@@ -47,12 +47,12 @@
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_phone)
 
-                                        <p><b>Phone</b> : {{ $sale->branch->phone }}</p>
+                                        <p><b>@lang('menu.phone')</b> : {{ $sale->branch->phone }}</p>
                                     @endif
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_email)
 
-                                        <p><b>Email</b> : {{ $sale->branch->email }}</p>
+                                        <p><b>@lang('menu.email')</b> : {{ $sale->branch->email }}</p>
                                     @endif
                                 @else
 
@@ -69,7 +69,7 @@
                                     @endif
 
                                     @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                        <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                                        <p>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
                             </div>
@@ -121,7 +121,7 @@
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
                                 <li>
-                                    <strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
@@ -442,7 +442,7 @@
 
                             <tr>
                                 <th class="text-center">
-                                    <span><b>Email :</b> {{ $sale->branch->email }}</span>
+                                    <span><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</span>
                                 </th>
                             </tr>
                         </thead>
@@ -454,7 +454,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>Date:</b>
+                                    <b>@lang('menu.date'):</b>
                                     {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
                                 </th>
                             </tr>

@@ -93,7 +93,7 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="es_settings_form" href="#">Send Email & SMS Settings</a>
+                                            <a class="menu_btn" data-form="es_settings_form" href="#">Send Email & @lang('menu.sms_settings')</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -111,7 +111,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Business Name :</strong></label>
+                                            <label><strong>@lang('menu.business_name') :</strong></label>
                                             <input type="text" name="shop_name" class="form-control bs_input"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
@@ -133,7 +133,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>Email :</strong></label>
+                                            <label><strong>@lang('menu.email') :</strong></label>
                                             <input type="text" name="email" class="form-control bs_input" placeholder="Business email address"
                                                 value="{{ json_decode($generalSettings->business, true)['email'] }}">
                                         </div>
@@ -344,7 +344,7 @@
                                                     value="{{ json_decode($generalSettings->dashboard, true)['view_stock_expiry_alert_for'] }}">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text input-group-text-sm"
-                                                        id="basic-addon1">Days</span>
+                                                        id="basic-addon1">@lang('menu.days')</span>
                                                 </div>
                                             </div>
                                             <span class="error error_dbs_view_stock_expiry_alert_for"></span>
@@ -751,7 +751,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">Send Email & SMS Settings</h6>
+                                            <h6 class="text-primary">Send Email & @lang('menu.sms_settings')</h6>
                                         </div>
                                     </div>
 

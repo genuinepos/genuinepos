@@ -33,19 +33,19 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>State :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="state" class="form-control  add_input" data-name="State" id="state" placeholder="State name"/>
+            <label><strong>@lang('menu.state') :</strong>  <span class="text-danger">*</span></label>
+            <input type="text" name="state" class="form-control  add_input" data-name="State" id="state" placeholder="@lang('menu.state')"/>
             <span class="error error_state"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Country :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="country" class="form-control  add_input" data-name="country" id="country" placeholder="Country"/>
+            <label><strong>@lang('menu.country') :</strong>  <span class="text-danger">*</span></label>
+            <input type="text" name="country" class="form-control  add_input" data-name="country" id="country" placeholder="@lang('menu.country')"/>
             <span class="error error_country"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Zip-code :</strong> <span class="text-danger">*</span></label>
+            <label> <strong>@lang('menu.zip_code') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="zip_code" class="form-control  add_input" data-name="Zip code" id="zip_code" placeholder="Zip code"/>
             <span class="error error_zip_code"></span>
         </div>
@@ -53,7 +53,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Email :</strong> </label>
+            <label> <strong>@lang('menu.email') :</strong> </label>
             <input type="text" name="email" class="form-control "  id="email" placeholder="Email address"/>
         </div>
 

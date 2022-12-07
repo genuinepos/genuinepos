@@ -49,9 +49,9 @@
                             @endif
 
                             @if ($product->status == 1)
-                                <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-up mr-1 text-success"></i>Change Status</a>
+                                <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-up mr-1 text-success"></i>@lang('menu.change_status')</a>
                             @else
-                                <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-down mr-1 text-danger"></i>Change Status</a>
+                                <a class="dropdown-item" id="change_status" href="{{ route('products.change.status', $product->id) }}"><i class="far fa-thumbs-down mr-1 text-danger"></i>@lang('menu.change_status')</a>
                             @endif
 
                             @if (auth()->user()->can('openingStock_add'))

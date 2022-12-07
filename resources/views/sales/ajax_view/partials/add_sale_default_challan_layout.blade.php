@@ -61,7 +61,7 @@
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
-                                    <p><b>Email :</b> {{ $sale->branch->email }}</p>
+                                    <p><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</p>
                                 @endif
                             @else
                                 <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
@@ -76,7 +76,7 @@
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
-                                    <p><b>Email :</b>
+                                    <p><b>@lang('menu.email') :</b>
                                         {{ json_decode($generalSettings->business, true)['email'] }}
                                     </p>
                                 @endif
@@ -105,7 +105,7 @@
                         @endif
 
                         @if ($defaultLayout->customer_tax_no)
-                            <li><strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                             </li>
                         @endif
 
@@ -138,7 +138,7 @@
                 <thead>
                     <tr>
                     <tr>
-                        <th class="text-start">Serial</th>
+                        <th class="text-start">@lang('menu.serial')</th>
                         <th class="text-start">Descrpiton</th>
                         <th class="text-start">Unit</th>
                         <th class="text-start">@lang('menu.quantity')</th>

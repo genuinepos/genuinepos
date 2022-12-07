@@ -8,7 +8,7 @@
 
     <div class="col-md-4">
         <p><b>Due Date : </b>{{ date('d/m/Y', strtotime($todo->due_date)) }}</p>
-        <p><b>Status : </b> {{ $todo->status }}</p>
+        <p><b>@lang('menu.status') : </b> {{ $todo->status }}</p>
         <p><b>Priority : </b> {{ $todo->priority }}</p>
     </div>
 

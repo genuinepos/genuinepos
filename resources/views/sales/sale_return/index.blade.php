@@ -41,7 +41,7 @@
                                                 <th class="text-start">@lang('menu.invoice_id')</th>
                                                 <th class="text-start">Parent Sale</th>
                                                 <th class="text-start">Customer Name</th>
-                                                <th class="text-start">From</th>
+                                                <th class="text-start">@lang('menu.from')</th>
                                                 {{-- <th class="text-start">Payment Status</th> --}}
                                                 <th class="text-start">Total Returned Amount</th>
                                                 {{-- <th class="text-start">Payment Due</th> --}}

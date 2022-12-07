@@ -78,7 +78,7 @@
                     </button>
 
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="Pending" id="change_status"><i class="fas fa-circle text-danger"></i> <b>Pending</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="Pending" id="change_status"><i class="fas fa-circle text-danger"></i> <b>@lang('menu.pending')</b></a>
                         <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="In-Progress" id="change_status"><i class="fas fa-circle text-secondary"></i> <b>In-Progress</b></a>
                         <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="Complated" id="change_status"><i class="fas fa-circle text-info"></i> <b>Complated</b></a>
                     </div>

@@ -109,7 +109,7 @@
 
                                 <div class="col-md-2">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Status : <span
+                                        <label class="col-4"> <b>@lang('menu.status') : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="status" class="form-control add_input" data-name="Status"
@@ -139,7 +139,7 @@
                                         <div class="col-6">
                                             <select name="invoice_schema" class="form-control"
                                                 id="invoice_schema">
-                                                <option value="">None</option>
+                                                <option value="">@lang('menu.none')</option>
                                                 @foreach ($invoice_schemas as $inv_schema)
                                                     <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
                                                         {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}

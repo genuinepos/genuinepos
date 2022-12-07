@@ -80,7 +80,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Status :</b></label>
+                                        <label class="col-4"><b>@lang('menu.status') :</b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                 <option value="3">Ordered</option>

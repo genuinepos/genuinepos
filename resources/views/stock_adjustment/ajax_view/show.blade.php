@@ -30,7 +30,7 @@
                                 <strong>Adjustment Location : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
@@ -39,7 +39,7 @@
                                 <strong>Adjustment Location : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
@@ -181,13 +181,13 @@
                             <h5 class="branch_name">{{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }}</h5>
                             <p class="address">{{ $adjustment->branch->city }}, {{ $adjustment->branch->state }},
                                 {{ $adjustment->branch->zip_code }}, {{ $adjustment->branch->country }}</p>
-                            <p class="branch_phone"><b>Phone</b> : {{ $adjustment->branch->phone }}</p>
+                            <p class="branch_phone"><b>@lang('menu.phone')</b> : {{ $adjustment->branch->phone }}</p>
                             <p class="branch_email">{{ $adjustment->branch->email }}</p>
                         @else
                             <h5 class="business_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                             <p class="address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                            <p class="branch_phone"><b>Phone</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-                            <p class="branch_email"><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                            <p class="branch_phone"><b>@lang('menu.phone')</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                            <p class="branch_email"><b>@lang('menu.email')</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                         @endif
                         <h6 class="bill_name">Stock Adjustment Details</h6>
                     </div>
@@ -213,7 +213,7 @@
                                 <strong>Adjustment Location : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
@@ -222,7 +222,7 @@
                                 <strong>Adjustment Location : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>

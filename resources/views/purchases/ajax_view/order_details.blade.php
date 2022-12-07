@@ -19,14 +19,14 @@
                              <li><strong>@lang('menu.supplier') : - </strong></li>
                              <li><strong>@lang('menu.name') :</strong> {{ $purchase->supplier->name }}</li>
                              <li><strong>@lang('menu.address') : </strong> {{ $purchase->supplier->address }}</li>
-                             <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
+                             <li><strong>@lang('menu.tax_number') : </strong> {{ $purchase->supplier->tax_number }}</li>
                              <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                          </ul>
                      </div>
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Purchase From : </strong></li>
+                             <li><strong>@lang('menu.purchase_from') : </strong></li>
                              <li><strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>Branch/Concern</b>)
@@ -60,7 +60,7 @@
                             <li><strong>Receiving Status : </strong>
                                 @if ($purchase->po_receiving_status == 'Pending')
 
-                                    <span class="badge bg-danger">Pending</span>
+                                    <span class="badge bg-danger">@lang('menu.pending')</span>
                                 @elseif ($purchase->po_receiving_status == 'Completed')
 
                                     <span class="badge bg-success">Completed</span>
@@ -385,13 +385,13 @@
                             <li><strong>@lang('menu.supplier') : - </strong></li>
                             <li><strong>@lang('menu.name') :</strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
-                            <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $purchase->supplier->tax_number }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Purchase From : </strong></li>
+                            <li><strong>@lang('menu.purchase_from') : </strong></li>
                             <li>
                                 <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)

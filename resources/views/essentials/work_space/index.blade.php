@@ -63,7 +63,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label><strong>Status : </strong></label>
+                                        <label><strong>@lang('menu.status') : </strong></label>
                                         <select name="status"
                                             class="form-control submit_able" id="status" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -178,7 +178,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Status : </strong></label>
+                                <label><strong>@lang('menu.status') : </strong></label>
                                 <select required name="status" class="form-control">
                                     <option value="">Select Status</option>
                                     <option value="New">New</option>

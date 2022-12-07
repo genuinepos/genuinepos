@@ -32,12 +32,12 @@
                                     {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                                 </p>
                                 <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
-                                <p><strong>Email :</strong> {{ $receipt->email }}</p>
+                                <p><strong>@lang('menu.email') :</strong> {{ $receipt->email }}</p>
                             @else
                                 <h6 class="company_name"><b>{{ json_decode($generalSettings->business, true)['shop_name'] }}</b></h6>
                                 <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                                 <p>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-                                <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                                <p>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                             @endif
                         </div>
                     </div>
@@ -195,12 +195,12 @@
                                     {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                                 </p>
                                 <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
-                                <p><strong>Email :</strong> {{ $receipt->email }}</p>
+                                <p><strong>@lang('menu.email') :</strong> {{ $receipt->email }}</p>
                             @else
                                 <h6 class="company_name"><b>{{ json_decode($generalSettings->business, true)['shop_name'] }}</b></h6>
                                 <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                                 <p>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-                                <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                                <p>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                             @endif
                         </div>
                     </div>

@@ -60,7 +60,7 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid Amount :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_amount') :</th>
                             <td width="50%">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}

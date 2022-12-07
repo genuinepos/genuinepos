@@ -30,7 +30,7 @@
                 <table class="table table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid Amount :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_amount') :</th>
                             <td width="50%" class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $payment->paid }}

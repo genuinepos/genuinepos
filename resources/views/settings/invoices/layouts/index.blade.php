@@ -32,7 +32,7 @@
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th>Serial</th>
+                                        <th>@lang('menu.serial')</th>
                                         <th>Layout Name</th>
                                         <th>Is Header Less</th>
                                         <th>@lang('menu.action')</th>

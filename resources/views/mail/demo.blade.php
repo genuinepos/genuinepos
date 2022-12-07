@@ -115,8 +115,8 @@
           <strong style="display:block;margin:0 0 10px 0;">Regards</strong> <br>
             If you need any support, Feel free to contact us.
             <br><br>
-            <b>Phone:</b> {{ json_decode($generalSettings->business, true)['phone'] }}<br>
-            <b>Email:</b> {{ json_decode($generalSettings->business, true)['email'] }}
+            <b>@lang('menu.phone'):</b> {{ json_decode($generalSettings->business, true)['phone'] }}<br>
+            <b>@lang('menu.email'):</b> {{ json_decode($generalSettings->business, true)['email'] }}
         </td>
       </tr>
     </tfoot>

@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>From : </strong></li>
+                        <li><strong>@lang('menu.from') : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
                         
@@ -54,8 +54,8 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
-                        <li><strong>Status : </strong> 
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong> 
                             Pending
                         </li>
                     </ul>

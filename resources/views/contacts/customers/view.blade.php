@@ -179,7 +179,7 @@
                                     <li><span class="name">{{ $customer->name }}</span></li><br>
                                     <li><strong><i class="fas fa-map-marker-alt"></i> Address :</strong></li>
                                     <li><span class="address">{{ $customer->address }}</span></li><br>
-                                    <li><strong><i class="fas fa-briefcase"></i> Business Name :</strong></li>
+                                    <li><strong><i class="fas fa-briefcase"></i> @lang('menu.business_name') :</strong></li>
                                     <li><span class="business">{{ $customer->business_name }}</span></li>
                                 </ul>
                             </div>
@@ -193,7 +193,7 @@
 
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong><i class="fas fa-info"></i> Tax Number</strong></li>
+                                    <li><strong><i class="fas fa-info"></i> @lang('menu.tax_number')</strong></li>
                                     <li><span class="tax_number">{{ $customer->tax_number }}</span></li>
                                 </ul>
                             </div>
@@ -463,7 +463,7 @@
                                                     <tr class="text-start">
                                                         <th class="text-start">@lang('menu.date')</th>
                                                         <th class="text-start">@lang('menu.voucher_no')</th>
-                                                        <th class="text-start">Reference</th>
+                                                        <th class="text-start">@lang('menu.reference')</th>
                                                         <th class="text-start">Against Invoice</th>
                                                         {{-- <th>Created By</th> --}}
                                                         <th class="text-start">Payment Status</th>

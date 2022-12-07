@@ -12,7 +12,7 @@
         <div class="sec-name">
             <div class="name-head">
                 <span class="fas fa-sliders-h"></span>
-                <h6>SMS Settings</h6>
+                <h6>@lang('menu.sms_settings')</h6>
             </div>
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -28,29 +28,29 @@
                 @csrf
                 <div class="form-group">
                     <div class="setting_form_heading">
-                        <h6 class="text-primary">SMS Settings</h6>
+                        <h6 class="text-primary">@lang('menu.sms_settings')</h6>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <label><strong>SMS URL : </strong></label>
+                        <label><strong>{{ __('SMS URL') }} : </strong></label>
                         <input type="text" name="SMS_URL" class="form-control"
-                            placeholder="SMS URL" autocomplete="off"
+                            placeholder="{{ __('SMS URL') }}" autocomplete="off"
                             value="{{ env('SMS_URL') }}">
                     </div>
 
                     <div class="col-md-3">
-                        <label><strong>API KEY : </strong></label>
+                        <label><strong>{{ __('API KEY') }} : </strong></label>
                         <input type="text" name="API_KEY" class="form-control"
-                            placeholder="API KEY" autocomplete="off"
+                            placeholder="{{ __('API KEY') }}" autocomplete="off"
                             value="{{ env('API_KEY') }}">
                     </div>
 
                     <div class="col-md-3">
-                        <label><strong>SENDER ID : </strong></label>
+                        <label><strong>{{ __('SENDER ID') }} : </strong></label>
                         <input type="text" name="SENDER_ID" class="form-control"
-                            placeholder="SENDER ID" autocomplete="off"
+                            placeholder="{{ __('SENDER ID') }}" autocomplete="off"
                             value="{{ env('SENDER_ID') }}">
                     </div>
 

@@ -61,7 +61,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>Date :</b></label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.date'):</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control  changeable"
                                                 value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="datepicker">

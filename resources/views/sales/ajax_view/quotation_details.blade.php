@@ -25,7 +25,7 @@
                             <strong>@lang('menu.address') : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
                         </li>
                         <li>
-                            <strong>Tax Number : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
+                            <strong>@lang('menu.tax_number') : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
                         </li>
                         <li>
                             <strong>@lang('menu.phone') : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}
@@ -62,7 +62,7 @@
                         <li>
                             <strong>Quotation ID : </strong> {{ $quotation->invoice_id }}
                         </li>
-                    <li><strong>Status : </strong>
+                    <li><strong>@lang('menu.status') : </strong>
                         <span class="sale_status">
                             <spna class="badge bg-info">Quotation</spna>
                         </span>
@@ -287,11 +287,11 @@
                                     </p>
 
                                     @if ($quotation->branch->add_sale_invoice_layout->branch_phone)
-                                        <p><b>Phone</b> : {{ $quotation->branch->phone }}</p>
+                                        <p><b>@lang('menu.phone')</b> : {{ $quotation->branch->phone }}</p>
                                     @endif
 
                                     @if ($quotation->branch->add_sale_invoice_layout->branch_email)
-                                        <p><b>Email</b> : {{ $quotation->branch->email }}</p>
+                                        <p><b>@lang('menu.email')</b> : {{ $quotation->branch->email }}</p>
                                     @endif
                                 @else
                                     <h5 class="company_name">
@@ -307,7 +307,7 @@
                                     @endif
 
                                     @if ($quotation->branch->add_sale_invoice_layout->branch_email)
-                                        <p>Email : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                                        <p>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
                                 <p class="bill_name"><b>Entered By :</b>
@@ -335,7 +335,7 @@
                             @endif
 
                             @if ($quotation->branch->add_sale_invoice_layout->customer_tax_no)
-                                <li><strong>Tax Number : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}</li>
+                                <li><strong>@lang('menu.tax_number') : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}</li>
                             @endif
 
                             @if ($quotation->branch->add_sale_invoice_layout->customer_phone)
@@ -620,11 +620,11 @@
                                     </p>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <p><b>Phone</b> : {{ $quotation->branch->phone }}</p>
+                                        <p><b>@lang('menu.phone')</b> : {{ $quotation->branch->phone }}</p>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <p><b>Email</b> : {{ $quotation->branch->email }}</p>
+                                        <p><b>@lang('menu.email')</b> : {{ $quotation->branch->email }}</p>
                                     @endif
                                 @else
                                     <h4 class="company_name">
@@ -634,11 +634,11 @@
                                     </p>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <p><b>Phone</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                                        <p><b>@lang('menu.phone')</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <p><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                                        <p><b>@lang('menu.email')</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
 
@@ -669,7 +669,7 @@
 
                             @if ($defaultLayout->customer_tax_no)
                                 <li>
-                                    <strong>Tax Number : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
                                 </li>
                             @endif
 

@@ -45,7 +45,7 @@
 
         @if ($fromDate && $toDate)
 
-            <p style="margin-top: 10px;"><b>From :</b>
+            <p style="margin-top: 10px;"><b>@lang('menu.from') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>

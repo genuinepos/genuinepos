@@ -124,7 +124,7 @@
                 <thead>
                     <tr>
                     <tr>
-                        <th class="text-startx">Serial</th>
+                        <th class="text-startx">@lang('menu.serial')</th>
                         <th class="text-startx">@lang('menu.description')</th>
                         <th class="text-startx">@lang('menu.unit')</th>
                         <th class="text-startx">@lang('menu.quantity')</th>

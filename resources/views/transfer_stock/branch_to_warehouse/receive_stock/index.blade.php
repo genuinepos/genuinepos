@@ -34,7 +34,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-start">@lang('menu.date')</th>
-                                                <th class="text-start">Reference ID</th>
+                                                <th class="text-start">@lang('menu.reference_id')</th>
                                                 <th class="text-start">Warehouse(From)</th>
                                                 <th class="text-start">@lang('menu.b_location')(To)</th>
                                                 <th class="text-start">Total Item</th>

@@ -42,10 +42,10 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled float-right">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->status == 1)
-                                <span class="badge bg-danger">Pending</span>
+                                <span class="badge bg-danger">@lang('menu.pending')</span>
                             @elseif($transfer->status == 2)
                                 <span class="badge bg-primary">Partial</span>
                             @elseif($transfer->status == 3)
@@ -202,8 +202,8 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->status == 1)
                                 Pending
                             @elseif($transfer->status == 2)

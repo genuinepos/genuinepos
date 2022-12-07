@@ -9,7 +9,7 @@
 
         <td>
             @if ($leave->status == 0)
-                <span class="badge bg-warning">Pending</span>
+                <span class="badge bg-warning">@lang('menu.pending')</span>
             @elseif($leave->status == 1)
                 <span class="badge bg-success">Approved</span>
             @else 

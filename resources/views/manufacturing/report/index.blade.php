@@ -109,7 +109,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Status :</strong></label>
+                                        <label><strong>@lang('menu.status') :</strong></label>
                                         <div class="input-group">
                                             <select name="status" class="form-control" id="status" autofocus>
                                                 <option value="">@lang('menu.all')</option>

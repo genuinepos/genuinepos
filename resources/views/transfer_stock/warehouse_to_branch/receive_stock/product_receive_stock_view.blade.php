@@ -31,7 +31,7 @@
                             <hr class="m-1">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p>
+                                    <p class="m-0"><strong>@lang('menu.reference_id') </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p>
                                     <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p>
                                     </div>
                                     <div class="col-md-6">

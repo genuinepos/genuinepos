@@ -78,7 +78,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4">Status : <span
+                                        <label class="col-4">@lang('menu.status') : <span
                                                 class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select name="status" class="form-control add_input" data-name="Status"

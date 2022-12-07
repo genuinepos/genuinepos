@@ -36,7 +36,7 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Serial</th>
+                                    <th>@lang('menu.serial')</th>
                                     <th>@lang('menu.type')</th>
                                     <th>Max leave</th>
                                     <th>Leave Count Interval</th>
@@ -86,7 +86,7 @@
                         <div class="form-group mt-1">
                             <label><b>leave Count Interval :</b> </label>
                             <select name="leave_count_interval" class="form-control">
-                            	<option value="0">None</option>
+                            	<option value="0">@lang('menu.none')</option>
                             	<option value="1">Current Month</option>
                             	<option value="2">Current Financial year</option>
                             </select>

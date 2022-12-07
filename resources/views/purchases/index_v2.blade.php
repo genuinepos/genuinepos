@@ -62,7 +62,7 @@
                                                         class="form-control  submit_able">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">Purchased</option>
-                                                        <option value="2">Pending</option>
+                                                        <option value="2">@lang('menu.pending')</option>
                                                         <option value="3">Purchased By Order</option>
                                                     </select>
                                                 </div>
@@ -131,7 +131,7 @@
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
                                                 <th>P.Invoice ID</th>
-                                                <th>Purchase From</th>
+                                                <th>@lang('menu.purchase_from')</th>
                                                 <th>Supplier</th>
                                                 <th>Purchase Status</th>
                                                 <th>Payment Status</th>

@@ -34,7 +34,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Reference ID</th>
+                                                <th>@lang('menu.reference_id')</th>
                                                 <th>@lang('menu.b_location')(From)</th>
                                                 <th>Warehouse(To) </th>
                                                 <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>

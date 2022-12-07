@@ -104,7 +104,7 @@
                                                     </li>
 
                                                     <li>
-                                                        <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name &nbsp; </p>
+                                                        <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; @lang('menu.business_name') &nbsp; </p>
                                                     </li>
 
                                                     <li>

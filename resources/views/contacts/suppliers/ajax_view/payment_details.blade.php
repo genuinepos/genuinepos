@@ -39,7 +39,7 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <td width="50%" class="text-start"><strong>Paid Amount :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.paid_amount') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($supplierPayment->paid_amount) }}
@@ -70,7 +70,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Reference :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.reference') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $supplierPayment->reference }}
                             </td>

@@ -52,7 +52,7 @@
                                                     <label><strong>Payment Status :</strong></label>
                                                     <select name="receive_status" id="receive_status" class="form-control">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Pending</option>
+                                                        <option value="1">@lang('menu.pending')</option>
                                                         <option value="2">Partial</option>
                                                         <option value="3">Completed</option>
                                                     </select>
@@ -111,7 +111,7 @@
                                             <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Reference ID</th>
+                                                <th>@lang('menu.reference_id')</th>
                                                 <th>Send From</th>
                                                 <th>Receive Status</th>
                                                 <th>Total Item</th>

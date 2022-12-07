@@ -1,7 +1,7 @@
 <table id="kt_datatable" class="display data_tbl data__table">
     <thead>
         <tr>
-            <th>Serial</th>
+            <th>@lang('menu.serial')</th>
             <th>@lang('menu.name')</th>
             <th>Duration</th>
             <th>@lang('menu.type')</th>

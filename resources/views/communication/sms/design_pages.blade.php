@@ -62,7 +62,7 @@
                                         <div class="col-12">
                                             <div class="sms-example">
                                                 <p class="text-secondary"><strong>Example:</strong></p>
-                                                <p>Date @date,</p>
+                                                <p>@lang('menu.date') @date,</p>
                                                 <p>Dear Customer,</p>
                                                 <p>Today Bill No @invoice_no. Net amount @net_amount + vat (@vat) and discount @discount. Total Amount: @total_amount</p>
                                                 <p>Earning Point: @point</p>

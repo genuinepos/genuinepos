@@ -24,8 +24,8 @@
                     {{ $payment->purchase->branch ? $payment->purchase->branch->country : '' }}.
                 @else
                     {{ json_decode($generalSettings->business, true)['address'] }} <br>
-                    <b>Phone</b> : {{ json_decode($generalSettings->business, true)['phone'] }} <br>
-                    <b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }} <br>
+                    <b>@lang('menu.phone')</b> : {{ json_decode($generalSettings->business, true)['phone'] }} <br>
+                    <b>@lang('menu.email')</b> : {{ json_decode($generalSettings->business, true)['email'] }} <br>
                 @endif
             </h6>
             <h6>Payment Details</h6>
@@ -50,7 +50,7 @@
                 <table class="table table-md">
                     <tbody>
                         <tr>
-                            <th class="text-start" width="50%">Paid Amount :</th>
+                            <th class="text-start" width="50%">@lang('menu.paid_amount') :</th>
                             <td width="50%">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}

@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Status : </strong></label>
+            <label><strong>@lang('menu.status') : </strong></label>
             <select required name="status" class="form-control" id="status">
                 <option value="">Select Status</option>
                 <option {{ $ws->status == 'New' ? 'SELECTED' : '' }} value="New">New</option>

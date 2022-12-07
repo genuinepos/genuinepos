@@ -82,7 +82,7 @@
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
                                 <li>
-                                    <strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
@@ -311,7 +311,7 @@
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6>Email : {{ $sale->branch->email }}</h6>
+                                        <h6>@lang('menu.email') : {{ $sale->branch->email }}</h6>
                                     @endif
                                 @else
                                     <h4 class="company_name">
@@ -327,7 +327,7 @@
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6>Email : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
+                                        <h6>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
                                     @endif
                                 @endif
                             </div>
@@ -357,7 +357,7 @@
 
                             @if ($defaultLayout->customer_tax_no)
                                 <li>
-                                    <strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 

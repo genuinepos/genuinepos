@@ -1,7 +1,7 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-start">Serial</th>
+            <th class="text-start">@lang('menu.serial')</th>
             <th class="text-start">@lang('menu.type')</th>
             <th class="text-start">Max leave</th>
             <th class="text-start">Leave Count Interval</th>
@@ -20,7 +20,7 @@
                 	@elseif($row->leave_count_interval==2)
                 	    <span class="badge bg-warning">Current Financial Year</span>
                 	@else
-                	    <span class="badge bg-info">None</span>
+                	    <span class="badge bg-info">@lang('menu.none')</span>
                 	@endif
                 </td> 
                 <td class="text-start"> 

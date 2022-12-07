@@ -175,7 +175,7 @@
                                 <li>{{ $supplier->name }}</li><br>
                                 <li><strong><i class="fas fa-map-marker-alt"></i> Address</strong></li>
                                 <li>{{ $supplier->address }}</li><br>
-                                <li><strong><i class="fas fa-briefcase"></i> Business Name</strong></li>
+                                <li><strong><i class="fas fa-briefcase"></i> @lang('menu.business_name')</strong></li>
                                 <li>{{ $supplier->business_name }}</li>
                             </ul>
                         </div>
@@ -322,8 +322,8 @@
                                             <tr class="text-left">
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Reference ID</th>
-                                                <th>Purchase From</th>
+                                                <th>@lang('menu.reference_id')</th>
+                                                <th>@lang('menu.purchase_from')</th>
                                                 <th>Supplier</th>
                                                 <th>Purchase Status</th>
                                                 <th>Payment Status</th>
@@ -445,7 +445,7 @@
                                                 <th class="text-start">@lang('menu.action')</th>
                                                 <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">Order ID</th>
-                                                <th class="text-start">Purchase From</th>
+                                                <th class="text-start">@lang('menu.purchase_from')</th>
                                                 <th class="text-start">Supplier</th>
                                                 <th class="text-start">@lang('menu.created_by')</th>
                                                 <th class="text-start">Receiving Status</th>
@@ -595,7 +595,7 @@
                                                 <tr class="text-start">
                                                     <th class="text-start">@lang('menu.date')</th>
                                                     <th class="text-start">@lang('menu.voucher_no')</th>
-                                                    <th class="text-start">Reference</th>
+                                                    <th class="text-start">@lang('menu.reference')</th>
                                                     <th class="text-start">Against Invoice</th>
                                                     {{-- <th>@lang('menu.created_by')</th> --}}
                                                     <th class="text-start">Payment Status</th>

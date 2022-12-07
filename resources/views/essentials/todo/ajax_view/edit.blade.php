@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Status : </strong></label>
+            <label><strong>@lang('menu.status') : </strong></label>
             <select required name="status" class="form-control">
                 <option value="">Select Status</option>
                 <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">New</option>

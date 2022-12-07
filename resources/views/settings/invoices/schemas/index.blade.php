@@ -96,8 +96,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label>Prefix : <span class="text-danger">*</span></label>
-                                <input type="text" name="prefix" class="form-control form-control-sm" id="prefix" placeholder="Prefix"/>
+                                <label>@lang('menu.prefix') : <span class="text-danger">*</span></label>
+                                <input type="text" name="prefix" class="form-control form-control-sm" id="prefix" placeholder="@lang('menu.prefix')"/>
                                 <span class="error error_prefix"></span>
                             </div>
                         </div>

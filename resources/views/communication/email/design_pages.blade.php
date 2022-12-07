@@ -120,7 +120,7 @@
                                 <table class=" display table-striped">
                                     <thead>
                                         <tr class="bg-secondary text-white">
-                                            <td>Serial</td>
+                                            <td>@lang('menu.serial')</td>
                                             <td>Sender</td>
                                         </tr>
                                     </thead>
@@ -182,7 +182,7 @@
                             <strong>Dear Customer,</strong>
                             <p>THis is a notice that invoice @invoice which was originally generated on @date.</p>
                             <br>
-                            <p><strong>Date #</strong> @date</p>
+                            <p><strong>@lang('menu.date') #</strong> @date</p>
                             <p><strong>Invoice #</strong> @invoice</p>
                             <hr class="my-1">
                             <p><strong>Sub Total :</strong> @subtotal</p>
@@ -207,7 +207,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Email Settings</strong>
+                    <strong>@lang('menu.email_settings')</strong>
                 </div>
             </div>
             <div class="row g-3">

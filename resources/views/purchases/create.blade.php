@@ -91,11 +91,11 @@
 
                                     @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
                                         <div class="input-group mt-1">
-                                            <label class=" col-4"><b>Status :</b></label>
+                                            <label class=" col-4"><b>@lang('menu.status') :</b></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                     <option value="1">Purchase</option>
-                                                    {{-- <option value="2">Pending</option> --}}
+                                                    {{-- <option value="2">@lang('menu.pending')</option> --}}
                                                     <option value="3">Ordered</option>
                                                 </select>
                                             </div>
@@ -123,7 +123,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Pay Term :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.pay_term') :</b> </label>
                                         <div class="col-8">
                                             <div class="row">
                                                 <div class="col-5">
@@ -134,9 +134,9 @@
                                                 <div class="col-7">
                                                     <select name="pay_term" class="form-control changeable"
                                                     id="pay_term">
-                                                        <option value="">Pay Term</option>
-                                                        <option value="1">Days</option>
-                                                        <option value="2">Months</option>
+                                                        <option value="">@lang('menu.pay_term')</option>
+                                                        <option value="1">@lang('menu.days')</option>
+                                                        <option value="2">@lang('menu.months')</option>
                                                     </select>
                                                 </div>
                                             </div>

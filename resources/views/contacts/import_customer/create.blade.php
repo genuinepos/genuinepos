@@ -87,7 +87,7 @@
 
                                             <tr>
                                                 <td class="text-start">2</td>
-                                                <td class="text-start"> Business Name </td>
+                                                <td class="text-start"> @lang('menu.business_name') </td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
@@ -106,31 +106,31 @@
 
                                             <tr>
                                                 <td class="text-start">5</td>
-                                                <td class="text-start"> Alternative Number</td>
+                                                <td class="text-start"> @lang('menu.alternative_number')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">6</td>
-                                                <td class="text-start">Landline</td>
+                                                <td class="text-start">@lang('menu.landline')</td>
                                                 <td class="text-start"> Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">7</td>
-                                                <td class="text-start">Email</td>
+                                                <td class="text-start">@lang('menu.email')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">8</td>
-                                                <td class="text-start">Date Of Birth</td>
+                                                <td class="text-start">@lang('menu.date_of_birth')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">9</td>
-                                                <td class="text-start">Tax Number</td>
+                                                <td class="text-start">@lang('menu.tax_number')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
@@ -149,31 +149,31 @@
 
                                             <tr>
                                                 <td class="text-start">13</td>
-                                                <td class="text-start">City</td>
+                                                <td class="text-start">@lang('menu.city')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">13</td>
-                                                <td class="text-start">State</td>
+                                                <td class="text-start">@lang('menu.state')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">14</td>
-                                                <td class="text-start">Country</td>
+                                                <td class="text-start">@lang('menu.country')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">15</td>
-                                                <td class="text-start">Zip-Code</td>
+                                                <td class="text-start">@lang('menu.zip_code')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">16</td>
-                                                <td class="text-start">Shipping Address</td>
+                                                <td class="text-start">@lang('menu.shipping_address')</td>
                                                 <td class="text-start">Optional</td>
                                             </tr>
 
@@ -186,7 +186,7 @@
 
                                             <tr>
                                                 <td class="text-start">17</td>
-                                                <td class="text-start">Pay term</td>
+                                                <td class="text-start">@lang('menu.pay_term')</td>
                                                 <td class="text-start">Optional (If exists 1=Day,2=Month)</td>
                                             </tr>
 

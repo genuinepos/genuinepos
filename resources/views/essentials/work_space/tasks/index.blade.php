@@ -60,7 +60,7 @@
                                         <div class="col-md-4">
                                             <ul class="list-unstyled ws_description">
                                                 <li><b>Priority  :</b> {{ $ws->priority }}</li>
-                                                <li><b>Status :</b> {{ $ws->status }}</li>
+                                                <li><b>@lang('menu.status') :</b> {{ $ws->status }}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -85,7 +85,7 @@
                                     <div class="col-md-2">
                                         <select name="task_status" id="task_status" class="form-control form-control-sm">
                                             <option value="In-Progress">In-Progress</option>
-                                            <option value="Pending">Pending</option>
+                                            <option value="Pending">@lang('menu.pending')</option>
                                             <option value="Completed">Completed</option>
                                         </select>
                                     </div>

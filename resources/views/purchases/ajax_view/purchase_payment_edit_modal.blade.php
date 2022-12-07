@@ -25,7 +25,7 @@
                                 <li><strong>@lang('menu.supplier') : </strong>
                                     {{ $payment->purchase->supplier->name }}
                                 </li>
-                                <li><strong>Business : </strong>
+                                <li><strong>@lang('menu.business') : </strong>
                                     {{ $payment->purchase->supplier->business_name }}
                                 </li>
                                 <li><strong>@lang('menu.phone') : </strong>
@@ -62,7 +62,7 @@
                                     @if ($payment->purchase->purchase_status == 1)
                                         <span class="text-success"><b>Received</b></span>
                                     @elseif($payment->purchase->purchase_status == 2){
-                                        <span class="text-warning"><b>Pending</b></span>
+                                        <span class="text-warning"><b>@lang('menu.pending')</b></span>
                                     @else
                                         <span class="text-primary"><b>Ordered</b></span>
                                     @endif

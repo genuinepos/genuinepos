@@ -65,11 +65,11 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-end">
                             <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                            <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
-                            <li><strong>Status : </strong>
+                            <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
+                            <li><strong>@lang('menu.status') : </strong>
                                 @if ($transfer->receive_status == 1)
 
-                                    <span class="text-danger">Pending</span>
+                                    <span class="text-danger">@lang('menu.pending')</span>
                                 @elseif($transfer->receive_status == 2)
 
                                     <span class="text-primary">Partial</span>
@@ -168,9 +168,9 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>From : </strong></li>
+                        <li><strong>@lang('menu.from') : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
 
                         @if ($transfer->sender_branch)
                             <li><strong>@lang('menu.address') : </strong>
@@ -190,7 +190,7 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.to') : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
 
                         @if ($transfer->receiver_branch)
                             <li><strong>@lang('menu.address') : </strong>
@@ -210,11 +210,11 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
-                        <li><strong>Status : </strong>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->receive_status == 1)
 
-                                <span class="text-danger">Pending</span>
+                                <span class="text-danger">@lang('menu.pending')</span>
                             @elseif($transfer->receive_status == 2)
 
                                 <span class="text-primary">Partial</span>

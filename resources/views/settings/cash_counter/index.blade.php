@@ -32,7 +32,7 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="bg-navey-blue">
-                                    <th class="text-black">Serial</th>
+                                    <th class="text-black">@lang('menu.serial')</th>
                                     <th class="text-black">Counter Name</th>
                                     <th class="text-black">Short Name</th>
                                     <th class="text-black">@lang('menu.branch')</th>

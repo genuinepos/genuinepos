@@ -44,8 +44,8 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->status == 1)
                                 Pending
                             @elseif($transfer->status == 2)

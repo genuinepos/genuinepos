@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Customer Group</h5>
+                                <h5>@lang('menu.customer_group')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -24,7 +24,7 @@
                                 <div class="card" id="add_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
-                                            <h6>Add Customer Group</h6>
+                                            <h6>@lang('menu.add_customer_group')</h6>
                                         </div>
                                     </div>
 
@@ -38,9 +38,9 @@
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <label><strong>Calculation Percent (%) :</strong></label>
+                                                <label><strong>@lang('menu.calculation_percent') (%) :</strong></label>
                                                 <input type="number" step="any" name="calculation_percent" class="form-control" step="any"
-                                                    id="calculation_percent" placeholder="Calculation Percent" autocomplete="off" />
+                                                    id="calculation_percent" placeholder="@lang('menu.calculation_percent')" autocomplete="off" />
                                             </div>
 
                                             <div class="form-group row mt-3">
@@ -59,7 +59,7 @@
                                 <div class="card d-hide" id="edit_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
-                                            <h6>Edit Customer Group</h6>
+                                            <h6>@lang('menu.edit_customer_group')</h6>
                                         </div>
                                     </div>
 
@@ -74,9 +74,9 @@
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <label><strong>Calculation Percent (%) :</strong></label>
+                                                <label><strong>@lang('menu.calculation_percent') (%) :</strong></label>
                                                 <input type="number" step="any" name="calculation_percent" class="form-control"
-                                                    id="e_calculation_percent" placeholder="Calculation Percent" />
+                                                    id="e_calculation_percent" placeholder="@lang('menu.calculation_percent')" />
                                             </div>
 
                                             <div class="form-group row mt-3">
@@ -98,7 +98,7 @@
                                 <div class="card">
                                     <div class="section-header">
                                         <div class="col-md-6">
-                                            <h6>All Customer Groups</h6>
+                                            <h6>@lang('menu.all_customer_group')</h6>
                                         </div>
                                     </div>
 
@@ -110,9 +110,9 @@
                                             <table class="display data_tbl data__table">
                                                 <thead>
                                                     <tr>
-                                                        <th>Serial</th>
+                                                        <th>@lang('menu.serial')</th>
                                                         <th>@lang('menu.name')</th>
-                                                        <th>Calculation Percent</th>
+                                                        <th>@lang('menu.calculation_percent')</th>
                                                         <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>

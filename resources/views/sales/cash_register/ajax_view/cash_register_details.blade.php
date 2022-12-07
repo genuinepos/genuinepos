@@ -91,7 +91,7 @@
             </li>
 
             <li>
-                <b>Email : </b> {{ $activeCashRegister->u_email }}
+                <b>@lang('menu.email') : </b> {{ $activeCashRegister->u_email }}
             </li>
 
             <li>

@@ -27,7 +27,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.customer') : </strong><span class="card_text customer_name">{{ $customer->name }}</span></li>
-                                <li><strong>Business : </strong><span class="card_text customer_business">{{ $customer->business_name }}</span></li>
+                                <li><strong>@lang('menu.business') : </strong><span class="card_text customer_business">{{ $customer->business_name }}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -363,7 +363,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Reference :</strong> </label>
+                                <label><strong>@lang('menu.reference') :</strong> </label>
                                 <input type="text" name="reference" class="form-control" placeholder="Payment Reference" autocomplete="off"/>
                             </div>
                         </div>

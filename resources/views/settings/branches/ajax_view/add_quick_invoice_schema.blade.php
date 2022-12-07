@@ -23,8 +23,8 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Prefix :</b> <span class="text-danger">*</span></label>
-            <input type="text" name="prefix" class="form-control" id="q_prefix" placeholder="Prefix"/>
+            <label><b>@lang('menu.prefix') :</b> <span class="text-danger">*</span></label>
+            <input type="text" name="prefix" class="form-control" id="q_prefix" placeholder="@lang('menu.prefix')"/>
             <span class="error error_q_prefix"></span>
         </div>
 

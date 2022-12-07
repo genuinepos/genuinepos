@@ -227,7 +227,7 @@
 
                                     <div class="col-md-12">
                                         <div class="row"><p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="customer_group" class="contacts"> &nbsp; Customer Group -> View/Add/Edit/Delete</p>
+                                            <input type="checkbox" name="customer_group" class="contacts"> &nbsp; @lang('menu.customer_group') -> View/Add/Edit/Delete</p>
                                         </div>
                                     </div>
 

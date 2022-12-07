@@ -104,7 +104,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Prefix :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.prefix') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="prefix" class="form-control"
                                             placeholder="Mr / Mrs / Miss"
@@ -149,7 +149,7 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-5"><span
-                                            class="text-danger">*</span> <b>Email :</b> </label>
+                                            class="text-danger">*</span> <b>@lang('menu.email') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="email" id="email" class="form-control"
                                             placeholder="exmple@email.com"
@@ -190,10 +190,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>Date of birth :</b> </label>
+                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.date_of_birth'):</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="date_of_birth" class="form-control"
-                                            autocomplete="off" placeholder="Date of birth"
+                                            autocomplete="off" placeholder="@lang('menu.date_of_birth')"
                                             value="{{ auth()->user()->date_of_birth }}">
                                     </div>
                                 </div>

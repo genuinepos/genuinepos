@@ -21,7 +21,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.customer') : </strong><span class="card_text customer_name">{{ $customer->name }}</span>
                                 </li>
-                                <li><strong>Business : </strong><span
+                                <li><strong>@lang('menu.business') : </strong><span
                                         class="card_text customer_business">{{ $customer->business_name }}</span>
                                 </li>
                             </ul>

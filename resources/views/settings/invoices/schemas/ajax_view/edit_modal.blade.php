@@ -24,8 +24,8 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label>Prefix : <span class="text-danger">*</span></label>
-            <input type="text" name="prefix" {{ $schema->format == 2 ? 'readonly' : ''  }} class="form-control form-control-sm" id="e_prefix" placeholder="Prefix" value="{{ $schema->prefix }}"/>
+            <label>@lang('menu.prefix') : <span class="text-danger">*</span></label>
+            <input type="text" name="prefix" {{ $schema->format == 2 ? 'readonly' : ''  }} class="form-control form-control-sm" id="e_prefix" placeholder="@lang('menu.prefix')" value="{{ $schema->prefix }}"/>
             <span class="error error_e_prefix"></span>
         </div>
 

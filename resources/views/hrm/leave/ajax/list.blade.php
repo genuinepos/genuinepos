@@ -20,7 +20,7 @@
                 <td class="text-start">{{ $row->reason }}</td> 
                 <td class="text-start">
                 	@if($row->status == 0)
-                	   <span class="badge bg-warning">Pending</span>
+                	   <span class="badge bg-warning">@lang('menu.pending')</span>
                 	@else
                 	  <span class="badge bg-success">Success</span>
                 	@endif   

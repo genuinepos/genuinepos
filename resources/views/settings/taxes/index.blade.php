@@ -36,7 +36,7 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">Serial</th>
+                                    <th class="text-start">@lang('menu.serial')</th>
                                     <th class="text-start">Tax Name</th>
                                     <th class="text-start">Tax Percent</th>
                                     <th class="text-start">Actions</th>

@@ -69,7 +69,7 @@
                     <table class="display data_tbl data__table">
                         <thead>
                             <tr class="bg-navey-blue">
-                                <th class="text-black">Serial</th>
+                                <th class="text-black">@lang('menu.serial')</th>
                                 <th class="text-black">Photo</th>
                                 <th class="text-black">@lang('menu.name')</th>
                                 <th class="text-black">@lang('menu.description')</th>

@@ -85,7 +85,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>Status : </b></label>
+                                            <label><b>@lang('menu.status') : </b></label>
                                             <select name="status" id="status" class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="1">Active</option>

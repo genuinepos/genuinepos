@@ -180,8 +180,8 @@ aria-hidden="true">
                                     <div class="row g-0">
                                         <input type="number" step="any" name="duration" class="form-control w-50 add_warranty_input" data-name="Warranty duration" id="add_warranty_duration" placeholder="Warranty duration">
                                         <select name="duration_type" class="form-control w-50" id="duration_type">
-                                            <option value="Months">Months</option>
-                                            <option value="Days">Days</option>
+                                            <option value="Months">@lang('menu.months')</option>
+                                            <option value="Days">@lang('menu.days')</option>
                                             <option value="Years">Years</option>
                                         </select>
                                     </div>

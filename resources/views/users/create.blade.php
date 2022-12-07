@@ -26,7 +26,7 @@
                             <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Prefix :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.prefix') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="prefix" class="form-control"
                                                 placeholder="Mr / Mrs / Miss" autofocus>
@@ -61,7 +61,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Email :</b><span class="text-danger">*</span></label>
+                                        <label class="col-4"><b>@lang('menu.email') :</b><span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input type="text" name="email" id="email" class="form-control"
                                                 placeholder="exmple@email.com">
@@ -226,9 +226,9 @@
                             <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Date of birth :</b> </label>
+                                        <label class="col-4"> <b>@lang('menu.date_of_birth'):</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="Date of birth">
+                                            <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="@lang('menu.date_of_birth')">
                                         </div>
                                     </div>
                                 </div>

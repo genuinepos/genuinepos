@@ -81,7 +81,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <th colspan="2" width="100%"  class="text-start">None</th>
+                                <th colspan="2" width="100%"  class="text-start">@lang('menu.none')</th>
                             </tr>
                         @endif
                     </tbody>
@@ -114,7 +114,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <th colspan="2">None</th>
+                                <th colspan="2">@lang('menu.none')</th>
                             </tr>
                         @endif
                     </tbody>

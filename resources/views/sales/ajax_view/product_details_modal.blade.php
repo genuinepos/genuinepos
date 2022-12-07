@@ -32,7 +32,7 @@
                             </li>
 
                             <li>
-                                <strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                             </li>
 
                             <li>
@@ -318,13 +318,13 @@
 
                         @if(auth()->user()->can('edit_add_sale'))
 
-                            <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> Edit</a>
+                            <a class="btn btn-sm btn-secondary" href="{{ route('sales.edit', $sale->id) }}"> @lang('menu.edit')</a>
                         @endif
                     @else
 
                         @if(auth()->user()->can('pos_edit'))
 
-                            <a class="footer_btn btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> Edit</a>
+                            <a class="footer_btn btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}"> @lang('menu.edit')</a>
                         @endif
                     @endif
                 @endif

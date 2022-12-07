@@ -95,7 +95,7 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>Serial</th>
+                                            <th>@lang('menu.serial')</th>
                                             <th>Short Name</th>
                                             <th>Code Name</th>
                                             <th>@lang('menu.action')</th>

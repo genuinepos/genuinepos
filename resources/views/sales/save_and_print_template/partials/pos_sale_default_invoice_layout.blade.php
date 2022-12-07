@@ -58,7 +58,7 @@
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <p><b>Email :</b> {{ $sale->branch->email }}</p>
+                                        <p><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</p>
                                     @endif
                                 @else
                                     <p class="company_name" style="text-transform: uppercase;">
@@ -74,7 +74,7 @@
                                     @endif
 
                                     @if ($defaultLayout->branch_email && json_decode($generalSettings->business, true)['email'])
-                                        <p><strong>Email :</strong> {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                                        <p><strong>@lang('menu.email') :</strong> {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
                             </div>
@@ -124,7 +124,7 @@
                             @endif
 
                             @if ($defaultLayout->customer_tax_no)
-                                <li><strong>Tax Number : </strong>
+                                <li><strong>@lang('menu.tax_number') : </strong>
                                     {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
@@ -470,7 +470,7 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>Email :</b> {{ $sale->branch->email }}</span>
+                                        <span><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</span>
                                     </th>
                                 </tr>
                             @else
@@ -488,7 +488,7 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>Email :</b> {{ json_decode($generalSettings->business, true)['email'] }} </span>
+                                        <span><b>@lang('menu.email') :</b> {{ json_decode($generalSettings->business, true)['email'] }} </span>
                                     </th>
                                 </tr>
                             @endif
@@ -501,7 +501,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>Date:</b> <span> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
+                                    <b>@lang('menu.date'):</b> <span> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
                                 </th>
                             </tr>
 

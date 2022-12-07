@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="widget_content">
+         <div class="widget_content">
                 <div class="data_preloader">
                     <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
@@ -80,7 +80,7 @@
                     <table class="display data_tbl2 data__table w-100">
                         <thead>
                             <tr>
-                                <th>Serial</th>
+                                <th>@lang('menu.serial')</th>
                                 <th>Photo</th>
                                 <th>SubCategory</th>
                                 <th>Parent Category</th>

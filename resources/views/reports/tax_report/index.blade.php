@@ -120,7 +120,7 @@
                                                                         <th>@lang('menu.date')</th>
                                                                         <th>@lang('menu.invoice_id')</th>
                                                                         <th>@lang('menu.customer')</th>
-                                                                        <th>Tax Number</th>
+                                                                        <th>@lang('menu.tax_number')</th>
                                                                         <th>Discount</th>
                                                                         <th>Tax Percent</th>
                                                                         <th>Tax Amount</th>
@@ -131,7 +131,7 @@
                                                                         <td>--/--/----</td>
                                                                         <td>SI000555</td>
                                                                         <td>Walk-In-Customer</td>
-                                                                        <td>Tax Number</td>
+                                                                        <td>@lang('menu.tax_number')</td>
                                                                         <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                         <td>(5.00%)</td>
                                                                         <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
@@ -153,7 +153,7 @@
                                                                         <th>@lang('menu.date')</th>
                                                                         <th>@lang('menu.invoice_id')</th>
                                                                         <th>Supplier</th>
-                                                                        <th>Tax Number</th>
+                                                                        <th>@lang('menu.tax_number')</th>
                                                                         <th>Discount</th>
                                                                         <th>Tax Percent</th>
                                                                         <th>Tax Amount</th>
@@ -164,7 +164,7 @@
                                                                         <td>--/--/----</td>
                                                                         <td>SI000555</td>
                                                                         <td>Freedan Joo</td>
-                                                                        <td>Tax Number</td>
+                                                                        <td>@lang('menu.tax_number')</td>
                                                                         <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                         <td>(0.00%)</td>
                                                                         <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>

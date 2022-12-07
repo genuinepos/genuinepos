@@ -23,7 +23,7 @@
                         </span>
                     </li>
                     <li class="text-navy-blue">
-                        <strong>Business : </strong>
+                        <strong>@lang('menu.business') : </strong>
                         <span class="card_text customer_business">{{ $customer->business_name }}</span>
                     </li>
                 </ul>
@@ -69,7 +69,7 @@
             <thead>
                 <tr>
                     <th>@lang('menu.date')</th>
-                    <th>From</th>
+                    <th>@lang('menu.from')</th>
                     <th>@lang('menu.voucher_no')</th>
                     <th>@lang('menu.amount')</th>
                     <th>@lang('menu.action')</th>
@@ -98,16 +98,16 @@
                             <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Action
+                                        @lang('menu.action')
                                     </button>
 
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if ($receipt->status != 'Completed')
                                             <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i>@lang('menu.print')</a>
-                                            <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i> Edit</a>
-                                            <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt text-primary"></i> Change Status</a>
+                                            <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i>@lang('menu.edit')</a>
+                                            <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt text-primary"></i>@lang('menu.change_status')</a>
                                         @endif
-                                        <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}"><i class="far fa-trash-alt text-primary"></i> Delete</a>
+                                        <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}"><i class="far fa-trash-alt text-primary"></i> @lang('menu.delete')</a>
                                     </div>
                                 </div>
                             </td>
@@ -130,7 +130,7 @@
 <div class="form-group row mt-3">
     <div class="col-md-12 d-flex justify-content-end gap-2">
         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="btn btn-sm btn-success">Generate New</a>
+        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="btn btn-sm btn-success">{{ __('Generate New') }}</a>
     </div>
 </div>
 

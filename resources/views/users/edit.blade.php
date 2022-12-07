@@ -236,7 +236,7 @@
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"> <b>@lang('menu.date_of_birth') :</b> </label>
                                                 <div class="col-sm-8 col-7">
-                                                    <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="Date of birth" value="{{ $user->date_of_birth }}">
+                                                    <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="@lang('menu.date_of_birth')" value="{{ $user->date_of_birth }}">
                                                 </div>
                                             </div>
                                         </div>

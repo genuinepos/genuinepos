@@ -72,7 +72,7 @@
                                 </div>
 
                                 <div class="form-group mt-1">
-                                    <label><b>Phone :</b>  <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
                                     <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
                                     <span class="error error_phone"></span>
                                 </div>
@@ -141,7 +141,7 @@
                                             <th class="text-start">@lang('menu.name')</th>
                                             <th class="text-start">@lang('menu.business_location')</th>
                                             <th class="text-start">Warehouse Code</th>
-                                            <th class="text-start">Phone</th>
+                                            <th class="text-start">@lang('menu.phone')</th>
                                             <th class="text-start">@lang('menu.address')</th>
                                             <th class="text-start">Actions</th>
                                         </tr>

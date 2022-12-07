@@ -15,7 +15,7 @@
                         {{ $return->customer ? $return->customer->name : 'Walk-In-Customer' }}
                     </li>
 
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         {{ $return->customer ? $return->customer->business_name : '' }}
                     </li>
                 </ul>

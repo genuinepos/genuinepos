@@ -53,8 +53,8 @@
 
                                             <div class="col-md-6">
                                                 <select name="duration_type" class="form-control" id="duration_type">
-                                                    <option value="Months">Months</option>
-                                                    <option value="Days">Days</option>
+                                                    <option value="Months">@lang('menu.months')</option>
+                                                    <option value="Days">@lang('menu.days')</option>
                                                     <option value="Years">Years</option>
                                                 </select>
                                             </div>
@@ -118,8 +118,8 @@
 
                                             <div class="col-md-6">
                                                 <select name="duration_type" class="form-control" id="e_duration_type">
-                                                    <option value="Months">Months</option>
-                                                    <option value="Days">Days</option>
+                                                    <option value="Months">@lang('menu.months')</option>
+                                                    <option value="Days">@lang('menu.days')</option>
                                                     <option value="Years">Years</option>
                                                 </select>
                                             </div>

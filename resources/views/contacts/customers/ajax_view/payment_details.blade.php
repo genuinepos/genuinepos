@@ -48,7 +48,7 @@
                     @endif
                 </p>
 
-                <h6 style="margin-top: 10px;">Payment Receive Voucher</h6>
+                <h6 style="margin-top: 10px;">@lang('menu.payment_receive_voucher')</h6>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
                     <tbody>
                         <tr>
                             <td width="50%" class="text-start">
-                                <strong>Paid Amount :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <strong>@lang('menu.paid_amount') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                             </td>
 
                             <td width="50%" class="text-start">
@@ -106,7 +106,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Reference :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.reference') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->reference }}
                             </td>

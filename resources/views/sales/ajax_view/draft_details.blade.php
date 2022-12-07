@@ -21,7 +21,7 @@
                             <strong>@lang('menu.address') : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
                         </li>
                         <li>
-                            <strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
+                            <strong>@lang('menu.tax_number') : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
                         </li>
                         <li>
                             <strong>@lang('menu.phone') : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
@@ -32,17 +32,17 @@
                     <ul class="list-unstyled">
                         <li><strong>Entered From : </strong></li>
                         @if ($draft->branch)
-                            <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            <li><strong>@lang('menu.business_name') : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             </li>
                             <li><strong>@lang('menu.address') : </strong> <span>{{ $draft->branch->name }}/{{ $draft->branch->branch_code }},
                                     {{ $draft->branch->city }}, {{ $draft->branch->state }},
                                     {{ $draft->branch->zip_code }}, {{ $draft->branch->country }}</span></li>
-                            <li><strong>Phone : </strong> <span>{{ $draft->branch->phone }}</span></li>
+                            <li><strong>@lang('menu.phone') : </strong> <span>{{ $draft->branch->phone }}</span></li>
                         @else
-                            <li><strong>Business Name : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b></span>
+                            <li><strong>@lang('menu.business_name') : </strong> <span>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b></span>
                             </li>
                             <li><strong>@lang('menu.address') : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
-                            <li><strong>Phone : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
+                            <li><strong>@lang('menu.phone') : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
                             <li><strong>Stock Location : </strong>
                                 <span>
                                     {{ $draft->warehouse->warehouse_name.'/'.$draft->warehouse->warehouse_code }},
@@ -60,7 +60,7 @@
                         <li>
                             <strong>draft ID : </strong> {{ $draft->invoice_id }}
                         </li>
-                    <li><strong>Status : </strong>
+                    <li><strong>@lang('menu.status') : </strong>
                         <span class="sale_status">
                             <spna class="badge bg-info">draft</spna>
                         </span>
@@ -272,11 +272,11 @@
                                     </h6>
 
                                     @if ($draft->branch->add_sale_invoice_layout->branch_phone)
-                                        <h6><b>Phone</b> : {{ $draft->branch->phone }}</h6>
+                                        <h6><b>@lang('menu.phone')</b> : {{ $draft->branch->phone }}</h6>
                                     @endif
 
                                     @if ($draft->branch->add_sale_invoice_layout->branch_email)
-                                        <h6><b>Email</b> : {{ $draft->branch->email }}</h6>
+                                        <h6><b>@lang('menu.email')</b> : {{ $draft->branch->email }}</h6>
                                     @endif
                                 @else
                                     <h5 class="company_name">
@@ -290,7 +290,7 @@
                                     @endif
 
                                     @if ($draft->branch->add_sale_invoice_layout->branch_email)
-                                        <h6>Email : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
+                                        <h6>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
                                     @endif
                                 @endif
                                 <h6 class="bill_name">Entered By :
@@ -318,7 +318,7 @@
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->customer_tax_no)
-                                <li><strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}</li>
+                                <li><strong>@lang('menu.tax_number') : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}</li>
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->customer_phone)
@@ -626,11 +626,11 @@
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6><b>Phone</b> : {{ $draft->branch->phone }}</h6>
+                                        <h6><b>@lang('menu.phone')</b> : {{ $draft->branch->phone }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6><b>Email</b> : {{ $draft->branch->email }}</h6>
+                                        <h6><b>@lang('menu.email')</b> : {{ $draft->branch->email }}</h6>
                                     @endif
                                 @else
                                     <h3 class="company_name">
@@ -640,11 +640,11 @@
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6><b>Phone</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
+                                        <h6><b>@lang('menu.phone')</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
+                                        <h6><b>@lang('menu.email')</b> : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
                                     @endif
                                 @endif
 
@@ -675,7 +675,7 @@
 
                             @if ($defaultLayout->customer_tax_no)
                                 <li>
-                                    <strong>Tax Number : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
                                 </li>
                             @endif
 

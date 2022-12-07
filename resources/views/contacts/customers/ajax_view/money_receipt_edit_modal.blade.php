@@ -23,7 +23,7 @@
                         </span>
                     </li>
                     <li>
-                        <strong>Business : </strong>
+                        <strong>@lang('menu.business') : </strong>
                         <span class="card_text customer_business">{{ $receipt->cus_business }}</span>
                     </li>
                 </ul>
@@ -36,8 +36,8 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Receiving Amount :</b> </label>
-            <input type="text" name="amount" class="form-control" placeholder="Receiving Amount" value="{{ $receipt->amount }}"/>
+            <label><b>@lang('menu.receiving_amount') :</b> </label>
+            <input type="text" name="amount" class="form-control" placeholder="@lang('menu.receiving_amount')" value="{{ $receipt->amount }}"/>
         </div>
 
         <div class="col-md-3">
@@ -53,41 +53,41 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Account Details :</b> </label>
+            <label><b>{{ __('Account Details ') }} :</b> </label>
             <input type="text" name="ac_details" class="form-control" placeholder="Account Details" value="{{ $receipt->ac_details }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Receiver :</b> </label>
-            <input type="text" name="receiver" class="form-control" placeholder="Receiver Name" value="{{ $receipt->receiver }}"/>
+            <label><b>@lang('menu.receiver') :</b> </label>
+            <input type="text" name="receiver" class="form-control" placeholder="@lang('menu.receiver')" value="{{ $receipt->receiver }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-2">
         <div class="col-md-12">
-            <label><strong>Paper Note :</strong></label>
+            <label><strong>@lang('menu.paper_note') :</strong></label>
             <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                placeholder="Paper Note">{{ $receipt->note }}</textarea>
+                placeholder="@lang('menu.paper_note')">{{ $receipt->note }}</textarea>
         </div>
     </div>
 
     <div class="extra_label">
         <div class="form-group row mt-2">
             <div class="col-md-3">
-                <p> <input type="checkbox" {{ $receipt->is_customer_name ? 'CHECKED' : '' }} name="is_customer_name" id="is_customer_name" value="1"> &nbsp; <b>Show Customer Name</b> </p>
+                <p> <input type="checkbox" {{ $receipt->is_customer_name ? 'CHECKED' : '' }} name="is_customer_name" id="is_customer_name" value="1"> &nbsp; <b>@lang('menu.show_customer_name')</b> </p>
             </div>
 
             <div class="col-md-2">
-                <p> <input type="checkbox" {{ $receipt->is_date ? 'CHECKED' : '' }} name="is_date" value="1"> &nbsp; <b>Show Date</b></p>
+                <p> <input type="checkbox" {{ $receipt->is_date ? 'CHECKED' : '' }} name="is_date" value="1"> &nbsp; <b>@lang('menu.show_date')</b></p>
             </div>
 
             <div class="col-md-3 mt-2">
-                <p> <input type="checkbox" {{ $receipt->is_header_less ? 'CHECKED' : '' }} name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
+                <p> <input type="checkbox" {{ $receipt->is_header_less ? 'CHECKED' : '' }} name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>@lang('menu.is_header_less_for_pad_print')?</b> </p>
             </div>
 
             <div class="col-md-4 gap-from-top-add {{ $receipt->is_header_less == 1 ? '' : 'd-hide' }}">
-                <label><b>Gap From Top :</b> </label>
-                <input type="text" name="gap_from_top" class="form-control" placeholder="Gap From Top" value="{{ $receipt->gap_from_top}}"/>
+                <label><b>@lang('menu.gap_from_top') :</b> </label>
+                <input type="text" name="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')" value="{{ $receipt->gap_from_top}}"/>
             </div>
         </div>
     </div>

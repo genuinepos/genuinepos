@@ -78,7 +78,7 @@
                                     <th>Prefix</th>
                                     <th>@lang('menu.name')</th>
                                     <th>Business</th>
-                                    <th>Phone</th>
+                                    <th>@lang('menu.phone')</th>
                                     <th>Opening Balance</th>
                                     <th>@lang('menu.total_purchase')</th>
                                     <th>@lang('menu.total_paid')</th>
@@ -145,29 +145,29 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
+                                <b>@lang('menu.business_name') :</b>
+                                <input type="text" name="business_name" class="form-control" placeholder="@lang('menu.business_name')"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
-                               <b>Alternative Number :</b>
+                               <b>@lang('menu.alternative_number') :</b>
                                 <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                               <b>Landline :</b>
+                               <b>@lang('menu.landline') :</b>
                                 <input type="text" name="landline" class="form-control " placeholder="landline number"/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <b>Email :</b>
+                                <b>@lang('menu.email') :</b>
                                 <input type="text" name="email" class="form-control " placeholder="Email address"/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <b>Date Of Birth :</b>
+                                <b>@lang('menu.date_of_birth'):</b>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -179,8 +179,8 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
-                                <b>Tax Number :</b>
-                                <input type="text" name="tax_number" class="form-control " placeholder="Tax number"/>
+                                <b>@lang('menu.tax_number') :</b>
+                                <input type="text" name="tax_number" class="form-control " placeholder="@lang('menu.tax_number')"/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
@@ -189,7 +189,7 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>Pay Term</b> : </label>
+                                <label><b>@lang('menu.pay_term')</b> : </label>
                                 <div class="row">
                                     <div class="col-md-5">
                                         <input type="number" step="any" name="pay_term_number" class="form-control"
@@ -198,9 +198,9 @@
 
                                     <div class="col-md-7">
                                         <select name="pay_term" class="form-control">
-                                            <option value="">Days/Months</option>
-                                            <option value="1">Days</option>
-                                            <option value="2">Months</option>
+                                            <option value="">@lang('menu.days')/@lang('menu.months')</option>
+                                            <option value="1">@lang('menu.days')</option>
+                                            <option value="2">@lang('menu.months')</option>
                                         </select>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                                 <input type="text" name="address" class="form-control "  placeholder="Address">
                             </div>
                             <div class="col-md-3">
-                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b>
+                               <b>@lang('menu.prefix') <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b>
                                 <input type="text" name="prefix" class="form-control " placeholder="prefix"/>
                             </div>
                         </div>
@@ -225,25 +225,25 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                               <b>State :</b>
-                                <input type="text" name="state" class="form-control " placeholder="State"/>
+                               <b>@lang('menu.state') :</b>
+                                <input type="text" name="state" class="form-control " placeholder="@lang('menu.state')"/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <b>Country :</b>
-                                <input type="text" name="country" class="form-control " placeholder="Country"/>
+                                <b>@lang('menu.country') :</b>
+                                <input type="text" name="country" class="form-control " placeholder="@lang('menu.country')"/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <b>Zip-Code :</b>
+                                <b>@lang('menu.zip_code') :</b>
                                 <input type="text" name="zip_code" class="form-control " placeholder="zip_code"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-5">
-                               <b>Shipping Address :</b>
-                                <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address"/>
+                               <b>@lang('menu.shipping_address') :</b>
+                                <input type="text" name="shipping_address" class="form-control " placeholder="@lang('menu.shipping_address')"/>
                             </div>
                         </div>
 

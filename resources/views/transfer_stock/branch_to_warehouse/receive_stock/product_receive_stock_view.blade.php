@@ -29,7 +29,7 @@
                             <hr class="m-1">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id"></span> </p>
+                                    <p class="m-0"><strong>@lang('menu.reference_id'): </strong> <span class="transfer_invoice_id"></span> </p>
                                     <p class="m-0"><strong>Date: </strong> <span class="transfer_date"></span></p>
                                     </div>
                                     <div class="col-md-6">

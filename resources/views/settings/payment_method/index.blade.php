@@ -74,7 +74,7 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Serial</th>
+                                                <th>@lang('menu.serial')</th>
                                                 <th>Payment Method Name</th>
                                                 <th>Actions</th>
                                             </tr>

@@ -103,9 +103,9 @@
 
                                 <div class="col-md-9 hideable_field {{ $layout->is_header_less == 0 ? 'd-hide' : '' }}">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span>  <b>Gap From Top (inc) : </b> </label>
+                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span>  <b>@lang('menu.gap_from_top') (inc) : </b> </label>
                                         <div class="col-8">
-                                            <input type="number" name="gap_from_top" id="gap_from_top" class="form-control" placeholder="Gap From Top" value="{{ $layout->gap_from_top }}">
+                                            <input type="number" name="gap_from_top" id="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')" value="{{ $layout->gap_from_top }}">
                                             <span class="error error_gap_from_top"></span>
                                         </div>
                                     </div>
@@ -216,7 +216,7 @@
                                 <div class="col-md-2">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                            <input type="checkbox" {{ $layout->branch_city == 1 ? 'CHECKED' : ''}} name="branch_city"> &nbsp;<b>City</b>
+                                            <input type="checkbox" {{ $layout->branch_city == 1 ? 'CHECKED' : ''}} name="branch_city"> &nbsp;<b>@lang('menu.city')</b>
                                         </p>
                                     </div>
                                 </div>
@@ -224,21 +224,21 @@
                                 <div class="col-md-2">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->branch_state == 1 ? 'CHECKED' : ''}} name="branch_state"> &nbsp; <b>State</b></p>
+                                        <input type="checkbox" {{ $layout->branch_state == 1 ? 'CHECKED' : ''}} name="branch_state"> &nbsp; <b>@lang('menu.state')</b></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->branch_zipcode == 1 ? 'CHECKED' : ''}} name="branch_zipcode"> &nbsp; <b>Zip-Code</b></p>
+                                        <input type="checkbox" {{ $layout->branch_zipcode == 1 ? 'CHECKED' : ''}} name="branch_zipcode"> &nbsp; <b>@lang('menu.zip_code')</b></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->branch_phone == 1 ? 'CHECKED' : ''}} name="branch_phone"> &nbsp; <b>Phone</b></p>
+                                        <input type="checkbox" {{ $layout->branch_phone == 1 ? 'CHECKED' : ''}} name="branch_phone"> &nbsp; <b>@lang('menu.phone')</b></p>
                                     </div>
                                 </div>
 
@@ -248,14 +248,14 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->branch_alternate_number == 1 ? 'CHECKED' : ''}} name="branch_alternate_number"> &nbsp; <b>Alternative Number</b></p>
+                                        <input type="checkbox" {{ $layout->branch_alternate_number == 1 ? 'CHECKED' : ''}} name="branch_alternate_number"> &nbsp; <b>@lang('menu.alternative_number')</b></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->branch_email == 1 ? 'CHECKED' : ''}} name="branch_email"> &nbsp; <b>Email</b></p>
+                                        <input type="checkbox" {{ $layout->branch_email == 1 ? 'CHECKED' : ''}} name="branch_email"> &nbsp; <b>@lang('menu.email')</b></p>
                                     </div>
                                 </div>
                             </div>
@@ -264,7 +264,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Field For Customer</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.field_for_customer')</b></p>
                         </div>
 
                         <div class="element-body">
@@ -281,7 +281,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" {{ $layout->customer_tax_no == 1 ? 'CHECKED' : ''}} name="customer_tax_no"> &nbsp; <b>Tax Number</b></p>
+                                        <input type="checkbox" {{ $layout->customer_tax_no == 1 ? 'CHECKED' : ''}} name="customer_tax_no"> &nbsp; <b>@lang('menu.tax_number')</b></p>
                                     </div>
                                 </div>
 
@@ -295,7 +295,7 @@
                                 <div class="col-md-2">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" {{ $layout->customer_phone == 1 ? 'CHECKED' : '' }} name="customer_phone"> &nbsp;<b>Phone</b></p>
+                                        <input type="checkbox" {{ $layout->customer_phone == 1 ? 'CHECKED' : '' }} name="customer_phone"> &nbsp;<b>@lang('menu.phone')</b></p>
                                     </div>
                                 </div>
                             </div>

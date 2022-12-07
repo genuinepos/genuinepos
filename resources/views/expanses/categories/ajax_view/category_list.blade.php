@@ -1,7 +1,7 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-start">Serial</th>
+            <th class="text-start">@lang('menu.serial')</th>
             <th class="text-start">@lang('menu.name')</th>
             <th class="text-start">Code</th>
             <th class="text-start">@lang('menu.action')</th>

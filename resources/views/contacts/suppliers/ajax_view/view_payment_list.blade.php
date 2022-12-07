@@ -14,7 +14,7 @@
                     <li><strong>@lang('menu.supplier') : </strong>
                         {{ $supplier->name  }}
                     </li>
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         {{ $supplier->business_name }}
                     </li>
                 </ul>

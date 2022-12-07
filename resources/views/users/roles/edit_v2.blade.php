@@ -1083,7 +1083,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="email_settings" {{ $role->hasPermissionTo('email_settings') ? 'checked' : '' }} class="communication super_select_all communication_permission"> Email settings
+                                            <input type="checkbox" name="email_settings" {{ $role->hasPermissionTo('email_settings') ? 'checked' : '' }} class="communication super_select_all communication_permission"> @lang('menu.email_settings')
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -1091,7 +1091,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="sms_settings" {{ $role->hasPermissionTo('sms_settings') ? 'checked' : '' }} class="communication super_select_all communication_permission"> SMS settings
+                                            <input type="checkbox" name="sms_settings" {{ $role->hasPermissionTo('sms_settings') ? 'checked' : '' }} class="communication super_select_all communication_permission"> @lang('menu.sms_settings')
                                         </p>
                                     </div>
                                 </div>

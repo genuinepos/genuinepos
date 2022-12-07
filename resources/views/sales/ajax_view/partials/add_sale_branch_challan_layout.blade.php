@@ -81,7 +81,7 @@
                         @endif
 
                         @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
-                            <li><strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                             </li>
                         @endif
 

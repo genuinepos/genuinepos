@@ -22,7 +22,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.supplier') : </strong><span>{{ $payment->purchase->supplier->name }}</span></li>
-                                <li><strong>Business : </strong>
+                                <li><strong>@lang('menu.business') : </strong>
                                     <span>{{ $payment->purchase->supplier->business_name }}</span> 
                                 </li>
                                 <li><strong>@lang('menu.phone') : </strong>

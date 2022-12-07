@@ -36,7 +36,7 @@
                 </b>
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">Reference ID :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.reference_id') :</span>
                 {{ $transfer->invoice_id }}
             </p>
         </td>

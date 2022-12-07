@@ -14,7 +14,7 @@
                     <li><strong>@lang('menu.customer') : </strong>
                         {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                     </li>
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         {{ $sale->customer ? $sale->customer->business_name : '' }}
                     </li>
                 </ul>

@@ -16,7 +16,7 @@
                         {{ $customer->name  }}
                     </li>
                     <li>
-                        <strong>Business : </strong>
+                        <strong>@lang('menu.business') : </strong>
                         {{ $customer->business_name }}
                     </li>
                 </ul>

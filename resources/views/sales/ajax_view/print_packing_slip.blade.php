@@ -42,7 +42,7 @@
                             @endif
                         </li>
                         <li>
-                            <strong>Tax Number : </strong>{{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            <strong>@lang('menu.tax_number') : </strong>{{ $sale->customer ? $sale->customer->tax_number : '' }}
                         </li>
                         <li>
                             <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
@@ -60,7 +60,7 @@
                 </div>
                 <div class="col-4">
                     <ul class="list-unstyled float-right">
-                        <li><strong>Shipping Address : </strong></li>
+                        <li><strong>@lang('menu.shipping_address') : </strong></li>
                         <li>
                             @if ($sale->shipment_address)
                                 {{ $sale->shipment_address }}

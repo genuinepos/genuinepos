@@ -20,7 +20,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.customer') : </strong><span>{{ $payment->customer ? $payment->customer->name : 'Walk-In-Customer' }}</span> </li>
-                                <li><strong>Business : </strong><span>{{ $payment->customer ? $payment->customer->business_name : '' }}</span> </li>
+                                <li><strong>@lang('menu.business') : </strong><span>{{ $payment->customer ? $payment->customer->business_name : '' }}</span> </li>
                             </ul>
                         </div>
                     </div>

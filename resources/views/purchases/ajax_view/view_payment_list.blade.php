@@ -17,7 +17,7 @@
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span>
                     </li>
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         <span>{{ $purchase->supplier->business_name }}</span>
                     </li>
                     <li><strong>@lang('menu.phone') : </strong>
@@ -63,7 +63,7 @@
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>Received</b></span>
                         @elseif($purchase->purchase_status == 2){
-                            <span class="text-warning"><b>Pending</b></span>
+                            <span class="text-warning"><b>@lang('menu.pending')</b></span>
                         @else
                             <span class="text-primary"><b>Ordered</b></span>
                         @endif

@@ -72,7 +72,7 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.voucher_no')</th>
-                    <th class="text-start">Reference</th>
+                    <th class="text-start">@lang('menu.reference')</th>
                     <th class="text-start">Against Invoice</th>
                     {{-- <th>@lang('menu.created_by')</th> --}}
                     <th class="text-start">Payment Status</th>

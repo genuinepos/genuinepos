@@ -40,7 +40,7 @@
                                 <div class="col-md-4">
                                     <label><strong>Default Sale Tax :</strong></label>
                                     <select name="default_tax_id" class="form-control">
-                                        <option value="null">None</option>
+                                        <option value="null">@lang('menu.none')</option>
                                         @foreach ($taxes as $tax)
                                             <option
                                                 {{ json_decode($generalSettings->sale, true)['default_tax_id'] == $tax->tax_percent ? 'SELECTED' : '' }}
@@ -76,7 +76,7 @@
                                 <div class="col-md-4">
                                     <label><strong>Default Selling Price Group :</strong></label>
                                     <select name="default_price_group_id" class="form-control">
-                                        <option value="null">None</option>
+                                        <option value="null">@lang('menu.none')</option>
                                         @foreach ($price_groups as $pg)
                                             <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                         @endforeach

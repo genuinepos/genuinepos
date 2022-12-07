@@ -21,7 +21,7 @@
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
                              <li><strong>@lang('menu.address') : </strong> <span
                                      class="supplier_address">{{ $purchase->supplier->address }}</span></li>
-                             <li><strong>Tax Number : </strong> <span
+                             <li><strong>@lang('menu.tax_number') : </strong> <span
                                      class="supplier_tax_number">{{ $purchase->supplier->tax_number }}</span></li>
                              <li><strong>@lang('menu.phone') : </strong> <span
                                      class="supplier_phone">{{ $purchase->supplier->phone }}</span></li>
@@ -29,7 +29,7 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Purchase From : </strong></li>
+                             <li><strong>@lang('menu.purchase_from') : </strong></li>
                              <li><strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>BL</b>)
@@ -59,7 +59,7 @@
                                 @if ($purchase->purchase_status == 1)
                                     <span class="badge bg-success">Purchased</span>
                                 @elseif($purchase->purchase_status == 2){
-                                    <span class="badge bg-warning text-white">Pending</span>
+                                    <span class="badge bg-warning text-white">@lang('menu.pending')</span>
                                 @else
                                     <span class="badge bg-primary">Purchased By Order</span>
                                 @endif
@@ -336,15 +336,15 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.supplier') : - </strong></li>
-                            <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
+                            <li><strong>@lang('menu.name') : </strong>{{ $purchase->supplier->name }}</li>
                             <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
-                            <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $purchase->supplier->tax_number }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Purchase From : </strong></li>
+                            <li><strong>@lang('menu.purchase_from') : </strong></li>
                             <li>
                                 <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)

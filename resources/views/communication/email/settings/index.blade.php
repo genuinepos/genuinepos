@@ -12,7 +12,7 @@
         <div class="sec-name">
             <div class="name-head">
                 <span class="fas fa-sliders-h"></span>
-                <h6>Email Settings</h6>
+                <h6>@lang('menu.email_settings')</h6>
             </div>
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -27,62 +27,62 @@
 
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>MAIL MAILER : </strong></label>
+                        <label><strong>{{ __('MAIL MAILER') }} : </strong></label>
                         <input type="text" name="MAIL_MAILER" class="form-control es_input"
-                            placeholder="MAIL MAILER" autocomplete="off"
+                            placeholder="{{ __('MAIL MAILER') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_MAILER'] }}">
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>MAIL HOST :</strong></label>
+                        <label><strong>{{ __('MAIL HOST') }} :</strong></label>
                         <input type="text" name="MAIL_HOST" class="form-control es_input"
-                            placeholder="MAIL HOST" autocomplete="off"
+                            placeholder="{{ __('MAIL HOST') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_HOST'] }}">
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>MAIL PORT :</strong></label>
+                        <label><strong>{{ __('MAIL PORT') }} :</strong></label>
                         <input type="text" name="MAIL_PORT" class="form-control  es_input"
-                            placeholder="MAIL PORT" autocomplete="off"
+                            placeholder="{{ __('MAIL PORT') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_PORT'] }}">
                     </div>
                 </div>
 
                 <div class="form-group row mt-1">
                     <div class="col-md-4">
-                        <label><strong>MAIL_USERNAME :</strong></label>
+                        <label><strong>{{ __('MAIL USERNAME') }} :</strong></label>
                         <input type="text" name="MAIL_USERNAME" class="form-control es_input"
-                            placeholder="MAIL USERNAME" autocomplete="off"
+                            placeholder="{{ __('MAIL USERNAME') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_USERNAME'] }}">
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>MAIL PASSWORD :</strong></label>
+                        <label><strong>{{ __('MAIL PASSWORD ') }} :</strong></label>
                         <input type="text" name="MAIL_PASSWORD" class="form-control es_input"
-                            placeholder="MAIL PASSWORD" autocomplete="off"
+                            placeholder="{{ __('MAIL PASSWORD ') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_PASSWORD'] }}">
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>MAIL ENCRYPTION :</strong></label>
+                        <label><strong>{{ __('MAIL ENCRYPTION') }} :</strong></label>
                         <input type="text" name="MAIL_ENCRYPTION" class="form-control  es_input"
-                            placeholder="MAIL ENCRYPTION" autocomplete="off"
+                            placeholder="{{ __('MAIL ENCRYPTION') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_ENCRYPTION'] }}">
                     </div>
                 </div>
 
                 <div class="form-group row mt-1">
                     <div class="col-md-4">
-                        <label><strong>MAIL FROM ADDRESS :</strong></label>
+                        <label><strong>{{ __('MAIL FROM ADDRESS ') }}:</strong></label>
                         <input type="text" name="MAIL_FROM_ADDRESS" class="form-control es_input"
-                            placeholder="MAIL FROM ADDRESS" autocomplete="off"
+                            placeholder="{{ __('MAIL FROM ADDRESS') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_FROM_ADDRESS'] }}">
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>MAIL FROM NAME :</strong></label>
+                        <label><strong>{{ __('MAIL FROM NAME') }} :</strong></label>
                         <input type="text" name="MAIL_FROM_NAME" class="form-control es_input"
-                            placeholder="MAIL FROM NAME" autocomplete="off"
+                            placeholder="{{ __('MAIL FROM NAME') }}" autocomplete="off"
                             value="{{ $emailSetting['MAIL_FROM_NAME'] }}">
                     </div>
 

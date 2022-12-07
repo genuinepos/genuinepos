@@ -19,29 +19,29 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Business Name :</b>
-            <input type="text" name="business_name" class="form-control" placeholder="Business Name" id="e_business_name" value="{{ $supplier->business_name }}"/>
+            <b>@lang('menu.business_name') :</b>
+            <input type="text" name="business_name" class="form-control" placeholder="@lang('menu.business_name')" id="e_business_name" value="{{ $supplier->business_name }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <b>Alternative Number :</b>
+            <b>@lang('menu.alternative_number') :</b>
             <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative Phone Number" id="e_alternative_phone" value="{{ $supplier->alternative_phone }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Landline :</b>
+            <b>@lang('menu.landline') :</b>
             <input type="text" name="landline" class="form-control " placeholder="Landline Number" id="e_landline" value="{{ $supplier->landline }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Email :</b>
+            <b>@lang('menu.email') :</b>
             <input type="text" name="email" class="form-control" placeholder="Email Address" id="e_email" value="{{ $supplier->email }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Date Of Birth :</b>
+            <b>@lang('menu.date_of_birth'):</b>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -53,8 +53,8 @@
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <b>Tax Number :</b>
-            <input type="text" name="tax_number" class="form-control " placeholder="Tax number" id="e_tax_number" value="{{ $supplier->tax_number }}"/>
+            <b>@lang('menu.tax_number') :</b>
+            <input type="text" name="tax_number" class="form-control " placeholder="@lang('menu.tax_number')" id="e_tax_number" value="{{ $supplier->tax_number }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
@@ -63,7 +63,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><b>Pay Term</b> : </label>
+            <label><b>@lang('menu.pay_term')</b> : </label>
             <div class="row">
                 <div class="col-md-5">
                     <input type="number" step="any" name="pay_term_number" class="form-control"
@@ -72,9 +72,9 @@
 
                 <div class="col-md-7">
                     <select name="pay_term" class="form-control">
-                        <option value="">Days/Months</option>
-                        <option {{ $supplier->pay_term == 1 ? 'SELECTED' : '' }} value="1">Days</option>
-                        <option {{ $supplier->pay_term == 2 ? 'SELECTED' : '' }} value="2">Months</option>
+                        <option value="">@lang('menu.days')/@lang('menu.months')</option>
+                        <option {{ $supplier->pay_term == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.days')</option>
+                        <option {{ $supplier->pay_term == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.months')</option>
                     </select>
                 </div>
             </div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="col-md-3">
-           <b>Prefix :</b>
+           <b>@lang('menu.prefix') :</b>
             <input readonly type="text" name="prefix" id="e_prefix" class="form-control " placeholder="prefix" value="{{ $supplier->prefix }}"/>
         </div>
     </div>
@@ -100,25 +100,25 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-           <b>State :</b>
-            <input type="text" name="state" class="form-control " placeholder="State" id="e_state" value="{{ $supplier->state }}"/>
+           <b>@lang('menu.state') :</b>
+            <input type="text" name="state" class="form-control " placeholder="@lang('menu.state')" id="e_state" value="{{ $supplier->state }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Country :</b>
-            <input type="text" name="country" class="form-control " placeholder="Country" id="e_country" value="{{ $supplier->country }}"/>
+            <b>@lang('menu.country') :</b>
+            <input type="text" name="country" class="form-control " placeholder="@lang('menu.country')" id="e_country" value="{{ $supplier->country }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Zip-Code :</b>
-            <input type="text" name="zip_code" class="form-control " placeholder="Zip-Code" id="e_zip_code" value="{{ $supplier->zip_code }}"/>
+            <b>@lang('menu.zip_code') :</b>
+            <input type="text" name="zip_code" class="form-control " placeholder="@lang('menu.zip_code')" id="e_zip_code" value="{{ $supplier->zip_code }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-5">
-            <b>Shipping Address :</b>
-            <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address" id="e_shipping_address" value="{{ $supplier->shipping_address }}"/>
+            <b>@lang('menu.shipping_address') :</b>
+            <input type="text" name="shipping_address" class="form-control " placeholder="@lang('menu.shipping_address')" id="e_shipping_address" value="{{ $supplier->shipping_address }}"/>
         </div>
     </div>
 

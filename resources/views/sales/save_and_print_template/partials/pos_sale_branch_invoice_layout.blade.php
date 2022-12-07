@@ -45,7 +45,7 @@
                                 @endif
 
                                 @if ($sale->branch->pos_sale_invoice_layout->branch_email && $sale->branch->email)
-                                    <p><strong>Email :</strong>{{ $sale->branch->email }}</p>
+                                    <p><strong>@lang('menu.email') :</strong>{{ $sale->branch->email }}</p>
                                 @endif
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->customer_tax_no)
-                                <li><strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
@@ -426,7 +426,7 @@
 
                             <tr>
                                 <th class="text-center">
-                                    <span><b>Email :</b> {{ $sale->branch->email }}</span>
+                                    <span><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</span>
                                 </th>
                             </tr>
                         </thead>
@@ -438,7 +438,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>Date:</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <b>@lang('menu.date'):</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
                                 </th>
                             </tr>
 

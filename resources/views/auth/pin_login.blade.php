@@ -27,7 +27,7 @@
 
                                 <div class="main-form">
                                     <div class="form-title">
-                                        <p>User Login</p>
+                                        <p>@lang('menu.user_login')</p>
                                     </div>
                                     <form action="" method="POST">
                                         @csrf
@@ -44,7 +44,7 @@
                                                 </p>
                                             </div>
                                         @endif
-                                        <button type="submit" class="submit-button">Login</button>
+                                        <button type="submit" class="submit-button">@lang('menu.login')</button>
                                     </form>
                                     <div class="login_opt_link">
 
@@ -54,7 +54,7 @@
 
                                         {{-- <div class="form-group cx-box">
                                             <input type="checkbox" id="remembar" class="form-control">
-                                            <label for="remembar">Remembar me</label>
+                                            <label for="remembar">@lang('menu.remember_me')</label>
                                         </div> --}}
                                     </div>
                                 </div>
@@ -72,9 +72,9 @@
                                                     src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS"
                                                     class="logo">
                                             </p>
-                                            <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
-                                            <p class="details"><span>Support:</span> support@speeddigit.com</p>
-                                            <p class="details"><span>Website:</span> www.speeddigit.com</p>
+                                            <p class="details"><span>@lang('menu.address'):</span> Motijheel Arambagh, Dhaka</p>
+                                            <p class="details"><span>@lang('menu.support')</span> support@speeddigit.com</p>
+                                            <p class="details"><span>@lang('menu.website')</span> www.speeddigit.com</p>
 
                                             <div class="function-btn">
                                                 <span class="btn-fn">P</span>

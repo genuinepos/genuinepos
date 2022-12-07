@@ -34,19 +34,19 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>State :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="state" class="form-control edit_input" data-name="State" id="e_state" placeholder="State" value="{{ $branch->state }}"/>
+            <label><strong>@lang('menu.state') :</strong>  <span class="text-danger">*</span></label>
+            <input type="text" name="state" class="form-control edit_input" data-name="State" id="e_state" placeholder="@lang('menu.state')" value="{{ $branch->state }}"/>
             <span class="error error_e_state"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Country :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="country" class="form-control  edit_input" data-name="country" id="e_country" placeholder="Country" value="{{ $branch->country }}"/>
+            <label><strong>@lang('menu.country') :</strong>  <span class="text-danger">*</span></label>
+            <input type="text" name="country" class="form-control  edit_input" data-name="country" id="e_country" placeholder="@lang('menu.country')" value="{{ $branch->country }}"/>
             <span class="error error_e_country"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Zip-code :</strong> <span class="text-danger">*</span></label>
+            <label> <strong>@lang('menu.zip_code') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="zip_code" class="form-control edit_input" data-name="Zip code" id="e_zip_code" placeholder="Zip code" value="{{ $branch->zip_code }}"/>
             <span class="error error_e_zip_code"></span>
         </div>
@@ -54,7 +54,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Email :</strong> </label>
+            <label> <strong>@lang('menu.email') :</strong> </label>
             <input type="text" name="email" class="form-control" id="e_email" placeholder="Email address" value="{{ $branch->email }}"/>
         </div>
 

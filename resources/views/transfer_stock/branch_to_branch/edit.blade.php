@@ -77,7 +77,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Reference :</b>
+                                        <label class="col-4"><b>@lang('menu.reference') :</b>
                                             <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
                                         </label>
 

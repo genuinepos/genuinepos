@@ -32,7 +32,7 @@
                         <div class="col-lg-3 col-sm-6">
                             <label><strong>Default Unit :</strong></label>
                             <select name="default_unit_id" class="form-control" id="default_unit_id">
-                                <option value="null">None</option>
+                                <option value="null">@lang('menu.none')</option>
                                 @foreach ($units as $unit)
                                     <option {{ json_decode($generalSettings->product, true)['default_unit_id'] == $unit->id ? 'SELECTED' : '' }}
                                         value="{{ $unit->id }}">{{ $unit->name }}

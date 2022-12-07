@@ -43,12 +43,12 @@
                                     <th class="text-white">Logo</th>
                                     <th class="text-white">B.Location Name</th>
                                     <th class="text-white">Branch Code</th>
-                                    <th class="text-white">Phone</th>
-                                    <th class="text-white">City</th>
-                                    <th class="text-white">State</th>
-                                    <th class="text-white">Zip-Code</th>
-                                    <th class="text-white">Country</th>
-                                    <th class="text-white">Email</th>
+                                    <th class="text-white">@lang('menu.phone')</th>
+                                    <th class="text-white">@lang('menu.city')</th>
+                                    <th class="text-white">@lang('menu.state')</th>
+                                    <th class="text-white">@lang('menu.zip_code')</th>
+                                    <th class="text-white">@lang('menu.country')</th>
+                                    <th class="text-white">@lang('menu.email')</th>
                                     <th class="text-white">Actions</th>
                                 </tr>
                             </thead>

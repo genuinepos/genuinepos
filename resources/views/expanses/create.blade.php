@@ -61,7 +61,7 @@
                                         <label class=" col-4"><b>Expanse For :</b></label>
                                         <div class="col-8">
                                             <select name="admin_id" class="form-control" id="admin_id">
-                                                <option value="">None</option>
+                                                <option value="">@lang('menu.none')</option>
                                                 @foreach ($users as $user)
                                                     <option value="{{$user->id}}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                 @endforeach

@@ -258,7 +258,7 @@
             </div>
             <div class="modal-footer">
                 @if (auth()->user()->can('pos_edit'))
-                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}" tabindex="-1"> Edit</a>
+                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}" tabindex="-1"> @lang('menu.edit')</a>
                 @endif
 
                 @if (auth()->user()->can('shipment_access'))

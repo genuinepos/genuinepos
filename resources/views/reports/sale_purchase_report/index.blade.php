@@ -158,7 +158,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th> Sale Due: </th>
+                                                                    <th>{{ __('Sale Due') }} : </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
                                                             </tbody>

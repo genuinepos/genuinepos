@@ -98,7 +98,7 @@
                                     <th>Clockin note</th>
                                     <th>Clockout note</th>
                                     <th>Shift</th>
-                                    <th>Actions</th>
+                                    <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

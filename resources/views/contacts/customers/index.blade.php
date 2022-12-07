@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-people-arrows"></span>
-                    <h5>Customers</h5>
+                    <h5>@lang('menu.customers')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -56,7 +56,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-4">
-                        <h6>All Customer</h6>
+                        <h6>{{ __('All Customer') }}</h6>
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
@@ -77,18 +77,18 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="text-start">
-                                    <th>Actions</th>
-                                    <th>Customer ID</th>
+                                    <th>@lang('menu.action')</th>
+                                    <th>@lang('menu.customer_id')</th>
                                     <th>@lang('menu.name')</th>
-                                    <th>Business</th>
+                                    <th>@lang('menu.business')</th>
                                     <th>@lang('menu.phone')</th>
-                                    <th>Group</th>
+                                    <th>@lang('menu.group')</th>
                                     <th>@lang('menu.credit_limit')</th>
-                                    <th>Opening Balance</th>
+                                    <th>@lang('menu.opening_balance')</th>
                                     <th>@lang('menu.total_sale')</th>
                                     <th>@lang('menu.total_paid')</th>
-                                    <th>Sale Due</th>
-                                    <th>Total Return</th>
+                                    <th>{{ __('Sale Due') }}</th>
+                                    <th>@lang('menu.total_return')</th>
                                     <th>Return Due</th>
                                     <th>@lang('menu.status')</th>
                                 </tr>

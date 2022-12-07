@@ -137,7 +137,7 @@
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-black">Actions</th>
+                                        <th class="text-black">@lang('menu.action')</th>
                                         <th class="text-black">@lang('menu.date')</th>
                                         <th class="text-black">@lang('menu.voucher_no')</th>
                                         <th class="text-black">@lang('menu.business_location')</th>

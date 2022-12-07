@@ -42,7 +42,7 @@
                                     <th>@lang('menu.type')</th>
                                     <th>Max leave</th>
                                     <th>Leave Count Interval</th>
-                                    <th>Actions</th>
+                                    <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody>

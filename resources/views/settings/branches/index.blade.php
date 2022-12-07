@@ -49,7 +49,7 @@
                                     <th class="text-white">@lang('menu.zip_code')</th>
                                     <th class="text-white">@lang('menu.country')</th>
                                     <th class="text-white">@lang('menu.email')</th>
-                                    <th class="text-white">Actions</th>
+                                    <th class="text-white">@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

@@ -215,7 +215,7 @@
                                 </li>
 
                                 <li>
-                                    <strong> Total Less : </strong>
+                                    <strong> @lang('menu.total_less') : </strong>
                                 </li>
 
                                 <li>

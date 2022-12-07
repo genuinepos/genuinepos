@@ -28,7 +28,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_less') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_less" id="cus_payments_total_less">0.00</td>
                 </tr>
 
@@ -45,7 +45,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>{{ __('Returnable Due') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_sale_return_due" id="cus_payments_total_sale_return_due">0.00</td>
                 </tr>
             </tbody>

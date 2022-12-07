@@ -119,7 +119,7 @@
                                     <th>@lang('menu.total_amount')</th>
                                     <th>@lang('menu.payment_status')</th>
                                     <th>Created By</th>
-                                    <th>Actions</th>
+                                    <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

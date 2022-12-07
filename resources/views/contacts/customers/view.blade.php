@@ -211,12 +211,12 @@
                                     </li>
 
                                     <li>
-                                        <strong> Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> @lang('menu.total_return') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> @lang('menu.total_less') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</span>
                                     </li>
 
@@ -321,7 +321,7 @@
                                         <table class="display data_tbl data__table sales_table w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>Actions</th>
+                                                    <th>@lang('menu.action')</th>
                                                     <th>@lang('menu.date')</th>
                                                     <th>@lang('menu.invoice_id')</th>
                                                     <th>@lang('menu.business_location')</th>
@@ -471,7 +471,7 @@
                                                         <th class="text-start">@lang('menu.account')</th>
                                                         <th class="text-endx">@lang('menu.less_amount')</th>
                                                         <th class="text-end">@lang('menu.paid_amount')</th>
-                                                        <th class="text-start">Actions</th>
+                                                        <th class="text-start">@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

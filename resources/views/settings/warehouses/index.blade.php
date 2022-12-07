@@ -143,7 +143,7 @@
                                             <th class="text-start">Warehouse Code</th>
                                             <th class="text-start">@lang('menu.phone')</th>
                                             <th class="text-start">@lang('menu.address')</th>
-                                            <th class="text-start">Actions</th>
+                                            <th class="text-start">@lang('menu.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

@@ -180,7 +180,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>Total Less :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_less') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
                     <td class="text-end">
                         ({{ App\Utils\Converter::format_in_bdt($totalLess) }})

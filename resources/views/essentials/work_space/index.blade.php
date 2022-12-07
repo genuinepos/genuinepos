@@ -120,7 +120,7 @@
                                     <th>End Date</th>
                                     <th>Estimated Hour</th>
                                     <th>Assigned By</th>
-                                    <th>Actions</th>
+                                    <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

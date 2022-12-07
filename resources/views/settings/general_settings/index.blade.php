@@ -442,7 +442,7 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Supplier ID:</strong></label>
+                                            <label><strong>@lang('menu.supplier_id'):</strong></label>
                                             <input type="text" name="supplier_id" class="form-control"
                                                 autocomplete="off" value="{{ json_decode($generalSettings->prefix, true)['supplier_id'] }}">
                                         </div>

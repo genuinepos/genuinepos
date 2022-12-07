@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-md-3">
-            <label><strong>Supplier ID :</strong></label>
+            <label><strong>@lang('menu.supplier_id') :</strong></label>
             <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
         </div>
 

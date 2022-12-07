@@ -73,13 +73,13 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="text-start">
-                                    <th>Actions</th>
-                                    <th>Supplier ID</th>
+                                    <th>@lang('menu.action')</th>
+                                    <th>@lang('menu.supplier_id')</th>
                                     <th>Prefix</th>
                                     <th>@lang('menu.name')</th>
-                                    <th>Business</th>
+                                    <th>@lang('menu.business')</th>
                                     <th>@lang('menu.phone')</th>
-                                    <th>Opening Balance</th>
+                                    <th>@lang('menu.opening_balance')</th>
                                     <th>@lang('menu.total_purchase')</th>
                                     <th>@lang('menu.total_paid')</th>
                                     <th>@lang('menu.purchase_due')</th>
@@ -140,7 +140,7 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                              <b>Supplier ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
+                              <b>@lang('menu.supplier_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
                                 <input type="text" name="contact_id" class="form-control" placeholder="Contact ID"/>
                             </div>
 

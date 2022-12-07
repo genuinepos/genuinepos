@@ -27,7 +27,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Less : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_less') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_less" id="ledger_total_less"></td>
                 </tr>
 

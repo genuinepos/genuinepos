@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <b>Supplier ID :</b>
+            <b>@lang('menu.supplier_id') :</b>
             <input readonly type="text" name="contact_id" class="form-control"  placeholder="Contact ID" id="e_contact_id" value="{{ $supplier->contact_id }}"/>
         </div>
 

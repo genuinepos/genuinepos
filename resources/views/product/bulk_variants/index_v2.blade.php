@@ -278,7 +278,7 @@
                     html += '<input required type="text" name="variant_child[]" class="form-control " placeholder="Variant child" value="' + bulk_variant_child.child_name + '"/>';
                     html += '</div>';
                     html += '<div class="col-md-2 text-end">';
-                    html +='<a class="btn btn-sm btn-danger delete_more_for_edit" data-index="' + add_more_index_for_edit + '" href="#"></a>';
+                    html +='<a class="btn btn-sm btn-danger delete_more_for_edit" data-index="' + add_more_index_for_edit + '" href="#">×</a>';
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';

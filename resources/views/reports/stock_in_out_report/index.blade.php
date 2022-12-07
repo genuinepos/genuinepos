@@ -110,12 +110,12 @@
                                                 <div class="col-6">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-6">
-                                                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                                    <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -32,7 +32,7 @@
                     <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-1 gy-1">
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.b_location') :</b></label>
@@ -83,9 +83,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row mt-1">
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class="col-4"><b>Receive From :<span class="text-danger">*</span></b></label>

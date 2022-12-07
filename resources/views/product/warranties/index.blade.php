@@ -83,9 +83,7 @@
 
                     <div class="card d-hide" id="edit_form">
                         <div class="section-header">
-                            <div class="col-md-6">
-                                <h6>Edit Warranty/Guaranty</h6>
-                            </div>
+                            <h6>Edit Warranty/Guaranty</h6>
                         </div>
 
                         <div class="form-area px-3 pb-2">

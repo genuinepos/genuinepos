@@ -29,7 +29,6 @@
                 <div class="col-md-12">
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
-                            <i class="fas fa-funnel-dollar ms-2"></i> <b>@lang('menu.filter')</b>
                             <form action="" method="get">
                                 <div class="form-group row">
                                     @if ($addons->branches == 1)

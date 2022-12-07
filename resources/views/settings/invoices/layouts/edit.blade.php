@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-md-3">
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" {{ $layout->is_header_less == 1 ? 'CHECKED' : '' }} name="is_header_less" id="is_header_less"> &nbsp;<b>Is Headerless ?</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you check this option then print header info will not come in the print preview. Use case, When the print page is pre-generated Like Pad.Where header info previously exists." class="fas fa-info-circle tp"></i>
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row gx-2 mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <label for="inputEmail3" class="col-4"><b>Sub Heading 1 : </b> </label>
@@ -135,8 +135,8 @@
                             <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Header Text : </b> </label>
-                                        <div class="col-8">
+                                        <label for="inputEmail3" class="col-lg-2 col-4"><b>Header Text : </b> </label>
+                                        <div class="col-lg-10 col-8">
                                             <input type="text" name="header_text" class="form-control form-control-sm"  placeholder="Header text" {{ $layout->header_text }}>
                                         </div>
                                     </div>
@@ -151,11 +151,11 @@
                         </div>
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><span class="text-danger">*</span> <b>Invoice Heading :</b> </label>
-                                        <div class="col-7">
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Invoice Heading :</b> </label>
+                                        <div class="col-lg-8 col-7">
                                             <input type="text" name="invoice_heading" class="form-control" id="invoice_heading" placeholder="Invoice Heading" value="{{ $layout->invoice_heading }}">
                                             <span class="error error_invoice_heading"></span>
                                         </div>
@@ -164,8 +164,8 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><span class="text-danger">*</span> <b>Quotation Heading :</b> </label>
-                                        <div class="col-7">
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Quotation Heading :</b> </label>
+                                        <div class="col-lg-8 col-7">
                                             <input type="text" name="quotation_heading" id="quotation_heading" class="form-control" placeholder="Quotation Heading" value="{{ $layout->quotation_heading }}">
                                             <span class="error error_quotation_heading"></span>
                                         </div>
@@ -173,11 +173,11 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-1">
+                            <div class="row gx-2 mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><span class="text-danger">*</span> <b>Draft Heading : </b> </label>
-                                        <div class="col-7">
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Draft Heading : </b> </label>
+                                        <div class="col-lg-8 col-7">
                                             <input type="text" name="draft_heading" id="draft_heading" class="form-control" placeholder="Draft Heading" value="{{ $layout->draft_heading }}">
                                             <span class="error error_draft_heading"></span>
                                         </div>
@@ -186,8 +186,8 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><span class="text-danger">*</span> <b>Challan Heading : </b> </label>
-                                        <div class="col-7">
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Challan Heading : </b> </label>
+                                        <div class="col-lg-8 col-7">
                                             <input type="text" name="challan_heading" id="challan_heading" class="form-control" placeholder="Challan Heading" value="{{ $layout->challan_heading }}">
                                             <span class="error error_challan_heading"></span>
                                         </div>

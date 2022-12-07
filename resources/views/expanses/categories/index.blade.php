@@ -19,9 +19,7 @@
                     <div class="col-md-4">
                         <div class="card" id="add_form">
                             <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Add Expanse Category</h6>
-                                </div>
+                                <h6>Add Expanse Category</h6>
                             </div>
 
                             <div class="form-area px-3 pb-2">

@@ -302,7 +302,7 @@
                                                     </div>
 
                                                     <div class="col-6">
-                                                        <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_purchase_statements"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_purchase_statements"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -636,6 +636,9 @@
         @csrf
     </form>
 
+
+    <div id="purchase_details"></div>
+
     @if (auth()->user()->can('purchase_payment'))
         <!--Payment list modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -686,8 +689,6 @@
             </div>
         </div>
     @endif
-
-    <div id="purchase_details"></div>
 @endsection
 @push('scripts')
     <script src="{{ asset('assets/plugins/custom/barcode/JsBarcode.all.min.js') }}"></script>

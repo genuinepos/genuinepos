@@ -41,7 +41,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class=" col-4"><b>Sale INV. ID :</b> </label>
@@ -254,7 +254,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form_element rounded m-0">
-                                <div class="element-body">
+                                <div class="element-body p-2">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
@@ -344,7 +344,7 @@
 
                         <div class="col-md-6">
                             <div class="form_element rounded m-0">
-                                <div class="element-body">
+                                <div class="element-body p-2">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">

@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        table.display td input {height: 31px!important; padding: 4px;}
+        table.display td input {height: 25px!important; padding: 4px;}
         span.input-group-text-custom {font-size: 11px;padding: 4px;}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -25,7 +25,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-md-2">
                                     <label><b>Production A/C : <span class="text-danger">*</span></b></label>
                                     <select name="production_account_id" class="form-control add_input"

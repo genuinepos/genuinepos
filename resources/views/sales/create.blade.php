@@ -50,7 +50,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.customer') :</b> </label>
@@ -262,7 +262,7 @@
 
                                 <div class="form_element rounded mt-0 mb-3">
                                     <div class="element-body">
-                                        <div class="row">
+                                        <div class="row gx-2 gy-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Ship Details :</b></label>
@@ -296,9 +296,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Delivered To :</b></label>
@@ -343,21 +341,21 @@
                             <div class="col-md-3">
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
-                                        <div class="row mb-2">
+                                        <div class="row gx-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Discount:</label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
@@ -371,7 +369,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax"></select>
@@ -379,21 +377,21 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Shipment Cost:</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Previous Due :</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Total Payable:</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
@@ -402,21 +400,21 @@
                                         </div>
 
                                         <div class="payment_body">
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">Cash Receive: >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">Change :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -431,7 +429,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
@@ -452,7 +450,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.due') :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">

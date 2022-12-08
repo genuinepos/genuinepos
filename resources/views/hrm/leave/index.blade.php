@@ -109,8 +109,8 @@
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
-                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="start_date" required class="form-control datepicker" autocomplete="off" placeholder="Start Date">
+                                <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="start_date" required class="form-control datepicker" autocomplete="off" placeholder="@lang('menu.start_date')">
                             </div>
 
                             <div class="form-group col-6">
@@ -192,8 +192,8 @@
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
-                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="start_date" id="e_start_date" class="form-control datepicker" placeholder="Start Date" autocomplete="off">
+                                <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="start_date" id="e_start_date" class="form-control datepicker" placeholder="@lang('menu.start_date')" autocomplete="off">
                             </div>
 
                             <div class="form-group col-6">

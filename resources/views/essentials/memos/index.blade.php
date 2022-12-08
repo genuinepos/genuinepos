@@ -59,7 +59,7 @@
                     <div class="card d-hide" id="edit_form">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Edit Memo</h6>
+                                <h6>{{ __('Edit Memo') }}</h6>
                             </div>
                         </div>
 
@@ -82,7 +82,7 @@
                                         <div class="btn-loading">
                                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                             <button type="button" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                            <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_changes')</button>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>All Memos </h6>
+                                <h6>{{ __('All Memos') }} </h6>
                             </div>
                         </div>
 
@@ -107,7 +107,7 @@
                                         <tr>
                                             <th>@lang('menu.heading')</th>
                                             <th>@lang('menu.description')</th>
-                                            <th>Created Date</th>
+                                            <th>@lang('menu.created_date')</th>
                                             <th>@lang('menu.action')</th>
                                         </tr>
                                     </thead>
@@ -132,7 +132,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Share Memo</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.share_memo')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_user_modal_body">

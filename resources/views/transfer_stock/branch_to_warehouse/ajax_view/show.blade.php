@@ -209,7 +209,7 @@
                             @elseif($transfer->status == 2)
                                 Partial
                             @elseif($transfer->status == 3)
-                               Complated
+                            @lang('menu.completed')
                             @endif
                         </li>
                     </ul>

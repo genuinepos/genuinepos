@@ -150,7 +150,7 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save Changes</button>
+                        <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.save_changes')</button>
                         <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>

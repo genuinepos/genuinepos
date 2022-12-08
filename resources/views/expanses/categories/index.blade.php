@@ -78,7 +78,7 @@
                                             <div class="btn-loading">
                                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</b></button>
                                                 <button type="button" id="close_form" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                                <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_changes')</button>
                                             </div>
                                         </div>
                                     </div>

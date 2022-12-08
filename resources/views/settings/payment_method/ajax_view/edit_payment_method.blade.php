@@ -14,7 +14,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
             </div>
         </div>
     </div>

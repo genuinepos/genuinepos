@@ -1698,7 +1698,7 @@
                                     <div class="col-lg-3 col-sm-6">
                                         <p class="text-info">
                                             <input type="checkbox" class="select_all super_select_all project_permission" data-target="manage_task" autocomplete="off"><strong>
-                                                Manage Task</strong>
+                                                @lang('menu.manage_task')</strong>
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="assign_todo" {{ $role->hasPermissionTo('assign_todo') ? 'checked' : '' }} class="manage_task project_permission super_select_all">

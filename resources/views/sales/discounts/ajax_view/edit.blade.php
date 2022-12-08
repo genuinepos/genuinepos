@@ -11,7 +11,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><strong>Priority <i data-bs-toggle="tooltip" data-bs-placement="right"
+            <label><strong>@lang('menu.priority') <i data-bs-toggle="tooltip" data-bs-placement="right"
                         title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</strong> <span class="text-danger">*</span> </label>
             <input type="text" name="priority" class="form-control add_input" data-name="Priority" id="priority" placeholder="Priority" value="{{ $discount->priority }}" autocomplete="off"/>
             <span class="error error_priority"></span>
@@ -136,7 +136,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span>@lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
             </div>
         </div>
     </div>

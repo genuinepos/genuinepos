@@ -24,7 +24,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-envelope"></span>
-                                <h6>Message Manage</h6>
+                                <h6>@lang('menu.message_manage')</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -36,7 +36,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-12">
-                                    <h6>Messages </h6>
+                                    <h6>@lang('menu.message') </h6>
                                 </div>
                             </div>
 

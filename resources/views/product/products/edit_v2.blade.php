@@ -621,7 +621,7 @@
                 <div class="d-flex justify-content-end">
                     <div class="btn-loading">
                         <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
-                        <button type="submit" class="btn btn-success submit_button btn-sm">Save Changes</button>
+                        <button type="submit" class="btn btn-success submit_button btn-sm">@lang('menu.save_changes')</button>
                     </div>
                 </div>
             </form>
@@ -729,7 +729,7 @@
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                                    <button type="submit" id="save" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
                                 </div>
                             </div>
                         </div>

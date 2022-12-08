@@ -1310,7 +1310,7 @@
                                     <div class="col-md-4">
 
                                         <div class="col-md-12">
-                                            <p><strong>Manage Task</strong></p>
+                                            <p><strong>@lang('menu.manage_task')</strong></p>
                                         </div>
 
                                         <div class="col-md-12">

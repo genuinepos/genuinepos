@@ -523,7 +523,7 @@ return [
   'shipments' => 'Shipments',
   'discounts' => 'Discounts',
   'hrm' => 'HRM',
-  'essentials' => 'Manage Task',
+  'manage_task' => 'Manage Task',
   'e_commerce' => 'Ecommerce',
   'service' => 'Service',
   'superadmin' => 'Superadmin',

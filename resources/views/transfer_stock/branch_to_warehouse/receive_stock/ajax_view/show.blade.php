@@ -168,7 +168,7 @@
                                 @elseif($sendStock->status == 2)
                                     Partial
                                 @elseif($sendStock->status == 3)
-                                    Complated
+                                @lang('menu.completed')
                                 @endif
                             </li>
                         </ul>

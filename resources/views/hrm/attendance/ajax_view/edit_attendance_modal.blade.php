@@ -2,7 +2,7 @@
     @csrf
     <input type="hidden" name="id" value="{{ $attendance->id }}">
     <label class="text-navy-blue"><b>Employee :</b> {{ $attendance->prefix . ' ' . $attendance->name . ' ' . $attendance->last_name }} </label><br>
-    <label class="text-navy-blue"><b>Start Date :</b> {{ $attendance->at_date }}  </label>
+    <label class="text-navy-blue"><b>@lang('menu.start_date') :</b> {{ $attendance->at_date }}  </label>
     <div class="form-group row">
         <div class="col-md-6">
             <label><b>Clock In :</b></label>

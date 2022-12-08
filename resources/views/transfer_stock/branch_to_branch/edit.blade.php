@@ -401,7 +401,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
                             </div>
                         </div>
                     </div>

@@ -46,7 +46,7 @@
                                                 <th>End At</th>
                                                 <th>Discount Type</th>
                                                 <th>Discount Amount</th>
-                                                <th>Priority</th>
+                                                <th>@lang('menu.priority')</th>
                                                 <th>Brand</th>
                                                 <th>Category</th>
                                                 <th>Applicable Products</th>
@@ -94,7 +94,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><strong>Priority <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</strong> <span class="text-danger">*</span> </label>
+                                <label><strong>@lang('menu.priority') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</strong> <span class="text-danger">*</span> </label>
                                 <input type="text" name="priority" class="form-control add_input"
                                     data-name="Priority" id="priority" placeholder="Priority" />
                                 <span class="error error_priority"></span>

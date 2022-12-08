@@ -43,7 +43,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><b>Location :</b> </label>
+                                                <label class="col-4"><b>@lang('menu.location') :</b> </label>
                                                 <div class="col-8">
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">

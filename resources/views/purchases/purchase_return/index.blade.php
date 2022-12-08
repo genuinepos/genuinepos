@@ -113,7 +113,7 @@
                                                 <th>Return Invoice ID</th>
                                                 <th>Parent Purchase</th>
                                                 <th>@lang('menu.supplier_name')</th>
-                                                <th>Location</th>
+                                                <th>@lang('menu.location')</th>
                                                 <th>Return From</th>
                                                 <th>@lang('menu.payment_status')</th>
                                                 <th>Return Amount</th>

@@ -51,14 +51,14 @@
                                     @endif
 
                                     <div class="col-md-3">
-                                        <label><strong>Priority : </strong></label>
+                                        <label><strong>@lang('menu.priority') : </strong></label>
                                         <select name="priority"
                                             class="form-control submit_able" id="priority" autofocus>
                                             <option value="">@lang('menu.all')</option>
-                                            <option value="Low">Low</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="High">High</option>
-                                            <option value="Urgent">Urgent</option>
+                                            <option value="Low">@lang('menu.low')</option>
+                                            <option value="Medium">@lang('menu.medium')</option>
+                                            <option value="High">@lang('menu.high')</option>
+                                            <option value="Urgent">@lang('menu.urgent')</option>
                                         </select>
                                     </div>
 
@@ -67,10 +67,10 @@
                                         <select name="status"
                                             class="form-control submit_able" id="status" autofocus>
                                             <option value="">@lang('menu.all')</option>
-                                            <option value="New">New</option>
-                                            <option value="In-Progress">In-Progress</option>
-                                            <option value="On-Hold">On-Hold</option>
-                                            <option value="Complated">Complated</option>
+                                            <option value="New">@lang('menu.new')</option>
+                                            <option value="In-Progress">@lang('menu.in_progress')</option>
+                                            <option value="On-Hold">@lang('menu.on_hold')</option>
+                                            <option value="Complated">@lang('menu.completed')</option>
                                         </select>
                                     </div>
 
@@ -110,16 +110,16 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Entry Date</th>
+                                    <th>@lang('menu.entry_date')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>Workspace ID</th>
-                                    <th>Location</th>
-                                    <th>Priority</th>
+                                    <th>@lang('menu.location')</th>
+                                    <th>@lang('menu.priority')</th>
                                     <th>@lang('menu.status')</th>
-                                    <th>Start Date</th>
+                                    <th>@lang('menu.start_date')</th>
                                     <th>End Date</th>
                                     <th>Estimated Hour</th>
-                                    <th>Assigned By</th>
+                                    <th>@lang('menu.assigned_by')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -156,7 +156,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Assigned To :</b></label>
+                                <label><b>@lang('menu.assigned_to') :</b></label>
                                 <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
@@ -167,31 +167,31 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Priority : </b></label>
+                                <label><b>@lang('menu.priority') : </b></label>
                                 <select required name="priority" class="form-control">
-                                    <option value="">Select Priority</option>
-                                    <option value="Low">Low</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="High">High</option>
-                                    <option value="Urgent">Urgent</option>
+                                    <option value="">@lang('menu.select_priority')</option>
+                                    <option value="Low">@lang('menu.low')</option>
+                                    <option value="Medium">@lang('menu.medium')</option>
+                                    <option value="High">@lang('menu.high')</option>
+                                    <option value="Urgent">@lang('menu.urgent')</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
                                 <label><strong>@lang('menu.status') : </strong></label>
                                 <select required name="status" class="form-control">
-                                    <option value="">Select Status</option>
-                                    <option value="New">New</option>
-                                    <option value="In-Progress">In-Progress</option>
-                                    <option value="On-Hold">On-Hold</option>
-                                    <option value="Complated">Complated</option>
+                                    <option value="">@lang('menu.select_status')</option>
+                                    <option value="New">@lang('menu.new')</option>
+                                    <option value="In-Progress">@lang('menu.in_progress')</option>
+                                    <option value="On-Hold">@lang('menu.on_hold')</option>
+                                    <option value="Complated">@lang('menu.completed')</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Start Date : </b></label>
+                                <label><b>@lang('menu.start_date') : </b></label>
                                 <input required type="text" name="start_date" class="form-control datepicker" value="{{date(json_decode($generalSettings->business, true)['date_format'])}}" autocomplete="off">
                             </div>
 

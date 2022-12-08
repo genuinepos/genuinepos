@@ -4,11 +4,11 @@
     <div class="form-group">
         <label><strong>@lang('menu.status') : </strong></label>
         <select required name="status" class="form-control">
-            <option value="">Select Status</option>
-            <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">New</option>
-            <option {{ $todo->status == 'In-Progress' ? 'SELECTED' : ''  }} value="In-Progress">In-Progress</option>
-            <option {{ $todo->status == 'On-Hold' ? 'SELECTED' : ''  }} value="On-Hold">On-Hold</option>
-            <option {{ $todo->status == 'Complated' ? 'SELECTED' : ''  }} value="Complated">Complated</option>
+            <option value="">@lang('menu.select_status')</option>
+            <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">@lang('menu.new')</option>
+            <option {{ $todo->status == 'In-Progress' ? 'SELECTED' : ''  }} value="In-Progress">@lang('menu.in_progress')</option>
+            <option {{ $todo->status == 'On-Hold' ? 'SELECTED' : ''  }} value="On-Hold">@lang('menu.on_hold')</option>
+            <option {{ $todo->status == 'Complated' ? 'SELECTED' : ''  }} value="Complated">@lang('menu.completed')</option>
         </select>
     </div>
 

@@ -114,7 +114,7 @@
                                         <div class="col-8">
                                             <select name="status" class="form-control add_input" data-name="Status"
                                                 id="status">
-                                                <option value="">Select status</option>
+                                                <option value="">@lang('menu.select_status')</option>
                                                 @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
                                                     <option value="{{ $key }}">{{ $status }}</option>
                                                 @endforeach

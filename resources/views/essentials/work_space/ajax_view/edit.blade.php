@@ -7,7 +7,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Assigned To :</b></label>
+            <label><b>@lang('menu.assigned_to') :</b></label>
             <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
                 <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
@@ -24,31 +24,31 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Priority : </b></label>
+            <label><b>@lang('menu.priority') : </b></label>
             <select required name="priority" class="form-control" id="priority">
-                <option value="">Select Priority</option>
-                <option {{ $ws->priority == 'Low' ? 'SELECTED' : '' }} value="Low">Low</option>
-                <option {{ $ws->priority == 'Medium' ? 'SELECTED' : '' }} value="Medium">Medium</option>
-                <option {{ $ws->priority == 'High' ? 'SELECTED' : '' }} value="High">High</option>
-                <option {{ $ws->priority == 'Urgent' ? 'SELECTED' : '' }} value="Urgent">Urgent</option>
+                <option value="">@lang('menu.select_priority')</option>
+                <option {{ $ws->priority == 'Low' ? 'SELECTED' : '' }} value="Low">@lang('menu.low')</option>
+                <option {{ $ws->priority == 'Medium' ? 'SELECTED' : '' }} value="Medium">@lang('menu.medium')</option>
+                <option {{ $ws->priority == 'High' ? 'SELECTED' : '' }} value="High">@lang('menu.high')</option>
+                <option {{ $ws->priority == 'Urgent' ? 'SELECTED' : '' }} value="Urgent">@lang('menu.urgent')</option>
             </select>
         </div>
 
         <div class="col-md-6">
             <label><strong>@lang('menu.status') : </strong></label>
             <select required name="status" class="form-control" id="status">
-                <option value="">Select Status</option>
-                <option {{ $ws->status == 'New' ? 'SELECTED' : '' }} value="New">New</option>
-                <option {{ $ws->status == 'In-Progress' ? 'SELECTED' : '' }} value="In-Progress">In-Progress</option>
-                <option {{ $ws->status == 'On-Hold' ? 'SELECTED' : '' }} value="On-Hold">On-Hold</option>
-                <option {{ $ws->status == 'Complated' ? 'SELECTED' : '' }} value="Complated">Complated</option>
+                <option value="">@lang('menu.select_status')</option>
+                <option {{ $ws->status == 'New' ? 'SELECTED' : '' }} value="New">@lang('menu.new')</option>
+                <option {{ $ws->status == 'In-Progress' ? 'SELECTED' : '' }} value="In-Progress">@lang('menu.in_progress')</option>
+                <option {{ $ws->status == 'On-Hold' ? 'SELECTED' : '' }} value="On-Hold">@lang('menu.on_hold')</option>
+                <option {{ $ws->status == 'Complated' ? 'SELECTED' : '' }} value="Complated">@lang('menu.completed')</option>
             </select>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Start Date : </b></label>
+            <label><b>@lang('menu.start_date') : </b></label>
             <input required type="text" name="start_date" class="form-control datepicker" id="start_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ws->start_date)) }}">
         </div>
 
@@ -82,7 +82,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success">Save Changes</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_changes')</button>
             </div>
         </div>
     </div>

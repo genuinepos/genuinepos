@@ -139,7 +139,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Start Date :</strong></label>
+                                            <label><strong>@lang('menu.start_date') :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>

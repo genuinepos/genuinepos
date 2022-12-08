@@ -5,7 +5,7 @@
 
             <td class="text-start task_details">
                 <div class="task_area" data-id="{{ $task->id }}">
-                    <span id="task_name" class="text-muted"> {{ $task->task_name }} </span>  
+                    <span id="task_name" class="text-muted"> {{ $task->task_name }} </span>
                     <a href="{{ route('workspace.task.delete', $task->id) }}" class="text-danger float-end" title="Delete" id="delete"><i class="far fa-trash-alt ms-1"></i></a>
                     <a href="#" class="text-muted" title="Edit" id="edit_task_btn"><i class="fas fa-pencil-alt"></i></a>
                 </div>
@@ -53,10 +53,10 @@
                     </button>
 
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="High" id="change_priority"><i class="fas fa-circle text-danger"></i> <b>High Priority</b></a>
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="Low" id="change_priority"><i class="fas fa-circle text-warning"></i> <b>Low Priority</b></a>
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="Medium" id="change_priority"><i class="fas fa-circle text-secondary"></i> <b>Medium Priority</b></a>
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="Urgent" id="change_priority"><i class="fas fa-circle text-1"></i> <b>Urgent Priority</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="High" id="change_priority"><i class="fas fa-circle text-danger"></i> <b>{{ __('High Priority') }}</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="Low" id="change_priority"><i class="fas fa-circle text-warning"></i> <b>{{ __('Low Priority') }}</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="Medium" id="change_priority"><i class="fas fa-circle text-secondary"></i> <b>{{ __('Medium Priority') }}</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.priority', $task->id) }}" data-priority="Urgent" id="change_priority"><i class="fas fa-circle text-1"></i> <b>{{ __('Urgent Priority') }}</b></a>
                     </div>
                 </div>
             </td>
@@ -79,16 +79,16 @@
 
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="Pending" id="change_status"><i class="fas fa-circle text-danger"></i> <b>@lang('menu.pending')</b></a>
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="In-Progress" id="change_status"><i class="fas fa-circle text-secondary"></i> <b>In-Progress</b></a>
-                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="Complated" id="change_status"><i class="fas fa-circle text-info"></i> <b>Complated</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="In-Progress" id="change_status"><i class="fas fa-circle text-secondary"></i> <b>@lang('menu.in_progress')</b></a>
+                        <a class="dropdown-item mt-1" href="{{ route('workspace.task.status', $task->id) }}" data-status="Complated" id="change_status"><i class="fas fa-circle text-info"></i> <b>@lang('menu.completed')</b></a>
                     </div>
                 </div>
             </td>
-        </tr>  
+        </tr>
     @endforeach
-@else 
+@else
     <tr>
-        <th colspan="3">No-Task-Available</th>
+        <th colspan="3">{{ __('No-Task-Available') }}</th>
     </tr>
 @endif
 

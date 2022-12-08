@@ -15,7 +15,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-th-list"></span>
-                    <h6>Todo</h6>
+                    <h6>@lang('menu.todo')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -48,14 +48,14 @@
                                 @endif
 
                                 <div class="col-md-2">
-                                    <label><strong>Priority : </strong></label>
+                                    <label><strong>@lang('menu.priority') : </strong></label>
                                     <select name="priority"
                                         class="form-control submit_able" id="priority" autofocus>
                                         <option value="">@lang('menu.all')</option>
-                                        <option value="Low">Low</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="High">High</option>
-                                        <option value="Urgent">Urgent</option>
+                                        <option value="Low">@lang('menu.low')</option>
+                                        <option value="Medium">@lang('menu.medium')</option>
+                                        <option value="High">@lang('menu.high')</option>
+                                        <option value="Urgent">@lang('menu.urgent')</option>
                                     </select>
                                 </div>
 
@@ -64,10 +64,10 @@
                                     <select name="status"
                                         class="form-control submit_able" id="status" autofocus>
                                         <option value="">@lang('menu.all')</option>
-                                        <option value="New">New</option>
-                                        <option value="In-Progress">In-Progress</option>
-                                        <option value="On-Hold">On-Hold</option>
-                                        <option value="Complated">Complated</option>
+                                        <option value="New">@lang('menu.new')</option>
+                                        <option value="In-Progress">@lang('menu.in_progress')</option>
+                                        <option value="On-Hold">@lang('menu.on_hold')</option>
+                                        <option value="Complated">@lang('menu.completed')</option>
                                     </select>
                                 </div>
 
@@ -112,7 +112,7 @@
                     <div class="card" id="add_form">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Add Todo </h6>
+                                <h6>{{ __('Add Todo') }} </h6>
                             </div>
                         </div>
 
@@ -121,14 +121,14 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label><b>Task :</b></label>
+                                        <label><b>@lang('menu.task') :</b></label>
                                         <input required type="text" name="task" class="form-control" placeholder="Task">
                                     </div>
                                 </div>
 
                                 <div class="form-group mt-1">
                                     <div class="col-md-12">
-                                        <label><b>Assigned To :</b></label>
+                                        <label><b>@lang('menu.assigned_to') :</b></label>
                                         <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
@@ -139,31 +139,31 @@
 
                                 <div class="form-group row mt-1">
                                     <div class="col-md-6">
-                                        <label><b>Priority : </b></label>
+                                        <label><b>@lang('menu.priority') : </b></label>
                                         <select required name="priority" class="form-control">
-                                            <option value="">Select Priority</option>
-                                            <option value="Low">Low</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="High">High</option>
-                                            <option value="Urgent">Urgent</option>
+                                            <option value="">@lang('menu.select_priority')</option>
+                                            <option value="Low">@lang('menu.low')</option>
+                                            <option value="Medium">@lang('menu.medium')</option>
+                                            <option value="High">@lang('menu.high')</option>
+                                            <option value="Urgent">@lang('menu.urgent')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label><strong>@lang('menu.status') : </strong></label>
                                         <select required name="status" class="form-control">
-                                            <option value="">Select Status</option>
-                                            <option value="New">New</option>
-                                            <option value="In-Progress">In-Progress</option>
-                                            <option value="On-Hold">On-Hold</option>
-                                            <option value="Complated">Complated</option>
+                                            <option value="">@lang('menu.select_status')</option>
+                                            <option value="New">@lang('menu.new')</option>
+                                            <option value="In-Progress">@lang('menu.in_progress')</option>
+                                            <option value="On-Hold">@lang('menu.on_hold')</option>
+                                            <option value="Complated">@lang('menu.completed')</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group mt-1">
                                     <div class="col-md-12">
-                                        <label><b>Due Date : </b></label>
+                                        <label><b>@lang('menu.due_date') : </b></label>
                                         <input required type="text" name="due_date" class="form-control" id="due_date" placeholder="DD-MM-YYYY" autocomplete="off">
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                     <div class="card d-hide" id="edit_form">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Edit Todo</h6>
+                                <h6>{{ __('Edit Todo') }}</h6>
                             </div>
                         </div>
 
@@ -203,7 +203,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>All Todo </h6>
+                                <h6>{{ __('All Todo') }} </h6>
                             </div>
                         </div>
 
@@ -213,13 +213,13 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>Todo ID</th>
-                                            <th>Task</th>
-                                            <th>Location</th>
-                                            <th>Priority</th>
+                                            <th>@lang('menu.todo_id')</th>
+                                            <th>@lang('menu.task')</th>
+                                            <th>@lang('menu.location')</th>
+                                            <th>@lang('menu.priority')</th>
                                             <th>@lang('menu.status')</th>
-                                            <th>Due Date</th>
-                                            <th>Assigned To</th>
+                                            <th>@lang('menu.due_date')</th>
+                                            <th>@lang('menu.assigned_to')</th>
                                             <th>@lang('menu.action')</th>
                                         </tr>
                                     </thead>

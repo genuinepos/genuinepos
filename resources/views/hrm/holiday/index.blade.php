@@ -79,7 +79,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
                                 <input type="date" name="start_date" required class="form-control">
                             </div>
 

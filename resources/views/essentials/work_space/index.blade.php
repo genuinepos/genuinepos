@@ -117,7 +117,7 @@
                                     <th>@lang('menu.priority')</th>
                                     <th>@lang('menu.status')</th>
                                     <th>@lang('menu.start_date')</th>
-                                    <th>End Date</th>
+                                    <th>@lang('menu.end_date')</th>
                                     <th>Estimated Hour</th>
                                     <th>@lang('menu.assigned_by')</th>
                                     <th>@lang('menu.action')</th>
@@ -196,7 +196,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>End Date : </b></label>
+                                <label><b>@lang('menu.end_date') : </b></label>
                                 <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ json_decode($generalSettings->business, true)['date_format'] }}" autocomplete="off">
                             </div>
                         </div>

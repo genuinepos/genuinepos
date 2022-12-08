@@ -53,7 +53,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>End Date : </b></label>
+            <label><b>@lang('menu.end_date') : </b></label>
             <input required type="text" name="end_date" class="form-control datepicker" id="end_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($ws->end_date)) }}">
         </div>
     </div>

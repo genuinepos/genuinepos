@@ -40,7 +40,7 @@
                                         <div class="col-md-4">
                                             <ul class="list-unstyled ws_description">
                                                 <li><b>@lang('menu.start_date') :</b> {{ date('d-m-Y', strtotime($ws->start_date)) }}</li>
-                                                <li><b>End Date :</b> {{ date('d-m-Y', strtotime($ws->end_date)) }}</li>
+                                                <li><b>@lang('menu.end_date') :</b> {{ date('d-m-Y', strtotime($ws->end_date)) }}</li>
                                                 <li><b>Estimated Hours :</b> {{ $ws->estimated_hours }}</li>
                                             </ul>
                                         </div>

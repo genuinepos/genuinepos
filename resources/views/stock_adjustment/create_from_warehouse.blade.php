@@ -207,7 +207,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Reason :</b></label>
+                                                        <label class=" col-4"><b>@lang('menu.reason') :</b></label>
                                                         <div class="col-8">
                                                             <input type="text" name="reason" class="form-control"
                                                                 autocomplete="off" placeholder="Reason">

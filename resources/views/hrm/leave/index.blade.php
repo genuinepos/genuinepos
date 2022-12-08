@@ -114,14 +114,14 @@
                             </div>
 
                             <div class="form-group col-6">
-                              <label><b>End Date :</b> <span class="text-danger">*</span></label>
-                              <input type="text" name="end_date" required class="form-control datepicker" autocomplete="off" placeholder="End Date">
+                              <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
+                              <input type="text" name="end_date" required class="form-control datepicker" autocomplete="off" placeholder="@lang('menu.end_date')">
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>Reason :</b> </label>
+                                <label><b>@lang('menu.reason') :</b> </label>
                                 <textarea type="text" name="reason" class="form-control" placeholder="Reason"></textarea>
                             </div>
                         </div>
@@ -197,14 +197,14 @@
                             </div>
 
                             <div class="form-group col-6">
-                              <label><b>End Date :</b> <span class="text-danger">*</span></label>
-                              <input required type="text" name="end_date" id="e_end_date" class="form-control datepicker" placeholder="End Date" autocomplete="off">
+                              <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
+                              <input required type="text" name="end_date" id="e_end_date" class="form-control datepicker" placeholder="@lang('menu.end_date')" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>Reason :</b> </label>
+                                <label><b>@lang('menu.reason') :</b> </label>
                                 <textarea type="text" name="reason" id="e_reason" class="form-control" placeholder="Reason"></textarea>
                             </div>
                         </div>

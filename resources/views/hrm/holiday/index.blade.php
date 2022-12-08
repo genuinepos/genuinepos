@@ -84,7 +84,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>End Date :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
                                 <input type="date" name="end_date" required class="form-control">
                             </div>
                         </div>

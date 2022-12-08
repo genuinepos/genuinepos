@@ -155,7 +155,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Reason : </h6>
+                        <h6>@lang('menu.reason') : </h6>
                         <p class="reason">{{ $adjustment->reason }}</p>
                     </div>
                 </div>

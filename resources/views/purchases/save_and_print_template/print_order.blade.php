@@ -101,8 +101,8 @@
                             <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>PO Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Delivery Date : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
-                            <li><strong>Purchase Status : </strong>Ordered</li>
-                            <li><strong>Receiving Status : </strong>{{ $purchase->po_receiving_status }}</li>
+                            <li><strong>@lang('menu.purchases_status') : </strong>Ordered</li>
+                            <li><strong>@lang('menu.receiving_status') : </strong>{{ $purchase->po_receiving_status }}</li>
                             <li><strong>@lang('menu.payment_status') : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
@@ -129,7 +129,7 @@
                         <tr>
                             <th scope="col">@lang('menu.description')</th>
                             <th scope="col">Ordered Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
                             <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -230,11 +230,11 @@
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <h6>CHECKED BY : </h6>
+                    <h6>@lang('menu.checked_by') : </h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6>APPROVED BY : </h6>
+                    <h6>@lang('menu.approved_by') : </h6>
                 </div>
             </div>
 

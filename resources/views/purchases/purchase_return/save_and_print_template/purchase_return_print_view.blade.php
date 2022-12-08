@@ -58,7 +58,7 @@
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
-                        <li><strong>Supplier Name : </strong>
+                        <li><strong>@lang('menu.supplier_name') : </strong>
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
@@ -166,10 +166,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>CHECKED BY</strong></h6>
+                    <h6><strong>@lang('menu.checked_by')</strong></h6>
                 </div>
                 <div class="col-md-6 text-end">
-                    <h6><strong>APPROVED BY</strong></h6>
+                    <h6><strong>@lang('menu.approved_by')</strong></h6>
                 </div>
             </div>
         </div>

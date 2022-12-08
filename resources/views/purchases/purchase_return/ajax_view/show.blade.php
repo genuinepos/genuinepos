@@ -23,7 +23,7 @@
                                 <strong>Return Date : </strong> {{ $return->date }}
                             </li>
                             <li>
-                                <strong>supplier Name : </strong>
+                                <strong>@lang('menu.supplier_name') : </strong>
                                 {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
                             </li>
                             <li class="warehouse"><strong>@lang('menu.business_location') : </strong>
@@ -53,7 +53,7 @@
                         <ul class="list-unstyled">
                             <li class="parent_purchase"><strong>Purchase Details :</strong>  </li>
                             <li class="parent_purchase">
-                                <strong>P.Invoice ID : </strong>
+                                <strong>{{ __('P.Invoice ID') }} : </strong>
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
                             </li>
                             <li class="parent_purchase"><strong>@lang('menu.date') : </strong>
@@ -69,7 +69,7 @@
                                 <tr class="bg-secondary text-white text-start">
                                     <th class="text-start" scope="col">@lang('menu.sl')</th>
                                     <th class="text-start" scope="col">@lang('menu.product')</th>
-                                    <th class="text-start" scope="col">Unit cost</th>
+                                    <th class="text-start" scope="col">@lang('menu.unit_cost')</th>
                                     <th class="text-start" scope="col">Return Quantity</th>
                                     <th class="text-start" scope="col">SubTotal</th>
                                 </tr>
@@ -199,7 +199,7 @@
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
-                        <li><strong>Supplier Name : </strong>
+                        <li><strong>@lang('menu.supplier_name') : </strong>
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
@@ -235,7 +235,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">@lang('menu.product')</th>
-                            <th class="text-end">Unit Cost</th>
+                            <th class="text-end">@lang('menu.unit_cost')</th>
                             <th class="text-end">Return Quantity</th>
                             <th class="text-end">SubTotal</th>
                         </tr>
@@ -308,10 +308,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>CHECKED BY</strong></h6>
+                    <h6><strong>@lang('menu.checked_by')</strong></h6>
                 </div>
                 <div class="col-md-6 text-end">
-                    <h6><strong>APPROVED BY</strong></h6>
+                    <h6><strong>@lang('menu.approved_by')</strong></h6>
                 </div>
             </div>
         </div>

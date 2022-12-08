@@ -30,20 +30,20 @@
                     <div class="tab_list_area">
                         <div class="btn-group">
                             <a id="tab_btn" data-show="ledger" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                <i class="fas fa-scroll"></i> Ledger
+                                <i class="fas fa-scroll"></i> @lang('menu.ledger')
                             </a>
 
                             <a id="tab_btn" data-show="contract_info_area" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-info-circle">
-                                </i> Contract Info
+                                </i> {{ __('Contract Info') }}
                             </a>
 
                             <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-shopping-bag"></i> Sale
+                                <i class="fas fa-shopping-bag"></i> @lang('menu.sale')
                             </a>
 
                             @if (auth()->user()->can('sale_payment'))
                                 <a id="tab_btn" data-show="payments" class="btn btn-sm btn-primary tab_btn" href="#">
-                                    <i class="far fa-money-bill-alt"></i> Payments
+                                    <i class="far fa-money-bill-alt"></i>@lang('menu.payments')
                                 </a>
                             @endif
                         </div>
@@ -58,7 +58,7 @@
                             <div class="col-sm-12 col-lg-9">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                        <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -248,7 +248,7 @@
                             <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                        <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -330,7 +330,7 @@
                                                     <th>@lang('menu.total_paid')</th>
                                                     <th>Sell Due</th>
                                                     <th>Return Amount</th>
-                                                    <th>Return Due</th>
+                                                    <th>@lang('menu.return_due')</th>
                                                     <th>@lang('menu.payment_status')</th>
                                                 </tr>
                                             </thead>
@@ -363,7 +363,7 @@
                                 <div class="col-sm-12 col-lg-9">
                                     <div class="account_summary_area">
                                         <div class="heading py-1">
-                                            <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                            <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                         </div>
 
                                         <div class="account_summary_table">
@@ -431,13 +431,13 @@
                                                     <div class="col-md-12 col-sm-12 col-lg-12 d-md-block d-flex gap-2">
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> Receive</a>
+                                                                <a href="{{ route('customers.payment', $customer->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> @lang('menu.receive')</a>
                                                             </div>
                                                         </div>
 
                                                         <div class="row mt-md-2">
                                                             <div class="col-md-12">
-                                                                <a class="btn btn-sm btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> Refund </a>
+                                                                <a class="btn btn-sm btn-success return_payment_btn" id="add_return_payment" href="{{ route('customers.return.payment', $customer->id) }}"><i class="far fa-money-bill-alt text-white"></i> @lang('menu.refund') </a>
                                                             </div>
                                                         </div>
 
@@ -518,7 +518,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="payment_view_modal_body"> </div>
@@ -534,7 +534,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details')(<span class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">

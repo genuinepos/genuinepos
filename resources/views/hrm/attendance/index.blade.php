@@ -46,7 +46,7 @@
                                     @endif
 
                                     <div class="col-md-3">
-                                        <label><strong>Users :</strong></label>
+                                        <label><strong>@lang('menu.users') :</strong></label>
                                         <select name="user_id"
                                             class="form-control submit_able" id="user_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -92,7 +92,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.date')</th>
-                                    <th>Employee</th>
+                                    <th>{{ __('Employee') }}</th>
                                     <th>Clock IN - CLock Out</th>
                                     <th>Work Duration</th>
                                     <th>Clockin note</th>
@@ -129,7 +129,7 @@
                     <form id="add_attendance_form" action="{{ route('hrm.attendance.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>Department :</b></label>
+                                <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
                                 <select  class="form-control employee" required="" id="department_id">
                                     <option> Select Employee </option>
                                     @foreach($departments as $dep)

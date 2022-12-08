@@ -16,12 +16,12 @@
                     <div id="breadCrumb3" class="breadCrumb module">
                         <ul>
                             <li>
-                                <a href="" class="text-primary"><i class="fas fa-tachometer-alt"></i> <b>HRM</b></a>
+                                <a href="" class="text-primary"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                             </li>
 
                             @if(auth()->user()->can('leave_type'))
                                 <li>
-                                    <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                    <a href="{{ route('hrm.leave.type') }}" class="text-dark text-muted"><i class="fas fa-th-large"></i> <b>{{ __('Leave Types') }}</b></a>
                                 </li>
                             @endif
 
@@ -68,7 +68,7 @@
             <div class="card-title mt-4 ps-4">
                 <h1 class="text-start text-primary pl-5">
                     <i class="fas fa-anchor"></i>
-                    <span class="">HRM</span> Dashboard
+                    <span class="">@lang('menu.hrm')</span>@lang('menu.dashboard')
                 </h1>
             </div>
 
@@ -79,11 +79,11 @@
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
                                     <span class="fas fa-users"></span>
-                                    Users
+                                    @lang('menu.users')
                                 </h6>
                                 <span class="badge bg-secondary text-white">
                                     <div id="small-badge">
-                                        Total: 4324
+                                        @lang('menu.total') 4324
                                     </div>
                                 </span>
                             </div>
@@ -94,17 +94,17 @@
                                             class="display data__table data_tble stock_table compact" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Department</th>
-                                                    <th>Total</th>
+                                                    <th>@lang('menu.department')</th>
+                                                    <th>@lang('menu.total')</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Branch Manger</td>
+                                                    <td>{{ __('Branch Manger') }}</td>
                                                     <td>125</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>HRM</td>
+                                                    <td>@lang('menu.hrm')</td>
                                                     <td>23</td>
                                                 </tr>
                                                 <tr>
@@ -124,7 +124,7 @@
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
                                     <span class="fas fa-user-check"></span>
-                                    Today's Attendance
+                                    {{ __('Todays Attendance') }}
                                 </h6>
                                 {{-- <h6 class="">4324</h6> --}}
                             </div>
@@ -135,9 +135,9 @@
                                             width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Employee</th>
-                                                    <th>Clock-in Time</th>
-                                                    <th>Clock-out Time</th>
+                                                    <th>{{ __('Employee') }}</th>
+                                                    <th>{{ __('Clock-in Time') }}</th>
+                                                    <th>{{ __('Clock-out Time') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -225,7 +225,7 @@
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
                                     <span class="far fa-file-alt"></span>
-                                    Leave Applications
+                                    {{ __('Leave Applications') }}
                                 </h6>
                             </div>
                             <div class="widget_content">
@@ -324,19 +324,19 @@
                             <div class="section-header d-flex justify-content-between align-items-center px-3">
                                 <h6>
                                     <span class="far fa-file-alt"></span>
-                                    Holidays
+                                    {{ __('Holidays') }}
                                 </h6>
                             </div>
                             <div class="widget_content">
                                 <div class="px-3 pt-2">
-                                    <div class="px-1"><strong>Today:</strong></div>
+                                    <div class="px-1"><strong>{{ __('Today') }}:</strong></div>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item list-group-item-success">Its' work day</li>
+                                        <li class="list-group-item list-group-item-success">{{ __('Its work day') }}</li>
                                     </ul>
                                 </div>
                                 <div class="px-3 pt-2 pb-2">
                                     <div class="px-1">
-                                        <span><strong>Upcoming Holidays:</strong></span>
+                                        <span><strong>{{ __('Upcoming Holidays') }}:</strong></span>
                                     </div>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item list-group-item-warning">A simple warning list group item

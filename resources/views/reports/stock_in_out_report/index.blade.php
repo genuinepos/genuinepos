@@ -145,7 +145,7 @@
                                             <th>Stock In Date</th>
                                             <th>Lot No</th>
                                             {{-- <th>Stock In Qty</th> --}}
-                                            <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            <th>@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

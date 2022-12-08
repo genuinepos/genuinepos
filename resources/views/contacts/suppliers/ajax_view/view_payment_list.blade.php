@@ -33,14 +33,14 @@
 
                     <li>
                         <h6>
-                            Total Purchase Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_purchase_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
                             <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            Total Returnable amount Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_purchase_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
                             <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}</b>
                         </h6>
                     </li>

@@ -102,7 +102,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">Grand Total</th>
+                        <th class="text-start" colspan="6">@lang('menu.grand_total')</th>
                         @php
                             $grandTotal = $transfer->net_total_amount  + $transfer->shipping_charge;
                         @endphp

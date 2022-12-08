@@ -134,10 +134,10 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.product')</th>
                                                 <th>P.Code</th>
-                                                <th>Supplier</th>
-                                                <th>P.Invoice ID</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.quantity')</th>
-                                                <th>Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th>@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
                                                 <th>Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
                                                 <th>Subtotal({{json_decode($generalSettings->business, true)['currency']}})</th>
                                             </tr>

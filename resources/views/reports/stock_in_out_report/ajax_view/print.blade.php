@@ -68,7 +68,7 @@
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">Stock In By</th>
                     <th class="text-start">Stock In Date</th>
-                    <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

@@ -13,7 +13,7 @@
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_payment') <span class="type_name"></span></h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -56,11 +56,12 @@
                                         date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time))
                                     }}
                                 </li>
-                                <li><strong>Purchase Status : </strong>
+                                <li><strong>@lang('menu.purchases_status') : </strong>
                                     @if ($purchase->purchase_status == 1)
                                         <span class="text-success"><b>Received</b></span>
                                     @elseif($purchase->purchase_status == 2){
                                         <span class="text-warning"><b>@lang('menu.pending')</b></span>
+                                    }
                                     @else
                                         <span class="text-primary"><b>Ordered</b></span>
                                     @endif

@@ -280,7 +280,7 @@
                                                 <th>@lang('menu.invoice_id')</th>
                                                 <th>@lang('menu.branch')</th>
                                                 <th>@lang('menu.customer')</th>
-                                                <th>Shipment Status</th>
+                                                <th>@lang('menu.shipment_status')</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
@@ -296,7 +296,7 @@
                     <section>
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
-                                <h6><span class="fas fa-table"></span> Sales Payment Due</h6>
+                                <h6><span class="fas fa-table"></span>@lang('menu.sales_payment_due')</h6>
                                 <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
@@ -324,7 +324,7 @@
                     <section>
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
-                                <h6><span class="fas fa-table"></span> Purchase Payment Due</h6>
+                                <h6><span class="fas fa-table"></span>@lang('menu.purchase_payment_due')</h6>
                                 <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
@@ -334,8 +334,8 @@
                                         class="display data__table data_tble purchase_due_table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Supplier</th>
-                                                <th>P.Invoice ID</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.branch')</th>
                                                 <th>@lang('menu.due_amount')</th>
                                             </tr>

@@ -60,10 +60,10 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">P.Code(SKU)</th>
-                    <th class="text-start">Supplier</th>
-                    <th class="text-start">P.Invoice ID</th>
+                    <th class="text-start">@lang('menu.supplier')</th>
+                    <th class="text-start">{{ __('P.Invoice ID') }}</th>
                     <th class="text-start">Qty</th>
-                    <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>

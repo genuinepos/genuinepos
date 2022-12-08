@@ -348,12 +348,12 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Checked By</strong>  </p>
+                        <p class="borderTop"><strong>@lang('menu.checked_by')</strong>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Approved By</strong> </p>
+                        <p class="borderTop"><strong>@lang('menu.approved_by')</strong> </p>
                     </div>
                 </div>
                 <div class="col-md-3">

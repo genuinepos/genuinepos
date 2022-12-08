@@ -9,7 +9,7 @@
         <div class="sec-name">
             <div class="name-head">
                 <span class="fas fa-users"></span>
-                <h5>Suppliers</h5>
+                <h5>@lang('menu.supplier')</h5>
             </div>
 
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -61,7 +61,7 @@
                 <div class="col-md-6 d-flex justify-content-end gap-2">
                     <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
 
-                    <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Suppliers</a>
+                    <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_suppliers')</a>
                 </div>
             </div>
 
@@ -75,7 +75,7 @@
                                 <tr class="text-start">
                                     <th>@lang('menu.action')</th>
                                     <th>@lang('menu.supplier_id')</th>
-                                    <th>Prefix</th>
+                                    <th>@lang('menu.prefix')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>@lang('menu.business')</th>
                                     <th>@lang('menu.phone')</th>
@@ -84,7 +84,7 @@
                                     <th>@lang('menu.total_paid')</th>
                                     <th>@lang('menu.purchase_due')</th>
                                     <th>Total Return</th>
-                                    <th>Return Due</th>
+                                    <th>@lang('menu.return_due')</th>
                                     <th>@lang('menu.status')</th>
                                 </tr>
                             </thead>
@@ -129,7 +129,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
                                 <b>@lang('menu.name') :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
+                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="@lang('menu.supplier_name')"/>
                                 <span class="error error_name" style="color: red;"></span>
                             </div>
 
@@ -220,7 +220,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
-                                <b>City :</b>
+                                <b>@lang('menu.city') :</b>
                                 <input type="text" name="city" class="form-control " placeholder="City"/>
                             </div>
 
@@ -268,7 +268,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Supplier</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_supplier')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="edit_modal_body"></div>

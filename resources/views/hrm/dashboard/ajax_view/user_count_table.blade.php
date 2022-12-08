@@ -15,7 +15,7 @@
             <table id="user_table" class="display data__table data_tble stock_table compact" width="100%">
                 <thead>
                     <tr>
-                        <th>Department</th>
+                        <th>@lang('menu.department')</th>
                         <th>Total</th>
                     </tr>
                 </thead>

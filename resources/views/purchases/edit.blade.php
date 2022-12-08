@@ -198,9 +198,9 @@
                                                     <tr>
                                                         <th>@lang('menu.product')</th>
                                                         <th>@lang('menu.quantity')</th>
-                                                        <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
+                                                        <th>@lang('menu.unit_cost')(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
                                                         <th>Discount</th>
-                                                        <th>Unit Cost(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
+                                                        <th>@lang('menu.unit_cost')(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                         <th>SubTotal(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                         <th>Unit Tax</th>
                                                         <th>Net Unit Cost</th>

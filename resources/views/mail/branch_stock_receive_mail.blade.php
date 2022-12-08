@@ -64,7 +64,7 @@
         <td style="width:50%;padding:20px;vertical-align:top">
             <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.business_location')(To)</span> </h6>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px;"> Name :</span>
+              <span style="display:block;font-weight:bold;font-size:13px;"> @lang('menu.name') :</span>
               {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</p>

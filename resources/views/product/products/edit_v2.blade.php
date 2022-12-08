@@ -267,7 +267,7 @@
                                 <div class="row gx-2 gy-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
                                                 <input readonly type="number" step="any" name="product_cost" class="form-control"
                                                 autocomplete="off" id="product_cost" placeholder="Unit cost" value="{{ $product->product_cost }}">
@@ -288,7 +288,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
                                                 <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="{{ $product->product_cost_with_tax }}">
                                                 <span class="error error_product_cost_with_tax"></span>

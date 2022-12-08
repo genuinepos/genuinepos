@@ -27,7 +27,7 @@
             <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
-        <p class="mt-2"><b>Supplier Payments </b></p>
+        <p class="mt-2"><b>@lang('menu.supplier_payments') </b></p>
     </div>
 </div>
 

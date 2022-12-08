@@ -20,7 +20,7 @@
                     {{ json_decode($generalSettings->business, true)['address'] }}
                 @endif
             </h6>
-            <h6>Payment Details</h6>
+            <h6>@lang('menu.payment_details')</h6>
         </div>
     </div>
 
@@ -103,15 +103,15 @@
     <div class="row">
         <div class="col-12">
             <div class="heading_area">
-                <p><b>DESTIBUTION OF DUE PURCHASES:</b></p>
+                <p><b>{{ __('DESTITUTION OF DUE PURCHASES') }}:</b></p>
             </div>
         </div>
         <div class="col-12">
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">Purchase Date</th>
-                        <th class="text-start">Purchase Invoice ID</th>
+                        <th class="text-start">@lang('menu.purchase_date')</th>
+                        <th class="text-start">@lang('menu.purchase_invoice_id')</th>
                         <th class="text-start">@lang('menu.paid_amount')</th>
                     </tr>
                 </thead>

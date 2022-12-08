@@ -28,8 +28,8 @@
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label> <strong>City :</strong> <span class="text-danger">*</span></label>
-            <input type="text" name="city" class="form-control edit_input" data-name="City" id="e_city" placeholder="City" value="{{ $branch->city }}"/>
+            <label> <strong>@lang('menu.city') :</strong> <span class="text-danger">*</span></label>
+            <input type="text" name="city" class="form-control edit_input" data-name="City" id="e_city" placeholder="@lang('menu.city')" value="{{ $branch->city }}"/>
             <span class="error error_e_city"></span>
         </div>
 
@@ -73,7 +73,7 @@
         <div class="col-lg-3 col-md-6">
             <label><strong>Invoice Schema :</strong>  <span class="text-danger">*</span></label>
             <select name="invoice_schema_id" id="e_invoice_schema_id" data-name="Add sale pos invoice schema" class="form-control  edit_input">
-                <option value="">Select Please</option>
+                <option value="">@lang('menu.select_please')</option>
                 @foreach ($invSchemas as $schema)
                     <option {{ $schema->id == $branch->invoice_schema_id ? 'SELECTED' : '' }} value="{{ $schema->id }}">{{ $schema->name }}</option>
                 @endforeach
@@ -84,7 +84,7 @@
         <div class="col-lg-3 col-md-6">
             <label><strong>Add Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
             <select name="add_sale_invoice_layout_id" id="e_add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  edit_input">
-                <option value="">Select Please</option>
+                <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
                     <option {{ $layout->id == $branch->add_sale_invoice_layout_id ? 'SELECTED' : '' }} value="{{ $layout->id }}">{{ $layout->name }}</option>
                 @endforeach
@@ -95,7 +95,7 @@
         <div class="col-lg-3 col-md-6">
             <label><strong>POS Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
             <select name="pos_sale_invoice_layout_id" id="e_pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  edit_input">
-                <option value="">Select Please</option>
+                <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
                     <option {{ $layout->id == $branch->pos_sale_invoice_layout_id ? 'SELECTED' : '' }} value="{{ $layout->id }}">{{ $layout->name }}</option>
                 @endforeach

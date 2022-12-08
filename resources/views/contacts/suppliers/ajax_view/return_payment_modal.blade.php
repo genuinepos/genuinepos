@@ -9,7 +9,7 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Receive Return Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Receive Return Payment') }} <span class="type_name"></span></h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 
@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Returnable Amount : </strong>
+                                <li><strong>{{ __('Total Returnable Amount') }} : </strong>
                                     <span class="card_text branch">
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}

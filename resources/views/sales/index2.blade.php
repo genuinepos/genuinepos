@@ -147,7 +147,7 @@
                                                 <th>@lang('menu.paid')</th>
                                                 <th>@lang('menu.due')</th>
                                                 <th>Return</th>
-                                                <th>Return Due</th>
+                                                <th>@lang('menu.return_due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -193,7 +193,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -210,7 +210,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>

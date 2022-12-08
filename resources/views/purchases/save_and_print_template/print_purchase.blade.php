@@ -104,9 +104,9 @@
 
                     <div class="col-4">
                         <ul class="list-unstyled">
-                            <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>Purchase Status : </strong>
+                            <li><strong>@lang('menu.purchases_status') : </strong>
                                 <span class="purchase_status">
                                     @if ($purchase->purchase_status == 1)
                                         Purchased
@@ -143,7 +143,7 @@
                         <tr>
                             <th scope="col">@lang('menu.description')</th>
                             <th scope="col">@lang('menu.quantity')</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
+                            <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
                             <th scope="col">Net Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
@@ -231,11 +231,11 @@
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <h6>CHECKED BY : </h6>
+                    <h6>@lang('menu.checked_by') : </h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6>APPROVED BY : </h6>
+                    <h6>@lang('menu.approved_by') : </h6>
                 </div>
             </div>
 

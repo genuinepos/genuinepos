@@ -353,12 +353,12 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Checked By</b>  </p>
+                        <p class="borderTop"><b>@lang('menu.checked_by')</b>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Approved By</b> </p>
+                        <p class="borderTop"><b>@lang('menu.approved_by')</b> </p>
                     </div>
                 </div>
                 <div class="col-md-3">

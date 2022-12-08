@@ -111,10 +111,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>CHECKED BY</strong></p>
+                    <p><strong>@lang('menu.checked_by')</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p><strong>APPROVED BY</strong></p>
+                    <p><strong>@lang('menu.approved_by')</strong></p>
                 </div>
             </div>
         </div>

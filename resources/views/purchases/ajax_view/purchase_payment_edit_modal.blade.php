@@ -58,7 +58,7 @@
                                         date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->purchase->date)) . ' ' . date($timeFormat, strtotime($payment->purchase->time)) 
                                     }}
                                 </span> </li>
-                                <li><strong>Purchase Status : </strong>
+                                <li><strong>@lang('menu.purchases_status') : </strong>
                                     @if ($payment->purchase->purchase_status == 1)
                                         <span class="text-success"><b>Received</b></span>
                                     @elseif($payment->purchase->purchase_status == 2){

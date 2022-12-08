@@ -115,7 +115,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Expense : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_expense') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
                     </td>

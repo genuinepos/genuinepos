@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-file-alt"></span>
-                    <h6>Memo</h6>
+                    <h6>@lang('menu.memo')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -27,7 +27,7 @@
                     <div class="card" id="add_form">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Add Memo </h6>
+                                <h6>@lang('menu.add_memo') </h6>
                             </div>
                         </div>
 
@@ -35,12 +35,12 @@
                             <form id="add_memo_form" action="{{ route('memos.store') }}">
                                 @csrf
                                 <div class="from-group">
-                                    <label><b>Heading :</b></label>
+                                    <label><b>@lang('menu.heading') :</b></label>
                                     <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
                                 </div>
 
                                 <div class="from-group mt-1">
-                                    <label><b>Description :</b></label>
+                                    <label><b>@lang('menu.description') :</b></label>
                                     <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                 </div>
 
@@ -68,12 +68,12 @@
                                 @csrf
                                 <input type="hidden" id="id" name="id">
                                 <div class="from-group">
-                                    <label><b>Heading :</b></label>
+                                    <label><b>@lang('menu.heading') :</b></label>
                                     <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
                                 </div>
 
                                 <div class="from-group mt-1">
-                                    <label><b>Description :</b></label>
+                                    <label><b>@lang('menu.description') :</b></label>
                                     <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                 </div>
 
@@ -105,8 +105,8 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>Heading</th>
-                                            <th>Description</th>
+                                            <th>@lang('menu.heading')</th>
+                                            <th>@lang('menu.description')</th>
                                             <th>Created Date</th>
                                             <th>@lang('menu.action')</th>
                                         </tr>

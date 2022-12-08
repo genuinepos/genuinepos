@@ -107,8 +107,8 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-3">
-            <label><strong>City :</strong>  </label>
-            <input type="text" name="city" class="form-control" placeholder="City"/>
+            <label><strong>@lang('menu.city') :</strong>  </label>
+            <input type="text" name="city" class="form-control" placeholder="@lang('menu.city')"/>
         </div>
 
         <div class="col-md-3">

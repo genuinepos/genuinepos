@@ -48,7 +48,7 @@
                                     @endif
 
                                     <div class="col-md-3">
-                                        <label><strong>Department :</strong></label>
+                                        <label><strong>@lang('menu.department') :</strong></label>
                                         <select name="department_id"
                                             class="form-control submit_able" id="department_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -103,7 +103,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.date')</th>
-                                    <th>Employee</th>
+                                    <th>{{ __('Employee') }}</th>
                                     <th>Clock IN - CLock Out</th>
                                     <th>Work Duration</th>
                                     <th>Shift</th>

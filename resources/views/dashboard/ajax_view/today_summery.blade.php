@@ -61,7 +61,7 @@
             </div>
 
             <div class="row text-center">
-                <p>Today Summery</p>
+                <p>{{ __('Today Summery') }}</p>
             </div>
         </div>
         <div class="row">
@@ -74,12 +74,12 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Payment :</th>
+                            <th class="text-start">{{ __('Total Payment') }} :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayment) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Purchase Due :</th>
+                            <th class="text-start">@lang('menu.total_purchase_due') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseDue) }}</td>
                         </tr>
 
@@ -89,38 +89,38 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Expense :</th>
+                            <th class="text-start">@lang('menu.total_expense') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalExpense) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Discount :</th>
+                            <th class="text-start">{{ __('Total Sale Discount') }} :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDiscount) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Transfer Shiping Charge :</th>
+                            <th class="text-start">{{ __('Transfer Shipping Charge') }} :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalTransferShippingCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Purchanse Shiping Charge :</th>
+                            <th class="text-start">{{ __('purchase Shipping Charge') }} :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($purchaseTotalShipmentCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Customer Reward :</th>
+                            <th class="text-start">@lang('menu.total_customer_reward') :</th>
                             <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Return :</th>
+                            <th class="text-start">@lang('menu.total_sale_return') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
                         @if ($addons->hrm == 1)
                             <tr>
-                                <th class="text-start">Total Payroll :</th>
+                                <th class="text-start">@lang('menu.total_payroll') :</th>
                                 <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
                             </tr>
                         @endif
@@ -149,7 +149,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Due :</th>
+                            <th class="text-start">@lang('menu.total_sale_due') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDue) }}</td>
                         </tr>
 
@@ -159,17 +159,17 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Purchase Return :</th>
+                            <th class="text-start">@lang('menu.total_purchase_return') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseReturn) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Shipping Charge :</th>
+                            <th class="text-start">{{ __('Total Sale Shipping Charge') }} :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesShipmentCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Round Off :</th>
+                            <th class="text-start">{{ __('Total Round Off') }} :</th>
                             <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
                     </tbody>
@@ -178,7 +178,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Today Daily Profit :</th>
+                            <th class="text-start">{{ __('Today Daily Profit') }} :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($todayProfit) }}</td>
                         </tr>
                     </tbody>
@@ -190,10 +190,10 @@
             <br><br>
             <div class="row">
                 <div class="col-6">
-                    <p><strong>CHECKED BY :</strong></p>
+                    <p><strong>@lang('menu.checked_by') :</strong></p>
                 </div>
                 <div class="col-6 text-end">
-                    <p><strong>APPROVED BY :</strong></p>
+                    <p><strong>@lang('menu.approved_by') :</strong></p>
                 </div>
             </div>
         </div>

@@ -36,7 +36,7 @@
                             </tr>
     
                             <tr>
-                                <th class="text-start"> Total Expense : </th>
+                                <th class="text-start"> @lang('menu.total_expense') : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }} 
                                     {{ App\Utils\Converter::format_in_bdt($totalExpense) }}

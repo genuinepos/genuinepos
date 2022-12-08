@@ -2,9 +2,9 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-12">
-            <label><b>Users :</b></label>
+            <label><b>@lang('menu.users') :</b></label>
             <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
-                <option disabled value=""> Select Please </option>
+                <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
                     @if ($user->id != auth()->user()->id)
                         <option @foreach ($memo->memo_users as $mamo_user)
@@ -23,7 +23,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success">Update</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
             </div>
         </div>
     </div>

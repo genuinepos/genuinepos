@@ -444,11 +444,11 @@
         <br>
         <div class="row">
             <div class="col-md-6">
-                <h6>CHECKED BY : </h6>
+                <h6>@lang('menu.checked_by') : </h6>
             </div>
 
             <div class="col-md-6 text-end">
-                <h6>APPROVED BY : </h6>
+                <h6>@lang('menu.approved_by') : </h6>
             </div>
         </div>
 

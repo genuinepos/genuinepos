@@ -22,7 +22,7 @@
 
                             @if(auth()->user()->can('leave_type'))
                                 <li>
-                                    <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                                    <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>{{ __('Leave Types') }}</b></a>
                                 </li>
                             @endif
 
@@ -110,7 +110,7 @@
 
                                 <div class="form_element rounded m-0 users_data">
                                     <div class="section-header d-flex justify-content-between align-items-center px-3">
-                                        <h6><span class="fas fa-users"></span>Users</h6>
+                                        <h6><span class="fas fa-users"></span>@lang('menu.users')</h6>
                                         <span class="badge bg-secondary text-white">
                                             <div id="small-badge">Total: 4324</div>
                                         </span>
@@ -121,13 +121,13 @@
                                                 <table id="users_table" class="display data__table data_tble stock_table compact" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th>Department</th>
+                                                            <th>@lang('menu.department')</th>
                                                             <th>Total</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Branch Manger</td>
+                                                            <td>{{ __('Branch Manger') }}</td>
                                                             <td>125</td>
                                                         </tr>
                                                     </tbody>
@@ -149,7 +149,7 @@
                                     <div class="section-header d-flex justify-content-between align-items-center px-3">
                                         <h6>
                                             <span class="fas fa-user-check"></span>
-                                            Today's Attendance
+                                            {{ __('Todays Attendance') }}
                                         </h6>
                                     </div>
 
@@ -160,9 +160,9 @@
                                                     width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th>Employee</th>
-                                                            <th>Clock-in Time</th>
-                                                            <th>Clock-out Time</th>
+                                                            <th>{{ __('Employee') }}</th>
+                                                            <th>{{ __('Clock-in Time') }}</th>
+                                                            <th>{{ __('Clock-out Time') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -189,7 +189,7 @@
                                     <div class="section-header d-flex justify-content-between align-items-center px-3">
                                         <h6>
                                             <span class="far fa-file-alt"></span>
-                                            Leave Applications
+                                            {{ __('Leave Applications') }}
                                         </h6>
                                     </div>
                                     <div class="widget_content">
@@ -212,13 +212,13 @@
                                     <div class="section-header d-flex justify-content-between align-items-center px-3">
                                         <h6>
                                             <span class="far fa-file-alt"></span>
-                                            Holidays
+                                            {{ __('Holidays') }}
                                         </h6>
                                     </div>
                                     <div class="widget_content">
                                         <div class="px-3 pt-2 pb-2">
                                             <div class="px-1">
-                                                <span><strong>Upcoming Holidays:</strong></span>
+                                                <span><strong>{{ __('Upcoming Holidays') }}:</strong></span>
                                             </div>
                                             <ul class="list-group list-group-flush upcoming_holiday_list">
                                                 <li class="list-group-item list-group-item-warning">A simple warning list group item</li>

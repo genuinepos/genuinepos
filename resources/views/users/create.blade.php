@@ -464,7 +464,7 @@
                                 <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Department :</b> </label>
+                                            <label class="col-4"><b>@lang('menu.department') :</b> </label>
                                             <div class="col-8">
                                                 <select name="department_id" class="form-control">
                                                     <option value="">Select Department</option>

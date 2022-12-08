@@ -27,7 +27,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"><b>File To Import :</b> </label>
+                                            <label for="inputEmail3" class="col-4"><b>>@lang('menu.file_to_import') :</b> </label>
                                             <div class="col-8">
                                                 <input type="file" name="import_file" class="form-control">
                                                 <span class="error" style="color: red;">
@@ -40,7 +40,7 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <div class="col-8">
-                                                <button class="btn btn-sm btn-primary">Upload</button>
+                                                <button class="btn btn-sm btn-primary">@lang('menu.upload')</button>
                                             </div>
                                         </div>
                                     </div>
@@ -51,7 +51,7 @@
                                         <div class="input-group">
                                             <label for="inputEmail3" class="col-4"><b>Download Simple :</b> </label>
                                             <div class="col-8">
-                                                <a href="{{ asset('import_template/product_import_template.csv') }}" class="btn btn-sm btn-success" download>Download Template File, Click Here</a>
+                                                <a href="{{ asset('import_template/product_import_template.csv') }}" class="btn btn-sm btn-success" download>@lang('menu.download_template_click')</a>
                                             </div>
                                         </div>
                                     </div>
@@ -63,19 +63,19 @@
                     <div class="col-12">
                         <div class="form_element rounded m-0">
                             <div class="element-body">
-                                <div class="heading"><h4>Instructions</h4></div>
+                                <div class="heading"><h4>@lang('menu.instructions')</h4></div>
                                 <div class="top_note">
-                                    <p class="p-0 m-0"><b>Follow the instructions carefully before importing the file.</b></p>
-                                    <p>The columns of the file should be in the following order.</p>
+                                    <p class="p-0 m-0"><b>@lang('menu.follow_instruct_import').</b></p>
+                                    <p>@lang('menu.column_follow_order').</p>
                                 </div>
 
                                 <div class="instruction_table">
                                     <table class="table table-sm modal-table table-striped">
                                         <thead>
                                             <tr >
-                                                <th class="text-start">Column Number</th>
-                                                <th class="text-start">Column Name</th>
-                                                <th class="text-start">Instruction</th>
+                                                <th class="text-start">@lang('menu.column_number')</th>
+                                                <th class="text-start">@lang('menu.column_name')</th>
+                                                <th class="text-start">@lang('menu.instruction')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -87,7 +87,7 @@
 
                                             <tr>
                                                 <td class="text-start">2</td>
-                                                <td class="text-start"> @lang('menu.product_code')(SKU) (Optional)</td>
+                                                <td class="text-start"> @lang('menu.product_code')(SKU) (@lang('menu.optional'))</td>
                                                 <td class="text-start">@lang('menu.product_code')(SKU). If blank an SKU will be automatically generated</td>
                                             </tr>
 
@@ -106,7 +106,7 @@
 
                                             <tr>
                                                 <td class="text-start">5</td>
-                                                <td class="text-start"> Child category (Optional)</td>
+                                                <td class="text-start"> Child category (@lang('menu.optional'))</td>
                                                 <td class="text-start"> <b>Name of the Sub-Category</b> <br>
                                                     (<small>If not found new sub-category with the given name under the
                                                         parent Category will be created</small>)</td>
@@ -114,7 +114,7 @@
 
                                             <tr>
                                                 <td class="text-start">6</td>
-                                                <td class="text-start">Brand (Optional)</td>
+                                                <td class="text-start">Brand (@lang('menu.optional'))</td>
                                                 <td class="text-start"> <b>Name of the brand</b> <br>
                                                     (<small>If not found new brand with the given name will be created</small>)</td>
                                             </tr>
@@ -128,13 +128,13 @@
 
                                             <tr>
                                                 <td class="text-start">8</td>
-                                                <td class="text-start">Alert quantity (Optional)</td>
+                                                <td class="text-start">Alert quantity (@lang('menu.optional'))</td>
                                                 <td class="text-start"> Alert quantity</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">9</td>
-                                                <td class="text-start">Expiry Date (Optional)</td>
+                                                <td class="text-start">Expiry Date (@lang('menu.optional'))</td>
                                                 <td class="text-start">Stock Expiry Date <br>
                                                     (<span><b>Format: mm-dd-yyyy; Ex: 11-25-2018</b> </span>)
                                                 </td>
@@ -148,13 +148,13 @@
 
                                             <tr>
                                                 <td class="text-start">11</td>
-                                                <td class="text-start">@lang('menu.description') (Optional)</td>
+                                                <td class="text-start">@lang('menu.description') (@lang('menu.optional'))</td>
                                                 <td class="text-start">Description of product </td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">12</td>
-                                                <td class="text-start">Tax (Optional)</td>
+                                                <td class="text-start">Tax (@lang('menu.optional'))</td>
                                                 <td class="text-start">Only in numbers</td>
                                             </tr>
 
@@ -166,13 +166,13 @@
 
                                             <tr>
                                                 <td class="text-start">13</td>
-                                                <td class="text-start">UNIT COST Including Tax (Optional)</td>
+                                                <td class="text-start">UNIT COST Including Tax (@lang('menu.optional'))</td>
                                                 <td class="text-start">Only in numbers</td>
                                             </tr>
 
                                             <tr>
                                                 <td class="text-start">14</td>
-                                                <td class="text-start">Profit Margin % (Optional)</td>
+                                                <td class="text-start">Profit Margin % (@lang('menu.optional'))</td>
                                                 <td class="text-start">
                                                     Profit Margin (Only in numbers)
                                                 </td>
@@ -188,7 +188,7 @@
 
                                             <tr>
                                                 <td class="text-start">16</td>
-                                                <td class="text-start">Opening stock Branch (Optional) <br>
+                                                <td class="text-start">Opening stock Branch (@lang('menu.optional')) <br>
                                                     (<small>If blank first Branch will be used</small>)  </td>
                                                 <td class="text-start">
                                                     Only Branch Code

@@ -56,8 +56,8 @@
                 <thead>
                     <tr>
                         <th class="text-start">@lang('menu.date')</th>
-                        <th class="text-start">Employee</th>
-                        <th class="text-start">Department</th>
+                        <th class="text-start">{{ __('Employee') }}</th>
+                        <th class="text-start">@lang('menu.department')</th>
                         <th class="text-start">Month/Year</th>
                         <th class="text-start">@lang('menu.reference_no')</th>
                         <th class="text-start">Gross Amount</th>

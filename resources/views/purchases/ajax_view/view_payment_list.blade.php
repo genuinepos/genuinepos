@@ -30,7 +30,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> P.Invoice ID : </strong>{{ $purchase->invoice_id }}
+                    <li><strong> {{ __('P.Invoice ID') }} : </strong>{{ $purchase->invoice_id }}
                     </li>
                     <li><strong>Purchase Form : </strong>
                         {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : 'Head Office' }}
@@ -59,7 +59,7 @@
                         {{ $purchase->due }}
                     </li>
                     <li><strong>@lang('menu.date') : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
-                    <li><strong>Purchase Status : </strong>
+                    <li><strong>@lang('menu.purchases_status') : </strong>
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>Received</b></span>
                         @elseif($purchase->purchase_status == 2){

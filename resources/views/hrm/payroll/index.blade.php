@@ -48,7 +48,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>Users/Employees :</strong></label>
+                                        <label><strong>@lang('menu.users')/Employees :</strong></label>
                                         <select name="user_id"
                                             class="form-control submit_able" id="user_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -111,8 +111,8 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Employee</th>
-                                    <th>Department</th>
+                                    <th>{{ __('Employee') }}</th>
+                                    <th>@lang('menu.department')</th>
                                     <th>Designation</th>
                                     <th>Month/Year</th>
                                     <th>Referance No</th>
@@ -149,7 +149,7 @@
                     <form  action="{{ route('hrm.payroll.create') }}" method="get">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>Department :</b></label>
+                                <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
                                 <select  class="form-control employee" required="" id="department_id">
                                     <option> Select Employee </option>
                                     @foreach($departments as $dep)
@@ -233,7 +233,7 @@
         <div class="modal-dialog col-50-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Details</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
 

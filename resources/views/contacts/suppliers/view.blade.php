@@ -27,24 +27,24 @@
                 <div class="tab_list_area">
                     <div class="btn-group">
                         <a id="tab_btn" data-show="ledger" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                            <i class="fas fa-scroll"></i> Ledger
+                            <i class="fas fa-scroll"></i> @lang('menu.ledger')
                         </a>
 
                         <a id="tab_btn" data-show="contract_info_area" class="btn btn-sm btn-primary tab_btn" href="#">
-                            <i class="fas fa-info-circle"></i> Contract Info
+                            <i class="fas fa-info-circle"></i> {{ __('Contract Info') }}
                         </a>
 
                         <a id="tab_btn" data-show="purchases" class="btn btn-sm btn-primary purchases tab_btn" href="#">
-                            <i class="fas fa-shopping-bag"></i> Purchases
+                            <i class="fas fa-shopping-bag"></i>@lang('menu.purchase')
                         </a>
 
                         <a id="tab_btn" data-show="uncompleted_orders" class="btn btn-sm btn-primary uncompleted_orders tab_btn" href="#">
-                            <i class="fas fa-shopping-bag"></i> Purchase Orders
+                            <i class="fas fa-shopping-bag"></i> @lang('menu.purchase_orders')
                         </a>
 
                         @if(auth()->user()->can('purchase_payment'))
                             <a id="tab_btn" data-show="payments" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="far fa-money-bill-alt"></i> Payments
+                                <i class="far fa-money-bill-alt"></i> @lang('menu.payments')
                             </a>
                         @endif
                     </div>
@@ -59,7 +59,7 @@
                         <div class="col-sm-12 col-lg-8">
                             <div class="account_summary_area">
                                 <div class="heading">
-                                    <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                    <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                 </div>
 
                                 <div class="account_summary_table">
@@ -145,7 +145,7 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.particulars')</th>
                                                 <th>@lang('menu.business_location')</th>
-                                                <th>Voucher/P.Invoice</th>
+                                                <th>@lang('menu.voucher')/@lang('menu.p_invoice')</th>
                                                 <th>@lang('menu.debit')</th>
                                                 <th>@lang('menu.credit')</th>
                                                 <th>@lang('menu.running_balance')</th>
@@ -171,9 +171,9 @@
                     <div class="row">
                         <div class="col-md-3">
                             <ul class="list-unstyled"><br>
-                                <li><strong>Supplier Name :</strong></li>
+                                <li><strong>@lang('menu.supplier_name') :</strong></li>
                                 <li>{{ $supplier->name }}</li><br>
-                                <li><strong><i class="fas fa-map-marker-alt"></i> Address</strong></li>
+                                <li><strong><i class="fas fa-map-marker-alt"></i> @lang('menu.address')</strong></li>
                                 <li>{{ $supplier->address }}</li><br>
                                 <li><strong><i class="fas fa-briefcase"></i> @lang('menu.business_name')</strong></li>
                                 <li>{{ $supplier->business_name }}</li>
@@ -182,14 +182,14 @@
 
                         <div class="col-md-3"><br>
                             <ul class="list-unstyled">
-                                <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
+                                <li><strong><i class="fas fa-phone-square"></i> @lang('menu.phone')</strong></li>
                                 <li>{{ $supplier->phone }}</li>
                             </ul>
                         </div>
 
                         <div class="col-md-3"><br>
                             <ul class="list-unstyled">
-                                <li><strong><i class="fas fa-info"></i> Tex Number</strong></li>
+                                <li><strong><i class="fas fa-info"></i>@lang('menu.tax_number')</strong></li>
                                 <li><span class="tax_number">{{ $supplier->tax_number }}</span></li>
                             </ul>
                         </div>
@@ -224,7 +224,7 @@
                                 </li>
 
                                 <li>
-                                    <strong> Total Purchase Due :</strong>
+                                    <strong> @lang('menu.total_purchase_due') :</strong>
                                 </li>
 
                                 <li>
@@ -246,7 +246,7 @@
                         <div class="col-sm-12 col-lg-8">
                             <div class="account_summary_area">
                                 <div class="heading">
-                                    <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                    <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                 </div>
 
                                 <div class="account_summary_table">
@@ -324,14 +324,14 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.reference_id')</th>
                                                 <th>@lang('menu.purchase_from')</th>
-                                                <th>Supplier</th>
-                                                <th>Purchase Status</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>@lang('menu.purchases_status')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>Grand Total</th>
+                                                <th>@lang('menu.grand_total')</th>
                                                 <th>@lang('menu.paid')</th>
                                                 <th>Payment Due</th>
                                                 <th>Return Amount</th>
-                                                <th>Return Due</th>
+                                                <th>@lang('menu.return_due')</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
@@ -368,7 +368,7 @@
                         <div class="col-sm-12 col-lg-8">
                             <div class="account_summary_area">
                                 <div class="heading">
-                                    <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                    <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                 </div>
 
                                 <div class="account_summary_table">
@@ -444,15 +444,15 @@
                                             <tr >
                                                 <th class="text-start">@lang('menu.action')</th>
                                                 <th class="text-start">@lang('menu.date')</th>
-                                                <th class="text-start">Order ID</th>
+                                                <th class="text-start">@lang('menu.order_id')</th>
                                                 <th class="text-start">@lang('menu.purchase_from')</th>
-                                                <th class="text-start">Supplier</th>
+                                                <th class="text-start">@lang('menu.supplier')</th>
                                                 <th class="text-start">@lang('menu.created_by')</th>
-                                                <th class="text-start">Receiving Status</th>
-                                                <th class="text-end">Ordered Qty</th>
-                                                <th class="text-end">Received Qty</th>
-                                                <th class="text-end">Pending Qty</th>
-                                                <th class="text-end">Grand Total</th>
+                                                <th class="text-start">@lang('menu.receiving_status')</th>
+                                                <th class="text-end">@lang('menu.ordered_qty')</th>
+                                                <th class="text-end">@lang('menu.received_qty')</th>
+                                                <th class="text-end">@lang('menu.pending_qty')</th>
+                                                <th class="text-end">@lang('menu.grand_total')</th>
                                                 <th class="text-end">@lang('menu.paid')</th>
                                                 <th class="text-end">@lang('menu.due')</th>
                                                 <th class="text-end">@lang('menu.payment_status')</th>
@@ -494,7 +494,7 @@
                             <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading">
-                                        <h5 class="py-1 pl-1 text-center">Filter Area</h5>
+                                        <h5 class="py-1 pl-1 text-center">@lang('menu.filter_area')</h5>
                                     </div>
 
                                     <div class="row">
@@ -565,13 +565,13 @@
                                         <div class="col-lg-2 col-md-3">
                                             <div class="row mt-3">
                                                 <div class="col-md-12">
-                                                    <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> PAY</a>
+                                                    <a href="{{ route('suppliers.payment', $supplier->id) }}" id="add_payment" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i>{{ __('pay') }}</a>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-2">
                                                 <div class="col-md-12">
-                                                    <a class="btn btn-sm btn-success return_payment_btn" id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i>Refund </a>
+                                                    <a class="btn btn-sm btn-success return_payment_btn" id="add_payment" href="{{ route('suppliers.return.payment', $supplier->id) }}"><i class="far fa-money-bill-alt text-white"></i>@lang('menu.refund') </a>
                                                 </div>
                                             </div>
 
@@ -642,7 +642,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="payment_list_modal_body"></div>
@@ -659,7 +659,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">

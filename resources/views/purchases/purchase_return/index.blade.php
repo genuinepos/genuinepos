@@ -112,7 +112,7 @@
                                                 <th>@lang('menu.date')</th>
                                                 <th>Return Invoice ID</th>
                                                 <th>Parent Purchase</th>
-                                                <th>Supplier Name</th>
+                                                <th>@lang('menu.supplier_name')</th>
                                                 <th>Location</th>
                                                 <th>Return From</th>
                                                 <th>@lang('menu.payment_status')</th>
@@ -147,7 +147,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="payment_list_modal_body">
@@ -170,7 +170,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
                             class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>

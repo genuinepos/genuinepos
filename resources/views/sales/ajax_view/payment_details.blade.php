@@ -38,7 +38,7 @@
                     {{ json_decode($generalSettings->business, true)['address'] }}
                 @endif
             </p>
-            <h6 style="margin-top: 10px;"><b>Payment Details</b></h6>
+            <h6 style="margin-top: 10px;"><b>@lang('menu.payment_details')</b></h6>
         </div>
     </div>
 

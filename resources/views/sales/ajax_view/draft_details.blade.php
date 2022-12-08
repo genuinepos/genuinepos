@@ -190,7 +190,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Grand Total</th>
+                            <th class="text-start">@lang('menu.grand_total')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                 <span class="total_payable_amount">
                                     {{ $draft->total_payable_amount }}
@@ -489,12 +489,12 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Checked By</b>  </p>
+                        <p class="borderTop"><b>@lang('menu.checked_by')</b>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Approved By</b> </p>
+                        <p class="borderTop"><b>@lang('menu.approved_by')</b> </p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -847,12 +847,12 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Checked By</b>  </p>
+                        <p class="borderTop"><b>@lang('menu.checked_by')</b>  </p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><b>Approved By</b> </p>
+                        <p class="borderTop"><b>@lang('menu.approved_by')</b> </p>
                     </div>
                 </div>
                 <div class="col-md-3">

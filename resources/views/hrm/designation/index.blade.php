@@ -38,7 +38,7 @@
                                 <tr>
                                     <th>@lang('menu.sl')</th>
                                     <th>@lang('menu.name')</th>
-                                    <th>Description</th>
+                                    <th>@lang('menu.description')</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

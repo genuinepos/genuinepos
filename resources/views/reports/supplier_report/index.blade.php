@@ -65,7 +65,7 @@
                                                 <table class="display data_tbl data__table">
                                                     <thead>
                                                         <tr class="text-start">
-                                                            <th>Supplier</th>
+                                                            <th>@lang('menu.supplier')</th>
                                                             <th>Opening Balance Due</th>
                                                             <th>@lang('menu.total_purchase')</th>
                                                             <th>@lang('menu.total_paid')</th>

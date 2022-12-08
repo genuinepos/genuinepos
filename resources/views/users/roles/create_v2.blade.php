@@ -77,7 +77,7 @@
 
                                             <p class="checkbox_input_wrap mt-1">
                                                 <input type="checkbox" name="customer_edit" class=" customers sales_app_permission super_select_all">
-                                                Edit customer
+                                                @lang('menu.edit_customer')
                                             </p>
 
 
@@ -2074,7 +2074,7 @@
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="today_summery" class="others others_permission super_select_all">
-                                        Today summery
+                                        {{ __('Today Summery') }}
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">

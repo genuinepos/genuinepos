@@ -10,5 +10,5 @@
     <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
         <span><i class="fas fa-plus-square text-white"></i></span>
     </a>
-    <p>Add Shortcut</p>
+    <p>@lang('menu.add_shortcut')</p>
 </div>

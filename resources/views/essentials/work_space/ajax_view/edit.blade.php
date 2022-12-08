@@ -9,7 +9,7 @@
         <div class="col-md-6">
             <label><b>Assigned To :</b></label>
             <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
-                <option disabled value=""> Select Please </option>
+                <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
                     <option
                         @foreach ($ws->ws_users as $ws_user)

@@ -89,7 +89,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 

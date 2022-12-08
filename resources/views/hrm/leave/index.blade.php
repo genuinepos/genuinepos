@@ -40,7 +40,7 @@
                                 <tr>
                                     <th>@lang('menu.serial')</th>
                                     <th>@lang('menu.type')</th>
-                                    <th>Max leave</th>
+                                    <th>{{ __('Max leave') }}</th>
                                     <th>Leave Count Interval</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
@@ -75,7 +75,7 @@
                     <form id="add_leave_form" action="{{ route('hrm.leave.store') }}">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>Department :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.department') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="department_id" id="department_id">
                                     <option value="">Select Department</option>
                                     @foreach ($departments as $dep)
@@ -158,7 +158,7 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>Department :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.department') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="department_id" id="e_department_id">
                                     <option value="">Select Department</option>
                                     @foreach ($departments as $dep)

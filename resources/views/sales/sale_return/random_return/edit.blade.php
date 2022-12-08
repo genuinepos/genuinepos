@@ -510,7 +510,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="btn btn-sm btn-success">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
                         </div>
                     </form>
                 </div>

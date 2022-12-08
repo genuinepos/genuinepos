@@ -14,7 +14,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Purchase Orders</h5>
+                                <h5>@lang('menu.purchase_orders')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -60,7 +60,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Purchase Status :</strong></label>
+                                                    <label><strong>@lang('menu.purchases_status') :</strong></label>
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able">
                                                         <option value="">@lang('menu.all')</option>
@@ -129,13 +129,13 @@
                                             <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>P.Invoice ID</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.purchase_from')</th>
-                                                <th>Supplier</th>
+                                                <th>@lang('menu.supplier')</th>
                                                 <th>@lang('menu.created_by')</th>
-                                                <th>Receiving Status</th>
+                                                <th>@lang('menu.receiving_status')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>Grand Total({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.grand_total')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
@@ -172,7 +172,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="payment_list_modal_body">
@@ -194,7 +194,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
                                 class="payment_invoice"></span>)</h6>
                             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>

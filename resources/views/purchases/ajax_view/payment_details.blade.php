@@ -28,7 +28,7 @@
                     <b>@lang('menu.email')</b> : {{ json_decode($generalSettings->business, true)['email'] }} <br>
                 @endif
             </h6>
-            <h6>Payment Details</h6>
+            <h6>@lang('menu.payment_details')</h6>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
                 {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
             @endif
         </h6>
-        <h6 class="text-navy-blue"><b>P.Invoice ID :</b> {{ $payment->purchase->invoice_id }}</h6>
+        <h6 class="text-navy-blue"><b>{{ __('P.Invoice ID') }} :</b> {{ $payment->purchase->invoice_id }}</h6>
         <h6 class="text-navy-blue"><b>@lang('menu.supplier')</b> {{ $payment->purchase->supplier->name }}</h6>
     </div>
 

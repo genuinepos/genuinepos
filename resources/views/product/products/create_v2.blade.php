@@ -254,7 +254,7 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" name="product_cost" class="form-control"
                                                         autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
@@ -275,7 +275,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
                                                         <span class="error error_product_cost_with_tax"></span>
@@ -560,7 +560,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.product')</th>
-                                                <th>Unit Cost</th>
+                                                <th>@lang('menu.unit_cost')</th>
                                                 <th>Unit Price</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>

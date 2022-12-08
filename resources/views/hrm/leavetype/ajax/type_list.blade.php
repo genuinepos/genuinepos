@@ -3,7 +3,7 @@
         <tr>
             <th class="text-start">@lang('menu.serial')</th>
             <th class="text-start">@lang('menu.type')</th>
-            <th class="text-start">Max leave</th>
+            <th class="text-start">{{ __('Max leave') }}</th>
             <th class="text-start">Leave Count Interval</th>
             <th class="text-start">@lang('menu.action')</th>
         </tr>

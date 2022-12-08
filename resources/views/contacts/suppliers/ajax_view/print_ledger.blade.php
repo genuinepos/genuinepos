@@ -47,7 +47,7 @@
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
         @endif
-        <p><b>Supplier Ledger </b></p>
+        <p><b>@lang('menu.supplier_ledger') </b></p>
     </div>
 </div>
 
@@ -74,7 +74,7 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.particulars')</th>
-                    <th class="text-start">Voucher/P.Invoice</th>
+                    <th class="text-start">@lang('menu.voucher')/@lang('menu.p_invoice')</th>
                     <th class="text-end">@lang('menu.debit')</th>
                     <th class="text-end">@lang('menu.credit')</th>
                     <th class="text-end">@lang('menu.running_balance')</th>

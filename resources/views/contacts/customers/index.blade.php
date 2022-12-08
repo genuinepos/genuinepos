@@ -63,7 +63,7 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary">
                             <i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)
                         </a>
-                        <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Import Customers</a>
+                        <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> Print All</a>
 
                     </div>
@@ -89,7 +89,7 @@
                                     <th>@lang('menu.total_paid')</th>
                                     <th>{{ __('Sale Due') }}</th>
                                     <th>@lang('menu.total_return')</th>
-                                    <th>Return Due</th>
+                                    <th>@lang('menu.return_due')</th>
                                     <th>@lang('menu.status')</th>
                                 </tr>
                             </thead>
@@ -123,7 +123,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -253,8 +253,8 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>City :</strong> </label>
-                                <input type="text" name="city" class="form-control" placeholder="City" />
+                                <label><strong>@lang('menu.city') :</strong> </label>
+                                <input type="text" name="city" class="form-control" placeholder="@lang('menu.city')" />
                             </div>
 
                             <div class="col-md-3">
@@ -303,7 +303,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Customer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_customer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -318,7 +318,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Receipt Voucher List</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_receipt_voucher')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -334,7 +334,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Generate Money Receipt Voucher</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.generate_money_receipt')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

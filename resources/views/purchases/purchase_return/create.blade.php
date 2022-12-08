@@ -105,7 +105,7 @@
                                                     <tr>
                                                         <th>Product Name</th>
                                                         <th></th>
-                                                        <th>Unit Cost</th>
+                                                        <th>@lang('menu.unit_cost')</th>
                                                         <th>Lot Number</th>
                                                         <th>Purchase Quantity</th>
                                                         <th>Return Quantity</th>

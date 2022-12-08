@@ -119,7 +119,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start"> Total Expense : </th>
+                                                        <th class="text-start"> @lang('menu.total_expense') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
@@ -134,7 +134,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start"> Total customer reward : </th>
+                                                        <th class="text-start"> @lang('menu.total_customer_reward') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 

@@ -370,12 +370,12 @@
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Checked By</strong></p>
+                        <p class="borderTop"><strong>@lang('menu.checked_by')</strong></p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="details_area text-center">
-                        <p class="borderTop"><strong>Approved By</strong></p>
+                        <p class="borderTop"><strong>@lang('menu.approved_by')</strong></p>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -536,7 +536,7 @@
                                 <th class="text-start">@lang('menu.description')</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-center">Price</th>
-                                <th class="text-end">Total</th>
+                                <th class="text-end">@lang('menu.total')</th>
                             </tr>
                         </thead>
                         <thead class="d-body">

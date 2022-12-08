@@ -37,7 +37,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Total Returnable/Refundable Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>{{ __('Total Returnable/Refundable Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                     <td class="text-end total_purchase_return_due" id="ledger_total_purchase_return_due"></td>
                 </tr>
             </tbody>

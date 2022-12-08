@@ -53,7 +53,7 @@
                 <thead>
                     <tr>
                         <th class="text-start">@lang('menu.date')</th>
-                        <th class="text-start">Employee</th>
+                        <th class="text-start">{{ __('Employee') }}</th>
                         <th class="text-start">@lang('menu.payment_voucher_no')</th>
                         <th class="text-start">@lang('menu.paid')</th>
                         <th class="text-start">Pay For(Payroll)</th>

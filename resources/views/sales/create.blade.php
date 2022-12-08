@@ -623,7 +623,7 @@
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="btn btn-sm btn-success">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
                         </div>
                     </form>
                 </div>
@@ -682,7 +682,7 @@
                                                     <th class="text-start">@lang('menu.sl')</th>
                                                     <th class="text-start">@lang('menu.invoice_id')</th>
                                                     <th class="text-start">@lang('menu.customer')</th>
-                                                    <th class="text-start">Total</th>
+                                                    <th class="text-start">@lang('menu.total')</th>
                                                     <th class="text-start">@lang('menu.action')</th>
                                                 </tr>
                                             </thead>

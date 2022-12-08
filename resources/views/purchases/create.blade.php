@@ -84,7 +84,7 @@
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.invoice_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID" autocomplete="off">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.purchase_invoice_id')" autocomplete="off">
                                             <span class="error error_invoice_id"></span>
                                         </div>
                                     </div>
@@ -206,9 +206,9 @@
                                                 <tr>
                                                     <th>@lang('menu.product')</th>
                                                     <th>@lang('menu.quantity')</th>
-                                                    <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
+                                                    <th>@lang('menu.unit_cost')(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
                                                     <th>Discount</th>
-                                                    <th>Unit Cost(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
+                                                    <th>@lang('menu.unit_cost')(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                     <th>SubTotal (BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                     <th>Unit Tax</th>
                                                     <th>Net Unit Cost</th>

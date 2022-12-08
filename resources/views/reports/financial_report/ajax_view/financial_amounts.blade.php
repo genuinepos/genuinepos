@@ -46,7 +46,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Purchase Due :</em>
+                                <em>@lang('menu.total_purchase_due') :</em>
                             </td>
 
                             <td class="text-end">
@@ -56,7 +56,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Purchase Return :</em>
+                                <em>@lang('menu.total_purchase_return') :</em>
                             </td>
 
                             <td class="text-end">
@@ -92,7 +92,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Sale Due :</em>
+                                <em>@lang('menu.total_sale_due') :</em>
                             </td>
 
                             <td class="text-end">
@@ -102,7 +102,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Sale Return :</em>
+                                <em>@lang('menu.total_sale_return') :</em>
                             </td>
 
                             <td class="text-end">

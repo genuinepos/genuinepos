@@ -1819,7 +1819,6 @@ return [
   'receipt_loan' => 'Receipt Load',
   'loan_liabilities' => 'Load Liabilities',
   'payments' => 'Payments',
-  'filter_area' => 'Filter Area',
   'debit_ac' => 'Debit A/c',
   'curr_due' => 'Curr. Due',
   'additional_expense_details' => 'Additional Expense Details',
@@ -2002,4 +2001,6 @@ return [
   'vehicles' => 'Vehicles',
   'purchase_ac' => 'Purchase A/C',
   'sale_ac' => 'Sale A/C',
+  'version' => 'Version',
+  'receive' => 'Receive',
 ];

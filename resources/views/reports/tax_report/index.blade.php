@@ -152,7 +152,7 @@
                                                                     <tr>
                                                                         <th>@lang('menu.date')</th>
                                                                         <th>@lang('menu.invoice_id')</th>
-                                                                        <th>Supplier</th>
+                                                                        <th>@lang('menu.supplier')</th>
                                                                         <th>@lang('menu.tax_number')</th>
                                                                         <th>Discount</th>
                                                                         <th>Tax Percent</th>

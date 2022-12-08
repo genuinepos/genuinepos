@@ -57,7 +57,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Purchase Status :</strong></label>
+                                                    <label><strong>@lang('menu.purchases_status') :</strong></label>
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able">
                                                         <option value="">@lang('menu.all')</option>
@@ -140,16 +140,16 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>P.Invoice ID</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.purchase_from')</th>
-                                                <th>Supplier</th>
+                                                <th>@lang('menu.supplier')</th>
                                                 <th>@lang('menu.created_by')</th>
-                                                <th>Purchase Status</th>
+                                                <th>@lang('menu.purchases_status')</th>
                                                 <th>Total Item</th>
                                                 <th>Net Total Amt.</th>
                                                 <th>Order Discount</th>
                                                 <th>Order Tax</th>
-                                                <th>Grand Total</th>
+                                                <th>@lang('menu.grand_total')</th>
                                                 <th>@lang('menu.paid')</th>
                                                 <th>Return Amount</th>
                                                 <th>@lang('menu.due')</th>

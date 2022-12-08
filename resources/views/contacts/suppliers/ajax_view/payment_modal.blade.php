@@ -17,7 +17,7 @@
 <div class="modal-dialog five-col-modal" role="document" z-index="-1">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_payment') <span class="type_name"></span></h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 
@@ -98,7 +98,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_purchase_table_area" value="purchases"> &nbsp; <b>Payment Against Specific Purchase</b>
+                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_purchase_table_area" value="purchases"> &nbsp; <b>@lang('menu.payment_against_specific_purchase')</b>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -110,7 +110,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_orders_table_area"  value="purchase_orders"> &nbsp; <b> Payment Against Specific Purchase Orderes</b> </p>
+                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_orders_table_area"  value="purchase_orders"> &nbsp; <b>@lang('menu.payment_against_specific_purchase') @lang('menu.order')</b> </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,10 +139,10 @@
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">@lang('menu.sl')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
-                                                                    <th class="text-start text-white">Order/@lang('menu.invoice_id')</th>
+                                                                    <th class="text-start text-white">@lang('menu.order')/@lang('menu.invoice_id')</th>
                                                                     <th class="text-start text-white">@lang('menu.status')</th>
                                                                     <th class="text-start text-white">@lang('menu.pay_status')</th>
-                                                                    <th class="text-start text-white">Purchased Amt.</th>
+                                                                    <th class="text-start text-white">{{ __('Purchased Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
@@ -219,7 +219,7 @@
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
                                                                     <th class="text-start text-white">@lang('menu.invoice_id')</th>
                                                                     <th class="text-start text-white">@lang('menu.payment_status')</th>
-                                                                    <th class="text-start text-white">Purchased Amt.</th>
+                                                                    <th class="text-start text-white">{{ __('Purchased Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
@@ -282,9 +282,9 @@
                                                                 <tr class="bg-primary">
                                                                     <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
-                                                                    <th class="text-start text-white">Order ID</th>
+                                                                    <th class="text-start text-white">@lang('menu.order_id')</th>
                                                                     <th class="text-start text-white">@lang('menu.payment_status')</th>
-                                                                    <th class="text-start text-white">Purchased Amt.</th>
+                                                                    <th class="text-start text-white">{{ __('Purchased Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
@@ -328,7 +328,7 @@
                                         <div class="total_amount_area mt-1">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p><strong>Purchase Invoice Refundable : </strong> <span class="text-danger">{{ App\Utils\Converter::format_in_bdt($totalInvoiceReturnDue->sum('total_return_due')) }}</span> </p>
+                                                    <p><strong>@lang('menu.purchase_invoice_refundable') </strong> <span class="text-danger">{{ App\Utils\Converter::format_in_bdt($totalInvoiceReturnDue->sum('total_return_due')) }}</span> </p>
                                                     <input type="hidden" name="pi_refundable" id="pi_refundable" value="{{ $totalInvoiceReturnDue->sum('total_return_due') }}">
                                                 </div>
                                             </div>

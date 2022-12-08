@@ -263,7 +263,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Grand Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.grand_total') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
                                     </td>

@@ -160,7 +160,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="payment_view_modal_body"></div>
@@ -190,7 +190,7 @@
         <div class="modal-dialog col-55-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
                             class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>

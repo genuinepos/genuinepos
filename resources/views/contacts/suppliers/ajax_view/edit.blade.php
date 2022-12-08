@@ -3,7 +3,7 @@
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
             <label><b>@lang('menu.name') :</b></label><span class="text-danger">*</span>
-            <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="Supplier Name" value="{{ $supplier->name }}"/>
+            <input type="text" name="name" class="form-control edit_input" data-name="Supplier name" id="e_name" placeholder="@lang('menu.supplier_name')" value="{{ $supplier->name }}"/>
             <span class="error error_e_name"></span>
         </div>
 
@@ -95,8 +95,8 @@
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-           <b>City :</b>
-            <input type="text" name="city" class="form-control " placeholder="City" id="e_city" value="{{ $supplier->city }}"/>
+           <b>@lang('menu.city') :</b>
+            <input type="text" name="city" class="form-control " placeholder="@lang('menu.city')" id="e_city" value="{{ $supplier->city }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">

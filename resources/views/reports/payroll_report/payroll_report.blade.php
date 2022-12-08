@@ -48,7 +48,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>Department :</strong></label>
+                                        <label><strong>@lang('menu.department') :</strong></label>
                                         <select name="department_id"
                                             class="form-control submit_able" id="department_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -111,8 +111,8 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Employee</th>
-                                    <th>Department</th>
+                                    <th>{{ __('Employee') }}</th>
+                                    <th>@lang('menu.department')</th>
                                     <th>Month/Year</th>
                                     <th>Referance No</th>
                                     <th>@lang('menu.total_amount')</th>

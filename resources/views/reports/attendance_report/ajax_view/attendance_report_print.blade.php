@@ -43,7 +43,7 @@
         <thead>
             <tr>
                 <th class="text-start">@lang('menu.date')</th>
-                <th class="text-start">Employee</th>
+                <th class="text-start">{{ __('Employee') }}</th>
                 <th class="text-start">Clock In - Clock Out</th>
                 <th class="text-start">Work Duration</th>
                 <th class="text-start">Shift</th>

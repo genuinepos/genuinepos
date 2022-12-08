@@ -75,7 +75,7 @@
                                                                 <th>Ingredient</th>
                                                                 <th>Final Quantity</th>
                                                                 <th>Unit</th>
-                                                                <th>Unit Cost</th>
+                                                                <th>@lang('menu.unit_cost')</th>
                                                                 <th>SubTotal</th>
                                                                 <th><i class="fas fa-trash-alt"></i></th>
                                                             </tr>

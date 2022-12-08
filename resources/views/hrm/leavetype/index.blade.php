@@ -12,7 +12,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-th-large"></span>
-                    <h6>Leave Types</h6>
+                    <h6>{{ __('Leave Types') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -23,7 +23,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>Leave Types</h6>
+                        <h6>{{ __('Leave Types') }}</h6>
                     </div>
                     <div class="col-6 d-flex justify-content-end">
                         <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
@@ -38,7 +38,7 @@
                                 <tr>
                                     <th>@lang('menu.serial')</th>
                                     <th>@lang('menu.type')</th>
-                                    <th>Max leave</th>
+                                    <th>{{ __('Max leave') }}</th>
                                     <th>Leave Count Interval</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>

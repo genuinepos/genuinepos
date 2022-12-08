@@ -100,7 +100,7 @@
                                                         <tr>
                                                             <th>Ingredient</th>
                                                             <th>Input Quantity</th>
-                                                            <th>Unit Cost</th>
+                                                            <th>@lang('menu.unit_cost')</th>
                                                             <th>SubTotal</th>
                                                         </tr>
                                                     </thead>

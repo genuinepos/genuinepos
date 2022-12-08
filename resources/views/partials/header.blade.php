@@ -49,7 +49,7 @@
                             @endif --}}
 
                             @if(auth()->user()->can('today_summery'))
-                                <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
+                                <li class="top-icon"><a href="#" id="today_summery"><b>{{ __('Today') }}</b></a></li>
                             @endif
 
                             <li class="top-icon dropdown notification-dropdown">

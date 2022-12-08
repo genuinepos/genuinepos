@@ -11,7 +11,7 @@
         <div class="col-md-12">
             <label><b>Assigned To :</b></label>
             <select required name="user_ids[]" class="form-control select2" multiple="multiple">
-                <option disabled value=""> Select Please </option>
+                <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
                 <option
                     @foreach ($todo->todo_users as $todo_user)

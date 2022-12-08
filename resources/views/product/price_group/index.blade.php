@@ -58,7 +58,7 @@
 
                 <div class="col-md-6 col-sm-12 d-hide d-md-block">
                     <div class="col-md-12">
-                        <div class="heading"><h4>Instructions</h4></div>
+                        <div class="heading"><h4>@lang('menu.instructions')</h4></div>
                         <div class="top_note">
                             <p class="p-0 m-0">
                                 <b>•</b> Export Selling price group prices.

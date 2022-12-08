@@ -208,7 +208,7 @@
                                             <th>Product Name</th>
                                             <th>Code</th>
                                             <th>Price</th>
-                                            <th>Supplier Name</th>
+                                            <th>@lang('menu.supplier_name')</th>
                                             <th>Qty</th>
                                         </tr>
                                     </thead>

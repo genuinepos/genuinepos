@@ -282,7 +282,7 @@
                                                                 <tr class="bg-secondary">
                                                                     <th class="text-start text-white">@lang('menu.select')</th>
                                                                     <th class="text-start text-white">@lang('menu.date')</th>
-                                                                    <th class="text-start text-white">Order ID</th>
+                                                                    <th class="text-start text-white">@lang('menu.order_id')</th>
                                                                     <th class="text-start text-white">@lang('menu.pay_status')</th>
                                                                     <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
                                                                     <th class="text-start text-white">@lang('menu.due_amount')</th>

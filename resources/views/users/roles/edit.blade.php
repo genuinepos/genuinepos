@@ -57,7 +57,7 @@
 
                                 <div class="col-md-4">
                                     <div class="col-md-12">
-                                        <p><strong>Users</strong></p>
+                                        <p><strong>@lang('menu.users')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -140,7 +140,7 @@
 
                                 <div class="col-md-4">
                                     <div class="col-md-12">
-                                        <p><strong>Suppliers</strong></p>
+                                        <p><strong>@lang('menu.supplier')</strong></p>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="row">
@@ -166,7 +166,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('supplier_edit') ? 'CHECKED' : '' }} name="supplier_edit" class="contacts"> &nbsp; Edit Supplier </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('supplier_edit') ? 'CHECKED' : '' }} name="supplier_edit" class="contacts"> &nbsp; @lang('menu.edit_supplier') </p>
                                         </div>
                                     </div>
 
@@ -202,7 +202,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }} name="customer_add" class="contacts"> &nbsp; Add Customer </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }} name="customer_add" class="contacts"> &nbsp; @lang('menu.add_customer')</p>
                                         </div>
                                     </div>
 
@@ -216,7 +216,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }} name="customer_edit" class=" contacts"> &nbsp; Edit Customer </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }} name="customer_edit" class=" contacts"> &nbsp; @lang('menu.edit_customer') </p>
                                         </div>
                                     </div>
 
@@ -942,7 +942,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }} name="customer_add" class="contacts"> &nbsp; Add Customer </p>
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }} name="customer_add" class="contacts"> &nbsp; @lang('menu.add_customer')</p>
                                                     </div>
                                                 </div>
 
@@ -956,7 +956,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }} name="customer_edit" class=" contacts"> &nbsp; Edit Customer </p>
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }} name="customer_edit" class=" contacts"> &nbsp; @lang('menu.edit_customer') </p>
                                                     </div>
                                                 </div>
 
@@ -1471,7 +1471,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('today_summery') ? 'CHECKED' : '' }} name="today_summery" class="others"> &nbsp; Today Summery</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('today_summery') ? 'CHECKED' : '' }} name="today_summery" class="others"> &nbsp; {{ __('Today Summery') }}</p>
                                         </div>
                                     </div>
 

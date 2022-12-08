@@ -104,8 +104,8 @@
                                                 <thead class="staky">
                                                     <tr>
                                                         <th>@lang('menu.product')</th>
-                                                        <th>Ordered Qty</th>
-                                                        <th>Unit Cost(Inc.Tax)</th>
+                                                        <th>@lang('menu.ordered_qty')</th>
+                                                        <th>@lang('menu.unit_cost')(Inc.Tax)</th>
                                                         <th>Subtotal</th>
                                                         <th>Pending Qty</th>
                                                         <th>Receive Qty</th>

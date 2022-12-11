@@ -39,7 +39,7 @@
                                     <th>@lang('menu.serial')</th>
                                     <th>@lang('menu.type')</th>
                                     <th>{{ __('Max leave') }}</th>
-                                    <th>Leave Count Interval</th>
+                                    <th>{{ __('Leave Count Interval') }}</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -64,7 +64,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Leave Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Leave Type') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -72,23 +72,23 @@
                     <!--begin::Form-->
                     <form id="add_leavetype_form" action="{{ route('hrm.leavetype.store') }}">
                         <div class="form-group">
-                            <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="leave_type" class="form-control add_input" data-name="leave type" id="leave_type" placeholder="Leave Type" required="" />
                             <span class="error error_leave_type"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Max leave count :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="Max leave count"  />
+                            <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="{{ __('Max leave count') }}t"  />
                             <span class="error error_max_leave_count"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>leave Count Interval :</b> </label>
+                            <label><b>{{ __('Leave Count Interval') }} :</b> </label>
                             <select name="leave_count_interval" class="form-control">
                             	<option value="0">@lang('menu.none')</option>
-                            	<option value="1">Current Month</option>
-                            	<option value="2">Current Financial year</option>
+                            	<option value="1">{{ __('Current Month') }}</option>
+                            	<option value="2">{{ __('Current Financial Year') }}</option>
                             </select>
                         </div>
 
@@ -114,7 +114,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Leave Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Leave Type') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -123,19 +123,19 @@
                     <form id="edit_leavetype_form" action="{{ route('hrm.leavetype.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="Leave Type" required="" />
                             <span class="error error_e_leave_type"></span>
                         </div>
 
                          <div class="form-group">
-                            <label><b>Max Leave Count :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" placeholder="Max leave count"  />
+                            <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" placeholder="{{ __('Max leave count') }}"  />
                             <span class="error error_e_max_leave_count"></span>
                         </div>
 
                         <div class="form-group">
-                            <label><b>leave Count Interval :</b></label>
+                            <label><b>{{ __('Leave Count Interval') }} :</b></label>
                             <select name="leave_count_interval" class="form-control" id="e_leave_count_interval">
                             </select>
                         </div>

@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Reference ID : </strong>{{ $expense->invoice_id }} </li>
+                    <li><strong> @lang('menu.reference_id') : </strong>{{ $expense->invoice_id }} </li>
                     <li><strong>@lang('menu.business_location') : </strong>
                         {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
                     </li>
@@ -52,7 +52,7 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.voucher_no')</th>
-                    <th class="text-start">Note</th>
+                    <th class="text-start">@lang('menu.note')</th>
                     <th class="text-start">@lang('menu.amount')</th>
                     <th class="text-start">@lang('menu.method')</th>
                     <th class="text-start">@lang('menu.type')</th>

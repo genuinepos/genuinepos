@@ -4,8 +4,8 @@
             <th>@lang('menu.sl')</th>
             <th>@lang('menu.name')</th>
             <th>@lang('menu.date')</th>
-            <th>Allowed Branch</th>
-            <th>Note</th>
+            <th>{{ __('Allowed Branch') }}</th>
+            <th>@lang('menu.note')</th>
             <th>@lang('menu.action')</th>
         </tr>
     </thead>

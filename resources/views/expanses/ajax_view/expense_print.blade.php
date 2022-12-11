@@ -58,7 +58,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end">Tax :</th>
+                            <th class="text-end">@lang('menu.tax') :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ $expense->tax_amount }}</b>

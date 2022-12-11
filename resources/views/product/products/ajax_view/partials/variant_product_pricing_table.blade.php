@@ -6,7 +6,7 @@
             <th class="text-white text-start">Stock</th>
             <th class="text-white text-start">Default Purchase Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
             <th class="text-white text-start">Default Purchase Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
-            <th class="text-white text-start">x Margin(%)</th>
+            <th class="text-white text-start">@lang('menu.x_margin')(%)</th>
             <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
             <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
             @if (count($price_groups) > 0)

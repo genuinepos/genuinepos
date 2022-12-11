@@ -16,7 +16,7 @@
                 <thead>
                     <tr>
                         <th>@lang('menu.department')</th>
-                        <th>Total</th>
+                        <th>@lang('menu.total')</th>
                     </tr>
                 </thead>
                 <tbody>

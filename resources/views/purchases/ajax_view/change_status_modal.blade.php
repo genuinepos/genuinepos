@@ -3,9 +3,9 @@
     <div class="form-group">
         <label>Purchase Staus :</label>
         <select name="purchase_status" class="form-control form-control-sm" id="purchase_status">
-            <option {{ $purchase->purchase_status == 1 ? 'SELECTED' : '' }} value="1">Received</option>
+            <option {{ $purchase->purchase_status == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.receive')</option>
             <option {{ $purchase->purchase_status == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.pending')</option>
-            <option {{ $purchase->purchase_status == 3 ? 'SELECTED' : '' }} value="3">Ordered</option>
+            <option {{ $purchase->purchase_status == 3 ? 'SELECTED' : '' }} value="3">@lang('menu.ordered')</option>
         </select>
     </div>
 

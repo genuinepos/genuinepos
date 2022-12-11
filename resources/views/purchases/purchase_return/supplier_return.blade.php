@@ -65,7 +65,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Warehouse :</b></label>
+                                        <label class="col-4"><b>@lang('menu.warehouse') :</b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
@@ -172,7 +172,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group mt-1">
-                                        <label for="inputEmail3" class="col-6"><b>Tax :</b>  <span class="text-danger">*</span></label>
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.tax') :</b>  <span class="text-danger">*</span></label>
                                         <div class="col-6">
                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                             </select>

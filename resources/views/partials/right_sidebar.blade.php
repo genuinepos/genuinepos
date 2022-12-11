@@ -91,7 +91,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="sidebarShortcutModalLabel">Add a shortcut to sidebar</h6>
+                <h6 class="modal-title" id="sidebarShortcutModalLabel">@lang('menu.add_shortcut_menus')</h6>
                 <a href="#" role="button" type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
                     <span class="fas fa-times"></span>
                 </a>

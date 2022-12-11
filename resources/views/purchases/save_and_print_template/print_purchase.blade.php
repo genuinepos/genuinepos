@@ -78,7 +78,7 @@
                                 @endif
                             </li>
 
-                            <li><strong>Stored Location : </strong>
+                            <li><strong>@lang('menu.stored_location') : </strong>
                                 @if ($purchase->warehouse_id )
                                     {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
                                     (<b>WH</b>)
@@ -111,7 +111,7 @@
                                     @if ($purchase->purchase_status == 1)
                                         Purchased
                                     @elseif($purchase->purchase_status == 2){
-                                        Pending
+                                        @lang('menu.pending')
                                     @else
                                         Purchased By Order
                                     @endif
@@ -122,11 +122,11 @@
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
                                @if ($purchase->due <= 0)
-                                   Paid
+                               @lang('menu.paid')
                                @elseif($purchase->due > 0 && $purchase->due < $payable)
-                                   Partial
+                               @lang('menu.partial')
                                @elseif($payable == $purchase->due)
-                                   Due
+                               @lang('menu.due')
                                @endif
                             </li>
                             <li><strong>@lang('menu.created_by') : </strong>
@@ -148,7 +148,7 @@
                             <th scope="col">Tax(%)</th>
                             <th scope="col">Net Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Lot Number</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
 
                         </tr>
                     </thead>

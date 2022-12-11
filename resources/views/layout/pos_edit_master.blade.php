@@ -61,7 +61,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">Choose Payment method</h6>
+                        <h6 class="modal-title" id="payment_heading">@lang('menu.choose_payment_method')</h6>
                         <a href="" class="close-btn" id="cancel_pay_mathod"><span class="fas fa-times"></span></a>
                     </div>
 
@@ -110,7 +110,7 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">Confirm (F10)</a>
+                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">@lang('menu.confirm') (F10)</a>
                                 <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
             <div class="modal-dialog col-40-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Recent Transections</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">{{ __('Recent Transactions') }}</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
@@ -132,15 +132,15 @@
                         <div class="tab_list_area">
                             <ul class="list-unstyled">
                                 <li>
-                                    <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> Final</a>
+                                    <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
                                 </li>
 
                                 <li>
-                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>Quotation</a>
+                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
                                 </li>
 
                                 <li>
-                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/drafts')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
+                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/drafts')}}"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
                                 </li>
                             </ul>
                         </div>
@@ -157,9 +157,9 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="text-start">@lang('menu.sl')</th>
-                                                        <th class="text-start">Reference/InvoiceId</th>
+                                                        <th class="text-start">@lang('menu.reference')/@lang('menu.invoice_id')</th>
                                                         <th class="text-start">@lang('menu.customer')</th>
-                                                        <th class="text-start">Total</th>
+                                                        <th class="text-start">@lang('menu.total')</th>
                                                         <th class="text-start">@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
@@ -188,7 +188,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Hold Invoices</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.hold_invoices')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -225,7 +225,7 @@
                     <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
-                    <h6 class="modal-title">Item Stocks</h6>
+                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>
@@ -240,7 +240,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_product_body">
@@ -257,7 +257,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_customer_modal_body"></div>
@@ -271,7 +271,7 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title">Suspended Sales</h6>
+                    <h6 class="modal-title">@lang('menu.suspended_sales')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="suspended_sale_list">
@@ -300,7 +300,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" {{ auth()->user()->can('edit_price_pos_screen') ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value="" />
                             <span class="error error_e_unit_price"></span>
                         </div>
@@ -308,15 +308,15 @@
                         @if(auth()->user()->can('edit_discount_pos_screen'))
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><strong>Discount Type</strong> :</label>
+                                <label><strong>@lang('menu.discount_type')</strong> :</label>
                                 <select class="form-control form-control-sm" id="e_unit_discount_type">
-                                    <option value="2">Percentage</option>
-                                    <option value="1">Fixed</option>
+                                    <option value="2">@lang('menu.percentage')</option>
+                                    <option value="1">@lang('menu.fixed')</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Discount</strong> :</label>
+                                <label><strong>@lang('menu.discount')</strong> :</label>
                                 <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00" />
                                 <input type="hidden" id="e_discount_amount" />
                             </div>
@@ -324,14 +324,14 @@
                         @endif
 
                         <div class="form-group">
-                            <label><strong>Tax</strong> :</label>
+                            <label><strong>@lang('menu.tax')</strong> :</label>
                             <select class="form-control form-control-sm" id="e_unit_tax">
 
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label><strong>Sale Unit</strong> :</label>
+                            <label><strong>@lang('menu.sale_unit')</strong> :</label>
                             <select class="form-control form-control-sm" id="e_unit"></select>
                         </div>
 
@@ -356,7 +356,7 @@
                     <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
-                    <h6 class="modal-title">Item Stocks</h6>
+                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>

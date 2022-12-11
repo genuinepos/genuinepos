@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-level-down-alt"></span>
-                    <h6>Leaves</h6>
+                    <h6>@lang('menu.leaves')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -24,7 +24,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>Leaves</h6>
+                        <h6>@lang('menu.leaves')</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
@@ -41,7 +41,7 @@
                                     <th>@lang('menu.serial')</th>
                                     <th>@lang('menu.type')</th>
                                     <th>{{ __('Max leave') }}</th>
-                                    <th>Leave Count Interval</th>
+                                    <th>{{ __('Leave Count Interval') }}</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -66,7 +66,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Leave</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Leave') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -77,7 +77,7 @@
                             <div class="col-md-6">
                                 <label><b>@lang('menu.department') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="department_id" id="department_id">
-                                    <option value="">Select Department</option>
+                                    <option value="">@lang('menu.select_department')</option>
                                     @foreach ($departments as $dep)
                                         <option value="{{ $dep->id }}">{{ $dep->department_name }}</option>
                                     @endforeach
@@ -85,9 +85,9 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Employee :</b> <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Employee') }} :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="employee_id" id="employee_id" required>
-                                    <option value="">Select Employee</option>
+                                    <option value="">{{ __('Select Employee') }}</option>
                                     @foreach ($employees as $emp)
                                         <option value="{{ $emp->id }}">{{ $emp->prefix.' '.$emp->name.' '.$emp->last_name }}</option>
                                     @endforeach
@@ -97,9 +97,9 @@
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
-                                <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="leave_id" required id="leave_id">
-                                    <option value="">Select Leave Type</option>
+                                    <option value="">{{ __('Select Leave Type') }}</option>
                                     @foreach ($leavetypes as $lt)
                                         <option value="{{ $lt->id }}">{{ $lt->leave_type }}</option>
                                     @endforeach
@@ -148,7 +148,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Leave</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Leave') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -160,7 +160,7 @@
                             <div class="col-md-6">
                                 <label><b>@lang('menu.department') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="department_id" id="e_department_id">
-                                    <option value="">Select Department</option>
+                                    <option value="">@lang('menu.select_department')</option>
                                     @foreach ($departments as $dep)
                                         <option value="{{ $dep->id }}">{{ $dep->department_name }}</option>
                                     @endforeach
@@ -168,9 +168,9 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Employee :</b> <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Employee') }} :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="employee_id" id="e_employee_id" required="">
-                                    <option value="">Select Employee</option>
+                                    <option value="">{{ __('Select Employee') }}</option>
                                     {{-- @foreach ($employees as $emp)
                                         <option value="{{ $emp->id }}">{{ $emp->prefix.' '.$emp->name.' '.$emp->last_name }}</option>
                                     @endforeach --}}
@@ -180,9 +180,9 @@
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
-                                <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="leave_id" required id="e_leave_id">
-                                    <option value="">Select Leave Type</option>
+                                    <option value="">{{ __('Select Leave Type') }}</option>
                                     @foreach ($leavetypes as $lt)
                                         <option value="{{ $lt->id }}">{{ $lt->leave_type }}</option>
                                     @endforeach

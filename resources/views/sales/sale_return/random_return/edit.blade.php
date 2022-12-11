@@ -188,9 +188,9 @@
                                                         <tr>
                                                             <th class="text-start">@lang('menu.product')</th>
                                                             <th class="text-center">Unit Price</th>
-                                                            <th class="text-center">Unit</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
                                                             <th class="text-center">Return Quantity</th>
-                                                            <th class="text-center">SubTotal</th>
+                                                            <th class="text-center">@lang('menu.sub_total')</th>
                                                             <th><i class="fas fa-minus text-dark"></i></th>
                                                         </tr>
                                                     </thead>
@@ -289,7 +289,7 @@
                                                                 <div class="col-md-6">
                                                                     <select name="return_discount_type" class="form-control" id="return_discount_type">
                                                                         <option {{ $return->return_discount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed(0.00)</option>
-                                                                        <option {{ $return->return_discount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage(%)</option>
+                                                                        <option {{ $return->return_discount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')(%)</option>
                                                                     </select>
                                                                 </div>
 
@@ -468,22 +468,22 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price_exc_tax" placeholder="Unit price" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Discount Type</strong> :</label>
+                                <label><strong>@lang('menu.discount_type')</strong> :</label>
                                 <select class="form-control " id="e_unit_discount_type">
-                                    <option value="2">Percentage</option>
-                                    <option value="1">Fixed</option>
+                                    <option value="2">@lang('menu.percentage')</option>
+                                    <option value="1">@lang('menu.fixed')</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Discount</strong> :</label>
+                                <label><strong>@lang('menu.discount')</strong> :</label>
                                 <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                 <input type="hidden" id="e_discount_amount"/>
                             </div>
@@ -491,7 +491,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Tax</strong> :</label>
+                                <label><strong>@lang('menu.tax')</strong> :</label>
                                 <select class="form-control" id="e_unit_tax">
                                     <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
@@ -501,10 +501,10 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Tax Type</strong> :</label>
+                                <label><strong>@lang('menu.tax_type')</strong> :</label>
                                 <select class="form-control" id="e_tax_type">
-                                    <option value="1">Exclusive</option>
-                                    <option value="2">Inclusive</option>
+                                    <option value="1">@lang('menu.exclusive')</option>
+                                    <option value="2">@lang('menu.exclusive')</option>
                                 </select>
                             </div>
                         </div>

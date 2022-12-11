@@ -5,8 +5,8 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Product Name :</b> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control" id="add_name" placeholder="Product Name"/>
+            <label><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control" id="add_name" placeholder="@lang('menu.product_name')"/>
             <span class="error error_add_name"></span>
         </div>
 
@@ -41,7 +41,7 @@
     <div class="form-group row mt-1">
         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
             <div class="col-md-3">
-                <label><b>Category :</b> </label>
+                <label><b>@lang('menu.category') :</b> </label>
                 <select class="form-control category" name="category_id" id="add_category_id">
                     <option value="">Select Category</option>
                     @foreach ($categories as $category)
@@ -106,7 +106,7 @@
     <div class="form-group row mt-1">
         @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
             <div class="col-md-3 ">
-                <label><b>Tax :</b> </label>
+                <label><b>@lang('menu.tax') :</b> </label>
                 <select class="form-control" name="tax_id" id="add_tax_id">
                     <option value="">@lang('menu.no_tax')</option>
                     @foreach ($taxes as $tax)
@@ -129,8 +129,8 @@
                 <thead>
                     <tr class="bg-secondary">
                         <th class="text-white">Default Purchase Price</th>
-                        <th class="text-white">x Margin(%)</th>
-                        <th class="text-white">Selling Price</th>
+                        <th class="text-white">@lang('menu.x_margin')(%)</th>
+                        <th class="text-white">@lang('menu.selling_price')</th>
                     </tr>
                 </thead>
                 <tbody>

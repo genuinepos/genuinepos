@@ -36,8 +36,8 @@
 
                 <div class="col-md-3">
                     <ul class="list-unstyled">
-                        <li><strong>Category : </strong> {{$product->category ? $product->category->name : 'N/A' }}</li>
-                        <li><strong>Sub-Category : </strong> {{ $product->subCategory ? $product->subCategory->name : 'N/A' }}</li>
+                        <li><strong>@lang('menu.category') : </strong> {{$product->category ? $product->category->name : 'N/A' }}</li>
+                        <li><strong>@lang('menu.sub_category') : </strong> {{ $product->subCategory ? $product->subCategory->name : 'N/A' }}</li>
                         <li><strong>Is For Sale : </strong>{{ $product->is_for_sale == 1 ? 'Yes' : 'No' }}</li>
                         <li><strong>Alert Quantity : </strong>{{ $product->alert_quantity }}</li>
                         <li><strong>Warranty : </strong>
@@ -50,9 +50,9 @@
                     <ul class="list-unstyled">
                         <li><strong>Expire Date : </strong> {{$product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : 'N/A' }}
                         </li>
-                        <li><strong>Tax : </strong>{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</li>
+                        <li><strong>@lang('menu.tax') : </strong>{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</li>
                         @if ($product->tax)
-                            <li><strong>Tax Type: </strong>{{ $product->tax_type == 1 ? 'Exclusive' : 'Inclusive' }}</li>
+                            <li><strong>@lang('menu.tax_type'): </strong>{{ $product->tax_type == 1 ? 'Exclusive' : 'Inclusive' }}</li>
                         @endif
                         <li><strong>Product Condition : </strong> {{ $product->product_condition }}</li>
                         <li>

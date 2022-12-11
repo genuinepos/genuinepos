@@ -64,7 +64,7 @@
                     <th class="text-start">{{ __('P.Invoice ID') }}</th>
                     <th class="text-start">Qty</th>
                     <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-end">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.subtotal')({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -104,7 +104,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalUnitCost) }}</td>
                 </tr>
 

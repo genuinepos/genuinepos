@@ -131,7 +131,7 @@
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
                                 <select  class="form-control employee" required="" id="department_id">
-                                    <option> Select Employee </option>
+                                    <option> {{ __('Select Employee') }} </option>
                                     @foreach($departments as $dep)
                                        <option value="{{ $dep->id }}">{{$dep->department_name }}</option>
                                     @endforeach
@@ -139,9 +139,9 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>Employee :</b></label>
+                                <label class="text-navy-blue"><b>{{ __('Employee') }} :</b></label>
                                 <select  class="form-control" id="employee">
-                                    <option disabled selected> Select Employee </option>
+                                    <option disabled selected> {{ __('Select Employee') }} </option>
                                     {{-- @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
                                     @endforeach --}}

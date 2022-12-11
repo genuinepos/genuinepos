@@ -101,7 +101,7 @@
                                         <th class="text-start">@lang('menu.voucher_no')</th>
                                         <th class="text-start">Adjustment location</th>
                                         <th class="text-start">@lang('menu.business_location')</th>
-                                        <th class="text-start">Reason</th>
+                                        <th class="text-start">@lang('menu.reason')</th>
                                         <th class="text-start">@lang('menu.created_by')</th>
                                         <th class="text-start">@lang('menu.type')</th>
                                         <th class="text-start">@lang('menu.total_amount')</th>

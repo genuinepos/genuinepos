@@ -11,17 +11,17 @@
     <div class="form-group">
         <label><b>@lang('menu.type') :</b></label>
         <select class="form-control form-control-sm" name="type">
-            <option {{ $allowance->type == 'Allowance' ? 'SELECTED' : '' }} value="Allowance">Allowance</option>
-            <option {{ $allowance->type == 'Deduction' ? 'SELECTED' : '' }} value="Deduction">Deduction</option>
+            <option {{ $allowance->type == 'Allowance' ? 'SELECTED' : '' }} value="Allowance">{{ __('Allowance') }}</option>
+            <option {{ $allowance->type == 'Deduction' ? 'SELECTED' : '' }} value="Deduction">{{ __('Deduction') }}</option>
         </select>
     </div>
 
     <div class="row">
         <div class="form-group col-6">
-            <label><b>Amount Type :</b> </label>
+            <label><b>{{ __('Amount Type') }} :</b> </label>
             <select class="form-control form-control-sm" name="amount_type">
                 <option {{ $allowance->type == 1 ? 'SELECTED' : '' }} value="1">Fixed (0.0)</option>
-                <option {{ $allowance->type == 2 ? 'SELECTED' : '' }} value="2">Percentage (%)</option>
+                <option {{ $allowance->type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage') (%)</option>
             </select>
         </div>
         <div class="form-group col-6">

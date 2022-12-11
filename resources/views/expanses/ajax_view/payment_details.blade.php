@@ -89,7 +89,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Note :</th>
+                            <th class="text-start">@lang('menu.note') :</th>
                             <td class="text-end">{{ $payment->note }}</td>
                         </tr>
                     </tbody>

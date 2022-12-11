@@ -37,7 +37,7 @@
 
                                     @if ($purchase->warehouse_id)
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>Warehouse :</b><span class="text-danger">*</span></label>
+                                            <label class="col-4"><b>@lang('menu.warehouse') :</b><span class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable add_input"
                                                     name="warehouse_id" data-name="Warehouse" id="warehouse_id">
@@ -83,7 +83,7 @@
                                         <label class="col-4"><b>@lang('menu.status') :</b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable" name="purchase_status" id="purchase_status">
-                                                <option value="3">Ordered</option>
+                                                <option value="3">@lang('menu.ordered')</option>
                                             </select>
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@
                                                         <th>@lang('menu.product')</th>
                                                         <th>@lang('menu.ordered_qty')</th>
                                                         <th>@lang('menu.unit_cost')(Inc.Tax)</th>
-                                                        <th>Subtotal</th>
+                                                        <th>@lang('menu.sub_total')</th>
                                                         <th>Pending Qty</th>
                                                         <th>Receive Qty</th>
                                                         <th>Add Receive</th>
@@ -275,7 +275,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class="col-4"><b>@lang('menu.total_payable') :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_purchase_amount" type="number" step="any" class="form-control" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
                                                         </div>

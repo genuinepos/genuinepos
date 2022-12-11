@@ -61,11 +61,11 @@
                     <li><strong>@lang('menu.date') : </strong>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
                     <li><strong>@lang('menu.purchases_status') : </strong>
                         @if ($purchase->purchase_status == 1)
-                            <span class="text-success"><b>Received</b></span>
+                            <span class="text-success"><b>@lang('menu.receive')</b></span>
                         @elseif($purchase->purchase_status == 2){
                             <span class="text-warning"><b>@lang('menu.pending')</b></span>
                         @else
-                            <span class="text-primary"><b>Ordered</b></span>
+                            <span class="text-primary"><b>@lang('menu.ordered')</b></span>
                         @endif
                     </li>
                     <li><strong>@lang('menu.payment_status') : </strong>

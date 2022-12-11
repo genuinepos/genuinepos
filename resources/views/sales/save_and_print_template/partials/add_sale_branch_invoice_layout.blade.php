@@ -63,11 +63,11 @@
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                        Paid
+                                    @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                        Partial
+                                    @lang('menu.partial') 
                                     @elseif($payable==$sale->due)
-                                        Due
+                                    @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -115,11 +115,11 @@
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                        PAID
+                                    @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                        PARTIAL
+                                    @lang('menu.partial')
                                     @elseif($payable==$sale->due)
-                                        DUE
+                                    @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -149,14 +149,14 @@
                             @endif
                             <th class="text-end">Price</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
-                                <th class="text-end">Discount</th>
+                                <th class="text-end">@lang('menu.discount')</th>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->product_tax)
-                                <th class="text-end">Tax</th>
+                                <th class="text-end">@lang('menu.tax')</th>
                             @endif
 
-                            <th class="text-end">SubTotal</th>
+                            <th class="text-end">@lang('menu.sub_total')</th>
                         </tr>
                     </thead>
 
@@ -309,7 +309,7 @@
                             @endif
 
                             <tr>
-                                <td class="text-end"><strong> Total Payable : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_payable') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="total_payable text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
                                 </td>
@@ -475,7 +475,7 @@
                                 <th class="text-start">@lang('menu.description')</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-center">Price</th>
-                                <th class="text-end">Total</th>
+                                <th class="text-end">@lang('menu.total')</th>
                             </tr>
                         </thead>
                         <thead class="d-body">
@@ -510,7 +510,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">Discount :
+                                <th class="text-end">@lang('menu.discount') :
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                 </th>
                                 <th class="text-end">

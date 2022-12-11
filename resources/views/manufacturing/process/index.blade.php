@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-dumpster-fire"></span>
-                    <h6>Process</h6>
+                    <h6>@lang('menu.process')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>Process</h6>
+                        <h6>@lang('menu.process')</h6>
                     </div>
 
                     @if (auth()->user()->can('process_add'))
@@ -44,14 +44,14 @@
                                             <input class="all" type="checkbox" name="all_checked"/>
                                         </th>
                                         <th class="text-black">@lang('menu.action')</th>
-                                        <th class="text-black">Product Name</th>
-                                        <th class="text-black">Category</th>
-                                        <th class="text-black">SubCategory</th>
-                                        <th class="text-black">Wastage</th>
-                                        <th class="text-black">Output Quantity</th>
-                                        <th class="text-black">Total Ingrediant Cost</th>
-                                        <th class="text-black">Production Cost</th>
-                                        <th class="text-black">Total Cost</th>
+                                        <th class="text-black">@lang('menu.product_name')</th>
+                                        <th class="text-black">@lang('menu.category')</th>
+                                        <th class="text-black">@lang('menu.sub_category')</th>
+                                        <th class="text-black">@lang('menu.wastage')</th>
+                                        <th class="text-black">@lang('menu.output_quantity')</th>
+                                        <th class="text-black">{{ __('Total Ingredient Cost') }}</th>
+                                        <th class="text-black">@lang('menu.production_cost')</th>
+                                        <th class="text-black">@lang('menu.total_cost')</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -76,7 +76,7 @@
             <div class="modal-dialog double-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Choose Product</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.choose_product')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                                 class="fas fa-times"></span></a>
                     </div>
@@ -84,7 +84,7 @@
                         <!--begin::Form-->
                         <form action="{{ route('manufacturing.process.create') }}" method="GET">
                             <div class="form-group">
-                                <label><b>Select Product</b> : <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.select_product')</b> : <span class="text-danger">*</span></label>
                                 <select required name="product_id" class="form-control select2">
                                     @foreach ($products as $product)
                                         @php

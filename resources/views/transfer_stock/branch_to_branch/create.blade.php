@@ -45,7 +45,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Warehouse :</b></label>
+                                        <label class="col-4"><b>@lang('menu.warehouse') :</b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
@@ -145,9 +145,9 @@
                                                                     <th class="text-start">@lang('menu.product')</th>
                                                                     <th></th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
-                                                                    <th class="text-center">Unit</th>
+                                                                    <th class="text-center">@lang('menu.unit')</th>
                                                                     <th class="text-center">Unit Cost Inc.Tax</th>
-                                                                    <th class="text-center">SubTotal</th>
+                                                                    <th class="text-center">@lang('menu.subtotal')</th>
                                                                     <th><i class="fas fa-trash-alt text-dark"></i></th>
                                                                 </tr>
                                                             </thead>

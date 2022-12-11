@@ -5,7 +5,7 @@
                 <li data-menu="dashboardmenu" class="">
                     <a href="{{ route('dashboard.dashboard') }}" class="">
                         <img src="{{ asset('backend/asset/img/icon/pie-chart.svg') }}" alt="">
-                        <p class="title">Dashboard</p>
+                        <p class="title">@lang('menu.dashboard')</p>
                     </a>
                 </li>
 

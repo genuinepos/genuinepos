@@ -32,9 +32,9 @@
                                     <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>Product Name :</b> <span class="text-danger">*</span></label>
+                                                <label class="col-5"><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
                                                 <div class="col-7">
-                                                    <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" autofocus>
+                                                    <input type="text" name="name" class="form-control" id="name" placeholder="@lang('menu.product_name')" autofocus>
                                                     <span class="error error_name"></span>
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@
                                         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>Category :</b> </label>
+                                                    <label class="col-5"><b>@lang('menu.category') :</b> </label>
                                                     <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control category" name="category_id"
@@ -116,7 +116,7 @@
                                         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"> <b>Sub-category :</b> </label>
+                                                    <label class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
                                                     <div class="col-7">
                                                         <select class="form-control" name="child_category_id"
                                                             id="child_category_id">
@@ -267,7 +267,7 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
+                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')">
                                                         <span class="error error_product_price"></span>
                                                     </div>
                                                 </div>
@@ -296,7 +296,7 @@
                                             @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-5"><b>Tax :</b> </label>
+                                                        <label class="col-5"><b>@lang('menu.tax') :</b> </label>
                                                         <div class="col-7">
                                                             <select class="form-control" name="tax_id" id="tax_id">
                                                                 <option value="">@lang('menu.no_tax')</option>
@@ -310,11 +310,11 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-5"><b>Tax Type :</b> </label>
+                                                        <label class="col-5"><b>@lang('menu.tax_type') :</b> </label>
                                                         <div class="col-7">
                                                             <select name="tax_type" class="form-control" id="tax_type">
-                                                                <option value="1">Exclusive</option>
-                                                                <option value="2">Inclusive</option>
+                                                                <option value="1">@lang('menu.exclusive')</option>
+                                                                <option value="2">@lang('menu.exclusive')</option>
                                                             </select>
                                                         </div>
                                                     </div>

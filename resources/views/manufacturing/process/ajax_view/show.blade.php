@@ -7,10 +7,10 @@
         <table class="display data_tbl data__table">
             <thead>
                 <tr class="bg-secondary">
-                    <th class="text-start text-white">Ingredients</th>
+                    <th class="text-start text-white">@lang('menu.ingredients')</th>
                     <th class="text-start text-white">@lang('menu.quantity')</th>
-                    <th class="text-start text-white">Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                    <th class="text-start text-white">Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start text-white">{{ __('Cost Inc.Tax') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start text-white">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,7 @@
             </tbody>
             <tfoot class="display data_tbl data__table">
                 <tr>
-                    <th colspan="3" class="text-end">Total Ingredients : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th colspan="3" class="text-end">{{ __('Total Ingredients') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
                     <th>{{ $process->total_ingredient_cost }}</th>
                 </tr>
             </tfoot>
@@ -39,11 +39,11 @@
            <table class="">
                <tbody>
                     <tr>
-                        <th class="text-start">Wastage : </th>
+                        <th class="text-start">@lang('menu.wastage') : </th>
                         <td class="text-start"> {{ $process->wastage_percent.'%' }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">Total Output Quantity : </th>
+                        <th class="text-start">@lang('menu.total_output_quantity') : </th>
                         <td class="text-start"> {{ $process->total_output_qty.' '.$process->unit->name }}</td>
                     </tr>
                     <tr>
@@ -58,11 +58,11 @@
             <table class="display data_tbl data__table">
                 <tbody>
                     <tr>
-                        <th class="text-start">Additional Cost : </th>
+                        <th class="text-start">@lang('menu.additional_cost') : </th>
                         <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->production_cost }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">Total Cost: </th>
+                        <th class="text-start">@lang('menu.total_cost') :</th>
                         <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->total_cost }}</td>
                     </tr>
                 </tbody>

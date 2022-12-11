@@ -61,7 +61,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Category :</strong></label>
+            <label><strong>@lang('menu.category') :</strong></label>
             <select name="category_id" id="category_id" class="form-control add_input">
                 <option value="">Please select </option>
                 @foreach ($categories as $category)
@@ -75,10 +75,10 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><strong>Discount Type :</strong> </label>
+            <label><strong>@lang('menu.discount_type') :</strong> </label>
             <select name="discount_type" id="discount_type" class="form-control add_input">
                 <option {{ $discount->discount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed(0.00)</option>
-                <option {{ $discount->discount_type == 2 ? 'SELECTED' : '' }} value="1">Percentage(%)</option>
+                <option {{ $discount->discount_type == 2 ? 'SELECTED' : '' }} value="1">@lang('menu.percentage')(%)</option>
             </select>
             <span class="error error_discount_type"></span>
         </div>

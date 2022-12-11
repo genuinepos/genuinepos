@@ -1,7 +1,7 @@
 <table id="single_product_pricing_table" class="table modal-table table-sm">
     <thead>
         <tr class="bg-secondary">
-            <th class="text-white text-start">Product Name</th>
+            <th class="text-white text-start">@lang('menu.product_name')</th>
             <th class="text-white text-start">Prodcut cost (Inc.Tax)</th>
             <th class="text-white text-start">Profit Margin(%)</th>
             <th class="text-white text-start">Default Selling Price (Exc.Tax)</th>

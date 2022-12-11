@@ -118,9 +118,9 @@
                             <th scope="col" class="text-start">@lang('menu.quantity')</th>
                             <th scope="col" class="text-start">Unit Price</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
-                                <th scope="col" class="text-start">Discount</th>
+                                <th scope="col" class="text-start">@lang('menu.discount')</th>
                             @endif
-                            <th scope="col" class="text-start">SubTotal</th>
+                            <th scope="col" class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
@@ -204,7 +204,7 @@
                             </tr>
 
                             <tr>
-                                <td><strong> Total Payable : </strong></td>
+                                <td><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="total_payable text-start">
                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($sale->total_payable_amount, 2) }}</b>
@@ -394,8 +394,8 @@
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Unit Price</th>
-                            <th class="text-start">Discount</th>
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.discount')</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                         </tr>
                     </thead>
@@ -476,7 +476,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Total Payable : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="total_payable text-end">
                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($sale->total_payable_amount, 2) }}</b>

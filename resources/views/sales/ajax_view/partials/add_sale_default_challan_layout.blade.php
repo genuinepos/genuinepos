@@ -140,7 +140,7 @@
                     <tr>
                         <th class="text-start">@lang('menu.serial')</th>
                         <th class="text-start">Descrpiton</th>
-                        <th class="text-start">Unit</th>
+                        <th class="text-start">@lang('menu.unit')</th>
                         <th class="text-start">@lang('menu.quantity')</th>
                     </tr>
                     </tr>

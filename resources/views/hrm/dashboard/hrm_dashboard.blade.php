@@ -90,7 +90,7 @@
                     @if ($addons->branches == 1)
                         <div class="card-title mt-2 ps-4">
                             <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                                <option value="">All Business Lacation</option>
+                                <option value="">{{ __('All Business Location') }}</option>
                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                 @foreach ($branches as $branch)
                                     <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
@@ -112,7 +112,7 @@
                                     <div class="section-header d-flex justify-content-between align-items-center px-3">
                                         <h6><span class="fas fa-users"></span>@lang('menu.users')</h6>
                                         <span class="badge bg-secondary text-white">
-                                            <div id="small-badge">Total: 4324</div>
+                                            <div id="small-badge">@lang('menu.total'): 4324</div>
                                         </span>
                                     </div>
                                     <div class="widget_content">
@@ -122,7 +122,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>@lang('menu.department')</th>
-                                                            <th>Total</th>
+                                                            <th>@lang('menu.total')</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

@@ -12,7 +12,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus"></span>
-                    <h6>Allowances/Deductions</h6>
+                    <h6>{{ __('Allowances') }}/{{ __('Deductions') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -23,7 +23,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-8">
-                        <h6>Allowances/Deductions</h6>
+                        <h6>{{ __('Allowances') }}/{{ __('Deductions') }}</h6>
                     </div>
 
                     <div class="col-4 d-flex justify-content-end">
@@ -40,7 +40,7 @@
                                     <th>@lang('menu.serial')</th>
                                     <th>@lang('menu.type')</th>
                                     <th>{{ __('Max leave') }}</th>
-                                    <th>Leave Count Interval</th>
+                                    <th>{{ __('Leave Count Interval') }}</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -63,7 +63,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Allowance/{{ __('Deduction') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -80,18 +80,18 @@
                             <div class="col-md-6">
                                 <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="type" required="">
-                                    <option value="Allowance">Allowance</option>
-                                    <option value="Deduction">Deduction</option>
+                                    <option value="Allowance">{{ __('Allowance') }}</option>
+                                    <option value="Deduction">{{ __('Deduction') }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-6">
-                                <label><b>Amount Type :</b>  <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Amount Type') }} :</b>  <span class="text-danger">*</span></label>
                                 <select class="form-control" name="amount_type" id="amount_type">
                                     <option value="1">Fixed (0.0)</option>
-                                    <option value="2">Percentage (%)</option>
+                                    <option value="2">@lang('menu.percentage') (%)</option>
                                 </select>
                             </div>
 
@@ -122,7 +122,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/{{ __('Deduction') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

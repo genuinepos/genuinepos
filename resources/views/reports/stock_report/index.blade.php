@@ -63,7 +63,7 @@
                                             @endif
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Category :</strong></label>
+                                                <label><strong>@lang('menu.category') :</strong></label>
                                                 <select id="category_id" name="category_id" class="form-control">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($categories as $c)
@@ -93,7 +93,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Tax :</strong></label>
+                                                <label><strong>@lang('menu.tax') :</strong></label>
                                                 <select id="tax_id" name="tax_id" class="form-control">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($taxes as $t)
@@ -185,9 +185,9 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <label><strong>Warehouse :</strong></label>
+                                                    <label><strong>@lang('menu.warehouse') :</strong></label>
                                                     <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                        <option value="">Select Business Location First</option>
+                                                        <option value="">@lang('menu.select_business_location_first')</option>
                                                     </select>
                                                 @else
                                                     @php
@@ -202,7 +202,7 @@
                                                             )->get();
                                                     @endphp
 
-                                                    <label><strong>Warehouse :</strong></label>
+                                                    <label><strong>@lang('menu.warehouse') :</strong></label>
                                                     <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($wh as $row)
@@ -213,7 +213,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Category :</strong></label>
+                                                <label><strong>@lang('menu.category') :</strong></label>
                                                 <select id="w_category_id" name="category_id" class="form-control common_submitable">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($categories as $c)
@@ -243,7 +243,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Tax :</strong></label>
+                                                <label><strong>@lang('menu.tax') :</strong></label>
                                                 <select id="w_tax_id" name="tax_id" class="form-control common_submitable">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($taxes as $t)

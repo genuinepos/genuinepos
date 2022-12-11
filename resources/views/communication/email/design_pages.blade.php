@@ -189,7 +189,7 @@
                             <p><strong>vat :</strong> @vat</p>
                             <p><strong>@lang('menu.total_due') :</strong> @due</p>
                             <p><strong>Total Discount :</strong> @discount</p>
-                            <p><strong>Total :</strong> @total_amount</p>
+                            <p><strong>@lang('menu.total') :</strong> @total_amount</p>
                             <br>
                             <p><strong>Reward Points :</strong> @point</p>
                             <br>

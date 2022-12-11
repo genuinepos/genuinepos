@@ -96,7 +96,7 @@
                             <th class="text-start">@lang('menu.product')</th>
                             <th class="text-end">Unit Cost</th>
                             <th class="text-end">Return Quantity</th>
-                            <th class="text-end">SubTotal</th>
+                            <th class="text-end">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>

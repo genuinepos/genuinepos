@@ -15,7 +15,7 @@
             <div class="input-group">
                 <label for="inputEmail3" class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
                 <div class="col-8">
-                    <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax" value="">
+                    <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="">
                 <span class="error error_product_price"></span>    
                 </div>
             </div>
@@ -47,7 +47,7 @@
         <div class="row mt-1">
             <div class="col-md-6">
                 <div class="input-group">
-                    <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
+                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') :</b> </label>
                     <div class="col-8">
                         <select class="form-control" name="tax_id" id="tax_id">
                             <option value="">@lang('menu.no_tax')</option>
@@ -61,11 +61,11 @@
 
             <div class="col-md-6">
                 <div class="input-group">
-                    <label for="inputEmail3" class="col-4"><b>Tax Type :</b> </label>
+                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax_type') :</b> </label>
                     <div class="col-8">
                         <select name="tax_type" class="form-control" id="tax_type">
-                            <option value="1">Exclusive</option>
-                            <option value="2">Inclusive</option>
+                            <option value="1">@lang('menu.exclusive')</option>
+                            <option value="2">@lang('menu.exclusive')</option>
                         </select>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                                             <th>@lang('menu.product')</th>
                                             <th>@lang('menu.quantity')</th>
                                             <th>Unit price</th>
-                                            <th>SubTotal</th>
+                                            <th>@lang('menu.sub_total')</th>
                                             <th><i class="fas fa-trash-alt"></i></th>
                                         </tr>
                                     </thead>
@@ -238,7 +238,7 @@
 
     <div class="row">
         <div class="col-md-3 offset-3">
-            <label><b>x Margin :</b></label>
+            <label><b>@lang('menu.x_margin'):</b></label>
             <input type="text" name="profit" class="form-control form-control-sm" id="profit"
                 value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
         </div>

@@ -38,7 +38,7 @@
                                         <th class="text-start">@lang('menu.product')</th>
                                         <th class="text-start">Unit Price</th>
                                         <th class="text-start">Return Quantity</th>
-                                        <th class="text-start">SubTotal</th>
+                                        <th class="text-start">@lang('menu.sub_total')</th>
                                     </tr>
                                 </thead>
                                 <tbody class="sale_return_product_list">
@@ -203,7 +203,7 @@
                                 <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">Unit Price</th>
                                 <th class="text-start">Return Quantity</th>
-                                <th class="text-start">SubTotal</th>
+                                <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </tr>
                     </thead>

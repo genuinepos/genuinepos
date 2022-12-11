@@ -61,7 +61,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><b>Warehouse :</b>
+                                                <label class="col-4"><b>@lang('menu.warehouse') :</b>
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -233,7 +233,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><strong>Tax : </strong></label>
+                                                <label class="col-4"><strong>@lang('menu.tax') : </strong></label>
                                                 <div class="col-8">
 
                                                     <select name="purchase_tax" class="form-control" id="purchase_tax">

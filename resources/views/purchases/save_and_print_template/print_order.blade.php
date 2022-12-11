@@ -100,19 +100,19 @@
                         <ul class="list-unstyled">
                             <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>PO Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>Delivery Date : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
-                            <li><strong>@lang('menu.purchases_status') : </strong>Ordered</li>
+                            <li><strong>@lang('menu.delivery_date') : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
+                            <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>
                             <li><strong>@lang('menu.receiving_status') : </strong>{{ $purchase->po_receiving_status }}</li>
                             <li><strong>@lang('menu.payment_status') : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
                                @if ($purchase->due <= 0)
-                                   Paid
+                               @lang('menu.paid')
                                @elseif($purchase->due > 0 && $purchase->due < $payable)
-                                   Partial
+                               @lang('menu.partial')
                                @elseif($payable == $purchase->due)
-                                   Due
+                               @lang('menu.due')
                                @endif
                             </li>
                             <li><strong>@lang('menu.created_by') : </strong>
@@ -132,7 +132,7 @@
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Pending Qty</th>
                             <th scope="col">Received Qty</th>
                         </tr>

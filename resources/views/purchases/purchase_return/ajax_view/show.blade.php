@@ -71,7 +71,7 @@
                                     <th class="text-start" scope="col">@lang('menu.product')</th>
                                     <th class="text-start" scope="col">@lang('menu.unit_cost')</th>
                                     <th class="text-start" scope="col">Return Quantity</th>
-                                    <th class="text-start" scope="col">SubTotal</th>
+                                    <th class="text-start" scope="col">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
                             <tbody class="purchase_return_product_list">
@@ -237,7 +237,7 @@
                             <th class="text-start">@lang('menu.product')</th>
                             <th class="text-end">@lang('menu.unit_cost')</th>
                             <th class="text-end">Return Quantity</th>
-                            <th class="text-end">SubTotal</th>
+                            <th class="text-end">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>

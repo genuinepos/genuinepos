@@ -38,9 +38,9 @@
                                     @if ($sale->due <= 0)
                                     @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                        Partial
+                                    @lang('menu.partial')
                                     @elseif($payable==$sale->due)
-                                        Due
+                                    @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -113,9 +113,9 @@
                                     @if ($sale->due <= 0)
                                     @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                        Partial
+                                    @lang('menu.partial')
                                     @elseif($payable==$sale->due)
-                                        Due
+                                    @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -151,7 +151,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->product_tax)
-                                <th class="text-startx">Tax</th>
+                                <th class="text-startx">@lang('menu.tax')</th>
                             @endif
 
                             <th class="text-startx">@lang('menu.sub_total')</th>

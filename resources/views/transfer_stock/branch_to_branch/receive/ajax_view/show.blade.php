@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
-                    Transfer Details (Reference ID : <strong>{{ $transfer->ref_id }}</strong>)
+                    Transfer Details (@lang('menu.reference_id') : <strong>{{ $transfer->ref_id }}</strong>)
                 </h6>
 
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
@@ -91,7 +91,7 @@
                                     <th class="text-start">Unit Cost Inc.Tax</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
                                     <th class="text-start">Receive Qty</th>
-                                    <th class="text-start">SubTotal</th>
+                                    <th class="text-start">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
 
@@ -238,7 +238,7 @@
                             <th class="text-start">Unit Cost Inc.Tax</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Receive Qty</th>
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>

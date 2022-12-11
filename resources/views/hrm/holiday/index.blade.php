@@ -39,8 +39,8 @@
                                     <th>@lang('menu.sl')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>@lang('menu.date')</th>
-                                    <th>Allowed Branch</th>
-                                    <th>Note</th>
+                                    <th>{{ __('Allowed Branch') }}</th>
+                                    <th>@lang('menu.note')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -73,8 +73,8 @@
                     <!--begin::Form-->
                     <form id="add_holiday_form" action="{{ route('hrm.holidays.store') }}">
                         <div class="form-group ">
-                            <label><b>Holiday Name :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="holiday_name" required class="form-control" placeholder="Holiday Name">
+                            <label><b>{{ __('Holiday Name') }} :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="holiday_name" required class="form-control" placeholder="{{ __('Holiday Name') }}">
                         </div>
 
                         <div class="form-group row mt-1">
@@ -91,7 +91,7 @@
 
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="form-group mt-1">
-                                <label><b>Allowed Branch</b> <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Allowed Branch') }}</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="branch_id" required>
                                     <option value="All"> All </option>
                                     <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
@@ -103,8 +103,8 @@
                         @endif
 
                         <div class="form-group mt-1">
-                            <label><b>Note :</b> </label>
-                            <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="Note"></textarea>
+                            <label><b>@lang('menu.note') :</b> </label>
+                            <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="@lang('menu.note')"></textarea>
 
                         </div>
 

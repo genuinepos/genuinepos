@@ -1027,7 +1027,7 @@
                                 <div class="col-md-6">
 
                                     <div class="col-md-12">
-                                        <p><strong>Dashboard</strong></p>
+                                        <p><strong>@lang('menu.dashboard')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -1092,7 +1092,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="hrm_dashboard" class="HRMS"> &nbsp; HRM Dashboard</p>
+                                                <input type="checkbox" name="hrm_dashboard" class="HRMS"> &nbsp; HRM @lang('menu.dashboard')</p>
                                             </div>
                                         </div>
 
@@ -1182,7 +1182,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="designation" class="HRMS"> &nbsp; Designation</p>
+                                                <input type="checkbox" name="designation" class="HRMS"> &nbsp; @lang('menu.designation')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1282,7 +1282,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="process_edit" class="Manufacturing"> &nbsp;  Edit Process</p>
+                                                <input type="checkbox" name="process_edit" class="Manufacturing"> &nbsp;  @lang('menu.edit_process')</p>
                                             </div>
                                         </div>
 
@@ -1303,14 +1303,14 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="production_add" class="Manufacturing"> &nbsp; Add Production</p>
+                                                <input type="checkbox" name="production_add" class="Manufacturing"> &nbsp; @lang('menu.add_production')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="production_edit" class="Manufacturing"> &nbsp;  Edit Production</p>
+                                                <input type="checkbox" name="production_edit" class="Manufacturing"> &nbsp; @lang('menu.edit_production')</p>
                                             </div>
                                         </div>
 
@@ -1331,7 +1331,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="manuf_report" class="Manufacturing"> &nbsp; Manufacturing Report</p>
+                                                <input type="checkbox" name="manuf_report" class="Manufacturing"> &nbsp; @lang('menu.manufacturing_report')</p>
                                             </div>
                                         </div>
                                     </div>

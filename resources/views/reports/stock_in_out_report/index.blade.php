@@ -40,8 +40,8 @@
                                 <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                     <div class="form-group row">
                                         <div class="col-lg-2 col-md-4 search_area">
-                                            <label><strong>Search Product :</strong></label>
-                                            <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                            <label><strong>{{ __('Search Product') }} :</strong></label>
+                                            <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
                                             <input type="hidden" name="product_id" id="product_id" value="">
                                             <input type="hidden" name="variant_id" id="variant_id" value="">
                                             <div class="search_result d-hide">

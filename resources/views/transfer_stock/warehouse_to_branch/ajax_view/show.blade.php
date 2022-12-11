@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <ul class="list-unstyled">
-                        <li><strong>Warehouse (From) : </strong></li>
+                        <li><strong>@lang('menu.warehouse') (From) : </strong></li>
                         <li><strong>@lang('menu.name') :</strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>@lang('menu.address') : </strong>{{ $transfer->warehouse->address }}</li>
@@ -65,10 +65,10 @@
                                 <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">Unit Price</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
-                                <th class="text-start">Unit</th>
+                                <th class="text-start">@lang('menu.unit')</th>
                                 <th class="text-start">Pending Qty</th>
                                 <th class="text-start">Received Qty</th>
-                                <th class="text-start">SubTotal</th>
+                                <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
                         <tbody class="transfer_print_product_list">
@@ -174,7 +174,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Warehouse (Form) : </strong></li>
+                        <li><strong>@lang('menu.warehouse') (Form) : </strong></li>
                         <li><strong>@lang('menu.name') :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
                         <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
                         <li><strong>@lang('menu.address') : </strong> {{ $transfer->warehouse->address }}</li>
@@ -224,9 +224,9 @@
                             <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">Unit Price</th>
                             <th class="text-start">@lang('menu.quantity')</th>
-                            <th class="text-start">Unit</th>
+                            <th class="text-start">@lang('menu.unit')</th>
                             <th class="text-start">Receive Qty</th>
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>

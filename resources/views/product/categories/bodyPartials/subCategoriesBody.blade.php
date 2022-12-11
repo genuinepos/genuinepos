@@ -82,7 +82,7 @@
                             <tr>
                                 <th>@lang('menu.serial')</th>
                                 <th>Photo</th>
-                                <th>SubCategory</th>
+                                <th>@lang('menu.sub_category')</th>
                                 <th>Parent Category</th>
                                 <th>@lang('menu.description')</th>
                                 <th>@lang('menu.action')</th>

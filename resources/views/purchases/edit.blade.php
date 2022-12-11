@@ -46,7 +46,7 @@
                                     @if ($purchase->warehouse_id)
                                         <input name="warehouse_count" value="YES" type="hidden"/>
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>Warehouse :</b><span
+                                            <label class="col-4"><b>@lang('menu.warehouse') :</b><span
                                                 class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable add_input"
@@ -93,7 +93,7 @@
                                                     <select class="form-control changeable" name="purchase_status" id="purchase_status">
                                                         <option value="1">Purchased</option>
                                                         {{-- <option value="2">@lang('menu.pending')</option> --}}
-                                                        <option value="3">Ordered</option>
+                                                        <option value="3">@lang('menu.ordered')</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -137,7 +137,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Delivery Date :</b></label>
+                                        <label class="col-4"><b>@lang('menu.delivery_date') :</b></label>
                                         <div class="col-8">
                                             <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off" value="{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}">
                                         </div>
@@ -199,15 +199,15 @@
                                                         <th>@lang('menu.product')</th>
                                                         <th>@lang('menu.quantity')</th>
                                                         <th>@lang('menu.unit_cost')(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
-                                                        <th>Discount</th>
+                                                        <th>@lang('menu.discount')</th>
                                                         <th>@lang('menu.unit_cost')(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
-                                                        <th>SubTotal(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
+                                                        <th>@lang('menu.subtotal')(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                         <th>Unit Tax</th>
                                                         <th>Net Unit Cost</th>
                                                         <th>Line Total</th>
                                                         @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                                                             <th>Profit Margin(%)</th>
-                                                            <th>Selling Price Exc.Tax</th>
+                                                            <th>@lang('menu.selling_price_exc_tax')</th>
                                                         @endif
                                                         <th><i class="fas fa-trash-alt"></i></th>
                                                     </tr>
@@ -228,12 +228,12 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Discount :</b></label>
+                                        <label class=" col-4"><b>@lang('menu.discount') :</b></label>
                                         <div class="col-8">
                                             <div class="row g-0">
                                                 <select name="order_discount_type" class="form-control w-25" id="order_discount_type">
-                                                    <option value="1">Fixed</option>
-                                                    <option value="2">Percentage</option>
+                                                    <option value="1">@lang('menu.fixed')</option>
+                                                    <option value="2">@lang('menu.percentage')</option>
                                                 </select>
 
                                                 <input name="order_discount" type="number" class="form-control w-75" id="order_discount" value="0.00">
@@ -243,7 +243,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Tax :</b></label>
+                                        <label class="col-4"><b>@lang('menu.tax') :</b></label>
                                         <div class="col-8">
                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                                 <option value="0.00">@lang('menu.no_tax')</option>

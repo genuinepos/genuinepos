@@ -17,7 +17,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h5>Create Process</h5>
+                    <h5>@lang('menu.create_process')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -36,7 +36,7 @@
                                     @php
                                         $p_code = $product['v_code'] ? $product['v_code'] : $product['p_code'];
                                     @endphp
-                                    <p> <strong>Product :</strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
+                                    <p> <strong>@lang('menu.product') :</strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 offset-md-3">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Select Ingredients</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.select_ingredients')</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -72,11 +72,11 @@
                                                     <table class="display data__table table-striped">
                                                         <thead class="staky">
                                                             <tr>
-                                                                <th>Ingredient</th>
-                                                                <th>Final Quantity</th>
-                                                                <th>Unit</th>
+                                                                <th>@lang('menu.ingredient')</th>
+                                                                <th>@lang('menu.final_quantity')</th>
+                                                                <th>@lang('menu.unit')</th>
                                                                 <th>@lang('menu.unit_cost')</th>
-                                                                <th>SubTotal</th>
+                                                                <th>@lang('menu.sub_total')</th>
                                                                 <th><i class="fas fa-trash-alt"></i></th>
                                                             </tr>
                                                         </thead>
@@ -96,7 +96,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="mt-1 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant C }}ost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 
@@ -105,10 +105,10 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>Total Output Qty :</b></label>
+                                    <label><b>@lang('menu.total_output_qty') :</b></label>
                                     <div class="row">
                                         <div class="col-7">
-                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="Total Output Quantity" value="1.00">
+                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="1.00">
                                         </div>
 
                                         <div class="col-5">
@@ -118,13 +118,13 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>Addtional Production Cost :</b></label>
+                                    <label><b>{{ __('Additional Production Cost') }} :</b></label>
                                     <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>Total Cost :</b></label>
-                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="Total Cost">
+                                    <label><b>@lang('menu.total_cost') :</b></label>
+                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')">
                                 </div>
                             </div>
                         </div>

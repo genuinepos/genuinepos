@@ -37,8 +37,8 @@
                                     <form id="filter_form">
                                         <div class="form-group row">
                                             <div class="col-md-2 search_area">
-                                                <label><strong>Search Product :</strong></label>
-                                                <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                                <label><strong>{{ __('Search Product') }} :</strong></label>
+                                                <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
                                                 <input type="hidden" name="product_id" id="product_id" value="">
                                                 <input type="hidden" name="variant_id" id="variant_id" value="">
                                                 <div class="search_result d-hide">
@@ -79,7 +79,7 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <label><strong>Category :</strong></label>
+                                                <label><strong>@lang('menu.category') :</strong></label>
                                                 <select name="category_id" class="form-control submit_able"
                                                     id="category_id">
                                                     <option value="">@lang('menu.all')</option>
@@ -90,7 +90,7 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <label><strong>Sub-Category :</strong></label>
+                                                <label><strong>@lang('menu.sub_category') :</strong></label>
                                                 <select name="sub_category_id" class="form-control" id="sub_category_id">
                                                     <option value="">@lang('menu.all')</option>
                                                 </select>
@@ -172,7 +172,7 @@
                                                     <th>Sold By</th>
                                                     <th>@lang('menu.quantity')</th>
                                                     <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                    <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>

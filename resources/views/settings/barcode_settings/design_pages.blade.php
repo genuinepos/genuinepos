@@ -78,7 +78,7 @@
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-sm-4">
-                                    <label for="">Product Name</label>
+                                    <label for="">@lang('menu.product_name')</label>
                                 </div>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" placeholder="Search Product">
@@ -91,8 +91,8 @@
                                         <tr class="bg-secondary text-white">
                                             <th>SL</th>
                                             <th>Code</th>
-                                            <th>Product Name</th>
-                                            <th>Selling Price</th>
+                                            <th>@lang('menu.product_name')</th>
+                                            <th>@lang('menu.selling_price')</th>
                                             <th>Print Qty</th>
                                             <th><i class="fas fa-times"></i></th>
                                         </tr>
@@ -205,7 +205,7 @@
                                         <tr>
                                             <th>Check</th>
                                             <th> SL</th>
-                                            <th>Product Name</th>
+                                            <th>@lang('menu.product_name')</th>
                                             <th>Code</th>
                                             <th>Price</th>
                                             <th>@lang('menu.supplier_name')</th>
@@ -513,7 +513,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="productNameCheck">
                                                 <label class="form-check-label" for="productNameCheck">
-                                                    Product Name
+                                                    @lang('menu.product_name')
                                                 </label>
                                             </div>
                                             <div class="row g-1">

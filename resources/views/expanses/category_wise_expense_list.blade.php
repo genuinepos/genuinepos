@@ -47,7 +47,7 @@
                                     </div> --}}
 
                                     <div class="col-md-2">
-                                        <label><strong>Category :</strong></label>
+                                        <label><strong>@lang('menu.category') :</strong></label>
                                         <select name="category_id" class="form-control submit_able" id="category_id" >
                                             <option value="">@lang('menu.all')</option>
                                         </select>

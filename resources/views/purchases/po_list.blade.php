@@ -64,9 +64,9 @@
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Received</option>
+                                                        <option value="1">@lang('menu.receive')</option>
                                                         <option value="2">@lang('menu.pending')</option>
-                                                        <option value="3">Ordered</option>
+                                                        <option value="3">@lang('menu.ordered')</option>
                                                     </select>
                                                 </div>
 

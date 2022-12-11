@@ -183,7 +183,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>@lang('menu.date')</th>
-                                                                <th>Reference No</th>
+                                                                <th>@lang('menu.reference_no')</th>
                                                                 <th>@lang('menu.branch')</th>
                                                                 <th>Expense For</th>
                                                                 <th>@lang('menu.payment_status')</th>

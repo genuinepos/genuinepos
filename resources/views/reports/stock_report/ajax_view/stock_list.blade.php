@@ -3,7 +3,7 @@
         <tr class="bg-navey-blue">
             <th>P.Code(SKU)</th>
             <th>@lang('menu.product')</th>
-            <th>Unit Price Exc.Tax</th>
+            <th>@lang('menu.unit_price_exc_tax')</th>
             <th>@lang('menu.b_location')</th>
             <th>Warehouse</th>
             <th>@lang('menu.current_stock')</th>

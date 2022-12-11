@@ -34,7 +34,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Reference ID : </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
+                                <li><strong> @lang('menu.reference_id') : </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
                                 </li>
                                 <li><strong>@lang('menu.b_location') : </strong>
                                     <span class="warehouse">

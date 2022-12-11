@@ -13,7 +13,7 @@
       </tr>
       <tr>
         <th style="text-align:left;">
-            <p><b>Receive Stock Details</b></p>
+            <p><b>{{ __('Receive Stock Details') }}</b></p>
         </th>
       </tr>
     </thead>
@@ -24,14 +24,14 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:150px">Paid Status :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} :</span>
                 <b style="color:green;font-weight:normal;margin:0">
                   @if ($transfer->status == 1)
-                    Pending
+                    @lang('menu.pending')
                   @elseif($transfer->status == 2)
-                    Partial
+                    @lang('menu.partial')
                   @elseif($transfer->status == 3)
-                    Completed
+                    @lang('menu.completed')
                   @endif
                 </b>
             </p>
@@ -47,7 +47,7 @@
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px"><strong>Warehouse (From):</strong></span>
+              <span style="display:block;font-weight:bold;font-size:13px"><strong>@lang('menu.warehouse') (From):</strong></span>
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.name') :</span>

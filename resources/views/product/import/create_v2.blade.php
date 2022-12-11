@@ -81,7 +81,7 @@
                                         <tbody>
                                             <tr>
                                                 <td class="text-start">1</td>
-                                                <td class="text-start"> Product Name (Required)</td>
+                                                <td class="text-start"> @lang('menu.product_name') (Required)</td>
                                                 <td class="text-start"> Name of the product</td>
                                             </tr>
 

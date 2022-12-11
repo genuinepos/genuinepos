@@ -23,7 +23,7 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:150px">Paid Status :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} :</span>
                 @php
                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                 @endphp
@@ -40,7 +40,7 @@
                 {{ $sale->invoice_id }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">Total Payable : </span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_payable') : </span>
                 {{ json_decode($generalSettings->business, true)['currency'] }} {{ number_format($sale->total_payable_amount, 2) }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">

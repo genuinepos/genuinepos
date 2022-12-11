@@ -115,7 +115,7 @@
                     <tr>
                         <th class="text-start">@lang('menu.sl')</th>
                         <th class="text-start">@lang('menu.product')</th>
-                        <th class="text-start">Unit</th>
+                        <th class="text-start">@lang('menu.unit')</th>
                         <th class="text-start">@lang('menu.quantity')</th>
                     </tr>
                 </thead>

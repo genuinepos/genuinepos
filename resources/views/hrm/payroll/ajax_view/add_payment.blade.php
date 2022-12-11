@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Employee : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name}}</li>
+                    <li><strong>{{ __('Employee') }} : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name}}</li>
                     <li>
                         <strong>@lang('menu.business_location') : </strong>
                         <span>
@@ -28,7 +28,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Referance ID : </strong><span>{{ $payroll->reference_no }}</span> </li>
+                    <li><strong> @lang('menu.reference_id') : </strong><span>{{ $payroll->reference_no }}</span> </li>
 
                 </ul>
             </div>

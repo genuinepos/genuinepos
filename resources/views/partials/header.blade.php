@@ -59,18 +59,18 @@
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton0">
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> Notification 1 <span>3 Days ago</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> Notification 1 <span>3 Days ago</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> Notification 1 <span>3 Days ago</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
                                     </li>
 
-                                    <a href="#" class="btn btn-sm btn-primary">View All</a>
+                                    <a href="#" class="btn btn-sm btn-primary">@lang('menu.view_all')</a>
 
                                 </ul>
                             </li>
@@ -171,7 +171,7 @@
 
                                     <li>
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"
-                                            href="{{ route('users.profile.index') }}">Edit Profile</a>
+                                            href="{{ route('users.profile.index') }}">{{ __('Edit Profile') }} </a>
                                     </li>
                                 </ul>
                             </li>

@@ -1030,7 +1030,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="production_edit" {{ $role->hasPermissionTo('production_edit') ? 'checked' : '' }} class="manage_production manufacturing_permission super_select_all"> Edit production
+                                            <input type="checkbox" name="production_edit" {{ $role->hasPermissionTo('production_edit') ? 'checked' : '' }} class="manage_production manufacturing_permission super_select_all"> @lang('menu.edit_production')
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -1050,7 +1050,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="manuf_report" {{ $role->hasPermissionTo('manuf_report') ? 'checked' : '' }} class="menufacturing_report manufacturing_permission super_select_all">  Manufacturing report
+                                            <input type="checkbox" name="manuf_report" {{ $role->hasPermissionTo('manuf_report') ? 'checked' : '' }} class="menufacturing_report manufacturing_permission super_select_all">  @lang('menu.manufacturing_report')
                                         </p>
                                     </div>
                                     <div class="col-lg-3 col-sm-6"></div>
@@ -1888,7 +1888,7 @@
                             <div class="element-body border-top">
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6">
-                                        <p class="text-info"><input type="checkbox" class="select_all super_select_all dashboard_permission" data-target="dashboard" autocomplete="off"><strong> Dashboard</strong>
+                                        <p class="text-info"><input type="checkbox" class="select_all super_select_all dashboard_permission" data-target="dashboard" autocomplete="off"><strong> @lang('menu.dashboard')</strong>
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="dash_data" {{ $role->hasPermissionTo('dash_data') ? 'checked' : '' }} class="dashboard dashboard_permission super_select_all">
@@ -1918,7 +1918,7 @@
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="hrm_dashboard" {{ $role->hasPermissionTo('hrm_dashboard') ? 'checked' : '' }} class="hrm human_permission super_select_all ">
                                                 HRM
-                                            dashboard
+                                                @lang('menu.dashboard')
                                         </p>
 
                                         <p class="checkbox_input_wrap">

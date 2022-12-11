@@ -16,10 +16,10 @@
                     <table class="table table-sm table-striped">
                         <thead>
                             <tr class="bg-secondary">
-                                <th class="text-white">Product Name</th>
+                                <th class="text-white">@lang('menu.product_name')</th>
                                 <th class="text-white">Quantity Remaining</th>
                                 <th class="text-white">Unit Cost Exc.Tax</th>
-                                <th class="text-white">SubTotal</th>
+                                <th class="text-white">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
                         <tbody>

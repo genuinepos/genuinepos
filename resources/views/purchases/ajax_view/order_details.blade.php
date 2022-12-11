@@ -8,7 +8,7 @@
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">
-                     PO Details (Reference ID : <strong>{{ $purchase->invoice_id }}</strong>)
+                     PO Details (@lang('menu.reference_id') : <strong>{{ $purchase->invoice_id }}</strong>)
                  </h5>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
@@ -56,7 +56,7 @@
                             <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>PO Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>Delivery : </strong> {{$purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) : '' }}</li>
-                            <li><strong>@lang('menu.purchases_status') : </strong> <span class="badge bg-primary">Ordered</span></li>
+                            <li><strong>@lang('menu.purchases_status') : </strong> <span class="badge bg-primary">@lang('menu.ordered')</span></li>
                             <li><strong>@lang('menu.receiving_status') : </strong>
                                 @if ($purchase->po_receiving_status == 'Pending')
 
@@ -100,10 +100,10 @@
                                          <th class="text-white text-start">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency']}}) (Before Discount)</th>
                                          <th class="text-white text-start">Unit Discount({{ json_decode($generalSettings->business, true)['currency']}})</th>
                                          <th class="text-white text-start">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency']}}) (Before Tax)</th>
-                                         <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency']}}) (Before Tax)</th>
+                                         <th class="text-white text-start">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency']}}) (Before Tax)</th>
                                          <th class="text-white text-start">Tax(%)</th>
                                          <th class="text-white text-start">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency']}}) (After Tax)</th>
-                                         <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                                         <th class="text-white text-start">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency']}})</th>
                                          <th class="text-white text-start">Pending Qty</th>
                                          <th class="text-white text-start">Received Qty</th>
                                      </tr>
@@ -434,9 +434,9 @@
                         <ul class="list-unstyled">
                             <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>@lang('menu.purchase_date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>Delivery Date : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
+                            <li><strong>@lang('menu.delivery_date') : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
 
-                            <li><strong>@lang('menu.purchases_status') : </strong>Ordered</li>
+                            <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>
                             <li><strong>@lang('menu.receiving_status') : </strong>{{ $purchase->po_receiving_status }}</li>
                             <li><strong>@lang('menu.payment_status') : </strong>
                                @php
@@ -444,13 +444,13 @@
                                @endphp
                                @if ($purchase->due <= 0)
 
-                                   Paid
+                               @lang('menu.paid')
                                @elseif($purchase->due > 0 && $purchase->due < $payable)
 
-                                   Partial
+                               @lang('menu.partial')
                                @elseif($payable == $purchase->due)
 
-                                   Due
+                               @lang('menu.due')
                                @endif
                             </li>
                             <li><strong>@lang('menu.created_by') : </strong>
@@ -470,7 +470,7 @@
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Pending Qty</th>
                             <th scope="col">Received Qty</th>
                         </tr>

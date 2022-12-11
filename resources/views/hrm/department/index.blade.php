@@ -74,15 +74,15 @@
                         </div>
 
                         <div class="form-group">
-                            <label><b>Department ID :</b> <span class="text-danger">*</span></label>
+                            <label><b>{{ __('Department ID') }} :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="Department name" required/>
-                            <small class="text-danger">Department ID must be Unique</small>
+                            <small class="text-danger">{{ __('Department id must be Unique') }}</small>
                         </div>
 
                         <div class="form-group mt-1">
                             <div class="form-group">
-                                <label><b>Department Details :</b> </label>
-                                <textarea name="description" class="form-control" placeholder="Department Details"></textarea>
+                                <label><b>{{ __('Department Details') }} :</b> </label>
+                                <textarea name="description" class="form-control" placeholder="{{ __('Department Details') }}"></textarea>
                             </div>
                         </div>
 
@@ -118,15 +118,15 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Department ID :</b> <span class="text-danger">*</span></label>
+                            <label><b>{{ __('Department ID') }} :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="Department name" id="e_department_id" required/>
-                            <small class="text-danger">Department id must be Unique</small>
+                            <small class="text-danger">{{ __('Department id must be Unique') }}</small>
                         </div>
 
                         <div class="form-group mt-1">
                             <div class="form-group">
-                                <label><b>Department Details :</b> </label>
-                                <textarea name="description" class="form-control" placeholder="Department Details" id="e_description"></textarea>
+                                <label><b>{{ __('Department Details') }} :</b> </label>
+                                <textarea name="description" class="form-control" placeholder="{{ __('Department Details') }}" id="e_description"></textarea>
                             </div>
                         </div>
 

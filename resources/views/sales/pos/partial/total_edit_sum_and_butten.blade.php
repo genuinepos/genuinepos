@@ -16,7 +16,7 @@
                                         toastr.error('Creating draft is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-orange function-card" tabindex="-1">Draft<p>F2</p>
+                                class="bg-orange function-card" tabindex="-1">@lang('menu.draft')<p>F2</p>
                             </a>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                                         toastr.error('Creating quotaion is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-orange function-card" tabindex="-1">Quotation<p>F4</p>
+                                class="bg-orange function-card" tabindex="-1">@lang('menu.quotation')<p>F4</p>
                             </a>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                                 toastr.error('Exchange System is not available in pos sale edit section.');
                             "
                             class="bg-orange function-card" tabindex="-1">
-                                Exchange<p>F6</p>
+                            @lang('menu.exchange')<p>F6</p>
                             </a>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>Total:</b></label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>@lang('menu.total'):</b></label>
                         <div class="col-sm-9">
                             <input readonly type="number" class="form-control sp-input" name="net_total_amount" id="net_total_amount" value="0.00">
                         </div>
@@ -157,7 +157,7 @@
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Discount:</label>
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">@lang('menu.discount'):</label>
                             <div class="col-sm-9 ">
                                 <input name="order_discount" type="number" step="any" class="form-control"
                                     id="order_discount" value="0.00">
@@ -231,7 +231,7 @@
                             </div>
 
                             <div class="btn-bg">
-                                <a href="#" class="bg-parpal btn-pos" id="reedem_point_button" tabindex="-1">Reedem Point</a>
+                                <a href="#" class="bg-parpal btn-pos" id="reedem_point_button" tabindex="-1">@lang('menu.reedem_oint')</a>
                             </div>
                         </div>
 

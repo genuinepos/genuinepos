@@ -17,7 +17,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h5>Edit Process</h5>
+                    <h5>@lang('menu.edit_process')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -37,7 +37,7 @@
                                     @php
                                         $p_code = $process->v_code ? $process->v_code : $process->p_code;
                                     @endphp
-                                    <p> <strong>Product :</strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
+                                    <p> <strong>@lang('menu.product') :</strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 offset-md-3">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Select Ingredients</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.select_ingredients')</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -75,11 +75,11 @@
                                                     <table class="display data__table table-striped">
                                                         <thead class="staky">
                                                             <tr>
-                                                                <th>Ingredient</th>
-                                                                <th>Final Quantity</th>
-                                                                <th>Unit</th>
+                                                                <th>@lang('menu.ingredient')</th>
+                                                                <th>@lang('menu.final_quantity')</th>
+                                                                <th>@lang('menu.unit')</th>
                                                                 <th>@lang('menu.unit_cost')</th>
-                                                                <th>SubTotal</th>
+                                                                <th>@lang('menu.subtotal')</th>
                                                                 <th><i class="fas fa-trash-alt"></i></th>
                                                             </tr>
                                                         </thead>
@@ -137,10 +137,10 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>Total Output Qty :</b></label>
+                                    <label><b>@lang('menu.total_output_qty') :</b></label>
                                     <div class="row">
                                         <div class="col-7">
-                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="Total Output Quantity" value="{{ $process->total_output_qty }}">
+                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="{{ $process->total_output_qty }}">
                                         </div>
 
                                         <div class="col-5">
@@ -154,13 +154,13 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>Production Cost :</b></label>
-                                    <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="{{ $process->production_cost }}">
+                                    <label><b>@lang('menu.production_cost') :</b></label>
+                                    <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="@lang('menu.production_cost')" value="{{ $process->production_cost }}">
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>Total Cost :</b></label>
-                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="Total Cost" value="{{ $process->total_cost }}">
+                                    <label><b>@lang('menu.total_cost') :</b></label>
+                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')" value="{{ $process->total_cost }}">
                                 </div>
                             </div>
                         </div>

@@ -4,7 +4,7 @@
     <div class="modal-dialog col-80-modal">
       <div class="modal-content" >
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Stock Adjustment Details (Reference No : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Stock Adjustment Details (@lang('menu.reference_no') : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -70,7 +70,7 @@
                                 <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">Unit Cost Inc.Tax</th>
-                                <th class="text-start">SubTotal</th>
+                                <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
                         <tbody class="adjustment_product_list">
@@ -254,7 +254,7 @@
                             <th scope="col" class="text-start">@lang('menu.product')</th>
                             <th scope="col" class="text-start">@lang('menu.quantity')</th>
                             <th scope="col" class="text-start">Unit Cost Inc.Tax</th>
-                            <th scope="col" class="text-start">SubTotal</th>
+                            <th scope="col" class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>

@@ -143,7 +143,7 @@
                                                 <th>Stock Location</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>Total Payable</th>
+                                                <th>@lang('menu.total_payable')</th>
                                                 <th>@lang('menu.paid')</th>
                                                 <th>@lang('menu.due')</th>
                                                 <th>Return</th>

@@ -141,7 +141,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Tax :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.tax') :</b> </label>
                                         <div class="col-8">
                                             <select name="tax" class="form-control" id="tax">
                                                 <option value="0.00">@lang('menu.no_tax')</option>

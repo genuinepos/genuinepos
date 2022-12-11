@@ -22,7 +22,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-file-alt"></span>
-                    <h6>Manufacturing Report</h6>
+                    <h6>@lang('menu.manufacturing_report')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -38,8 +38,8 @@
                             <form id="filter_form">
                                 <div class="form-group row">
                                     <div class="col-md-2 search_area">
-                                        <label><strong>Search Product :</strong></label>
-                                        <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                        <label><strong>{{ __('Search Product') }} :</strong></label>
+                                        <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
                                         <input type="hidden" name="product_id" id="product_id" value="">
                                         <input type="hidden" name="variant_id" id="variant_id" value="">
                                         <div class="search_result d-hide">
@@ -69,9 +69,9 @@
 
                                     <div class="col-md-2">
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <label><strong>Warehouse :</strong></label>
+                                            <label><strong>@lang('menu.warehouse') :</strong></label>
                                             <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                <option value="">Select Business Location First</option>
+                                                <option value="">@lang('menu.select_business_location_first')</option>
                                             </select>
                                         @else
                                             @php
@@ -80,7 +80,7 @@
                                                 ->get(['id', 'warehouse_name', 'warehouse_code']);
                                             @endphp
 
-                                            <label><strong>Warehouse :</strong></label>
+                                            <label><strong>@lang('menu.warehouse') :</strong></label>
                                             <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($wh as $row)
@@ -91,7 +91,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Category :</strong></label>
+                                        <label><strong>@lang('menu.category') :</strong></label>
                                         <select name="category_id" class="form-control submit_able"
                                             id="category_id">
                                             <option value="">@lang('menu.all')</option>
@@ -102,7 +102,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Sub-Category :</strong></label>
+                                        <label><strong>@lang('menu.sub_category') :</strong></label>
                                         <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
                                             <option value="">@lang('menu.all')</option>
                                         </select>
@@ -113,8 +113,8 @@
                                         <div class="input-group">
                                             <select name="status" class="form-control" id="status" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="1">Final</option>
-                                                <option value="0">Hold</option>
+                                                <option value="1">@lang('menu.final')</option>
+                                                <option value="0">@lang('menu.hold')</option>
                                             </select>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                         <label><strong></strong></label>
                                         <div class="input-group">
                                             <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start">
-                                                <i class="fas fa-funnel-dollar"></i> Filter
+                                                <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                             </button>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
 
             <div class="card">
                 <div class="section-header">
-                    <div class="col-6"><h6>Productions</h6></div>
+                    <div class="col-6"><h6>@lang('menu.production')</h6></div>
                     @if (auth()->user()->can('production_add'))
                         <div class="col-6 d-flex justify-content-end">
                             <a href="{{ route('manufacturing.productions.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
@@ -183,14 +183,14 @@
                                         <th class="text-black">@lang('menu.business_location')</th>
                                         <th class="text-black">@lang('menu.product')</th>
                                         <th class="text-black">@lang('menu.status')</th>
-                                        <th class="text-black">Per Unit Cost(Inc.Tax)</th>
-                                        <th class="text-black">Selling Price(Exc.Tax)</th>
-                                        <th class="text-black">Output Qty</th>
-                                        <th class="text-black">Wasted Qty</th>
-                                        <th class="text-black">Final Qty</th>
-                                        <th class="text-black">Total Ingredient Cost</th>
-                                        <th class="text-black">Production Cost</th>
-                                        <th class="text-black">Total Cost</th>
+                                        <th class="text-black">@lang('menu.per_unit_cost')(Inc.Tax)</th>
+                                        <th class="text-black">@lang('menu.selling_price')(Exc.Tax)</th>
+                                        <th class="text-black">@lang('menu.output_qty')</th>
+                                        <th class="text-black"> @lang('menu.wasted_qty')</th>
+                                        <th class="text-black">@lang('menu.final_qty')</th>
+                                        <th class="text-black">@lang('menu.total_ingredient_cost')</th>
+                                        <th class="text-black">@lang('menu.production_cost')</th>
+                                        <th class="text-black">@lang('menu.total_cost')</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

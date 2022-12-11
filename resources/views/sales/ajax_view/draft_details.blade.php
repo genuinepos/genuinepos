@@ -62,23 +62,23 @@
                         </li>
                     <li><strong>@lang('menu.status') : </strong>
                         <span class="sale_status">
-                            <spna class="badge bg-info">draft</spna>
+                            <span class="badge bg-info">@lang('menu.draft')</span>
                         </span>
                     </li>
                     <li><strong>Shipment Status : </strong>
                         <span class="shipment_status">
                             @if ($draft->shipment_status == null)
-                                <spna class="badge bg-danger">Not-Available</spna>
+                                <span class="badge bg-danger">Not-Available</span>
                             @elseif($draft->shipment_status == 1)
-                                <spna class="badge bg-warning">Ordered</spna>
+                                <span class="badge bg-warning">@lang('menu.ordered')</span>
                             @elseif($draft->shipment_status == 2)
-                                <spna class="badge bg-secondary">Packed</spna>
+                                <span class="badge bg-secondary">Packed</span>
                             @elseif($draft->shipment_status == 3)
-                                <spna class="badge bg-primary">Shipped</spna>
+                                <span class="badge bg-primary">Shipped</span>
                             @elseif($draft->shipment_status == 4)
-                                <spna class="badge bg-success">Delivered</spna>
+                                <span class="badge bg-success">Delivered</span>
                             @elseif($draft->shipment_status == 5)
-                                <spna class="badge bg-info">Cancelled</spna>
+                                <span class="badge bg-info">Cancelled</span>
                             @endif
                         </span>
                     </li>
@@ -115,11 +115,11 @@
                             <tr class="bg-primary text-white">
                                 <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
-                                <th class="text-start">Unit Price Exc.Tax</th>
+                                <th class="text-start">@lang('menu.unit_price_exc_tax')</th>
                                 <th class="text-start">Unit Discount</th>
                                 <th class="text-start">Unit Tax</th>
                                 <th class="text-start">Unit Price Inc.Tax</th>
-                                <th class="text-start">SubTotal</th>
+                                <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
                         <tbody class="draft_product_list">
@@ -212,7 +212,7 @@
             </div>
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>Note : </h6>
+                    <h6>@lang('menu.note') : </h6>
                     <p class="sale_note">{{ $draft->sale_note ? $draft->sale_note : 'N/A' }}</p>
                 </div>
             </div>
@@ -350,14 +350,14 @@
                             <th class="text-start">Unit Price</th>
 
                             @if ($draft->branch->add_sale_invoice_layout->product_discount)
-                                <th class="text-start">Discount</th>
+                                <th class="text-start">@lang('menu.discount')</th>
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->product_tax)
-                                <th class="text-start">Tax</th>
+                                <th class="text-start">@lang('menu.tax')</th>
                             @endif
 
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
@@ -468,7 +468,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Total Payable : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
@@ -710,14 +710,14 @@
                             <th class="text-start">Unit Price</th>
 
                             @if ($defaultLayout->product_discount)
-                                <th class="text-start">Discount</th>
+                                <th class="text-start">@lang('menu.discount')</th>
                             @endif
 
                             @if ($defaultLayout->product_tax)
-                                <th class="text-start">Tax</th>
+                                <th class="text-start">@lang('menu.tax')</th>
                             @endif
 
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
@@ -826,7 +826,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Total Payable : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}

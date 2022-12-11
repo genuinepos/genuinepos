@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="col-md-6">
                                     <p class="m-0"><strong>@lang('menu.business_location') (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
-                                        <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p>
+                                        <p class="m-0"><strong>@lang('menu.warehouse') (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p>
                                     </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                                         <tr>
                                                             <th>@lang('menu.product')</th>
                                                             <th class="text-center">Send Quantity</th>
-                                                            <th class="text-center">Unit</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
                                                             <th class="text-center">Pending Qty</th>
                                                             <th class="text-center">Receive Quantity</th>
                                                         </tr>

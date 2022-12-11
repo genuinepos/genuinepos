@@ -59,11 +59,11 @@
                             <li><strong>@lang('menu.invoice_id') : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>Sale Status : </strong>
                                 @if ($sale->status == 1)
-                                    <span class="badge bg-success">Final</span>
+                                    <span class="badge bg-success">@lang('menu.final')</span>
                                 @elseif($sale->status == 2)
-                                    <span class="badge bg-primary">Draft</span>
+                                    <span class="badge bg-primary">@lang('menu.draft')</span>
                                 @elseif($sale->status == 3)
-                                    <span class="badge bg-info">Quotation</span>
+                                    <span class="badge bg-info">@lang('menu.quotation')</span>
                                 @endif
                             </li>
                             <li><strong>@lang('menu.payment_status') : </strong>

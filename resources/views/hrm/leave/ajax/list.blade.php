@@ -5,7 +5,7 @@
             <th class="text-start">@lang('menu.type')</th>
             <th class="text-start">{{ __('Employee') }}</th>
             <th class="text-start">@lang('menu.date')</th>
-            <th class="text-start">Reason</th>
+            <th class="text-start">@lang('menu.reason')</th>
             <th class="text-start">@lang('menu.status')</th>
             <th class="text-start">@lang('menu.action')</th>
         </tr>

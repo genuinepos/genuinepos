@@ -92,7 +92,7 @@
                                                     </li>
 
                                                     <li>
-                                                        <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name &nbsp; </p>
+                                                        <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; @lang('menu.product_name') &nbsp; </p>
                                                     </li>
 
                                                     <li>

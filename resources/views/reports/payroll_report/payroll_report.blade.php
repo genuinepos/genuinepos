@@ -113,8 +113,8 @@
                                 <tr>
                                     <th>{{ __('Employee') }}</th>
                                     <th>@lang('menu.department')</th>
-                                    <th>Month/Year</th>
-                                    <th>Referance No</th>
+                                    <th>@lang('menu.month')/@lang('menu.years')</th>
+                                    <th>@lang('menu.reference_no')</th>
                                     <th>@lang('menu.total_amount')</th>
                                     <th>@lang('menu.paid')</th>
                                     <th>@lang('menu.due')</th>

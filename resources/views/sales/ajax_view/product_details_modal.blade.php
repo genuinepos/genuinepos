@@ -71,11 +71,11 @@
                             <li><strong> {{ $sale->status == 1 ? 'Invoice ID' : 'Order No' }}  : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>Sale Status : </strong>
                                 @if ($sale->status == 1)
-                                    <spna class="badge bg-success">Final</spna>
+                                    <span class="badge bg-success">@lang('menu.final')</span>
                                 @elseif($sale->status == 2)
-                                    <spna class="badge bg-primary">Draft</spna>
+                                    <span class="badge bg-primary">@lang('menu.draft')</span>
                                 @elseif($sale->status == 3)
-                                    <spna class="badge bg-dark">Ordered</spna>
+                                    <span class="badge bg-dark">@lang('menu.ordered')</span>
                                 @endif
                             </li>
                             <li><strong>@lang('menu.payment_status') : </strong>
@@ -94,7 +94,7 @@
                                 @if ($sale->shipment_status == null)
                                     <span class="badge bg-danger">Not-Available</span>
                                 @elseif($sale->shipment_status == 1)
-                                    <span class="badge bg-warning">Ordered</span>
+                                    <span class="badge bg-warning">@lang('menu.ordered')</span>
                                 @elseif($sale->shipment_status == 2)
                                     <span class="badge bg-secondary">Packed</span>
                                 @elseif($sale->shipment_status == 3)
@@ -143,11 +143,11 @@
                                     <th class="text-start">Stock Location</th>
                                     <th class="text-start">Warranty</th>
                                     <th class="text-end">@lang('menu.quantity')</th>
-                                    <th class="text-end">Unit Price Exc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-end">@lang('menu.unit_price_exc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Price Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                    <th class="text-end">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-end">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 </tr>
                             </thead>
                             <tbody class="sale_product_list">

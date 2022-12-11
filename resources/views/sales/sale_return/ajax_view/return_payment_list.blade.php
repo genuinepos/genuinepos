@@ -34,8 +34,7 @@
                             {{ $return->branch->name . '/' . $return->branch->branch_code }}
                         @else
 
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                            Office</b>)
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </li>
                 </ul>

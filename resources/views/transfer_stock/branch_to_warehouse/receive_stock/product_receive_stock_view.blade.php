@@ -33,7 +33,7 @@
                                     <p class="m-0"><strong>Date: </strong> <span class="transfer_date"></span></p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p class="m-0"><strong>Warehouse (From) : </strong> <span class="warehouse"></span> </p>
+                                        <p class="m-0"><strong>@lang('menu.warehouse') (From) : </strong> <span class="warehouse"></span> </p>
                                         <p class="m-0"><strong>@lang('menu.business_location') : </strong> <span class="branch"></span></p>
                                     </div>
                             </div>
@@ -54,7 +54,7 @@
                                                         <tr>
                                                             <th>@lang('menu.product')</th>
                                                             <th class="text-center">Send Quantity</th>
-                                                            <th class="text-center">Unit</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
                                                             <th class="text-center">Pending Qty</th>
                                                             <th class="text-center">Receive Quantity</th>
                                                         </tr>

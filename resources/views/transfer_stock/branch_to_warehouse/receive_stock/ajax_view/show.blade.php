@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li><strong>Warehouse (From) : </strong></li>
+                            <li><strong>@lang('menu.warehouse') (From) : </strong></li>
                             <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
                             <li><strong>@lang('menu.address') : </strong> {{ $sendStock->warehouse->address }}</li>
@@ -64,10 +64,10 @@
                                     <th class="text-start">@lang('menu.product')</th>
                                     <th class="text-start">Unit Price</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
-                                    <th class="text-start">Unit</th>
+                                    <th class="text-start">@lang('menu.unit')</th>
                                     <th class="text-start">Pending Qty</th>
                                     <th class="text-start">Received Qty</th>
-                                    <th class="text-start">SubTotal</th>
+                                    <th class="text-start">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
                             <tbody class="transfer_print_product_list">
@@ -133,7 +133,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Warehouse (Form) : </strong></li>
+                            <li><strong>@lang('menu.warehouse') (Form) : </strong></li>
                             <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
                             <li><strong>@lang('menu.address') : </strong> {{ $sendStock->warehouse->address }}</li>
@@ -164,9 +164,9 @@
                             <li><strong>@lang('menu.reference_id') : </strong>{{ $sendStock->invoice_id }}</li>
                             <li><strong>@lang('menu.status') : </strong>
                                 @if ($sendStock->status == 1)
-                                    Pending
+                                @lang('menu.pending')
                                 @elseif($sendStock->status == 2)
-                                    Partial
+                                @lang('menu.partial')
                                 @elseif($sendStock->status == 3)
                                 @lang('menu.completed')
                                 @endif
@@ -185,10 +185,10 @@
                                 <th scope="col">@lang('menu.product')</th>
                                 <th scope="col">Unit Price</th>
                                 <th scope="col">@lang('menu.quantity')</th>
-                                <th scope="col">Unit</th>
+                                <th scope="col">@lang('menu.unit')</th>
                                 <th scope="col">Pending Qty</th>
                                 <th scope="col">Received Qty</th>
-                                <th scope="col">SubTotal</th>
+                                <th scope="col">@lang('menu.sub_total')</th>
                             </tr>
                         </tr>
                     </thead>

@@ -92,11 +92,11 @@
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
                             </li>
 
-                            <li><strong>Delivery Date : </strong>
+                            <li><strong>@lang('menu.delivery_date') : </strong>
                                 {{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}
                             </li>
 
-                            <li><strong>@lang('menu.purchases_status') : </strong>Ordered</li>
+                            <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>
                             <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
                             </li>

@@ -49,7 +49,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Category :</strong></label>
+                                        <label><strong>@lang('menu.category') :</strong></label>
                                         <select name="cate_id" class="form-control submit_able" id="cate_id" >
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($ex_cates as $cate)
@@ -129,7 +129,7 @@
                                     <th class="text-start">@lang('menu.description')</th>
                                     <th class="text-start">Expanse For</th>
                                     <th class="text-start">@lang('menu.payment_status')</th>
-                                    <th class="text-start">Tax</th>
+                                    <th class="text-start">@lang('menu.tax')</th>
                                     <th class="text-start">Net Total</th>
                                     <th class="text-start">Payment Due</th>
                                 </tr>

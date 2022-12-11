@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"> <b>Warehouse :</b><span
+                                        <label for="inputEmail3" class="col-4"> <b>@lang('menu.warehouse') :</b><span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
@@ -115,8 +115,8 @@
                                                                     <th>@lang('menu.product')</th>
                                                                     <th></th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">SubTotal</th>
+                                                                    <th class="text-center">@lang('menu.unit')</th>
+                                                                    <th class="text-center">@lang('menu.sub_total')</th>
                                                                     <th><i class="fas fa-trash-alt text-white"></i></th>
                                                                 </tr>
                                                             </thead>

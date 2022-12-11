@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="far fa-money-bill-alt"></span>
-                    <h6>All Payrolls</h6>
+                    <h6>{{ __('All Payrolls') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -48,7 +48,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.users')/Employees :</strong></label>
+                                        <label><strong>@lang('menu.users')/{{ __('Employees') }} :</strong></label>
                                         <select name="user_id"
                                             class="form-control submit_able" id="user_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -97,7 +97,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>All Payrolls <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
+                        <h6>{{ __('All Payrolls') }} <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
@@ -113,12 +113,12 @@
                                 <tr>
                                     <th>{{ __('Employee') }}</th>
                                     <th>@lang('menu.department')</th>
-                                    <th>Designation</th>
-                                    <th>Month/Year</th>
-                                    <th>Referance No</th>
+                                    <th>@lang('menu.designation')</th>
+                                    <th>@lang('menu.month')/@lang('menu.years')</th>
+                                    <th>@lang('menu.reference_no')</th>
                                     <th>@lang('menu.total_amount')</th>
                                     <th>@lang('menu.payment_status')</th>
-                                    <th>Created By</th>
+                                    <th>@lang('menu.create_by')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -141,7 +141,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Select Employee & Month</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Select Employee') }} & @lang('menu.month')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -151,7 +151,7 @@
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
                                 <select  class="form-control employee" required="" id="department_id">
-                                    <option> Select Employee </option>
+                                    <option> {{ __('Select Employee') }} </option>
                                     @foreach($departments as $dep)
                                        <option value="{{ $dep->id }}">{{$dep->department_name }}</option>
                                     @endforeach
@@ -159,9 +159,9 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>Employee :</b></label>
+                                <label class="text-navy-blue"><b>{{ __('Employee') }} :</b></label>
                                 <select required name="user_id" class="form-control" id="employee">
-                                    <option value=""> Select Employee </option>
+                                    <option value=""> {{ __('Select Employee') }} </option>
                                     {{-- @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
                                     @endforeach --}}
@@ -171,7 +171,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><strong>Month/Year :</strong></label>
+                                <label><strong>@lang('menu.month')/@lang('menu.years') :</strong></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week"></i></span>
@@ -214,7 +214,7 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h6 class="modal-title" id="modal_title">Add Payment</h6>
+                    <h6 class="modal-title" id="modal_title">@lang('menu.add_payment')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
 

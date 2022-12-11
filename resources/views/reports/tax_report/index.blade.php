@@ -121,7 +121,7 @@
                                                                         <th>@lang('menu.invoice_id')</th>
                                                                         <th>@lang('menu.customer')</th>
                                                                         <th>@lang('menu.tax_number')</th>
-                                                                        <th>Discount</th>
+                                                                        <th>@lang('menu.discount')</th>
                                                                         <th>Tax Percent</th>
                                                                         <th>Tax Amount</th>
                                                                     </tr>
@@ -154,7 +154,7 @@
                                                                         <th>@lang('menu.invoice_id')</th>
                                                                         <th>@lang('menu.supplier')</th>
                                                                         <th>@lang('menu.tax_number')</th>
-                                                                        <th>Discount</th>
+                                                                        <th>@lang('menu.discount')</th>
                                                                         <th>Tax Percent</th>
                                                                         <th>Tax Amount</th>
                                                                     </tr>

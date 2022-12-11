@@ -24,7 +24,7 @@
                 <label><strong>Shipment Status :</strong> </label>
                 <select name="shipment_status" class="form-control form-control-sm add_input" id="shipment_status" data-name="Shipment status">
                     <option value="">Select Shipment Status</option>
-                    <option {{ $sale->shipment_status == 1 ? 'SELECTED' : '' }} value="1">Ordered</option>
+                    <option {{ $sale->shipment_status == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.ordered')</option>
                     <option {{ $sale->shipment_status == 2 ? 'SELECTED' : '' }} value="2">Packed</option>
                     <option {{ $sale->shipment_status == 3 ? 'SELECTED' : '' }} value="3">Shipped</option>
                     <option {{ $sale->shipment_status == 4 ? 'SELECTED' : '' }} value="4">Delivered</option>

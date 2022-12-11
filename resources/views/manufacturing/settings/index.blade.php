@@ -58,7 +58,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-3">
-                                            <label><strong>Production Reference prefix :</strong></label>
+                                            <label><strong>@lang('menu.production_reference_prefix') :</strong></label>
                                             @php
                                                 $voucherPrefix = '';
                                                 if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix'])){
@@ -66,7 +66,7 @@
                                                 }
                                             @endphp
                                             <input type="text" name="production_ref_prefix" class="form-control"
-                                                autocomplete="off" placeholder="Production Reference prefix"
+                                                autocomplete="off" placeholder="@lang('menu.production_reference_prefix')"
                                                 value="{{ $voucherPrefix }}">
                                         </div>
 
@@ -77,7 +77,7 @@
                                                         @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
                                                             {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
-                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b>
+                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>@lang('menu.enable_editing_ingredients_quantity_in_production')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                         @if(isset(json_decode($generalSettings->mf_settings, true)['enable_updating_product_price']))
                                                             {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
-                                                        name="enable_updating_product_price"> &nbsp; <b>Update product cost and selling price based on total production cost, on finalizing production</b>
+                                                        name="enable_updating_product_price"> &nbsp; <b>@lang('menu.update_selling_finalizing_production')</b>
                                                 </p>
                                             </div>
                                         </div>

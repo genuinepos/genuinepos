@@ -11,15 +11,15 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Employee : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name }}
+                    <li><strong>{{ __('Employee') }} : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name }}
                     </li>
 
-                    <li><strong>Branch: </strong>
+                    <li><strong>@lang('menu.branch') : </strong>
                         @if ($payroll->employee->branch)
                             {{ $payroll->employee->branch->name . '/' . $payroll->employee->branch->branch_code }}
                         @else
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                            Office</b>)
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')
+                            </b>)
                         @endif
                     </li>
                 </ul>
@@ -29,7 +29,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Referance No : </strong>{{ $payroll->reference_no }} </li>
+                    <li><strong> @lang('menu.reference_no') : </strong>{{ $payroll->reference_no }} </li>
 
                 </ul>
             </div>

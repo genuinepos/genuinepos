@@ -18,8 +18,8 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h5>Edit Payroll Of
-                    <b>{{ $payroll->employee->name }}</b> for <b>{{ $payroll->month. ' '.$payroll->year }}</b> (Reference No : {{$payroll->reference_no}})</h5>
+                    <h5>{{ __('Edit Payroll Of') }}
+                    <b>{{ $payroll->employee->name }}</b> for <b>{{ $payroll->month. ' '.$payroll->year }}</b> (@lang('menu.reference_no') : {{$payroll->reference_no}})</h5>
                 </div>
 
                 <div class="col-3">
@@ -37,29 +37,29 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>Total Work Duration :</b> <span class="text-danger">*
+                                    <label><b>{{ __('Total work duration') }} :</b> <span class="text-danger">*
                                         </span> </label>
                                     <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
-                                        placeholder="Total Work Duration" autofocus value="{{ $payroll->duration_time }}">
+                                        placeholder="{{ __('Total work duration') }}" autofocus value="{{ $payroll->duration_time }}">
                                     <span class="error error_duration_time"></span>
                                 </div>
 
                                 <div class="col-md-3">
                                     <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
                                     <select name="duration_unit" id="duration_unit" class="form-control">
-                                        <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">Hourly</option>
-                                        <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">Monthly</option>
-                                        <option {{ $payroll->duration_unit == 'Yearly' ? 'SELECTED' : '' }}  value="Yearly">Hour</option>
-                                        <option {{ $payroll->duration_unit == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Week</option>
+                                        <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
+                                        <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>
+                                        <option {{ $payroll->duration_unit == 'Yearly' ? 'SELECTED' : '' }}  value="Yearly">{{ __('Hourly') }}</option>
+                                        <option {{ $payroll->duration_unit == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">{{ __('Week') }}</option>
                                     </select>
                                     <span class="error error_duration_unit"></span>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>Amount per unit duration :</b> <span
+                                    <label><b>{{ __('Amount per unit duration') }} :</b> <span
                                             class="text-danger">*</span></label>
                                     <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
-                                        class="form-control" placeholder="Amount per unit duration" value="{{ $payroll->amount_per_unit }}">
+                                        class="form-control" placeholder="{{ __('Amount per unit duration') }}" value="{{ $payroll->amount_per_unit }}">
                                     <span class="error error_amount_per_unit"></span>
                                 </div>
 
@@ -77,7 +77,7 @@
                             <div class="heading_area">
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6">
-                                        <p class="p-2 text-primary"><b>Allowances</b> </p>
+                                        <p class="p-2 text-primary"><b>{{ __('Allowances') }}</b> </p>
                                     </div>
 
                                     <div class="col-md-6 col-sm-6 d-flex justify-content-end">
@@ -93,8 +93,8 @@
                                         <table class="table modal-table table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-navy-blue">Allowance</th>
-                                                    <th class="text-navy-blue">Amount Type</th>
+                                                    <th class="text-navy-blue">{{ __('Allowance') }}</th>
+                                                    <th class="text-navy-blue">{{ __('Amount Type') }}</th>
                                                     <th class="text-navy-blue">@lang('menu.amount')</th>
                                                     <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
                                                 </tr>
@@ -112,8 +112,8 @@
 
                                                             <td>
                                                                 <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
-                                                                    <option {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}  value="1">Fixed</option>
-                                                                    <option {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
+                                                                    <option {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}  value="1">@lang('menu.fixed')</option>
+                                                                    <option {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')</option>
                                                                 </select>
 
                                                                 <div class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-hide' : '' }} ">
@@ -148,7 +148,7 @@
 
                                                         <td>
                                                             <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
-                                                                <option value="1">Fixed</option>
+                                                                <option value="1">@lang('menu.fixed')</option>
                                                                 <option value="2">Percentage</option>
                                                             </select>
 
@@ -174,7 +174,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th class="text-navy-blue" colspan="2">Total</th>
+                                                    <th class="text-navy-blue" colspan="2">@lang('menu.total')</th>
                                                     <th class="text-navy-blue" colspan="2">
                                                         $
                                                         <span class="span_total_allowance_amount">{{ $payroll->total_allowance_amount }}</span>
@@ -194,7 +194,7 @@
                             <div class="heading_area">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p class="p-2 text-primary"><b>Deductions</b> </p>
+                                        <p class="p-2 text-primary"><b>{{ __('Deductions') }}</b> </p>
                                     </div>
 
                                     <div class="col-md-6 d-flex justify-content-end">
@@ -211,8 +211,8 @@
                                         <table class="table table-sm">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-navy-blue">Deduction</th>
-                                                    <th class="text-navy-blue">Amount Type</th>
+                                                    <th class="text-navy-blue">{{ __('Deduction') }}</th>
+                                                    <th class="text-navy-blue">{{ __('Amount Type') }}</th>
                                                     <th class="text-navy-blue">@lang('menu.amount')</th>
                                                     <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
                                                 </tr>
@@ -230,8 +230,8 @@
 
                                                             <td>
                                                                 <select class="form-control" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                    <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed</option>
-                                                                    <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
+                                                                    <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')</option>
+                                                                    <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')</option>
                                                                 </select>
 
                                                                 <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-hide' : '' }} ">
@@ -266,8 +266,8 @@
 
                                                         <td>
                                                             <select class="form-control form-control-sm" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                <option value="1">Fixed</option>
-                                                                <option value="2">Percentage</option>
+                                                                <option value="1">@lang('menu.fixed')</option>
+                                                                <option value="2">@lang('menu.percentage')</option>
                                                             </select>
 
                                                             <div class="input-group deduction_percent_field d-hide">
@@ -293,7 +293,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th class="text-navy-blue" colspan="2">Total</th>
+                                                    <th class="text-navy-blue" colspan="2">@lang('menu.total')</th>
                                                     <th class="text-navy-blue" colspan="2">
                                                         $ <span class="span_total_deduction_amount">
                                                             {{ $payroll->total_deduction_amount }}
@@ -314,7 +314,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h6 class="float-end">
-                                        Gross Amount : <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
+                                        {{ __('Gross Amount ') }}: <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
                                         <input type="hidden" name="gross_amount" id="gross_amount" {{ $payroll->gross_amount }}>
                                     </h6>
                                 </div>
@@ -325,7 +325,7 @@
                     <div class="submit-area d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                            <button class="btn btn-sm btn-success submit_button">Generate</button>
+                            <button class="btn btn-sm btn-success submit_button">{{ __('Generate') }}</button>
                         </div>
                     </div>
                 </section>

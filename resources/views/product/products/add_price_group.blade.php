@@ -29,7 +29,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-12">
                                     <div class="heading_area">
-                                        <p><strong>Product : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p>
+                                        <p><strong>@lang('menu.product') : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p>
                                         <small class="text-danger">Tax (If Exists) will be added to all price group.</small>
                                     </div>
                                     <div class="table-responsive mt-1">

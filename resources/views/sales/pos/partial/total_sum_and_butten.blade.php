@@ -26,7 +26,7 @@
                                         toastr.error('Creating draft is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Draft<p>F2</p>
+                                class="function-card" tabindex="-1">@lang('menu.draft')<p>F2</p>
                             </a>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                         toastr.error('Creating quotaion is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Quotation<p>F4</p>
+                                class="function-card" tabindex="-1">@lang('menu.quotation')<p>F4</p>
                             </a>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="col-4">
                         <div class="btn-bg">
                             <a href="#" class="function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal" tabindex="-1">
-                                Exchange<p>F6</p>
+                                @lang('menu.exchange')<p>F6</p>
                             </a>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row g-1">
-                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>Total:</b></label>
+                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>@lang('menu.total'):</b></label>
                         <div class="col-sm-9 col-8">
                             <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                         </div>
@@ -145,7 +145,7 @@
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
                         <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">Discount:</label>
+                            <label class="col-sm-3 col-4 col-form-label text-white">@lang('menu.discount'):</label>
                             <div class="col-sm-9 col-8">
 
                                 <div class="row g-2">
@@ -261,7 +261,7 @@
                             </div>
 
                             <div class="btn-bg">
-                                <a href="#" class="btn-pos" id="reedem_point_button" tabindex="-1">Reedem Point</a>
+                                <a href="#" class="btn-pos" id="reedem_point_button" tabindex="-1">@lang('menu.reedem_oint')</a>
                             </div>
                         </div>
 

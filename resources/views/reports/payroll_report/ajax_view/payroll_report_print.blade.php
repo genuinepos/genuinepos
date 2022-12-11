@@ -58,7 +58,7 @@
                         <th class="text-start">@lang('menu.date')</th>
                         <th class="text-start">{{ __('Employee') }}</th>
                         <th class="text-start">@lang('menu.department')</th>
-                        <th class="text-start">Month/Year</th>
+                        <th class="text-start">@lang('menu.month')/@lang('menu.years')</th>
                         <th class="text-start">@lang('menu.reference_no')</th>
                         <th class="text-start">Gross Amount</th>
                         <th class="text-start">@lang('menu.paid')</th>
@@ -89,11 +89,11 @@
                             <td class="text-start">{{ $row->due }}</td>
                             <td class="text-start">
                                 @if ($row->due <= 0)
-                                    Paid
+                                @lang('menu.paid')
                                 @elseif($row->due > 0 && $row->due < $row->gross_amount)
-                                    Partial
+                                @lang('menu.partial')
                                 @elseif($row->gross_amount == $row->due)
-                                    Due
+                                @lang('menu.due')
                                 @endif
                             </td>
                         </tr>

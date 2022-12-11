@@ -467,7 +467,7 @@
                                             <label class="col-4"><b>@lang('menu.department') :</b> </label>
                                             <div class="col-8">
                                                 <select name="department_id" class="form-control">
-                                                    <option value="">Select Department</option>
+                                                    <option value="">@lang('menu.select_department')</option>
                                                     @foreach ($departments as $department)
                                                         <option value="{{ $department->id }}">{{ $department->department_name }}</option>
                                                     @endforeach
@@ -509,10 +509,10 @@
                                             <div class="col-8">
                                                 <select name="pay_type" class="form-control" id="pay_type">
                                                     <option value="">Select Pay type</option>
-                                                    <option value="Monthly">Monthly</option>
-                                                    <option value="Yearly">Yearly</option>
-                                                    <option value="Daliy">Daliy</option>
-                                                    <option value="Hourly">Hourly</option>
+                                                    <option value="Monthly">{{ __('Monthly') }}</option>
+                                                    <option value="Yearly">{{ __('Yearly') }}</option>
+                                                    <option value="Daliy">{{ __('Daily') }}</option>
+                                                    <option value="Hourly">{{ __('Hourly') }}</option>
                                                 </select>
                                                 <span class="error error_pay_type"></span>
                                             </div>

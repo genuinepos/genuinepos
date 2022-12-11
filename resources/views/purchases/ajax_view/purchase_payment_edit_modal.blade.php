@@ -37,7 +37,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Reference ID : </strong>
+                                <li><strong> @lang('menu.reference_id') : </strong>
                                     {{ $payment->purchase->invoice_id }}
                                 </li>
                                 <li><strong>@lang('menu.b_location') : </strong>
@@ -60,11 +60,12 @@
                                 </span> </li>
                                 <li><strong>@lang('menu.purchases_status') : </strong>
                                     @if ($payment->purchase->purchase_status == 1)
-                                        <span class="text-success"><b>Received</b></span>
+                                        <span class="text-success"><b>@lang('menu.receive')</b></span>
                                     @elseif($payment->purchase->purchase_status == 2){
                                         <span class="text-warning"><b>@lang('menu.pending')</b></span>
+                                    }
                                     @else
-                                        <span class="text-primary"><b>Ordered</b></span>
+                                        <span class="text-primary"><b>@lang('menu.ordered')</b></span>
                                     @endif
                                 </li>
                                 <li><strong>@lang('menu.payment_status') : </strong>

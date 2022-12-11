@@ -103,7 +103,7 @@
                                             <table class="display data__table table-striped">
                                                 <thead class="staky">
                                                     <tr>
-                                                        <th>Product Name</th>
+                                                        <th>@lang('menu.product_name')</th>
                                                         <th></th>
                                                         <th>@lang('menu.unit_cost')</th>
                                                         <th>Lot Number</th>

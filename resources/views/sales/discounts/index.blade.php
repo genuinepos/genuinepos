@@ -44,11 +44,11 @@
                                                 <th>@lang('menu.status')</th>
                                                 <th>Start At</th>
                                                 <th>End At</th>
-                                                <th>Discount Type</th>
+                                                <th>@lang('menu.discount_type')</th>
                                                 <th>Discount Amount</th>
                                                 <th>@lang('menu.priority')</th>
                                                 <th>Brand</th>
-                                                <th>Category</th>
+                                                <th>@lang('menu.category')</th>
                                                 <th>Applicable Products</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
@@ -139,7 +139,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Category :</strong></label>
+                                <label><strong>@lang('menu.category') :</strong></label>
                                 <select name="category_id" id="category_id" class="form-control add_input">
                                     <option value="">Please select </option>
                                     @foreach ($categories as $category)
@@ -151,10 +151,10 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Discount Type :</strong> </label>
+                                <label><strong>@lang('menu.discount_type') :</strong> </label>
                                 <select name="discount_type" id="discount_type" class="form-control add_input">
                                     <option value="1">Fixed(0.00)</option>
-                                    <option value="1">Percentage(%)</option>
+                                    <option value="1">@lang('menu.percentage')(%)</option>
                                 </select>
                                 <span class="error error_discount_type"></span>
                             </div>

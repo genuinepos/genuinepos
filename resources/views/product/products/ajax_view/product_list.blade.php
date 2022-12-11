@@ -13,9 +13,9 @@
             <th class="text-white">Salling Price</th>
             <th class="text-white">@lang('menu.current_stock')</th>
             <th class="text-white">Product Type</th>
-            <th class="text-white">Category</th>
+            <th class="text-white">@lang('menu.category')</th>
             <th class="text-white">Brand</th>
-            <th class="text-white">Tax</th>
+            <th class="text-white">@lang('menu.tax')</th>
             <th class="text-white">Expire Date</th>
             <th class="text-white">@lang('menu.status')</th>
 

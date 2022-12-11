@@ -1120,7 +1120,7 @@
                                 <div class="col-md-6">
 
                                     <div class="col-md-12">
-                                        <p><strong>Dashboard</strong></p>
+                                        <p><strong>@lang('menu.dashboard')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -1186,7 +1186,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('hrm_dashboard') ? 'CHECKED' : '' }}  name="hrm_dashboard" class="HRMS"> &nbsp; Hrm Dashboard</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('hrm_dashboard') ? 'CHECKED' : '' }}  name="hrm_dashboard" class="HRMS"> &nbsp; Hrm @lang('menu.dashboard')</p>
                                             </div>
                                         </div>
 
@@ -1283,7 +1283,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('designation') ? 'CHECKED' : '' }} name="designation" class="HRMS"> &nbsp; Designation</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('designation') ? 'CHECKED' : '' }} name="designation" class="HRMS"> &nbsp; @lang('menu.designation')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1391,7 +1391,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('process_edit') ? 'CHECKED' : '' }} name="process_edit" class="Manufacturing"> &nbsp;  Edit Process</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('process_edit') ? 'CHECKED' : '' }} name="process_edit" class="Manufacturing"> &nbsp;  @lang('menu.edit_process')</p>
                                             </div>
                                         </div>
 
@@ -1412,14 +1412,14 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('production_add') ? 'CHECKED' : '' }} name="production_add" class="Manufacturing"> &nbsp; Add Production</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('production_add') ? 'CHECKED' : '' }} name="production_add" class="Manufacturing"> &nbsp; @lang('menu.add_production')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('production_edit') ? 'CHECKED' : '' }} name="production_edit" class="Manufacturing"> &nbsp;  Edit Production</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('production_edit') ? 'CHECKED' : '' }} name="production_edit" class="Manufacturing"> &nbsp;  @lang('menu.edit_production')</p>
                                             </div>
                                         </div>
 
@@ -1440,7 +1440,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('manuf_report') ? 'CHECKED' : '' }} name="manuf_report" class="Manufacturing"> &nbsp; Manufacturing Report</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('manuf_report') ? 'CHECKED' : '' }} name="manuf_report" class="Manufacturing"> &nbsp; @lang('menu.manufacturing_report')</p>
                                             </div>
                                         </div>
                                     </div>

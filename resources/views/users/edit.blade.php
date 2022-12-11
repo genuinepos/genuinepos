@@ -477,7 +477,7 @@
                                                     <label class="col-4"><b>@lang('menu.department') :</b> </label>
                                                     <div class="col-8">
                                                         <select name="department_id" class="form-control">
-                                                            <option value="">Select Department</option>
+                                                            <option value="">@lang('menu.select_department')</option>
                                                             @foreach ($departments as $department)
                                                             <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->department_name }}</option>
                                                             @endforeach
@@ -519,10 +519,10 @@
                                                     <div class="col-8">
                                                         <select name="pay_type" class="form-control" id="pay_type">
                                                             <option value="">Select Pay type</option>
-                                                            <option {{ $user->salary_type == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">Monthly</option>
-                                                            <option {{ $user->salary_type == 'Yearly' ? 'SELECTED' : '' }} value="Yearly">Yearly</option>
-                                                            <option {{ $user->salary_type == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Daliy</option>
-                                                            <option {{ $user->salary_type == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">Hourly</option>
+                                                            <option {{ $user->salary_type == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>
+                                                            <option {{ $user->salary_type == 'Yearly' ? 'SELECTED' : '' }} value="Yearly">{{ __('Yearly') }}</option>
+                                                            <option {{ $user->salary_type == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">{{ __('Daily') }}</option>
+                                                            <option {{ $user->salary_type == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
                                                         </select>
                                                         <span class="error error_pay_type"></span>
                                                     </div>

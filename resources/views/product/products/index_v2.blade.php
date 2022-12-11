@@ -53,7 +53,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>Category :</b></label>
+                                            <label><b>@lang('menu.category') :</b></label>
                                             <select id="category_id" name="category_id"
                                                 class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
@@ -75,7 +75,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>Tax :</b></label>
+                                            <label><b>@lang('menu.tax') :</b></label>
                                             <select id="tax_id" name="tax_id" class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($taxes as $tax)
@@ -153,12 +153,12 @@
                                                     <th>@lang('menu.product')</th>
                                                     <th>Access Locations</th>
                                                     <th>Purchase Cost</th>
-                                                    <th>Selling Price</th>
+                                                    <th>@lang('menu.selling_price')</th>
                                                     <th>@lang('menu.current_stock')</th>
                                                     <th>Product Type</th>
-                                                    <th>Category</th>
+                                                    <th>@lang('menu.category')</th>
                                                     <th>Brand</th>
-                                                    <th>Tax</th>
+                                                    <th>@lang('menu.tax')</th>
                                                     <th>@lang('menu.status')</th>
                                                 </tr>
                                             </thead>

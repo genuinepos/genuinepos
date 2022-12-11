@@ -8,7 +8,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Production Details (Reference ID : <strong>{{ $production->reference_no }}</strong>)
+                    @lang('menu.production_details') (@lang('menu.reference_id') : <strong>{{ $production->reference_no }}</strong>)
                 </h5>
                 <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Stored Location : </strong>
+                            <li><strong>@lang('menu.stored_location') : </strong>
                                 @if ($production->warehouse_id)
                                     {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
                                 @else
@@ -27,7 +27,7 @@
                                     @endif
                                 @endif
                             </li>
-                            <li><strong>Ingredients Stock Location : </strong>
+                            <li><strong>@lang('menu.ingredients_stock_location') : </strong>
                                 @if ($production->stock_warehouse_id)
                                     {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
                                 @else
@@ -44,15 +44,15 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Production Item : </strong>
+                                <strong>@lang('menu.production_item') : </strong>
                                 {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                             </li>
                             <li>
-                                <strong>Production Status: </strong>
+                                <strong>@lang('menu.production_status') </strong>
                                 @if ($production->is_final == 1)
-                                    <span class="text-success">Final</span>
+                                    <span class="text-success">@lang('menu.final')</span>
                                 @else
-                                    <span class="text-hold">Hold</span>
+                                    <span class="text-hold">@lang('menu.hold')</span>
                                 @endif
                             </li>
                         </ul>
@@ -68,15 +68,15 @@
                 <br>
                 <div class="row">
                     <div class="col-md-12">
-                        <p><strong>Ingredients List</strong></p>
+                        <p><strong>{{ __('Ingredients List') }}</strong></p>
                         <div class="table-responsive">
                             <table class="table modal-table table-sm table-striped">
                                 <thead>
                                     <tr class="bg-secondary">
-                                        <th class="text-white text-start">Ingredient Name</th>
+                                        <th class="text-white text-start">@lang('menu.ingredient_name')</th>
                                         <th class="text-white text-start">Input Qty</th>
                                         <th class="text-white text-start">Unit Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                        <th class="text-white text-start">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                        <th class="text-white text-start">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     </tr>
                                 </thead>
                                 <tbody class="purchase_print_product_list">
@@ -102,39 +102,39 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Production Quantity And Total Cost</strong></p>
+                        <p><strong>@lang('menu.production_quantity_and_total_cost')</strong></p>
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end">Output Quantity : </th>
+                                    <th class="text-end">@lang('menu.output_quantity') : </th>
                                     <td class="text-end">
                                         {{ $production->quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Wasted Quantity : </th>
+                                    <th class="text-end">@lang('menu.wasted_quantity') : </th>
                                     <td class="text-end">
                                         {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Final Quantity : </th>
+                                    <th class="text-end">@lang('menu.final_quantity') : </th>
                                     <td class="text-end">
                                         {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Additional Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.additional_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->production_cost) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Total Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.total_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->total_cost) }}
                                     </td>
@@ -144,39 +144,39 @@
                     </div>
 
                     <div class="col-md-6 text-end">
-                        <p><strong>Production Items's Costing And Pricing</strong></p>
+                        <p><strong>{{ __('Production Items Costing And Pricing') }}</strong></p>
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end">Tax : </th>
+                                    <th class="text-end">@lang('menu.tax') : </th>
                                     <td class="text-end">
                                         {{ $production->tax ? $production->tax->tax_percent : 0 }}%
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Per Unit Cost Exc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.per_unit_cost_exc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->unit_cost_exc_tax) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Per Unit Cost Inc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.per_unit_cost_inc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->unit_cost_inc_tax) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">xMargin(%) : </th>
+                                    <th class="text-end">@lang('menu.x_margin')(%) : </th>
                                     <td class="text-end">
                                         {{ $production->x_margin }}%
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Selling Price Exc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.selling_price_exc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($production->price_exc_tax) }}
                                     </td>
@@ -190,7 +190,7 @@
             <div class="modal-footer">
                <div class="row">
                    <div class="col-md-12 d-flex justify-content-end gap-2">
-                        <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <a href="{{ route('manufacturing.productions.edit', $production->id) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
                         <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                    </div>
@@ -262,7 +262,7 @@
                 </div>
                 <div class="col-md-4 col-sm-4 col-lg-4">
                     <div class="heading text-center">
-                        <p style="margin-top: 10px;" class="bill_name"><strong>Menufacturing Bill</strong></p>
+                        <p style="margin-top: 10px;" class="bill_name"><strong>@lang('menu.manufacturing_bill')</strong></p>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-4 col-lg-4">
@@ -275,7 +275,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Stored Location : </strong>
+                        <li><strong>@lang('menu.stored_location') : </strong>
                             @if ($production->warehouse_id)
                                 {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
                             @else
@@ -286,7 +286,7 @@
                                 @endif
                             @endif
                         </li>
-                        <li><strong>Ingredients Stock Location : </strong>
+                        <li><strong>@lang('menu.ingredients_stock_location') : </strong>
                             @if ($production->stock_warehouse_id)
                                 {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
                             @else
@@ -302,15 +302,15 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Production Item : </strong>
+                            <strong>@lang('menu.production_item') : </strong>
                             {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                         </li>
                         <li>
-                            <strong>Production Status: </strong>
+                            <strong>@lang('menu.production_status'): </strong>
                             @if ($production->is_final == 1)
-                                <span class="text-success">Final</span>
+                                <span class="text-success">@lang('menu.final')</span>
                             @else
-                                <span class="text-hold">Hold</span>
+                                <span class="text-hold">@lang('menu.hold')</span>
                             @endif
                         </li>
                     </ul>
@@ -325,14 +325,14 @@
         </div>
 
         <div class="purchase_product_table pt-3 pb-3">
-            <p><strong>Ingredients List</strong></p>
+            <p><strong>{{ __('Ingredients List') }}</strong></p>
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">Ingredient Name</th>
+                        <th scope="col">@lang('menu.ingredient_name')</th>
                         <th scope="col">Input Qty</th>
                         <th scope="col">Unit Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                        <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                        <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                     </tr>
                 </thead>
                 <tbody class="purchase_print_product_list">
@@ -357,39 +357,39 @@
         <br>
         <div class="row">
             <div class="col-md-6">
-                <p><strong>Production Quantity And Total Cost</strong></p>
+                <p><strong>@lang('menu.production_quantity_and_total_cost')</strong></p>
                 <table class="table modal-table table-sm table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-end">Output Quantity : </th>
+                            <th class="text-end">@lang('menu.output_quantity') : </th>
                             <td class="text-end">
                                 {{ $production->quantity.'/'.$production->unit->code_name }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Wasted Quantity : </th>
+                            <th class="text-end">@lang('menu.wasted_quantity') : </th>
                             <td class="text-end">
                                 {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Final Quantity : </th>
+                            <th class="text-end">@lang('menu.final_quantity') : </th>
                             <td class="text-end">
                                 {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Additional Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th class="text-end">@lang('menu.additional_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($production->production_cost) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Total Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th class="text-end">@lang('menu.total_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($production->total_cost) }}
                             </td>
@@ -399,39 +399,39 @@
             </div>
 
             <div class="col-md-6 text-end">
-                <p><strong>Production Items's Costing And Pricing</strong></p>
+                <p><strong>{{ __('Production Items Costing And Pricing') }}</strong></p>
                 <table class="table modal-table table-sm table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-end">Tax : </th>
+                            <th class="text-end">@lang('menu.tax') : </th>
                             <td class="text-end">
                                 {{ $production->tax ? $production->tax->tax_percent : '' }}%
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Per Unit Cost Exc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th class="text-end">@lang('menu.per_unit_cost_exc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($production->unit_cost_exc_tax) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Per Unit Cost Inc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th class="text-end">@lang('menu.per_unit_cost_inc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($production->unit_cost_inc_tax) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">xMargin(%) : </th>
+                            <th class="text-end">@lang('menu.x_margin')(%) : </th>
                             <td class="text-end">
                                 {{ $production->x_margin }}%
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Selling Price Exc.Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th class="text-end">@lang('menu.selling_price_exc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($production->price_exc_tax) }}
                             </td>

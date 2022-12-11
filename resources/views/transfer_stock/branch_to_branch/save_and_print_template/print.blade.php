@@ -56,7 +56,7 @@
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
                         <li><strong>@lang('menu.status') : </strong> 
-                            Pending
+                            @lang('menu.pending')
                         </li>
                     </ul>
                 </div>
@@ -73,7 +73,7 @@
                             <th class="text-start">Unit Cost Inc.Tax</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Receive Qty</th>
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>

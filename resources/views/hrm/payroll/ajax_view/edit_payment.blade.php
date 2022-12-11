@@ -12,7 +12,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.customer') : </strong>{{ $payment->payroll->employee->prefix.' '.$payment->payroll->employee->name.' '.$payment->payroll->employee->last_name}}</li>
-                    <li><strong>Branch/Business : </strong>
+                    <li><strong>@lang('menu.branch')/@lang('menu.business') </strong>
                         <span>
                             @if ($payment->payroll->employee->branch)
                                 {{ $payment->payroll->employee->branch->name.'/'.$payment->payroll->employee->branch->branch_code }}
@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Referance No : </strong><span>{{ $payment->payroll->reference_no }}</span> </li>
+                    <li><strong> @lang('menu.reference_no') : </strong><span>{{ $payment->payroll->reference_no }}</span> </li>
 
                 </ul>
             </div>

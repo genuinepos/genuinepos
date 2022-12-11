@@ -12,7 +12,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-map-marker-alt"></span>
-                    <h6>Designations</h6>
+                    <h6>{{ __('Designations') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -22,7 +22,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>Designations</h6>
+                        <h6>{{ __('Designations') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
@@ -39,7 +39,7 @@
                                     <th>@lang('menu.sl')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>@lang('menu.description')</th>
-                                    <th>Action</th>
+                                    <th>@lang('menu.action')</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,7 +63,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Designation</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Designation') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -76,8 +76,8 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Designation Details :</b> </label>
-                            <textarea name="description" class="form-control" id="description" placeholder="Designation details"></textarea>
+                            <label><b>{{ __('Designation Details') }} :</b> </label>
+                            <textarea name="description" class="form-control" id="description" placeholder="{{ __('Designation Details') }}"></textarea>
                         </div>
 
                         <div class="form-group d-flex justify-content-end mt-3">
@@ -114,8 +114,8 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Designation Details :</b> </label>
-                            <textarea name="description" class="form-control" id="e_description" placeholder="Designation details"></textarea>
+                            <label><b>{{ __('Designation Details') }} :</b> </label>
+                            <textarea name="description" class="form-control" id="e_description" placeholder="{{ __('Designation Details') }}"></textarea>
                         </div>
 
                         <div class="form-group d-flex justify-content-end mt-3">

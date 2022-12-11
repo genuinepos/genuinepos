@@ -189,7 +189,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-6"><b>Net Total Amount</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.net_total_amount')</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                         <div class="col-6">
                                             <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00" >
                                         </div>

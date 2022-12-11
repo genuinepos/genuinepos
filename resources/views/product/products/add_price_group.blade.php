@@ -11,7 +11,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-square"></span>
-                    <h5>Add or edit Price Group </h5>
+                    <h5>@lang('menu.add_edit_price_group') </h5>
                 </div>
 
                 <div class="col-6">
@@ -30,17 +30,17 @@
                                 <div class="col-md-12">
                                     <div class="heading_area">
                                         <p><strong>@lang('menu.product') : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p>
-                                        <small class="text-danger">Tax (If Exists) will be added to all price group.</small>
+                                        <small class="text-danger">{{ __('Tax (If Exists) will be added to all price group') }}.</small>
                                     </div>
                                     <div class="table-responsive mt-1">
                                         <table class="table modal-table table-sm">
                                             <thead>
                                                 <tr class="bg-secondary">
                                                     @if ($type == 1)
-                                                        <th class="text-white text-start" scope="col">Variant</th>
+                                                        <th class="text-white text-start" scope="col">@lang('menu.variant')</th>
                                                     @endif
                                                     <th class="text-white text-center" scope="col">
-                                                        Default Selling Price Exc.Tax
+                                                        @lang('menu.default_selling_price') Exc.Tax
                                                     </th>
                                                     @foreach ($priceGroups as $pg)
                                                         <th class="text-white text-start" scope="col">
@@ -113,8 +113,8 @@
 
                 <div class="d-flex justify-content-end">
                     <div class="btn-loading">
-                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner"></i><span>Loading</span> </button>
-                        <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm">Save And Add Another</button>
+                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner"></i><span>@lang('menu.loading')</span> </button>
+                        <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm">@lang('menu.save_and_add_another')</button>
                         <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm">@lang('menu.save')</button>
                     </div>
                 </div>

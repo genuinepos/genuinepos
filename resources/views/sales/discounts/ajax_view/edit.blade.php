@@ -34,7 +34,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><strong>Products :</strong> </label>
+            <label><strong>@lang('menu.products') :</strong> </label>
             <select name="product_ids[]" class="form-control select2" multiple="multiple" id="e_product_ids">
                 @foreach ($products as $product)
                     <option
@@ -49,7 +49,7 @@
 
     <div class="form-group row mt-1 e_brand_category_area {{ count($discountProducts) > 0 ? 'd-hide' : '' }}">
         <div class="col-md-6">
-            <label><strong>Brand :</strong> </label>
+            <label><strong>@lang('menu.brand'):</strong> </label>
             <select name="brand_id" id="brand_id" class="form-control add_input">
                 <option value="">Please select </option>
                 @foreach ($brands as $brand)
@@ -94,7 +94,7 @@
         <div class="col-md-6">
             <label><strong>Selling Price Group :</strong> </label>
             <select name="price_group_id" id="price_group_id" class="form-control">
-                <option value="">Default Price</option>
+                <option value="">@lang('menu.default_price')</option>
                 @foreach ($price_groups as $price_group)
                     <option {{ $discount->price_group_id == $price_group->id ? 'SELECTED' : '' }} value="{{ $price_group->id }}">
                         {{ $price_group->name }}

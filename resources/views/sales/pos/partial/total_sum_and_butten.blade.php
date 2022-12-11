@@ -59,7 +59,7 @@
 
                     <div class="col-4">
                         <div class="btn-bg">
-                            <a href="#" class="function-card" id="show_stock" tabindex="-1">Stock<p>Alt+C</p>
+                            <a href="#" class="function-card" id="show_stock" tabindex="-1">@lang('menu.stock')<p>Alt+C</p>
                             </a>
                         </div>
                     </div>

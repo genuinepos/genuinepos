@@ -181,7 +181,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class=" col-4"><b>Net Total Amount :</b> </label>
+                                                            <label for="inputEmail3" class=" col-4"><b@lang('menu.net_total_amount') :</b> </label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" class="form-control" step="any" step="any"
                                                                     name="net_total_amount" id="net_total_amount" value="0.00">

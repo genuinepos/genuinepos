@@ -120,7 +120,7 @@
                                 <th class="text-start">@lang('menu.unit_price_exc_tax')</th>
                                 <th class="text-start">Unit Discount</th>
                                 <th class="text-start">Unit Tax</th>
-                                <th class="text-start">Unit Price Inc.Tax</th>
+                                <th class="text-start">@lang('menu.unit_price') Inc.Tax</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
@@ -174,7 +174,7 @@
                   <div class="table-responsive">
                     <table class="table modal-table table-sm">
                         <tr>
-                            <th class="text-start">Net Total Amount</th>
+                            <th class="text-start">@lang('menu.net_total_amount')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                     {{ $quotation->net_total_amount }}
                             </td>
@@ -368,7 +368,7 @@
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">@lang('menu.quantity')</th>
-                            <th class="text-start">Unit Price</th>
+                            <th class="text-start">@lang('menu.unit_price')</th>
 
                             @if ($quotation->branch->add_sale_invoice_layout->product_discount)
                                 <th class="text-start">@lang('menu.discount')</th>
@@ -454,7 +454,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>Net Total Amount :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -706,7 +706,7 @@
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">Sold Qty</th>
-                            <th class="text-start">Unit Price</th>
+                            <th class="text-start">@lang('menu.unit_price')</th>
 
                             @if ($defaultLayout->product_discount)
                                 <th class="text-start">@lang('menu.discount')</th>
@@ -790,7 +790,7 @@
                     <table class="table modal-table table-sm table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>Net Total Amount :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="net_total text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}

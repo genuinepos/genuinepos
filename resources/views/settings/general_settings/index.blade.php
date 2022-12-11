@@ -646,7 +646,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['stock_adjustment'] == '1' ? 'CHECKED' : '' }}
-                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>Stock Adjustment</b>
+                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
                                                 </p>
                                             </div>
                                         </div>

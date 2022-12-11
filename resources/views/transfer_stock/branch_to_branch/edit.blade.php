@@ -155,7 +155,7 @@
                                                             <th></th>
                                                             <th class="text-center">@lang('menu.quantity')</th>
                                                             <th class="text-center">@lang('menu.unit')</th>
-                                                            <th class="text-center">Unit Cost Inc.Tax</th>
+                                                            <th class="text-center">@lang('menu.unit_cost_inc_tax')</th>
                                                             <th class="text-center">@lang('menu.sub_total')</th>
                                                             <th><i class="fas fa-trash-alt text-dark"></i></th>
                                                         </tr>
@@ -262,7 +262,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Quantity :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_quantity') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_send_qty" type="number" step="any" class="form-control" id="total_send_qty" value="0.00">
                                                         </div>

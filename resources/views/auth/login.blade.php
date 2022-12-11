@@ -36,7 +36,7 @@
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
                                                 <input type="text" name="username" class="form-control form-st"
-                                                    value="{{ old('username') }}" placeholder="Username" required />
+                                                    value="{{ old('username') }}" placeholder="@lang('menu.username')" required />
                                             </div>
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>

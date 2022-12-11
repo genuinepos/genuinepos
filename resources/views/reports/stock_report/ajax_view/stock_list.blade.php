@@ -5,11 +5,11 @@
             <th>@lang('menu.product')</th>
             <th>@lang('menu.unit_price_exc_tax')</th>
             <th>@lang('menu.b_location')</th>
-            <th>Warehouse</th>
+            <th>@lang('menu.warehouse')</th>
             <th>@lang('menu.current_stock')</th>
             <th>@lang('menu.current_stock_value') <b><small>(By Purchase Price)</small></b></th>
             <th>Total Unit Sold</th>
-            <th>Total Adjusted</th>
+            <th>@lang('menu.total_adjusted')</th>
         </tr>
     </thead>
     <tbody>

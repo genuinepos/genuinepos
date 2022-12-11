@@ -74,7 +74,7 @@
 
                             <div class="form-group row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>Default Selling Price Group :</strong></label>
+                                    <label><strong>{{ __('Default Selling Price Group') }} :</strong></label>
                                     <select name="default_price_group_id" class="form-control">
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($price_groups as $pg)

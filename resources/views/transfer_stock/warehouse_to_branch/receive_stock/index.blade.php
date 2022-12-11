@@ -36,7 +36,7 @@
                                                 <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">@lang('menu.reference_id')</th>
                                                 <th class="text-start">@lang('menu.b_location')(From)</th>
-                                                <th class="text-start">Warehouse(To)</th>
+                                                <th class="text-start">@lang('menu.warehouse')(To)</th>
                                                 <th class="text-start">Total Item</th>
                                                 <th class="text-start">Total Qty</th>
                                                 <th class="text-start">@lang('menu.status')</th>

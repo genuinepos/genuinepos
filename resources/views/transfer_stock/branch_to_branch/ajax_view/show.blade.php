@@ -83,7 +83,7 @@
                                 <tr class="bg-secondary text-white">
                                     <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">@lang('menu.product')</th>
-                                    <th class="text-start">Unit Cost Inc.Tax</th>
+                                    <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
                                     <th class="text-start">Receive Qty</th>
                                     <th class="text-start">@lang('menu.sub_total')</th>
@@ -143,7 +143,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white">Print Challan</button>
+                <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white">@lang('menu.print_challan')</button>
                 <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">Print Details</button>
                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">@lang('menu.close')</button>
             </div>
@@ -232,7 +232,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">@lang('menu.product')</th>
-                            <th class="text-start">Unit Cost Inc.Tax</th>
+                            <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">Receive Qty</th>
                             <th class="text-start">@lang('menu.sub_total')</th>

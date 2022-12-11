@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-user-plus"></span>
-                    <h5>Add User</h5>
+                    <h5>@lang('menu.add_user')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -36,12 +36,12 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>First Name :</b><span class="text-danger">*
+                                        <label class="col-4"><b>@lang('menu.first_name') :</b><span class="text-danger">*
                                         </span></label>
 
                                         <div class="col-8">
                                             <input type="text" name="first_name" class="form-control"
-                                                placeholder="First Name" id="first_name">
+                                                placeholder="@lang('menu.first_name')" id="first_name">
                                             <span class="error error_first_name"></span>
                                         </div>
                                     </div>
@@ -51,10 +51,10 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Last Name :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.last_name') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="last_name" class="form-control"
-                                                placeholder="Last Name">
+                                                placeholder="@lang('menu.last_name')">
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.phone') :</b></label>
                                         <div class="col-8">
-                                            <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="" autocomplete="off">
+                                            <input type="text" name="phone" class="form-control" placeholder="@lang('menu.phone_number')" value="" autocomplete="off">
                                             <span class="error error_phone"></span>
                                         </div>
                                     </div>
@@ -84,7 +84,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Role Permission</b> </p>
+                            <p class="p-1 text-primary"><b>@lang('menu.role_permission')</b> </p>
                         </div>
 
                         <div class="element-body">
@@ -92,7 +92,7 @@
                                 <div class="col-md-12">
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" checked name="allow_login" id="allow_login">
-                                        <b>Allow login</b>
+                                        <b>@lang('menu.allow_login')</b>
                                     </p>
                                 </div>
                             </div>
@@ -101,11 +101,11 @@
                                 <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Username :</b><span
+                                            <label class="col-4"><b>@lang('menu.username') :</b><span
                                                 class="text-danger">*</span> </label>
                                             <div class="col-8">
                                                 <input type="text" name="username" id="username"
-                                                    class="form-control " placeholder="Username" autocomplete="off">
+                                                    class="form-control " placeholder="@lang('menu.username')" autocomplete="off">
                                                 <span class="error error_username"></span>
                                             </div>
                                         </div>
@@ -113,11 +113,11 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Role :</b><span
+                                            <label class="col-4"><b>@lang('menu.role') :</b><span
                                                 class="text-danger">*</span><i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i> </label>
                                             <div class="col-8">
                                                 <select name="role_id" id="role_id" class="form-control">
-                                                    <option value="">Admin</option>
+                                                    <option value="">{{ __('Admin') }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@
                                 <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Password :</b><span
+                                            <label class="col-4"><b>@lang('menu.password') :</b><span
                                                     class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
@@ -138,10 +138,10 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Confirm Pass : </b><span
+                                            <label class="col-4"><b>@lang('menu.confirm_password') : </b><span
                                                 class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm password" autocomplete="off">
+                                                <input type="password" name="password_confirmation" class="form-control" placeholder="@lang('menu.confirm_password')" autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="col-md-6 access_branch">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Access Location :</b> </label>
+                                            <label class="col-4"><b>@lang('menu.access_location') :</b> </label>
                                             <div class="col-8">
                                                 <select name="branch_id" id="branch_id" class="form-control">
                                                     <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
@@ -167,7 +167,7 @@
 
                                     <div class="col-md-6 belonging_branch d-hide">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Belonging Location :</b><span
+                                            <label class="col-4"><b>@lang('menu.belonging_location') :</b><span
                                                 class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
@@ -190,7 +190,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="px-1 pt-1 pb-0 text-primary"><b>Sales</b> </p>
+                            <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.sales')</b> </p>
                         </div>
 
                         <div class="element-body">
@@ -198,7 +198,7 @@
                             <div class="row g-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>Commission (%) :</b> </label>
+                                        <label class="col-4"> <b>@lang('menu.commission') (%) :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="sales_commission_percent"  class="form-control" placeholder="Sales Commission Percentage (%)" autocomplete="off">
                                         </div>
@@ -207,7 +207,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Max Discount(%) : </b> </label>
+                                        <label class="col-4"><b>@lang('menu.max_discount')(%) : </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="max_sales_discount_percent"  class="form-control" placeholder="Max sales discount percent" autocomplete="off">
                                         </div>
@@ -219,7 +219,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="px-1 pt-1 pb-0 text-primary"><b>More Information</b> </p>
+                            <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.more_information')</b> </p>
                         </div>
 
                         <div class="element-body">
@@ -235,13 +235,13 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Gender :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.gender') :</b> </label>
                                         <div class="col-8">
                                             <select name="gender" class="form-control">
-                                                <option value="">Select Gender</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Others">Others</option>
+                                                <option value="">@lang('menu.select_gender')</option>
+                                                <option value="Male">@lang('menu.male')</option>
+                                                <option value="Female">@lang('menu.female')</option>
+                                                <option value="Others">@lang('menu.others')</option>
                                             </select>
                                         </div>
                                     </div>
@@ -251,13 +251,13 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Marital Status :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.marital_status') :</b> </label>
                                         <div class="col-8">
                                             <select name="marital_status" class="form-control">
-                                                <option value="">Marital Status</option>
-                                                <option value="Married">Married</option>
-                                                <option value="Unmarried">Unmarried</option>
-                                                <option value="Divorced">Divorced</option>
+                                                <option value="">@lang('menu.marital_status')</option>
+                                                <option value="Married">@lang('menu.married')</option>
+                                                <option value="Unmarried">{{ __('Unmarried') }}</option>
+                                                <option value="Divorced">@lang('menu.divorced')</option>
                                             </select>
                                         </div>
                                     </div>
@@ -265,9 +265,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Blood Group :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.blood_group') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="blood_group"  class="form-control" placeholder="Blood group" autocomplete="off">
+                                            <input type="text" name="blood_group"  class="form-control" placeholder="@lang('menu.blood_group')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -276,9 +276,9 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Facebook Link :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.facebook_link') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="facebook_link" class="form-control" autocomplete="off" placeholder="Facebook link">
+                                            <input type="text" name="facebook_link" class="form-control" autocomplete="off" placeholder="@lang('menu.facebook_link')">
                                         </div>
                                     </div>
                                 </div>
@@ -287,38 +287,18 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Twitter Link :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.twitter_link') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="twitter_link" class="form-control" autocomplete="off" placeholder="Twitter link">
+                                            <input type="text" name="twitter_link" class="form-control" autocomplete="off" placeholder="@lang('menu.twitter_link')">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Instagram Link :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.instagram_link') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="instagram_link" class="form-control" autocomplete="off" placeholder="Instagram link">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 pt-1">
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <label class="col-4"><b>Guardian Name:</b> </label>
-                                        <div class="col-8">
-                                            <input type="text" name="guardian_name" class="form-control" autocomplete="off" placeholder="Guardian name">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <label class="col-4"><b>ID Proof Name :</b> </label>
-                                        <div class="col-8">
-                                            <input type="text" name="id_proof_name" class="form-control" autocomplete="off" placeholder="ID proof name">
+                                            <input type="text" name="instagram_link" class="form-control" autocomplete="off" placeholder="@lang('menu.instagram_link')">
                                         </div>
                                     </div>
                                 </div>
@@ -327,9 +307,29 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>ID Proof Number :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.guardian_name')</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="ID proof number">
+                                            <input type="text" name="guardian_name" class="form-control" autocomplete="off" placeholder="@lang('menu.guardian_name')">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.id_proof_name')</b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="id_proof_name" class="form-control" autocomplete="off" placeholder="@lang('menu.id_proof_name')">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 pt-1">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.id_proof_number') :</b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="@lang('menu.id_proof_number')">
                                         </div>
                                     </div>
                                 </div>
@@ -338,9 +338,9 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group ">
-                                        <label class="col-4"><b>Permanent Address :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.permanent_address') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="Permanent address">
+                                            <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="@lang('menu.permanent_address')">
                                         </div>
                                     </div>
                                 </div>
@@ -349,9 +349,9 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Current Address :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.current_address') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="current_address" class="form-control form-control-sm" placeholder="Current address">
+                                            <input type="text" name="current_address" class="form-control form-control-sm" placeholder="@lang('menu.current_address')">
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +362,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="px-1 pt-1 pb-0 text-primary"><b>Bank Details</b> </p>
+                            <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.bank_details')</b> </p>
                         </div>
 
                         <div class="element-body">
@@ -371,14 +371,14 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.account_name') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="Account holder's name" autocomplete="off">
+                                            <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="@lang('menu.account_holders_name')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Account No :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.account_no')</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="bank_ac_no" class="form-control" placeholder="@lang('menu.account_number')" autocomplete="off">
                                         </div>
@@ -398,9 +398,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Identifier Code :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.identifier_code') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="bank_identifier_code" class="form-control" placeholder="Bank identifier code" autocomplete="off">
+                                            <input type="text" name="bank_identifier_code" class="form-control" placeholder="{{ __('Bank Identifier Code') }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -418,9 +418,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Tax Payer ID :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.tax_payer_id') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="tax_payer_id" class="form-control" placeholder="Tax payer ID" autocomplete="off">
+                                            <input type="text" name="tax_payer_id" class="form-control" placeholder="@lang('menu.tax_payer_id')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -431,16 +431,16 @@
                     @if ($addons->hrm == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="px-1 pt-1 pb-0 text-primary"><strong>Human Resource Details</strong> </p>
+                                <p class="px-1 pt-1 pb-0 text-primary"><strong>{{ __('Human Resource Details') }}</strong> </p>
                             </div>
 
                             <div class="element-body">
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Employee ID :</b> </label>
+                                            <label class="col-4"><b>{{ __('Employee ID') }} :</b> </label>
                                             <div class="col-8">
-                                                <input type="text" class="form-control" name="emp_id" placeholder="Employee ID">
+                                                <input type="text" class="form-control" name="emp_id" placeholder="{{ __('Employee ID') }}">
                                                 <span class="error error_emp_id"></span>
                                             </div>
                                         </div>
@@ -448,7 +448,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Shift :</b> </label>
+                                            <label class="col-4"><b>@lang('menu.shift') :</b> </label>
                                             <div class="col-8">
                                                 <select name="shift_id" class="form-control">
                                                     @foreach ($shifts as $shift)
@@ -479,10 +479,10 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"><b>Designation :</b> </label>
+                                            <label class="col-4"><b>@lang('menu.designation') :</b> </label>
                                             <div class="col-8">
                                                 <select name="designation_id" class="form-control">
-                                                    <option value="">Select Designation</option>
+                                                    <option value="">{{ __('Select Designation') }}</option>
                                                     @foreach ($designations as $designation)
                                                         <option value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
                                                     @endforeach
@@ -495,7 +495,7 @@
                                 <div class="row g-2 pt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"> <b>Salary :</b> </label>
+                                            <label class="col-4"> <b>{{ __('Salary') }} :</b> </label>
                                             <div class="col-8">
                                                 <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off">
                                                 <span class="error error_salary"></span>
@@ -505,10 +505,10 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-4"> <b>Pay Type :</b> </label>
+                                            <label class="col-4"> <b>{{ __('Pay Type') }} :</b> </label>
                                             <div class="col-8">
                                                 <select name="pay_type" class="form-control" id="pay_type">
-                                                    <option value="">Select Pay type</option>
+                                                    <option value="">{{ __('Select Pay type') }}</option>
                                                     <option value="Monthly">{{ __('Monthly') }}</option>
                                                     <option value="Yearly">{{ __('Yearly') }}</option>
                                                     <option value="Daliy">{{ __('Daily') }}</option>

@@ -173,7 +173,7 @@
 
                                 <tr>
                                     <th class="text-start text-dark" colspan="2">
-                                        <strong>PRODUCTS :</strong>
+                                        <strong>@lang('menu.products') :</strong>
                                     </th>
                                 </tr>
 

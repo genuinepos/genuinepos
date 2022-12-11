@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.serial')</th>
-                                    <th>Photo</th>
+                                    <th>@lang('menu.photo')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>

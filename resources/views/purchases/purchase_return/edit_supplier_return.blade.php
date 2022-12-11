@@ -157,7 +157,7 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th>@lang('menu.product')</th>
-                                                                    <th>Unit Price</th>
+                                                                    <th>@lang('menu.unit_price')</th>
                                                                     <th>@lang('menu.current_stock')</th>
                                                                     <th>Return Quantity</th>
                                                                     <th>Return Subtotal</th>
@@ -258,7 +258,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4 text-center"><strong>Net Total Amount : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                <label class="col-4 text-center"><strong@lang('menu.net_total_amount') : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                 <div class="col-8">
                                                     <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                                 </div>

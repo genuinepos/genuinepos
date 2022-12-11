@@ -3,13 +3,13 @@
         <tr class="bg-navey-blue">
             <th>P.Code(SKU)</th>
             <th>@lang('menu.product')</th>
-            <th>Unit Price</th>
+            <th>@lang('menu.unit_price')</th>
             <th>@lang('menu.current_stock')</th>
             <th>@lang('menu.current_stock_value') <b><small>(By Unit Cost)</small></b></th>
             <th>@lang('menu.current_stock_value') <b><small>(By Unit Price)</small></b></th>
             <th>Potential profit</th>
             <th>Total Unit Sold</th>
-            <th>Total Adjusted</th>
+            <th>@lang('menu.total_adjusted')</th>
         </tr>
     </thead>
     <tbody>

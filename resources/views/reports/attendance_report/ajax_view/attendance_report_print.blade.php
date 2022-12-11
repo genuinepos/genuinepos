@@ -30,10 +30,10 @@
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BL) </h5>
                     @elseif($branch_id == '')
-                        <h5><b>@lang('menu.all_business_location')</b></h5> 
+                        <h5><b>@lang('menu.all_business_location')</b></h5>
                     @endif
-                    <h6><b>Attendance Report</b></h6>
-                    <h6>Attendance Of {{ $s_date .' To '. $e_date }}</h6>
+                    <h6><b>@lang('menu.attendance_report')</b></h6>
+                    <h6>@lang('menu.attendance') Of {{ $s_date .' To '. $e_date }}</h6>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
                 <th class="text-start">{{ __('Employee') }}</th>
                 <th class="text-start">Clock In - Clock Out</th>
                 <th class="text-start">Work Duration</th>
-                <th class="text-start">Shift</th>
+                <th class="text-start">@lang('menu.shift')</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@
                         <b> {{ date('h:i a', strtotime($row->clock_in)) . $clockOut }}</b>
                     </td>
                     <td class="text-start">
-                        @if ($row->clock_out_ts) 
+                        @if ($row->clock_out_ts)
                             @php
                                 $startTime = Carbon::parse($row->clock_in);
                                 $endTime = Carbon::parse($row->clock_out);
@@ -69,7 +69,7 @@
                                 $totalDuration = $endTime->diff($startTime)->format("%H:%I:%S");
                             @endphp
                             {{ $totalDuration }}
-                        @else 
+                        @else
                             Clock-Out-does-not-exists
                         @endif
                     </td>

@@ -198,7 +198,7 @@
                          <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-start">Net Total Amount</th>
+                                    <th class="text-start">@lang('menu.net_total_amount')</th>
                                     <td class="text-start">
                                         <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
@@ -449,7 +449,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="7" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                             </td>

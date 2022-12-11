@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-warehouse"></span>
-                    <h5>Warehouses</h5>
+                    <h5>@lang('menu.warehouse')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -73,7 +73,7 @@
 
                                 <div class="form-group mt-1">
                                     <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
-                                    <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+                                    <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
                                     <span class="error error_phone"></span>
                                 </div>
 

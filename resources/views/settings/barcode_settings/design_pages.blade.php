@@ -270,7 +270,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Barcode Settings</strong>
+                    <strong></strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -407,7 +407,7 @@
                                         <div class="col-sm-8">
                                             <label for="">Barcode Value</label>
                                             <input type="number" class="form-control mb-1" value="123456789">
-                                            <label for="">Barcode Type</label>
+                                            <label for="">@lang('menu.barcode_type')</label>
                                             <select name="" class="form-control mb-2" id="">
                                                 <option value="">CODE128</option>
                                                 <option value="">CODE128</option>

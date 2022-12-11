@@ -7,7 +7,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-band-aid"></span>
-                    <h5>Brands</h5>
+                    <h5>@lang('menu.brands')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -20,7 +20,7 @@
                         <div class="card" id="add_form">
                             <div class="section-header">
                                 <div class="col-md-12">
-                                    <h6>Add Brand </h6>
+                                    <h6>@lang('menu.add_brand') </h6>
                                 </div>
                             </div>
 
@@ -55,7 +55,7 @@
                         <div class="card d-hide" id="edit_form">
                             <div class="section-header">
                                 <div class="col-md-12">
-                                    <h6>Edit Brand </h6>
+                                    <h6>@lang('menu.edit_brand')</h6>
                                 </div>
                             </div>
 
@@ -68,7 +68,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>All Brand</h6>
+                                <h6>@lang('menu.all_brand')</h6>
                             </div>
                         </div>
 
@@ -81,8 +81,8 @@
                                     <thead>
                                         <tr>
                                             <th>@lang('menu.serial')</th>
-                                            <th>Photo</th>
-                                            <th>Name</th>
+                                            <th>@lang('menu.photo')</th>
+                                            <th>@lang('menu.name')</th>
                                             <th>@lang('menu.action')</th>
                                         </tr>
                                     </thead>

@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-tags"></span>
-                    <h5>Selling Price Group</h5>
+                    <h5>@lang('menu.selling_price_group')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -79,7 +79,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-10">
-                        <h6>All Selling Price Group</h6>
+                        <h6>{{ __('All Selling Price Group') }}</h6>
                     </div>
 
                     <div class="col-2 d-flex justify-content-end">
@@ -93,7 +93,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('menu.sl')</th>
-                                    <th>Name</th>
+                                    <th>@lang('menu.name')</th>
                                     <th>@lang('menu.description')</th>
                                     <th>@lang('menu.status')</th>
                                     <th>@lang('menu.action')</th>
@@ -120,7 +120,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Price Group</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_price_group')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -164,7 +164,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Category</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_category')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

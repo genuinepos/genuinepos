@@ -50,7 +50,7 @@
                                 name="password"
                                 required
                                 autocomplete="new-password"
-                                placeholder="New Password"
+                                placeholder="@lang('menu.new_password')"
                                 autofocus>
                             </div>
 
@@ -58,7 +58,7 @@
                                 <i class="fa fa-check-double"></i>
 
                                 <input id="password_confimation" type="password" class="form-control form-st rounded-bottom"
-                                    name="password_confirmation" required placeholder="Confirm Password">
+                                    name="password_confirmation" required placeholder="@lang('menu.confirm_password')">
                             </div>
 
                             {{-- Custom errror message --}}

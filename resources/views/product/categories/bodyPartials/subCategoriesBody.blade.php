@@ -3,7 +3,7 @@
         <div class="card" id="add_sub_cate_form">
             <div class="section-header">
                 <div class="col-md-12">
-                    <h6>Add SubCategory </h6>
+                    <h6>@lang('menu.add_subCategory')</h6>
                 </div>
             </div>
             <div class="form-area px-3 pb-2">
@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label><b>Parent category : <span class="text-danger">*</span></b></label>
+                        <label><b>@lang('menu.parent_category') : <span class="text-danger">*</span></b></label>
                         <select name="parent_category_id" class="form-control " id="parent_category"
                             required>
                             <option selected="" disabled="">Select Parent Category</option>
@@ -81,9 +81,9 @@
                         <thead>
                             <tr>
                                 <th>@lang('menu.serial')</th>
-                                <th>Photo</th>
+                                <th>@lang('menu.photo')</th>
                                 <th>@lang('menu.sub_category')</th>
-                                <th>Parent Category</th>
+                                <th>@lang('menu.parent_category')</th>
                                 <th>@lang('menu.description')</th>
                                 <th>@lang('menu.action')</th>
                             </tr>

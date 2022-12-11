@@ -5,14 +5,14 @@
             <th class="text-white text-start">@lang('menu.product')</th>
             <th class="text-white text-start">@lang('menu.business_location')</th>
             <th class="text-white text-start">@lang('menu.current_stock')</th>
-            <th class="text-white text-start">Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-            <th class="text-white text-start">Total Purchased(+)</th>
-            <th class="text-white text-start">Total Opening Stock(+)</th>
+            <th class="text-white text-start">@lang('menu.stock_value')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th class="text-white text-start">@lang('menu.total_purchase')(+)</th>
+            <th class="text-white text-start">{{ __('Total Opening Stock') }}(+)</th>
             <th class="text-white text-start">@lang('menu.total_sale_return')(+)</th>
             <th class="text-white text-start">@lang('menu.total_received')(+)</th>
             <th class="text-white text-start">@lang('menu.total_sale')(-)</th>
-            <th class="text-white text-start">Total Adjusted(-)</th>
-            <th class="text-white text-start">Total Transferred(-)</th>
+            <th class="text-white text-start">@lang('menu.total_adjusted')(-)</th>
+            <th class="text-white text-start">@lang('menu.total_transferred')(-)</th>
             <th class="text-white text-start">@lang('menu.total_purchase_return')(-)</th>
         </tr>
     </thead>
@@ -65,7 +65,7 @@
                 @endif
             @endforeach
         @else 
-            <tr><th colspan="10" class="text-center">This Product Is Not Available In This Business Location</th></tr>
+            <tr><th colspan="10" class="text-center">{{ __('This Product Is Not Available In This Business Location') }}</th></tr>
         @endif
     </tbody>
 </table>

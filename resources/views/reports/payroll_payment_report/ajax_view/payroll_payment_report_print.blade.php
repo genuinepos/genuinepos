@@ -43,7 +43,7 @@
                     <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
                 </p>
             @endif
-            <h6 style="margin-top: 10px;">Payroll Payment Report</h6>
+            <h6 style="margin-top: 10px;">@lang('menu.payroll_payment_report')</h6>
         </div>
     </div>
     <br>

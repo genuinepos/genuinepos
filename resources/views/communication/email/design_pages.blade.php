@@ -69,13 +69,13 @@
                                         </div>
                                     </div>
                                     <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">User Name</label>
+                                        <label for="" class="col-3">@lang('menu.user_name')</label>
                                         <div class="col-9">
                                             <input class="form-control" type="text" placeholder="E.x. @username">
                                         </div>
                                     </div>
                                     <div class="row g-3 mb-1">
-                                        <label for="" class="col-3">Password</label>
+                                        <label for="" class="col-3">@lang('menu.password')</label>
                                         <div class="col-9">
                                             <input class="form-control" type="password" placeholder="E.x. ************">
                                         </div>

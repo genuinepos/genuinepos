@@ -45,7 +45,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
+                                    <label><span class="text-danger">* </span><b>Unit ({{ __('Pay Type') }}) :</b> </label>
                                     <select name="duration_unit" id="duration_unit" class="form-control">
                                         <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
                                         <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>

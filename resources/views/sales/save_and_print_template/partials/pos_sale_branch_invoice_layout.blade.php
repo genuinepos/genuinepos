@@ -149,7 +149,7 @@
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">Sold Qty</th>
                             @if ($sale->branch->pos_sale_invoice_layout->product_w_type || $sale->branch->pos_sale_invoice_layout->product_w_duration || $sale->branch->pos_sale_invoice_layout->product_w_discription)
-                                <th class="text-start">Warranty</th>
+                                <th class="text-start">@lang('menu.warranty')</th>
                             @endif
                             <th class="text-start">Price</th>
                             @if ($sale->branch->pos_sale_invoice_layout->product_discount)
@@ -237,7 +237,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->account_no)
-                                <p>Account No : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
+                                <p>@lang('menu.account_no') : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->bank_name)
@@ -255,7 +255,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end"><strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                 <td class="net_total text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 </td>

@@ -17,8 +17,8 @@
                         <thead>
                             <tr class="bg-secondary">
                                 <th class="text-white">@lang('menu.product_name')</th>
-                                <th class="text-white">Quantity Remaining</th>
-                                <th class="text-white">Unit Cost Exc.Tax</th>
+                                <th class="text-white">@lang('menu.quantity_remaining')</th>
+                                <th class="text-white">@lang('menu.unit_cost_exc_tax')</th>
                                 <th class="text-white">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>

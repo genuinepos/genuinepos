@@ -163,7 +163,7 @@
                                         <div class="col-7">
                                             <select name="price_group_id" class="form-control"
                                                 id="price_group_id">
-                                                <option value="">Default Selling Price</option>
+                                                <option value="">@lang('menu.default_selling_price')</option>
                                                 @foreach ($price_groups as $pg)
                                                     <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                 @endforeach
@@ -226,7 +226,7 @@
                                                 <label class="col-form-label"></label>
                                                 <div class="input-group ">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text add_button p-1 m-0">Stock</span>
+                                                        <span class="input-group-text add_button p-1 m-0">@lang('menu.stock')</span>
                                                     </div>
                                                     <input type="text" readonly class="form-control text-success stock_quantity"
                                                         autocomplete="off" id="stock_quantity"
@@ -246,7 +246,7 @@
                                                                     <th class="text-start">Stock Location</th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>@lang('menu.unit')</th>
-                                                                    <th class="text-center">Price Inc.Tax</th>
+                                                                    <th class="text-center">@lang('menu.price_inc_tax')</th>
                                                                     <th>@lang('menu.sub_total')</th>
                                                                     <th><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
@@ -637,7 +637,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>

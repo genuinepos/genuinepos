@@ -355,7 +355,7 @@
                     <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/business-report.svg') }}">
-                            <p class="title">Reports</p>
+                            <p class="title">@lang('menu.reports')</p>
                         </a>
                     </li>
                 @endif
@@ -370,7 +370,7 @@
                     {{-- <div class="model__close bg-secondary-2 mb-3">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Product Management</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>{{ __("Product Management")</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
@@ -379,7 +379,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Product Management</p>
+                            <p class="sub-menu-group-title">{{ __("Product Management") }}</p>
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('product_add'))
                                     <div class="sub-menu-col">
@@ -554,7 +554,7 @@
                         </div>
 
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Product Reports</p>
+                            <p class="sub-menu-group-title">{{ __('Product Reports') }}</p>
                             @if (
                                 (
                                     auth()->user()->can('stock_report') &&
@@ -623,7 +623,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Superadmin</p>
+                                <p class="sub-menu-group-title">@lang('menu.superadmin')</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('branch'))
                                         <div class="sub-menu-col">
@@ -651,7 +651,7 @@
                         {{-- <div class="model__close bg-secondary-2 mb-3">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Contact Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>{{ __('Contact Management') }}</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
@@ -661,7 +661,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Contact Management</p>
+                                <p class="sub-menu-group-title">{{ __('Contact Management') }}</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('supplier_all'))
                                         <div class="sub-menu-col">
@@ -751,7 +751,7 @@
                                 </div> --}}
 
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">Contact Reports</p>
+                                    <p class="sub-menu-group-title">{{ __('Contact Reports') }}</p>
                                     <div class="sub-menu-row">
                                         @if (
                                             auth()->user()->can('supplier_report') &&
@@ -821,7 +821,7 @@
 
                             <div class="container-fluid">
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">Purchase Management</p>
+                                    <p class="sub-menu-group-title">{{ __('Purchase Management') }}</p>
                                     <div class="sub-menu-row">
                                         @if (auth()->user()->can('purchase_add'))
                                             <div class="sub-menu-col">
@@ -942,7 +942,7 @@
                                     </div> --}}
 
                                     <div class="sub-menu-group">
-                                        <p class="sub-menu-group-title">Purchase Reports</p>
+                                        <p class="sub-menu-group-title">{{ __("Purchase Reports") }}</p>
                                         <div class="sub-menu-row">
                                             @if (
                                                 auth()->user()->can('purchase_statements') &&
@@ -1030,7 +1030,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Sale Management</p>
+                            <p class="sub-menu-group-title">{{ __('Sale Management') }}</p>
                             <div class="sub-menu-row">
 
                                 @if (json_decode($generalSettings->modules, true)['add_sale'] == '1')
@@ -1268,7 +1268,7 @@
                             </div> --}}
 
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Sale Reports</p>
+                                <p class="sub-menu-group-title">{{ __("Sale Reports") }}</p>
                                 <div class="sub-menu-row">
                                     @if (
                                         auth()->user()->can('sale_statements') &&
@@ -1531,7 +1531,7 @@
                         {{-- <div class="model__close bg-secondary-2 mb-3">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Stock Adjustment</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>@lang('menu.stock_adjustment')</strong></p>
                                 </div>
 
                                 <div class="col-md-4">
@@ -1542,7 +1542,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Stock Adjustment</p>
+                                <p class="sub-menu-group-title">@lang('menu.stock_adjustment')</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('adjustment_add_from_location'))
                                         <div class="sub-menu-col">
@@ -1593,13 +1593,13 @@
                             )
                                 {{-- <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>Stock Adjustment Reports</strong></p>
+                                        <p class="text-muted mt-1 ms-3"><strong>{{ __('Stock Adjustment Reports') }}</strong></p>
                                         <hr class="p-0 m-0 mb-3">
                                     </div>
                                 </div> --}}
 
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">Stock Adjustment Reports</p>
+                                    <p class="sub-menu-group-title">{{ __('Stock Adjustment Reports') }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.stock.adjustments.index') }}" class="switch-bar-wrap">
@@ -1625,7 +1625,7 @@
                         {{-- <div class="model__close bg-secondary-2 mb-3">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Expense Management</strong></p>
+                                    <p class="text-muted float-start mt-1"><strong>{{ __('Expense Management') }}</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
@@ -1635,7 +1635,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Expense Management</p>
+                                <p class="sub-menu-group-title">{{ __('Expense Management') }}</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('add_expense') )
                                         <div class="sub-menu-col">
@@ -1706,7 +1706,7 @@
                                 </div> --}}
 
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">Expense Reports</p>
+                                    <p class="sub-menu-group-title">@lang('menu.expense_report')</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.expenses.index') }}" class="switch-bar-wrap">
@@ -1745,7 +1745,7 @@
 
                             <div class="container-fluid">
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">Account Management</p>
+                                    <p class="sub-menu-group-title">{{ __("Account Management") }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
                                             <a href="{{ route('accounting.banks.index') }}" class="switch-bar-wrap">
@@ -1860,7 +1860,7 @@
                                 </div> --}}
 
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">Account Reports</p>
+                                    <p class="sub-menu-group-title">{{ _('Account Reports') }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.profit.loss.index') }}" class="switch-bar-wrap">
@@ -1905,7 +1905,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">User Management</p>
+                            <p class="sub-menu-group-title">{{ __('User Management') }}</p>
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('user_add'))
                                     <div class="sub-menu-col">
@@ -1983,7 +1983,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Human Resource Management System</p>
+                                <p class="sub-menu-group-title">{{ __('Human Resource Management System') }}</p>
                                 <div class="sub-menu-row">
                                     @if ( auth()->user()->can('hrm_dashboard'))
                                         <div class="sub-menu-col">
@@ -2143,7 +2143,7 @@
                                 </div> --}}
 
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">HRM Reports</p>
+                                    <p class="sub-menu-group-title">HRM @lang('menu.report')</p>
                                     <div class="sub-menu-row">
 
                                         @if (
@@ -2215,7 +2215,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Set-up</p>
+                            <p class="sub-menu-group-title">{{ __('Set-up ') }}</p>
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('g_settings'))
                                     <div class="sub-menu-col">
@@ -2354,7 +2354,7 @@
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">Version Release Notes</p>
+                                        <p class="switch_text">@lang('menu.version_release_notes')</p>
                                     </a>
                                 </div>
 
@@ -2365,7 +2365,7 @@
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">Bercode Settings Design Pages</p>
+                                        <p class="switch_text">{{ __('Barcode Settings Design Pages') }}</p>
                                     </a>
                                 </div>
                             </div>
@@ -2390,7 +2390,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">Manufacturing</p>
+                                <p class="sub-menu-group-title">@lang('menu.manufacturing')</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('process_view'))
                                         <div class="sub-menu-col">
@@ -2464,7 +2464,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Task Management</p>
+                            <p class="sub-menu-group-title">{{ __("Task Management") }}</p>
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('assign_todo'))
                                     <div class="sub-menu-col">
@@ -2528,7 +2528,7 @@
                     {{-- <div class="model__close bg-secondary-2 mb-3">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Communication</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>@lang('menu.communication')</strong></p>
                             </div>
 
                             <div class="col-md-4">
@@ -2538,7 +2538,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Communication</p>
+                            <p class="sub-menu-group-title">@lang('menu.communication')</p>
                             <div class="sub-menu-row">
                                 <div class="sub-menu-col">
                                     <a href="" class="switch-bar-wrap">
@@ -2582,7 +2582,7 @@
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">Email Server Setup Design Pages</p>
+                                        <p class="switch_text">{{ __('Email Server Setup Design Pages') }}</p>
                                     </a>
                                 </div>
                             </div>
@@ -2617,7 +2617,7 @@
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">SMS Server Setup Design Pages</p>
+                                        <p class="switch_text">{{ __('SMS Server Setup Design Pages') }}</p>
                                     </a>
                                 </div>
                             </div>
@@ -2641,7 +2641,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">Common Reports</p>
+                            <p class="sub-menu-group-title">{{ __('Common Reports') }}</p>
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('tax_report'))
                                     <div class="sub-menu-col">

@@ -5,9 +5,9 @@
                 <th class="text-white" scope="col">@lang('menu.product_code')(SKU)</th>
                 <th class="text-white" scope="col">@lang('menu.product')</th>
                 <th class="text-white" scope="col">@lang('menu.branch')</th>
-                <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
+                <th class="text-white" scope="col">@lang('menu.unit_price') (Inc.Tax)</th>
                 <th class="text-white" scope="col">@lang('menu.current_stock')</th>
-                <th class="text-white" scope="col">Stock Value</th>
+                <th class="text-white" scope="col">@lang('menu.stock_value')</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
                 @endforeach
             @else 
                 <tr>
-                    <td colspan="7" class="text-center">This product is not available in any branch.</td>
+                    <td colspan="7" class="text-center">{{ __('This product is not available in any branch') }}.</td>
                 </tr>
             @endif
         </tbody>
@@ -43,9 +43,9 @@
                 <th class="text-white" scope="col">@lang('menu.product_code')(SKU)</th>
                 <th class="text-white" scope="col">@lang('menu.product')</th>
                 <th class="text-white" scope="col">@lang('menu.branch')</th>
-                <th class="text-white" scope="col">Unit Price (Inc.Tax)</th>
+                <th class="text-white" scope="col">@lang('menu.unit_price') (Inc.Tax)</th>
                 <th class="text-white" scope="col">@lang('menu.current_stock')</th>
-                <th class="text-white" scope="col">Stock Value</th>
+                <th class="text-white" scope="col">@lang('menu.stock_value')</th>
             </tr>
         </thead>
         <tbody>
@@ -71,7 +71,7 @@
                 @endforeach
             @else 
                 <tr>
-                    <td colspan="7" class="text-center">This product is not available in any branch.</td>
+                    <td colspan="7" class="text-center">{{ __('This product is not available in any branch') }}.</td>
                 </tr>
             @endif
         </tbody>

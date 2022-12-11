@@ -62,7 +62,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="3" class="text-end">Total Pending Qty :</th>
+            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} :</th>
             <th colspan="3" class="text-end">({{ $totalPendingQty }})</th>
         </tr>
     </tfoot>

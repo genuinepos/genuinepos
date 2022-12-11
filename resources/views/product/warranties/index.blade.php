@@ -7,7 +7,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-desktop"></span> <h5> Warranties/Guaranties</h5>
+                    <span class="fas fa-desktop"></span> <h5> @lang('menu.warranties')/@lang('menu.guaranties')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -20,7 +20,7 @@
                 <div class="col-lg-4">
                     <div class="card" id="add_form">
                         <div class="section-header">
-                            <h6>Add Warranty/Guaranty</h6>
+                            <h6>@lang('menu.add_warranty')/@lang('menu.guaranty')</h6>
                         </div>
 
                         <div class="form-area px-3 pb-2">
@@ -37,13 +37,13 @@
                                     <div class="col-lg-4">
                                         <strong>Type :</strong> <span class="text-danger">*</span>
                                         <select name="type" class="form-control" id="type">
-                                            <option value="1">Warranty</option>
-                                            <option value="2">Guaranty</option>
+                                            <option value="1">@lang('menu.warranty')</option>
+                                            <option value="2">@lang('menu.guaranty')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-lg-8">
-                                        <strong>Duration :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.duration') :</strong> <span class="text-danger">*</span>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <input type="number" name="duration" class="form-control add_input"
@@ -55,7 +55,7 @@
                                                 <select name="duration_type" class="form-control" id="duration_type">
                                                     <option value="Months">@lang('menu.months')</option>
                                                     <option value="Days">@lang('menu.days')</option>
-                                                    <option value="Years">Years</option>
+                                                    <option value="Years">@lang('menu.years')</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -72,7 +72,7 @@
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
                                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                            <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                            <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
                                             <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                         </div>
                                     </div>
@@ -84,7 +84,7 @@
                     <div class="card d-hide" id="edit_form">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>Edit Warranty/Guaranty</h6>
+                                <h6>@lang('menu.edit_warranty')/@lang('menu.guaranty')</h6>
                             </div>
                         </div>
 
@@ -102,13 +102,13 @@
                                     <div class="col-md-4">
                                         <strong>Type :</strong> <span class="text-danger">*</span>
                                         <select name="type" class="form-control" id="e_type">
-                                            <option value="1">Warranty</option>
-                                            <option value="2">Guaranty</option>
+                                            <option value="1">@lang('menu.warranty')</option>
+                                            <option value="2">@lang('menu.guaranty')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-8">
-                                        <strong>Duration :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.duration') :</strong> <span class="text-danger">*</span>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <input type="number" name="duration" class="form-control edit_input"
@@ -120,7 +120,7 @@
                                                 <select name="duration_type" class="form-control" id="e_duration_type">
                                                     <option value="Months">@lang('menu.months')</option>
                                                     <option value="Days">@lang('menu.days')</option>
-                                                    <option value="Years">Years</option>
+                                                    <option value="Years">@lang('menu.years')</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -151,7 +151,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>Warranty/Guaranty List</h6>
+                                <h6>@lang('menu.warranty')/@lang('menu.guaranty_list')</h6>
                             </div>
                         </div>
                         <!--begin: Datatable-->
@@ -164,8 +164,8 @@
                                     <thead>
                                         <tr class="text-center">
                                             <th>@lang('menu.sl')</th>
-                                            <th>Name</th>
-                                            <th>Duration</th>
+                                            <th>@lang('menu.name')</th>
+                                            <th>@lang('menu.duration')</th>
                                             <th>@lang('menu.description')</th>
                                             <th>@lang('menu.action')</th>
                                         </tr>

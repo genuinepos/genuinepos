@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-cubes"></span>
-                                <h5>Categories / SubCategories</h5>
+                                <h5>@lang('menu.categories') / @lang('menu.sub_category')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -28,10 +28,10 @@
                                         <div class="tab_list_area">
                                             <div class="btn-group">
                                                 <a id="tab_btn" data-show="categories" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                                    <i class="fas fa-th-large"></i> Categories</a>
+                                                    <i class="fas fa-th-large"></i> @lang('menu.categories')</a>
 
                                                 <a id="tab_btn" data-show="sub-categories" class="btn btn-sm btn-primary tab_btn" href="#">
-                                                    <i class="fas fa-code-branch"></i> SubCategories</a>
+                                                    <i class="fas fa-code-branch"></i>  @lang('menu.sub_categories')</a>
                                             </div>
                                         </div>
                                     </div>

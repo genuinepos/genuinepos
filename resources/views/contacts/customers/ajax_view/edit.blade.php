@@ -10,7 +10,7 @@
 
         <div class="col-md-3">
             <label><b>@lang('menu.phone')</b> : <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" placeholder="Phone number" value="{{ $customer->phone }}"/>
+            <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" placeholder="@lang('menu.phone_number')" value="{{ $customer->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
 

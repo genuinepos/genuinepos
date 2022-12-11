@@ -135,7 +135,7 @@
 
                             <div class="col-lg-3 col-md-6">
                                 <b>@lang('menu.phone') :</b> <span class="text-danger">*</span>
-                                <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+                                <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
                                 <span class="error error_phone"></span>
                             </div>
 

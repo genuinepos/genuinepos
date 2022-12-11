@@ -39,7 +39,7 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
+                                                <label><span class="text-danger">* </span><b>@lang('menu.unit') ({{ __('Pay Type') }}) :</b> </label>
                                                 <select name="duration_unit" id="duration_unit" class="form-control">
                                                     <option value="Hourly">{{ __('Hourly') }}</option>
                                                     <option value="Monthly">{{ __('Monthly') }}</option>

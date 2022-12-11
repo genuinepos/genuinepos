@@ -35,7 +35,7 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.reference_id')</th>
-                                                <th>Warehouse(From) </th>
+                                                <th>@lang('menu.warehouse')(From) </th>
                                                 <th>@lang('menu.b_location')(To)</th>
                                                 <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.total_amount') ({{ json_decode($generalSettings->business, true)['currency'] }})</th>

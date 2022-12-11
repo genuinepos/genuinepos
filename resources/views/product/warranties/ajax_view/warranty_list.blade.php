@@ -3,7 +3,7 @@
         <tr>
             <th>@lang('menu.serial')</th>
             <th>@lang('menu.name')</th>
-            <th>Duration</th>
+            <th>@lang('menu.duration')</th>
             <th>@lang('menu.type')</th>
             <th>@lang('menu.description')</th>
             <th>@lang('menu.action')</th>

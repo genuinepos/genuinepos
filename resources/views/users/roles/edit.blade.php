@@ -69,14 +69,14 @@
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('user_add') ? 'CHECKED' : '' }} name="user_add" class="users"> &nbsp; Add User
+                                            <input type="checkbox" {{ $role->hasPermissionTo('user_add') ? 'CHECKED' : '' }} name="user_add" class="users"> &nbsp; @lang('menu.add_user')
                                         </p>
 
                                     </div>
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('user_edit') ? 'CHECKED' : '' }} name="user_edit" class="users"> &nbsp; Edit User
+                                            <input type="checkbox" {{ $role->hasPermissionTo('user_edit') ? 'CHECKED' : '' }} name="user_edit" class="users"> &nbsp; @lang('menu.edit_user')
                                         </p>
                                     </div>
 
@@ -261,7 +261,7 @@
 
                                 <div class="col-md-4">
                                     <div class="col-md-12">
-                                        <p><strong>Products</strong></p>
+                                        <p><strong>@lang('menu.products')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -274,14 +274,14 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('product_add') ? 'CHECKED' : '' }} name="product_add" class="product"> &nbsp; Add Product </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('product_add') ? 'CHECKED' : '' }} name="product_add" class="product"> &nbsp; @lang('menu.add_product') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('product_edit') ? 'CHECKED' : '' }} name="product_edit" class="product"> &nbsp; Edit Product </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('product_edit') ? 'CHECKED' : '' }} name="product_edit" class="product"> &nbsp; {{ __('Edit Product') }} </p>
                                         </div>
                                     </div>
 
@@ -304,7 +304,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('product_settings') ? 'CHECKED' : '' }}
-                                            name="product_settings" class="product"> &nbsp; Product Settings</p>
+                                            name="product_settings" class="product"> &nbsp; @lang('menu.product_settings')</p>
                                         </div>
                                     </div>
 
@@ -370,14 +370,14 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('selling_price_group') ? 'CHECKED' : '' }} name="selling_price_group" class="product"> &nbsp; Selling Price Group</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('selling_price_group') ? 'CHECKED' : '' }} name="selling_price_group" class="product"> &nbsp; @lang('menu.selling_price_group')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('generate_barcode') ? 'CHECKED' : '' }}  name="generate_barcode" class="product"> &nbsp; Generate Barcode</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('generate_barcode') ? 'CHECKED' : '' }}  name="generate_barcode" class="product"> &nbsp; @lang('menu.generate_barcode')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -660,7 +660,7 @@
 
                                 <div class="col-md-4">
                                     <div class="col-md-12">
-                                        <p><strong>Sales</strong></p>
+                                        <p><strong>@lang('menu.sales')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -1005,7 +1005,7 @@
                                 <div class="col-md-6">
 
                                     <div class="col-md-12">
-                                        <p><strong>Reports</strong></p>
+                                        <p><strong>@lang('menu.reports')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -1091,7 +1091,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('barcode_settings') ? 'CHECKED' : '' }} name="barcode_settings" class="settings"> &nbsp; Barcode Settings</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('barcode_settings') ? 'CHECKED' : '' }} name="barcode_settings" class="settings"> &nbsp;@lang('menu.barcode_settings')</p>
                                         </div>
                                     </div>
 
@@ -1193,7 +1193,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('attendance') ? 'CHECKED' : '' }} name="attendance" class="HRMS"> &nbsp; Attendance</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('attendance') ? 'CHECKED' : '' }} name="attendance" class="HRMS"> &nbsp; @lang('menu.attendance')</p>
                                             </div>
                                         </div>
 
@@ -1210,7 +1210,7 @@
                                                 <input type="checkbox"
                                                 name="payroll_report"
                                                         {{ $role->hasPermissionTo('payroll_report') ? 'CHECKED' : '' }}
-                                                    class="HRMS"> &nbsp; Payroll Report</p>
+                                                    class="HRMS"> &nbsp; @lang('menu.payroll_report')</p>
                                             </div>
                                         </div>
 
@@ -1219,7 +1219,7 @@
                                                 <p class="checkbox_input_wrap">
                                                 <input type="checkbox"
                                                     {{ $role->hasPermissionTo('payroll_payment_report') ? 'CHECKED' : '' }}
-                                                name="payroll_payment_report" class="HRMS"> &nbsp; Payroll Payment Report</p>
+                                                name="payroll_payment_report" class="HRMS"> &nbsp; @lang('menu.payroll_payment_report')</p>
                                             </div>
                                         </div>
 
@@ -1228,7 +1228,7 @@
                                                 <p class="checkbox_input_wrap">
                                                 <input type="checkbox"
                                                         {{ $role->hasPermissionTo('attendance_report') ? 'CHECKED' : '' }}
-                                                name="attendance_report" class="HRMS"> &nbsp; Attendance Report</p>
+                                                name="attendance_report" class="HRMS"> &nbsp; @lang('menu.attendance_report')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1241,28 +1241,28 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('leave_type') ? 'CHECKED' : '' }}  name="leave_type" class="HRMS"> &nbsp; Leave Type</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('leave_type') ? 'CHECKED' : '' }}  name="leave_type" class="HRMS"> &nbsp; @lang('menu.leave_type')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('leave_assign') ? 'CHECKED' : '' }}  name="leave_assign" class="HRMS"> &nbsp; Leave Assign</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('leave_assign') ? 'CHECKED' : '' }}  name="leave_assign" class="HRMS"> &nbsp; {{ __('Leave assign') }}</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('shift') ? 'CHECKED' : '' }} name="shift" class="HRMS"> &nbsp; Shift</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('shift') ? 'CHECKED' : '' }} name="shift" class="HRMS"> &nbsp; @lang('menu.shift')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('view_allowance_and_deduction') ? 'CHECKED' : '' }} name="view_allowance_and_deduction" class="HRMS"> &nbsp; Allowance and deduction</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('view_allowance_and_deduction') ? 'CHECKED' : '' }} name="view_allowance_and_deduction" class="HRMS"> &nbsp; {{  __('Allowance and deduction') }}</p>
                                             </div>
                                         </div>
 
@@ -1478,7 +1478,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('communication') ? 'CHECKED' : '' }}   name="communication" class="others"> &nbsp; Communication</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('communication') ? 'CHECKED' : '' }}   name="communication" class="others"> &nbsp; @lang('menu.communication')</p>
                                         </div>
                                     </div>
                                 </div>

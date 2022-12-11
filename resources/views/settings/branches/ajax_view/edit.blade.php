@@ -16,7 +16,7 @@
 
         <div class="col-lg-3 col-md-6">
             <label><strong>@lang('menu.phone') :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $branch->phone }}"/>
+            <input type="text" name="phone" class="form-control  edit_input" data-name="Phone number" id="e_phone" placeholder="@lang('menu.phone_number')" value="{{ $branch->phone }}"/>
             <span class="error error_e_phone"></span>
         </div>
 

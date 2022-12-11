@@ -124,7 +124,7 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
                             <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="Leave Type" required="" />
+                            <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="@lang('menu.leave_type')" required="" />
                             <span class="error error_e_leave_type"></span>
                         </div>
 

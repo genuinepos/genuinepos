@@ -36,7 +36,7 @@
                                     <tr class="bg-secondary text-white">
                                         <th class="text-start">@lang('menu.sl')</th>
                                         <th class="text-start">@lang('menu.product')</th>
-                                        <th class="text-start">Unit Price</th>
+                                        <th class="text-start">@lang('menu.unit_price')</th>
                                         <th class="text-start">Return Quantity</th>
                                         <th class="text-start">@lang('menu.sub_total')</th>
                                     </tr>
@@ -82,7 +82,7 @@
                         <div class="table-responsive">
                             <table class="table modal-table tabl-sm">
                                 <tr>
-                                    <th class="text-start">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start net_total ">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}
                                     </td>
@@ -201,7 +201,7 @@
                             <tr>
                                 <th class="text-start">@lang('menu.sl')</th>
                                 <th class="text-start">@lang('menu.product')</th>
-                                <th class="text-start">Unit Price</th>
+                                <th class="text-start">@lang('menu.unit_price')</th>
                                 <th class="text-start">Return Quantity</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
@@ -242,7 +242,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end" colspan="4">Net Total Amount :</th>
+                            <th class="text-end" colspan="4"">@lang('menu.net_total_amount') :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
                         </tr>
 

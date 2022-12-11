@@ -141,12 +141,12 @@
                                     <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">@lang('menu.product')</th>
                                     <th class="text-start">Stock Location</th>
-                                    <th class="text-start">Warranty</th>
+                                    <th class="text-start">@lang('menu.warranty')</th>
                                     <th class="text-end">@lang('menu.quantity')</th>
                                     <th class="text-end">@lang('menu.unit_price_exc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                    <th class="text-end">Unit Price Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-end">@lang('menu.unit_price') Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 </tr>
                             </thead>
@@ -217,7 +217,7 @@
                         <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         <span class="net_total">
                                             {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
@@ -334,7 +334,7 @@
                     class="footer_btn btn btn-sm btn-success action_hideable">Print Packing Slip</button>
                 @endif
 
-                <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white action_hideable">Print Challan</button>
+                <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white action_hideable">@lang('menu.print_challan')</button>
                 <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">Print {{ $sale->status == 1 ? 'Invoice' : 'Order' }} </button>
                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">@lang('menu.close')</button>
             </div>

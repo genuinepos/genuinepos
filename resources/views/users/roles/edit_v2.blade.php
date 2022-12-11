@@ -242,7 +242,7 @@
 
                                                 <p class="text-info">
                                                     <input type="checkbox" class="select_all super_select_all sales_app_permission super_select_all" data-target="sale" autocomplete="off">
-                                                    <strong>Sales</strong>
+                                                    <strong>@lang('menu.sales')</strong>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="create_add_sale" {{ $role->hasPermissionTo('create_add_sale') ? 'checked' : '' }} class="sale sales_app_permission super_select_all"> Create add sale
@@ -750,7 +750,7 @@
 
                                     <div class="col-lg-3 col-sm-6">
                                         <p class="text-info">
-                                            <input type="checkbox" class="select_all super_select_all inventory_permission super_select_all" data-target="stock_adjustment" autocomplete="off"> <strong> Stock adjustment</strong>
+                                            <input type="checkbox" class="select_all super_select_all inventory_permission super_select_all" data-target="stock_adjustment" autocomplete="off"> <strong> @lang('menu.stock_adjustment')</strong>
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -1071,7 +1071,7 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-sm-6">
                                         <p class="text-info">
-                                            <input type="checkbox" class="select_all super_select_all communication_permission" data-target="communication" autocomplete="off"><strong> Communication</strong>
+                                            <input type="checkbox" class="select_all super_select_all communication_permission" data-target="communication" autocomplete="off"><strong> @lang('menu.communication')</strong>
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -1752,7 +1752,7 @@
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="barcode_settings" {{ $role->hasPermissionTo('barcode_settings') ? 'checked' : '' }} class="settings setup_permission super_select_all">
 
-                                            Barcode settings
+                                            @lang('menu.barcode_settings')
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -1805,15 +1805,15 @@
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="user_view" {{ $role->hasPermissionTo('user_view') ? 'checked' : '' }} class="users setup_permission super_select_all">
-                                            View user
+                                            @lang('menu.view_user')
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="user_add" {{ $role->hasPermissionTo('user_add') ? 'checked' : '' }} class="users setup_permission super_select_all" autocomplete="off">
-                                                Add user
+                                            @lang('menu.add_user')
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="user_edit" {{ $role->hasPermissionTo('user_edit') ? 'checked' : '' }} class="users setup_permission super_select_all" autocomplete="off">
-                                                Edit user
+                                                @lang('menu.edit_user')
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="user_delete" {{ $role->hasPermissionTo('user_delete') ? 'checked' : '' }} class="users setup_permission super_select_all" autocomplete="off">
@@ -1924,56 +1924,55 @@
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="attendance" {{ $role->hasPermissionTo('attendance') ? 'checked' : '' }} class="hrm human_permission super_select_all">
 
-                                            Attendance
+                                            @lang('menu.attendance')
                                         </p>
 
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="payroll" {{ $role->hasPermissionTo('payroll') ? 'checked' : '' }} class="hrm human_permission super_select_all">
-                                            Payroll
+                                            @lang('menu.payroll')
                                         </p>
 
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="payroll_report" {{ $role->hasPermissionTo('payroll_report') ? 'checked' : '' }} class="hrm human_permission super_select_all">
+                                            @lang('menu.payroll_report')
 
-                                            Payroll report
                                         </p>
 
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="payroll_payment_report" {{ $role->hasPermissionTo('payroll_payment_report') ? 'checked' : '' }} class="hrm human_permission super_select_all">
-                                                Payroll payment report
+                                                @lang('menu.payroll_payment_report')
                                         </p>
 
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="attendance_report" {{ $role->hasPermissionTo('attendance_report') ? 'checked' : '' }} class="hrm human_permission super_select_all">
-                                            Attendance report
+                                            @lang('menu.attendance_report')
                                         </p>
                                     </div>
                                     <div class="col-lg-3 col-sm-6">
                                         <p class="text-info">
                                             <input type="checkbox" class="select_all super_select_all human_permission " data-target="hrm_others" autocomplete="off"><strong>
-                                                Others</strong>
+                                                @lang('menu.others')</strong>
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="leave_type" {{ $role->hasPermissionTo('leave_type') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">
 
-                                            Leave type
+                                            @lang('menu.leave_type')
                                         </p>
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="leave_assign" {{ $role->hasPermissionTo('leave_assign') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">
 
-                                            Leave assign
+                                            {{ __('Leave assign') }}
                                         </p>
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="shift" {{ $role->hasPermissionTo('shift') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">
-                                                Shift
+                                                @lang('menu.shift')
                                         </p>
                                         <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="view_allowance_and_deduction" {{ $role->hasPermissionTo('view_allowance_and_deduction') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">  Allowance and deduction
+                                            <input type="checkbox" name="view_allowance_and_deduction" {{ $role->hasPermissionTo('view_allowance_and_deduction') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">  {{  __('Allowance and deduction') }}
                                         </p>
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="holiday" {{ $role->hasPermissionTo('holiday') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">
-
-                                            Holiday
+                                            @lang('menu.holiday')
                                         </p>
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="department" {{ $role->hasPermissionTo('department') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">
@@ -1983,7 +1982,7 @@
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="designation" {{ $role->hasPermissionTo('designation') ? 'checked' : '' }} class="hrm_others human_permission super_select_all">
 
-                                            Designation
+                                            @lang('menu.designation')
                                         </p>
                                     </div>
                                 </div>
@@ -1995,7 +1994,7 @@
                         <div class="accordion-header">
                             <input type="checkbox" class="other_check select_all super_select_all others_permission" data-target="others_permission" autocomplete="off">
                             <a data-bs-toggle="collapse" class="other_role" href="#collapsefourtenn" href="">
-                                Others Permissions
+                                {{ __('Others Permissions') }}
                             </a>
                         </div>
                         <div id="collapsefourtenn" class="collapse" data-bs-parent="#accordion">
@@ -2006,15 +2005,15 @@
                                                 Others</strong></p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="print_invoice" {{ $role->hasPermissionTo('print_invoice') ? 'checked' : '' }} class="others others_permission super_select_all">
-                                            Print invoice
+                                            @lang('menu.print_invoice')
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="print_challan" {{ $role->hasPermissionTo('print_challan') ? 'checked' : '' }} class="others others_permission super_select_all">
-                                            Print challan
+                                            @lang('menu.print_challan')
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="print_weight" {{ $role->hasPermissionTo('print_weight') ? 'checked' : '' }} class="others others_permission super_select_all">
-                                            Print weight
+                                            @lang('menu.print_weight')
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="today_summery" {{ $role->hasPermissionTo('today_summery') ? 'checked' : '' }} class="others others_permission super_select_all">
@@ -2023,7 +2022,7 @@
 
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="website_link" {{ $role->hasPermissionTo('website_link') ? 'checked' : '' }} class="others others_permission super_select_all">
-                                            Website link
+                                            {{ __('Website link') }}
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -2034,7 +2033,7 @@
 
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="modules_page" {{ $role->hasPermissionTo('modules_page') ? 'checked' : '' }} class="others others_permission super_select_all">
-                                            Modules page
+                                            {{ __('Modules page') }}
                                         </p>
 
 

@@ -3,13 +3,13 @@
         <tr class="bg-secondary">
             <th class="text-white text-start">@lang('menu.product_code')(SKU)</th>
             <th class="text-white text-start">@lang('menu.product')</th>
-            <th class="text-white text-start">Warehouse</th>
+            <th class="text-white text-start">@lang('menu.warehouse')</th>
             <th class="text-white text-start">@lang('menu.current_stock')</th>
-            <th class="text-white text-start">Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-            <th class="text-white text-start">Total Purchased(+)</th>
+            <th class="text-white text-start">@lang('menu.stock_value')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+            <th class="text-white text-start">@lang('menu.total_purchase')(+)</th>
             <th class="text-white text-start">@lang('menu.total_received')(+)</th>
-            <th class="text-white text-start">Total Adjusted(-)</th>
-            <th class="text-white text-start">Total Transferred(-)</th>
+            <th class="text-white text-start">@lang('menu.total_adjusted')(-)</th>
+            <th class="text-white text-start">@lang('menu.total_transferred')(-)</th>
         </tr>
     </thead>
     <tbody>

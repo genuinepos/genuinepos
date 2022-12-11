@@ -3,7 +3,7 @@
         <div class="card" id="add_cate_form">
             <div class="section-header">
                 <div class="col-md-12">
-                    <h6>Add Category </h6>
+                    <h6>@lang('menu.add_category')</h6>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b></small></label>
+                        <label><b>@lang('menu.photo') :</b> <small class="text-danger"><b>@lang('menu.photo') size 400px * 400px.</b></small></label>
                         <input type="file" name="photo" class="form-control" id="photo">
                         <span class="error error_photo"></span>
                     </div>
@@ -45,7 +45,7 @@
         <div class="card d-hide" id="edit_cate_form">
             <div class="section-header">
                 <div class="col-md-12">
-                    <h6>Edit Category </h6>
+                    <h6>@lang('menu.edit_category') </h6>
                 </div>
             </div>
 
@@ -57,7 +57,7 @@
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>All Category</h6>
+                    <h6>@lang('menu.all_category')</h6>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                         <thead>
                             <tr class="bg-navey-blue">
                                 <th class="text-black">@lang('menu.serial')</th>
-                                <th class="text-black">Photo</th>
+                                <th class="text-black">@lang('menu.photo')</th>
                                 <th class="text-black">@lang('menu.name')</th>
                                 <th class="text-black">@lang('menu.description')</th>
                                 <th class="text-black">@lang('menu.action')</th>

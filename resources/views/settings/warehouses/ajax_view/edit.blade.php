@@ -15,7 +15,7 @@
 
     <div class="form-group mt-1">
         <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
-        <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" id="e_phone" placeholder="Phone number" value="{{ $w->phone }}"/>
+        <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" id="e_phone" placeholder="@lang('menu.phone_number')" value="{{ $w->phone }}"/>
         <span class="error error_e_phone"></span>
     </div>
 

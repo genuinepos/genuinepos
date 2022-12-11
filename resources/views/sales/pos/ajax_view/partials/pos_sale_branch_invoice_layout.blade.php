@@ -141,7 +141,7 @@
                             <th class="text-startx">@lang('menu.description')</th>
                             <th class="text-startx">@lang('menu.sold_quantity')</th>
                             @if ($sale->branch->pos_sale_invoice_layout->product_w_type || $sale->branch->pos_sale_invoice_layout->product_w_duration || $sale->branch->pos_sale_invoice_layout->product_w_discription)
-                                <th class="text-startx">Warranty</th>
+                                <th class="text-startx">@lang('menu.warranty')</th>
                             @endif
 
                             <th class="text-startx">Price</th>
@@ -234,7 +234,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->account_no)
-                                <p>Account No : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
+                                <p>@lang('menu.account_no') : {{ $sale->branch->pos_sale_invoice_layout->account_no }}</p>
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->bank_name)

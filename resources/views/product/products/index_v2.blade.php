@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h6>Products</h6>
+                                <h6>@lang('menu.products')</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -46,9 +46,9 @@
                                             <select name="product_type" id="product_type"
                                                 class="form-control submit_able" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="1">Single</option>
-                                                <option value="2">Variant</option>
-                                                <option value="3">Combo</option>
+                                                <option value="1">@lang('menu.single')</option>
+                                                <option value="2">@lang('menu.variant')</option>
+                                                <option value="3">@lang('menu.combo')</option>
                                             </select>
                                         </div>
 
@@ -64,7 +64,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>Unit :</b></label>
+                                            <label><b>@lang('menu.unit') :</b></label>
                                             <select id="unit_id" name="unit_id"
                                                 class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
@@ -88,13 +88,13 @@
                                             <label><b>@lang('menu.status') : </b></label>
                                             <select name="status" id="status" class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">In-Active</option>
+                                                <option value="1">@lang('menu.active')</option>
+                                                <option value="0">{{ __('In-Active') }}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>Brand :</b></label>
+                                            <label><b>@lang('menu.brand'):</b></label>
                                             <select id="brand_id" name="brand_id"
                                                 class="form-control submit_able">
                                                 <option value="">@lang('menu.all')</option>
@@ -116,19 +116,19 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
-                                    <h6>All Product</h6>
+                                    <h6>{{ __('All Product') }}</h6>
                                 </div>
 
                                 @if(auth()->user()->can('product_add'))
 
                                     <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
-                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add Product (Ctrl+Enter)</a>
+                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add_product') (Ctrl+Enter)</a>
 
-                                        <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">Deactivate Selected</a>
+                                        <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
 
                                         @if (auth()->user()->can('product_delete'))
 
-                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">Delete Selected</a>
+                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">@lang('menu.delete_selected')</a>
                                         @endif
                                     </div>
                                 @endif
@@ -148,16 +148,16 @@
                                                     <th data-bSortable="false">
                                                         <input class="all" type="checkbox" name="all_checked"/>
                                                     </th>
-                                                    <th>Image</th>
+                                                    <th>@lang('menu.image')</th>
                                                     <th>@lang('menu.action')</th>
                                                     <th>@lang('menu.product')</th>
-                                                    <th>Access Locations</th>
-                                                    <th>Purchase Cost</th>
+                                                    <th>@lang('menu.access_location')</th>
+                                                    <th>@lang('menu.purchase_cost')</th>
                                                     <th>@lang('menu.selling_price')</th>
                                                     <th>@lang('menu.current_stock')</th>
-                                                    <th>Product Type</th>
+                                                    <th>{{ __('Product Type') }}</th>
                                                     <th>@lang('menu.category')</th>
-                                                    <th>Brand</th>
+                                                    <th>@lang('menu.brand')</th>
                                                     <th>@lang('menu.tax')</th>
                                                     <th>@lang('menu.status')</th>
                                                 </tr>
@@ -189,7 +189,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add opening stock</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add opening stock') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="opening_stock_view">

@@ -5,7 +5,7 @@
             <th class="text-white text-start">@lang('menu.product')</th>
             <th class="text-white text-start">@lang('menu.business_location')</th>
             <th class="text-white text-start">@lang('menu.current_stock')</th>
-            <th class="text-white text-start">Stock Value</th>
+            <th class="text-white text-start">@lang('menu.stock_value')</th>
             <th class="text-white text-start">@lang('menu.total_sale')</th>
         </tr>
     </thead>

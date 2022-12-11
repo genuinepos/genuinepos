@@ -18,7 +18,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Generate Barcode</h5>
+                                <h5>@lang('menu.generate_barcode')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back') </a>
@@ -59,7 +59,7 @@
 
                                         <div class="barcode_product_table_area">
                                             <div class="table_heading">
-                                                <p class="p-0 m-0"><strong>Recent Purchased Product List</strong></p>
+                                                <p class="p-0 m-0"><strong>{{ __('Recent Purchased Product List') }}</strong></p>
                                             </div>
                                             <div class="table_area">
                                                 <div class="data_preloader d-hide">
@@ -71,7 +71,7 @@
                                                             <th class="text-start">@lang('menu.product')</th>
                                                             <th class="text-start">@lang('menu.supplier')</th>
                                                             <th class="text-start">@lang('menu.quantity')</th>
-                                                            <th class="text-start">Packing Date</th>
+                                                            <th class="text-start">@lang('menu.packing_date')</th>
                                                             <th class="text-start">@lang('menu.action')</th>
                                                         </tr>
                                                     </thead>
@@ -80,7 +80,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th colspan="5" class="text-start"><a href="" class="btn btn-sm btn-success multiple_completed"> Generate Completed All</a></th>
+                                                            <th colspan="5" class="text-start"><a href="" class="btn btn-sm btn-success multiple_completed"> @lang('menu.generate_completed_all')</a></th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -92,7 +92,7 @@
                                                 <div class="row">
                                                     <ul class="list-unstyled">
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price Price. &nbsp;</p>
+                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; @lang('menu.price_price') &nbsp;</p>
                                                         </li>
 
                                                         <li>
@@ -100,11 +100,11 @@
                                                         </li>
 
                                                         <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Product Variant &nbsp; </p>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; @lang('menu.product_variant') &nbsp; </p>
                                                         </li>
 
                                                         <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Product Tax &nbsp; </p>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.product_tax') &nbsp; </p>
                                                         </li>
 
                                                         <li>
@@ -112,7 +112,7 @@
                                                         </li>
 
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; @lang('menu.supplier_prefix') &nbsp; </p>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -121,7 +121,7 @@
 
                                         <div class="row mt-3">
                                             <div class="col-md-4">
-                                                <label><b>Barcode Setting :</b></label>
+                                                <label><b>@lang('menu.barcode_settings') :</b></label>
                                                 <select name="br_setting_id" class="form-control">
                                                     @foreach ($bc_settings as $bc_setting)
                                                         <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
@@ -134,7 +134,7 @@
 
                                         <div class="row mt-3">
                                             <div class="col-md-12">
-                                                <button type="submit" class="btn btn-sm btn-primary float-end">Preview</button>
+                                                <button type="submit" class="btn btn-sm btn-primary float-end">@lang('menu.preview')</button>
                                             </div>
                                         </div>
                                     </div>

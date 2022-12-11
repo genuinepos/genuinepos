@@ -21,7 +21,7 @@
                         <div class="col-md-12">
                             <label><b>@lang('menu.phone') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="phone" class="form-control" id="phone" autocomplete="off"
-                                placeholder="Phone Number Name"/>
+                                placeholder="@lang('menu.phone_number') Name"/>
                             <span class="error error_phone"></span>
                         </div>
 

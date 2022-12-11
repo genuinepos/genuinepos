@@ -170,7 +170,7 @@
                             <th class="text-startx">@lang('menu.description')</th>
                             <th class="text-startx">@lang('menu.sold_quantity')</th>
                             @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
-                                <th scope="col">Warranty</th>
+                                <th scope="col">@lang('menu.warranty')</th>
                             @endif
 
                             <th class="text-startx">Price</th>
@@ -258,7 +258,7 @@
                             @endif
 
                             @if ($defaultLayout->account_no)
-                                <p>Account No : {{ $defaultLayout->account_no }}</p>
+                                <p>@lang('menu.account_no') : {{ $defaultLayout->account_no }}</p>
                             @endif
 
                             @if ($defaultLayout->bank_name)

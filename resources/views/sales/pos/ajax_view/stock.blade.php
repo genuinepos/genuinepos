@@ -9,7 +9,7 @@
         <tr class="bg-secondary">
             <th class="text-startx text-white">@lang('menu.serial')</th>
             <th class="text-startx text-white">@lang('menu.item')</th>
-            <th class="text-startx text-white">Stock</th>
+            <th class="text-startx text-white">@lang('menu.stock')</th>
             <th class="text-startx text-white">@lang('menu.unit')</th>
         </tr>
     </thead>

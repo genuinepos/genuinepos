@@ -3,7 +3,7 @@
     <div class="modal-dialog select_variant_modal_dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Select variant Child</h6>
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.select_variant_child')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
             <div class="modal-body">
@@ -38,7 +38,7 @@
     <div class="modal-dialog double-col-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Add Unit</h6>
+                <h6 class="modal-title" id="exampleModalLabel"> @lang('menu.add_unit')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
 
@@ -53,9 +53,9 @@
                     </div>
 
                     <div class="form-group mt-1">
-                       <label><b>Unit Code :</b></label>  <span class="text-danger">*</span>
+                       <label><b>{{ __('Unit Code') }} :</b></label>  <span class="text-danger">*</span>
                         <input type="text" name="code" class="form-control add_unit_input"
-                            data-name="Unit code" id="add_unit_code" placeholder="Unit code" />
+                            data-name="Unit code" id="add_unit_code" placeholder="{{ __('Unit Code') }}" />
                         <span class="error error_add_unit_code"></span>
                     </div>
 
@@ -81,7 +81,7 @@
     <div class="modal-dialog double-col-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Add Category</h6>
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_category')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
             <div class="modal-body">
@@ -116,7 +116,7 @@
     <div class="modal-dialog double-col-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Add Brand</h6>
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_brand')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
             <div class="modal-body">
@@ -151,7 +151,7 @@ aria-hidden="true">
     <div class="modal-dialog double-col-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Add Warranty</h6>
+                <h6 class="modal-title" id="exampleModalLabel"> @lang('menu.add_warranty')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
 
@@ -168,13 +168,13 @@ aria-hidden="true">
                         <div class="col-lg-4">
                             <label><b>@lang('menu.type') : </b> </label> <span class="text-danger">*</span>
                             <select name="type" class="form-control" id="type">
-                                <option value="1">Warranty</option>
-                                <option value="2">Guaranty</option>
+                                <option value="1">@lang('menu.warranty')</option>
+                                <option value="2">@lang('menu.guaranty')</option>
                             </select>
                         </div>
 
                         <div class="col-lg-8">
-                            <label><b>Duration :</b> </label> <span class="text-danger">*</span>
+                            <label><b>@lang('menu.duration') :</b> </label> <span class="text-danger">*</span>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row g-0">
@@ -182,7 +182,7 @@ aria-hidden="true">
                                         <select name="duration_type" class="form-control w-50" id="duration_type">
                                             <option value="Months">@lang('menu.months')</option>
                                             <option value="Days">@lang('menu.days')</option>
-                                            <option value="Years">Years</option>
+                                            <option value="Years">@lang('menu.years')</option>
                                         </select>
                                     </div>
                                     <span class="error error_add_warranty_duration"></span>

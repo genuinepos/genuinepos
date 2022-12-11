@@ -4,7 +4,7 @@
     <input type="hidden" name="id" id="id" value="{{ $data->id }}">
 
     <div class="form-group">
-        <label><b>Parent category :</b> <span class="text-danger">*</span></label>
+        <label><b>@lang('menu.parent_category') :</b> <span class="text-danger">*</span></label>
         <select name="parent_category_id" class="form-control" id="edit_parent_category">
         	@foreach($category as $row)
              <option value="{{ $row->id }}" @if($data->parent_category_id==$row->id) selected @endif>{{ $row->name }}</option>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="form-group editable_cate_img_field mt-1">
-        <label><b>Sub Category photo :</b></label>
+        <label><b>{{ __('Sub Category photo') }} :</b></label>
         <input type="file" name="photo" class="form-control" id="e_photo" accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_sub_e_photo"></span>
     </div>

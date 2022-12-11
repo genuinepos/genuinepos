@@ -116,7 +116,7 @@
                             <th scope="col" class="text-start">@lang('menu.sl')</th>
                             <th scope="col" class="text-start">Descrpiton</th>
                             <th scope="col" class="text-start">@lang('menu.quantity')</th>
-                            <th scope="col" class="text-start">Unit Price</th>
+                            <th scope="col" class="text-start">@lang('menu.unit_price')</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
                                 <th scope="col" class="text-start">@lang('menu.discount')</th>
                             @endif
@@ -168,7 +168,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td><strong>Net Total Amount :</strong></td>
+                                <td><strong@lang('menu.net_total_amount') :</strong></td>
                                 <td class="net_total text-start">
                                     <b></b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $sale->net_total_amount }}</b>
@@ -393,7 +393,7 @@
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">@lang('menu.quantity')</th>
-                            <th class="text-start">Unit Price</th>
+                            <th class="text-start">@lang('menu.unit_price')</th>
                             <th class="text-start">@lang('menu.discount')</th>
                             <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
@@ -442,7 +442,7 @@
                     <table class="table modal-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>Net Total Amount :</strong></td>
+                                <td class="text-start"><strong@lang('menu.net_total_amount') :</strong></td>
                                 <td class="text-end">
                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $sale->net_total_amount }}</b>
                                 </td>

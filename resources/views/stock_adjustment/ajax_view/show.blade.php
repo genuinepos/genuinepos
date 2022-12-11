@@ -69,7 +69,7 @@
                                 <th class="text-start">@lang('menu.sl')</th>
                                 <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
-                                <th class="text-start">Unit Cost Inc.Tax</th>
+                                <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
@@ -135,7 +135,7 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm">
                             <tr>
-                                <th class="text-start">Net Total Amount</th>
+                                <th class="text-start">@lang('menu.net_total_amount')</th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->net_total_amount}}
                                 </td>
@@ -253,7 +253,7 @@
                             <th scope="col" class="text-start">@lang('menu.sl')</th>
                             <th scope="col" class="text-start">@lang('menu.product')</th>
                             <th scope="col" class="text-start">@lang('menu.quantity')</th>
-                            <th scope="col" class="text-start">Unit Cost Inc.Tax</th>
+                            <th scope="col" class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                             <th scope="col" class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
@@ -276,7 +276,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">Net Total Amount :</th>
+                        <th colspan="4" class="text-end">@lang('menu.net_total_amount') :</th>
                         <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->net_total_amount}}
                         </td>

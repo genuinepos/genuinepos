@@ -206,7 +206,7 @@
                                                         <th>Net Unit Cost</th>
                                                         <th>Line Total</th>
                                                         @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
-                                                            <th>Profit Margin(%)</th>
+                                                            <th>@lang('menu.profit_margin')(%)</th>
                                                             <th>@lang('menu.selling_price_exc_tax')</th>
                                                         @endif
                                                         <th><i class="fas fa-trash-alt"></i></th>
@@ -326,7 +326,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>

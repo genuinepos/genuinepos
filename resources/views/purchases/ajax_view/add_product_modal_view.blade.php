@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Barcode Type :</b></label>
+            <label><b>@lang('menu.barcode_type') :</b></label>
             <select class="form-control" name="barcode_type" id="barcode_type">
                 <option value="CODE128">Code 128 (C128)</option>
                 <option value="CODE39">Code 39 (C39)</option>
@@ -29,7 +29,7 @@
         <div class="col-md-3 ">
             <label><b> Unit :</b> <span class="text-danger">*</span></label>
             <select class="form-control product_unit" name="unit_id" id="add_unit_id">
-                <option value="">Select Unit</option>
+                <option value="">@lang('menu.select_unit')</option>
                 @foreach ($units as $unit)
                     <option value="{{ $unit->id }}">{{ $unit->name }}({{ $unit->code_name }})</option>
                 @endforeach
@@ -43,7 +43,7 @@
             <div class="col-md-3">
                 <label><b>@lang('menu.category') :</b> </label>
                 <select class="form-control category" name="category_id" id="add_category_id">
-                    <option value="">Select Category</option>
+                    <option value="">@lang('menu.select_category')</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
@@ -54,20 +54,20 @@
 
         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
             <div class="col-md-3 parent_category">
-                <label><b>Child category :</b></label>
+                <label><b>@lang('menu.child_category') :</b></label>
                 <select class="form-control" name="child_category_id"
                     id="add_child_category_id">
-                    <option value="">Select child category first</option>
+                    <option value="">@lang('menu.select_child_category_first')</option>
                 </select>
             </div>
         @endif
 
         @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
             <div class="col-md-3">
-                <label><b>Brand :</b></label>
+                <label><b>@lang('menu.brand') :</b></label>
                 <select class="form-control" data-live-search="true" name="brand_id"
                     id="add_brand_id">
-                    <option value="">Select Brand</option>
+                    <option value="">@lang('menu.select_brand')</option>
                     @foreach ($brands as $brand)
                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                     @endforeach
@@ -77,9 +77,9 @@
 
         @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
             <div class="col-md-3">
-                <label><b>Warranty :</b></label>
+                <label><b>@lang('menu.warranty') :</b></label>
                 <select class="form-control" name="warranty_id" id="add_warranty_id">
-                    <option value="">Select Warranty</option>
+                    <option value="">@lang('menu.select_warranty')</option>
                     @foreach ($warranties as $warranty)
                         <option value="{{ $warranty->id }}">{{ $warranty->name }} ({{$warranty->type == 1 ? 'Warranty' : 'Guaranty'}})</option>
                     @endforeach
@@ -97,8 +97,8 @@
 
         <div class="col-md-4">
             <div class="row mt-5">
-                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; Product wil be displayed in E-Commerce. &nbsp; </p>
-                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; Enable IMEI or SL NO &nbsp;</p>
+                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; {{ __('Product wil be displayed in E-Commerce') }}. &nbsp; </p>
+                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; @lang('menu.enable_imei_or_serial') &nbsp;</p>
             </div>
         </div>
     </div>
@@ -117,7 +117,7 @@
         @endif
 
         <div class="col-md-3">
-            <label><b>Alert quentity :</b></label>
+            <label><b>@lang('menu.alert_quantity') :</b></label>
             <input type="number" name="alert_quantity" class="form-control"
                 autocomplete="off" id="add_alert_quantity" value="0">
         </div>
@@ -128,7 +128,7 @@
             <table class="table modal-table table-sm custom-table">
                 <thead>
                     <tr class="bg-secondary">
-                        <th class="text-white">Default Purchase Price</th>
+                        <th class="text-white">@lang('menu.default_purchase_price')</th>
                         <th class="text-white">@lang('menu.x_margin')(%)</th>
                         <th class="text-white">@lang('menu.selling_price')</th>
                     </tr>
@@ -138,15 +138,15 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6 text-start">
-                                    <label><b>Unit Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
-                                    <input type="number" step="any" name="product_cost" id="add_product_cost" class="form-control" autocomplete="off" placeholder="Unit Cost Exc.Tax">
+                                    <label><b>@lang('menu.unit_cost_exc_tax') :</b> <span class="text-danger">*</span></label>
+                                    <input type="number" step="any" name="product_cost" id="add_product_cost" class="form-control" autocomplete="off" placeholder="@lang('menu.unit_cost_exc_tax')">
                                     <span class="error error_add_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
-                                    <label><b>Unit Cost Inc.Tax :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_inc_tax') :</b> <span class="text-danger">*</span></label>
                                     <input type="number" step="any" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
-                                    id="add_product_cost_with_tax" placeholder="Unit Cost Inc.Tax">
+                                    id="add_product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')">
                                     <span class="error error_add_product_cost_with_tax"></span>
                                 </div>
                             </div>
@@ -159,9 +159,9 @@
                         </td>
 
                         <td class="text-start">
-                            <label><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="product_price" class="form-control"
-                                    autocomplete="off" id="add_product_price" placeholder="Price Exc.Tax">
+                                    autocomplete="off" id="add_product_price" placeholder="@lang('menu.price_exc_tax')">
                             <span class="error error_add_product_price"></span>
                         </td>
                     </tr>

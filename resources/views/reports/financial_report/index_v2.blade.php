@@ -219,7 +219,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>PRODUCTS :</span>
+                                                        <span>@lang('menu.products') :</span>
                                                     </th>
                                                 </tr>
 

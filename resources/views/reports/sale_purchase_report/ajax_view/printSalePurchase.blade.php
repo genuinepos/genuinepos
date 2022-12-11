@@ -123,7 +123,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="heading">
-                    <h6 class="text-primary"><b>Sales</b></h6>
+                    <h6 class="text-primary"><b>@lang('menu.sales')</b></h6>
                 </div>
 
                 <table class="table modal-table table-sm">

@@ -62,7 +62,7 @@
                                 <tr class="bg-secondary text-white">
                                     <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">@lang('menu.product')</th>
-                                    <th class="text-start">Unit Price</th>
+                                    <th class="text-start">@lang('menu.unit_price')</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
                                     <th class="text-start">@lang('menu.unit')</th>
                                     <th class="text-start">Pending Qty</th>
@@ -183,7 +183,7 @@
                             <tr>
                                 <th scope="col">@lang('menu.sl')</th>
                                 <th scope="col">@lang('menu.product')</th>
-                                <th scope="col">Unit Price</th>
+                                <th scope="col">@lang('menu.unit_price')</th>
                                 <th scope="col">@lang('menu.quantity')</th>
                                 <th scope="col">@lang('menu.unit')</th>
                                 <th scope="col">Pending Qty</th>

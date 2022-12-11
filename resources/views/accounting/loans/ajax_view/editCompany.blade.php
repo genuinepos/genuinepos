@@ -12,7 +12,7 @@
     <div class="col-md-12">
         <label><b>@lang('menu.phone') :</b> <span class="text-danger">*</span></label>
         <input type="text" name="phone" class="form-control" id="e_phone" autocomplete="off"
-            placeholder="Phone Number Name" value="{{ $company->phone }}"/>
+            placeholder="@lang('menu.phone_number')" value="{{ $company->phone }}"/>
         <span class="error error_e_phone"></span>
     </div>
 

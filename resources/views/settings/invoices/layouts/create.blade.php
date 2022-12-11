@@ -336,7 +336,7 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" checked name="product_tax" > &nbsp; <b>Product Tax</b></p>
+                                        <input type="checkbox" checked name="product_tax" > &nbsp; <b>@lang('menu.product_tax')</b></p>
                                     </div>
                                 </div>
 
@@ -353,14 +353,14 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Bank Details</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.bank_details')</b></p>
                         </div>
 
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Account No :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.account_no') :</b></label>
                                         <div class="col-8">
                                             <input type="text" name="account_no" class="form-control" placeholder="Account Number">
                                         </div>
@@ -369,9 +369,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Account Name:</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.account_name'):</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="account_name" class="form-control" placeholder="Account Name">
+                                            <input type="text" name="account_name" class="form-control" placeholder="@lang('menu.account_name')">
                                         </div>
                                     </div>
                                 </div>

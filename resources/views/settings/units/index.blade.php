@@ -20,7 +20,7 @@
                     <div class="card" id="add_form">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>Add Unit</h6>
+                                <h6>@lang('menu.add_unit')</h6>
                             </div>
                         </div>
 

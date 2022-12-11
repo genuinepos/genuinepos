@@ -145,7 +145,7 @@
                             <th class="text-start">Descrpiton</th>
                             <th class="text-start">Sold Qty</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_w_type || $sale->branch->add_sale_invoice_layout->product_w_duration || $sale->branch->add_sale_invoice_layout->product_w_discription)
-                                <th class="text-start">Warranty</th>
+                                <th class="text-start">@lang('menu.warranty')</th>
                             @endif
                             <th class="text-end">Price</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
@@ -246,7 +246,7 @@
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->account_no)
-                                <p>Account No : {{ $sale->branch->add_sale_invoice_layout->account_no }}</p>
+                                <p>@lang('menu.account_no') : {{ $sale->branch->add_sale_invoice_layout->account_no }}</p>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->bank_name)
@@ -265,7 +265,7 @@
                         <tbody>
                             <tr>
                                 <td class="text-end">
-                                    <strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                    <strong@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                 </td>
                                 <td class="net_total text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}

@@ -14,7 +14,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="far fa-file-alt"></span>
-                    <h5>Attendance Report</h5>
+                    <h5>@lang('menu.attendance_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -106,7 +106,7 @@
                                     <th>{{ __('Employee') }}</th>
                                     <th>Clock IN - CLock Out</th>
                                     <th>Work Duration</th>
-                                    <th>Shift</th>
+                                    <th>@lang('menu.shift')</th>
                                 </tr>
                             </thead>
                             <tbody>

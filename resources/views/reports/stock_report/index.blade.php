@@ -73,7 +73,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Brand :</strong></label>
+                                                <label><strong>@lang('menu.brand'):</strong></label>
                                                 <select id="brand_id" name="brand_id" class="form-control">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($brands as $b)
@@ -83,7 +83,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Unit :</strong></label>
+                                                <label><strong>@lang('menu.unit') :</strong></label>
                                                 <select id="unit_id" name="unit_id" class="form-control">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($units as $u)
@@ -135,9 +135,9 @@
                                                 <th>P.Code</th>
                                                 <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.business_location')</th>
-                                                <th>Unit Price</th>
+                                                <th>@lang('menu.unit_price')</th>
                                                 <th>@lang('menu.current_stock')</th>
-                                                <th>Stock Value <b><small>(By Unit Cost)</small></b></th>
+                                                <th>@lang('menu.stock_value') <b><small>(By Unit Cost)</small></b></th>
                                                 <th>Total Sold</th>
                                             </tr>
                                         </thead>
@@ -223,7 +223,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Brand :</strong></label>
+                                                <label><strong>@lang('menu.brand') :</strong></label>
                                                 <select id="w_brand_id" name="brand_id" class="form-control common_submitable">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($brands as $b)
@@ -233,7 +233,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>Unit :</strong></label>
+                                                <label><strong>@lang('menu.unit') :</strong></label>
                                                 <select id="w_unit_id" name="unit_id" class="form-control common_submitable">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($units as $u)
@@ -279,8 +279,8 @@
                                                 <th>P.Code</th>
                                                 <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.business_location')</th>
-                                                <th>Warehouse</th>
-                                                <th>Unit Price</th>
+                                                <th>@lang('menu.warehouse')</th>
+                                                <th>@lang('menu.unit_price')</th>
                                                 <th>@lang('menu.current_stock')</th>
                                                 <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
                                             </tr>

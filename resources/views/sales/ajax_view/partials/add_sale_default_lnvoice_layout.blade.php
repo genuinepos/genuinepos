@@ -172,7 +172,7 @@
                                 <th class="text-start">Sold Qty</th>
 
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
-                                    <th class="text-end">Warranty</th>
+                                    <th class="text-end">@lang('menu.warranty')</th>
                                 @endif
 
                                 <th class="text-end">Price</th>
@@ -277,7 +277,7 @@
                                 @endif
 
                                 @if ($defaultLayout->account_no)
-                                    <p>Account No : {{ $defaultLayout->account_no }}</p>
+                                    <p>@lang('menu.account_no') : {{ $defaultLayout->account_no }}</p>
                                 @endif
 
                                 @if ($defaultLayout->bank_name)
@@ -294,7 +294,7 @@
                         <table class="table modal-table table-sm">
                             <tbody>
                                 <tr>
-                                    <td class="text-end"><strong>Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="text-end"><strong@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
                                     <td class="net_total text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </td>

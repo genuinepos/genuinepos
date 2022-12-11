@@ -15,7 +15,7 @@
 
         <div class="col-lg-3 col-md-6">
             <label><strong>@lang('menu.phone') :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
+            <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
             <span class="error error_phone"></span>
         </div>
 
@@ -129,19 +129,19 @@
     <div class="add_opening_user_section" style="display: none;">
         <div class="row mt-1">
             <div class="col-lg-3 col-md-6">
-                <label> <strong>First Name :</strong> <span class="text-danger">*</span> </label>
-                <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First Name" data-name="First Name" autocomplete="off"/>
+                <label> <strong>@lang('menu.first_name') :</strong> <span class="text-danger">*</span> </label>
+                <input type="text" name="first_name" class="form-control" id="first_name" placeholder="@lang('menu.first_name')" data-name="First Name" autocomplete="off"/>
                 <span class="error error_first_name"></span>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>Last Name :</strong> <span class="text-danger">*</span> </label>
-                <input type="text" name="Last_name" class="form-control" id="Last_name" placeholder="Last Name" autocomplete="off"/>
+                <label> <strong>@lang('menu.last_name') :</strong> <span class="text-danger">*</span> </label>
+                <input type="text" name="Last_name" class="form-control" id="Last_name" placeholder="@lang('menu.last_name')" autocomplete="off"/>
             </div>
 
             <div class="col-lg-3 col-md-6">
                 <label> <strong>@lang('menu.phone') :</strong> <span class="text-danger">*</span> </label>
-                <input type="text" name="user_phone" class="form-control" id="user_phone" placeholder="Phone Number" data-name="Phone Number" autocomplete="off"/>
+                <input type="text" name="user_phone" class="form-control" id="user_phone" placeholder="@lang('menu.phone_number')" data-name="Phone Number" autocomplete="off"/>
                 <span class="error error_user_phone"></span>
             </div>
 
@@ -159,8 +159,8 @@
 
         <div class="row mt-1">
             <div class="col-lg-3 col-md-6">
-                <label> <strong>Username :</strong> <span class="text-danger">*</span> </label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Username" autocomplete="off"/>
+                <label> <strong>@lang('menu.username') :</strong> <span class="text-danger">*</span> </label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="@lang('menu.username')" autocomplete="off"/>
                 <span class="error error_username"></span>
             </div>
 
@@ -171,8 +171,8 @@
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>Confirm Password :</strong> <span class="text-danger">*</span> </label>
-                <input type="text" name="password_confirmation" class="form-control" id="phone" placeholder="Confirm Password" autocomplete="off"/>
+                <label> <strong>@lang('menu.confirm_password') :</strong> <span class="text-danger">*</span> </label>
+                <input type="text" name="password_confirmation" class="form-control" id="phone" placeholder="@lang('menu.confirm_password')" autocomplete="off"/>
             </div>
         </div>
     </div>

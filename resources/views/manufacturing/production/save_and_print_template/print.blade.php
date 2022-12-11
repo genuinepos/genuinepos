@@ -133,7 +133,7 @@
                         <tr>
                             <th scope="col">@lang('menu.ingredient_name')</th>
                             <th scope="col">Input Qty</th>
-                            <th scope="col">Unit Cost Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost_inc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                         </tr>
                     </thead>

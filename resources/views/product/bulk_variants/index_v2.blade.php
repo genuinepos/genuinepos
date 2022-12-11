@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-cubes"></span>
-                    <h5>Variants</h5>
+                    <h5>@lang('menu.variants')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -21,7 +21,7 @@
                     <div class="card" id="add_form">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Add Variant </h6>
+                                <h6>{{ __('Add Variant') }} </h6>
                             </div>
                         </div>
 
@@ -38,10 +38,10 @@
                                 </div>
 
                                 <div class="form-group row mt-1">
-                                    <label><b>Variant Childs </b>(Values) : <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.variant_child') </b>(Values) : <span class="text-danger">*</span></label>
                                     <div class="col-10">
                                         <input required type="text" name="variant_child[]" class="form-control"
-                                            placeholder="Variant child" />
+                                            placeholder="@lang('menu.variant_child')" />
                                     </div>
 
                                     <div class="col-2 text-end">
@@ -85,11 +85,11 @@
                                 </div>
 
                                 <div class="form-group row mt-2">
-                                    <div class="col-md-12"><b>Variant Childs (Values) :</b> <span class="text-danger">*</span></div>
+                                    <div class="col-md-12"><b>@lang('menu.variant_child') (Values) :</b> <span class="text-danger">*</span></div>
                                     <div class="col-md-10">
                                         <input type="hidden" name="variant_child_ids[]" id="e_variant_child_id" value="">
                                         <input required type="text" name="variant_child[]" class="form-control"
-                                            id="e_variant_child" placeholder="Variant child" />
+                                            id="e_variant_child" placeholder="@lang('menu.variant_child')" />
                                     </div>
 
                                     <div class="col-md-2 text-end">
@@ -131,8 +131,8 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th class="text-start">Name</th>
-                                            <th class="text-start">Childs</th>
+                                            <th class="text-start">@lang('menu.name')</th>
+                                            <th class="text-start">@lang('menu.child')</th>
                                             <th class="text-start">@lang('menu.action')</th>
                                         </tr>
                                     </thead>

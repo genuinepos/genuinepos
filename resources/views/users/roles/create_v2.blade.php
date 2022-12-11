@@ -236,7 +236,7 @@
 
                                             <p class="text-info">
                                                 <input type="checkbox" class="select_all super_select_all sales_app_permission super_select_all" data-target="sale" autocomplete="off">
-                                                <strong>Sales</strong>
+                                                <strong>@lang('menu.sales')</strong>
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -760,7 +760,7 @@
 
                                 <div class="col-lg-3 col-sm-6">
                                     <p class="text-info">
-                                        <input type="checkbox" class="select_all super_select_all inventory_permission super_select_all" data-target="stock_adjustment" autocomplete="off"> <strong> Stock adjustment</strong>
+                                        <input type="checkbox" class="select_all super_select_all inventory_permission super_select_all" data-target="stock_adjustment" autocomplete="off"> <strong> @lang('menu.stock_adjustment')</strong>
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
@@ -1091,7 +1091,7 @@
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6">
                                     <p class="text-info">
-                                        <input type="checkbox" class="select_all super_select_all communication_permission" data-target="communication" autocomplete="off"><strong> Communication</strong>
+                                        <input type="checkbox" class="select_all super_select_all communication_permission" data-target="communication" autocomplete="off"><strong> @lang('menu.communication')</strong>
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
@@ -1808,7 +1808,7 @@
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="barcode_settings" class="settings setup_permission super_select_all">
 
-                                        Barcode settings
+                                        @lang('menu.barcode_settings')
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
@@ -1861,15 +1861,15 @@
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="user_view" class="users setup_permission super_select_all">
-                                        View user
+                                        @lang('menu.view_user')
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="user_add" class="users setup_permission super_select_all" autocomplete="off">
-                                            Add user
+                                        @lang('menu.add_user')
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="user_edit" class="users setup_permission super_select_all" autocomplete="off">
-                                            Edit user
+                                        @lang('menu.edit_user')
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="user_delete" class="users setup_permission super_select_all" autocomplete="off">
@@ -1980,28 +1980,28 @@
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="attendance" class="hrm human_permission super_select_all">
 
-                                        Attendance
+                                        @lang('menu.attendance')
                                     </p>
 
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="payroll" class="hrm human_permission super_select_all">
-                                        Payroll
+                                        @lang('menu.payroll')
                                     </p>
 
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="payroll_report" class="hrm human_permission super_select_all">
 
-                                        Payroll report
+                                        @lang('menu.payroll_report')
                                     </p>
 
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="payroll_payment_report" class="hrm human_permission super_select_all">
-                                            Payroll payment report
+                                            @lang('menu.payroll_payment_report')
                                     </p>
 
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="attendance_report" class="hrm human_permission super_select_all">
-                                        Attendance report
+                                        @lang('menu.attendance_report')
                                     </p>
                                 </div>
                                 <div class="col-lg-3 col-sm-6">
@@ -2012,24 +2012,24 @@
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="leave_type" class="hrm_others human_permission super_select_all">
 
-                                        Leave type
+                                        @lang('menu.leave_type')
                                     </p>
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="leave_assign" class="hrm_others human_permission super_select_all">
 
-                                        Leave assign
+                                        {{ __('Leave assign') }}
                                     </p>
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="shift" class="hrm_others human_permission super_select_all">
-                                            Shift
+                                        @lang('menu.shift')
                                     </p>
                                     <p class="checkbox_input_wrap">
-                                        <input type="checkbox" name="view_allowance_and_deduction" class="hrm_others human_permission super_select_all">  Allowance and deduction
+                                        <input type="checkbox" name="view_allowance_and_deduction" class="hrm_others human_permission super_select_all">  {{  __('Allowance and deduction') }}
                                     </p>
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="holiday" class="hrm_others human_permission super_select_all">
 
-                                        Holiday
+                                        @lang('menu.holiday')
                                     </p>
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" name="department" class="hrm_others human_permission super_select_all">
@@ -2051,7 +2051,7 @@
                     <div class="accordion-header">
                         <input type="checkbox" class="other_check select_all super_select_all others_permission" data-target="others_permission" autocomplete="off">
                         <a data-bs-toggle="collapse" class="other_role" href="#collapsefourtenn" href="">
-                            Others Permissions
+                            {{ __('Others Permissions') }}
                         </a>
                     </div>
                     <div id="collapsefourtenn" class="collapse" data-bs-parent="#accordion">
@@ -2059,18 +2059,18 @@
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6">
                                     <p class="text-info"><strong><input type="checkbox" class="select_all super_select_all others_permission" data-target="others">
-                                            Others</strong></p>
+                                            @lang('menu.others')</strong></p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="print_invoice" class="others others_permission super_select_all">
-                                        Print invoice
+                                        @lang('menu.print_invoice')
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="print_challan" class="others others_permission super_select_all">
-                                        Print challan
+                                        @lang('menu.print_challan') 
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="print_weight" class="others others_permission super_select_all">
-                                        Print weight
+                                        @lang('menu.print_weight')
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="today_summery" class="others others_permission super_select_all">
@@ -2079,7 +2079,7 @@
 
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="website_link" class="others others_permission super_select_all">
-                                        Website link
+                                        {{ __('Website link') }}
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
@@ -2090,10 +2090,8 @@
 
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="modules_page" class="others others_permission super_select_all">
-                                        Modules page
+                                        {{ __('Modules page') }}
                                     </p>
-
-
                                 </div>
                             </div>
                         </div>

@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h6>Edit Product</h6>
+                    <h6>{{ __('Edit Product') }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -51,11 +51,11 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Unit :</b> <span class="text-danger">*</span></label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.unit') :</b> <span class="text-danger">*</span></label>
                                     <div class="col-7">
                                         <div class="input-group">
                                             <select class="form-control product_unit" name="unit_id" id="unit_id">
-                                                <option value="">Select Unit</option>
+                                                <option value="">@lang('menu.select_unit')</option>
                                                 @foreach ($units as $unit)
                                                     <option {{ $product->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
                                                 @endforeach
@@ -72,7 +72,7 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>Barcode Type  :</b> </label>
+                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.barcode_type')  :</b> </label>
                                     <div class="col-7">
                                         <select class="form-control" name="barcode_type" id="barcode_type">
                                             <option {{ $product->barcode_type == 'CODE128' ? 'SELECTED' : '' }} value="CODE128">Code 128 (C128)</option>
@@ -92,7 +92,7 @@
                                             <div class="input-group">
                                                 <select class="form-control category" name="category_id"
                                                     id="category_id">
-                                                    <option value="">Select Category</option>
+                                                    <option value="">@lang('menu.select_category')</option>
                                                     @foreach ($categories as $category)
                                                         <option {{ $product->category_id == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach
@@ -120,7 +120,7 @@
                                                     $subCategories = DB::table('categories')
                                                     ->where('parent_category_id', $product->category_id)->get();
                                                 @endphp
-                                                <option value="">Select Child Category</option>
+                                                <option value="">@lang('menu.select_child_category')</option>
                                                 @foreach ($subCategories as $subCategory)
                                                     <option {{ $product->parent_category_id == $subCategory->id ? 'SELECTED' : '' }} value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
                                                 @endforeach
@@ -132,11 +132,11 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Brand :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.brand'):</b> </label>
                                     <div class="col-7">
                                         <div class="input-group">
                                             <select class="form-control" name="brand_id" id="brand_id">
-                                                <option value="">Select Brand</option>
+                                                <option value="">@lang('menu.select_brand')</option>
                                                 @foreach ($brands as $brand)
                                                     <option {{ $product->brand_id == $brand->id ? 'SELECTED' : '' }} value="{{$brand->id}}">{{$brand->name}}</option>
                                                 @endforeach
@@ -152,7 +152,7 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>Alert quentity  :</b> </label>
+                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.alert_quantity')  :</b> </label>
                                     <div class="col-7">
                                         <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="{{ $product->alert_quantity }}">
                                         <span class="error error_alert_quantity"></span>
@@ -163,11 +163,11 @@
                             @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>Warranty :</b> </label>
+                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.warranty') :</b> </label>
                                         <div class="col-7">
                                             <div class="input-group">
                                                 <select class="form-control" name="warranty_id" id="warranty_id">
-                                                    <option value="">Select Warranty</option>
+                                                    <option value="">@lang('menu.select_warranty')</option>
                                                     @foreach ($warranties as $warranty)
                                                         @php
                                                             $type = $warranty->type == 1 ? 'Warranty' : 'Guaranty';
@@ -220,12 +220,12 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>Condition  :</b> </label>
+                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.condition')  :</b> </label>
                                     <div class="col-7">
                                         <select class="form-control" name="product_condition"
                                             id="product_condition">
-                                            <option {{ $product->product_condition == 'New' ? 'SELECTED' : '' }} value="New">New</option>
-                                            <option {{ $product->product_condition == 'Used' ? 'SELECTED' : '' }} value="Used">Used</option>
+                                            <option {{ $product->product_condition == 'New' ? 'SELECTED' : '' }} value="New">@lang('menu.new')</option>
+                                            <option {{ $product->product_condition == 'Used' ? 'SELECTED' : '' }} value="Used">@lang('menu.used')</option>
                                         </select>
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@
                                             <div class="col-12">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
+                                                    <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>@lang('menu.manage_stock')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -249,7 +249,7 @@
                                             <div class="col-12">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p>
+                                                    <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> @lang('menu.service')/ @lang('menu.product')</b> </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +278,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
                                                 <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="{{ $product->product_price }}">
                                             <span class="error error_product_price"></span>
@@ -290,7 +290,7 @@
                                         <div class="input-group">
                                             <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
-                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="{{ $product->product_cost_with_tax }}">
+                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="{{ $product->product_cost_with_tax }}">
                                                 <span class="error error_product_cost_with_tax"></span>
                                             </div>
                                         </div>
@@ -298,7 +298,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
                                                 <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
                                                 <span class="error error_profit"></span>
@@ -337,7 +337,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>Thumbnail Photo <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.thumbnail_photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
                                             <div class="col-7">
                                                 <input type="file" name="photo" class="form-control" id="photo">
                                                 <span class="error error_photo"></span>
@@ -353,7 +353,7 @@
                                                 <div class="col-md-12">
                                                     <div class="col-6">
                                                         <div class="form-group row">
-                                                            <p class="checkbox_input_wrap"> <input type="checkbox" name="is_variant" CHECKED id="is_variant"> &nbsp; This product has varient. </p>
+                                                            <p class="checkbox_input_wrap"> <input type="checkbox" name="is_variant" CHECKED id="is_variant"> &nbsp; {{ __('This product has varient') }}. </p>
                                                         </div>
                                                     </div>
 
@@ -366,13 +366,13 @@
                                                         <table class="table modal-table table-sm">
                                                             <thead>
                                                                 <tr class="text-center bg-primary variant_header">
-                                                                    <th class="text-white text-start">Select Variant</th>
+                                                                    <th class="text-white text-start">@lang('menu.select_variant')</th>
                                                                     <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
                                                                     </th>
-                                                                    <th colspan="2" class="text-white text-start">Default Cost</th>
-                                                                    <th class="text-white text-start">Profit(%)</th>
-                                                                    <th class="text-white text-start">Default Price (Exc.Tax)</th>
-                                                                    <th class="text-white text-start">Variant Image</th>
+                                                                    <th colspan="2" class="text-white text-start">@lang('menu.default_cost')</th>
+                                                                    <th class="text-white text-start">@lang('menu.profit')(%)</th>
+                                                                    <th class="text-white text-start">@lang('menu.default_price') (Exc.Tax)</th>
+                                                                    <th class="text-white text-start">@lang('menu.variant_image')</th>
                                                                     <th><i class="fas fa-trash-alt text-white"></i></th>
                                                                 </tr>
                                                             </thead>
@@ -389,7 +389,7 @@
 
                                                                     <td class="text-start">
                                                                         <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
-                                                                            placeholder="Variant Code">
+                                                                            placeholder="@lang('menu.variant_code')">
                                                                     </td>
 
                                                                     <td class="text-start">
@@ -454,7 +454,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form_table_heading">
-                                                            <p class="m-0 pb-1"><strong>Create combo product</strong></p>
+                                                            <p class="m-0 pb-1"><strong>@lang('menu.create_combo_product')</strong></p>
                                                         </div>
                                                         <div class="table-responsive">
                                                             <table class="table modal-table table-sm">
@@ -462,7 +462,7 @@
                                                                     <tr>
                                                                         <th>@lang('menu.product')</th>
                                                                         <th>@lang('menu.quantity')</th>
-                                                                        <th>Unit price</th>
+                                                                        <th>@lang('menu.unit_price')</th>
                                                                         <th>@lang('menu.sub_total')</th>
                                                                         <th><i class="fas fa-trash-alt"></i></th>
                                                                     </tr>
@@ -472,7 +472,7 @@
                                                                 </tbody>
                                                                 <tfoot>
                                                                     <tr>
-                                                                        <th colspan="3" class="text-center">Net Total Amount :</th>
+                                                                        <th colspan="3" class="text-center">@lang('menu.net_total_amount') :</th>
                                                                         <th>
                                                                             {{ json_decode($generalSettings->business, true)['currency']}} <span class="span_total_combo_price">0.00</span>
 
@@ -498,7 +498,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label><b>Default Price Exc.Tax :</b></label>
+                                        <label><b>@lang('menu.default_price') Exc.Tax :</b></label>
                                         <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
                                     </div>
                                 </div>
@@ -560,7 +560,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p>
+                                            <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b></p>
                                         </div>
                                     </div>
                                 </div>
@@ -571,7 +571,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p>
+                                            <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>{{ __('Enable Product IMEI or Serial Number') }}</b> </p>
                                         </div>
                                     </div>
                                 </div>
@@ -582,7 +582,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p>
+                                            <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
                                         </div>
                                     </div>
                                 </div>
@@ -607,7 +607,7 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                    <label for="inputEmail3" class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
                                     <div class="col-10">
                                         <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
                                         <span class="error error_image"></span>
@@ -620,7 +620,7 @@
 
                 <div class="d-flex justify-content-end">
                     <div class="btn-loading">
-                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner text-primary"></i> <strong>Loading</strong> </button>
+                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner text-primary"></i> <strong>@lang('menu.loading')</strong> </button>
                         <button type="submit" class="btn btn-success submit_button btn-sm">@lang('menu.save_changes')</button>
                     </div>
                 </div>
@@ -633,7 +633,7 @@
         <div class="modal-dialog select_variant_modal_dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Select variant Child</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.select_variant_child')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -668,7 +668,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Unit</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_unit')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
 
@@ -683,9 +683,9 @@
                         </div>
 
                         <div class="form-group mt-1">
-                           <label><b>Unit Code :</b></label>  <span class="text-danger">*</span>
+                           <label><b>{{ __('Unit Code') }} :</b></label>  <span class="text-danger">*</span>
                             <input type="text" name="code" class="form-control add_unit_input"
-                                data-name="Unit code" id="add_unit_code" placeholder="Unit code" />
+                                data-name="Unit code" id="add_unit_code" placeholder="{{ __('Unit Code') }}" />
                             <span class="error error_add_unit_code"></span>
                         </div>
 
@@ -711,7 +711,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Category</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_category')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -746,7 +746,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Brand</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_brand')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -781,7 +781,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Warranty</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_warranty')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
 
@@ -798,13 +798,13 @@
                             <div class="col-lg-4">
                                 <label><b>@lang('menu.type') : </b> </label> <span class="text-danger">*</span>
                                 <select name="type" class="form-control" id="type">
-                                    <option value="1">Warranty</option>
-                                    <option value="2">Guaranty</option>
+                                    <option value="1">@lang('menu.warranty')</option>
+                                    <option value="2">@lang('menu.guaranty')</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-8">
-                                <label><b>Duration :</b> </label> <span class="text-danger">*</span>
+                                <label><b>@lang('menu.duration') :</b> </label> <span class="text-danger">*</span>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row g-0">
@@ -812,7 +812,7 @@
                                             <select name="duration_type" class="form-control w-50" id="duration_type">
                                                 <option value="Months">@lang('menu.months')</option>
                                                 <option value="Days">@lang('menu.days')</option>
-                                                <option value="Year">Year</option>
+                                                <option value="Year">@lang('menu.years')</option>
                                             </select>
                                         </div>
                                         <span class="error error_add_warranty_duration"></span>

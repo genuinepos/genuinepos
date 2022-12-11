@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-key"></span>
-                    <h5>Change Password</h5>
+                    <h5>@lang('menu.change_password')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -25,7 +25,7 @@
                             <div class="col-md-12">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-sm-3"><span
-                                            class="text-danger">*</span> <b>Current Password :</b> </label>
+                                            class="text-danger">*</span> <b>@lang('menu.current_password') :</b> </label>
                                     <div class="col-sm-9 col-12">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -46,7 +46,7 @@
                             <div class="col-md-12">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-sm-3"><span
-                                            class="text-danger">*</span> <b>New Password :</b> </label>
+                                            class="text-danger">*</span> <b>@lang('menu.new_password') :</b> </label>
                                     <div class="col-sm-9 col-12">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -54,7 +54,7 @@
                                                         class="fas fa-lock input_i"></i></span>
                                             </div>
                                             <input type="password" name="password" class="form-control"
-                                                autocomplete="off" placeholder="New password">
+                                                autocomplete="off" placeholder="@lang('menu.new_password')">
                                         </div>
                                         <span class="error error_password"></span>
                                     </div>
@@ -66,7 +66,7 @@
                             <div class="col-md-12">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-sm-3"><span
-                                            class="text-danger">*</span> <b>Confirm password :</b> </label>
+                                            class="text-danger">*</span> <b>@lang('menu.confirm_password') :</b> </label>
                                     <div class="col-sm-9 col-12">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -97,7 +97,7 @@
                 @csrf
                 <div class="form_element rounded mt-0 mb-3">
                     <div class="heading_area">
-                        <p class="px-1 pt-1 pb-0 text-primary"><b>Update Profile</b> </p>
+                        <p class="px-1 pt-1 pb-0 text-primary"><b> @lang('menu.update_profile')</b> </p>
                     </div>
 
                     <div class="element-body">
@@ -116,11 +116,11 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <label for="inputEmail3" class="col-5"><span class="text-danger">*
-                                        </span><b>First Name :</b> </label>
+                                        </span><b>@lang('menu.first_name') :</b> </label>
 
                                     <div class="col-7">
                                         <input type="text" name="first_name" class="form-control"
-                                            placeholder="First Name" id="first_name"
+                                            placeholder="@lang('menu.first_name')" id="first_name"
                                             value="{{ auth()->user()->name }}">
                                         <span class="error error_first_name"></span>
                                     </div>
@@ -131,10 +131,10 @@
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Last Name :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.last_name') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="last_name" class="form-control"
-                                            placeholder="Last Name"
+                                            placeholder="@lang('menu.last_name')"
                                             value="{{ auth()->user()->last_name }}">
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Default Language :</b>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.default_language') :</b>
                                     </label>
                                     <div class="col-7">
                                         <select name="language" class="form-control">
@@ -183,7 +183,7 @@
 
                 <div class="form_element rounded mt-0 mb-3">
                     <div class="heading_area">
-                        <p class="px-1 pt-1 pb-0 text-primary"><b>More Information</b> </p>
+                        <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.more_information')</b> </p>
                     </div>
 
                     <div class="element-body">
@@ -201,22 +201,22 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Gender :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.gender') :</b> </label>
                                     <div class="col-7">
                                         <select name="gender" class="form-control">
-                                            <option value="">Select Gender</option>
+                                            <option value="">@lang('menu.select_gender')</option>
                                             <option
                                                 {{ auth()->user()->gender == 'Male' ? 'SELECTED' : '' }}
-                                                value="Male">Male
+                                                value="Male">@lang('menu.male')
                                             </option>
                                             <option
                                                 {{ auth()->user()->gender == 'Female' ? 'SELECTED' : '' }}
                                                 value="Female">
-                                                Female</option>
+                                                @lang('menu.female')</option>
                                             <option
                                                 {{ auth()->user()->gender == 'Others' ? 'SELECTED' : '' }}
                                                 value="Others">
-                                                Others</option>
+                                                @lang('menu.others')</option>
                                         </select>
                                     </div>
                                 </div>
@@ -226,19 +226,19 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Marital Status :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.marital_status') :</b> </label>
                                     <div class="col-7">
                                         <select name="marital_status" class="form-control">
-                                            <option value="">Marital Status</option>
+                                            <option value="">@lang('menu.marital_status')</option>
                                             <option
                                                 {{ auth()->user()->marital_status == 'Married' ? 'SELECTED' : '' }}
-                                                value="Married">Married</option>
+                                                value="Married">@lang('menu.married')</option>
                                             <option
                                                 {{ auth()->user()->marital_status == 'Unmarried' ? 'SELECTED' : '' }}
-                                                value="Unmarried">Unmarried</option>
+                                                value="Unmarried">{{ __('Unmarried') }}</option>
                                             <option
                                                 {{ auth()->user()->marital_status == 'Divorced' ? 'SELECTED' : '' }}
-                                                value="Divorced">Divorced</option>
+                                                value="Divorced">@lang('menu.divorced')</option>
                                         </select>
                                     </div>
                                 </div>
@@ -246,10 +246,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Blood Group :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.blood_group') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="blood_group" class="form-control"
-                                            placeholder="Blood group" autocomplete="off"
+                                            placeholder="@lang('menu.blood_group')" autocomplete="off"
                                             value="{{ auth()->user()->blood_group }}">
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@
                                     <label for="inputEmail3" class="col-5"><b>@lang('menu.phone') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="phone" class="form-control"
-                                            autocomplete="off" placeholder="Phone number"
+                                            autocomplete="off" placeholder="@lang('menu.phone_number')"
                                             value="{{ auth()->user()->phone }}">
                                     </div>
                                 </div>
@@ -270,10 +270,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Facebook Link :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.facebook_link') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="facebook_link" class="form-control"
-                                            autocomplete="off" placeholder="Facebook link"
+                                            autocomplete="off" placeholder="@lang('menu.facebook_link')"
                                             value="{{ auth()->user()->facebook_link }}">
                                     </div>
                                 </div>
@@ -283,10 +283,10 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Twitter Link :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.twitter_link') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="twitter_link" class="form-control"
-                                            autocomplete="off" placeholder="Twitter link"
+                                            autocomplete="off" placeholder="@lang('menu.twitter_link')"
                                             value="{{ auth()->user()->twitter_link }}">
                                     </div>
                                 </div>
@@ -294,10 +294,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Instagram Link :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.instagram_link') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="instagram_link" class="form-control"
-                                            autocomplete="off" placeholder="Instagram link"
+                                            autocomplete="off" placeholder="@lang('menu.instagram_link')"
                                             value="{{ auth()->user()->instagram_link }}">
                                     </div>
                                 </div>
@@ -307,10 +307,10 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Guardian Name:</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.guardian_name'):</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="guardian_name" class="form-control"
-                                            autocomplete="off" placeholder="Guardian name"
+                                            autocomplete="off" placeholder="@lang('menu.guardian_name')"
                                             value="{{ auth()->user()->guardian_name }}">
                                     </div>
                                 </div>
@@ -318,10 +318,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>ID Proof Name :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.id_proof_name') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="id_proof_name" class="form-control"
-                                            autocomplete="off" placeholder="ID proof name"
+                                            autocomplete="off" placeholder="@lang('menu.id_proof_name')"
                                             value="{{ auth()->user()->id_proof_name }}">
                                     </div>
                                 </div>
@@ -331,10 +331,10 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>ID Proof Number :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.id_proof_number') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="id_proof_number" class="form-control"
-                                            autocomplete="off" placeholder="ID proof number"
+                                            autocomplete="off" placeholder="@lang('menu.id_proof_number')"
                                             value="{{ auth()->user()->id_proof_number }}">
                                     </div>
                                 </div>
@@ -344,12 +344,12 @@
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-sm-3"><b>Permanent Address :</b>
+                                    <label for="inputEmail3" class="col-sm-3"><b>@lang('menu.permanent_address') :</b>
                                     </label>
                                     <div class="col-sm-9 col-12">
                                         <input type="text" name="permanent_address"
                                             class="form-control form-control-sm" autocomplete="off"
-                                            placeholder="Permanent address"
+                                            placeholder="@lang('menu.permanent_address')"
                                             {{ auth()->user()->permanent_address }}>
                                     </div>
                                 </div>
@@ -359,11 +359,11 @@
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-sm-3"><b>Current Address :</b> </label>
+                                    <label for="inputEmail3" class="col-sm-3"><b>@lang('menu.current_address') :</b> </label>
                                     <div class="col-sm-9 col-12">
                                         <input type="text" name="current_address"
                                             class="form-control form-control-sm"
-                                            placeholder="Current address"
+                                            placeholder="@lang('menu.current_address')"
                                             {{ auth()->user()->current_address }}>
                                     </div>
                                 </div>
@@ -375,7 +375,7 @@
 
                 <div class="form_element rounded mt-0 mb-3">
                     <div class="heading_area">
-                        <p class="px-1 pt-1 pb-0 text-primary"><b>Bank Details</b> </p>
+                        <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.bank_details')</b> </p>
                     </div>
 
                     <div class="element-body">
@@ -385,7 +385,7 @@
                                     <label for="inputEmail3" class="col-5"><b>@lang('menu.account_name') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="bank_ac_holder_name" class="form-control "
-                                            placeholder="Account holder's name" autocomplete="off"
+                                            placeholder="@lang('menu.account_holders_name')" autocomplete="off"
                                             value="{{ auth()->user()->bank_ac_holder_name }}">
                                     </div>
                                 </div>
@@ -393,7 +393,7 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Account No :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.account_no') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="bank_ac_no" class="form-control"
                                             placeholder="@lang('menu.account_number')" autocomplete="off"
@@ -417,10 +417,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Identifier Code :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.identifier_code') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="bank_identifier_code" class="form-control"
-                                            placeholder="Bank identifier code" autocomplete="off"
+                                            placeholder="{{ __('Bank Identifier Code') }}" autocomplete="off"
                                             value="{{ auth()->user()->bank_identifier_code }}">
                                     </div>
                                 </div>
@@ -441,10 +441,10 @@
 
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Tax Payer ID :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.tax_payer_id') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" name="tax_payer_id" class="form-control"
-                                            placeholder="Tax payer ID" autocomplete="off"
+                                            placeholder="@lang('menu.tax_payer_id')" autocomplete="off"
                                             value="{{ auth()->user()->tax_payer_id }}">
                                     </div>
                                 </div>

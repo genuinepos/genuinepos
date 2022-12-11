@@ -2,10 +2,10 @@
     <thead>
         <tr class="bg-secondary">
             <th class="text-white text-start">@lang('menu.product_name')</th>
-            <th class="text-white text-start">Prodcut cost (Inc.Tax)</th>
-            <th class="text-white text-start">Profit Margin(%)</th>
-            <th class="text-white text-start">Default Selling Price (Exc.Tax)</th>
-            <th class="text-white text-start">Default Selling Price (Inc.Tax)</th>
+            <th class="text-white text-start">{{ __('Product cost') }} (Inc.Tax)</th>
+            <th class="text-white text-start">@lang('menu.profit_margin')(%)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')(Exc.Tax)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price') (Inc.Tax)</th>
             <th class="text-white text-start">@lang('menu.quantity')</th>
             <th class="text-white text-start">@lang('menu.total_amount')</th>
         </tr>

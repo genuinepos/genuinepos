@@ -48,14 +48,14 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
-                                    <th>Allow Login</th>
+                                    <th>@lang('menu.username')</th>
+                                    <th>@lang('menu.allow_login')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>@lang('menu.phone')</th>
                                     @if($addons->branches == 1)
                                         <th>@lang('menu.business_location')</th>
                                     @endif
-                                    <th>Role</th>
+                                    <th>@lang('menu.role')</th>
                                     <th>@lang('menu.email')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>

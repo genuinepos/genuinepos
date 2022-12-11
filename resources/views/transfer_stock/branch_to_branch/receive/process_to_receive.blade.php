@@ -177,7 +177,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4">Total Pending Qty :</label>
+                                        <label class=" col-4">{{ __('Total Pending Qty') }} :</label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_pending_quantity" id="total_pending_quantity" class="form-control" value="0.00">
                                         </div>

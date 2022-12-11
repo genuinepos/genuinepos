@@ -8,7 +8,7 @@
         <div class="sec-name">
             <div class="name-head">
                 <span class="fas fa-user"></span>
-                <h6>View User</h6>
+                <h6>@lang('menu.view_user')</h6>
             </div>
 
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -22,13 +22,13 @@
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>Role Permission</b> </p>
+                                    <p class="p-1 text-primary"><b>@lang('menu.role_permission')</b> </p>
                                 </div>
 
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p><b>User Name :</b> {!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!} </p>
+                                            <p><b>@lang('menu.user_name') :</b> {!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!} </p>
                                             <p><b>Role :</b>
                                                 @if ($user->role_type == 1)
                                                     Super-Admin
@@ -49,7 +49,7 @@
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>Basic Information</b> </p>
+                                    <p class="p-1 text-primary"><b>@lang('menu.basic_information')</b> </p>
                                 </div>
 
                                 <div class="element-body">
@@ -68,19 +68,19 @@
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>Personal Information</b> </p>
+                                    <p class="p-1 text-primary"><b> @lang('menu.personal_information')</b> </p>
                                 </div>
 
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p><b>@lang('menu.date_of_birth') :</b> {{ $user->date_of_birth }}</p>
-                                            <p><b>Gender :</b> {{ $user->gender }}</p>
-                                            <p><b>Marital Status :</b> {{ $user->marital_status }}</p>
-                                            <p><b>Blood Group : </b> {{ $user->blood_group }}</p>
-                                            <p><b>Phone Number : </b> {{ $user->phone }}</p>
-                                            <p><b>ID proof name : </b> {{ $user->id_proof_name }}</p>
-                                            <p><b>ID proof Number : </b> {{ $user->id_proof_number }}</p>
+                                            <p><b>@lang('menu.gender') :</b> {{ $user->gender }}</p>
+                                            <p><b>@lang('menu.marital_status') :</b> {{ $user->marital_status }}</p>
+                                            <p><b>@lang('menu.blood_group') : </b> {{ $user->blood_group }}</p>
+                                            <p><b>@lang('menu.phone_number') : </b> {{ $user->phone }}</p>
+                                            <p><b>@lang('menu.id_proof_name') : </b> {{ $user->id_proof_name }}</p>
+                                            <p><b>@lang('menu.id_proof_number') : </b> {{ $user->id_proof_number }}</p>
 
                                         </div>
                                     </div>
@@ -91,19 +91,19 @@
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>Other Information</b> </p>
+                                    <p class="p-1 text-primary"><b>@lang('menu.other_information')</b> </p>
                                 </div>
 
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p><b>Guardian Name :</b> {{ $user->guardian_name }}</p>
-                                            <p><b>Facebook Link :</b> {{ $user->facebook_link }}</p>
-                                            <p><b>Twitter Link :</b> {{ $user->twitter_link }}</p>
-                                            <p><b>Instagram Link :</b> {{ $user->instagram_link }}</p>
+                                            <p><b>@lang('menu.guardian_name') :</b> {{ $user->guardian_name }}</p>
+                                            <p><b>@lang('menu.facebook_link') :</b> {{ $user->facebook_link }}</p>
+                                            <p><b>@lang('menu.twitter_link') :</b> {{ $user->twitter_link }}</p>
+                                            <p><b>@lang('menu.instagram_link') :</b> {{ $user->instagram_link }}</p>
                                             <p><b>@lang('menu.custom_field') 1 :</b> {{ $user->custom_field_1 }}</p>
-                                            <p><b>Permanent Address :</b> {{ $user->permanent_address }}</p>
-                                            <p><b>Current Address :</b> {{ $user->current_address }}</p>
+                                            <p><b>@lang('menu.permanent_address') :</b> {{ $user->permanent_address }}</p>
+                                            <p><b>@lang('menu.current_address') :</b> {{ $user->current_address }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -115,16 +115,16 @@
                         <div class="col-md-6">
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>Bank Information</b> </p>
+                                    <p class="p-1 text-primary"><b>@lang('menu.bank_information')</b> </p>
                                 </div>
 
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p><b>Account Holder's Name :</b> {{ $user->bank_ac_holder_name }}</p>
-                                            <p><b>Account No :</b> {{ $user->bank_ac_no }}</p>
+                                            <p><b>@lang('menu.account_holders_name') :</b> {{ $user->bank_ac_holder_name }}</p>
+                                            <p><b>@lang('menu.account_no') :</b> {{ $user->bank_ac_no }}</p>
                                             <p><b>@lang('menu.bank_name') :</b> {{ $user->bank_name }}</p>
-                                            <p><b>Bank Identifier Code :</b> {{ $user->bank_identifier_code }}</p>
+                                            <p><b>{{ __('Bank Identifier Code') }} :</b> {{ $user->bank_identifier_code }}</p>
                                         </div>
                                     </div>
                                 </div>

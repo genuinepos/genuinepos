@@ -99,7 +99,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Quantity :</th>
+                    <th class="text-end">@lang('menu.total_quantity') :</th>
                     <td class="text-end">{{ bcadd($totalQty, 0, 2) }}</td>
                 </tr>
 
@@ -109,7 +109,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
                 </tr>
             </thead>

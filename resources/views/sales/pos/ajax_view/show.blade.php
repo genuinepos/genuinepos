@@ -115,7 +115,7 @@
                                     <th class="text-startx">@lang('menu.unit_price_exc_tax')</th>
                                     <th class="text-startx">Unit Discount</th>
                                     <th class="text-startx">@lang('menu.unit_tax')</th>
-                                    <th class="text-startx">Unit Price Inc.Tax</th>
+                                    <th class="text-startx">@lang('menu.unit_price') Inc.Tax</th>
                                     <th sclass="text-start">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
@@ -266,8 +266,8 @@
                     class="btn btn-sm btn-success">Print Packing Slip</button>
                 @endif
 
-                <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">Print Challan</button>
-                <button type="button" class="btn btn-sm btn-primary print_btn">Print Invoice</button>
+                <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">@lang('menu.print_challan')</button>
+                <button type="button" class="btn btn-sm btn-primary print_btn">@lang('menu.print_invoice')</button>
                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">@lang('menu.close')</button>
             </div>
         </div>

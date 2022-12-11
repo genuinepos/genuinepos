@@ -138,7 +138,7 @@
                                                 <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.quantity')</th>
                                                 <th>@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th>Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th>@lang('menu.unit_price')({{json_decode($generalSettings->business, true)['currency']}})</th>
                                                 <th>@lang('menu.subtotal')({{json_decode($generalSettings->business, true)['currency']}})</th>
                                             </tr>
                                         </thead>

@@ -9,7 +9,7 @@
 
         <div class="col-md-3">
             <label><strong>@lang('menu.phone') :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="phone" class="form-control s_add_input" data-name="Phone number" id="phone" placeholder="Phone Number"/>
+            <input type="text" name="phone" class="form-control s_add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
             <span class="error error_phone"></span>
         </div>
 

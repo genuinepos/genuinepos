@@ -13,7 +13,7 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><b>Photo :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b> </small></label>
+        <label><b>@lang('menu.photo') :</b> <small class="text-danger"><b>Photo size 400px * 400px.</b> </small></label>
         <input type="file" name="photo" class="form-control " accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_e_photo"></span>
     </div>

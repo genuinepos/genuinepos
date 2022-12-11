@@ -116,7 +116,7 @@
                                         <div class="col-8">
                                             <select name="price_group_id" class="form-control"
                                                 id="price_group_id">
-                                                <option value="">Default Selling Price</option>
+                                                <option value="">@lang('menu.default_selling_price')</option>
                                                 @foreach ($price_groups as $pg)
                                                     <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                 @endforeach
@@ -180,7 +180,7 @@
                                                     <thead class="staky">
                                                         <tr>
                                                             <th class="text-start">@lang('menu.product')</th>
-                                                            <th class="text-center">Unit Price</th>
+                                                            <th class="text-center">@lang('menu.unit_price')</th>
                                                             <th class="text-center">@lang('menu.unit')</th>
                                                             <th class="text-center">Return Quantity</th>
                                                             <th class="text-center">@lang('menu.sub_total')</th>
@@ -225,7 +225,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Net Total Amount :</b></label>
+                                                        <label class="col-4"><b@lang('menu.net_total_amount') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="net_total_amount" id="net_total_amount" class="form-control" value="0" tabindex="-1">
                                                         </div>

@@ -2001,4 +2001,5 @@ return [
   'sale_ac' => 'Sale A/C',
   'version' => 'Version',
   'receive' => 'Receive',
+  'essentials' => 'Essentials',
 ];

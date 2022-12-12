@@ -33,7 +33,7 @@
                     <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><span

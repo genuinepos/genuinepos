@@ -84,7 +84,7 @@
                                                             <div class="col-6">
                                                                 <label><strong></strong></label>
                                                                 <div class="input-group">
-                                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                                 </div>
                                                             </div>
 

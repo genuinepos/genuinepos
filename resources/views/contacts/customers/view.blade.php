@@ -505,6 +505,9 @@
         @csrf
     </form>
 
+    <!-- Details Modal -->
+    <div id="sale_details"></div>
+
    <!-- Edit Shipping modal -->
    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
@@ -557,9 +560,6 @@
             </div>
         </div>
     @endif
-
-    <!-- Details Modal -->
-    <div id="sale_details"></div>
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

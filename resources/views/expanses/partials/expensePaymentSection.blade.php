@@ -1,7 +1,7 @@
 <section>
     <div class="form_element rounded mt-0 mb-3">
         <div class="element-body">
-            <div class="row mt-1">
+            <div class="row gx-2 mt-1">
                 <div class="col-md-6">
                     <div class="input-group">
                         <label class=" col-4">
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="row mt-1">
+            <div class="row gx-2 mt-1">
                 <div class="col-md-6">
                     <div class="input-group">
                         <label class="col-4"><b>@lang('menu.credit_account') :</b></label>
@@ -71,9 +71,9 @@
             <div class="row mt-1">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <label class=" col-4"><b>@lang('menu.payment_note') :</b></label>
+                        <label class="col-lg-2 col-4"><b>@lang('menu.payment_note') :</b></label>
 
-                        <div class="col-8">
+                        <div class="col-lg-10 col-8">
                             <input type="text" name="payment_note" class="form-control form-control-sm" id="payment_note" placeholder="@lang('menu.payment_note')">
                         </div>
                     </div>

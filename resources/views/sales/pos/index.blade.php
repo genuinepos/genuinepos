@@ -87,7 +87,7 @@
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-info float-start text-white"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-info float-start text-white m-0"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -234,9 +234,9 @@
             "serverSide": true,
             dom: "lBfrtip",
             buttons: [
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> @lang('menu.pdf')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> @lang('menu.pdf')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],

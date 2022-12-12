@@ -703,7 +703,7 @@ a.resent-tn:hover {
 @media (min-width: 1200px) and (max-width: 1400px) {
     .function-card {
         font-size: 10px;
-        line-height: 2;
+        line-height: 2.2;
         padding: 10px 0px;
     }
 }

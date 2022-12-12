@@ -34,7 +34,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row g-2">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.supplier')</b></label>

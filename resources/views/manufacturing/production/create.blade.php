@@ -28,7 +28,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-md-2">
                                     <label><b>@lang('menu.production_ac') : <span class="text-danger">*</span></b></label>
                                     <select name="production_account_id" class="form-control add_input"

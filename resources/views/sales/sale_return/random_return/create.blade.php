@@ -42,7 +42,7 @@
                 <section>
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
-                            <div class="row">
+                            <div class="row gx-2">
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class=" col-4"><b>Sale INV. ID :</b> </label>

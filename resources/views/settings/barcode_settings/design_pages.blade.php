@@ -32,6 +32,9 @@
             font-size: 80%;
             line-height: 150%;
         }
+        .btn.btn-sm {
+            margin-top: -3px;
+        }
     </style>
 
 @endpush

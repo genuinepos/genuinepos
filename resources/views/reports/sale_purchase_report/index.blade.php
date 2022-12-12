@@ -78,7 +78,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
                                                                 <div class="row justify-content-between align-items-end">
                                                                     <div class="col-6">
                                                                         <label><strong></strong></label>

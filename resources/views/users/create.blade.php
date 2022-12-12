@@ -338,8 +338,8 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group ">
-                                        <label class="col-4"><b>@lang('menu.permanent_address') :</b> </label>
-                                        <div class="col-8">
+                                        <label class="col-lg-2 col-4"><b>@lang('menu.permanent_address') :</b> </label>
+                                        <div class="col-lg-10 col-8">
                                             <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="@lang('menu.permanent_address')">
                                         </div>
                                     </div>
@@ -349,8 +349,8 @@
                             <div class="row g-2 pt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.current_address') :</b> </label>
-                                        <div class="col-8">
+                                        <label class="col-lg-2 col-4"><b>@lang('menu.current_address') :</b> </label>
+                                        <div class="col-lg-10 col-8">
                                             <input type="text" name="current_address" class="form-control form-control-sm" placeholder="@lang('menu.current_address')">
                                         </div>
                                     </div>

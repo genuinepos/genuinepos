@@ -22,7 +22,7 @@
                             <div class="form_element rounded m-0">
 
                                 <div class="element-body">
-                                    <div class="row g-2">
+                                    <div class="row gx-2">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.prefix') :</b> </label>
@@ -44,7 +44,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-1">
+                                    <div class="row gx-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.last_name') :</b> </label>
@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-1">
+                                    <div class="row gx-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.phone') :</b> <span class="text-danger">*</span> </label>
@@ -87,7 +87,7 @@
                                 </div>
 
                                 <div class="element-body">
-                                    <div class="row g-2">
+                                    <div class="row gx-2">
                                         <div class="col-md-12">
                                             <p class="checkbox_input_wrap">
                                                 <input type="checkbox" {{ $user->allow_login == 1 ? 'CHECKED' : '' }} name="allow_login" id="allow_login">
@@ -97,7 +97,7 @@
                                     </div>
 
                                     <div class="auth_field_area">
-                                        <div class="row g-2 mt-2">
+                                        <div class="row gx-2 pt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>@lang('menu.username') :</b> <span class="text-danger">*</span> </label>
@@ -128,7 +128,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row g-2 mt-2">
+                                        <div class="row gx-2 pt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>Password :</b> <span class="text-danger">*</span> </label>
@@ -151,7 +151,7 @@
                                     </div>
 
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-6 access_branch">
                                                 <div class="input-group">
@@ -256,7 +256,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.marital_status') :</b> </label>
@@ -281,7 +281,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.twitter_link') :</b> </label>
@@ -301,7 +301,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.guardian_name'):</b> </label>
@@ -321,7 +321,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.facebook_link') :</b> </label>
@@ -341,22 +341,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-sm-4 col-12"><b>@lang('menu.permanent_address') :</b> </label>
-                                                <div class="col-sm-8 col-12">
+                                                <label class="col-lg-2 col-sm-4 col-12"><b>@lang('menu.permanent_address') :</b> </label>
+                                                <div class="col-lg-10 col-sm-8 col-12">
                                                     <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="@lang('menu.permanent_address')" value="{{ $user->permanent_address }}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-2">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-sm-4 col-12"><b>@lang('menu.current_address') :</b> </label>
-                                                <div class="col-sm-8 col-12">
+                                                <label class="col-lg-2 col-sm-4 col-12"><b>@lang('menu.current_address') :</b> </label>
+                                                <div class="col-lg-10 col-sm-8 col-12">
                                                     <input type="text" name="current_address" class="form-control form-control-sm" placeholder="@lang('menu.current_address')" value="{{ $user->current_address }}">
                                                 </div>
                                             </div>
@@ -394,7 +394,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-1">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.bank_name'):</b> </label>
@@ -414,7 +414,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mt-1">
+                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.branch') :</b> </label>
@@ -445,7 +445,7 @@
                                     </div>
 
                                     <div class="element-body">
-                                        <div class="row">
+                                        <div class="row g-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Employee ID') }} :</b> </label>
@@ -471,7 +471,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
+                                        <div class="row g-2 pt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>@lang('menu.department') :</b> </label>
@@ -502,7 +502,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
+                                        <div class="row g-2 pt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-4"><span class="text-danger">*</span> <b>{{ __('Salary') }} :</b> </label>

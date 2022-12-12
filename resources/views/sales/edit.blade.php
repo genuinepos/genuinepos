@@ -305,9 +305,9 @@
                                     </div>
                                 </div>
 
-                                <div class="card payment_body">
-                                    <div class="card-body">
-                                        <div class="row gx-4 gy-1">
+                                <div class="form_element rounded m-0 payment_body">
+                                    <div class="element-body">
+                                        <div class="row gx-2 gy-1">
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>Ship Details :</b></label>
@@ -343,7 +343,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>Delivered To :</b></label>
+                                                    <label class="col-4"><b>Delivered To :</b></label>
                                                     <div class="col-8">
                                                         <input name="delivered_to" type="text" class="form-control" id="delivered_to" value="{{ $sale->delivered_to }}" placeholder="Delivered To">
                                                     </div>
@@ -352,7 +352,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4">Sale Note :</label>
+                                                    <label class="col-4"><b>Sale Note :</b></label>
                                                     <div class="col-8">
                                                         <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note" value="{{ $sale->sale_note }}">
                                                     </div>
@@ -361,7 +361,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4">@lang('menu.payment_note'):</label>
+                                                    <label class="col-4"><b>@lang('menu.payment_note'):</b></label>
                                                     <div class="col-8">
                                                         <input name="payment_note" type="text" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')" value="">
                                                     </div>
@@ -373,23 +373,23 @@
                             </div>
 
                             <div class="col-lg-3">
-                                <div class="card number-fields">
-                                    <div class="card-body">
-                                        <div class="row mb-2">
+                                <div class="form_element rounded m-0 number-fields">
+                                    <div class="element-body">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Total Item :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="{{ $sale->total_item }}" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Net Total :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">@lang('menu.discount') :</label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
@@ -403,7 +403,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Order Tax :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax">
@@ -416,14 +416,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">Shipment Cost :</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}">
                                             </div>
                                         </div>
 
-                                        <div class="row mb-2">
+                                        <div class="row g-2 mb-2">
                                             <label class="col-sm-5 col-form-label">@lang('menu.total_payable') :</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
@@ -432,21 +432,21 @@
 
                                         <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-hide' }}">
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.paid') :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="previous_paid" class="form-control text-success" id="previous_paid" value="{{ $sale->paid }}" tabindex="-1">
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">CR. Receivable :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="" tabindex="-1">
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">Cash Receive : >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
@@ -460,7 +460,7 @@
                                                 </div>
                                             </div> --}}
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">Paid By :</label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -475,7 +475,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C : <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
@@ -496,7 +496,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2">
+                                            <div class="row g-2 mb-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.due') :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">

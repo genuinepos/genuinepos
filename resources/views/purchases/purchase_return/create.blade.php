@@ -52,9 +52,9 @@
                             <div class="row g-1">
                                 <div class="col-lg-4 col-md-10">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-sm-4 col-5"><b>PR.Invoice ID : </b><span
+                                        <label for="inputEmail3" class="col-5"><b>PR.Invoice ID : </b><span
                                                 class="text-danger">*</span></label>
-                                        <div class="col-sm-8 col-7">
+                                        <div class="col-7">
                                             <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID" autocomplete="off">
                                         </div>
                                     </div>
@@ -62,9 +62,9 @@
 
                                 <div class="col-lg-4 col-md-10">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-sm-4 col-5"><b>@lang('menu.date') :</b> <span
+                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.date') :</b> <span
                                             class="text-danger">*</span></label>
-                                        <div class="col-sm-8 col-7">
+                                        <div class="col-7">
                                             <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
                                             <span class="error error_date"></span>
                                         </div>
@@ -72,10 +72,10 @@
                                 </div>
 
                                 <div class="col-lg-4 col-md-10">
-                                    <div class="input-group mt-1">
-                                        <label for="inputEmail3" class="col-sm-4 col-5"><b>Purchase Return A/C : <span
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-5"><b>Purchase Return A/C : <span
                                             class="text-danger">*</span></b></label>
-                                        <div class="col-sm-8 col-7">
+                                        <div class="col-7">
                                             <select name="purchase_return_account_id" class="form-control add_input"
                                                 id="purchase_return_account_id" data-name="Purchase Return A/C">
                                                 @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
@@ -123,7 +123,7 @@
                 </section>
 
                 <section>
-                    <div class="form_element mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-12">

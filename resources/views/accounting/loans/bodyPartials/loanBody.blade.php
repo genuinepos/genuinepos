@@ -10,7 +10,7 @@
             <div class="form-area px-3 pb-2">
                 <form id="adding_loan_form" action="{{ route('accounting.loan.store') }}" method="POST">
                     @csrf
-                    <div class="form-group row">
+                    <div class="form-group row gx-3">
                         <div class="col-md-6">
                             <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
                             <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row gx-3">
                         <div class="col-md-6">
                             <label><strong>@lang('menu.company')/@lang('menu.people') : <span class="text-danger">*</span></strong></label>
                             <select name="company_id" class="form-control" id="company_id">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row mt-1">
+                    <div class="form-group row gx-3 mt-1">
                         <div class="col-md-6">
                             <label><b>@lang('menu.loan_amount') :</b> <span class="text-danger">*</span> </label>
                             <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="@lang('menu.loan_amount')"/>

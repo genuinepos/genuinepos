@@ -98,8 +98,8 @@
                     $variant = $transfer_product->variant ? ' ('.$transfer_product->variant->variant_name.')' : '';
                   @endphp
                   {{ $transfer_product->product->name.$variant }}
-                </span>Send Stock- {{ $transfer_product->quantity.' ('.$transfer_product->unit.')' }}
-                    <b style="font-size:12px;font-weight:300;"> /Pending Qty-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/Receive Qty-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
+                </span>{{ __('Send Stock') }}- {{ $transfer_product->quantity.' ('.$transfer_product->unit.')' }}
+                    <b style="font-size:12px;font-weight:300;"> /@lang('menu.pending_qty')-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/Receive Qty-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
                 </p>
             </td>
         </tr>

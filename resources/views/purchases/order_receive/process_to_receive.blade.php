@@ -61,7 +61,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>PO.Invoice ID :</b></label>
+                                        <label class="col-4"><b>@lang('menu.po_invoice_id') :</b></label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Order Invoice ID" autocomplete="off" value="{{ $purchase->invoice_id }}">
                                         </div>
@@ -107,7 +107,7 @@
                                                         <th>@lang('menu.ordered_qty')</th>
                                                         <th>@lang('menu.unit_cost')(Inc.Tax)</th>
                                                         <th>@lang('menu.sub_total')</th>
-                                                        <th>Pending Qty</th>
+                                                        <th>@lang('menu.pending_qty')</th>
                                                         <th>Receive Qty</th>
                                                         <th>Add Receive</th>
                                                     </tr>

@@ -87,7 +87,7 @@
                     </div>
                     <div class="col-4">
                         <ul class="list-unstyled">
-                            <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>@lang('menu.po_invoice_id') : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>@lang('menu.purchase_date') : </strong>
                                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
                             </li>
@@ -111,7 +111,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">@lang('menu.description')</th>
-                            <th scope="col">Ordered Quantity</th>
+                            <th scope="col">@lang('menu.ordered_quantity')</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">

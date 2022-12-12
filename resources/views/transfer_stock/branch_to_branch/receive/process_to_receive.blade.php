@@ -96,7 +96,7 @@
                                                 <th>@lang('menu.product')</th>
                                                 <th>Send Quantity</th>
                                                 <th>@lang('menu.unit')</th>
-                                                <th>Pending Qty</th>
+                                                <th>@lang('menu.pending_qty')</th>
                                                 <th>Receive Quantity</th>
                                             </tr>
                                         </thead>

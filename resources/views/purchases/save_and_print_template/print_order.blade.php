@@ -98,8 +98,8 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>PO.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>PO Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>@lang('menu.po_invoice_id') : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>{{ __('PO Date') }} : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                             <li><strong>@lang('menu.delivery_date') : </strong>{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
                             <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>
                             <li><strong>@lang('menu.receiving_status') : </strong>{{ $purchase->po_receiving_status }}</li>
@@ -128,12 +128,12 @@
                     <thead>
                         <tr>
                             <th scope="col">@lang('menu.description')</th>
-                            <th scope="col">Ordered Quantity</th>
+                            <th scope="col">@lang('menu.ordered_quantity')</th>
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
                             <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Pending Qty</th>
+                            <th scope="col">@lang('menu.pending_qty')</th>
                             <th scope="col">Received Qty</th>
                         </tr>
                     </thead>

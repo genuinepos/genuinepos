@@ -144,7 +144,7 @@
                                     <th class="text-start">@lang('menu.warranty')</th>
                                     <th class="text-end">@lang('menu.quantity')</th>
                                     <th class="text-end">@lang('menu.unit_price_exc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                    <th class="text-end">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-end">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">Unit Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">@lang('menu.unit_price') Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>

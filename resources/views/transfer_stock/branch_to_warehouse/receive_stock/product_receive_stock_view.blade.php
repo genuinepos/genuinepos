@@ -55,7 +55,7 @@
                                                             <th>@lang('menu.product')</th>
                                                             <th class="text-center">Send Quantity</th>
                                                             <th class="text-center">@lang('menu.unit')</th>
-                                                            <th class="text-center">Pending Qty</th>
+                                                            <th class="text-center">@lang('menu.pending_qty')</th>
                                                             <th class="text-center">Receive Quantity</th>
                                                         </tr>
                                                     </thead>

@@ -113,7 +113,7 @@
                                     <th class="text-startx">@lang('menu.item')</th>
                                     <th class="text-startx">@lang('menu.quantity')</th>
                                     <th class="text-startx">@lang('menu.unit_price_exc_tax')</th>
-                                    <th class="text-startx">Unit Discount</th>
+                                    <th class="text-startx">@lang('menu.unit_cost')</th>
                                     <th class="text-startx">@lang('menu.unit_tax')</th>
                                     <th class="text-startx">@lang('menu.unit_price') Inc.Tax</th>
                                     <th sclass="text-start">@lang('menu.sub_total')</th>

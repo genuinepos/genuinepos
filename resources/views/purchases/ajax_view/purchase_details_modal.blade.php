@@ -93,12 +93,12 @@
                                      <tr class="bg-secondary">
                                          <th class="text-white text-start">@lang('menu.product')</th>
                                          <th class="text-white text-start">@lang('menu.quantity')</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(Before Discount)</th>
-                                         <th class="text-white text-start">Unit Discount</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(Before Tax)</th>
-                                         <th class="text-white text-start">@lang('menu.sub_total') (Before Tax)</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_discount'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax'))</th>
                                          <th class="text-white text-start">Tax(%)</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(After Tax)</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax'))</th>
                                          <th class="text-white text-start">Unit Selling Price</th>
                                          <th class="text-white text-start">@lang('menu.sub_total')</th>
                                          <th class="text-white text-start">Lot Number</th>
@@ -417,7 +417,7 @@
                             <th scope="col">@lang('menu.description')</th>
                             <th scope="col">@lang('menu.quantity')</th>
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
-                            <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Tax(%)</th>
                             <th scope="col">Net Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">Lot Number</th>

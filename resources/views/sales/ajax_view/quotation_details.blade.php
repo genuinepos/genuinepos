@@ -118,7 +118,7 @@
                                 <th class="text-start">Stock Location</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">@lang('menu.unit_price_exc_tax')</th>
-                                <th class="text-start">Unit Discount</th>
+                                <th class="text-start">@lang('menu.unit_cost')</th>
                                 <th class="text-start">Unit Tax</th>
                                 <th class="text-start">@lang('menu.unit_price') Inc.Tax</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>

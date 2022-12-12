@@ -65,7 +65,7 @@
                                     <th class="text-start">@lang('menu.unit_price')</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
                                     <th class="text-start">@lang('menu.unit')</th>
-                                    <th class="text-start">Pending Qty</th>
+                                    <th class="text-start">@lang('menu.pending_qty')</th>
                                     <th class="text-start">Received Qty</th>
                                     <th class="text-start">@lang('menu.sub_total')</th>
                                 </tr>
@@ -186,7 +186,7 @@
                                 <th scope="col">@lang('menu.unit_price')</th>
                                 <th scope="col">@lang('menu.quantity')</th>
                                 <th scope="col">@lang('menu.unit')</th>
-                                <th scope="col">Pending Qty</th>
+                                <th scope="col">@lang('menu.pending_qty')</th>
                                 <th scope="col">Received Qty</th>
                                 <th scope="col">@lang('menu.sub_total')</th>
                             </tr>

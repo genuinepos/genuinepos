@@ -17,7 +17,7 @@
             <h6>
                 @if ($payment->purchase->branch)
                     {{ $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code }}
-                    (<b>Branch/Concern</b>) ,<br>
+                    (<b>@lang('menu.branch_concern')</b>) ,<br>
                     {{ $payment->purchase->branch ? $payment->purchase->branch->city : '' }},
                     {{ $payment->purchase->branch ? $payment->purchase->branch->state : '' }},
                     {{ $payment->purchase->branch ? $payment->purchase->branch->zip_code : '' }},

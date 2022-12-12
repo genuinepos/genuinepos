@@ -117,7 +117,7 @@
                                                 <th>Total Item</th>
                                                 <th>Send Qty</th>
                                                 <th>Received Qty</th>
-                                                <th>Pending Qty</th>
+                                                <th>@lang('menu.pending_qty')</th>
                                                 <th>Total Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>

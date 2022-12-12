@@ -43,7 +43,7 @@
                                         <th>@lang('menu.total_amount')</th>
                                         <th>@lang('menu.discount')</th>
                                         <th>Tax Percent</th>
-                                        <th>Tax Amount</th>
+                                        <th>@lang('menu.tax_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -106,7 +106,7 @@
                                         <th>@lang('menu.total_amount')</th>
                                         <th>@lang('menu.discount')</th>
                                         <th>Tax Percent</th>
-                                        <th>Tax Amount</th>
+                                        <th>@lang('menu.tax_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -173,7 +173,7 @@
                                         <th>@lang('menu.invoice_id')</th>
                                         <th>@lang('menu.total_amount')</th>
                                         <th>Tax Percent</th>
-                                        <th>Tax Amount</th>
+                                        <th>@lang('menu.tax_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="far fa-money-bill-alt"></span>
-                                <h5>Sale Payment Report</h5>
+                                <h5>{{ __('Sale Payment Report') }}</h5>
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">

@@ -1700,7 +1700,7 @@
                             )
                                 {{-- <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>Expense Reports</strong></p>
+                                        <p class="text-muted mt-1 ms-3"><strong>@lang('menu.expense_report')</strong></p>
                                         <hr class="p-0 m-0 mb-3">
                                     </div>
                                 </div> --}}

@@ -32,13 +32,13 @@
                 <ul class="list-unstyled">
                     <li><strong> {{ __('P.Invoice ID') }} : </strong>{{ $purchase->invoice_id }}
                     </li>
-                    <li><strong>Purchase Form : </strong>
+                    <li><strong>{{ __('Purchase Form') }} : </strong>
                         {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : 'Head Office' }}
                     </li>
-                    <li><strong>Stored Loacation : </strong>
+                    <li><strong>{{ __('Stored Location') }} : </strong>
                         @if ($purchase->branch)
                             {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                            (<b>Branch/Company</b>) ,<br>
+                            (<b>@lang('menu.branch')/@lang('menu.company')</b>) ,<br>
                             {{ $purchase->branch ? $purchase->branch->city : '' }},
                             {{ $purchase->branch ? $purchase->branch->state : '' }},
                             {{ $purchase->branch ? $purchase->branch->zip_code : '' }},

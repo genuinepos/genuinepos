@@ -48,7 +48,7 @@
                                         <div class="col-8">
                                             {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1"> --}}
                                             <select name="warehouse_id" class="form-control" id="warehouse_id">
-                                                <option value="">Select Warehouse</option>
+                                                <option value="">@lang('menu.select_warehouse')</option>
                                                 @foreach ($warehouses as $warehouse)
                                                     <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
                                                         {{ $warehouse->name.'/'.$warehouse->code }}
@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Attachment :</b>
+                                        <label class="col-4"><b>@lang('menu.attachment') :</b>
                                             <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="file" name="attachment" class="form-control">
@@ -147,7 +147,7 @@
                                         <div class="row">
                                             <div class="col-md-9">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
+                                                    <label class="col-form-label">@lang('menu.item_search')</label>
                                                     <div class="input-group ">
 
                                                         <div class="input-group-prepend">
@@ -190,7 +190,7 @@
                                                             <thead class="staky">
                                                                 <tr>
                                                                     <th class="text-start">@lang('menu.product')</th>
-                                                                    <th class="text-start">Stock Location</th>
+                                                                    <th class="text-start">@lang('menu.stock_location')</th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>@lang('menu.unit')</th>
                                                                     <th class="text-center">@lang('menu.price_inc_tax')</th>
@@ -310,9 +310,9 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>Ship Details :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Details') }} :</b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details" value="{{ $sale->shipment_details }}">
+                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="@lang('menu.shipment_details')" value="{{ $sale->shipment_details }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -376,14 +376,14 @@
                                 <div class="form_element rounded m-0 number-fields">
                                     <div class="element-body">
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">Total Item :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.total_item') :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="{{ $sale->total_item }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">Net Total :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.net_total') :</label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}" tabindex="-1">
                                             </div>
@@ -404,7 +404,7 @@
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">Order Tax :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.order_tax') :</label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax">
                                                     <option value="0.00">@lang('menu.no_tax')</option>
@@ -417,7 +417,7 @@
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">Shipment Cost :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost') :</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}">
                                             </div>
@@ -461,7 +461,7 @@
                                             </div> --}}
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">Paid By :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.paid_by') :</label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)

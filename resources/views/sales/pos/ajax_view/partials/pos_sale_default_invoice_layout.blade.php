@@ -153,7 +153,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong> Date : </strong>
+                            <li><strong>@lang('menu.date'): </strong>
                                 {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
                             </li>
                             <li><strong> @lang('menu.user') : </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
@@ -173,7 +173,7 @@
                                 <th scope="col">@lang('menu.warranty')</th>
                             @endif
 
-                            <th class="text-startx">Price</th>
+                            <th class="text-startx">@lang('menu.price')</th>
 
                             @if ($defaultLayout->product_discount)
                                 <th class="text-startx">@lang('menu.discount')</th>
@@ -501,8 +501,8 @@
                         <thead class="t-head">
                             <tr>
                                 <th class="text-startx">@lang('menu.description')</th>
-                                <th class="text-center">Qty</th>
-                                <th class="text-center">Price</th>
+                                <th class="text-center">@lang('menu.qty')</th>
+                                <th class="text-center">@lang('menu.price')</th>
                                 <th class="text-endx">@lang('menu.total')</th>
                             </tr>
                         </thead>

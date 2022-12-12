@@ -47,7 +47,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>Total Return Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <strong>@lang('menu.total_return_amount'): {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span>{{ $payment->sale_return->total_return_amount }}</span>
                                 </li>
 

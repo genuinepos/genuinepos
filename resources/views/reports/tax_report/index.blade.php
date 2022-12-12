@@ -52,7 +52,7 @@
                                         @endif
 
                                         <div class="col-md-3">
-                                            <label><strong>Date Range :</strong></label>
+                                            <label><strong>@lang('menu.date_range') :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -123,14 +123,14 @@
                                                                         <th>@lang('menu.tax_number')</th>
                                                                         <th>@lang('menu.discount')</th>
                                                                         <th>Tax Percent</th>
-                                                                        <th>Tax Amount</th>
+                                                                        <th>@lang('menu.tax_amount')</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>--/--/----</td>
                                                                         <td>SI000555</td>
-                                                                        <td>Walk-In-Customer</td>
+                                                                        <td>{{ __('Walk-In-Customer') }}</td>
                                                                         <td>@lang('menu.tax_number')</td>
                                                                         <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                         <td>(5.00%)</td>
@@ -156,7 +156,7 @@
                                                                         <th>@lang('menu.tax_number')</th>
                                                                         <th>@lang('menu.discount')</th>
                                                                         <th>Tax Percent</th>
-                                                                        <th>Tax Amount</th>
+                                                                        <th>@lang('menu.tax_amount')</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>

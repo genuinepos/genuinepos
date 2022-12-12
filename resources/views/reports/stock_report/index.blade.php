@@ -132,7 +132,7 @@
                                     <table class="display data_tbl data__table b_data_tbl">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>P.Code</th>
+                                                <th>@lang('menu.p_code')</th>
                                                 <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>@lang('menu.unit_price')</th>
@@ -276,7 +276,7 @@
                                     <table class="display data_tbl data__table w_data_tbl w-100">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>P.Code</th>
+                                                <th>@lang('menu.p_code')</th>
                                                 <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>@lang('menu.warehouse')</th>

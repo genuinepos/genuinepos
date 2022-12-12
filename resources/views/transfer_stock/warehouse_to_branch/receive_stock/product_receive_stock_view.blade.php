@@ -32,7 +32,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="m-0"><strong>@lang('menu.reference_id') </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p>
-                                    <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p>
+                                    <p class="m-0"><strong>@lang('menu.date'): </strong> <span class="transfer_date">05-12-2020</span></p>
                                     </div>
                                     <div class="col-md-6">
                                     <p class="m-0"><strong>@lang('menu.business_location') (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
@@ -87,7 +87,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4">Net Total :</label>
+                                        <label for="inputEmail3" class=" col-4">@lang('menu.net_total') :</label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
                                         </div>

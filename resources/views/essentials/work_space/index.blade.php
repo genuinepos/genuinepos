@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label><strong>Date Range :</strong></label>
+                                        <label><strong>@lang('menu.date_range') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i

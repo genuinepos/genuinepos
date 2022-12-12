@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label><strong>Date Range :</strong></label>
+                                        <label><strong>@lang('menu.date_range') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -104,8 +104,8 @@
                                 <tr>
                                     <th>@lang('menu.date')</th>
                                     <th>{{ __('Employee') }}</th>
-                                    <th>Clock IN - CLock Out</th>
-                                    <th>Work Duration</th>
+                                    <th>{{ __('Clock In - Clock Out') }}</th>
+                                    <th>{{ __('Work Duration') }}</th>
                                     <th>@lang('menu.shift')</th>
                                 </tr>
                             </thead>

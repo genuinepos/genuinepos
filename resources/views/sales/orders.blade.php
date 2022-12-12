@@ -47,7 +47,7 @@
                                                     <label><strong>@lang('menu.customer') :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">Walk-In-Customer</option>
+                                                        <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                         @foreach ($customers as $customer)
                                                             <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                         @endforeach
@@ -125,12 +125,12 @@
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
                                                 <th>Order No</th>
-                                                <th>Stock Location</th>
+                                                <th>@lang('menu.stock_location')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.payment_status')</th>
                                                 <th>@lang('menu.total_amount')</th>
                                                 <th>@lang('menu.total_paid')</th>
-                                                <th>Payment Due</th>
+                                                <th>@lang('menu.payment_due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

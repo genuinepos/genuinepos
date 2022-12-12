@@ -98,7 +98,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <select name="customer_id" class="form-control form-select" id="customer_id">
-                                        <option value="">Walk-In-Customer</option>
+                                        <option value="">{{ __('Walk-In-Customer') }}</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')'
                                             }}</option>

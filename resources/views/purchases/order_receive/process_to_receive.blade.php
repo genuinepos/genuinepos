@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-tasks"></span>
-                    <h5>Receive Purchase Order</h5>
+                    <h5>{{ __('Receive Purchase Order') }}</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -41,7 +41,7 @@
                                             <div class="col-8">
                                                 <select class="form-control changeable add_input"
                                                     name="warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                    <option value="">Select Warehouse</option>
+                                                    <option value="">@lang('menu.select_warehouse')</option>
                                                     @foreach ($warehouses as $warehouse)
                                                         <option {{ $purchase->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
                                                     @endforeach
@@ -108,8 +108,8 @@
                                                         <th>@lang('menu.unit_cost')(Inc.Tax)</th>
                                                         <th>@lang('menu.sub_total')</th>
                                                         <th>@lang('menu.pending_qty')</th>
-                                                        <th>Receive Qty</th>
-                                                        <th>Add Receive</th>
+                                                        <th>@lang('menu.receive_qty')</th>
+                                                        <th>{{ __('Add Receive') }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="order_list">
@@ -155,13 +155,13 @@
                                                                                 @foreach ($row->receives as $receive)
                                                                                     <tr class="text-end">
                                                                                         <td>
-                                                                                            <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" value="{{ $receive->purchase_challan }}" placeholder="Challan No">
+                                                                                            <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" value="{{ $receive->purchase_challan }}" placeholder="@lang('menu.challan_no')">
 
                                                                                             <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="{{ $receive->id }}">
                                                                                         </td>
 
                                                                                         <td>
-                                                                                            <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" value="{{ $receive->lot_number }}" placeholder="Lot Number">
+                                                                                            <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" value="{{ $receive->lot_number }}" placeholder="@lang('menu.lot_number')">
                                                                                         </td>
 
                                                                                         <td>
@@ -188,13 +188,13 @@
                                                                             <tbody id="{{ $row->id }}">
                                                                                 <tr class="text-end">
                                                                                     <td>
-                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" placeholder="Challan No">
+                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" placeholder="@lang('menu.challan_no')">
 
                                                                                         <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="">
                                                                                     </td>
 
                                                                                     <td>
-                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" placeholder="Lot Number">
+                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" placeholder="@lang('menu.lot_number')">
                                                                                     </td>
 
                                                                                     <td>
@@ -237,7 +237,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class=" col-4"><b>Total Item :</b> </label>
+                                                        <label class=" col-4"><b>@lang('menu.total_item') :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->total_item }}" tabindex="-1">
                                                         </div>
@@ -248,7 +248,7 @@
                                                     <input type="hidden" name="total_pending" id="total_pending" value="{{ $purchase->po_pending_qty }}" tabindex="-1">
                                                     <input type="hidden" name="total_received" id="total_received" value="{{ $purchase->po_received_qty }}" tabindex="-1">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Order Discount :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.order_discount') :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}" tabindex="-1">
                                                         </div>
@@ -257,7 +257,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Order Tax :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.order_tax') :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="purchase_tax_amount" type="text" class="form-control" id="purchase_tax_amount" value="{{ $purchase->purchase_tax_amount.'('.$purchase->purchase_tax_percent.'%)' }}" tabindex="-1">
                                                         </div>
@@ -266,7 +266,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Shipment Cost :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.shipment_cost') :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}" tabindex="-1">
                                                         </div>
@@ -305,7 +305,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class=" col-4"><b>Current Order Due :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>{{ __('Current Order Due') }} :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="due" id="due" class="form-control text-danger bold_input_field" value="{{ $purchase->due }}" tabindex="-1">
                                                         </div>
@@ -314,7 +314,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Paying Amount : </b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <label class="col-4"><b>@lang('menu.paying_amount') : </b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-7">
@@ -348,7 +348,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Account :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.account') :</b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id">
                                                                 @foreach ($accounts as $account)
@@ -376,7 +376,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Pay Note :</b> </label>
+                                                        <label class="col-4"><b>{{ __('Pay Note') }} :</b> </label>
                                                         <div class="col-8">
                                                             <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')">
                                                         </div>

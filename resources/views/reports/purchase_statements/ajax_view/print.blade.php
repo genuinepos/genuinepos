@@ -47,7 +47,7 @@
             </p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Purchase Statements </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.purchase_statements') </b></h6>
     </div>
 </div>
 <br>
@@ -71,17 +71,17 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.invoice_id')</th>
-                    <th class="text-start">Stock Location</th>
+                    <th class="text-start">@lang('menu.stock_location')</th>
                     <th class="text-start">@lang('menu.customer')</th>
-                    <th class="text-start">Entered By</th>
-                    <th class="text-end">Total Item</th>
-                    <th class="text-end">Net total Amt.</th>
-                    <th class="text-end">Order Discount</th>
-                    <th class="text-end">Order Tax</th>
-                    <th class="text-end">Total Purchase Amt.</th>
-                    <th class="text-end">Paid Amt.</th>
-                    <th class="text-end">Return Amount</th>
-                    <th class="text-end">Due Amt.</th>
+                    <th class="text-start">@lang('menu.entered_by')</th>
+                    <th class="text-end">@lang('menu.total_item')</th>
+                    <th class="text-end">{{ __('Net total Amt') }}.</th>
+                    <th class="text-end">@lang('menu.order_discount')</th>
+                    <th class="text-end">@lang('menu.order_tax')</th>
+                    <th class="text-end">{{ __('Total Purchase Amt') }}.</th>
+                    <th class="text-end">@lang('menu.paid_amount')</th>
+                    <th class="text-end">@lang('menu.return_amount')</th>
+                    <th class="text-end">{{ __('Due Amt') }}.</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -177,35 +177,35 @@
             <thead>
 
                 <tr>
-                    <th class="text-end">Total Item : </th>
+                    <th class="text-end">@lang('menu.total_item') : </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalItems) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Net Total Amount : {{json_decode($generalSettings->business, true)['currency']}}</th>
+                    <th class="text-end">{{ __('Total Net Total Amount') }} : {{json_decode($generalSettings->business, true)['currency']}}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalNetTotal) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Order Discount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalOrderDiscount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Order Tax') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalOrderTax) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Purchased Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Purchased Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalPurchaseAmount) }}
                     </td>

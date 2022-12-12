@@ -47,7 +47,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">P.Code</th>
+                    <th class="text-start">@lang('menu.p_code')</th>
                     <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">@lang('menu.business_location')</th>
                     <th class="text-end">@lang('menu.unit_price')</th>

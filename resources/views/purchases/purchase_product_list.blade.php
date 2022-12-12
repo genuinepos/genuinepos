@@ -139,7 +139,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>All Purchased Products</h6>
+                                    <h6>{{ __('All Purchased Products') }}</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
@@ -158,7 +158,7 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.product')</th>
-                                                <th>P.Code</th>
+                                                <th>@lang('menu.p_code')</th>
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.quantity')</th>

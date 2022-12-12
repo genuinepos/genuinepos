@@ -1,13 +1,13 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr class="bg-navey-blue">
-            <th>P.Code(SKU)</th>
+            <th>@lang('menu.p_code')(SKU)</th>
             <th>@lang('menu.product')</th>
             <th>@lang('menu.unit_price_exc_tax')</th>
             <th>@lang('menu.b_location')</th>
             <th>@lang('menu.warehouse')</th>
             <th>@lang('menu.current_stock')</th>
-            <th>@lang('menu.current_stock_value') <b><small>(By Purchase Price)</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>(By @lang('menu.purchase_price'))</small></b></th>
             <th>Total Unit Sold</th>
             <th>@lang('menu.total_adjusted')</th>
         </tr>

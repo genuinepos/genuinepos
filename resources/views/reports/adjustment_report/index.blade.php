@@ -17,7 +17,7 @@
                 <div class="sec-name">
                     <div class="name-head">
                         <span class="fas fa-sliders-h"></span>
-                        <h5>Stock Adjustment Report</h5>
+                        <h5>@lang('menu.stock_adjustment_report')</h5>
                     </div>
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                         <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -108,12 +108,12 @@
                                                 <table class="table modal-table table-sm">
                                                     <tbody>
                                                         <tr>
-                                                            <th class="text-start">Total Normal : </th>
+                                                            <th class="text-start">@lang('menu.total_normal') : </th>
                                                             <td class="text-start"> <span class="total_normal"></span></td>
                                                         </tr>
 
                                                         <tr>
-                                                            <th class="text-start">Total Abnormal : </th>
+                                                            <th class="text-start">@lang('menu.total_abnormal') : </th>
                                                             <td class="text-start"><span class="total_abnormal"></span></td>
                                                         </tr>
 
@@ -133,7 +133,7 @@
                                                 <table class="table modal-table table-sm">
                                                     <tbody>
                                                         <tr>
-                                                            <th class="text-start">Total Amount Recovered</th>
+                                                            <th class="text-start">{{ __('Total Amount Recovered') }}</th>
                                                             <td class="text-start"><span class="total_recovered"></span></td>
                                                         </tr>
                                                     </tbody>
@@ -153,10 +153,10 @@
                                     <tr>
                                         <th class="text-start">@lang('menu.date')</th>
                                         <th class="text-start">@lang('menu.reference_no')</th>
-                                        <th class="text-start">Adjustment From</th>
+                                        <th class="text-start">{{ __('Adjustment From') }}</th>
                                         <th class="text-start">@lang('menu.type')</th>
                                         <th class="text-start">@lang('menu.total_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                        <th class="text-start">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                        <th class="text-start">@lang('menu.total_recovered_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
                                         <th class="text-start">@lang('menu.reason')</th>
                                         <th class="text-start">@lang('menu.created_by')</th>
                                     </tr>

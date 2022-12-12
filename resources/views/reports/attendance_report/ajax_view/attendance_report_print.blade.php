@@ -44,8 +44,8 @@
             <tr>
                 <th class="text-start">@lang('menu.date')</th>
                 <th class="text-start">{{ __('Employee') }}</th>
-                <th class="text-start">Clock In - Clock Out</th>
-                <th class="text-start">Work Duration</th>
+                <th class="text-start">{{ __('Clock In - Clock Out') }}</th>
+                <th class="text-start">{{ __('Work Duration') }}</th>
                 <th class="text-start">@lang('menu.shift')</th>
             </tr>
         </thead>
@@ -70,7 +70,7 @@
                             @endphp
                             {{ $totalDuration }}
                         @else
-                            Clock-Out-does-not-exists
+                            {{ __('Clock-Out-does-not-exists') }}
                         @endif
                     </td>
                     <td class="text-start">{{ $row->shift_name ? $row->shift_name : 'N/A' }}</td>

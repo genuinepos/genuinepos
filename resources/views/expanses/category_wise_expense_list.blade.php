@@ -40,7 +40,7 @@
                                     @endif
 
                                     {{-- <div class="col-md-2">
-                                        <label><strong>Expense For :</strong></label>
+                                        <label><strong>@lang('menu.expense_for') :</strong></label>
                                         <select name="admin_id" class="form-control submit_able" id="admin_id" >
                                             <option value="">@lang('menu.all')</option>
                                         </select>

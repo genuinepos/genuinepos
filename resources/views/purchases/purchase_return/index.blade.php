@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-undo-alt"></span>
-                                <h5>Purchase Returns</h5>
+                                <h5>@lang('menu.purchase_return')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -90,11 +90,11 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>All Purchase Returns</h6>
+                                    <h6>{{ __('All Purchase Returns') }}</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.returns.supplier.return') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add Return</a>
+                                        <a href="{{ route('purchases.returns.supplier.return') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.add_return')</a>
                                     </div>
                                 @endif
                             </div>
@@ -110,14 +110,14 @@
                                             <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Return Invoice ID</th>
-                                                <th>Parent Purchase</th>
+                                                <th>@lang('menu.return_invoice_id')</th>
+                                                <th>@lang('menu.parent_purchase')</th>
                                                 <th>@lang('menu.supplier_name')</th>
                                                 <th>@lang('menu.location')</th>
-                                                <th>Return From</th>
+                                                <th>@lang('menu.return_from')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>Return Amount</th>
-                                                <th>Payment Due</th>
+                                                <th>@lang('menu.return_amount')</th>
+                                                <th>@lang('menu.payment_due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

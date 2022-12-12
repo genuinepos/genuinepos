@@ -32,7 +32,7 @@
             <div class="card">
                 <div class="card-body card-custom">
                     <div class="heading">
-                        <h6 class="text-primary"><b>Purchases</b> </h6>
+                        <h6 class="text-primary"><b>@lang('menu.purchases')</b> </h6>
                     </div>
 
                     <table class="table modal-table table-sm">
@@ -46,7 +46,7 @@
                             </tr>
 
                             <tr>
-                                <th>Purchase Including Tax : </th>
+                                <th>@lang('menu.purchase_including_tax') : </th>
                                 <td>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
@@ -54,7 +54,7 @@
                             </tr>
 
                             <tr>
-                                <th>Purchase Return Including Tax : </th>
+                                <th>@lang('menu.purchase_return_including_tax') : </th>
                                 <td>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
@@ -92,7 +92,7 @@
                             </tr>
 
                             <tr>
-                                <th>Sale Including Tax :</th>
+                                <th>@lang('menu.sale_including_tax') :</th>
                                 <td>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
@@ -100,7 +100,7 @@
                             </tr>
 
                             <tr>
-                                <th>Sale Return Including Tax :</th>
+                                <th>@lang('menu.sale_return_including_tax') :</th>
                                 <td>
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
@@ -126,11 +126,11 @@
             <div class="card">
                 <div class="card-body card-custom">
                     <div class="heading">
-                        <h6 class="text-navy-blue">Overall (Sale - Sale Return - Purchase - Purchase Return)</h6>
+                        <h6 class="text-navy-blue">@lang('menu.overall_purchase_return')</h6>
                     </div>
 
                     <div class="compare_area mt-3">
-                        <h5 class="text-muted">Sale - Purchase :
+                        <h5 class="text-muted">@lang('menu.sale') - @lang('menu.purchase'):
                             <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
                                 {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}

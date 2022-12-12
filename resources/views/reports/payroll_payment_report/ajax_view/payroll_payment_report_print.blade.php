@@ -56,8 +56,8 @@
                         <th class="text-start">{{ __('Employee') }}</th>
                         <th class="text-start">@lang('menu.payment_voucher_no')</th>
                         <th class="text-start">@lang('menu.paid')</th>
-                        <th class="text-start">Pay For(Payroll)</th>
-                        <th class="text-start">Paid By</th>
+                        <th class="text-start">{{ __('Pay For(Payroll)') }}</th>
+                        <th class="text-start">@lang('menu.paid_by')</th>
                     </tr>
                 </thead>
                 <tbody>

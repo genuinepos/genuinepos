@@ -66,7 +66,7 @@
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">@lang('menu.unit')</th>
                                 <th class="text-start">@lang('menu.pending_qty')</th>
-                                <th class="text-start">Received Qty</th>
+                                <th class="text-start">@lang('menu.received_qty')</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
@@ -99,7 +99,7 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm">
                             <tr>
-                                <th class="text-start" colspan="6"">@lang('menu.net_total_amount') :</th>
+                                <th class="text-start" colspan="6">@lang('menu.net_total_amount') :</th>
                                 <th class="text-start" colspan="2">
                                     {{json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $transfer->net_total_amount }}
@@ -227,7 +227,7 @@
                             <th class="text-start">@lang('menu.unit_price')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">@lang('menu.unit')</th>
-                            <th class="text-start">Receive Qty</th>
+                            <th class="text-start">@lang('menu.receive_qty')</th>
                             <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
@@ -250,7 +250,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th class="text-start" colspan="6"">@lang('menu.net_total_amount') :</th>
+                        <th class="text-start" colspan="6">@lang('menu.net_total_amount') :</th>
                         <th class="text-start" colspan="2">
                             {{json_decode($generalSettings->business, true)['currency'] }}
                             {{ $transfer->net_total_amount }}

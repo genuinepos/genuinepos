@@ -61,10 +61,10 @@
                     <th class="text-start">@lang('menu.product')</th>
                     <th class="text-start">Sale</th>
                     <th class="text-start">@lang('menu.sale_date')</th>
-                    <th class="text-start">B. Location</th>
+                    <th class="text-start">{{ __('B. Location') }}</th>
                     <th class="text-end">Sold/Out Qty</th>
                     <th class="text-end">Sold Price({{json_decode($generalSettings->business, true)['currency']}})</th>
-                
+
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">Stock In By</th>
                     <th class="text-start">Stock In Date</th>
@@ -89,9 +89,9 @@
                             {{ date($__date_format, strtotime($row->date)) }}
                         </td>
                         <td class="text-start">
-                            @if ($row->branch_name) 
+                            @if ($row->branch_name)
                                 {{ $row->branch_name }}
-                            @else 
+                            @else
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }}
                             @endif
                         </td>
@@ -103,23 +103,23 @@
                         </td>
 
                         <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer'; }}</td>
-                        
+
                         <td class="text-start">
                             @if ($row->purchase_inv)
 
-                                {{ 'Purchase:'. $row->purchase_inv }}  
-                            @elseif ($row->production_voucher_no) 
+                                {{ 'Purchase:'. $row->purchase_inv }}
+                            @elseif ($row->production_voucher_no)
 
                                 {{ 'Production:' . $row->production_voucher_no }}
                             @elseif ($row->pos_id)
 
                                 {{ 'Opening Stock' }}
-                            @elseif ($row->sale_return_id) 
+                            @elseif ($row->sale_return_id)
 
                                 {{ 'Sale Returned Stock:'  . $row->sale_return_invoice }}
-                            @else 
+                            @else
 
-                                Non-Manageable-Stock        
+                                Non-Manageable-Stock
                             @endif
                         </td>
 
@@ -133,7 +133,7 @@
                     </tr>
                 @endforeach
             </tbody>
-          
+
         </table>
     </div>
 </div>

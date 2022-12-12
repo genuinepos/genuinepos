@@ -137,7 +137,7 @@
                                             <th>@lang('menu.product')</th>
                                             <th>@lang('menu.sale_date')</th>
                                             <th>Sale</th>
-                                            <th>B. Location</th>
+                                            <th>{{ __('B. Location') }}</th>
                                             <th>Sold Qty</th>
                                             <th>Sold Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             <th>@lang('menu.customer')</th>

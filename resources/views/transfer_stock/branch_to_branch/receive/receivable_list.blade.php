@@ -114,9 +114,9 @@
                                                 <th>@lang('menu.reference_id')</th>
                                                 <th>Send From</th>
                                                 <th>Receive Status</th>
-                                                <th>Total Item</th>
+                                                <th>@lang('menu.total_item')</th>
                                                 <th>Send Qty</th>
-                                                <th>Received Qty</th>
+                                                <th>@lang('menu.received_qty')</th>
                                                 <th>@lang('menu.pending_qty')</th>
                                                 <th>Total Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>

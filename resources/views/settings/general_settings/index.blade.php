@@ -371,7 +371,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Purchase Invoice :</strong></label>
+                                            <label><strong>{{ __('PURCHASE Invoice') }} :</strong></label>
                                             <input type="text" name="purchase_invoice" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['purchase_invoice'] }}">
@@ -412,7 +412,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Expenses :</strong></label>
+                                            <label><strong>@lang('menu.expenses') :</strong></label>
                                             <input type="text" name="expenses" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['expenses'] }}">
                                         </div>
@@ -603,7 +603,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['purchases'] == '1' ? 'CHECKED' : '' }}
-                                                        name="purchases" autocomplete="off"> &nbsp; <b>Purchases</b>
+                                                        name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -656,7 +656,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['expenses'] == '1' ? 'CHECKED' : '' }}
-                                                        name="expenses" autocomplete="off"> &nbsp; <b>Expenses</b>
+                                                        name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
                                                 </p>
                                             </div>
                                         </div>

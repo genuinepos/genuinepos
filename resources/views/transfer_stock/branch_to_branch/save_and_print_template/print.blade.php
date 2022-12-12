@@ -1,4 +1,4 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="transfer_print_template">
     <div class="details_area">
         <div class="heading_area">
@@ -18,12 +18,12 @@
                         <li><strong>@lang('menu.from') : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
-                        <li><strong>Stock Location : </strong> 
+
+                        <li><strong>@lang('menu.stock_location') : </strong>
                             @if ($transfer->sender_warehouse)
 
                                 {{ $transfer->sender_warehouse->warehouse_name.'/'.$transfer->sender_warehouse->warehouse_code.'(WH)' }}
-                            @else     
+                            @else
 
                                 {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code.'(B.L)' : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
                             @endif
@@ -35,16 +35,16 @@
                         <li><strong>@lang('menu.to') : </strong></li>
                         <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
+
                         @if ($transfer->receiver_branch)
-                            <li><strong>@lang('menu.address') : </strong> 
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>@lang('menu.address') : </strong> 
+                        @else
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -55,7 +55,7 @@
                     <ul class="list-unstyled float-end">
                         <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
                         <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
-                        <li><strong>@lang('menu.status') : </strong> 
+                        <li><strong>@lang('menu.status') : </strong>
                             @lang('menu.pending')
                         </li>
                     </ul>
@@ -72,7 +72,7 @@
                             <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
-                            <th class="text-start">Receive Qty</th>
+                            <th class="text-start">@lang('menu.receive_qty')</th>
                             <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
@@ -98,7 +98,7 @@
                         <td class="text-end" colspan="5"><strong>Total Stock Value :</strong></td>
                         <td class="text-start">{{ $transfer->total_stock_value }}</td>
                     </tr>
-                   
+
                     <tr>
                         <th class="text-end" colspan="5">Transfer Cost</th>
                         <td class="text-start">{{ $transfer->transfer_cost }}</td>

@@ -54,7 +54,7 @@
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Cash Register Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.cash_register_reports') </b></h6>
     </div>
 </div>
 <br>
@@ -69,15 +69,15 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Open Time</th>
-                    <th class="text-start">Closed Time</th>
+                    <th class="text-start">@lang('menu.open_time')</th>
+                    <th class="text-start">@lang('menu.closed_time')</th>
                     <th class="text-start">@lang('menu.business_location')</th>
-                    <th class="text-start">User</th>
+                    <th class="text-start">@lang('menu.user')</th>
                     <th class="text-start">@lang('menu.status')</th>
                     <th class="text-end">@lang('menu.total_sale')</th>
                     <th class="text-end">@lang('menu.total_paid')</th>
                     <th class="text-end">@lang('menu.total_due')</th>
-                    <th class="text-end">Closing Amount</th>
+                    <th class="text-end">{{ __('Closing Amount') }}</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -109,9 +109,9 @@
 
                         <td class="text-start">
                             @if ($row->status == 1 )
-                                <span class="text-success">Open</span>
+                                <span class="text-success">@lang('menu.open')</span>
                             @else
-                                <span class="text-danger">Closed</span>
+                                <span class="text-danger">@lang('menu.closed')</span>
                             @endif
                         </td>
 
@@ -159,7 +159,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end"> All Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end"> @lang('menu.all_total_sale') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalSaleAmount) }}
                     </td>
@@ -180,7 +180,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">All Total Closing Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.all_total_closing_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalClosedAmount) }}
                     </td>

@@ -115,11 +115,11 @@
                         <thead>
                             <tr class="bg-primary text-white">
                                 <th class="text-start">@lang('menu.product')</th>
-                                <th class="text-start">Stock Location</th>
+                                <th class="text-start">@lang('menu.stock_location')</th>
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">@lang('menu.unit_price_exc_tax')</th>
                                 <th class="text-start">@lang('menu.unit_cost')</th>
-                                <th class="text-start">Unit Tax</th>
+                                <th class="text-start">@lang('menu.unit_tax')</th>
                                 <th class="text-start">@lang('menu.unit_price') Inc.Tax</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
@@ -181,7 +181,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Order Discount</th>
+                            <th class="text-start">@lang('menu.order_discount')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                 @php
                                     $discount_type = $quotation->order_discount_type == 1 ? ' (Fixed)' : '%';
@@ -191,14 +191,14 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Order Tax</th>
+                            <th class="text-start">@lang('menu.order_tax')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                     {{ App\Utils\Converter::format_in_bdt($quotation->order_tax_amount) . ' (' . $quotation->order_tax_percent . '%)' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Shipment Charge</th>
+                            <th class="text-start">@lang('menu.shipment_charge')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                               {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                             </td>
@@ -220,7 +220,7 @@
           <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <p><b>Shipping Details :</b></p>
+                    <p><b>@lang('menu.shipping_details') :</b></p>
                     <p class="shipping_details">
                         {{ $quotation->shipment_details ? $quotation->shipment_details : 'N/A' }}</p>
                 </div>
@@ -310,7 +310,7 @@
                                         <p>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                                     @endif
                                 @endif
-                                <p class="bill_name"><b>Entered By :</b>
+                                <p class="bill_name"><b>@lang('menu.entered_by') :</b>
                                     {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
                                 </p>
                             </div>
@@ -353,8 +353,8 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $quotation->invoice_id }}</li>
-                            <li><strong> Date : </strong> <{{ $quotation->date . ' ' . $quotation->time }}</li>
-                            <li><strong> Entered By : </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
+                            <li><strong>@lang('menu.date'): </strong> <{{ $quotation->date . ' ' . $quotation->time }}</li>
+                            <li><strong> @lang('menu.entered_by') : </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
                             </li>
                         </ul>
                     </div>
@@ -463,7 +463,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Discount : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($quotation->order_discount_type == 1)
@@ -476,7 +476,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Tax : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -487,7 +487,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Shipment charge : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -692,8 +692,8 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Quotation ID : </strong> {{ $quotation->invoice_id }}</li>
-                            <li><strong> Date : </strong> {{ $quotation->date . ' ' . $quotation->time }}</li>
-                            <li><strong> Entered By : </strong> {{$quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}</li>
+                            <li><strong>@lang('menu.date'): </strong> {{ $quotation->date . ' ' . $quotation->time }}</li>
+                            <li><strong> @lang('menu.entered_by') : </strong> {{$quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}</li>
                         </ul>
                     </div>
                 </div>
@@ -800,7 +800,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Discount : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($quotation->order_discount_type == 1)
@@ -815,7 +815,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Tax : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
@@ -826,7 +826,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Shipment charge : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}

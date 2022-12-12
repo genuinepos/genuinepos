@@ -48,7 +48,7 @@
                                                     <label><strong>@lang('menu.customer') :</strong></label>
                                                     <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">Walk-In-Customer</option>
+                                                        <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                         @foreach ($customers as $customer)
                                                             <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                         @endforeach
@@ -128,18 +128,18 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.invoice_id')</th>
-                                                <th>Stock Location</th>
+                                                <th>@lang('menu.stock_location')</th>
                                                 <th>@lang('menu.customer')</th>
-                                                <th>Entered By</th>
-                                                <th>Total Item</th>
-                                                <th>Net total Amt.</th>
-                                                <th>Order Discount</th>
-                                                <th>Order Tax</th>
-                                                <th>Shipment Charge</th>
-                                                <th>Total Payable Amt.</th>
-                                                <th>Paid Amt.</th>
-                                                <th>Return Amount</th>
-                                                <th>Due Amt.</th>
+                                                <th>@lang('menu.entered_by')</th>
+                                                <th>@lang('menu.total_item')</th>
+                                                <th>{{ __('Net total Amt') }}.</th>
+                                                <th>@lang('menu.order_discount')</th>
+                                                <th>@lang('menu.order_tax')</th>
+                                                <th>@lang('menu.shipment_charge')</th>
+                                                <th>{{ __('Total Payable Amt') }}.</th>
+                                                <th>@lang('menu.paid_amount').</th>
+                                                <th>@lang('menu.return_amount')</th>
+                                                <th>{{ __('Due Amt') }}.</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

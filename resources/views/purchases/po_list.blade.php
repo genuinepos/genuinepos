@@ -110,7 +110,7 @@
                         <div class="card">
                             <div class="section-header row">
                                 <div class="col-6 col-6">
-                                    <h6>PO List</h6>
+                                    <h6>@lang('menu.po_list')</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-6 d-flex justify-content-end">
@@ -137,7 +137,7 @@
                                                 <th>@lang('menu.payment_status')</th>
                                                 <th>@lang('menu.grand_total')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.payment_due')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

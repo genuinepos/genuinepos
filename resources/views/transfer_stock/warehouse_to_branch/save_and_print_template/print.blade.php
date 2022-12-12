@@ -68,7 +68,7 @@
                             <th class="text-start">@lang('menu.unit_price')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">@lang('menu.unit')</th>
-                            <th class="text-start">Receive Qty</th>
+                            <th class="text-start">@lang('menu.receive_qty')</th>
                             <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
@@ -91,7 +91,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-start" colspan="6"><strong@lang('menu.net_total_amount') :</strong></td>
+                        <td class="text-start" colspan="6"><strong>@lang('menu.net_total_amount') :</strong></td>
                         <td class="text-start" colspan="2">{{ $transfer->net_total_amount }}</td>
                     </tr>
 

@@ -100,11 +100,11 @@
                                          <th class="text-white text-start">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency']}})</th>
                                          <th class="text-white text-start">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency']}}) (@lang('menu.before_tax'))</th>
                                          <th class="text-white text-start">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency']}}) (@lang('menu.before_tax'))</th>
-                                         <th class="text-white text-start">Tax(%)</th>
+                                         <th class="text-white text-start">@lang('menu.tax')(%)</th>
                                          <th class="text-white text-start">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency']}}) (@lang('menu.after_tax'))</th>
                                          <th class="text-white text-start">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency']}})</th>
                                          <th class="text-white text-start">@lang('menu.pending_qty')</th>
-                                         <th class="text-white text-start">Received Qty</th>
+                                         <th class="text-white text-start">@lang('menu.received_qty')</th>
                                      </tr>
                                  </thead>
                                  <tbody class="purchase_product_list">
@@ -130,14 +130,14 @@
                                             @if (count($product->receives) > 0)
 
                                                 <tr>
-                                                    <td colspan="3" class="text-center"><strong>Receive Details ➡</strong></td>
+                                                    <td colspan="3" class="text-center"><strong>@lang('menu.receipt_details') ➡</strong></td>
 
                                                     <td colspan="8">
                                                         <table class="table modal-table table-sm table-striped">
                                                             <thead>
                                                                 <tr class="bg-secondary">
-                                                                    <th class="text-white">Challan No</th>
-                                                                    <th class="text-white">Lot Number</th>
+                                                                    <th class="text-white">@lang('menu.challan_no')</th>
+                                                                    <th class="text-white">@lang('menu.lot_number')</th>
                                                                     <th class="text-white">Received Date</th>
                                                                     <th class="text-white">Received Quantity</th>
                                                                 </tr>
@@ -248,21 +248,21 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end"><b></b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
@@ -296,13 +296,13 @@
                  <div class="row">
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p><b>Shipping Details</b> : </p>
+                             <p><b>@lang('menu.shipping_details')</b> : </p>
                              <p class="shipping_details">{{ $purchase->shipment_details }}</p>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p><b>Purchase Note</b> : </p>
+                             <p><b>@lang('menu.purchase_not')</b> : </p>
                              <p class="purchase_note">{{ $purchase->purchase_note }}</p>
                          </div>
                      </div>
@@ -368,7 +368,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h3 class="bill_name">Purchase Order</h3>
+                            <h3 class="bill_name">@lang('menu.purchase_order')</h3>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -401,7 +401,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
-                            <li><strong>Ordered Location : </strong>
+                            <li><strong>{{ __('Ordered Location') }} : </strong>
                                 @if ($purchase->warehouse_id )
 
                                     {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
@@ -468,10 +468,10 @@
                             <th scope="col">@lang('menu.ordered_quantity')</th>
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Tax(%)</th>
+                            <th scope="col">@lang('menu.tax')(%)</th>
                             <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">@lang('menu.pending_qty')</th>
-                            <th scope="col">Received Qty</th>
+                            <th scope="col">@lang('menu.received_qty')</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -498,14 +498,14 @@
 
                                 @if (count($product->receives) > 0)
                                     <tr>
-                                        <td colspan="3" class="text-center"><strong>Receive Details ➡</strong></td>
+                                        <td colspan="3" class="text-center"><strong>@lang('menu.receipt_details') ➡</strong></td>
 
                                         <td colspan="8">
                                             <table class="table modal-table table-sm table-bordered">
                                                 <thead>
                                                     <tr class="bg-info">
-                                                        <th>Challan No</th>
-                                                        <th>Lot Number</th>
+                                                        <th>@lang('menu.challan_no')</th>
+                                                        <th>@lang('menu.lot_number')</th>
                                                         <th>Received Date</th>
                                                         <th>Received Quantity</th>
                                                     </tr>
@@ -536,9 +536,9 @@
 
             <div class="row">
                 <div class="col-6">
-                    <p><strong>Order Note :</strong> </p>
+                    <p><strong>@lang('menu.order_note') :</strong> </p>
                     <p>{{ $purchase->purchase_note }}</p><br>
-                    <p><strong>Shipment Details :</strong> </p>
+                    <p><strong>@lang('menu.shipment_details') :</strong> </p>
                     <p>{{ $purchase->shipment_details }}</p>
                 </div>
 
@@ -552,7 +552,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="11" class="text-end">Order Discount :
+                                <th colspan="11" class="text-end">@lang('menu.order_discount') :
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                 </th>
                                 <td colspan="2" class="text-end">
@@ -560,14 +560,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="11" class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.order_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th colspan="11" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                 </td>

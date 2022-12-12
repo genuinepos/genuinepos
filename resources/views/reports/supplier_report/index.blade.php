@@ -66,7 +66,7 @@
                                                     <thead>
                                                         <tr class="text-start">
                                                             <th>@lang('menu.supplier')</th>
-                                                            <th>Opening Balance Due</th>
+                                                            <th>@lang('menu.opening_balance')</th>
                                                             <th>@lang('menu.total_purchase')</th>
                                                             <th>@lang('menu.total_paid')</th>
                                                             <th>@lang('menu.total_due')</th>

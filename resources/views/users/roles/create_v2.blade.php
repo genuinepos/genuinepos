@@ -148,7 +148,7 @@
 
                                         <div class="col-lg-3 col-sm-6">
                                             <p class="text-info">
-                                                <input type="checkbox" class="select_all sales_app_permission super_select_all" data-target="sales_report" autocomplete="off"> <strong> Sales report</strong>
+                                                <input type="checkbox" class="select_all sales_app_permission super_select_all" data-target="sales_report" autocomplete="off"> <strong> @lang('menu.sales_report')</strong>
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -442,14 +442,14 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_edit" class="purchase procurement_permission super_select_all"> Edit purchase
+                                            <input type="checkbox" name="purchase_edit" class="purchase procurement_permission super_select_all"> @lang('menu.edit_purchase')
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="purchase_delete" class="purchase procurement_permission super_select_all"> Delete purchase
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_settings" class="purchase procurement_permission super_select_all"> Purchase settings
+                                            <input type="checkbox" name="purchase_settings" class="purchase procurement_permission super_select_all"> @lang('menu.purchase_settings')
                                         </p>
                                     </div>
 
@@ -592,11 +592,11 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="add_purchase_return" class="purchase_return procurement_permission super_select_all"> Add purchase return
+                                            <input type="checkbox" name="add_purchase_return" class="purchase_return procurement_permission super_select_all"> @lang('menu.add_purchase_return')
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="edit_purchase_return" class="purchase_return procurement_permission super_select_all"> Edit purchase return
+                                            <input type="checkbox" name="edit_purchase_return" class="purchase_return procurement_permission super_select_all"> {{ __('Edit Purchase Return') }}
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -980,7 +980,7 @@
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="daily_profit_loss" class="finance_report finance_permission super_select_all"> Daily profit/loss
+                                        <input type="checkbox" name="daily_profit_loss" class="finance_report finance_permission super_select_all"> @lang('menu.daily_profit')/loss
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
@@ -2066,7 +2066,7 @@
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="print_challan" class="others others_permission super_select_all">
-                                        @lang('menu.print_challan') 
+                                        @lang('menu.print_challan')
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="print_weight" class="others others_permission super_select_all">

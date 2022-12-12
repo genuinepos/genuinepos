@@ -13,17 +13,17 @@
                 <div class="row">
                     <div class="col-6">
                         <ul class="list-unstyled">
-                            <li><strong>Return Details : </strong> </li>
-                            <li><strong>Return Invoice ID : </strong> {{ $saleReturn->invoice_id }}</li>
-                            <li><strong>Return Date : </strong> {{ $saleReturn->date }}</li>
+                            <li><strong>@lang('menu.return_details') : </strong> </li>
+                            <li><strong>@lang('menu.return_invoice_id') : </strong> {{ $saleReturn->invoice_id }}</li>
+                            <li><strong>@lang('menu.return_date') : </strong> {{ $saleReturn->date }}</li>
                             <li><strong>Customer Name : </strong> {{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>Stock Location : </strong> {!! $saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>' !!} </li>
+                            <li><strong>@lang('menu.stock_location') : </strong> {!! $saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>' !!} </li>
                         </ul>
                     </div>
                     <div class="col-6 text-left">
                         <ul class="list-unstyled">
                             <li><strong>Parent Sale Details  </strong></li>
-                            <li><strong>Invoice No : </strong> {{ $saleReturn->sale ? $saleReturn->sale->invoice_id : '' }}</li>
+                            <li><strong>@lang('menu.invoice_no') : </strong> {{ $saleReturn->sale ? $saleReturn->sale->invoice_id : '' }}</li>
                             <li><strong>@lang('menu.date') : </strong> {{ $saleReturn->sale ? $saleReturn->sale->date : '' }}</li>
                         </ul>
                     </div>
@@ -37,7 +37,7 @@
                                         <th class="text-start">@lang('menu.sl')</th>
                                         <th class="text-start">@lang('menu.product')</th>
                                         <th class="text-start">@lang('menu.unit_price')</th>
-                                        <th class="text-start">Return Quantity</th>
+                                        <th class="text-start">@lang('menu.return_quantity')</th>
                                         <th class="text-start">@lang('menu.sub_total')</th>
                                     </tr>
                                 </thead>
@@ -96,7 +96,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
                                     <td class="text-start total_return_amount">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}
                                     </td>
@@ -169,11 +169,11 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Return Details : </strong> </li>
+                            <li><strong>@lang('menu.return_details') : </strong> </li>
                             <li><strong>@lang('menu.invoice_id') : </strong>{{ $saleReturn->invoice }}</li>
-                            <li><strong>Return Date : </strong>{{ $saleReturn->date }}</li>
+                            <li><strong>@lang('menu.return_date') : </strong>{{ $saleReturn->date }}</li>
                             <li><strong>Customer Name : </strong>{{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>Stock Location : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.stock_location') : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
@@ -186,7 +186,7 @@
                             <li>
                                 <strong>Sale Details </strong> </li>
                             <li>
-                                <strong>Invoice No : </strong> {{ $saleReturn->sale ? $saleReturn->sale->invoice_id : '' }}
+                                <strong>@lang('menu.invoice_no') : </strong> {{ $saleReturn->sale ? $saleReturn->sale->invoice_id : '' }}
                             </li>
                             <li><strong>@lang('menu.date') : </strong>  {{ $saleReturn->sale ? $saleReturn->sale->date : '' }} </li>
                         </ul>
@@ -202,7 +202,7 @@
                                 <th class="text-start">@lang('menu.sl')</th>
                                 <th class="text-start">@lang('menu.product')</th>
                                 <th class="text-start">@lang('menu.unit_price')</th>
-                                <th class="text-start">Return Quantity</th>
+                                <th class="text-start">@lang('menu.return_quantity')</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </tr>
@@ -242,7 +242,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end" colspan="4"">@lang('menu.net_total_amount') :</th>
+                            <th class="text-end" colspan="4">@lang('menu.net_total_amount') :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}</td>
                         </tr>
 
@@ -258,7 +258,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end" colspan="4">Total Return Amount :</th>
+                            <th class="text-end" colspan="4">@lang('menu.total_return_amount') :</th>
                             <td class="text-start" colspan="2">{{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}</td>
                         </tr>
 

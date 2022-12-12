@@ -24,7 +24,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Product Purchase Report</h5>
+                                <h5>@lang('menu.product_purchase_report')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -133,7 +133,7 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.product')</th>
-                                                <th>P.Code</th>
+                                                <th>@lang('menu.p_code')</th>
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.quantity')</th>

@@ -46,7 +46,7 @@
                                             class="text-danger">*</span></label>
                                         <select class="form-control changeable add_input"
                                             name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id">
-                                            <option value="">Select Warehouse</option>
+                                            <option value="">@lang('menu.select_warehouse')</option>
                                             @foreach ($warehouses as $w)
                                                 <option {{ $production->warehouse_id == $w->id ? 'SELECTED' : '' }}  value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                             @endforeach

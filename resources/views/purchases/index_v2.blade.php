@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Purchases</h5>
+                                <h5>@lang('menu.purchases')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -61,9 +61,9 @@
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Purchased</option>
+                                                        <option value="1">@lang('menu.purchased')</option>
                                                         <option value="2">@lang('menu.pending')</option>
-                                                        <option value="3">Purchased By Order</option>
+                                                        <option value="3">@lang('menu.purchased_by_order')</option>
                                                     </select>
                                                 </div>
 
@@ -97,7 +97,7 @@
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
                                                         <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
-                                                            <i class="fas fa-funnel-dollar"></i> Filter
+                                                            <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                                         </button>
                                                     </div>
                                                 </div>
@@ -111,7 +111,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-10">
-                                    <h6>All Purchases</h6>
+                                    <h6>{{ __('All Purchases') }}</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-2 d-flex justify-content-end">
@@ -137,9 +137,9 @@
                                                 <th>@lang('menu.payment_status')</th>
                                                 <th>@lang('menu.grand_total')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Payment Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.payment_due')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.return_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.return_due')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>

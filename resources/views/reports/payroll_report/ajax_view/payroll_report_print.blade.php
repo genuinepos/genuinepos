@@ -60,7 +60,7 @@
                         <th class="text-start">@lang('menu.department')</th>
                         <th class="text-start">@lang('menu.month')/@lang('menu.years')</th>
                         <th class="text-start">@lang('menu.reference_no')</th>
-                        <th class="text-start">Gross Amount</th>
+                        <th class="text-start">{{ __('Gross Amount') }}</th>
                         <th class="text-start">@lang('menu.paid')</th>
                         <th class="text-start">@lang('menu.due')</th>
                         <th class="text-start">@lang('menu.payment_status')</th>

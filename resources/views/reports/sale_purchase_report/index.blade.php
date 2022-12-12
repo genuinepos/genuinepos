@@ -19,7 +19,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-file-alt"></span>
-                                <h5>Purchases & Sales Report</h5>
+                                <h5>@lang('menu.purchases') & @lang('menu.sales_report')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -113,7 +113,7 @@
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <div class="heading">
-                                                            <h6 class="text-primary"><b>Purchases</b></h6>
+                                                            <h6 class="text-primary"><b>@lang('menu.purchases')</b></h6>
                                                         </div>
 
                                                         <table class="table modal-table table-sm">
@@ -124,7 +124,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th>Purchase Including Tax : </th>
+                                                                    <th>@lang('menu.purchase_including_tax') : </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
 
@@ -153,7 +153,7 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th>Sale Including Tax : </th>
+                                                                    <th>@lang('menu.sale_including_tax') : </th>
                                                                     <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>
                                                                 </tr>
 

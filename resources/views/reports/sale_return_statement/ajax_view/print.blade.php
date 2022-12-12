@@ -71,12 +71,12 @@
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.invoice_id')</th>
                     <th class="text-start">Parent Sale</th>
-                    <th class="text-start">Stock Location</th>
+                    <th class="text-start">@lang('menu.stock_location')</th>
                     <th class="text-start">@lang('menu.customer')</th>
-                    <th class="text-start">Entered By</th>
-                    <th class="text-end">Total Item</th>
+                    <th class="text-start">@lang('menu.entered_by')</th>
+                    <th class="text-end">@lang('menu.total_item')</th>
                     <th class="text-end">Total Qty</th>
-                    <th class="text-end">Net total Amt.</th>
+                    <th class="text-end">{{ __('Net total Amt') }}.</th>
                     <th class="text-end">Return Discount</th>
                     <th class="text-end">Return Tax</th>
                     <th class="text-end">Total Return Amt.</th>
@@ -205,7 +205,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnAmount) }}
                     </td>

@@ -42,7 +42,7 @@
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Expense Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.expanse_report') </b></h6>
     </div>
 </div>
 <br>
@@ -55,7 +55,7 @@
                     <th class="text-start">@lang('menu.reference_no')</th>
                     <th class="text-start">@lang('menu.description')</th>
                     <th class="text-start">@lang('menu.b_location')</th>
-                    <th class="text-start">Expense For</th>
+                    <th class="text-start">{{ __('Expense For') }}</th>
                     <th class="text-start">@lang('menu.total_amount')</th>
                     <th class="text-start">@lang('menu.paid')</th>
                     <th class="text-start">@lang('menu.due')</th>

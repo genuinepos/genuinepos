@@ -60,7 +60,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>B. Location :</b></label>
+                                        <label class="col-4"><b>{{ __('B. Location') }} :</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
                                             <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
@@ -73,7 +73,7 @@
                                         <label class="col-4"><b>@lang('menu.customer') :</b> </label>
                                         <div class="col-8">
                                             <select name="customer_id" class="form-control" id="customer_id">
-                                                <option value="">Walk-In-Customer</option>
+                                                <option value="">{{ __('Walk-In-Customer') }}</option>
                                                 @foreach ($customers as $customer)
                                                     <option {{ $customer->id == $return->customer_id ? 'SELECTED' : '' }} value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                 @endforeach
@@ -83,7 +83,7 @@
 
                                     <div class="input-group mt-1">
                                         <label class="col-4">
-                                            <b>Return A/C : <span class="text-danger">*</span></b>
+                                            <b>{{ __('Return A/C') }} : <span class="text-danger">*</span></b>
                                         </label>
 
                                         <div class="col-8">
@@ -102,7 +102,7 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class="col-4">
-                                            <b>Return Date : <span class="text-danger">*</span></b>
+                                            <b>@lang('menu.return_date') : <span class="text-danger">*</span></b>
                                         </label>
 
                                         <div class="col-8">
@@ -161,7 +161,7 @@
 
                                     <div class="col-md-8">
                                         <div class="searching_area" style="position: relative;">
-                                            <label class="col-form-label">Item Search</label>
+                                            <label class="col-form-label">@lang('menu.item_search')</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
@@ -189,7 +189,7 @@
                                                             <th class="text-start">@lang('menu.product')</th>
                                                             <th class="text-center">@lang('menu.unit_price')</th>
                                                             <th class="text-center">@lang('menu.unit')</th>
-                                                            <th class="text-center">Return Quantity</th>
+                                                            <th class="text-center">@lang('menu.return_quantity')</th>
                                                             <th class="text-center">@lang('menu.sub_total')</th>
                                                             <th><i class="fas fa-minus text-dark"></i></th>
                                                         </tr>
@@ -260,7 +260,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Total Item :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $return->total_item }}" tabindex="-1">
                                                         </div>
@@ -276,7 +276,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b@lang('menu.net_total_amount') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.net_total_amount') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="net_total_amount" id="net_total_amount" class="form-control" value="{{ $return->net_total_amount }}" tabindex="-1">
                                                         </div>
@@ -320,9 +320,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Return Amount :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_return_amount') :</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control" value="{{ $return->total_return_amount }}" placeholder="Total Return Amount" tabindex="-1">
+                                                            <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control" value="{{ $return->total_return_amount }}" placeholder="@lang('menu.total_return_amount')" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>

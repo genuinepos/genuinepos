@@ -22,7 +22,7 @@
                                 <div class="py-2 px-2 form-header">
                                     <div class="row">
                                         <div class="col-6">
-                                            <h6>Edit Purchase Return | <small class="text-muted">Save = (Shift + Enter)</small></h6>
+                                            <h6>{{ __('Edit Purchase Return') }} | <small class="text-muted">@lang('menu.save') = (Shift + Enter)</small></h6>
                                         </div>
 
                                         <div class="col-6">
@@ -54,7 +54,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-4"><b>PR. Invoice ID :</b> </label>
+                                                <label class="col-4"><b>{{ __('PR. Invoice ID') }} :</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" value="{{ $return->invoice_id }}">
                                                 </div>
@@ -68,7 +68,7 @@
                                                 <div class="col-8">
                                                     <select class="form-control changeable"
                                                         name="warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
+                                                        <option value="">@lang('menu.select_warehouse')</option>
                                                         @foreach ($warehouses as $warehouse)
                                                             <option {{ $return->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
                                                         @endforeach
@@ -80,7 +80,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Return Date :</b>
+                                                <label class="col-4"><b>@lang('menu.return_date') :</b>
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -93,7 +93,7 @@
 
                                             <div class="input-group mt-1">
                                                 <label class="col-4">
-                                                    <b>Return A/C : <span class="text-danger">*</span></b>
+                                                    <b>{{ __('Return A/C') }} : <span class="text-danger">*</span></b>
                                                 </label>
                                                 <div class="col-8">
                                                     <select name="purchase_return_account_id" class="form-control add_input"
@@ -113,7 +113,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Attachment :</b> </label>
+                                                <label for="inputEmail3" class="col-4"><b>@lang('menu.attachment') :</b> </label>
                                                 <div class="col-8">
                                                     <input type="file" class="form-control" name="attachment">
                                                 </div>
@@ -135,7 +135,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.item_search')</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -159,8 +159,8 @@
                                                                     <th>@lang('menu.product')</th>
                                                                     <th>@lang('menu.unit_price')</th>
                                                                     <th>@lang('menu.current_stock')</th>
-                                                                    <th>Return Quantity</th>
-                                                                    <th>Return Subtotal</th>
+                                                                    <th>@lang('menu.return_quantity')</th>
+                                                                    <th>@lang('menu.return_subtotal')</th>
                                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                                 </tr>
                                                             </thead>
@@ -189,7 +189,7 @@
 
                                                                         <td class="text">
                                                                             <span class="span_warehouse_stock">
-                                                                                {{ $qty_limits[$index] }}/Pieces
+                                                                                {{ $qty_limits[$index] }}/{{ __('Pieces') }}
                                                                             </span>
                                                                         </td>
 
@@ -252,13 +252,13 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label><strong> Tax Amount (+) : </strong></label> <span class="label_purchase_tax_amount"> 0.00</span>
+                                                <label><strong> @lang('menu.tax_amount') (+) : </strong></label> <span class="label_purchase_tax_amount"> 0.00</span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4 text-center"><strong@lang('menu.net_total_amount') : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                <label class="col-4 text-center"><strong>@lang('menu.net_total_amount') : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                 <div class="col-8">
                                                     <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                                 </div>
@@ -275,7 +275,7 @@
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i
                             class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button id="save" class="btn btn-sm btn-primary float-end">Save (Shift+Enter)</button>
+                        <button id="save" class="btn btn-sm btn-primary float-end">@lang('menu.save') (Shift+Enter)</button>
                     </div>
                 </div>
 

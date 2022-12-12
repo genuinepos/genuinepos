@@ -122,9 +122,9 @@
                                         <th>Sender B. Location</th>
                                         <th>@lang('menu.receiver') @lang('menu.b_location')</th>
                                         <th>Receive Status</th>
-                                        <th>Total Item</th>
+                                        <th>@lang('menu.total_item')</th>
                                         <th>Send Qty</th>
-                                        <th>Received Qty</th>
+                                        <th>@lang('menu.received_qty')</th>
                                         <th>@lang('menu.pending_qty')</th>
                                         <th>Total Transfer Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     </tr>

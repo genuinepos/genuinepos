@@ -152,7 +152,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('supplier_add') ? 'CHECKED' : '' }} name="supplier_add" class="contacts"> &nbsp; Add Supplier </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('supplier_add') ? 'CHECKED' : '' }} name="supplier_add" class="contacts"> &nbsp; @lang('menu.add_supplier') </p>
                                         </div>
                                     </div>
 
@@ -237,7 +237,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                                 <input type="checkbox"
                                                         {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}
-                                                name="customer_report" class="report contacts"> &nbsp; Customer Report</p>
+                                                name="customer_report" class="report contacts"> &nbsp; @lang('menu.customer_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -402,7 +402,7 @@
                                 <div class="col-md-4">
 
                                     <div class="col-md-12">
-                                        <p><strong>Purchases</strong></p>
+                                        <p><strong>@lang('menu.purchases')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -422,7 +422,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('purchase_edit') ? 'CHECKED' : '' }} name="purchase_edit" class="purchase"> &nbsp; Edit Purchase </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('purchase_edit') ? 'CHECKED' : '' }} name="purchase_edit" class="purchase"> &nbsp; @lang('menu.edit_purchase') </p>
                                         </div>
                                     </div>
 
@@ -445,7 +445,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('purchase_settings') ? 'CHECKED' : '' }}
-                                            name="purchase_settings" class="purchase"> &nbsp; Purchase Settings </p>
+                                            name="purchase_settings" class="purchase"> &nbsp; @lang('menu.purchase_settings') </p>
                                         </div>
                                     </div>
 
@@ -454,7 +454,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('purchase_statements') ? 'CHECKED' : '' }}
-                                                name="purchase_statements" class="purchase"> &nbsp; Purchase Statements</p>
+                                                name="purchase_statements" class="purchase"> &nbsp; @lang('menu.purchase_statements')</p>
                                         </div>
                                     </div>
 
@@ -472,7 +472,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('pro_purchase_report') ? 'CHECKED' : '' }}
-                                                name="pro_purchase_report" class="purchase"> &nbsp; Product Purchase Report</p>
+                                                name="pro_purchase_report" class="purchase"> &nbsp; @lang('menu.product_purchase_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -501,7 +501,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('purchase_payment_report') ? 'CHECKED' : '' }}
-                                            name="purchase_payment_report" class="purchase"> &nbsp; Purchase Payment Report</p>
+                                            name="purchase_payment_report" class="purchase"> &nbsp; @lang('menu.purchase_payment_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -562,7 +562,7 @@
                                             <p class="checkbox_input_wrap">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('stock_adjustment_report') ? 'CHECKED' : '' }}
-                                            name="stock_adjustment_report" class="adjustment"> &nbsp; Stock Adjustment Report</p>
+                                            name="stock_adjustment_report" class="adjustment"> &nbsp; @lang('menu.stock_adjustment_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -586,7 +586,7 @@
 
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <p><strong>Expenses</strong></p>
+                                        <p><strong>@lang('menu.expenses')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -813,7 +813,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('c_register_report') ? 'CHECKED' : '' }}
-                                            name="c_register_report" class="sale"> &nbsp; Cash Register report</p>
+                                            name="c_register_report" class="sale"> &nbsp; @lang('menu.cash_register_reports')</p>
                                         </div>
                                     </div>
 
@@ -822,7 +822,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('sale_representative_report') ? 'CHECKED' : '' }}
-                                            name="sale_representative_report" class="sale"> &nbsp; Sales Representative Report</p>
+                                            name="sale_representative_report" class="sale"> &nbsp; @lang('menu.sales_representative_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -977,7 +977,7 @@
                                                         <p class="checkbox_input_wrap mt-1">
                                                             <input type="checkbox"
                                                                     {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}
-                                                            name="customer_report" class="report contacts"> &nbsp; Customer Report</p>
+                                                            name="customer_report" class="report contacts"> &nbsp; @lang('menu.customer_report')</p>
                                                     </div>
                                                 </div>
                                             </div>

@@ -23,7 +23,7 @@
                                 {{ $transfer->sender_branch? $transfer->sender_branch->phone: json_decode($generalSettings->business, true)['phone'] }}
                             </li>
 
-                            <li><strong>Stock Location : </strong>
+                            <li><strong>@lang('menu.stock_location') : </strong>
                                 @if ($transfer->sender_warehouse)
                                     {{ $transfer->sender_warehouse->warehouse_name . '/' . $transfer->sender_warehouse->warehouse_code . '(WH)' }}
                                 @else
@@ -85,7 +85,7 @@
                                     <th class="text-start">@lang('menu.product')</th>
                                     <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                                     <th class="text-start">@lang('menu.quantity')</th>
-                                    <th class="text-start">Receive Qty</th>
+                                    <th class="text-start">@lang('menu.receive_qty')</th>
                                     <th class="text-start">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
@@ -172,7 +172,7 @@
                         <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
 
-                        <li><strong>Stock Location : </strong>
+                        <li><strong>@lang('menu.stock_location') : </strong>
                             @if ($transfer->sender_warehouse)
 
                                 {{ $transfer->sender_warehouse->warehouse_name.'/'.$transfer->sender_warehouse->warehouse_code.'(WH)' }}
@@ -234,7 +234,7 @@
                             <th class="text-start">@lang('menu.product')</th>
                             <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
-                            <th class="text-start">Receive Qty</th>
+                            <th class="text-start">@lang('menu.receive_qty')</th>
                             <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>

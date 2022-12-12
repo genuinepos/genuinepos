@@ -46,7 +46,7 @@
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Stock Adjustment Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.stock_adjustment_report') </b></h6>
     </div>
 </div>
 <br>
@@ -60,7 +60,7 @@
                     <th class="text-start">@lang('menu.b_location')</th>
                     <th class="text-start">@lang('menu.type')</th>
                     <th class="text-end">@lang('menu.total_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-end">Total Recovered Amount({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.total_recovered_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -111,7 +111,7 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-end">Total Normal : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_normal') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalNormal)  }}
                     </td>
@@ -132,7 +132,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Recovered Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_recovered_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalRecovered)  }}
                     </td>

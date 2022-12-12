@@ -16,7 +16,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill-wave"></span>
-                    <h5>@lang('menu.profit') / Loss Report</h5>
+                    <h5>@lang('menu.profit') / @lang('menu.loss_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -81,7 +81,7 @@
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button class="btn text-white btn-sm btn-info float-start">
-                                                                    <i class="fas fa-funnel-dollar"></i> Filter
+                                                                    <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -124,12 +124,12 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total transfer shipping charge : </th>
+                                                        <th class="text-start">@lang('menu.total_transfer_shipping_charge') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total Sell discount : </th>
+                                                        <th class="text-start">@lang('menu.total_sell_discount') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
@@ -139,12 +139,12 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total Sell Return : </th>
+                                                        <th class="text-start">@lang('menu.total_sell_return') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total Payroll :</th>
+                                                        <th class="text-start">@lang('menu.total_payroll') :</th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
@@ -166,23 +166,23 @@
                                                     <tr>
                                                         <th class="text-start">
                                                             @lang('menu.total_sale') : <br>
-                                                            <small>((Exc. tax, Discount))</small>
+                                                            <small>(({{ __('Exc. tax, Discount') }}))</small>
                                                         </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total sell shipping charge : </th>
+                                                        <th class="text-start">@lang('menu.total_sell_shipping_charge') : </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total Stock Recovered : </th>
+                                                        <th class="text-start">@lang('menu.total_stock_recovered') : </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">Total sell round off : </th>
+                                                        <th class="text-start">@lang('menu.total_sell_round_off') : </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
                                                 </tbody>

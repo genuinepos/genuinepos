@@ -40,7 +40,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Expense For:</th>
+                            <th class="text-start">@lang('menu.expense_for'):</th>
                             <td class="text-end">{{ $expense->admin ? $expense->admin->prefix.' '.$expense->admin->name.' '.$expense->admin->last_name : 'N/A' }}</td>
                         </tr>
 

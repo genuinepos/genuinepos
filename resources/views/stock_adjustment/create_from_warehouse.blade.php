@@ -41,7 +41,7 @@
                                             <input type="hidden" name="warehouse_count" value="YES">
                                             <select class="form-control changeable add_input"
                                                 name="warehouse_id" data-name="Warehouse" id="warehouse_id" autofocus>
-                                                <option value="">Select Warehouse</option>
+                                                <option value="">@lang('menu.select_warehouse')</option>
                                                 @foreach ($warehouses as $w)
                                                     <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                 @endforeach
@@ -128,7 +128,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
+                                                    <label class="col-form-label">@lang('menu.item_search')</label>
                                                     <div class="input-group ">
 
                                                         <div class="input-group-prepend">
@@ -190,7 +190,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label class="col-4"><b>Total Item :</b></label>
+                                                            <label class="col-4"><b>@lang('menu.total_item') :</b></label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" step="any" name="total_item" class="form-control" id="total_item" value="0.00">
                                                             </div>
@@ -199,7 +199,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label class="col-4"><b@lang('menu.net_total_amount') :</b> </label>
+                                                            <label class="col-4"><b>@lang('menu.net_total_amount') :</b> </label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" class="form-control" step="any" step="any" name="net_total_amount" id="net_total_amount" value="0.00">
                                                             </div>

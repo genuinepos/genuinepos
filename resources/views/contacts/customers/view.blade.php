@@ -231,7 +231,7 @@
                                     </li>
 
                                     <li>
-                                        <strong> Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> {{ __('Total Returnable Due') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
                                     </li>
                                 </ul>
@@ -329,7 +329,7 @@
                                                     <th>@lang('menu.total_amount')</th>
                                                     <th>@lang('menu.total_paid')</th>
                                                     <th>Sell Due</th>
-                                                    <th>Return Amount</th>
+                                                    <th>@lang('menu.return_amount')</th>
                                                     <th>@lang('menu.return_due')</th>
                                                     <th>@lang('menu.payment_status')</th>
                                                 </tr>

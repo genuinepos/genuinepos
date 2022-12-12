@@ -30,7 +30,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="m-0"><strong>@lang('menu.reference_id'): </strong> <span class="transfer_invoice_id"></span> </p>
-                                    <p class="m-0"><strong>Date: </strong> <span class="transfer_date"></span></p>
+                                    <p class="m-0"><strong>@lang('menu.date'): </strong> <span class="transfer_date"></span></p>
                                     </div>
                                     <div class="col-md-6">
                                         <p class="m-0"><strong>@lang('menu.warehouse') (From) : </strong> <span class="warehouse"></span> </p>
@@ -87,7 +87,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4">Net Total :</label>
+                                        <label class=" col-4">@lang('menu.net_total') :</label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
                                         </div>

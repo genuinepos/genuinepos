@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill"></span>
-                    <h5>Expenses</h5>
+                    <h5>@lang('menu.expenses')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -42,7 +42,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>Expense For :</strong></label>
+                                        <label><strong>@lang('menu.expense_for') :</strong></label>
                                         <select name="admin_id" class="form-control submit_able" id="admin_id" >
                                             <option value="">@lang('menu.all')</option>
                                         </select>
@@ -130,8 +130,8 @@
                                     <th class="text-start">Expanse For</th>
                                     <th class="text-start">@lang('menu.payment_status')</th>
                                     <th class="text-start">@lang('menu.tax')</th>
-                                    <th class="text-start">Net Total</th>
-                                    <th class="text-start">Payment Due</th>
+                                    <th class="text-start">@lang('menu.net_total')</th>
+                                    <th class="text-start">@lang('menu.payment_due')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

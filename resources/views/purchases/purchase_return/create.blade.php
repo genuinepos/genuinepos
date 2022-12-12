@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-undo"></span>
-                    <h5>Purchase Return</h5>
+                    <h5>@lang('menu.purchase_return')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -26,10 +26,10 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="m-0"><strong>@lang('menu.invoice_id'): </strong> {{ $purchase->invoice_id }} </p>
-                                    <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p>
+                                    <p class="m-0"><strong>@lang('menu.date'): </strong> {{ $purchase->date }}</p>
                                     </div>
                                     <div class="col-md-6">
-                                    <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p>
+                                    <p class="m-0 "><strong> @lang('menu.supplier') : </strong> {{ $purchase->supplier->name }}</p>
                                     <p class="m-0 branch"><strong>@lang('menu.business_location') : </strong>
                                         @if($purchase->branch)
                                             {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
@@ -37,7 +37,7 @@
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                                         @endif
                                     </p>
-                                        <p class="m-0 warehouse"><strong>Purchase Stored Location : </strong>
+                                        <p class="m-0 warehouse"><strong>{{ __('Purchase Stored Location') }} : </strong>
                                         @if ($purchase->warehouse)
                                             {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
                                         @elseif($purchase->branch)
@@ -52,10 +52,10 @@
                             <div class="row g-1">
                                 <div class="col-lg-4 col-md-10">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>PR.Invoice ID : </b><span
+                                        <label for="inputEmail3" class="col-5"><b>{{ __('PR.Invoice ID') }} : </b><span
                                                 class="text-danger">*</span></label>
                                         <div class="col-7">
-                                            <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID" autocomplete="off">
+                                            <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="{{ __('Purchase Return Invoice ID') }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
 
                                 <div class="col-lg-4 col-md-10">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>Purchase Return A/C : <span
+                                        <label for="inputEmail3" class="col-5"><b>{{ __('Purchase Return A/C') }} : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-7">
                                             <select name="purchase_return_account_id" class="form-control add_input"
@@ -106,10 +106,10 @@
                                                         <th>@lang('menu.product_name')</th>
                                                         <th></th>
                                                         <th>@lang('menu.unit_cost')</th>
-                                                        <th>Lot Number</th>
-                                                        <th>Purchase Quantity</th>
-                                                        <th>Return Quantity</th>
-                                                        <th>Return Subtotal</th>
+                                                        <th>@lang('menu.lot_number')</th>
+                                                        <th>@lang('menu.purchase_quantity')</th>
+                                                        <th>@lang('menu.return_quantity')</th>
+                                                        <th>@lang('menu.return_subtotal')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="purchase_return_list"></tbody>
@@ -128,7 +128,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-2"><b>Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</b>  </label>
+                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</b>  </label>
                                         <div class="col-8">
                                             <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                         </div>

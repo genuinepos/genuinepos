@@ -53,7 +53,7 @@
                                     <h6>Eamil : {{ $sale->branch->email }}</h6>
                                 @endif
 
-                                <h6 class="bill_name">Entered By :
+                                <h6 class="bill_name">@lang('menu.entered_by') :
                                     {{ $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name }}
                                 </h6>
                             </div>
@@ -103,7 +103,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Draft No : {{ $sale->invoice_id }}</strong></li>
-                            <li><strong> Date : {{ $sale->date }}</strong></li>
+                            <li><strong>@lang('menu.date'): {{ $sale->date }}</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
                     <table class="table modal-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong@lang('menu.net_total_amount') :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="net_total text-end">
                                     <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $sale->net_total_amount }}</b>
@@ -176,7 +176,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Discount : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="order_discount text-end">
                                 <b> @if ($sale->order_discount_type == 1)
                                         {{ $sale->order_discount_amount }} (Fixed)
@@ -187,7 +187,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Tax : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-end">
                                     <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $sale->order_tax_amount }}
@@ -195,7 +195,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Shipment charge : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="shipment_charge text-end">
                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($sale->shipment_charge, 2) }}</b>
@@ -363,8 +363,8 @@
                         <ul class="list-unstyled">
                             <li><strong> Draft No : {{ $sale->invoice_id }}
                                 </strong></li>
-                            <li><strong> Date : {{ $sale->date }}</strong></li>
-                            <li><strong> Entered By : {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</strong></li>
+                            <li><strong>@lang('menu.date'): {{ $sale->date }}</strong></li>
+                            <li><strong> @lang('menu.entered_by') : {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -429,7 +429,7 @@
                     <table class="table modal-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong@lang('menu.net_total_amount') :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="net_total text-end">
                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $sale->net_total_amount }}</b>
@@ -437,7 +437,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Discount : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="order_discount text-end">
                                 <b>@if ($sale->order_discount_type == 1)
                                         {{ $sale->order_discount_amount }} (Fixed)
@@ -448,7 +448,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Tax : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-end">
                                 <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $sale->order_tax_amount }}
@@ -456,7 +456,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Shipment charge : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="shipment_charge text-end">
                                     <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ number_format($sale->shipment_charge, 2) }}</b>

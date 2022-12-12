@@ -48,7 +48,7 @@
                 <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Product Purchase Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.product_purchase_report') </b></h6>
     </div>
 </div>
 <br>
@@ -59,10 +59,10 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.product')</th>
-                    <th class="text-start">P.Code(SKU)</th>
+                    <th class="text-start">@lang('menu.p_code')(SKU)</th>
                     <th class="text-start">@lang('menu.supplier')</th>
                     <th class="text-start">{{ __('P.Invoice ID') }}</th>
-                    <th class="text-start">Qty</th>
+                    <th class="text-start">@lang('menu.qty')</th>
                     <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
                     <th class="text-end">@lang('menu.subtotal')({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>

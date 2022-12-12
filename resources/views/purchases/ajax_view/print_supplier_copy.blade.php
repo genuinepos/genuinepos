@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h4 class="bill_name">Purchase Order Bill</h4>
+                            <h4 class="bill_name">{{ __('Purchase Order Bill') }}</h4>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -66,16 +66,16 @@
                     </div>
                     <div class="col-4">
                         <ul class="list-unstyled">
-                            <li><strong>Ordered From : </strong></li>
+                            <li><strong>@lang('menu.ordered_from') : </strong></li>
                             <li>
                                 <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Offiec</b>)
+                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                                 @endif
                             </li>
-                            <li><strong>Ordered Location : </strong>
+                            <li><strong>{{ __('Ordered Location') }} : </strong>
                                 @if($purchase->branch_id)
                                     {{ $purchase->branch->city }}, {{ $purchase->branch->state }},
                                     {{ $purchase->branch->zip_code }}, {{ $purchase->branch->country }}

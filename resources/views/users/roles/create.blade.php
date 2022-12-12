@@ -154,7 +154,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="supplier_add" class="contacts"> &nbsp; Add Supplier </p>
+                                            <input type="checkbox" name="supplier_add" class="contacts"> &nbsp; @lang('menu.add_supplier') </p>
                                         </div>
                                     </div>
 
@@ -234,7 +234,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="customer_report" class="contacts"> &nbsp; Customer Report</p>
+                                            <input type="checkbox" name="customer_report" class="contacts"> &nbsp; @lang('menu.customer_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -392,7 +392,7 @@
 
                                 <div class="col-md-4">
                                     <div class="col-md-12">
-                                        <p><strong>Purchases</strong></p>
+                                        <p><strong>@lang('menu.purchases')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -433,14 +433,14 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_settings" class="purchase"> &nbsp; Purchase Settings </p>
+                                            <input type="checkbox" name="purchase_settings" class="purchase"> &nbsp; @lang('menu.purchase_settings') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_statements" class="purchase"> &nbsp; Purchase Statements</p>
+                                            <input type="checkbox" name="purchase_statements" class="purchase"> &nbsp; @lang('menu.purchase_statements')</p>
                                         </div>
                                     </div>
 
@@ -454,7 +454,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pro_purchase_report" class="purchase"> &nbsp; Product Purchase Report</p>
+                                            <input type="checkbox" name="pro_purchase_report" class="purchase"> &nbsp; @lang('menu.product_purchase_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -481,7 +481,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_payment_report" class="report purchase"> &nbsp; Purchase Payment Report</p>
+                                            <input type="checkbox" name="purchase_payment_report" class="report purchase"> &nbsp; @lang('menu.purchase_payment_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -539,7 +539,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="stock_adjustment_report" class="adjustment"> &nbsp; Stock Adjustment Report</p>
+                                            <input type="checkbox" name="stock_adjustment_report" class="adjustment"> &nbsp; @lang('menu.stock_adjustment_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -563,7 +563,7 @@
 
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <p><strong>Expenses</strong></p>
+                                        <p><strong>@lang('menu.expenses')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
@@ -774,14 +774,14 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="c_register_report" class="sale"> &nbsp; Cash Register report</p>
+                                            <input type="checkbox" name="c_register_report" class="sale"> &nbsp; @lang('menu.cash_register_reports')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="sale_representative_report" class="sale"> &nbsp; Sales Representative Report</p>
+                                            <input type="checkbox" name="sale_representative_report" class="sale"> &nbsp; @lang('menu.sales_representative_report')</p>
                                         </div>
                                     </div>
                                 </div>

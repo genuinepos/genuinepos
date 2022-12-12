@@ -196,8 +196,8 @@
                             <p><strong>Thank you for staying with us.</strong></p>
                             <br>
                             <p>Regards</p>
-                            <p>@user</p>
-                            <h4>@company_Name</h4>
+                            <p>@lang('menu.user')</p>
+                            <h4>@lang('menu.company')</h4>
                         </div>
                     </div>
                 </div>
@@ -257,7 +257,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="purchaseReturnCheck">
                                                     <label class="form-check-label" for="purchaseReturnCheck">
-                                                        Purchase Return
+                                                        @lang('menu.purchase_return')
                                                     </label>
                                                 </div>
                                             </div>

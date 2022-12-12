@@ -99,7 +99,7 @@
                   @endphp
                   {{ $transfer_product->product->name.$variant }}
                 </span>{{ __('Send Stock') }}- {{ $transfer_product->quantity.' ('.$transfer_product->unit.')' }}
-                    <b style="font-size:12px;font-weight:300;"> /@lang('menu.pending_qty')-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/Receive Qty-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
+                    <b style="font-size:12px;font-weight:300;"> /@lang('menu.pending_qty')-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/@lang('menu.receive_qty')-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
                 </p>
             </td>
         </tr>

@@ -82,15 +82,15 @@
                 @php
                     $__receivedInCashAccount = $receivedInCashAccount + $activeCashRegister->cash_in_hand
                 @endphp
-                <label><b>Closing Amount :</b></label>
+                <label><b>{{ __('Closing Amount') }} :</b></label>
                 <input required type="number" name="closed_amount" step="any" class="form-control" value="{{ $__receivedInCashAccount }}">
             </div>
         </div>
 
         <div class="form-group row mt-1">
             <div class="col-md-12">
-                <label><b>Closing Note :</b></label>
-                <textarea name="closing_note" class="form-control" cols="10" rows="3" placeholder="Closing Note"></textarea>
+                <label><b>@lang('menu.closing_note') :</b></label>
+                <textarea name="closing_note" class="form-control" cols="10" rows="3" placeholder="@lang('menu.closing_note')"></textarea>
             </div>
         </div>
 

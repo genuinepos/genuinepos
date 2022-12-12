@@ -192,7 +192,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-startx">Shipment Charge</th>
+                                    <th class="text-startx">@lang('menu.shipment_charge')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="shipment_charge">
                                             {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
@@ -243,7 +243,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p><b>Shipping Details</b> : </p>
+                            <p><b>@lang('menu.shipping_details')</b> : </p>
                             <p class="shipping_details">
                                 {{ $sale->shipment_details ? $sale->shipment_details : 'N/A' }}</p>
                         </div>

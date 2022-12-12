@@ -8,7 +8,7 @@
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">
-                     Purchase Details (@lang('menu.reference_id') : <strong>{{ $purchase->invoice_id }}</strong>)
+                     @lang('menu.purchase_details') (@lang('menu.reference_id') : <strong>{{ $purchase->invoice_id }}</strong>)
                  </h5>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
@@ -57,11 +57,12 @@
                              <li>
                                 <strong>@lang('menu.purchases_status') : </strong>
                                 @if ($purchase->purchase_status == 1)
-                                    <span class="badge bg-success">Purchased</span>
+                                    <span class="badge bg-success">@lang('menu.purchased')</span>
                                 @elseif($purchase->purchase_status == 2){
                                     <span class="badge bg-warning text-white">@lang('menu.pending')</span>
+                                }
                                 @else
-                                    <span class="badge bg-primary">Purchased By Order</span>
+                                    <span class="badge bg-primary">@lang('menu.purchased_by_order')</span>
                                 @endif
                              </li>
 
@@ -97,11 +98,11 @@
                                          <th class="text-white text-start">@lang('menu.unit_cost')</th>
                                          <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax'))</th>
                                          <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax'))</th>
-                                         <th class="text-white text-start">Tax(%)</th>
+                                         <th class="text-white text-start">@lang('menu.tax')(%)</th>
                                          <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax'))</th>
-                                         <th class="text-white text-start">Unit Selling Price</th>
+                                         <th class="text-white text-start">@lang('menu.unit_selling_price')</th>
                                          <th class="text-white text-start">@lang('menu.sub_total')</th>
-                                         <th class="text-white text-start">Lot Number</th>
+                                         <th class="text-white text-start">@lang('menu.lot_number')</th>
                                      </tr>
                                  </thead>
                                  <tbody class="purchase_product_list">
@@ -146,7 +147,7 @@
                                             <th>@lang('menu.type')</th>
                                             <th>@lang('menu.account')</th>
                                             <th>
-                                                Amount({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                @lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
                                             <th class="action_hideable">@lang('menu.action')</th>
                                         </tr>
@@ -205,21 +206,21 @@
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Purchase Discount</th>
+                                    <th class="text-start">@lang('menu.purchase_discount')</th>
                                     <td class="text-start">
                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Purchase Tax</th>
+                                    <th class="text-start">@lang('menu.purchase_tax')</th>
                                     <td class="text-start">
                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Shipment Charge</th>
+                                    <th class="text-start">@lang('menu.shipment_charge')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
@@ -253,13 +254,13 @@
                  <div class="row">
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p><b>Shipping Details</b> : </p>
+                             <p><b>@lang('menu.shipping_details')</b> : </p>
                              <p class="shipping_details">{{ $purchase->shipment_details }}</p>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p><b>Purchase Note</b> : </p>
+                             <p><b>@lang('menu.purchase_not')</b> : </p>
                              <p class="purchase_note">{{ $purchase->purchase_note }}</p>
                          </div>
                      </div>
@@ -270,7 +271,7 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                             <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                         </div>
@@ -322,7 +323,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Invoice</h1>
+                            <h1 class="bill_name">{{ __('PURCHASE Invoice') }}</h1>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -386,7 +387,7 @@
                                     @elseif($purchase->purchase_status == 2){
                                         @lang('menu.pending')
                                     @else
-                                        Purchased By Order
+                                    @lang('menu.purchased_by_order')
                                     @endif
                                 </span>
                             </li>
@@ -418,9 +419,9 @@
                             <th scope="col">@lang('menu.quantity')</th>
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
                             <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Tax(%)</th>
-                            <th scope="col">Net Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Lot Number</th>
+                            <th scope="col">@lang('menu.tax')(%)</th>
+                            <th scope="col">{{ __('Net Unit Cost') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.lot_number')</th>
                             <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                         </tr>
                     </thead>
@@ -455,20 +456,20 @@
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="7" class="text-end">Purchase Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.purchase_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="7" class="text-end">Purchase Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.purchase_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                             </td>

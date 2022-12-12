@@ -102,7 +102,7 @@
                     @if ($sale_product->variant)
                         -{{ $sale_product->variant->variant_name }}
                     @endif
-                </span>Price- {{ $sale_product->unit_price_inc_tax }}
+                </span>@lang('menu.price')- {{ $sale_product->unit_price_inc_tax }}
                     <b style="font-size:12px;font-weight:300;"> /Qty-{{ $sale_product->quantity }}({{ $sale_product->unit }})/Subtotal-{{ $sale_product->subtotal }}</b>
                 </p>
             </td>

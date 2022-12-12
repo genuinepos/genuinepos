@@ -191,7 +191,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="purchaseReturnCheck">
                                                     <label class="form-check-label" for="purchaseReturnCheck">
-                                                        Purchase Return
+                                                        @lang('menu.purchase_return')
                                                     </label>
                                                 </div>
                                             </div>

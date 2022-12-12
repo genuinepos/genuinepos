@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Purchase Statements</h5>
+                                <h5>@lang('menu.purchase_statements')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -61,9 +61,9 @@
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able">
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="1">Purchased</option>
+                                                        <option value="1">@lang('menu.purchased')</option>
                                                         <option value="2">@lang('menu.pending')</option>
-                                                        <option value="3">Purchased By Order</option>
+                                                        <option value="3">@lang('menu.purchased_by_order')</option>
                                                     </select>
                                                 </div>
 
@@ -99,7 +99,7 @@
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
-                                                                    <i class="fas fa-funnel-dollar"></i> Filter
+                                                                    <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -122,7 +122,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>Purchase Statement List</h6>
+                                    <h6>{{ __('Purchase Statement List') }}</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
@@ -145,13 +145,13 @@
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>@lang('menu.purchases_status')</th>
-                                                <th>Total Item</th>
-                                                <th>Net Total Amt.</th>
-                                                <th>Order Discount</th>
-                                                <th>Order Tax</th>
+                                                <th>@lang('menu.total_item')</th>
+                                                <th>{{ __('Net total Amt') }}.</th>
+                                                <th>@lang('menu.order_discount')</th>
+                                                <th>@lang('menu.order_tax')</th>
                                                 <th>@lang('menu.grand_total')</th>
                                                 <th>@lang('menu.paid')</th>
-                                                <th>Return Amount</th>
+                                                <th>@lang('menu.return_amount')</th>
                                                 <th>@lang('menu.due')</th>
                                             </tr>
                                         </thead>

@@ -20,7 +20,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-desktop"></span>
-                    <h5>Sales Representative Report</h5>
+                    <h5>@lang('menu.sales_representative_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -59,7 +59,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><strong>Date Range :</strong></label>
+                                    <label><strong>@lang('menu.date_range') :</strong></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i
@@ -75,7 +75,7 @@
                                         <div class="col-6">
                                             <div class="input-group">
                                                 <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start">
-                                                    <i class="fas fa-funnel-dollar"></i> Filter
+                                                    <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                                 </button>
                                             </div>
                                         </div>
@@ -97,13 +97,13 @@
                             <div class="card-body card-custom px-0">
 
                                 <div class="heading">
-                                    <h6 class="text-muted">Total Sale - Total Sales Return : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
+                                    <h6 class="text-muted">@lang('menu.total_sale_return') : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="tax_sum">
-                                            <h6 class="text-muted">Expense  : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="expense_amount"></span></h6>
+                                            <h6 class="text-muted">@lang('menu.expense')  : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="expense_amount"></span></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -116,10 +116,10 @@
                                     <!--begin: Datatable-->
                                     <div class="tab_list_area">
                                         <div class="btn-group">
-                                            <a id="tab_btn" data-show="sales" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Seles</a>
+                                            <a id="tab_btn" data-show="sales" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.sales')</a>
 
                                             <a id="tab_btn" data-show="expense" class="btn btn-sm btn-primary tab_btn" href="#">
-                                            <i class="fas fa-scroll"></i> Expense</a>
+                                            <i class="fas fa-scroll"></i> @lang('menu.expense')</a>
                                         </div>
                                     </div>
 
@@ -136,9 +136,9 @@
                                                                 <th>@lang('menu.branch')</th>
                                                                 <th>@lang('menu.payment_status')</th>
                                                                 <th>@lang('menu.total_amount')</th>
-                                                                <th>Total Return</th>
+                                                                <th>@lang('menu.total_return')</th>
                                                                 <th>@lang('menu.total_paid')</th>
-                                                                <th>Total Remaining</th>
+                                                                <th>@lang('menu.total_remaining')</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -185,7 +185,7 @@
                                                                 <th>@lang('menu.date')</th>
                                                                 <th>@lang('menu.reference_no')</th>
                                                                 <th>@lang('menu.branch')</th>
-                                                                <th>Expense For</th>
+                                                                <th>@lang('menu.expense_for')</th>
                                                                 <th>@lang('menu.payment_status')</th>
                                                                 <th>@lang('menu.total_amount')</th>
                                                                 <th>@lang('menu.total_paid')</th>

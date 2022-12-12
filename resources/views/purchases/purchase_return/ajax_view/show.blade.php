@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Purchase return (Purchase Return Invoice ID : <strong>{{ $return->invoice_id }}</strong>)
+                    @lang('menu.purchase_return') ({{ __('Purchase Return Invoice ID') }} : <strong>{{ $return->invoice_id }}</strong>)
                 </h5>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
@@ -15,12 +15,12 @@
                     <div class="col-md-6">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Return Details : </strong> </li>
+                                <strong>@lang('menu.return_details') : </strong> </li>
                             <li>
-                                <strong>PR.Invoice ID : </strong> {{ $return->invoice_id }}
+                                <strong>{{ __('PR.Invoice ID') }} : </strong> {{ $return->invoice_id }}
                             </li>
                             <li>
-                                <strong>Return Date : </strong> {{ $return->date }}
+                                <strong>@lang('menu.return_date') : </strong> {{ $return->date }}
                             </li>
                             <li>
                                 <strong>@lang('menu.supplier_name') : </strong>
@@ -33,7 +33,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
                                 @endif
                             </li>
-                            <li class="warehouse"><strong>Return Stock Location : </strong>
+                            <li class="warehouse"><strong>{{ __('Return Stock Location') }} : </strong>
                                 @if ($return->warehouse)
                                     {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                                 @elseif($return->branch)
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-md-5 text-left">
                         <ul class="list-unstyled">
-                            <li class="parent_purchase"><strong>Purchase Details :</strong>  </li>
+                            <li class="parent_purchase"><strong>@lang('menu.purchase_details') :</strong>  </li>
                             <li class="parent_purchase">
                                 <strong>{{ __('P.Invoice ID') }} : </strong>
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
@@ -70,7 +70,7 @@
                                     <th class="text-start" scope="col">@lang('menu.sl')</th>
                                     <th class="text-start" scope="col">@lang('menu.product')</th>
                                     <th class="text-start" scope="col">@lang('menu.unit_cost')</th>
-                                    <th class="text-start" scope="col">Return Quantity</th>
+                                    <th class="text-start" scope="col">@lang('menu.return_quantity')</th>
                                     <th class="text-start" scope="col">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
@@ -123,7 +123,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <th class="text-start">Total Return Amount : </th>
+                                    <th class="text-start">@lang('menu.total_return_amount') : </th>
                                     <td class="total_return_amount text-start">{{ $return->total_return_amount }}</td>
                                 </tr>
                             </table>
@@ -175,7 +175,7 @@
 
                 <div class="col-4">
                     <div class="heading text-center">
-                        <h5 class="bill_name">Purchase Return Bill</h5>
+                        <h5 class="bill_name">@lang('menu.purchase_return_bill')</h5>
                     </div>
                 </div>
 
@@ -189,13 +189,13 @@
             <div class="row">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li><strong>Return Details : </strong> </li>
+                        <li><strong>@lang('menu.return_details') : </strong> </li>
 
-                        <li><strong>PR.Invoice ID : </strong>
+                        <li><strong>{{ __('PR.Invoice ID') }} : </strong>
                             <span class="return_invoice_id">{{ $return->invoice_id }}</span>
                         </li>
 
-                        <li><strong>Return Date : </strong>
+                        <li><strong>@lang('menu.return_date') : </strong>
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
@@ -203,7 +203,7 @@
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
-                        <li><strong>Return Stock Loction : </strong>
+                        <li><strong>{{ __('Return Stock Location') }} : </strong>
                             @if ($return->warehouse)
 
                                 {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
@@ -220,8 +220,8 @@
 
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
-                        <li><strong>Purchase Details : </strong> </li>
-                        <li><strong>Invoice No : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                        <li><strong>@lang('menu.purchase_details') : </strong> </li>
+                        <li><strong>@lang('menu.invoice_no') : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
                         <li><strong>@lang('menu.date') : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
@@ -236,7 +236,7 @@
                             <th class="text-start">@lang('menu.sl')</th>
                             <th class="text-start">@lang('menu.product')</th>
                             <th class="text-end">@lang('menu.unit_cost')</th>
-                            <th class="text-end">Return Quantity</th>
+                            <th class="text-end">@lang('menu.return_quantity')</th>
                             <th class="text-end">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
@@ -282,7 +282,7 @@
 
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <th colspan="4" class="text-end">@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                         <td colspan="2" class="text-end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
                     </tr>
 
@@ -296,7 +296,7 @@
                                 {{ App\Utils\Converter::format_in_bdt($return->total_return_due) }}
                             @else
 
-                                CHECK SUPPLIER DUE
+                                @lang('menu.check_supplier_due')
                             @endif
                         </td>
                     </tr>

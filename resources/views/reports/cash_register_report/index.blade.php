@@ -13,7 +13,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-cash-register"></span>
-                                <h5>Cash Register Reports</h5>
+                                <h5>@lang('menu.cash_register_reports')</h5>
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -68,8 +68,8 @@
                                                         <label><strong>@lang('menu.status') :</strong></label>
                                                         <select name="status" class="form-control submit_able" id="status">
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="1">Open</option>
-                                                            <option value="2">Closed</option>
+                                                            <option value="1">@lang('menu.open')</option>
+                                                            <option value="2">@lang('menu.closed')</option>
                                                         </select>
                                                     </div>
 
@@ -107,7 +107,7 @@
                                                                 <label><strong></strong></label>
                                                                 <div class="input-group">
                                                                     <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start">
-                                                                        <i class="fas fa-funnel-dollar"></i> Filter
+                                                                        <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -138,13 +138,13 @@
                                                 <table class="display data_tbl data__table">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-start">Open Time</th>
-                                                            <th class="text-start">Closed Time</th>
+                                                            <th class="text-start">@lang('menu.open_time')</th>
+                                                            <th class="text-start">@lang('menu.closed_time')</th>
                                                             <th class="text-start">@lang('menu.business_location')</th>
-                                                            <th class="text-start">User</th>
-                                                            <th class="text-start">Closing Note</th>
+                                                            <th class="text-start">@lang('menu.user')</th>
+                                                            <th class="text-start">@lang('menu.closing_note')</th>
                                                             <th class="text-start">@lang('menu.status')</th>
-                                                            <th class="text-start">Closing Amount</th>
+                                                            <th class="text-start">{{ __('Closing Amount') }}</th>
                                                             <th class="text-start">@lang('menu.action')</th>
                                                         </tr>
                                                     </thead>

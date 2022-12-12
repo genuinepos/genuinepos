@@ -8,7 +8,7 @@
                         <tbody>
                             <tr>
                                 <th class="text-start">
-                                    Sold Product Total Unit Cost :
+                                    {{ __('Sold Product Total Unit Cost') }} :
                                     <br>
                                     <small>(Inc.Tax)</small>
                                 </th>
@@ -20,7 +20,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">Total Order Tax : </th>
+                                <th class="text-start">{{ __('Total Order Tax') }} : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalOrderTax) }}
@@ -44,7 +44,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">Total transfer shipping charge : </th>
+                                <th class="text-start">@lang('menu.total_transfer_shipping_charge') : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalTransferShipmentCost) }}
@@ -52,7 +52,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">Total Sell Return : </th>
+                                <th class="text-start">@lang('menu.total_sell_return') : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalSaleReturn) }}
@@ -60,7 +60,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">Total Payroll :</th>
+                                <th class="text-start">@lang('menu.total_payroll') :</th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}
@@ -95,7 +95,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">Total Stock Adjustment Recovered : </th>
+                                <th class="text-start">{{ __('Total Stock Adjustment Recovered') }} : </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentRecovered) }}
@@ -126,7 +126,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="gross_profit_area">
-                        <h6 class="text-muted m-0">Total Daily Profit :
+                        <h6 class="text-muted m-0">{{ __('Total Daily Profit') }} :
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
                             <p class="text-muted m-0">@lang('menu.gross_profit') (Total Sale + Total Stock Adjustment Recovered)

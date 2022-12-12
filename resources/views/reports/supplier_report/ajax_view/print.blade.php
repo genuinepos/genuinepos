@@ -40,7 +40,7 @@
                     <th class="text-start">@lang('menu.supplier')</th>
                     <th class="text-end">@lang('menu.total_purchase')</th>
                     <th class="text-end">@lang('menu.total_paid')</th>
-                    <th class="text-end">Opening Balance Due</th>
+                    <th class="text-end">@lang('menu.opening_balance')</th>
                     <th class="text-end">@lang('menu.total_due')</th>
                     <th class="text-end">@lang('menu.total_return_due')</th>
                 </tr>
@@ -74,7 +74,7 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-end">Opening Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 

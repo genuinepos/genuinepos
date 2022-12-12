@@ -47,7 +47,7 @@
             <b>@lang('menu.title') :</b>
             {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}
         </p>
-        <p><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</p>
+        <p><b>@lang('menu.invoice_no') :</b> {{ $payment->sale->invoice_id }}</p>
         <p>
             <b>@lang('menu.customer') :</b>
             {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}

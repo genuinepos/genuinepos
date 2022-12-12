@@ -210,9 +210,9 @@
                                             <th> SL</th>
                                             <th>@lang('menu.product_name')</th>
                                             <th>Code</th>
-                                            <th>Price</th>
+                                            <th>@lang('menu.price')</th>
                                             <th>@lang('menu.supplier_name')</th>
-                                            <th>Qty</th>
+                                            <th>@lang('menu.qty')</th>
                                         </tr>
                                     </thead>
                                     <tbody>

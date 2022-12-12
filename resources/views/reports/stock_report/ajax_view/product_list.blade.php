@@ -1,7 +1,7 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr class="bg-navey-blue">
-            <th>P.Code(SKU)</th>
+            <th>@lang('menu.p_code')(SKU)</th>
             <th>@lang('menu.product')</th>
             <th>@lang('menu.unit_price')</th>
             <th>@lang('menu.current_stock')</th>

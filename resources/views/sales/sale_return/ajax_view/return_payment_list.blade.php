@@ -25,8 +25,8 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Return Invoice ID : </strong>{{ $return->invoice_id }}</li>
-                    <li><strong>Return Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}</li>
+                    <li><strong> @lang('menu.return_invoice_id') : </strong>{{ $return->invoice_id }}</li>
+                    <li><strong>@lang('menu.return_date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}</li>
                     <li><strong>@lang('menu.business_location'): </strong>
 
                         @if ($return->branch)

@@ -16,7 +16,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h6>Add Purchase Return</h6>
+                    <h6>@lang('menu.add_purchase_return')</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -38,7 +38,7 @@
                                         <div class="col-8">
                                             <select name="supplier_id" class="form-control add_input"
                                                 data-name="Supplier" id="supplier_id">
-                                                <option value="">Select Supplier</option>
+                                                <option value="">@lang('menu.select_supplier')</option>
                                                 @foreach ($suppliers as $sup)
                                                     <option value="{{$sup->id}}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
                                                 @endforeach
@@ -58,7 +58,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>R. Invoice ID :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.r_invoice_id') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.invoice_id')">
                                         </div>
@@ -69,7 +69,7 @@
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                <option value="">Select Warehouse</option>
+                                                <option value="">@lang('menu.select_warehouse')</option>
                                                 @foreach ($warehouses as $w)
                                                     <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                 @endforeach
@@ -89,7 +89,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Return A/C : <span
+                                        <label class="col-4"><b>{{ __('Return A/C') }} : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_return_account_id" class="form-control add_input"
@@ -107,7 +107,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Attachment :</b></label>
+                                        <label class="col-4"><b>@lang('menu.attachment') :</b></label>
                                         <div class="col-8">
                                             <input type="file" class="form-control" name="attachment">
                                         </div>
@@ -125,7 +125,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="searching_area" style="position: relative;">
-                                        <label class="col-form-label">Item Search</label>
+                                        <label class="col-form-label">@lang('menu.item_search')</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -149,10 +149,10 @@
                                                 <thead class="staky">
                                                     <tr>
                                                         <th>@lang('menu.product')</th>
-                                                        <th>Purchase Price</th>
+                                                        <th>@lang('menu.purchase_price')</th>
                                                         <th>@lang('menu.current_stock')</th>
-                                                        <th>Return Quantity</th>
-                                                        <th>Return Subtotal</th>
+                                                        <th>@lang('menu.return_quantity')</th>
+                                                        <th>@lang('menu.return_subtotal')</th>
                                                         <th><i class="fas fa-trash-alt"></i></th>
                                                     </tr>
                                                 </thead>

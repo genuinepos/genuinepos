@@ -43,7 +43,7 @@
                             </li>
                             <li><strong>@lang('menu.address') : </strong> <span>{{ json_decode($generalSettings->business, true)['address'] }}</span></li>
                             <li><strong>@lang('menu.phone') : </strong> <span>{{ json_decode($generalSettings->business, true)['phone'] }}</span></li>
-                            <li><strong>Stock Location : </strong>
+                            <li><strong>@lang('menu.stock_location') : </strong>
                                 <span>
                                     {{ $draft->warehouse->warehouse_name.'/'.$draft->warehouse->warehouse_code }},
                                     {{ $draft->warehouse->address }}
@@ -117,7 +117,7 @@
                                 <th class="text-start">@lang('menu.quantity')</th>
                                 <th class="text-start">@lang('menu.unit_price_exc_tax')</th>
                                 <th class="text-start">@lang('menu.unit_cost')</th>
-                                <th class="text-start">Unit Tax</th>
+                                <th class="text-start">@lang('menu.unit_tax')</th>
                                 <th class="text-start">@lang('menu.unit_price') Inc.Tax</th>
                                 <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
@@ -166,7 +166,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Order Discount</th>
+                            <th class="text-start">@lang('menu.order_discount')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                 @php
                                     $discount_type = $draft->order_discount_type == 1 ? ' (Fixed)' : '%';
@@ -176,14 +176,14 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Order Tax</th>
+                            <th class="text-start">@lang('menu.order_tax')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                     {{ $draft->order_tax_amount . ' (' . $draft->order_tax_percent . '%)' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Shipment Charge</th>
+                            <th class="text-start">@lang('menu.shipment_charge')</th>
                             <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                               {{ $draft->shipment_charge }}
                             </td>
@@ -205,7 +205,7 @@
           <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>Shipping Details : </h6>
+                    <h6>@lang('menu.shipping_details') : </h6>
                     <p class="shipping_details">
                         {{ $draft->shipment_details ? $draft->shipment_details : 'N/A' }}</p>
                 </div>
@@ -293,7 +293,7 @@
                                         <h6>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
                                     @endif
                                 @endif
-                                <h6 class="bill_name">Entered By :
+                                <h6 class="bill_name">@lang('menu.entered_by') :
                                     {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
                                 </h6>
                             </div>
@@ -332,8 +332,8 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> Invoice No : </strong> {{ $draft->invoice_id }}</li>
-                            <li><strong> Date : </strong> <{{ $draft->date . ' ' . $draft->time }}</li>
-                            <li><strong> Entered By : </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
+                            <li><strong>@lang('menu.date'): </strong> <{{ $draft->date . ' ' . $draft->time }}</li>
+                            <li><strong> @lang('menu.entered_by') : </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
                             </li>
                         </ul>
                     </div>
@@ -434,7 +434,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Discount : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($draft->order_discount_type == 1)
@@ -447,7 +447,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Tax : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
@@ -458,7 +458,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Shipment charge : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
@@ -694,8 +694,8 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> draft ID : </strong> {{ $draft->invoice_id }}</li>
-                            <li><strong> Date : </strong> {{ $draft->date . ' ' . $draft->time }}</li>
-                            <li><strong> Entered By : </strong> {{$draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}</li>
+                            <li><strong>@lang('menu.date'): </strong> {{ $draft->date . ' ' . $draft->time }}</li>
+                            <li><strong> @lang('menu.entered_by') : </strong> {{$draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}</li>
                         </ul>
                     </div>
                 </div>
@@ -792,7 +792,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Discount : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($draft->order_discount_type == 1)
@@ -805,7 +805,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Order Tax : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}
@@ -816,7 +816,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> Shipment charge : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ json_decode($generalSettings->business, true)['currency'] }} --}}

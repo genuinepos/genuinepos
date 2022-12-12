@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="m-0"><strong>Transfer Reference ID: </strong> {{ $transfer->ref_id }}</p>
-                                    <p class="m-0"><strong>Date: </strong> {{ $transfer->date }}</p>
+                                    <p class="m-0"><strong>@lang('menu.date'): </strong> {{ $transfer->date }}</p>
                                     </div>
 
                                     <div class="col-md-6">
@@ -168,7 +168,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4">Total Received Qty :</label>
+                                        <label class=" col-4">Total @lang('menu.received_qty') :</label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control" value="0.00">
                                         </div>

@@ -28,7 +28,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Product Sale Report</h5>
+                                <h5>{{ __('Product Sale Report') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -75,7 +75,7 @@
                                                 <label><strong>@lang('menu.customer') :</strong></label>
                                                 <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">Walk-In-Customer</option>
+                                                    <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                 </select>
                                             </div>
 
@@ -132,7 +132,7 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.product')</th>
-                                                <th>P.Code</th>
+                                                <th>@lang('menu.p_code')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.invoice_id')</th>
                                                 <th>@lang('menu.quantity')</th>

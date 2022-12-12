@@ -329,8 +329,8 @@
                                                 <th>@lang('menu.payment_status')</th>
                                                 <th>@lang('menu.grand_total')</th>
                                                 <th>@lang('menu.paid')</th>
-                                                <th>Payment Due</th>
-                                                <th>Return Amount</th>
+                                                <th>@lang('menu.payment_due')</th>
+                                                <th>@lang('menu.return_amount')</th>
                                                 <th>@lang('menu.return_due')</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>

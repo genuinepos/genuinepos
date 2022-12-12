@@ -10,7 +10,7 @@
 
                 <div class="name-head">
                     <span class="fas fa-money-bill"></span>
-                    <h5>Expense Report</h5>
+                    <h5>@lang('menu.expense_report')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -43,7 +43,7 @@
                                 @endif
 
                                 <div class="col-md-2">
-                                    <label><strong>Expense For :</strong></label>
+                                    <label><strong>@lang('menu.expense_for') :</strong></label>
                                     <select name="admin_id" class="form-control submit_able" id="admin_id" autofocus>
                                         <option value="">@lang('menu.all')</option>
                                     </select>
@@ -103,12 +103,12 @@
                                     <th class="text-start">@lang('menu.date')</th>
                                     <th class="text-start">@lang('menu.reference_id')</th>
                                     <th class="text-start">@lang('menu.b_location')</th>
-                                    <th class="text-start">Expanse For</th>
+                                    <th class="text-start">@lang('menu.expense_for')</th>
                                     <th class="text-start">@lang('menu.payment_status')</th>
                                     <th class="text-start">@lang('menu.tax')</th>
-                                    <th class="text-start">Net Total</th>
+                                    <th class="text-start">@lang('menu.net_total')</th>
                                     <th class="text-start">@lang('menu.paid')</th>
-                                    <th class="text-start">Payment Due</th>
+                                    <th class="text-start">@lang('menu.payment_due')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

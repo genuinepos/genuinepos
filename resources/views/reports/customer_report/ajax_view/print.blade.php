@@ -28,7 +28,7 @@
     <div class="col-md-12 text-center">
         <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
         <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        <h6 style="margin-top: 10px;"><b>Customer Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.customer_report') </b></h6>
     </div>
 </div>
 <br/>
@@ -40,7 +40,7 @@
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-end">@lang('menu.total_sale')</th>
                     <th class="text-end">@lang('menu.total_paid')</th>
-                    <th class="text-end">Opening Balance Due</th>
+                    <th class="text-end">@lang('menu.opening_balance')</th>
                     <th class="text-end">@lang('menu.total_due')</th>
                     <th class="text-end">@lang('menu.total_return_due')</th>
                 </tr>
@@ -74,7 +74,7 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-end">Opening Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
@@ -94,7 +94,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Returnable Due') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>

@@ -105,7 +105,7 @@
                                         <th class="text-start">@lang('menu.created_by')</th>
                                         <th class="text-start">@lang('menu.type')</th>
                                         <th class="text-start">@lang('menu.total_amount')</th>
-                                        <th class="text-start">Total Recovered Amount</th>
+                                        <th class="text-start">@lang('menu.total_recovered_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

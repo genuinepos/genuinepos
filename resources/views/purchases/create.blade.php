@@ -19,7 +19,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-shopping-cart"></span>
-                    <h6>Add Purchase</h6>
+                    <h6>@lang('menu.add_purchase')</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -42,7 +42,7 @@
                                             <div class="input-group">
                                                 <select name="supplier_id" class="form-control add_input"
                                                     data-name="Supplier" id="supplier_id">
-                                                    <option value="">Select Supplier</option>
+                                                    <option value="">@lang('menu.select_supplier')</option>
                                                 </select>
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text add_button" id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
@@ -61,7 +61,7 @@
                                             <div class="col-8">
                                                 <select class="form-control changeable add_input"
                                                     name="warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                    <option value="">Select Warehouse</option>
+                                                    <option value="">@lang('menu.select_warehouse')</option>
                                                     @foreach ($warehouses as $w)
                                                         <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                     @endforeach
@@ -94,7 +94,7 @@
                                             <label class=" col-4"><b>@lang('menu.status') :</b></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable" name="purchase_status" id="purchase_status">
-                                                    <option value="1">Purchase</option>
+                                                    <option value="1">@lang('menu.purchase')</option>
                                                     {{-- <option value="2">@lang('menu.pending')</option> --}}
                                                     <option value="3">@lang('menu.ordered')</option>
                                                 </select>
@@ -178,7 +178,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="searching_area" style="position: relative;">
-                                    <label class="col-form-label">Item Search</label>
+                                    <label class="col-form-label">@lang('menu.item_search')</label>
                                     <div class="input-group ">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
@@ -210,9 +210,9 @@
                                                     <th>@lang('menu.discount')</th>
                                                     <th>@lang('menu.unit_cost')(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
                                                     <th>@lang('menu.sub_total') (BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
-                                                    <th>Unit Tax</th>
-                                                    <th>Net Unit Cost</th>
-                                                    <th>Line Total</th>
+                                                    <th>@lang('menu.unit_tax')</th>
+                                                    <th>{{ __('Net Unit Cost') }}</th>
+                                                    <th>@lang('menu.line_total')</th>
                                                     @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
                                                         <th>@lang('menu.x_margin')(%)</th>
                                                         <th>@lang('menu.selling_price_exc_tax')</th>
@@ -240,7 +240,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
 
-                                                        <label class="col-4"><b>Total Item :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00" tabindex="-1">
                                                         </div>
@@ -258,7 +258,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Order Discount :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.order_discount') :</b></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-6">
@@ -277,7 +277,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
+                                                        <label class="col-4"><b>@lang('menu.order_tax') :</b><span class="text-danger">*</span></label>
                                                         <div class="col-8">
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                                                 <option value="0.00">@lang('menu.no_tax')</option>
@@ -289,25 +289,25 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Shipment Cost :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.shipment_cost') :</b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Shipment Details :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.shipment_details') :</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="@lang('menu.shipment_details')">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Purchase/Order Note :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.purchase') /@lang('menu.order_note') :</b></label>
                                                         <div class="col-8">
-                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="Order Note.">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="@lang('menu.order_note').">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -342,7 +342,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Paying Amount :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <label class=" col-4"><b>@lang('menu.amount') :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>
@@ -356,7 +356,7 @@
                                                                 @foreach ($methods as $method)
                                                                     <option
                                                                         data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                        value="{{ $method->id }}">
+                                                                        value="{{ $method ->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach
@@ -431,7 +431,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Supplier</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_supplier')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -460,7 +460,7 @@
         <div class="modal-dialog modal-lg description_modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Description <span id="product_name"></span></h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Description') }} <span id="product_name"></span></h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -473,7 +473,7 @@
                     </div>
 
                     <div class="form-group text-end mt-3">
-                        <button type="submit" id="add_description" class="btn btn-sm btn-success float-end">Add</button>
+                        <button type="submit" id="add_description" class="btn btn-sm btn-success float-end">@lang('menu.add')</button>
                     </div>
                 </div>
             </div>

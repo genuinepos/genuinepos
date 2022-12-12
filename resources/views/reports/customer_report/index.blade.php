@@ -19,7 +19,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
-                                <h5>Customer Report</h5>
+                                <h5>@lang('menu.customer_report')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -66,7 +66,7 @@
                                                 <thead>
                                                     <tr class="text-start">
                                                         <th>@lang('menu.customer')</th>
-                                                        <th>Opening Balance Due</th>
+                                                        <th>@lang('menu.opening_balance')</th>
                                                         <th>@lang('menu.total_sale')</th>
                                                         <th>@lang('menu.total_paid')</th>
                                                         <th>@lang('menu.total_due')</th>

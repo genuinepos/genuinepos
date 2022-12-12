@@ -8,8 +8,8 @@
         @csrf
         <div class="form-group row">
             <div class="col-md-6">
-                <label><strong>Shipment Details : </strong></label>
-                <textarea name="shipment_details" class="form-control form-control-sm" id="shipment_details" cols="30" rows="3" placeholder="Shipment Details">{{ $sale->shipment_details }}</textarea>
+                <label><strong>@lang('menu.shipment_details') : </strong></label>
+                <textarea name="shipment_details" class="form-control form-control-sm" id="shipment_details" cols="30" rows="3" placeholder="@lang('menu.shipment_details')">{{ $sale->shipment_details }}</textarea>
             </div>
 
             <div class="col-md-6">

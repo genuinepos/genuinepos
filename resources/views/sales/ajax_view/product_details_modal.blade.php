@@ -46,7 +46,7 @@
                             <li><strong>Sale From : </strong></li>
                             @if ($sale->branch)
                                 <li>
-                                    <strong>Stock Location : </strong>
+                                    <strong>@lang('menu.stock_location') : </strong>
                                     {{ $sale->branch->name }}/{{ $sale->branch->branch_code }}
                                 </li>
                                 <li>
@@ -56,7 +56,7 @@
                                 </li>
                                 <li><strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}</li>
                             @else
-                                <li><strong>Stock Location : </strong>
+                                <li><strong>@lang('menu.stock_location') : </strong>
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                                 </li>
                                 <li><strong>@lang('menu.address') : </strong>{{ json_decode($generalSettings->business, true)['address'] }}</li>
@@ -140,12 +140,12 @@
                                 <tr class="bg-secondary text-white">
                                     <th class="text-start">@lang('menu.sl')</th>
                                     <th class="text-start">@lang('menu.product')</th>
-                                    <th class="text-start">Stock Location</th>
+                                    <th class="text-start">@lang('menu.stock_location')</th>
                                     <th class="text-start">@lang('menu.warranty')</th>
                                     <th class="text-end">@lang('menu.quantity')</th>
                                     <th class="text-end">@lang('menu.unit_price_exc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                    <th class="text-end">Unit Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-end">@lang('menu.unit_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">@lang('menu.unit_price') Inc.Tax({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     <th class="text-end">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 </tr>
@@ -238,7 +238,7 @@
                                 </tr> --}}
 
                                 <tr>
-                                    <th class="text-end"> Order Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end"> @lang('menu.order_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         @if ($sale->order_discount_type == 1)
                                             {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} (Fixed)
@@ -249,14 +249,14 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Order Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) . ' (' . $sale->order_tax_percent . '%)' }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                     </td>
@@ -297,7 +297,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p><b>Shipping Details</b> : </p>
+                            <p><b>@lang('menu.shipping_details')</b> : </p>
                             <p class="shipping_details">
                                 {{ $sale->shipment_details ? $sale->shipment_details : 'N/A' }}</p>
                         </div>

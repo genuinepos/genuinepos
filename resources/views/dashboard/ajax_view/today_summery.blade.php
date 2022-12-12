@@ -154,7 +154,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Stock Recovered :</th>
+                            <th class="text-start">@lang('menu.total_stock_recovered') :</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_recovered) }}</td>
                         </tr>
 

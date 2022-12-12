@@ -10,7 +10,7 @@
 <div class="modal-dialog four-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Edit Purchase Return Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Purchase Return Payment') }} <span class="type_name"></span></h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <i aria-hidden="true" class="ki ki-close"></i>
             </button>

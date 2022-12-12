@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>B. Location :</b> </label>
+                                        <label class="col-4"><b>{{ __('B. Location') }} :</b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control"
                                                 value="{{
@@ -114,7 +114,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.item_search')</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
@@ -171,7 +171,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Total Item :</b></label>
+                                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.total_item') :</b></label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" step="any" name="total_item" class="form-control"
                                                                     id="total_item" value="0.00">
@@ -181,7 +181,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class=" col-4"><b@lang('menu.net_total_amount') :</b> </label>
+                                                            <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total_amount') :</b> </label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" class="form-control" step="any" step="any"
                                                                     name="net_total_amount" id="net_total_amount" value="0.00">

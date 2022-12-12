@@ -171,7 +171,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
                                 @if (isset($req->is_price))
                                     <p class="price_details">
-                                        <b>Price :
+                                        <b>@lang('menu.price') :
                                             {{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ bcadd($req->product_price[$index], 0, 2) }}
                                         {{ isset($req->is_tax) ? '+ ' . bcadd($req->product_tax[$index], 0, 2) . '% Tax' : '' }}

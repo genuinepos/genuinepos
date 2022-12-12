@@ -79,7 +79,7 @@
 
                         <tr>
                             <td class="text-start">
-                            <em>Closing Stock :</em>  
+                            <em>@lang('menu.closing_stock') :</em>  
                             </td>
 
                             <td class="text-start">

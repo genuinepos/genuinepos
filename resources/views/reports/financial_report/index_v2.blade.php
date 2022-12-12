@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="far fa-money-bill-alt"></span>
-                    <h5>Financial Report</h5>
+                    <h5>@lang('menu.financial_report')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -90,7 +90,7 @@
 
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>Financial Report</h6>
+                        <h6>@lang('menu.financial_report')</h6>
                     </div>
                 </div>
 
@@ -121,7 +121,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>SALES :</span>
+                                                        <span>@lang('menu.sales') :</span>
                                                     </th>
                                                 </tr>
 
@@ -157,7 +157,7 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>PURCHASE :</span>
+                                                        <span>@lang('menu.purchase') :</span>
                                                     </th>
                                                 </tr>
 
@@ -193,13 +193,13 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>EXPENSES :</span>
+                                                        <span>@lang('menu.expenses') :</span>
                                                     </th>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Direct Expense :</em>
+                                                        <em>@lang('menu.total_direct_expense') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -209,7 +209,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Indirect Expense :</em>
+                                                        <em>{{ __('Total Indirect Expense') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -225,7 +225,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Closing Stock :</em>
+                                                        <em>@lang('menu.closing_stock') :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -245,7 +245,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Stock Adjustment Recovered Amount :</em>
+                                                        <em>{{ __('Total Stock Adjustment Recovered Amount') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -261,7 +261,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Loan Liabilities :</em>
+                                                        <em>{{ __('Total Loan Liabilities') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -271,7 +271,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Loan & Liabilities Due Paid :</em>
+                                                        <em>{{ __('Total Loan & Liabilities Due Paid') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -307,7 +307,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Total Loan & Advance Due Received :</em>
+                                                        <em>{{ __('Total Loan & Advance Due Received') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -317,43 +317,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Receivable Loan & Advance Due :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <b><em>0.00</em> </b>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>PROFIT LOSS :</span>
-                                                    </th>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>Total Daily Profit :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <b><em>0.00</em> </b>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>Total Gross Profit :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <b><em>0.00</em> </b>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>Total Net Profit :</em>
+                                                        <em>{{ __('Receivable Loan & Advance Due') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -363,13 +327,49 @@
 
                                                 <tr>
                                                     <th class="text-start bg-secondary text-white" colspan="2">
-                                                        <span>ACCOUNT BALANCE :</span>
+                                                        <span>@lang('menu.profit_loss') :</span>
                                                     </th>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="text-start">
-                                                        <em>Cash-In-Hand Balance :</em>
+                                                        <em>{{ __('Total Daily Profit') }} :</em>
+                                                    </td>
+
+                                                    <td class="text-start">
+                                                        <b><em>0.00</em> </b>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>{{ __('Total Gross Profit') }} :</em>
+                                                    </td>
+
+                                                    <td class="text-start">
+                                                        <b><em>0.00</em> </b>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>{{ __('Total Net Profit') }} :</em>
+                                                    </td>
+
+                                                    <td class="text-start">
+                                                        <b><em>0.00</em> </b>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th class="text-start bg-secondary text-white" colspan="2">
+                                                        <span>@lang('menu.account_balance') :</span>
+                                                    </th>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <em>{{ __('Cash-In-Hand Balance') }} :</em>
                                                     </td>
 
                                                     <td class="text-start">

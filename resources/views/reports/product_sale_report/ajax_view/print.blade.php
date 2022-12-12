@@ -48,7 +48,7 @@
                     <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
                 </p>
             @endif
-            <h6 style="margin-top: 10px;"><b>Product Sale Report </b></h6>
+            <h6 style="margin-top: 10px;"><b>{{ __('Product Sale Report') }} </b></h6>
         </div>
     </div>
     <br>
@@ -105,7 +105,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">Total Price : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <th class="text-end">{{ __('Total Price') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalUnitPrice) }}</td>
                     </tr>
 

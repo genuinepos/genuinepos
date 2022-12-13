@@ -8,7 +8,7 @@
       <div class="modal-content" >
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-              Quotation Details (Quotation ID : <strong>{{ $quotation->invoice_id }}</strong>)
+              @lang('menu.quotation_details') (@lang('menu.quotation_id') : <strong>{{ $quotation->invoice_id }}</strong>)
           </h5>
           <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
             class="fas fa-times"></span></a>
@@ -60,27 +60,27 @@
                             <strong>@lang('menu.date') : </strong> {{ $quotation->date . ' ' . $quotation->time }}
                         </li>
                         <li>
-                            <strong>Quotation ID : </strong> {{ $quotation->invoice_id }}
+                            <strong>@lang('menu.quotation_id') : </strong> {{ $quotation->invoice_id }}
                         </li>
                     <li><strong>@lang('menu.status') : </strong>
                         <span class="sale_status">
                             <span class="badge bg-info">@lang('menu.quotation')</span>
                         </span>
                     </li>
-                    <li><strong>Shipment Status : </strong>
+                    <li><strong>@lang('menu.shipment_status') : </strong>
                         <span class="shipment_status">
                             @if ($quotation->shipment_status == null)
-                                <span class="badge bg-danger">Not-Available</span>
+                                <span class="badge bg-danger">{{ __('Not-Available') }}</span>
                             @elseif($quotation->shipment_status == 1)
                                 <span class="badge bg-warning">@lang('menu.ordered')</span>
                             @elseif($quotation->shipment_status == 2)
-                                <span class="badge bg-secondary">Packed</span>
+                                <span class="badge bg-secondary">{{ __('Packed') }}</span>
                             @elseif($quotation->shipment_status == 3)
-                                <span class="badge bg-primary">Shipped</span>
+                                <span class="badge bg-primary">{{ __('Shipped') }}</span>
                             @elseif($quotation->shipment_status == 4)
-                                <span class="badge bg-success">Delivered</span>
+                                <span class="badge bg-success">{{ __('Delivered') }}</span>
                             @elseif($quotation->shipment_status == 5)
-                                <span class="badge bg-info">Cancelled</span>
+                                <span class="badge bg-info">{{ __('Cancelled') }}</span>
                             @endif
                         </span>
                     </li>
@@ -352,7 +352,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Invoice No : </strong> {{ $quotation->invoice_id }}</li>
+                            <li><strong> @lang('menu.invoice_no') : </strong> {{ $quotation->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): </strong> <{{ $quotation->date . ' ' . $quotation->time }}</li>
                             <li><strong> @lang('menu.entered_by') : </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
                             </li>
@@ -366,7 +366,7 @@
                     <thead>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Descrpiton</th>
+                            <th class="text-start">@lang('menu.department')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">@lang('menu.unit_price')</th>
 
@@ -438,7 +438,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-right">
-                        <h6><em>Continued To this next page....</em></h6>
+                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
             @endif
@@ -563,7 +563,7 @@
                     @endif
 
                     <div class="col-4 text-center">
-                        <small>Print Time : {{ date('h:i:s') }}</small>
+                        <small>@lang('menu.print_time') : {{ date('h:i:s') }}</small>
                     </div>
                 </div>
             </div>
@@ -691,7 +691,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Quotation ID : </strong> {{ $quotation->invoice_id }}</li>
+                            <li><strong> @lang('menu.quotation_id') : </strong> {{ $quotation->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): </strong> {{ $quotation->date . ' ' . $quotation->time }}</li>
                             <li><strong> @lang('menu.entered_by') : </strong> {{$quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}</li>
                         </ul>
@@ -704,8 +704,8 @@
                     <thead>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Descrpiton</th>
-                            <th class="text-start">Sold Qty</th>
+                            <th class="text-start">@lang('menu.department')</th>
+                            <th class="text-start">{{ __('Sold Price') }}</th>
                             <th class="text-start">@lang('menu.unit_price')</th>
 
                             @if ($defaultLayout->product_discount)
@@ -775,7 +775,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-right">
-                        <h6><em>Continued To this next page....</em></h6>
+                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
             @endif
@@ -902,7 +902,7 @@
                     @endif
 
                     <div class="col-4 text-center">
-                        <small>Print Time : {{ date('h:i:s') }}</small>
+                        <small>@lang('menu.print_time') : {{ date('h:i:s') }}</small>
                     </div>
                 </div>
             </div>

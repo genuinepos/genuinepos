@@ -284,7 +284,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b> Paid :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b> @lang('menu.paid') :</b> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->paid }}" tabindex="-1">
                                                         </div>

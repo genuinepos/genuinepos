@@ -2,7 +2,7 @@
  <form id="edit_schema_form" action="{{ route('invoices.schemas.update', $schema->id) }}" method="POST">
     @csrf
     <div class="form-group">
-        <label><b>Preview :</b> <span id="e_schema_preview">#{{$schema->prefix.''.$schema->start_from}}</span></label>
+        <label><b>@lang('menu.preview') :</b> <span id="e_schema_preview">#{{$schema->prefix.''.$schema->start_from}}</span></label>
     </div>
 
     <div class="form-group row">

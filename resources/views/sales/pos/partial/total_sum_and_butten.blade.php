@@ -77,7 +77,7 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Hold Invoice<p>F8</p>
+                                class="function-card" tabindex="-1">@lang('menu.hold_invoices')<p>F8</p>
                             </a>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Pick Hold <p>F9</p>
+                                class="function-card" tabindex="-1">{{ __('Pick Hold') }} <p>F9</p>
                             </a>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                                         toastr.error('Suspend is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card function-card-danger" tabindex="-1">Suspend<p>Alt+A</p>
+                                class="function-card function-card-danger" tabindex="-1">{{ __('Suspend') }}<p>Alt+A</p>
                             </a>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                     @endif
 
                     <div class="row g-1">
-                        <label class="col-sm-3 col-4 col-form-label text-white">Pre. Due:</label>
+                        <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Pre. Due') }}:</label>
 
                         <div class="col-sm-9 col-8">
                             <input readonly class="form-control pos-amounts" type="number" step="any" name="previous_due"
@@ -227,7 +227,7 @@
                     </div>
 
                     <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-white">Change Amount:</label>
+                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.change_amount'):</label>
                         <div class="col-sm-6 col-7">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control pos-amounts" tabindex="-1">
@@ -257,7 +257,7 @@
                                             toastr.error('Full credit sale is disabled.');
                                         "
                                     @endif
-                                    tabindex="-1">Credit Sale</a>
+                                    tabindex="-1">@lang('menu.credit_sale')</a>
                             </div>
 
                             <div class="btn-bg">
@@ -268,7 +268,7 @@
                         <div class="col-lg-4 col-6 btn-bottom m-order-3">
                             <div class="btn-bg">
                                 <a href="#" class="function-card other_payment_method" tabindex="-1">
-                                    <span>Other Method</span>
+                                    <span>@lang('menu.other_method')</span>
                                     <p>Ctrl+B</p>
                                 </a>
                             </div>
@@ -278,7 +278,7 @@
                             <div class="btn-bg">
                                 <a href="#" class="function-card cash-btn" id="submit_btn" data-button_type="1"
                                     data-action_id="1" tabindex="-1">
-                                    <span>Cash </span>
+                                    <span>@lang('menu.cash') </span>
                                     <p>F10</p>
                                 </a>
                             </div>

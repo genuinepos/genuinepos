@@ -27,7 +27,7 @@
         </div>
 
         <div class="col-md-3 ">
-            <label><b> Unit :</b> <span class="text-danger">*</span></label>
+            <label><b> @lang('menu.unit') :</b> <span class="text-danger">*</span></label>
             <select class="form-control product_unit" name="unit_id" id="add_unit_id">
                 <option value="">@lang('menu.select_unit')</option>
                 @foreach ($units as $unit)

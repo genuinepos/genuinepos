@@ -19,7 +19,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h6>Edit Sale</h6>
+                    <h6>@lang('menu.edit_sale')</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -95,7 +95,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Price Group :</b></label>
+                                        <label class="col-4"><b>@lang('menu.price_group') :</b></label>
                                         <div class="col-8">
                                             <select name="price_group_id" class="form-control"
                                                 id="price_group_id">
@@ -319,19 +319,19 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>Ship Address :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Address') }} :</b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $sale->shipment_address }}" placeholder="Shipment Address">
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $sale->shipment_address }}" placeholder="{{ __('Shipment Address') }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Ship Status :</b></label>
+                                                    <label class="col-4"><b>{{ __('Ship Status') }} :</b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status">
-                                                            <option value="">Shipment Status</option>
+                                                            <option value="">@lang('menu.shipment_status')</option>
                                                             @foreach (App\Utils\SaleUtil::saleShipmentStatus() as $key => $shipmentStatus)
                                                                 <option {{ $sale->shipment_status == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $shipmentStatus }}
                                                                 </option>
@@ -343,18 +343,18 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Delivered To :</b></label>
+                                                    <label class="col-4"><b>{{ __('Delivered To') }} :</b></label>
                                                     <div class="col-8">
-                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" value="{{ $sale->delivered_to }}" placeholder="Delivered To">
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" value="{{ $sale->delivered_to }}" placeholder="{{ __('Delivered To') }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Sale Note :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.sale_note') :</b></label>
                                                     <div class="col-8">
-                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="Sale note" value="{{ $sale->sale_note }}">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="@lang('menu.sale_note')" value="{{ $sale->sale_note }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -440,21 +440,21 @@
                                             </div>
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">CR. Receivable :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.cr_receivable') :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="" tabindex="-1">
                                                 </div>
                                             </div>
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">Cash Receive : >></label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.cash_receive') : >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             {{-- <div class="row">
-                                                <label class="col-sm-5 col-form-label">Change :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.change') :</label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
                                                 </div>
@@ -508,7 +508,7 @@
                                             <div class="col-12 d-flex justify-content-end">
                                                 <div class="btn-loading">
                                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                                                    <button type="submit" id="save" class="btn btn-sm btn-success submit_button">Save Change </button>
+                                                    <button type="submit" id="save" class="btn btn-sm btn-success submit_button">@lang('menu.save_change') </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -541,7 +541,7 @@
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">Cost</span>
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>
                             </p>
                         @endif
 

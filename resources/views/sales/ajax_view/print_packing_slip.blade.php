@@ -20,7 +20,7 @@
                             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                             <p><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                         @endif
-                        <h6 >Packing Slip</h6>
+                        <h6 >@lang('menu.packing_slip')</h6>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                                 @endif
                             @endif
                         </li>
-                        <li><strong>Delivered To :</strong> {{ $sale->delivered_to }}</li>
+                        <li><strong>{{ __('Delivered To') }} :</strong> {{ $sale->delivered_to }}</li>
                     </ul>
                 </div>
             </div>
@@ -105,7 +105,7 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>Authorized Signature</strong></h6>
+                    <h6><strong>@lang('menu.authorized_signature')</strong></h6>
                 </div>
             </div>
         </div>

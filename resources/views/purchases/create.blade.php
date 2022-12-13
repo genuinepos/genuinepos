@@ -263,7 +263,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <select name="order_discount_type" class="form-control" id="order_discount_type">
-                                                                        <option value="1">Fixed(0.00)</option>
+                                                                        <option value="1">@lang('menu.fixed')(0.00)</option>
                                                                         <option value="2">@lang('menu.percentage')(%)</option>
                                                                     </select>
                                                                 </div>

@@ -186,7 +186,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         @endif
     </div>
 
-    {{-- <button class="btn btn-success" onclick="window.print()">Print</button> --}}
+    {{-- <button class="btn btn-success" onclick="window.print()">@lang('menu.print')</button> --}}
 </body>
 <!--Jquery Cdn-->
 <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>

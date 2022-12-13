@@ -7,7 +7,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Sale Details (Invoice ID : <strong>
+                    @lang('menu.sale_details') (@lang('menu.invoice_id') : <strong>
                         <span class="head_invoice_id">{{ $sale->invoice_id }}</span>
                     </strong>)
                 </h5>
@@ -43,7 +43,7 @@
 
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>Sale From : </strong></li>
+                            <li><strong>@lang('menu.sale_from') : </strong></li>
                             @if ($sale->branch)
                                 <li>
                                     <strong>@lang('menu.stock_location') : </strong>
@@ -69,7 +69,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong> {{ $sale->status == 1 ? 'Invoice ID' : 'Order No' }}  : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>Sale Status : </strong>
+                            <li><strong>@lang('menu.sale_status') : </strong>
                                 @if ($sale->status == 1)
                                     <span class="badge bg-success">@lang('menu.final')</span>
                                 @elseif($sale->status == 2)
@@ -83,26 +83,26 @@
                                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                 @endphp
                                 @if ($sale->due <= 0)
-                                    <span class="badge bg-success"> Paid </span>
+                                    <span class="badge bg-success"> @lang('menu.paid') </span>
                                 @elseif ($sale->due > 0 && $sale->due < $payable)
                                     <span class="badge bg-primary text-white">@lang('menu.partial')</span>
                                 @elseif ($payable == $sale->due)
                                     <span class="badge bg-danger text-white">@lang('menu.due')</span>
                                 @endif
                             </li>
-                            <li><strong>Shipment Status : </strong>
+                            <li><strong>@lang('menu.shipment_status') : </strong>
                                 @if ($sale->shipment_status == null)
-                                    <span class="badge bg-danger">Not-Available</span>
+                                    <span class="badge bg-danger">{{ __('Not-Available') }}</span>
                                 @elseif($sale->shipment_status == 1)
                                     <span class="badge bg-warning">@lang('menu.ordered')</span>
                                 @elseif($sale->shipment_status == 2)
-                                    <span class="badge bg-secondary">Packed</span>
+                                    <span class="badge bg-secondary">{{ __('Packed') }}</span>
                                 @elseif($sale->shipment_status == 3)
-                                    <span class="badge bg-primary">Shipped</span>
+                                    <span class="badge bg-primary">{{ __('Shipped') }}</span>
                                 @elseif($sale->shipment_status == 4)
-                                    <span class="badge bg-success">Delivered</span>
+                                    <span class="badge bg-success">{{ __('Delivered') }}</span>
                                 @elseif($sale->shipment_status == 5)
-                                    <span class="badge bg-info">Cancelled</span>
+                                    <span class="badge bg-info">{{ __('Cancelled') }}</span>
                                 @endif
                             </li>
                             <li><strong>@lang('menu.created_by') : </strong>
@@ -304,7 +304,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p><b>Sale Note</b> : </p>
+                            <p><b>@lang('menu.sale_note')</b> : </p>
                             <p class="sale_note">{{ $sale->sale_note ? $sale->sale_note : 'N/A' }}</p>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
 
                 @if(auth()->user()->can('shipment_access'))
                     <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
-                    class="footer_btn btn btn-sm btn-success action_hideable">Print Packing Slip</button>
+                    class="footer_btn btn btn-sm btn-success action_hideable">{{ __("Print Packing Slip") }}</button>
                 @endif
 
                 <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white action_hideable">@lang('menu.print_challan')</button>

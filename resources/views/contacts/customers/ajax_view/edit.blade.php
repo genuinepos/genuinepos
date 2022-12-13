@@ -4,7 +4,7 @@
     <div class="form-group row">
         <div class="col-md-3">
             <label><b>@lang('menu.name')</b> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control edit_input" data-name="Customer name" id="e_name" placeholder="Customer name" value="{{ $customer->name }}"/>
+            <input type="text" name="name" class="form-control edit_input" data-name="Customer name" id="e_name" placeholder="@lang('menu.customer_name')" value="{{ $customer->name }}"/>
             <span class="error error_e_name"></span>
         </div>
 

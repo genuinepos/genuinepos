@@ -20,13 +20,13 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><strong>Start At :</strong> </label>
+            <label><strong>@lang('menu.start_at') :</strong> </label>
             <input type="text" name="start_at" id="e_start_at" class="form-control add_input" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($discount->start_at)) }}">
             <span class="error error_start_at"></span>
         </div>
 
         <div class="col-md-6">
-            <label><strong>End At :</strong></label>
+            <label><strong>@lang('menu.end_at') :</strong></label>
             <input type="text" name="end_at" id="e_end_at" class="form-control add_input" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($discount->end_at)) }}">
             <span class="error error_end_at"></span>
         </div>
@@ -51,7 +51,7 @@
         <div class="col-md-6">
             <label><strong>@lang('menu.brand'):</strong> </label>
             <select name="brand_id" id="brand_id" class="form-control add_input">
-                <option value="">Please select </option>
+                <option value="">@lang('menu.please_select') </option>
                 @foreach ($brands as $brand)
                     <option {{ $discount->brand_id == $brand->id ? 'SELECTED' : '' }} value="{{ $brand->id }}">
                         {{ $brand->name }}
@@ -63,7 +63,7 @@
         <div class="col-md-6">
             <label><strong>@lang('menu.category') :</strong></label>
             <select name="category_id" id="category_id" class="form-control add_input">
-                <option value="">Please select </option>
+                <option value="">@lang('menu.please_select') </option>
                 @foreach ($categories as $category)
                     <option {{ $discount->category_id == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">
                         {{ $category->name }}
@@ -77,14 +77,14 @@
         <div class="col-md-6">
             <label><strong>@lang('menu.discount_type') :</strong> </label>
             <select name="discount_type" id="discount_type" class="form-control add_input">
-                <option {{ $discount->discount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed(0.00)</option>
+                <option {{ $discount->discount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')(0.00)</option>
                 <option {{ $discount->discount_type == 2 ? 'SELECTED' : '' }} value="1">@lang('menu.percentage')(%)</option>
             </select>
             <span class="error error_discount_type"></span>
         </div>
 
         <div class="col-md-6">
-            <label><strong>Discount Amount :</strong></label>
+            <label><strong>@lang('menu.discount_amount') :</strong></label>
             <input type="number" name="discount_amount" id="discount_amount" class="form-control add_input" value="{{ $discount->discount_amount }}" autocomplete="off">
             <span class="error error_discount_amount"></span>
         </div>
@@ -111,7 +111,7 @@
                     <div class="row">
                         <p class="checkbox_input_wrap">
                             <input {{ $discount->apply_in_customer_group == 1 ? 'CHECKED' : '' }} type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp;
-                            Apply in customer Group
+                            @lang('menu.apply_customer_group')
                         </p>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                 <div class="col-12">
                     <div class="row">
                         <p class="checkbox_input_wrap">
-                            <input {{ $discount->is_active == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_active" id="is_active"> &nbsp; Is Active
+                            <input {{ $discount->is_active == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_active" id="is_active"> &nbsp; @lang('menu.is_active')
                         </p>
                     </div>
                 </div>

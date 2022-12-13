@@ -25,7 +25,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-cubes"></span>
-                    <h5>Stock In-Out Report</h5>
+                    <h5>@lang('menu.stock_in_out_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -74,7 +74,7 @@
                                             <label><strong>@lang('menu.customer') :</strong></label>
                                             <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">Walk-In-Customer</option>
+                                                <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                 @foreach ($customers as $customer)
                                                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                                 @endforeach
@@ -136,13 +136,13 @@
                                         <tr>
                                             <th>@lang('menu.product')</th>
                                             <th>@lang('menu.sale_date')</th>
-                                            <th>Sale</th>
+                                            <th>@lang('menu.sale')</th>
                                             <th>{{ __('B. Location') }}</th>
-                                            <th>Sold Qty</th>
-                                            <th>Sold Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            <th>{{ __('Sold Qty') }}</th>
+                                            <th>{{ __('Sold Price') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             <th>@lang('menu.customer')</th>
-                                            <th>Stock In By</th>
-                                            <th>Stock In Date</th>
+                                            <th>{{ __('Stock In By') }}</th>
+                                            <th>{{ __('Stock In Date') }}</th>
                                             <th>Lot No</th>
                                             {{-- <th>Stock In Qty</th> --}}
                                             <th>@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>

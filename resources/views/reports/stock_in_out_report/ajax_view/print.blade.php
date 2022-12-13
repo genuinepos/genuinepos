@@ -41,7 +41,7 @@
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Stock In-Out Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.stock_in_out_report') </b></h6>
 
         @if ($fromDate && $toDate)
 
@@ -59,15 +59,15 @@
             <thead>
                 <tr>
                     <th class="text-start">@lang('menu.product')</th>
-                    <th class="text-start">Sale</th>
+                    <th class="text-start">@lang('menu.sale')</th>
                     <th class="text-start">@lang('menu.sale_date')</th>
                     <th class="text-start">{{ __('B. Location') }}</th>
-                    <th class="text-end">Sold/Out Qty</th>
-                    <th class="text-end">Sold Price({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">{{ __('Sold/Out Qty') }}</th>
+                    <th class="text-end">{{ __('Sold Price') }}({{json_decode($generalSettings->business, true)['currency']}})</th>
 
                     <th class="text-start">@lang('menu.customer')</th>
-                    <th class="text-start">Stock In By</th>
-                    <th class="text-start">Stock In Date</th>
+                    <th class="text-start">{{ __('Stock In By') }}</th>
+                    <th class="text-start">{{ __('Stock In Date') }}</th>
                     <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
@@ -119,7 +119,7 @@
                                 {{ 'Sale Returned Stock:'  . $row->sale_return_invoice }}
                             @else
 
-                                Non-Manageable-Stock
+                                {{ __('Non-Manageable-Stock') }}
                             @endif
                         </td>
 
@@ -144,14 +144,14 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Stock In Qty : </th>
+                    <th class="text-end">{{ __('Total Stock In Qty') }} : </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalStockInQty) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Stock Out Qty : </th>
+                    <th class="text-end">{{ __('Total Stock Out Qty') }} : </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalStockOutQty) }}
                     </td>
@@ -169,12 +169,12 @@
 
         <div class="col-4 text-center">
             @if (env('PRINT_SD_SALE') == true)
-                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             @endif
         </div>
 
         <div class="col-4 text-end">
-            <small>Print Time : {{ date($timeFormat) }}</small>
+            <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
         </div>
     </div>
 </div>

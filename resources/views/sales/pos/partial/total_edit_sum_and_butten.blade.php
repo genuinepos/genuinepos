@@ -73,7 +73,7 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-gren function-card" tabindex="-1">Hold Invoice<p>F8</p>
+                                class="bg-gren function-card" tabindex="-1">@lang('menu.hold_invoices')<p>F8</p>
                             </a>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                                         toastr.error('Suspend is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-swit function-card" tabindex="-1">Suspend<p>Alt+A</p>
+                                class="bg-swit function-card" tabindex="-1">{{ __('Suspend') }}<p>Alt+A</p>
                             </a>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#" class="bg-swit function-card" onclick="cancel(); return false;" tabindex="-1">
-                                Cancel
+                                @lang('menu.cancel')
                                 <p>Ctrl+M</p>
                             </a>
                         </div>
@@ -174,7 +174,7 @@
                     @endif
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Pre. Due:</label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Pre. Due') }}:</label>
                         <div class="col-sm-9 ">
                             <input readonly class="form-control" type="number" step="any" name="previous_due"
                                 id="previous_due" value="0.00" autocomplete="off">
@@ -197,7 +197,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">Change Amount:</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.change_amount'):</label>
                         <div class="col-sm-6 ">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control">
@@ -227,7 +227,7 @@
                                             toastr.error('Full credit sale is disabled.');
                                         "
                                     @endif
-                                tabindex="-1"><i class="fas fa-check"></i> Credit Sale</a>
+                                tabindex="-1"><i class="fas fa-check"></i> @lang('menu.credit_sale')</a>
                             </div>
 
                             <div class="btn-bg">
@@ -238,7 +238,7 @@
                         <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal function-card other_payment_method" tabindex="-1">
-                                    <small><i class="fas fa-credit-card"></i> Other Method</small>
+                                    <small><i class="fas fa-credit-card"></i> @lang('menu.other_method')</small>
                                     <p>Ctrl+B</p>
                                 </a>
                             </div>
@@ -248,7 +248,7 @@
                             <div class="btn-bg">
                                 <a href="#" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
                                     data-action_id="1" tabindex="-1">
-                                        <small><i class="far fa-money-bill-alt"></i> Cash </small>
+                                        <small><i class="far fa-money-bill-alt"></i> @lang('menu.cash') </small>
                                     <p>F10</p>
                                 </a>
                             </div>

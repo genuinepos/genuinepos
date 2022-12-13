@@ -10,7 +10,7 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="payment_heading">Edit Receive Payment</h6>
+            <h6 class="modal-title" id="payment_heading">{{ __('Edit Receive Payment') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body" id="payment-modal-body">
@@ -28,7 +28,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong> @lang('menu.invoice_id') : </strong><span>{{ $payment->sale->invoice_id }}</span> </li>
-                                <li><strong>Branch/Business : </strong>
+                                <li><strong>{{ __('Branch/Business') }} : </strong>
                                     <span>
                                         @if ($payment->sale->branch)
                                             {{ $payment->sale->branch->name.'/'.$payment->sale->branchbranch_code }}

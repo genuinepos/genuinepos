@@ -59,7 +59,7 @@
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px">Customer Name: </span>
+                <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.customer_name'): </span>
                 {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">

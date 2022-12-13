@@ -90,7 +90,7 @@
                             <div class="col-6">
                                 <label><b>{{ __('Amount Type') }} :</b>  <span class="text-danger">*</span></label>
                                 <select class="form-control" name="amount_type" id="amount_type">
-                                    <option value="1">Fixed (0.0)</option>
+                                    <option value="1">@lang('menu.fixed') (0.0)</option>
                                     <option value="2">@lang('menu.percentage') (%)</option>
                                 </select>
                             </div>

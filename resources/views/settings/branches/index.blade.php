@@ -40,8 +40,8 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-white">Logo</th>
-                                    <th class="text-white">B.Location Name</th>
+                                    <th class="text-white">@lang('menu.logo')</th>
+                                    <th class="text-white">{{ __('B.Location Name') }}</th>
                                     <th class="text-white">Branch Code</th>
                                     <th class="text-white">@lang('menu.phone')</th>
                                     <th class="text-white">@lang('menu.city')</th>

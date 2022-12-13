@@ -59,7 +59,7 @@
                             <p class="checkbox_input_wrap">
                                 <input type="checkbox"
                                     {{  env('SMS_ACTIVE') == 'true' ? 'CHECKED' : '' }}
-                                    name="SMS_ACTIVE" autocomplete="off"> &nbsp; <b>Is Active</b>
+                                    name="SMS_ACTIVE" autocomplete="off"> &nbsp; <b>@lang('menu.is_active')</b>
                             </p>
                         </div>
                     </div>

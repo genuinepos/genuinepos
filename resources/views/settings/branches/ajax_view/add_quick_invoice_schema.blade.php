@@ -1,7 +1,7 @@
 <form id="add_schema_form" action="{{ route('settings.branches.quick.invoice.schema.store') }}" method="POST">
     @csrf
     <div class="form-group">
-        <label><b>Preview : <span id="q_schema_preview"></span></label>
+        <label><b>@lang('menu.preview') : <span id="q_schema_preview"></span></label>
     </div>
 
     <div class="form-group row mt-1">
@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Format :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.from') :</b> <span class="text-danger">*</span></label>
             <select name="format" class="form-control" id="q_format">
                 <option value="1">FORMAT-XXXX</option>
                 <option value="2">FORMAT-{{ date('Y') }}/XXXX</option>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Start From :</b></label>
+            <label><b>@lang('menu.start_from') :</b></label>
             <input type="number" name="start_from" class="form-control" id="q_start_from" placeholder="Start From" value="0"/>
         </div>
     </div>

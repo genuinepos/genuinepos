@@ -47,7 +47,7 @@
             </p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Sale Statements </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.sale_statement') </b></h6>
     </div>
 </div>
 <br>
@@ -186,7 +186,7 @@
             <thead>
 
                 <tr>
-                    <th class="text-end">Total Sold Item : </th>
+                    <th class="text-end">{{ __('Total Sold Item') }} : </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalItems) }}
                     </td>
@@ -214,14 +214,14 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total @lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total') @lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalShipmentCharge) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Sale Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Sale Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalSaleAmount) }}
                     </td>

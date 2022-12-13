@@ -14,7 +14,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-shopping-cart"></span>
-                    <h5>User Activities Log</h5>
+                    <h5>@lang('menu.user_activities_log')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -50,7 +50,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>Action By :</strong></label>
+                                        <label><strong>@lang('menu.action_by') :</strong></label>
                                         <select name="user_id" class="form-control" id="user_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
 
@@ -58,7 +58,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Action Name :</strong></label>
+                                        <label><strong>@lang('menu.action_name') :</strong></label>
                                         <select name="action" class="form-control" id="action" autofocus>
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($userActivityLogUtil->actions() as $key => $action)
@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Subject Type :</strong></label>
+                                        <label><strong>@lang('menu.subject_type') :</strong></label>
                                         <select name="subject_type" class="form-control select2" id="subject_type" autofocus>
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($userActivityLogUtil->subjectTypes() as $key => $subjectTypes)
@@ -115,7 +115,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>User Activity Logs</h6>
+                        <h6>{{ __('User Activity Logs') }}</h6>
                     </div>
                 </div>
 
@@ -130,9 +130,9 @@
                                 <tr>
                                     <th>@lang('menu.date')</th>
                                     <th>@lang('menu.business_location')</th>
-                                    <th>Action By</th>
-                                    <th>Action Name</th>
-                                    <th>Subject Type</th>
+                                    <th>@lang('menu.action_by')</th>
+                                    <th>@lang('menu.action_name')</th>
+                                    <th>@lang('menu.subject_type')</th>
                                     <th>@lang('menu.description')</th>
                                 </tr>
                             </thead>

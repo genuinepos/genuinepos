@@ -225,7 +225,7 @@
 
                 <div class="col-4 text-center">
                     @if (env('PRINT_SD_SALE') == true)
-                        <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                        <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     @endif
                 </div>
 

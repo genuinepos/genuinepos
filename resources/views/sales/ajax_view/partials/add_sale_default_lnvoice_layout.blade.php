@@ -155,7 +155,7 @@
                         </div>
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
-                                <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
+                                <li><strong> @lang('menu.invoice_no') : </strong> {{ $sale->invoice_id }}</li>
                                 <li><strong>@lang('menu.date'): </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                                 <li><strong> @lang('menu.entered_by') : </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                             </ul>
@@ -168,8 +168,8 @@
                         <thead>
                             <tr>
                                 <th class="text-start">@lang('menu.sl')</th>
-                                <th class="text-start">Descrpiton</th>
-                                <th class="text-start">Sold Qty</th>
+                                <th class="text-start">@lang('menu.department')</th>
+                                <th class="text-start">{{ __('Sold Price') }}</th>
 
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
                                     <th class="text-end">@lang('menu.warranty')</th>
@@ -222,7 +222,7 @@
                                                 @endif
                                             @else
 
-                                                <b>No</b>
+                                                <b>@lang('menu.no')</b>
                                             @endif
                                         </td>
                                     @endif
@@ -249,7 +249,7 @@
                     <br>
                     <div class="row page_break">
                         <div class="col-md-12 text-end">
-                            <h6><em>Continued To this next page....</em></h6>
+                            <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                         </div>
                     </div>
                     @if ($defaultLayout->is_header_less == 1)
@@ -262,7 +262,7 @@
                 <div class="row" style="margin-top: -23px!important;">
                     <div class="col-md-6">
                         @if ($defaultLayout->show_total_in_word)
-                            <p style="text-transform: uppercase;"><b>@lang('menu.in_word'): </b> <span id="inword"></span> ONLY.</p>
+                            <p style="text-transform: uppercase;"><b>@lang('menu.in_word'): </b> <span id="inword"></span> @lang('menu.only')</p>
                         @endif
 
                         @if (
@@ -398,7 +398,7 @@
                         </div>
 
                         <div class="col-4 text-end">
-                            <small>Print Time : {{ date($timeFormat) }}</small>
+                            <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                         </div>
                     </div>
                 </div>
@@ -583,7 +583,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.change_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}

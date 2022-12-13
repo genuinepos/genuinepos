@@ -50,9 +50,9 @@
 
                                     @if ($sale->due <= 0)
                                     @lang('menu.paid')
-                                    @elseif ($sale->due > 0 && $sale->due < $payable) Partial
+                                    @elseif ($sale->due > 0 && $sale->due < $payable) {{ __('Partial') }}
                                         @elseif($payable==$sale->due)
-                                            Due
+                                            @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -152,7 +152,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Invoice No : </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong> @lang('menu.invoice_no') : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): </strong>
                                 {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
                             </li>
@@ -233,7 +233,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
-                        <h6><em>Continued To this next page....</em></h6>
+                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
             @endif
@@ -242,7 +242,7 @@
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word)
                         <p style="text-transform: uppercase;">
-                            <b>@lang('menu.in_word'): </b> <span id="inword"> ONLY.</span>
+                            <b>@lang('menu.in_word'): </b> <span id="inword"> @lang('menu.only').</span>
                         </p>
                     @endif
 
@@ -572,7 +572,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong> Change Amount : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
+                                <th class="text-endx"><strong> @lang('menu.change_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}

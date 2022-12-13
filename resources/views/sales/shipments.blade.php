@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shipping-fast"></span>
-                                <h5>Shipments</h5>
+                                <h5>@lang('menu.shipments')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -101,7 +101,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Shipment </h6>
+                                    <h6>{{ __('All Shipment') }} </h6>
                                 </div>
                             </div>
 
@@ -115,10 +115,10 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.invoice_id')</th>
-                                                <th>Sale From</th>
+                                                <th>@lang('menu.sale_from')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.created_by')</th>
-                                                <th>Shipment Status</th>
+                                                <th>@lang('menu.shipment_status')</th>
                                                 <th>@lang('menu.payment_status')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>

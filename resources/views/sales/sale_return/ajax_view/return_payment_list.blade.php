@@ -49,7 +49,7 @@
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                     </li>
                     <li>
-                        <strong>@lang('menu.total_paid')/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_due_pay) }}
                     </li>
                 </ul>

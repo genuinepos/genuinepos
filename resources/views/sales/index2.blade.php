@@ -146,7 +146,7 @@
                                                 <th>@lang('menu.total_payable')</th>
                                                 <th>@lang('menu.paid')</th>
                                                 <th>@lang('menu.due')</th>
-                                                <th>Return</th>
+                                                <th>{{ __('Return') }}</th>
                                                 <th>@lang('menu.return_due')</th>
                                             </tr>
                                         </thead>
@@ -227,7 +227,7 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
+                                    {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">@lang('menu.print')</a></li> --}}
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                                 </ul>

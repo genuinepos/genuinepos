@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-drafting-compass"></span>
-                                <h5>Drafts</h5>
+                                <h5>@lang('menu.draft')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -108,7 +108,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Draft ID</th>
+                                                <th>{{ __('Draft ID') }}</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.total_amount')</th>

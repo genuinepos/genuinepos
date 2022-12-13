@@ -5,10 +5,10 @@
             <th>@lang('menu.product')</th>
             <th>@lang('menu.unit_price')</th>
             <th>@lang('menu.current_stock')</th>
-            <th>@lang('menu.current_stock_value') <b><small>(By Unit Cost)</small></b></th>
-            <th>@lang('menu.current_stock_value') <b><small>(By Unit Price)</small></b></th>
-            <th>Potential profit</th>
-            <th>Total Unit Sold</th>
+            <th>@lang('menu.current_stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>({{ __('By Unit Price') }})</small></b></th>
+            <th>{{ __('Potential profit') }}</th>
+            <th>{{ __('Total Unit Sold') }}</th>
             <th>@lang('menu.total_adjusted')</th>
         </tr>
     </thead>

@@ -24,7 +24,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sold Product List</h5>
+                                <h5>@lang('menu.sold_product_list')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -147,7 +147,7 @@
                             <div class="card">
                                 <div class="section-header">
                                     <div class="col-6">
-                                        <h6>Sold Product List</h6>
+                                        <h6>@lang('menu.sold_product_list')</h6>
                                     </div>
                                     @if(auth()->user()->can('purchase_add'))
                                         <div class="col-6 d-flex justify-content-end">
@@ -169,7 +169,7 @@
                                                     <th>@lang('menu.p_code')</th>
                                                     <th>@lang('menu.customer')</th>
                                                     <th>@lang('menu.invoice_id')</th>
-                                                    <th>Sold By</th>
+                                                    <th>@lang('menu.sold_by')</th>
                                                     <th>@lang('menu.quantity')</th>
                                                     <th>@lang('menu.unit_price')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                     <th>@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>

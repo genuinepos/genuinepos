@@ -27,7 +27,7 @@
                             @csrf
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <label><strong>Default Sale Discount :</strong></label>
+                                    <label><strong>@lang('menu.default_sale_discount') :</strong></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>Default Sale Tax :</strong></label>
+                                    <label><strong>@lang('menu.default_sale_tax') :</strong></label>
                                     <select name="default_tax_id" class="form-control">
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($taxes as $tax)
@@ -51,22 +51,22 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>Sales Commission Agent:</strong></label>
+                                    <label><strong>@lang('menu.sales_commission_agent')</strong></label>
                                     <select class="form-control" name="sales_cmsn_agnt">
                                         <option {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'disable' ? 'SELECTED' : '' }}
-                                            value="disable">Disable
+                                            value="disable">{{ __('Disable') }}
                                         </option>
 
                                         <option {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'logged_in_user' ? 'SELECTED' : '' }}
-                                            value="logged_in_user">Logged in user
+                                            value="logged_in_user">@lang('menu.logged_in_user')
                                         </option>
 
                                         <option {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'user' ? 'SELECTED' : '' }}
-                                            value="user">Select from user&#039;s list
+                                            value="user">@lang('menu.select_from_user')&#039;s list
                                         </option>
 
                                         <option {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
-                                            value="select_form_cmsn_list">Select from commission agent&#039;s list
+                                            value="select_form_cmsn_list">@lang('menu.select_from_commission_agent')&#039;s list
                                         </option>
                                     </select>
                                 </div>

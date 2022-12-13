@@ -28,7 +28,7 @@
                             <ul class="list-unstyled">
                                 <li><strong> @lang('menu.invoice_id') : </strong><span>{{ $sale->invoice_id }}</span> </li>
                                 <li>
-                                    <strong>Branch/Business : </strong>
+                                    <strong>{{ __('Branch/Business') }} : </strong>
                                     <span>
                                         @if ($sale->branch)
                                             {{ $sale->branch->name.'/'.$sale->branch->branch_code }}

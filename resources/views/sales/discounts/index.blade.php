@@ -23,7 +23,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>Offer List</h6>
+                                    <h6>{{ __('Offer List') }}</h6>
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
@@ -39,13 +39,13 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>Offer Name</th>
+                                                <th>@lang('menu.offer_name')</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>@lang('menu.status')</th>
-                                                <th>Start At</th>
-                                                <th>End At</th>
+                                                <th>@lang('menu.start_at')</th>
+                                                <th>@lang('menu.end_at')</th>
                                                 <th>@lang('menu.discount_type')</th>
-                                                <th>Discount Amount</th>
+                                                <th>@lang('menu.discount_amount')</th>
                                                 <th>@lang('menu.priority')</th>
                                                 <th>@lang('menu.brand')</th>
                                                 <th>@lang('menu.category')</th>
@@ -74,7 +74,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Offer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_offer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -87,7 +87,7 @@
                             <div class="col-md-12">
                                 <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
-                                    data-name="Discount name" id="name" placeholder="Offer name" />
+                                    data-name="Discount name" id="name" placeholder="@lang('menu.offer_name')" />
                                 <span class="error error_name"></span>
                             </div>
                         </div>
@@ -103,13 +103,13 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Start At :</strong> </label>
+                                <label><strong>@lang('menu.start_at') :</strong> </label>
                                 <input type="text" name="start_at" id="start_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_start_at"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>End At :</strong></label>
+                                <label><strong>@lang('menu.end_at') :</strong></label>
                                 <input type="text" name="end_at" id="end_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_end_at"></span>
                             </div>
@@ -131,7 +131,7 @@
                             <div class="col-md-6">
                                 <label><strong>@lang('menu.brand'):</strong> </label>
                                 <select name="brand_id" id="brand_id" class="form-control add_input">
-                                    <option value="">Please select </option>
+                                    <option value="">@lang('menu.please_select') </option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
@@ -141,7 +141,7 @@
                             <div class="col-md-6">
                                 <label><strong>@lang('menu.category') :</strong></label>
                                 <select name="category_id" id="category_id" class="form-control add_input">
-                                    <option value="">Please select </option>
+                                    <option value="">@lang('menu.please_select') </option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -153,14 +153,14 @@
                             <div class="col-md-6">
                                 <label><strong>@lang('menu.discount_type') :</strong> </label>
                                 <select name="discount_type" id="discount_type" class="form-control add_input">
-                                    <option value="1">Fixed(0.00)</option>
+                                    <option value="1">@lang('menu.fixed')(0.00)</option>
                                     <option value="1">@lang('menu.percentage')(%)</option>
                                 </select>
                                 <span class="error error_discount_type"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Discount Amount :</strong></label>
+                                <label><strong>@lang('menu.discount_amount') :</strong></label>
                                 <input type="number" name="discount_amount" id="discount_amount" class="form-control add_input">
                                 <span class="error error_discount_amount"></span>
                             </div>
@@ -184,7 +184,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp; Apply in customer Group</p>
+                                            <input type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp; @lang('menu.apply_customer_group')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +195,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input CHECKED type="checkbox" name="is_active" id="is_active"> &nbsp; Is Active </p>
+                                            <input CHECKED type="checkbox" name="is_active" id="is_active"> &nbsp; @lang('menu.is_active') </p>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Offer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_offer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

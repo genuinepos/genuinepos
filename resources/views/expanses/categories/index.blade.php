@@ -8,7 +8,7 @@
                 <div class="sec-name">
                     <div class="name-head">
                         <span class="fas fa-desktop"></span>
-                        <h5>Expense Category</h5>
+                        <h5>@lang('menu.expense_category')</h5>
                     </div>
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                 </div>
@@ -27,7 +27,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-12">
                                             <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="Expense Category Name"/>
+                                            <input type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="@lang('menu.expense_category')"/>
                                             <span class="error error_name"></span>
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-12">
                                             <label><strong>@lang('menu.name') :</strong>  <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" placeholder="Expense Category Name"/>
+                                            <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" placeholder="@lang('menu.expense_category')"/>
                                             <span class="error error_e_name"></span>
                                         </div>
                                     </div>

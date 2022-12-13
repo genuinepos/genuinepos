@@ -47,7 +47,7 @@
             </p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Sale Return Statements </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.sale_return_statement') </b></h6>
     </div>
 </div>
 <br>
@@ -70,17 +70,17 @@
                 <tr>
                     <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.invoice_id')</th>
-                    <th class="text-start">Parent Sale</th>
+                    <th class="text-start">@lang('menu.parent_sale')</th>
                     <th class="text-start">@lang('menu.stock_location')</th>
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">@lang('menu.entered_by')</th>
                     <th class="text-end">@lang('menu.total_item')</th>
-                    <th class="text-end">Total Qty</th>
+                    <th class="text-end">@lang('menu.total_qty')</th>
                     <th class="text-end">{{ __('Net total Amt') }}.</th>
-                    <th class="text-end">Return Discount</th>
-                    <th class="text-end">Return Tax</th>
-                    <th class="text-end">Total Return Amt.</th>
-                    <th class="text-end">Refunded Amt.</th>
+                    <th class="text-end">@lang('menu.return_discount')</th>
+                    <th class="text-end">@lang('menu.return_tax')</th>
+                    <th class="text-end">{{ __('Total Return Amt') }}.</th>
+                    <th class="text-end">{{ __('Refunded Amt') }}.</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -170,35 +170,35 @@
             <thead>
 
                 <tr>
-                    <th class="text-end">Total Return Item : </th>
+                    <th class="text-end">{{ __('Total Return Item') }} : </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalItems) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Return Qty : {{json_decode($generalSettings->business, true)['currency']}}</th>
+                    <th class="text-end">@lang('menu.total_return_qty') : {{json_decode($generalSettings->business, true)['currency']}}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalIQty) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Net Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Net Return Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalNetTotal) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Return Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total') @lang('menu.return_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnDiscount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Return Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Return Tax') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnTax) }}
                     </td>
@@ -212,7 +212,7 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Refunded Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalRefundedAmount) }}
                     </td>

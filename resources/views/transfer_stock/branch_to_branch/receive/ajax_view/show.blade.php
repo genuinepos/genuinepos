@@ -16,7 +16,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>Send From : </strong></li>
-                            <li><strong>B.Location Name :</strong>
+                            <li><strong>{{ __('B.Location Name') }} :</strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->name . '/' . $transfer->sender_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
                             <li><strong>@lang('menu.phone') : </strong>
@@ -40,7 +40,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>Receive From : </strong></li>
-                            <li><strong>B.Location Name :</strong>
+                            <li><strong>{{ __('B.Location Name') }} :</strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->name . '/' . $transfer->receiver_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
                             <li><strong>@lang('menu.phone') : </strong>
@@ -169,7 +169,7 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.from') : </strong></li>
-                        <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
 
                         @if ($transfer->sender_branch)
@@ -189,7 +189,7 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.to') : </strong></li>
-                        <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                         <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
 
                         @if ($transfer->receiver_branch)

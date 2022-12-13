@@ -15,7 +15,7 @@
 
         <div class="col-md-3">
             <label><strong>@lang('menu.supplier_id') :</strong></label>
-            <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
+            <input type="text" name="contact_id" class="form-control"  placeholder="{{ __('Contact ID') }}"/>
         </div>
 
         <div class="col-md-3">

@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sale Return Statements</h5>
+                                <h5>@lang('menu.sale_return_statement')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -104,7 +104,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Sale Return Statement List</h6>
+                                    <h6>{{ __('Sale Return Statement List') }}</h6>
                                 </div>
                             </div>
 
@@ -119,24 +119,24 @@
                                             <tr>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.return_invoice_id')</th>
-                                                <th>Parent Sale</th>
+                                                <th>@lang('menu.parent_sale')</th>
                                                 <th>@lang('menu.stock_location')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.entered_by')</th>
                                                 <th>@lang('menu.total_item')</th>
-                                                <th>Total Qty</th>
+                                                <th>@lang('menu.total_qty')</th>
                                                 <th>{{ __('Net total Amt') }}.</th>
-                                                <th>Return Discount</th>
+                                                <th>@lang('menu.return_discount')</th>
                                                 <th>@lang('menu.order_tax')</th>
-                                                <th>Total Return Amt.</th>
-                                                <th>Total Refunded Amt.</th>
+                                                <th>{{ __('Total Return Amt') }}.</th>
+                                                <th>{{ __('Total Refunded Amt') }}.</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="6" class="text-white text-end">
-                                                    Total : ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                    @lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})
                                                 </th>
 
                                                 <th id="total_item" class="text-white text-end"></th>

@@ -22,9 +22,9 @@
                             <th scope="col">@lang('menu.name')</th>
                             <th scope="col">@lang('menu.sold_quantity')</th>
                             <th scope="col">@lang('menu.unit')</th>
-                            <th scope="col">Price.Inc.Tax</th>
+                            <th scope="col">@lang('menu.price_inc_tax')</th>
                             <th scope="col">@lang('menu.sub_total')</th>
-                            <th scope="col">Ex.Qty</th>
+                            <th scope="col">@lang('menu.ex_qty')</th>
                         </tr>
                     </thead>
 
@@ -73,7 +73,7 @@
     <div class="form-group mt-3">
         <div class="col-md-12">
             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
-            <button type="submit" class="c-btn button-success float-end">Next</button>
+            <button type="submit" class="c-btn button-success float-end">@lang('menu.next')</button>
             <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
         </div>
     </div>

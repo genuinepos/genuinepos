@@ -175,7 +175,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong>Customer Name :</strong></li>
+                                    <li><strong>@lang('menu.customer_name') :</strong></li>
                                     <li><span class="name">{{ $customer->name }}</span></li><br>
                                     <li><strong><i class="fas fa-map-marker-alt"></i> Address :</strong></li>
                                     <li><span class="address">{{ $customer->address }}</span></li><br>
@@ -201,7 +201,7 @@
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
                                     <li>
-                                        <strong> Opening Balance : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
+                                        <strong> @lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                         <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
                                     </li>
 

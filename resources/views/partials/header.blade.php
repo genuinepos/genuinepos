@@ -43,7 +43,7 @@
                                         <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send
                                                     SMS</span></a></li>
                                         <li><a href="#"><i class="fas fa-download"></i><span class="title">Download
-                                                    Center</span></a></li>
+                                                    {{ __('Center') }}</span></a></li>
                                     </ul>
                                 </li>
                             @endif --}}

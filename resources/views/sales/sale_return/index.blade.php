@@ -24,7 +24,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Sale Return List </h6>
+                                    <h6>@lang('menu.sale_return_list') </h6>
                                 </div>
                             </div>
 
@@ -39,13 +39,13 @@
                                                 <th class="text-start">@lang('menu.action')</th>
                                                 <th class="text-start">@lang('menu.date')</th>
                                                 <th class="text-start">@lang('menu.invoice_id')</th>
-                                                <th class="text-start">Parent Sale</th>
-                                                <th class="text-start">Customer Name</th>
+                                                <th class="text-start">@lang('menu.parent_sale')</th>
+                                                <th class="text-start">@lang('menu.customer_name')</th>
                                                 <th class="text-start">@lang('menu.from')</th>
                                                 {{-- <th class="text-start">@lang('menu.payment_status')</th> --}}
-                                                <th class="text-start">Total Returned Amount</th>
+                                                <th class="text-start">@lang('menu.total_return_amount')</th>
                                                 {{-- <th class="text-start">Payment Due</th> --}}
-                                                <th class="text-start">Refunded Amount</th>
+                                                <th class="text-start">@lang('menu.refunded_amount')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

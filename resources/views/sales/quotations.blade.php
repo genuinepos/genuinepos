@@ -104,7 +104,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Quotation ID</th>
+                                                <th>@lang('menu.quotation_id')</th>
                                                 <th>@lang('menu.business_location')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.total_amount')</th>

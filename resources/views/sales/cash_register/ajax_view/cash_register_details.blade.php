@@ -3,7 +3,7 @@
 @endphp
 
 <div class="modal-header">
-    <h6 class="modal-title" id="exampleModalLabel">Register Details (
+    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.register_details') (
         {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->created_at)->format('jS M, Y h:i A') }}
         @if ($activeCashRegister->closed_at)
             - {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->closed_at)->format('jS M, Y h:i A') }}
@@ -22,7 +22,7 @@
     <table class="cash_register_table table modal-table table-sm">
         <tbody>
             <tr>
-                <td width="50" class="text-start">Opening Balance :</td>
+                <td width="50" class="text-start">@lang('menu.opening_balance') :</td>
                 <td width="50" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
                     {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
                 </td>
@@ -39,7 +39,7 @@
             @endforeach
             <tr>
                 <td width="50" class="text-start">
-                    Total Credit Sale:
+                    @lang('menu.total_credit_sale')
                 </td>
                 <td width="50" class="text-start text-danger">
                     {{ json_decode($generalSettings->business, true)['currency'] }}
@@ -50,7 +50,7 @@
     </table>
     <hr>
 
-    <p><strong>Collected Amounts By Account</strong></p>
+    <p><strong>@lang('menu.collected_amounts_by_account')</strong></p>
     <table class="cash_register_table table modal-table table-sm">
         <tbody>
             @php
@@ -79,7 +79,7 @@
     @php
         $__receivedInCashAccount = $receivedInCashAccount + $activeCashRegister->cash_in_hand
     @endphp
-    <p><strong>Current Cash Amount : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+    <p><strong>@lang('menu.current_cash_amount') : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}
         {{ App\Utils\Converter::format_in_bdt($__receivedInCashAccount) }}
     </p>
 
@@ -104,7 +104,7 @@
             </li>
 
             <li>
-                <b>Cash Counter : </b> {!! $activeCashRegister->counter_name .' (<b>'.$activeCashRegister->cc_s_name.'</b>)' !!}
+                <b>@lang('menu.cash_counter') : </b> {!! $activeCashRegister->counter_name .' (<b>'.$activeCashRegister->cc_s_name.'</b>)' !!}
             </li>
         </ul>
     </div>

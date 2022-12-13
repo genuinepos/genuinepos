@@ -10,7 +10,7 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="payment_heading">Edit Return Payment</h6>
+            <h6 class="modal-title" id="payment_heading">{{ __('Edit Return Payment') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body" id="payment-modal-body">
@@ -52,7 +52,7 @@
                                 </li>
 
                                 <li class="sale_due">
-                                    <strong>@lang('menu.total_paid')/Refunded Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                                     <span>{{ $payment->sale_return->total_return_due_pay }}</span>
                                 </li>
                             </ul>

@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h6 class="modal-title" id="exampleModalLabel">Edit Shipment - ({{ $sale->invoice_id }})</h6>
+    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Shipment') }} - ({{ $sale->invoice_id }})</h6>
     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
         class="fas fa-times"></span></a>
 </div>
@@ -13,29 +13,29 @@
             </div>
 
             <div class="col-md-6">
-                <label><strong>Shipment Address : </strong></label>
-                <textarea name="shipment_address" class="form-control form-control-sm add_input" id="shipment_address" data-name="Shipment address" cols="30" rows="3" placeholder="Shipment Address">{{ $sale->shipment_address }}</textarea>
+                <label><strong>{{ __('Shipment Address') }} : </strong></label>
+                <textarea name="shipment_address" class="form-control form-control-sm add_input" id="shipment_address" data-name="Shipment address" cols="30" rows="3" placeholder="{{ __('Shipment Address') }}">{{ $sale->shipment_address }}</textarea>
                 <span class="error error_shipment_address"></span>
             </div>
         </div>
 
         <div class="form-group row">
             <div class="col-md-6">
-                <label><strong>Shipment Status :</strong> </label>
+                <label><strong>@lang('menu.shipment_status') :</strong> </label>
                 <select name="shipment_status" class="form-control form-control-sm add_input" id="shipment_status" data-name="Shipment status">
-                    <option value="">Select Shipment Status</option>
+                    <option value="">{{ __('Select Shipment Status') }}</option>
                     <option {{ $sale->shipment_status == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.ordered')</option>
-                    <option {{ $sale->shipment_status == 2 ? 'SELECTED' : '' }} value="2">Packed</option>
-                    <option {{ $sale->shipment_status == 3 ? 'SELECTED' : '' }} value="3">Shipped</option>
-                    <option {{ $sale->shipment_status == 4 ? 'SELECTED' : '' }} value="4">Delivered</option>
-                    <option {{ $sale->shipment_status == 5 ? 'SELECTED' : '' }} value="5">Cancelled</option>
+                    <option {{ $sale->shipment_status == 2 ? 'SELECTED' : '' }} value="2">{{ __('Packed') }}</option>
+                    <option {{ $sale->shipment_status == 3 ? 'SELECTED' : '' }} value="3">{{ __('Shipped') }}</option>
+                    <option {{ $sale->shipment_status == 4 ? 'SELECTED' : '' }} value="4">{{ __('Delivered') }}</option>
+                    <option {{ $sale->shipment_status == 5 ? 'SELECTED' : '' }} value="5">{{ __('Cancelled') }}</option>
                 </select>
                 <span class="error error_shipment_status"></span>
             </div>
 
             <div class="col-md-6">
-                <label><strong>Delivered To :</strong></label>
-                <input type="text" name="delivered_to" id="delivered_to" class="form-control form-control-sm add_input" placeholder="Delivered To" value="{{ $sale->delivered_to }}" data-name="Delivered to">
+                <label><strong>{{ __('Delivered To') }} :</strong></label>
+                <input type="text" name="delivered_to" id="delivered_to" class="form-control form-control-sm add_input" placeholder="{{ __('Delivered To') }}" value="{{ $sale->delivered_to }}" data-name="Delivered to">
                 <span class="error error_delivered_to"></span>
             </div>
         </div>

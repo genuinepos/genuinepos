@@ -3,7 +3,7 @@
 @endphp
 
 <div class="modal-header">
-    <h6 class="modal-title" id="exampleModalLabel">Register Details (
+    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.register_details') (
         {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->created_at)->format('jS M, Y h:i A') }}
         - {{ Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'))->format('jS M, Y h:i A') }} )
     </h6>
@@ -18,7 +18,7 @@
             <table class="cash_register_table modal-table table table-sm">
                 <tbody>
                     <tr>
-                        <td class="text-start">Opeing Balance :</td>
+                        <td class="text-start">{{ __('Opeing Balance') }} :</td>
                         <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
@@ -37,7 +37,7 @@
 
                     <tr>
                         <td width="50" class="text-start">
-                            Total Credit Sale:
+                            @lang('menu.total_credit_sale'):
                         </td>
 
                         <td width="50" class="text-start text-danger">
@@ -50,7 +50,7 @@
 
             <hr>
 
-            <p><strong>Collected Amounts By Account</strong></p>
+            <p><strong>@lang('menu.collected_amounts_by_account')</strong></p>
             <table class="cash_register_table table modal-table table-sm">
                 <tbody>
                     @php
@@ -98,7 +98,7 @@
             <div class="btn-loading">
                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                <button type="submit" class="btn btn-sm btn-success">Close Register</button>
+                <button type="submit" class="btn btn-sm btn-success">{{ __('Close Register') }}</button>
             </div>
         </div>
     </form>

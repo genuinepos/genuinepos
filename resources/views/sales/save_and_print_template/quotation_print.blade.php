@@ -114,7 +114,7 @@
                     <thead>
                         <tr>
                             <th scope="col" class="text-start">@lang('menu.sl')</th>
-                            <th scope="col" class="text-start">Descrpiton</th>
+                            <th scope="col" class="text-start">@lang('menu.department')</th>
                             <th scope="col" class="text-start">@lang('menu.quantity')</th>
                             <th scope="col" class="text-start">@lang('menu.unit_price')</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
@@ -218,7 +218,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Recevier's signature </h6>
+                        <h6>{{ __('Receivers signature') }} </h6>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -391,7 +391,7 @@
                         <tr>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">Descrpiton</th>
+                            <th class="text-start">@lang('menu.department')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">@lang('menu.unit_price')</th>
                             <th class="text-start">@lang('menu.discount')</th>
@@ -490,7 +490,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Recevier's signature </h6>
+                        <h6>{{ __('Receivers signature') }} </h6>
                     </div>
                 </div>
 

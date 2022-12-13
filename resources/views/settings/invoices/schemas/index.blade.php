@@ -68,7 +68,7 @@
                     <form id="add_schema_form" action="{{ route('invoices.schemas.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label><b>Preview :</b> <span id="schema_preview"></span></label>
+                            <label><b>@lang('menu.preview') :</b> <span id="schema_preview"></span></label>
                         </div>
 
                         <div class="form-group row mt-1">
@@ -80,7 +80,7 @@
 
                             <div class="col-md-6">
                                 <div class="row">
-                                    <p class="checkbox_input_wrap mt-4"> <input type="checkbox" name="set_as_default" autocomplete="off" id="set_as_default">&nbsp;&nbsp;Set as default.</p>
+                                    <p class="checkbox_input_wrap mt-4"> <input type="checkbox" name="set_as_default" autocomplete="off" id="set_as_default">&nbsp;&nbsp;@lang('menu.set_as_default').</p>
                                 </div>
                             </div>
                         </div>

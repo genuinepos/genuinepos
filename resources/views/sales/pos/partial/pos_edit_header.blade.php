@@ -47,9 +47,9 @@
                     @endif
                 </p>
                 <small class="login-user-name">
-                    <span class="text-highlight">Loggedin :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
+                    <span class="text-highlight">{{ __('Loggedin') }} :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
                     <span>
-                        <span class="text-highlight">C.Register :</span>
+                        <span class="text-highlight">{{ __('C.Register') }} :</span>
                         @if ($sale->admin)
                             @if ($sale->admin->role_type == 1)
                                 Super-Admin

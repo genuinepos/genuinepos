@@ -169,7 +169,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Currency :</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Currency') :</strong><span class="text-danger">*</span></label>
                                             <select name="currency" class="form-control bs_input" data-name="Currency"
                                                 id="currency">
                                                 @foreach ($currencies as $currency)

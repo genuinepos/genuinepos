@@ -38,7 +38,7 @@
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Business Location Stock Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.business_location_stock_report') </b></h6>
     </div>
 </div>
 <br>
@@ -52,8 +52,8 @@
                     <th class="text-start">@lang('menu.business_location')</th>
                     <th class="text-end">@lang('menu.unit_price')</th>
                     <th class="text-end">@lang('menu.current_stock')</th>
-                    <th class="text-end">@lang('menu.stock_value') <b><small>(By Unit Cost)</small></b></th>
-                    <th class="text-end">Total Sold</th>
+                    <th class="text-end">@lang('menu.stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+                    <th class="text-end">@lang('menu.total_sold')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -103,12 +103,12 @@
 
         <div class="col-4 text-center">
             @if (env('PRINT_SD_SALE') == true)
-                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             @endif
         </div>
 
         <div class="col-4 text-end">
-            <small>Print Time : {{ date($timeFormat) }}</small>
+            <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
         </div>
     </div>
 </div>

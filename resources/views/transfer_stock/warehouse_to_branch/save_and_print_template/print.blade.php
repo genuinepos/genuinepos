@@ -115,7 +115,7 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Receiver's Signature</strong></p>
+                    <p><strong>{{ __('Receivers signature') }}</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
                     <p><strong>@lang('menu.signature_of_authority')</strong></p>

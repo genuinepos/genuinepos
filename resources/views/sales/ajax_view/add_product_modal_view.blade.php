@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-md-3">
-            <label><b> Unit :</b> <span class="text-danger">*</span></label>
+            <label><b> @lang('menu.unit') :</b> <span class="text-danger">*</span></label>
             <select class="form-control product_unit" name="unit_id" id="sale_unit_id">
                 <option value="">@lang('menu.select_unit')</option>
                 @foreach ($units as $unit)
@@ -131,12 +131,12 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6 text-start">
-                                    <label><b>Item Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.item_cost_exc_tax') :</b> <span class="text-danger">*</span></label>
                                     <input type="text" name="product_cost" class="form-control" autocomplete="off" id="sale_product_cost" placeholder="Unit Cost Exc. Tax">
                                     <span class="error error_sale_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
-                                    <label><b>Item Cost (Inc.Tax) :</b><span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.item_cost') (Inc.Tax) :</b><span class="text-danger">*</span></label>
                                     <input type="text" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
                                     id="sale_product_cost_with_tax" placeholder="Unit Cost Inc. Tax">

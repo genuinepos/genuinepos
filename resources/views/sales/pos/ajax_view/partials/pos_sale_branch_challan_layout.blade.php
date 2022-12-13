@@ -50,7 +50,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->branch_email)
-                                <h6>Eamil : {{ $sale->branch->email }}</h6>
+                                <h6>@lang('menu.email') : {{ $sale->branch->email }}</h6>
                             @endif
                         </div>
                     </div>
@@ -138,7 +138,7 @@
             <br>
             <div class="row page_break">
                 <div class="col-md-12 text-end">
-                    <h6><em>Continued To this next page....</em></h6>
+                    <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                 </div>
             </div>
         @endif

@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sale Statements</h5>
+                                <h5>@lang('menu.sale_statement')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -113,7 +113,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Sale Statement List</h6>
+                                    <h6>{{ __('Sale Statement List') }}</h6>
                                 </div>
                             </div>
 
@@ -146,7 +146,7 @@
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="5" class="text-white text-end">
-                                                    Total : ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                    @lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})
                                                 </th>
 
                                                 <th id="total_item" class="text-white text-end"></th>

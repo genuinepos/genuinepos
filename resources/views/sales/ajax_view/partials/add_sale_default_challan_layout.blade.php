@@ -13,9 +13,9 @@
                     <div class="col-md-12">
                         <div class="header_text text-center">
                             <h4>{{ $defaultLayout->header_text }}</h4>
-                            <p>{{ $defaultLayout->sub_heading_1 }}<p/>
-                            <p>{{ $defaultLayout->sub_heading_2 }}<p/>
-                            <p>{{ $defaultLayout->sub_heading_3 }}<p/>
+                            <p>{{ $defaultLayout->sub_heading_1 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_2 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_3 }}</p>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                     <tr>
                     <tr>
                         <th class="text-start">@lang('menu.serial')</th>
-                        <th class="text-start">Descrpiton</th>
+                        <th class="text-start">@lang('menu.department')</th>
                         <th class="text-start">@lang('menu.unit')</th>
                         <th class="text-start">@lang('menu.quantity')</th>
                     </tr>
@@ -168,7 +168,7 @@
         @if (count($sale->sale_products) > 11)
             <div class="row page_break">
                 <div class="col-md-12 text-end">
-                    <h6><em>Continued To this next page....</em></h6>
+                    <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                 </div>
             </div>
         @endif
@@ -176,7 +176,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>Recevier's signature </h6>
+                    <h6>{{ __('Receivers signature') }}</h6>
                 </div>
             </div>
             <div class="col-md-6">
@@ -209,7 +209,7 @@
                 </div>
 
                 <div class="col-4 text-center">
-                    <small>Print Time : {{ date($timeFormat) }}</small>
+                    <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

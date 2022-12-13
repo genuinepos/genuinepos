@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-full-display">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> Sale Details (Invoice ID :
+                <h5 class="modal-title" id="exampleModalLabel"> @lang('menu.sale_details') (Invoice ID :
                     <strong>
                         <span class="head_invoice_id">{{ $sale->invoice_id }}</span>
                     </strong>)
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>Sale From : </strong></li>
+                            <li><strong>@lang('menu.sale_from') : </strong></li>
                             @if ($sale->branch)
                             <li>
                                 <strong>@lang('menu.stock_location') : </strong>
@@ -57,7 +57,7 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong>@lang('menu.invoice_id') : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>Sale Status : </strong>
+                            <li><strong>@lang('menu.sale_status') : </strong>
                                 @if ($sale->status == 1)
                                     <span class="badge bg-success">@lang('menu.final')</span>
                                 @elseif($sale->status == 2)
@@ -263,7 +263,7 @@
 
                 @if (auth()->user()->can('shipment_access'))
                     <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
-                    class="btn btn-sm btn-success">Print Packing Slip</button>
+                    class="btn btn-sm btn-success">{{ __('Print Packing Slip') }}</button>
                 @endif
 
                 <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">@lang('menu.print_challan')</button>

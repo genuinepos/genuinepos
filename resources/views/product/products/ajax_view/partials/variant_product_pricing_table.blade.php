@@ -10,7 +10,7 @@
             <th class="text-white text-start">@lang('menu.default_selling_price')({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
             <th class="text-white text-start">@lang('menu.default_selling_price')({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
             @if (count($price_groups) > 0)
-                <th class="text-white text-start">Price Group</th>
+                <th class="text-white text-start">@lang('menu.price_group')</th>
             @endif
             <th class="text-white text-start">Variation Images</th>
         </tr>

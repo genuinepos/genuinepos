@@ -20,7 +20,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-9">
-                        <h6>All Barcode Sticker Setting</h6>
+                        <h6>{{ __('All Barcode Sticker Setting') }}</h6>
                     </div>
 
                     <div class="col-3 d-flex justify-content-end">
@@ -34,8 +34,8 @@
                                 <thead>
                                     <tr>
                                         <th class="text-start">@lang('menu.sl')</th>
-                                        <th class="text-start">Sticker Settings Name</th>
-                                        <th class="text-start">Sticker Settings Description</th>
+                                        <th class="text-start">@lang('menu.sticker_settings_name')</th>
+                                        <th class="text-start">@lang('menu.sticker_settings_description')</th>
                                         <th class="text-start">@lang('menu.action')</th>
                                     </tr>
                                 </thead>

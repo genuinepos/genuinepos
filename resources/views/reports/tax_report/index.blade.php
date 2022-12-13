@@ -17,7 +17,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill-wave-alt"></span>
-                    <h5>Tax Report <i data-bs-toggle="tooltip" data-bs-placement="right" title="Output: Purchase Order Tax, Input: Sale Order Tax, Expense: Tax On Expense" class="fas fa-info-circle tp"></i></h5>
+                    <h5>@lang('menu.tax_report') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Output: Purchase Order Tax, Input: Sale Order Tax, Expense: Tax On Expense" class="fas fa-info-circle tp"></i></h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -79,13 +79,13 @@
                                     <div class="card-body card-custom px-0">
 
                                         <div class="heading">
-                                            <h4>Overall (Output - Input - Expense) </h4>
+                                            <h4>@lang('menu.overall_output_expense') </h4>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="tax_sum">
-                                                    <h4 class="text-muted">Output Tax - Input Tax - Expense Tax : {{ json_decode($generalSettings->business, true)['currency'] }} 00.00 </h4>
+                                                    <h4 class="text-muted">@lang('menu.output_tax_input_expense_tax') : {{ json_decode($generalSettings->business, true)['currency'] }} 00.00 </h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -99,13 +99,13 @@
                                             <div class="tab_list_area">
                                                 <div class="btn-grooup">
                                                     <a id="tab_btn" data-show="purchase" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                                        <i class="fas fa-info-circle"></i> Input Tax
+                                                        <i class="fas fa-info-circle"></i> @lang('menu.input_tax')
                                                     </a>
                                                     <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
-                                                        <i class="fas fa-scroll"></i>Output Tax
+                                                        <i class="fas fa-scroll"></i>@lang('menu.output_tax')
                                                     </a>
                                                     <a id="tab_btn" data-show="expense" class="btn btn-sm btn-primary tab_btn" href="#">
-                                                        <i class="fas fa-scroll"></i>Expense Tax
+                                                        <i class="fas fa-scroll"></i>@lang('menu.expense_tax')
                                                     </a>
                                                 </div>
                                             </div>
@@ -122,7 +122,7 @@
                                                                         <th>@lang('menu.customer')</th>
                                                                         <th>@lang('menu.tax_number')</th>
                                                                         <th>@lang('menu.discount')</th>
-                                                                        <th>Tax Percent</th>
+                                                                        <th>@lang('menu.tax_percent')</th>
                                                                         <th>@lang('menu.tax_amount')</th>
                                                                     </tr>
                                                                 </thead>
@@ -155,7 +155,7 @@
                                                                         <th>@lang('menu.supplier')</th>
                                                                         <th>@lang('menu.tax_number')</th>
                                                                         <th>@lang('menu.discount')</th>
-                                                                        <th>Tax Percent</th>
+                                                                        <th>@lang('menu.tax_percent')</th>
                                                                         <th>@lang('menu.tax_amount')</th>
                                                                     </tr>
                                                                 </thead>
@@ -185,9 +185,9 @@
                                                                     <tr>
                                                                         <th>@lang('menu.date')</th>
                                                                         <th>@lang('menu.invoice_id')</th>
-                                                                        <th>Expense Category</th>
+                                                                        <th>@lang('menu.expense_category')</th>
                                                                         <th>@lang('menu.branch')</th>
-                                                                        <th>Tax Percent</th>
+                                                                        <th>@lang('menu.tax_percent')</th>
                                                                         <th>@lang('menu.total_amount')</th>
                                                                     </tr>
                                                                 </thead>
@@ -195,7 +195,7 @@
                                                                     <tr>
                                                                         <td>--/--/----</td>
                                                                         <td>EX000555</td>
-                                                                        <td>Expense Category</td>
+                                                                        <td>@lang('menu.expense_category')</td>
                                                                         <td>Dhaka Branch - D8557</td>
                                                                         <td>(0.00%)</td>
                                                                         <td>{{ json_decode($generalSettings->business, true)['currency'] }} 0.00</td>

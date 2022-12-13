@@ -50,7 +50,7 @@
                                 @endif
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                    <h6>Eamil : {{ $sale->branch->email }}</h6>
+                                    <h6>@lang('menu.email') : {{ $sale->branch->email }}</h6>
                                 @endif
 
                                 <h6 class="bill_name">@lang('menu.entered_by') :
@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Draft No : {{ $sale->invoice_id }}</strong></li>
+                            <li><strong> {{ __('Draft No') }} : {{ $sale->invoice_id }}</strong></li>
                             <li><strong>@lang('menu.date'): {{ $sale->date }}</strong></li>
                         </ul>
                     </div>
@@ -114,8 +114,8 @@
                     <thead>
                         <tr>
                         <tr>
-                            <th class="text-start">Descrpiton</th>
-                            <th class="text-start"> Quantity</th>
+                            <th class="text-start">@lang('menu.department')</th>
+                            <th class="text-start"> @lang('menu.quantity')</th>
                             <th class="text-start">@lang('menu.unit_price')</th>
                             @if ($sale->branch->add_sale_invoice_layout->product_discount)
                                 <th class="text-start">@lang('menu.discount')</th>
@@ -217,7 +217,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Recevier's signature </h6>
+                        <h6>{{ __('Receivers signature') }} </h6>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -361,7 +361,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Draft No : {{ $sale->invoice_id }}
+                            <li><strong> {{ __('Draft No') }} : {{ $sale->invoice_id }}
                                 </strong></li>
                             <li><strong>@lang('menu.date'): {{ $sale->date }}</strong></li>
                             <li><strong> @lang('menu.entered_by') : {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</strong></li>
@@ -375,7 +375,7 @@
                     <thead>
                         <tr>
                         <tr>
-                            <th class="text-start">Descrpiton</th>
+                            <th class="text-start">@lang('menu.department')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
                             <th class="text-start">@lang('menu.unit_price')</th>
                             @if ($defaultLayout->product_discount)
@@ -478,7 +478,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Recevier's signature </h6>
+                        <h6>{{ __('Receivers signature') }} </h6>
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -4,7 +4,7 @@
       <div class="modal-content" >
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-                Draft Details (Draft ID : <strong>{{ $d->invoice_id }}</strong>)
+                {{ __('Draft Details') }} ({{ __('Draft ID') }} : <strong>{{ $d->invoice_id }}</strong>)
           </h5>
           <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
             class="fas fa-times"></span></a>
@@ -58,27 +58,27 @@
                             <strong>@lang('menu.date') : </strong> {{ $draft->date . ' ' . $draft->time }}
                         </li>
                         <li>
-                            <strong>draft ID : </strong> {{ $draft->invoice_id }}
+                            <strong>{{ __('Draft ID') }} : </strong> {{ $draft->invoice_id }}
                         </li>
                     <li><strong>@lang('menu.status') : </strong>
                         <span class="sale_status">
                             <span class="badge bg-info">@lang('menu.draft')</span>
                         </span>
                     </li>
-                    <li><strong>Shipment Status : </strong>
+                    <li><strong>@lang('menu.shipment_status') : </strong>
                         <span class="shipment_status">
                             @if ($draft->shipment_status == null)
-                                <span class="badge bg-danger">Not-Available</span>
+                                <span class="badge bg-danger">{{ __('Not-Available') }}</span>
                             @elseif($draft->shipment_status == 1)
                                 <span class="badge bg-warning">@lang('menu.ordered')</span>
                             @elseif($draft->shipment_status == 2)
-                                <span class="badge bg-secondary">Packed</span>
+                                <span class="badge bg-secondary">{{ __('Packed') }}</span>
                             @elseif($draft->shipment_status == 3)
-                                <span class="badge bg-primary">Shipped</span>
+                                <span class="badge bg-primary">{{ __('Shipped') }}</span>
                             @elseif($draft->shipment_status == 4)
-                                <span class="badge bg-success">Delivered</span>
+                                <span class="badge bg-success">{{ __('Delivered') }}</span>
                             @elseif($draft->shipment_status == 5)
-                                <span class="badge bg-info">Cancelled</span>
+                                <span class="badge bg-info">{{ __('Cancelled') }}</span>
                             @endif
                         </span>
                     </li>
@@ -331,7 +331,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Invoice No : </strong> {{ $draft->invoice_id }}</li>
+                            <li><strong> @lang('menu.invoice_no') : </strong> {{ $draft->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): </strong> <{{ $draft->date . ' ' . $draft->time }}</li>
                             <li><strong> @lang('menu.entered_by') : </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
                             </li>
@@ -344,7 +344,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">Descrpiton</th>
+                            <th class="text-start">@lang('menu.department')</th>
                             <th class="text-start">@lang('menu.quantity')</th>
 
                             <th class="text-start">@lang('menu.unit_price')</th>
@@ -409,7 +409,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-right">
-                        <h6><em>Continued To this next page....</em></h6>
+                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
             @endif
@@ -531,7 +531,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="heading text-center">
-                            <h4><b>Sister Concern</b></h4><br>
+                            <h4><b>{{ __('Sister Concern') }}</b></h4><br>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -563,13 +563,13 @@
                         <small>@lang('menu.print_date') : {{ date('d/m/Y') }}</h6>
                     </div>
                     <div class="col-md-6 text-center">
-                        <small>Print Time : {{ date('h:i:s') }}</h6>
+                        <small>@lang('menu.print_time') : {{ date('h:i:s') }}</h6>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Powered By <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                        <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             </div>
@@ -693,7 +693,7 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> draft ID : </strong> {{ $draft->invoice_id }}</li>
+                            <li><strong> {{ __('Draft ID') }} : </strong> {{ $draft->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): </strong> {{ $draft->date . ' ' . $draft->time }}</li>
                             <li><strong> @lang('menu.entered_by') : </strong> {{$draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}</li>
                         </ul>
@@ -705,8 +705,8 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">Descrpiton</th>
-                            <th class="text-start">Sold Qty</th>
+                            <th class="text-start">@lang('menu.department')</th>
+                            <th class="text-start">{{ __('Sold Price') }}</th>
                             <th class="text-start">@lang('menu.unit_price')</th>
 
                             @if ($defaultLayout->product_discount)
@@ -767,7 +767,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-right">
-                        <h6><em>Continued To this next page....</em></h6>
+                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
             @endif
@@ -887,7 +887,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="heading text-center">
-                            <h4><b>Sister Concern</b></h4><br>
+                            <h4><b>{{ __('Sister Concern') }}</b></h4><br>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -919,13 +919,13 @@
                         <small>@lang('menu.print_date') : {{ date('d/m/Y') }}</small>
                     </div>
                     <div class="col-md-6 text-center">
-                        <small>Print Time : {{ date('h:i:s') }}</small>
+                        <small>@lang('menu.print_time') : {{ date('h:i:s') }}</small>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Powered By <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                        <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             </div>

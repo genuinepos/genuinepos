@@ -8,7 +8,7 @@
             <th>@lang('menu.warehouse')</th>
             <th>@lang('menu.current_stock')</th>
             <th>@lang('menu.current_stock_value') <b><small>(By @lang('menu.purchase_price'))</small></b></th>
-            <th>Total Unit Sold</th>
+            <th>{{ __('Total Unit Sold') }}</th>
             <th>@lang('menu.total_adjusted')</th>
         </tr>
     </thead>

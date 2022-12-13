@@ -38,7 +38,7 @@
                                 <tr>
                                     <th class="text-start">@lang('menu.serial')</th>
                                     <th class="text-start">Tax Name</th>
-                                    <th class="text-start">Tax Percent</th>
+                                    <th class="text-start">@lang('menu.tax_percent')</th>
                                     <th class="text-start">@lang('menu.action')</th>
                                 </tr>
                             </thead>
@@ -76,8 +76,8 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Tax Percent :</b> <span class="text-danger">*</span></label>
-                            <input type="number" name="tax_percent" class="form-control form-control-sm add_input" data-name="Tax percent" id="tax_percent" placeholder="Tax percent"/>
+                            <label><b>@lang('menu.tax_percent') :</b> <span class="text-danger">*</span></label>
+                            <input type="number" name="tax_percent" class="form-control form-control-sm add_input" data-name="Tax percent" id="tax_percent" placeholder="@lang('menu.tax_percent')"/>
                             <span class="error error_tax_percent"></span>
                         </div>
 
@@ -115,7 +115,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Tax Percent :</b><span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.tax_percent') :</b><span class="text-danger">*</span></label>
                             <input type="text" name="tax_percent" class="form-control edit_input" data-name="Tax percent" id="e_tax_percent" placeholder="@lang('menu.branch_name')"/>
                             <span class="error error_e_tax_percent"></span>
                         </div>

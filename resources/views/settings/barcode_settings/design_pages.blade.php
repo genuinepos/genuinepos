@@ -58,11 +58,11 @@
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-sm-4">
-                                    <label for="">Settings Name</label>
+                                    <label for="">{{ __('Settings Name') }}</label>
                                 </div>
                                 <div class="col-sm-8">
                                     <select name="" id="" class="form-control">
-                                        <option value="">My Settings</option>
+                                        <option value="">{{ __('My Settings') }}</option>
                                         <option value="">1</option>
                                         <option value="">2</option>
                                         <option value="">3</option>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <span>Manual selection</span>
+                            <span>{{ __('Manual selection') }}</span>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
@@ -92,11 +92,11 @@
                                 <table class="display table table-striped">
                                     <thead>
                                         <tr class="bg-secondary text-white">
-                                            <th>SL</th>
-                                            <th>Code</th>
+                                            <th>@lang('menu.sl')</th>
+                                            <th>@lang('menu.code')</th>
                                             <th>@lang('menu.product_name')</th>
                                             <th>@lang('menu.selling_price')</th>
-                                            <th>Print Qty</th>
+                                            <th>{{ __('Print Qty') }}</th>
                                             <th><i class="fas fa-times"></i></th>
                                         </tr>
                                     </thead>
@@ -147,7 +147,7 @@
                             <div class="row justify-content-between g-2 pt-3">
                                 <div class="col-md-3 col-sm-4">
                                     <div class="row g-2">
-                                        <label for="" class="col-sm-6 col-4 text-sm-end">Column</label>
+                                        <label for="" class="col-sm-6 col-4 text-sm-end">{{ __('Column') }}</label>
                                         <div class="col-sm-6 col-8">
                                             <input class="form-control" type="number" name="" id="">
                                         </div>
@@ -155,7 +155,7 @@
                                 </div>
                                 <div class="col-md-3 col-sm-4">
                                     <div class="row g-2">
-                                        <label for="" class="col-sm-6 col-4 text-sm-end">Row</label>
+                                        <label for="" class="col-sm-6 col-4 text-sm-end">{{ __('Row') }}</label>
                                         <div class="col-sm-6 col-8">
                                             <input class="form-control" type="number" name="" id="">
                                         </div>
@@ -172,10 +172,10 @@
                             </div>
 
                             <div class="d-sm-flex gap-1 justify-content-between pt-3">
-                                <button class="btn btn-sm btn-primary m-0">Complete Print & Clear Data</button>
+                                <button class="btn btn-sm btn-primary m-0">{{ __('Complete Print & Clear Data') }}</button>
                                 <div>
-                                    <button class="btn btn-sm btn-success m-0">Print Preview</button>
-                                    <button class="btn btn-sm btn-success m-0">Print</button>
+                                    <button class="btn btn-sm btn-success m-0">{{ __('Print Preview') }}</button>
+                                    <button class="btn btn-sm btn-success m-0">@lang('menu.print')</button>
                                 </div>
                             </div>
                         </div>
@@ -280,21 +280,21 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <span>Preview</span>
+                            <span>@lang('menu.preview')</span>
                         </div>
                         <div class="card-body">
                             <form action="">
                                 <div class="row g-2 mb-3">
                                     <div class="col-sm-7">
                                         <div class="row g-2">
-                                            <label for="" class="col-4">Sttings Name</label>
+                                            <label for="" class="col-4">{{ __('Settings Name') }}</label>
                                             <div class="col-8">
                                                 <input type="text" class="form-control" placeholder="E.x. Barcode CODE128">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-5 d-flex justify-content-end">
-                                        <a role="button" class="btn btn-sm btn-primary">Settings List</a>
+                                        <a role="button" class="btn btn-sm btn-primary">{{ __('Settings List') }}</a>
                                     </div>
                                 </div>
                             </form>
@@ -315,39 +315,39 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-wrap justify-content-between">
-                                <button class="btn btn-sm btn-success">Save Settings</button>
+                                <button class="btn btn-sm btn-success">{{ __('Save Settings') }}</button>
                                 <div>
-                                    <button class="btn btn-sm btn-secondary">Print Preview</button>
-                                    <button class="btn btn-sm btn-success">Print</button>
+                                    <button class="btn btn-sm btn-secondary">{{ __('Print Preview') }}</button>
+                                    <button class="btn btn-sm btn-success">@lang('menu.print')</button>
                                 </div>
                             </div>
                         </div>
                         <div class="card-header">
-                            <span>Page & Print Setup</span>
+                            <span>{{ __('Page & Print Setup') }}</span>
                         </div>
                         <div class="card-body">
                             <div class="row g-2">
                                 <div class="col-sm-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <span>Page Margin (Pixel)</span>
+                                            <span>{{ __('Page Margin') }} (Pixel)</span>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-2">
                                                 <div class="col-6">
-                                                    <label for="">Top</label>
+                                                    <label for="">{{ __('Top') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="">Right</label>
+                                                    <label for="">{{ __('Right') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="">Left</label>
+                                                    <label for="">{{ __('Left') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="">Bottom</label>
+                                                    <label for="">{{ __('Bottom') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                             </div>
@@ -362,11 +362,11 @@
                                         <div class="card-body">
                                             <div class="row g-2">
                                                 <div class="col-6">
-                                                    <label for="">Column</label>
+                                                    <label for="">{{ __('Column') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="">Row</label>
+                                                    <label for="">{{ __('Row') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
@@ -383,11 +383,11 @@
                                         <div class="card-body">
                                             <div class="row g-2">
                                                 <div class="col-6">
-                                                    <label for="">Column</label>
+                                                    <label for="">{{ __('Column') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="">Row</label>
+                                                    <label for="">{{ __('Row') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                             </div>
@@ -510,7 +510,7 @@
                                                     <input type="text" class="form-control">
                                                 </div>
                                                 <div class="col-4">
-                                                    <button class="btn btn-sm btn-primary">Select Font</button>
+                                                    <button class="btn btn-sm btn-primary">{{ __('Select Font') }}</button>
                                                 </div>
                                             </div>
                                             <div class="form-check">
@@ -524,31 +524,31 @@
                                                     <input type="text" class="form-control">
                                                 </div>
                                                 <div class="col-4">
-                                                    <button class="btn btn-sm btn-primary">Select Font</button>
+                                                    <button class="btn btn-sm btn-primary">{{ __('Select Font') }}</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
-                                            <label for="">Line Height</label>
+                                            <label for="">{{ __('Line Height') }}</label>
                                             <input type="number" class="form-control">
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="textAlign" id="textAlign1">
                                                 <label class="form-check-label" for="textAlign1">
-                                                    Text Right
+                                                    
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="textAlign" id="textAlign2">
                                                 <label class="form-check-label" for="textAlign2">
-                                                    Text Left
+                                                    {{ __('Text Left') }}
                                                 </label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="textAlign" id="textAlign3">
                                                 <label class="form-check-label" for="textAlign3">
-                                                    Text Center
+                                                    {{ __('Text Center') }}
                                                 </label>
                                             </div>
                                         </div>
@@ -556,13 +556,13 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="showPriceCheck">
                                                 <label class="form-check-label" for="showPriceCheck">
-                                                    Show Price
+                                                    {{ __('Show Price') }}
                                                 </label>
                                             </div>
                                             <div class="row g-3">
                                                 <div class="col-sm-4">
                                                     <div class="row g-0">
-                                                        <label for="" class="col-6">Currency</label>
+                                                        <label for="" class="col-6">{{ __('Currency') }}</label>
                                                         <div class="col-6">
                                                             <input type="text" class="form-control" value="BDT">
                                                         </div>
@@ -585,20 +585,20 @@
                                             <div class="row g-2">
                                                 <div class="col-sm-6">
                                                     <div class="row g-0">
-                                                        <label for="" class="col-6">Alignment</label>
+                                                        <label for="" class="col-6">{{ __('Alignment') }}</label>
                                                         <div class="col-6">
                                                             <select name="" id="" class="form-control">
-                                                                <option value="">Center</option>
-                                                                <option value="">Top</option>
-                                                                <option value="">Bottom</option>
-                                                                <option value="">Left</option>
-                                                                <option value="">Right</option>
+                                                                <option value="">{{ __('Center') }}</option>
+                                                                <option value="">{{ __('Top') }}</option>
+                                                                <option value="">{{ __('Bottom') }}</option>
+                                                                <option value="">{{ __('Left') }}</option>
+                                                                <option value="">{{ __('Right') }}</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary m-0">Select Font</button>
+                                                    <button class="btn btn-sm btn-primary m-0">{{ __('Select Font') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -607,7 +607,7 @@
                             </div>
                             <div class="d-flex justify-content-between flex-wrap gap-2">
                                 <button class="btn btn-sm btn-danger">@lang('menu.reset')</button>
-                                <button class="btn btn-sm btn-success">Preview</button>
+                                <button class="btn btn-sm btn-success">@lang('menu.preview')</button>
                             </div>
                         </div>
                     </form>

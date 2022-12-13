@@ -182,7 +182,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('supplier_report') ? 'CHECKED' : '' }}
-                                                name="supplier_report" class="report contacts"> &nbsp; Supplier Report</p>
+                                                name="supplier_report" class="report contacts"> &nbsp; @lang('menu.supplier_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +195,7 @@
 
                                     <div class="col-md-12">
                                         <div class="row"><p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }} name="customer_all" class="contacts"> &nbsp; View All Customer </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }} name="customer_all" class="contacts"> &nbsp; @lang('menu.view_all_customer') </p>
                                         </div>
                                     </div>
 
@@ -322,7 +322,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('stock_in_out_report') ? 'CHECKED' : '' }}
-                                            name="stock_in_out_report" class="product"> &nbsp; Stock In-Out Report</p>
+                                            name="stock_in_out_report" class="product"> &nbsp; @lang('menu.stock_in_out_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -620,7 +620,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('expense_category') ? 'CHECKED' : '' }} name="expense_category" class="expense"> &nbsp; Expense Category -> View/Add/Edit/Delete </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('expense_category') ? 'CHECKED' : '' }} name="expense_category" class="expense"> &nbsp; @lang('menu.expense_category') -> View/Add/Edit/Delete </p>
                                         </div>
                                     </div>
 
@@ -777,7 +777,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('sale_statements') ? 'CHECKED' : '' }}
-                                            name="sale_statements" class="sale"> &nbsp; Sale Statements</p>
+                                            name="sale_statements" class="sale"> &nbsp; @lang('menu.sale_statement')</p>
                                         </div>
                                     </div>
 
@@ -786,7 +786,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('sale_return_statements') ? 'CHECKED' : '' }}
-                                            name="sale_return_statements" class="sale"> &nbsp; Sale Return Statements</p>
+                                            name="sale_return_statements" class="sale"> &nbsp; @lang('menu.sale_return_statement')</p>
                                         </div>
                                     </div>
 
@@ -935,7 +935,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="row"><p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }} name="customer_all" class="contacts"> &nbsp; View All Customer </p>
+                                                        <input type="checkbox" {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }} name="customer_all" class="contacts"> &nbsp; @lang('menu.view_all_customer') </p>
                                                     </div>
                                                 </div>
 
@@ -1011,7 +1011,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('tax_report') ? 'CHECKED' : '' }}  name="tax_report" class="report"> &nbsp; Tax Report</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('tax_report') ? 'CHECKED' : '' }}  name="tax_report" class="report"> &nbsp; @lang('menu.tax_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1098,7 +1098,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('cash_counters') ? 'CHECKED' : '' }} name="cash_counters" class="settings"> &nbsp; Cash Counters</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('cash_counters') ? 'CHECKED' : '' }} name="cash_counters" class="settings"> &nbsp; @lang('menu.cash_counter')</p>
                                         </div>
                                     </div>
                                 </div>

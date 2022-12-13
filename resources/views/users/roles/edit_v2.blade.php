@@ -64,7 +64,7 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="customer_all" {{ $role->hasPermissionTo('customer_all') ? 'checked' : '' }} {{ $role->hasPermissionTo('customer_all') ? 'checked' : '' }} class="customers sales_app_permission super_select_all">
-                                                    View all customer
+                                                    @lang('menu.view_all_customer')
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
@@ -156,7 +156,7 @@
 
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="sale_statements" {{ $role->hasPermissionTo('sale_statements') ? 'checked' : '' }} {{ $role->hasPermissionTo('sale_statements') ? 'checked' : '' }} class="sales_report sales_app_permission super_select_all">
-                                                        Sale statements
+                                                    @lang('menu.sale_statement')
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
@@ -252,7 +252,7 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_sale" {{ $role->hasPermissionTo('edit_sale') ? 'checked' : '' }} class="sale sales_app_permission super_select_all"> Edit sale
+                                                    <input type="checkbox" name="edit_sale" {{ $role->hasPermissionTo('edit_sale') ? 'checked' : '' }} class="sale sales_app_permission super_select_all"> @lang('menu.edit_sale')
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="delete_sale" {{ $role->hasPermissionTo('delete_sale') ? 'checked' : '' }} class="sale sales_app_permission super_select_all"> Delete sale
@@ -668,7 +668,7 @@
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="supplier_report" {{ $role->hasPermissionTo('supplier_report') ? 'checked' : '' }} class="procurement_report procurement_permission super_select_all"> Supplier report
+                                                <input type="checkbox" name="supplier_report" {{ $role->hasPermissionTo('supplier_report') ? 'checked' : '' }} class="procurement_report procurement_permission super_select_all"> @lang('menu.supplier_report')
                                             </p>
                                         </div>
                                     </div>
@@ -843,7 +843,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="stock_in_out_report" {{ $role->hasPermissionTo('stock_in_out_report') ? 'checked' : '' }} class="inventory_report inventory_permission super_select_all"> Stock in-out report
+                                            <input type="checkbox" name="stock_in_out_report" {{ $role->hasPermissionTo('stock_in_out_report') ? 'checked' : '' }} class="inventory_report inventory_permission super_select_all"> @lang('menu.stock_in_out_report')
                                         </p>
                                     </div>
                                 </div>

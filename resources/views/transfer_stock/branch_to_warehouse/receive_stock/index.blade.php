@@ -38,7 +38,7 @@
                                                 <th class="text-start">@lang('menu.warehouse')(From)</th>
                                                 <th class="text-start">@lang('menu.b_location')(To)</th>
                                                 <th class="text-start">@lang('menu.total_item')</th>
-                                                <th class="text-start">Total Qty</th>
+                                                <th class="text-start">@lang('menu.total_qty')</th>
                                                 <th class="text-start">@lang('menu.status')</th>
                                                 <th class="text-center">@lang('menu.action')</th>
                                             </tr>

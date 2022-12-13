@@ -136,7 +136,7 @@
                             <div class="col-md-3">
                                 <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
-                                    data-name="Customer name" id="name" placeholder="Customer name" />
+                                    data-name="Customer name" id="name" placeholder="@lang('menu.customer_name')" />
                                 <span class="error error_name"></span>
                             </div>
 

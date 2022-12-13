@@ -12,9 +12,9 @@
                     <div class="col-md-12">
                         <div class="header_text text-center">
                             <h4>{{ $defaultLayout->header_text }}</h4>
-                            <p>{{ $defaultLayout->sub_heading_1 }}<p/>
-                            <p>{{ $defaultLayout->sub_heading_2 }}<p/>
-                            <p>{{ $defaultLayout->sub_heading_3 }}<p/>
+                            <p>{{ $defaultLayout->sub_heading_1 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_2 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_3 }}</p>
                         </div>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
         @if (count($sale->sale_products) > 11)
             <div class="row page_break">
                 <div class="col-md-12 text-end">
-                    <h6><em>Continued To this next page....</em></h6>
+                    <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                 </div>
             </div>
         @endif

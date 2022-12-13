@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sales Order</h5>
+                                <h5>@lang('menu.sales_order')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -103,7 +103,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>Sales Order List</h6>
+                                    <h6>@lang('menu.sales_order_list')</h6>
                                 </div>
 
                                 @if(auth()->user()->can('create_add_sale'))
@@ -124,7 +124,7 @@
                                             <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>Order No</th>
+                                                <th>@lang('menu.order_no')</th>
                                                 <th>@lang('menu.stock_location')</th>
                                                 <th>@lang('menu.customer')</th>
                                                 <th>@lang('menu.payment_status')</th>
@@ -209,7 +209,7 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
+                                    {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">@lang('menu.print')</a></li> --}}
                                     <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                                     <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                                 </ul>
@@ -225,7 +225,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Send Notification</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.send_notification')</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fas fa-times"></span>
                     </a>

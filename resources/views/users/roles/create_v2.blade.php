@@ -64,7 +64,7 @@
                                             </p>
                                             <p class="checkbox_input_wrap mt-1">
                                                 <input type="checkbox" name="customer_all" class="customers sales_app_permission super_select_all">
-                                                View all customer
+                                                @lang('menu.view_all_customer')
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -249,7 +249,7 @@
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="edit_sale" class="sale sales_app_permission super_select_all">  Edit sale
+                                                <input type="checkbox" name="edit_sale" class="sale sales_app_permission super_select_all">  @lang('menu.edit_sale')
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -676,7 +676,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="supplier_report" class="procurement_report procurement_permission super_select_all"> Supplier report
+                                            <input type="checkbox" name="supplier_report" class="procurement_report procurement_permission super_select_all"> @lang('menu.supplier_report')
                                         </p>
                                     </div>
                                 </div>
@@ -860,7 +860,7 @@
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="stock_in_out_report" class="inventory_report inventory_permission super_select_all"> Stock in-out report
+                                        <input type="checkbox" name="stock_in_out_report" class="inventory_report inventory_permission super_select_all"> @lang('menu.stock_in_out_report')
                                     </p>
                                 </div>
                             </div>

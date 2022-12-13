@@ -3,7 +3,7 @@
     <div class="form-group row">
         <div class="col-md-3">
             <label><strong>@lang('menu.name') :</strong>  <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control c_add_input" data-name="Customer name" id="name" placeholder="Customer name"/>
+            <input type="text" name="name" class="form-control c_add_input" data-name="Customer name" id="name" placeholder="@lang('menu.customer_name')"/>
             <span class="error error_name"></span>
         </div>
 
@@ -14,8 +14,8 @@
         </div>
 
         <div class="col-md-3">
-            <label><strong>Contact ID :</strong></label>
-            <input type="text" name="contact_id" class="form-control"  placeholder="Contact ID"/>
+            <label><strong>{{ __('Contact ID') }} :</strong></label>
+            <input type="text" name="contact_id" class="form-control"  placeholder="{{ __('Contact ID') }}"/>
         </div>
 
         <div class="col-md-3">

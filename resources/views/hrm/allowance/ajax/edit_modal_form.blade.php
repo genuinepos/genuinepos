@@ -20,7 +20,7 @@
         <div class="form-group col-6">
             <label><b>{{ __('Amount Type') }} :</b> </label>
             <select class="form-control form-control-sm" name="amount_type">
-                <option {{ $allowance->type == 1 ? 'SELECTED' : '' }} value="1">Fixed (0.0)</option>
+                <option {{ $allowance->type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed') (0.0)</option>
                 <option {{ $allowance->type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage') (%)</option>
             </select>
         </div>

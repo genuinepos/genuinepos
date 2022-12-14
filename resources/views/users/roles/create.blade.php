@@ -12,7 +12,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h5>Add Role</h5>
+                    <h5>@lang('menu.add_role')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -28,10 +28,10 @@
                                 <div class="col-md-8">
                                     <div class="input-group">
                                         <label for="inputEmail3" class="col-4"><span
-                                            class="text-danger">*</span> <b>Role Name :</b> </label>
+                                            class="text-danger">*</span> <b>@lang('menu.role_name') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="role_name" class="form-control add_input" id="role_name"
-                                                placeholder="Role Name">
+                                                placeholder="@lang('menu.role_name')">
                                             <span class="error error_role_name">{{ $errors->first('role_name') }}</span>
                                         </div>
                                     </div>
@@ -42,7 +42,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Users Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Users Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -51,7 +51,7 @@
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
                                             <input type="checkbox" id="select_all" data-target="users"
-                                                autocomplete="off"> &nbsp; Select All
+                                                autocomplete="off"> &nbsp; @lang('menu.select_all')
                                         </p>
                                     </div>
                                 </div>
@@ -85,39 +85,39 @@
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="user_delete" class="users"
-                                                autocomplete="off"> &nbsp; Delete User
+                                                autocomplete="off"> &nbsp; {{ __('Delete User') }}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-5">
                                     <div class="col-md-12">
-                                        <p><strong>Roles</strong></p>
+                                        <p><strong>@lang('menu.roles')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="role_view" class="users">
-                                            &nbsp; View Role
+                                            &nbsp;{{ __('View Role') }}
                                         </p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox" name="role_add" class="users">
-                                            &nbsp; Add Role
+                                            &nbsp; @lang('menu.add_role')
                                         </p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="role_edit" class="users"> &nbsp; Edit Role
+                                            <input type="checkbox" name="role_edit" class="users"> &nbsp;{{ __('Edit Role') }}
                                         </p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="role_delete" class="users"> &nbsp; Delete Role
+                                            <input type="checkbox" name="role_delete" class="users"> &nbsp; {{ __('Delete Role') }}
                                         </p>
                                     </div>
                                 </div>
@@ -127,7 +127,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Contacts Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Contacts Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -135,7 +135,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" id="select_all" data-target="contacts" autocomplete="off"> &nbsp;  Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="contacts" autocomplete="off"> &nbsp;  @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
@@ -147,7 +147,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="supplier_all" class="contacts"> &nbsp; View All Supplier </p>
+                                            <input type="checkbox" name="supplier_all" class="contacts"> &nbsp; @lang('menu.view_all_supplier') </p>
                                         </div>
                                     </div>
 
@@ -161,7 +161,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="supplier_import" class="contacts"> &nbsp; Import Supplier </p>
+                                            <input type="checkbox" name="supplier_import" class="contacts"> &nbsp; @lang('menu.import_suppliers')</p>
                                         </div>
                                     </div>
 
@@ -175,7 +175,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="supplier_delete" class="contacts"> &nbsp; Delete Supplier </p>
+                                            <input type="checkbox" name="supplier_delete" class="contacts"> &nbsp; {{ __('Delete supplier') }} </p>
                                         </div>
                                     </div>
 
@@ -208,7 +208,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="customer_import" class="contacts"> &nbsp; Import Customer </p>
+                                            <input type="checkbox" name="customer_import" class="contacts"> &nbsp; @lang('menu.import_customer') </p>
                                         </div>
                                     </div>
 
@@ -221,13 +221,13 @@
 
                                     <div class="col-md-12">
                                         <div class="row"><p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="customer_delete" class="contacts"> &nbsp; Delete Customer </p>
+                                            <input type="checkbox" name="customer_delete" class="contacts"> &nbsp; @lang('menu.delete_customer') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row"><p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="customer_group" class="contacts"> &nbsp; @lang('menu.customer_group') -> View/Add/Edit/Delete</p>
+                                            <input type="checkbox" name="customer_group" class="contacts"> &nbsp; @lang('menu.customer_group') -> {{ __('View/Add/Edit/Delete') }}</p>
                                         </div>
                                     </div>
 
@@ -244,7 +244,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Products Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Products Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -252,7 +252,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" id="select_all" data-target="product" autocomplete="off"> &nbsp;  Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="product" autocomplete="off"> &nbsp;  @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
@@ -264,7 +264,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="product_all" class="product"> &nbsp; View All Product </p>
+                                            <input type="checkbox" name="product_all" class="product"> &nbsp; {{ __('View All Product') }} </p>
                                         </div>
                                     </div>
 
@@ -285,7 +285,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="openingStock_add" class="product"> &nbsp; Add/Edit Opening Stock </p>
+                                            <input type="checkbox" name="openingStock_add" class="product"> &nbsp; {{ __('Add/Edit Opening Stock') }} </p>
                                         </div>
                                     </div>
 
@@ -320,41 +320,41 @@
 
                                 <div class="col-md-5">
                                     <div class="col-md-12">
-                                        <p><strong>Others</strong></p>
+                                        <p><strong>@lang('menu.others')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="categories" class="product"> &nbsp; Categories</p>
+                                            <input type="checkbox" name="categories" class="product"> &nbsp; @lang('menu.categories')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="brand" class="product"> &nbsp; Brands</p>
+                                            <input type="checkbox" name="brand" class="product"> &nbsp; @lang('menu.brands')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="units" class="product"> &nbsp; Unit</p>
+                                            <input type="checkbox" name="units" class="product"> &nbsp; @lang('menu.unit')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="variant" class="product"> &nbsp; Variants</p>
+                                            <input type="checkbox" name="variant" class="product"> &nbsp; @lang('menu.variants')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="warranties" class="product"> &nbsp; Warranties</p>
+                                            <input type="checkbox" name="warranties" class="product"> &nbsp; @lang('menu.warranties')</p>
                                         </div>
                                     </div>
 
@@ -378,7 +378,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Purchases Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Purchases Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -386,7 +386,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" id="select_all" data-target="purchase" autocomplete="off"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="purchase" autocomplete="off"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
@@ -398,35 +398,35 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_all" class="purchase"> &nbsp; View All Purchase </p>
+                                            <input type="checkbox" name="purchase_all" class="purchase"> &nbsp; {{ __('View All Purchase') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_add" class="purchase"> &nbsp; Add Purchase </p>
+                                            <input type="checkbox" name="purchase_add" class="purchase"> &nbsp; @lang('menu.add_purchase') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_edit" class="purchase"> &nbsp; Edit Purchase </p>
+                                            <input type="checkbox" name="purchase_edit" class="purchase"> &nbsp; {{ __('Edit Purchase') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_delete" class="purchase" > &nbsp; Delete Purchase </p>
+                                            <input type="checkbox" name="purchase_delete" class="purchase" > &nbsp; {{ __('Delete purchase') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="status_update" class="purchase"> &nbsp; Update Status </p>
+                                            <input type="checkbox" name="status_update" class="purchase"> &nbsp; {{ __('Update Status') }} </p>
                                         </div>
                                     </div>
 
@@ -447,7 +447,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_sale_report" class="purchase"> &nbsp; Purchase & Sale Report</p>
+                                            <input type="checkbox" name="purchase_sale_report" class="purchase"> &nbsp; {{ __('Purchase & Sale Report') }}</p>
                                         </div>
                                     </div>
 
@@ -461,20 +461,20 @@
 
                                 <div class="col-md-5">
                                     <div class="col-md-12">
-                                        <p><strong>Others</strong></p>
+                                        <p><strong>@lang('menu.others')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_payment" class="purchase"> &nbsp; View/Add/Delete Purchase Payment </p>
+                                            <input type="checkbox" name="purchase_payment" class="purchase"> &nbsp; {{ __('View/Add/Delete Purchase Payment') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="purchase_return" class="purchase"> &nbsp; Access Purchase Return </p>
+                                            <input type="checkbox" name="purchase_return" class="purchase"> &nbsp; {{ __('Access Purchase Return') }} </p>
                                         </div>
                                     </div>
 
@@ -491,7 +491,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Adjustment Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Adjustment Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -499,40 +499,40 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" id="select_all" data-target="adjustment" autocomplete="off"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="adjustment" autocomplete="off"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <p><strong>Stock Adjustments</strong></p>
+                                        <p><strong>@lang('menu.stock_adjustment')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="adjustment_all" class="adjustment"> &nbsp; View All Adjustment </p>
+                                            <input type="checkbox" name="adjustment_all" class="adjustment"> &nbsp; {{ __('View All Adjustment') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="adjustment_add_from_location" class="adjustment"> &nbsp; Add Adjustment From Business Location</p>
+                                            <input type="checkbox" name="adjustment_add_from_location" class="adjustment"> &nbsp; {{ __('Add Adjustment From Business Location') }}</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="adjustment_add_from_warehouse" class="adjustment"> &nbsp; Add Adjustment From Warehouse</p>
+                                            <input type="checkbox" name="adjustment_add_from_warehouse" class="adjustment"> &nbsp; {{ __('Add Adjustment From Warehouse') }}</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="adjustment_delete" class="adjustment" > &nbsp; Delete Adjustment </p>
+                                            <input type="checkbox" name="adjustment_delete" class="adjustment" > &nbsp; {{ __('Delete Adjustment') }} </p>
                                         </div>
                                     </div>
 
@@ -549,7 +549,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Expenses Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Expenses Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -557,7 +557,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" id="select_all" data-target="expense" autocomplete="off"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="expense" autocomplete="off"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
@@ -569,49 +569,49 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="view_expense" class="expense"> &nbsp; View Expense </p>
+                                            <input type="checkbox" name="view_expense" class="expense"> &nbsp; {{ __('View Expense') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="add_expense" class="expense"> &nbsp; Add Expense </p>
+                                            <input type="checkbox" name="add_expense" class="expense"> &nbsp; {{ __('Add Expense') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="edit_expense" class="expense"> &nbsp; Edit Expense </p>
+                                            <input type="checkbox" name="edit_expense" class="expense"> &nbsp; @lang('menu.edit_expense') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="delete_expense" class="expense"> &nbsp; Delete Expense </p>
+                                            <input type="checkbox" name="delete_expense" class="expense"> &nbsp; {{ __('Delete Expense') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="expense_category" class="expense"> &nbsp; @lang('menu.expense_category') -> View/Add/Edit/Delete </p>
+                                            <input type="checkbox" name="expense_category" class="expense"> &nbsp; @lang('menu.expense_category') -> {{ __('View/Add/Edit/Delete') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="category_wise_expense" class="expense"> &nbsp; View Category Wise Expense </p>
+                                            <input type="checkbox" name="category_wise_expense" class="expense"> &nbsp; {{ __('View Category Wise Expense') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="expanse_report" class="expense"> &nbsp; Expanse Report</p>
+                                            <input type="checkbox" name="expanse_report" class="expense"> &nbsp;@lang('menu.expense_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -621,7 +621,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Sales Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Sales Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -629,7 +629,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" id="select_all" data-target="sale" autocomplete="off"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="sale" autocomplete="off"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
@@ -641,98 +641,98 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="create_add_sale" class="sale"> &nbsp; Create Add Sale </p>
+                                            <input type="checkbox" name="create_add_sale" class="sale"> &nbsp; @lang('menu.create_add_sale') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="view_add_sale" class="sale"> &nbsp; Manage Add Sale </p>
+                                            <input type="checkbox" name="view_add_sale" class="sale"> &nbsp; {{ __('Manage Add Sale') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="edit_add_sale" class="sale"> &nbsp; Edit Add Sale </p>
+                                            <input type="checkbox" name="edit_add_sale" class="sale"> &nbsp; {{ __('Edit Add Sale') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="delete_add_sale" class="sale"> &nbsp; Delete Add Sale </p>
+                                            <input type="checkbox" name="delete_add_sale" class="sale"> &nbsp; {{ __('Delete Add Sale') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="add_sale_settings" class="sale"> &nbsp; Add Sale Settings </p>
+                                            <input type="checkbox" name="add_sale_settings" class="sale"> &nbsp; @lang('menu.add_sale_settings') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="sale_draft" class="sale"> &nbsp; List Draft </p>
+                                            <input type="checkbox" name="sale_draft" class="sale"> &nbsp;{{ __('List Draft') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="sale_quotation" class="sale"> &nbsp; List Quotations </p>
+                                            <input type="checkbox" name="sale_quotation" class="sale"> &nbsp; {{ __('List Quotations') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="sale_payment" class="sale"> &nbsp; View/Add/Edit Payment </p>
+                                            <input type="checkbox" name="sale_payment" class="sale"> &nbsp; {{ __('View/Add/Edit Payment') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="edit_price_sale_screen" class="sale"> &nbsp; Edit product price from sales screen </p>
+                                            <input type="checkbox" name="edit_price_sale_screen" class="sale"> &nbsp; {{ __('Edit product price from sales screen') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="edit_discount_sale_screen" class="sale"> &nbsp; Edit Product Discount In Sale Scr. </p>
+                                            <input type="checkbox" name="edit_discount_sale_screen" class="sale"> &nbsp; {{ __('Edit product discount in sale scr') }}. </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="shipment_access" class="sale"> &nbsp; Access Shipments </p>
+                                            <input type="checkbox" name="shipment_access" class="sale"> &nbsp; {{ __('Access shipments') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="view_product_cost_is_sale_screed" class="sale"> &nbsp; View Product Cost In sale screen </p>
+                                            <input type="checkbox" name="view_product_cost_is_sale_screed" class="sale"> &nbsp; {{ __('View Product Cost In sale screen') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="view_own_sale" class="sale"> &nbsp; View only own Add/POS Sale </p>
+                                            <input type="checkbox" name="view_own_sale" class="sale"> &nbsp; {{ __('View only own Add/POS Sale') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="return_access" class="sale"> &nbsp; Access Sale Returns </p>
+                                            <input type="checkbox" name="return_access" class="sale"> &nbsp; {{ __('Access Sale Return') }} </p>
                                         </div>
                                     </div>
 
@@ -760,14 +760,14 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pro_sale_report" class="sale"> &nbsp;  Sale Product Report</p>
+                                            <input type="checkbox" name="pro_sale_report" class="sale"> &nbsp;{{ __('Sale Product Report') }}</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="sale_payment_report" class="sale"> &nbsp; Receive Payment Report</p>
+                                            <input type="checkbox" name="sale_payment_report" class="sale"> &nbsp; @lang('menu.receive_payment_report')</p>
                                         </div>
                                     </div>
 
@@ -789,55 +789,55 @@
                                 <div class="col-md-5">
 
                                     <div class="col-md-12">
-                                        <p><strong>POS Sale</strong></p>
+                                        <p><strong>@lang('menu.pos_sales')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pos_all" class="sale"> &nbsp; Manage Pos Sale</p>
+                                            <input type="checkbox" name="pos_all" class="sale"> &nbsp; @lang('menu.manage_pos_sale')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pos_add" class="sale"> &nbsp; Add POS Sale </p>
+                                            <input type="checkbox" name="pos_add" class="sale"> &nbsp; @lang('menu.add_pos_sale') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pos_edit" class="sale"> &nbsp; Edit POS Sale </p>
+                                            <input type="checkbox" name="pos_edit" class="sale"> &nbsp; @lang('menu.edit_pos_sale') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pos_delete" class="sale"> &nbsp; Delete POS Sale </p>
+                                            <input type="checkbox" name="pos_delete" class="sale"> &nbsp; @lang('menu.delete_pos_sale') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pos_sale_settings" class="sale"> &nbsp; POS Sale Settings </p>
+                                            <input type="checkbox" name="pos_sale_settings" class="sale"> &nbsp; @lang('menu.pos_sale_settings') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="edit_price_pos_screen" class="sale"> &nbsp; Edit Product Price From POS Screen </p>
+                                            <input type="checkbox" name="edit_price_pos_screen" class="sale"> &nbsp;{{ __('Edit Product Price From POS Screen') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="edit_discount_pos_screen" class="sale"> &nbsp; Edit Product Discount From POS Screen </p>
+                                            <input type="checkbox" name="edit_discount_pos_screen" class="sale"> &nbsp; {{ __('Edit Product Discount From POS Screen') }} </p>
                                         </div>
                                     </div>
                                 </div>
@@ -847,7 +847,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Cash Register Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Cash Register Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -855,33 +855,33 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" id="select_all" data-target="cash_register" autocomplete="off"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="cash_register" autocomplete="off"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <p><strong>Cash Register</strong></p>
+                                        <p><strong>{{ __('Cash Register') }}</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="register_view" class="cash_register"> &nbsp; View Cash Register</p>
+                                            <input type="checkbox" name="register_view" class="cash_register"> &nbsp; {{ __('View Cash Register') }}</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="register_close" class="cash_register"> &nbsp; Close Cash Register </p>
+                                            <input type="checkbox" name="register_close" class="cash_register"> &nbsp; {{ __('Close Cash Register') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="another_register_close" class="another_register_close cash_register"> &nbsp; Close Another Cash Register </p>
+                                            <input type="checkbox" name="another_register_close" class="another_register_close cash_register"> &nbsp; {{ __('Close Another Cash Register') }} </p>
                                         </div>
                                     </div>
                                 </div>
@@ -891,7 +891,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>All Report Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('All Report Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -899,7 +899,7 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" id="select_all" data-target="report"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="report"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
@@ -919,7 +919,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="production_report" class="report"> &nbsp; Production Report</p>
+                                            <input type="checkbox" name="production_report" class="report"> &nbsp; @lang('menu.production_report')</p>
                                         </div>
                                     </div>
                                 </div>
@@ -929,7 +929,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Setup Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Setup Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -937,61 +937,61 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" id="select_all" data-target="settings"> &nbsp; Select All</p>
+                                        <input type="checkbox" id="select_all" data-target="settings"> &nbsp; @lang('menu.select_all')</p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <p><strong>Setup</strong></p>
+                                        <p><strong>@lang('menu.setup')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="tax" class="settings"> &nbsp; Tax</p>
+                                            <input type="checkbox" name="tax" class="settings"> &nbsp; @lang('menu.tax')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="branch" class="settings"> &nbsp; Business Location</p>
+                                            <input type="checkbox" name="branch" class="settings"> &nbsp; @lang('menu.business_location')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="warehouse" class="settings"> &nbsp; Warehouse</p>
+                                            <input type="checkbox" name="warehouse" class="settings"> &nbsp; @lang('menu.warehouse')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="g_settings" class="settings"> &nbsp; General Settings</p>
+                                            <input type="checkbox" name="g_settings" class="settings"> &nbsp; @lang('menu.general_settings')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="p_settings" class="settings"> &nbsp; Payment settings</p>
+                                            <input type="checkbox" name="p_settings" class="settings"> &nbsp; {{ __('Payment settings') }}</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="inv_sc" class="settings"> &nbsp; Invoice Schemas</p>
+                                            <input type="checkbox" name="inv_sc" class="settings"> &nbsp; @lang('menu.invoice_schema')</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="inv_lay" class="settings"> &nbsp; Invoice Layout</p>
+                                            <input type="checkbox" name="inv_lay" class="settings"> &nbsp; {{ __('Invoice Layout') }}</p>
                                         </div>
                                     </div>
 
@@ -1015,7 +1015,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Dashboard Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Dashboard Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -1033,7 +1033,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="dash_data"> &nbsp; View Dashboard Data </p>
+                                            <input type="checkbox" name="dash_data"> &nbsp; {{ __('View Dashboard Data') }} </p>
                                         </div>
                                     </div>
                                 </div>
@@ -1043,7 +1043,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Accounting Permission</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Accounting Permission') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -1054,13 +1054,13 @@
 
                                 <div class="col-md-6">
                                     <div class="col-md-12">
-                                        <p><strong>Accounting</strong></p>
+                                        <p><strong>@lang('menu.accounting')</strong></p>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="ac_access"> &nbsp; Access Accounting </p>
+                                            <input type="checkbox" name="ac_access"> &nbsp; {{ __('Access Accounting') }} </p>
                                         </div>
                                     </div>
                                 </div>
@@ -1071,7 +1071,7 @@
                     @if ($addons->hrm == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="p-1 text-primary"><strong>HRM Permissions</strong> </p>
+                                <p class="p-1 text-primary"><strong>{{ __('HRM Permissions') }}</strong> </p>
                             </div>
 
                             <div class="element-body">
@@ -1079,7 +1079,7 @@
                                     <div class="col-md-3">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" id="select_all"  data-target="HRMS"> &nbsp; Select All </p>
+                                            <input type="checkbox" id="select_all"  data-target="HRMS"> &nbsp; @lang('menu.select_all') </p>
                                         </div>
                                     </div>
 
@@ -1134,7 +1134,7 @@
 
                                     <div class="col-md-5">
                                         <div class="col-md-12">
-                                            <p><strong>Others</strong></p>
+                                            <p><strong>@lang('menu.others')</strong></p>
                                         </div>
 
                                         <div class="col-md-12">
@@ -1168,14 +1168,14 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="holiday" class="HRMS"> &nbsp; Holiday</p>
+                                                <input type="checkbox" name="holiday" class="HRMS"> &nbsp; {{ __('Holidays') }}</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="department" class="HRMS"> &nbsp; Departments</p>
+                                                <input type="checkbox" name="department" class="HRMS"> &nbsp; @lang('menu.departments')</p>
                                             </div>
                                         </div>
 
@@ -1194,7 +1194,7 @@
                     @if ($addons->todo == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="p-1 text-primary"><strong>Manage Task Permissions</strong> </p>
+                                <p class="p-1 text-primary"><strong>{{ __('Manage Task Permissions') }}</strong> </p>
                             </div>
 
                             <div class="element-body">
@@ -1202,7 +1202,7 @@
                                     <div class="col-md-3">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" id="select_all"  data-target="Essentials"> &nbsp; Select All </p>
+                                            <input type="checkbox" id="select_all"  data-target="Essentials"> &nbsp; @lang('menu.select_all') </p>
                                         </div>
                                     </div>
 
@@ -1214,28 +1214,28 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="assign_todo" class="Essentials"> &nbsp; Todo</p>
+                                                <input type="checkbox" name="assign_todo" class="Essentials"> &nbsp; @lang('menu.todo')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="work_space" class="Essentials"> &nbsp; Work Space</p>
+                                                <input type="checkbox" name="work_space" class="Essentials"> &nbsp; @lang('menu.work_space')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="memo" class="Essentials"> &nbsp; Memo</p>
+                                                <input type="checkbox" name="memo" class="Essentials"> &nbsp; @lang('menu.memo')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="msg" class="Essentials"> &nbsp; Message</p>
+                                                <input type="checkbox" name="msg" class="Essentials"> &nbsp; @lang('menu.message')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1247,7 +1247,7 @@
                     @if ($addons->manufacturing == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="p-1 text-primary"><strong>Manufacturing Permissions</strong> </p>
+                                <p class="p-1 text-primary"><strong>@lang('menu.manufacturing_permissions')</strong> </p>
                             </div>
 
                             <div class="element-body">
@@ -1255,27 +1255,27 @@
                                     <div class="col-md-3">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" id="select_all" data-target="Manufacturing"> &nbsp; Select All </p>
+                                            <input type="checkbox" id="select_all" data-target="Manufacturing"> &nbsp; @lang('menu.select_all') </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
 
                                         <div class="col-md-12">
-                                            <p><strong>Manufacturing</strong></p>
+                                            <p><strong>@lang('menu.manufacturing')</strong></p>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="process_view" class=" Manufacturing"> &nbsp; View Process</p>
+                                                <input type="checkbox" name="process_view" class=" Manufacturing"> &nbsp; @lang('menu.view_process')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="process_add" class="Manufacturing"> &nbsp; Add Process</p>
+                                                <input type="checkbox" name="process_add" class="Manufacturing"> &nbsp; @lang('menu.add_process')</p>
                                             </div>
                                         </div>
 
@@ -1289,14 +1289,14 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="process_delete" class="Manufacturing"> &nbsp; Delete Process</p>
+                                                <input type="checkbox" name="process_delete" class="Manufacturing"> &nbsp; {{ __('Delete Process') }}</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="production_view" class=" Manufacturing"> &nbsp; View Production</p>
+                                                <input type="checkbox" name="production_view" class=" Manufacturing"> &nbsp; @lang('menu.view_production')</p>
                                             </div>
                                         </div>
 
@@ -1317,14 +1317,14 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="production_delete" class="Manufacturing"> &nbsp; Delete Production</p>
+                                                <input type="checkbox" name="production_delete" class="Manufacturing"> &nbsp; {{ __('Delete Production') }}</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" name="manuf_settings" class="Manufacturing"> &nbsp; Manufacturing Settings</p>
+                                                <input type="checkbox" name="manuf_settings" class="Manufacturing"> &nbsp; @lang('menu.manufacturing_setting')</p>
                                             </div>
                                         </div>
 
@@ -1350,14 +1350,14 @@
                                 <div class="col-md-3">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" id="select_all" data-target="others"> &nbsp; Select All </p>
+                                        <input type="checkbox" id="select_all" data-target="others"> &nbsp; @lang('menu.select_all') </p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
 
                                     <div class="col-md-12">
-                                        <p><strong>Others</strong></p>
+                                        <p><strong>@lang('menu.others')</strong></p>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="row">

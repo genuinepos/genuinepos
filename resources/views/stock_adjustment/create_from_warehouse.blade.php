@@ -18,7 +18,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-square"></span>
-                    <h5>Add Stock Adjustment <small>(From Warehouse)</small></h5>
+                    <h5>@lang('menu.add_stock_adjustment') <small>(@lang('menu.from_warehouse'))</small></h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
@@ -51,7 +51,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Adjust. A/C :
+                                        <label class="col-4"><b>{{ __('Adjust. A/C') }} :
                                             <span class="text-danger">*</span></b>
                                         </label>
                                         <div class="col-8">
@@ -86,7 +86,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Adjust. Date :</b>
+                                        <label class=" col-4"><b>{{ __('Adjust. Date') }} :</b>
                                             <span class="text-danger">*</span>
                                         </label>
 
@@ -107,8 +107,8 @@
                                             <select name="type" data-name="Adjustment type"
                                                 class="form-control add_input" title="Select branch" id="type">
                                                 <option value="">@lang('menu.select_type')</option>
-                                                <option value="1">Normal</option>
-                                                <option value="2">Abnormal</option>
+                                                <option value="1">@lang('menu.normal')</option>
+                                                <option value="2">@lang('menu.abnormal')</option>
                                             </select>
                                             <span class="error error_type"></span>
                                         </div>
@@ -161,7 +161,7 @@
                                                                     <th></th>
                                                                     <th class="text-center">@lang('menu.quantity')</th>
                                                                     <th>@lang('menu.unit')</th>
-                                                                    <th>Unit Cost.Inc.Tax</th>
+                                                                    <th>@lang('menu.unit_cost_inc_tax')</th>
                                                                     <th>@lang('menu.subtotal')</th>
                                                                     <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                                 </tr>
@@ -229,7 +229,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Recovered Amount : </b> <strong>>></strong></label>
+                                                        <label class="col-4"><b>@lang('menu.recovered_amount') : </b> <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="total_recovered_amount"
                                                                 id="total_recovered_amount" class="form-control" value="0.00">

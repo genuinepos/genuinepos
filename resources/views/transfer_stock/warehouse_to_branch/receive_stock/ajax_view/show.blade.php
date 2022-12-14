@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-full-display">
           <div class="modal-content" >
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Send Stock Details </h5>
+              <h5 class="modal-title" id="exampleModalLabel">@lang('menu.send_stock_details') </h5>
               <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                 class="fas fa-times"></span></a>
             </div>
@@ -96,7 +96,7 @@
               <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Receiver Note : </h6>
+                        <h6>{{ __('Receiver Note') }} : </h6>
                         <p class="receiver_note">{{ $sendStock->receiver_note }}</p>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                             <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                             <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                             <p class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-                            <h6 class="bill_name">Send Stock Details</h6>
+                            <h6 class="bill_name">@lang('menu.send_stock_details')</h6>
                         </div>
                     </div>
                 </div>
@@ -131,8 +131,8 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>B.Location (From) : </strong></li>
-                            <li><strong>Name :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.b_location') (From) : </strong></li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
                             <li><strong>@lang('menu.phone') : </strong>
                                 {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}
                             </li>

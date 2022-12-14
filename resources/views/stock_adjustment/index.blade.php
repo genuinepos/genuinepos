@@ -10,7 +10,7 @@
                 <div class="sec-name">
                     <div class="name-head">
                         <span class="fas fa-sliders-h"></span>
-                        <h5>Stock Adjustments</h5>
+                        <h5>@lang('menu.stock_adjustment')</h5>
                     </div>
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                             class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -46,8 +46,8 @@
                                             <label><strong>@lang('menu.type') :</strong></label>
                                             <select name="type" id="type" class="form-control submit_able" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="1">Normal</option>
-                                                <option value="2">Abnormal</option>
+                                                <option value="1">@lang('menu.normal')</option>
+                                                <option value="2">@lang('menu.abnormal')</option>
                                             </select>
                                         </div>
 
@@ -80,7 +80,7 @@
                 <div class="card">
                     <div class="section-header">
                         <div class="col-6">
-                            <h6>All Adjustment</h6>
+                            <h6>{{ __('All Adjustment') }}</h6>
                         </div>
 
                         <div class="col-6 d-flex justify-content-end">
@@ -99,7 +99,7 @@
                                         <th class="text-start">@lang('menu.action')</th>
                                         <th class="text-start">@lang('menu.date')</th>
                                         <th class="text-start">@lang('menu.voucher_no')</th>
-                                        <th class="text-start">Adjustment location</th>
+                                        <th class="text-start">@lang('menu.adjustment_location')</th>
                                         <th class="text-start">@lang('menu.business_location')</th>
                                         <th class="text-start">@lang('menu.reason')</th>
                                         <th class="text-start">@lang('menu.created_by')</th>

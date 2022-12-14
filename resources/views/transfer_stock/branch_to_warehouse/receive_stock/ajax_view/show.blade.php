@@ -4,7 +4,7 @@
           <div class="modal-content" >
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
-                  Send Stock Details
+                  @lang('menu.send_stock_details')
               </h5>
               <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                 class="fas fa-times"></span></a>
@@ -98,7 +98,7 @@
               <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Receiver Note : </h6>
+                        <h6>{{ __('Receiver Note') }} : </h6>
                         <p class="receiver_note">{{ $sendStock->receiver_note }}</p>
                     </div>
                 </div>
@@ -122,8 +122,8 @@
                         <div class="heading text-center">
                             <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                             <small class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</small><br>
-                            <small class="company_address">Phone : {{ json_decode($generalSettings->business, true)['phone'] }}</small>
-                            <h6 class="bill_name">Send Stock Invoice</h6>
+                            <small class="company_address">@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</small>
+                            <h6 class="bill_name">@lang('menu.send_stock_invoice')</h6>
                         </div>
                     </div>
                 </div>

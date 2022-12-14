@@ -159,7 +159,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="posSaleCheck">
                                                     <label class="form-check-label" for="posSaleCheck">
-                                                        POS Sale
+                                                        @lang('menu.pos_sales')
                                                     </label>
                                                 </div>
                                             </div>
@@ -167,7 +167,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="addSaleCheck">
                                                     <label class="form-check-label" for="addSaleCheck">
-                                                        Add Sale
+                                                        @lang('menu.add_sale')
                                                     </label>
                                                 </div>
                                             </div>
@@ -557,7 +557,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="specificNumberCheck">
                                             <label class="form-check-label" for="specificNumberCheck">
-                                                Specific Number?
+                                                {{ __('Specific Number') }}?
                                             </label>
                                         </div>
                                     </div>

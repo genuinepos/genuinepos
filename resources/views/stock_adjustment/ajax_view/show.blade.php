@@ -4,7 +4,7 @@
     <div class="modal-dialog col-80-modal">
       <div class="modal-content" >
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Stock Adjustment Details (@lang('menu.reference_no') : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
+            <h5 class="modal-title" id="exampleModalLabel">@lang('menu.stock_adjustment_details') (@lang('menu.reference_no') : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -20,14 +20,14 @@
 
                         @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>Adjustment Location : </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone}}</li>
                             <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>Adjustment Location : </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
@@ -36,7 +36,7 @@
                             </li>
                         @else
                             <li>
-                                <strong>Adjustment Location : </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
@@ -105,7 +105,7 @@
                                        <th>@lang('menu.method')</th>
                                        <th>@lang('menu.account')</th>
                                        <th>
-                                           Recovered Amount({{ json_decode($generalSettings->business, true)['currency'] }})
+                                           @lang('menu.recovered_amount')({{ json_decode($generalSettings->business, true)['currency'] }})
                                        </th>
                                    </tr>
                                </thead>
@@ -141,7 +141,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-start">Recovered Amount </th>
+                                <th class="text-start">@lang('menu.recovered_amount') </th>
                                 <td class="text-start">
                                     {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->recovered_amount }}
                                 </td>
@@ -189,7 +189,7 @@
                             <p class="branch_phone"><b>@lang('menu.phone')</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
                             <p class="branch_email"><b>@lang('menu.email')</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
                         @endif
-                        <h6 class="bill_name">Stock Adjustment Details</h6>
+                        <h6 class="bill_name">@lang('menu.stock_adjustment_details')</h6>
                     </div>
                 </div>
             </div>
@@ -203,14 +203,14 @@
                         <li><strong>@lang('menu.reference_no') : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>Adjustment Location : </strong>
-                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
+                                <strong>@lang('menu.adjustment_location') : </strong>
+                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(@lang('menu.warehouse'))</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone }}</li>
                             <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>Adjustment Location : </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
@@ -219,7 +219,7 @@
                             </li>
                         @else
                             <li>
-                                <strong>Adjustment Location : </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
                             <li><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
@@ -282,7 +282,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="4" class="text-end">Recovered Amount :</th>
+                        <th colspan="4" class="text-end">@lang('menu.recovered_amount') :</th>
                         <td class="text-start">
                             {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->recovered_amount }}
                         </td>

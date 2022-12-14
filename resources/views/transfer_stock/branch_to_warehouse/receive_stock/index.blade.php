@@ -10,7 +10,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-check-double"></span>
-                                <h5>Receive Stocks</h5>
+                                <h5>@lang('menu.receive_stocks')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -21,7 +21,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Transferred Stocks <small>(From Business Location)</small></h6>
+                                    <h6>@lang('menu.all_transferred_stocks') <small>(@lang('menu.from_business_location'))</small></h6>
                                 </div>
                             </div>
 
@@ -70,7 +70,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Send Mail</h6>
+                    <h6 class="modal-title" id="product_info">@lang('menu.send_mail')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -81,7 +81,7 @@
                         <div class="form-group mt-1">
                             <label><strong>@lang('menu.to') :</strong> </label>
                             <select required name="user_email" class="form-control" id="user_email">
-                                <option value="">Select User</option>
+                                <option value="">@lang('menu.select_user')</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->email }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name.' ('.$user->email.')' }}</option>
                                 @endforeach
@@ -89,12 +89,12 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>Mail Note:</strong> </label>
+                            <label><strong>@lang('menu.mail_note')</strong> </label>
                             <textarea name="mail_note" class="form-control" cols="30" rows="4"></textarea>
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="btn btn-sm btn-success">Send</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.send')</button>
                         </div>
                     </form>
                 </div>

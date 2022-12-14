@@ -44,7 +44,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-cart-plus"></span>
-                    <h6>Add Sale</h6>
+                    <h6>@lang('menu.add_sale')</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>

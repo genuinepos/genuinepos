@@ -13,7 +13,7 @@
         </div>
 
         <div class="col-md-6">
-            <label>Format : <span class="text-danger">*</span></label>
+            <label>{{ __('Format') }} : <span class="text-danger">*</span></label>
             <select name="format" class="form-control form-control-sm" id="e_format">
                 <option {{ $schema->format == 1 ? 'SELECTED' : ''  }} value="1">FORMAT-XXXX</option>
                 <option {{ $schema->format == 2 ? 'SELECTED' : ''  }} value="2">FORMAT-{{ date('Y') }}/XXXX</option>
@@ -30,8 +30,8 @@
         </div>
 
         <div class="col-md-6">
-            <label>Start From :</label>
-            <input type="number" name="start_from" class="form-control form-control-sm" id="e_start_from" placeholder="Start From" value="{{ $schema->start_from }}"/>
+            <label>@lang('menu.start_from') :</label>
+            <input type="number" name="start_from" class="form-control form-control-sm" id="e_start_from" placeholder="@lang('menu.start_from')" value="{{ $schema->start_from }}"/>
         </div>
     </div>
 

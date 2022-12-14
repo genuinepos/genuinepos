@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
-                    Transfer Details (@lang('menu.reference_id') : <strong>{{ $transfer->ref_id }}</strong>)
+                    @lang('menu.transfer_details') (@lang('menu.reference_id') : <strong>{{ $transfer->ref_id }}</strong>)
                 </h6>
 
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Send From : </strong></li>
+                            <li><strong>@lang('menu.send_from') : </strong></li>
                             <li><strong>{{ __('B.Location Name') }} :</strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->name . '/' . $transfer->sender_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Receive From : </strong></li>
+                            <li><strong>@lang('menu.receive_from') : </strong></li>
                             <li><strong>{{ __('B.Location Name') }} :</strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->name . '/' . $transfer->receiver_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
@@ -118,7 +118,7 @@
                         <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">Total Stock Value :</th>
+                                    <th class="text-end">@lang('menu.total_stock_value') :</th>
                                     <td class="text-start">{{ $transfer->total_stock_value }}</td>
                                 </tr>
                             </table>
@@ -129,14 +129,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>Transfer Note : </h6>
+                            <h6>@lang('menu.transfer_note') : </h6>
                             <p>{{ $transfer->transfer_note }}</p>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>Receiver Note : </h6>
+                            <h6>{{ __('Receiver Note') }} : </h6>
                             <p>{{ $transfer->receiver_note }}</p>
                         </div>
                     </div>
@@ -158,7 +158,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h6 class="bill_name">Transfer Stock Details (Business Location To Business Location)</h6>
+                        <h6 class="bill_name">{{ __('Transfer Stock Details (Business Location To Business Location)') }}</h6>
                     </div>
                 </div>
             </div>
@@ -260,7 +260,7 @@
 
                 <tfoot>
                     <tr>
-                        <td class="text-end" colspan="5"><strong>Total Stock Value :</strong></td>
+                        <td class="text-end" colspan="5"><strong>@lang('menu.total_stock_value') :</strong></td>
                         <td class="text-start">{{ $transfer->total_stock_value }}</td>
                     </tr>
                 </tfoot>

@@ -18,18 +18,18 @@
         <div class="p-3">
             <div class="card">
                 <div class="section-header">
-                    <div class="col-md-10"><h6>All Release Note.</h6></div>
+                    <div class="col-md-10"><h6>@lang('menu.all_release_note')</h6></div>
                 </div>
 
                 <div class="all-release-note-area p-2">
                     <div class="version-release-note mt-1">
                         <div class="release-version">
-                            <h5 class="text-blue">Release: 1.5.1</h5>
+                            <h5 class="text-blue">{{ __('Release') }}: 1.5.1</h5>
                         </div>
                         <div class="release-list p-1">
                             <ul class="list-styled">
-                                <li>Stylized links created for Ashlar are now available in the Lite template. A demo is available at</li>
-                                <li>Stylized links created for Ashlar are now available in the Lite template. A demo is available at</li>
+                                <li>{{ __('Stylized links created for Ashlar are now available in the Lite template. A demo is available at') }}</li>
+                                <li>{{ __('Stylized links created for Ashlar are now available in the Lite template. A demo is available at') }}</li>
                             </ul>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
 
                 <div class="changes-log-area p-2 mt-5">
                     <div class="release-version">
-                        <h5 class="text-blue">Change Log</h5>
+                        <h5 class="text-blue">@lang('menu.change_log')</h5>
                     </div>
                     <div class="changes-log mt-1">
                         <ul class="list-styled">

@@ -109,7 +109,7 @@
       <tfoot>
         <tr>
           <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
-            <strong style="display:block;margin:0 0 10px 0;">Mail Note: </strong> <br>
+            <strong style="display:block;margin:0 0 10px 0;">@lang('menu.mail_note'): </strong> <br>
                 {{ $mail_note }}
               <br>
           </td>

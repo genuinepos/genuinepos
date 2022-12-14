@@ -18,7 +18,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-exchange-alt"></span>
-                    <h6>Add Transfer Stock (Business Location To Warehouse)</h6>
+                    <h6>{{ __('Add Transfer Stock (Business Location To Warehouse)') }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -72,7 +72,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>Ref ID :</b>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.ref_id') :</b>
                                             <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
                                         </label>
 

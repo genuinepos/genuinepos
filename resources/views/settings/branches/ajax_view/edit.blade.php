@@ -9,8 +9,8 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Location Code :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
-            <input type="text" name="code" class="form-control edit_input" data-name="Branch code" id="e_code" placeholder="Business Location code" value="{{ $branch->branch_code }}"/>
+            <label><strong>@lang('menu.location_code') :</strong>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
+            <input type="text" name="code" class="form-control edit_input" data-name="Branch code" id="e_code" placeholder="@lang('menu.location_code')" value="{{ $branch->branch_code }}"/>
             <span class="error error_e_code"></span>
         </div>
 
@@ -21,8 +21,8 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Alternate Phone Number :</strong> </label>
-            <input type="text" name="alternate_phone_number" class="form-control" id="e_alternate_phone_number" placeholder="Alternate phone number" value="{{ $branch->alternate_phone_number }}"/>
+            <label><strong>@lang('menu.alternate_phone_number'):</strong> </label>
+            <input type="text" name="alternate_phone_number" class="form-control" id="e_alternate_phone_number" placeholder="@lang('menu.alternate_phone_number')" value="{{ $branch->alternate_phone_number }}"/>
         </div>
     </div>
 
@@ -59,19 +59,19 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Website :</strong> </label>
+            <label> <strong>@lang('menu.website') :</strong> </label>
             <input type="text" name="website" class="form-control" id="e_website" placeholder="Website URL" value="{{ $branch->website }}"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Location Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
+            <label> <strong>{{ __('Location Logo') }} :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
             <input type="file" name="logo" class="form-control" id="logo"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label><strong>Invoice Schema :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.invoice_schema') :</strong>  <span class="text-danger">*</span></label>
             <select name="invoice_schema_id" id="e_invoice_schema_id" data-name="Add sale pos invoice schema" class="form-control  edit_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invSchemas as $schema)
@@ -82,7 +82,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Add Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.add_sale_invoice_layout') :</strong>  <span class="text-danger">*</span></label>
             <select name="add_sale_invoice_layout_id" id="e_add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  edit_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
@@ -93,7 +93,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>POS Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.pos_sale_invoice_layout') :</strong>  <span class="text-danger">*</span></label>
             <select name="pos_sale_invoice_layout_id" id="e_pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  edit_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
@@ -108,7 +108,7 @@
         <div class="col-md-12">
             <div class="row">
                 <p class="checkbox_input_wrap mt-2">
-            <input type="checkbox" {{ $branch->purchase_permission == 1 ? 'CHECKED' : '' }} name="purchase_permission" id="e_purchase_permission" value="1"> &nbsp; <b>Enable purchase permission</b>  </p>
+            <input type="checkbox" {{ $branch->purchase_permission == 1 ? 'CHECKED' : '' }} name="purchase_permission" id="e_purchase_permission" value="1"> &nbsp; <b>@lang('menu.enable_purchase_permission')</b>  </p>
             </div>
         </div>
     </div>

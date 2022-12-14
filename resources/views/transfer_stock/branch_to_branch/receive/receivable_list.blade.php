@@ -13,7 +13,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Receivable Transfers </h5>
+                                <h5>@lang('menu.receivable_transfers') </h5>
                             </div>
 
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -30,7 +30,7 @@
                                             <div class="form-group row">
                                                 @if ($addons->branches == 1)
                                                     <div class="col-md-2">
-                                                        <label><strong>Sender Business Location :</strong></label>
+                                                        <label><strong>@lang('menu.sender_business_location') :</strong></label>
                                                         <select name="branch_id"
                                                             class="form-control submit_able" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
@@ -97,7 +97,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Receivable Transfer List</h6>
+                                    <h6>{{ __('Receivable Transfer List') }}</h6>
                                 </div>
                             </div>
 
@@ -112,13 +112,13 @@
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
                                                 <th>@lang('menu.reference_id')</th>
-                                                <th>Send From</th>
-                                                <th>Receive Status</th>
+                                                <th>@lang('menu.send_from')</th>
+                                                <th>@lang('menu.receive_status')</th>
                                                 <th>@lang('menu.total_item')</th>
-                                                <th>Send Qty</th>
+                                                <th>@lang('menu.send_qty')</th>
                                                 <th>@lang('menu.received_qty')</th>
                                                 <th>@lang('menu.pending_qty')</th>
-                                                <th>Total Stock Value({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.total_stock_value')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

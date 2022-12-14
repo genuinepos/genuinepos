@@ -18,7 +18,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h5>Edit Transfer Stock (Business Location To Business Location)</h5>
+                    <h5>{{ __('Edit Transfer Stock (Business Location To Business Location)') }}</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>B.Location :</b></label>
+                                        <label class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
 
@@ -63,7 +63,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Transfer Date :</b>
+                                        <label class="col-4"><b>@lang('menu.transfer_date') :</b>
                                             <span class="text-danger">*</span>
                                         </label>
 
@@ -92,7 +92,7 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class="col-4">
-                                            <b>Receive From :
+                                            <b>@lang('menu.receive_from') :
                                                 <span class="text-danger">*</span>
                                             </b>
                                         </label>
@@ -100,7 +100,7 @@
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
-                                                <option value="">Select Receiver B.Location</option>
+                                                <option value="">@lang('menu.select_receiver_b_location')</option>
                                                 <option value="NULL">
                                                     {{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
                                                 </option>
@@ -271,7 +271,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Stock Value :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_stock_value') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_stock_value" type="number" step="any" class="form-control" id="total_stock_value" value="0.00">
                                                         </div>
@@ -280,10 +280,10 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Transfer Note :</b>
+                                                        <label class="col-4"><b>@lang('menu.transfer_note') :</b>
                                                         </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="transfer_note" id="transfer_note" class="form-control" placeholder="Transfer Note">
+                                                            <input type="text" name="transfer_note" id="transfer_note" class="form-control" placeholder="@lang('menu.transfer_note')">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -302,7 +302,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Transfer Cost : </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.transfer_cost') : </b> </label>
                                                         <div class="col-8">
                                                             <input name="transfer_cost" type="number" step="any" id="transfer_cost" class="form-control" value="{{ $transfer->transfer_cost }}">
                                                         </div>
@@ -313,7 +313,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>Expense Ledger A/C :</b>
+                                                            <b>{{ __('Expense Ledger A/C') }}:</b>
                                                             <span class="text-danger">*</span>
                                                         </label>
 

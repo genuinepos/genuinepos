@@ -100,7 +100,7 @@
                                                 <label><strong>Sold By :</strong></label>
                                                 <select name="sold_by" id="sold_by" class="form-control">
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="1">Add Sale</option>
+                                                    <option value="1">@lang('menu.add_sale')</option>
                                                     <option value="2">POS</option>
                                                 </select>
                                             </div>

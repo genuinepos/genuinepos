@@ -10,7 +10,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-exchange-alt"></span>
-                                <h5>Transfer Stocks</h5>
+                                <h5>@lang('menu.transfer_stocks')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -21,7 +21,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Transfer Stocks </h6>
+                                    <h6>{{ __('All Transfer Stocks') }} </h6>
                                 </div>
                             </div>
 
@@ -37,7 +37,7 @@
                                                 <th>@lang('menu.reference_id')</th>
                                                 <th>@lang('menu.b_location')(From)</th>
                                                 <th>@lang('menu.warehouse')(To) </th>
-                                                <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.shipping_charge')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.total_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                                 <th>@lang('menu.status')</th>
                                                 <th>@lang('menu.action')</th>

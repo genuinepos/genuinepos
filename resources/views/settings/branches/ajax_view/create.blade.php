@@ -8,8 +8,8 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Location Code :</strong> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
-            <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="Business Location Code"/>
+            <label><strong>@lang('menu.location_code') :</strong> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
+            <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="@lang('menu.location_code')"/>
             <span class="error error_code"></span>
         </div>
 
@@ -20,8 +20,8 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Alternate Phone Number :</strong> </label>
-            <input type="text" name="alternate_phone_number" class="form-control " id="alternate_phone_number" placeholder="Alternate phone number"/>
+            <label><strong>@lang('menu.alternate_phone_number') :</strong> </label>
+            <input type="text" name="alternate_phone_number" class="form-control " id="alternate_phone_number" placeholder="@lang('menu.alternate_phone_number')"/>
         </div>
     </div>
 
@@ -58,19 +58,19 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Website :</strong> </label>
+            <label> <strong>@lang('menu.website') :</strong> </label>
             <input type="text" name="website" class="form-control " id="website" placeholder="Website URL"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>Logo :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
+            <label> <strong>@lang('menu.logo') :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
             <input type="file" name="logo" class="form-control " id="logo"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label><strong>Add Sale Invoice Scheme :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.add_sale_invoice_scheme') :</strong>  <span class="text-danger">*</span></label>
             <div class="input-group">
                 <select name="invoice_schema_id" id="invoice_schema_id" data-name="invoice schema" class="form-control add_input">
                     <option value="">@lang('menu.select_please')</option>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>Add Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.add_sale_invoice_layout') :</strong>  <span class="text-danger">*</span></label>
             <select name="add_sale_invoice_layout_id" id="add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  add_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
@@ -98,7 +98,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>POS Sale Invoice Layout :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.pos_sale_invoice_layout') :</strong>  <span class="text-danger">*</span></label>
             <select name="pos_sale_invoice_layout_id" id="pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  add_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
@@ -113,7 +113,7 @@
         <div class="col-12">
             <div class="row">
                 <p class="checkbox_input_wrap mt-2">
-            <input type="checkbox" name="purchase_permission" id="purchase_permission" value="1"> &nbsp; <b>Enable purchase permission</b></p>
+            <input type="checkbox" name="purchase_permission" id="purchase_permission" value="1"> &nbsp; <b>@lang('menu.enable_purchase_permission')</b></p>
             </div>
         </div>
     </div>
@@ -121,7 +121,7 @@
     <div class="row">
         <div class="col-md-12 text-center">
             <button type="button" value="1" class="btn text-white btn-sm btn-success float-center" id="add_opening_user_btn">
-                <i class="fas fa-user text-white"></i> Add Opening User</button>
+                <i class="fas fa-user text-white"></i> @lang('menu.add_opening_user')</button>
             <input type="hidden" name="add_opening_user" id="add_opening_user" value="">
         </div>
     </div>
@@ -146,9 +146,9 @@
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>Role Permissin :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>{{ __('Role Permission') }} :</strong> <span class="text-danger">*</span> </label>
                 <select name="role_id" id="role_id" class="form-control">
-                    <option value="">Select Role Permission</option>
+                    <option value="">{{ __('Select Role Permission') }}</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                     @endforeach

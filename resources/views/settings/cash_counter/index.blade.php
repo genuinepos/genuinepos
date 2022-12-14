@@ -18,7 +18,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-7">
-                        <h6>All Cash Counter</h6>
+                        <h6>{{ __('All Cash Counter') }}</h6>
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
@@ -33,8 +33,8 @@
                             <thead>
                                 <tr class="bg-navey-blue">
                                     <th class="text-black">@lang('menu.serial')</th>
-                                    <th class="text-black">Counter Name</th>
-                                    <th class="text-black">Short Name</th>
+                                    <th class="text-black">@lang('menu.counter_name')</th>
+                                    <th class="text-black">@lang('menu.short_name')</th>
                                     <th class="text-black">@lang('menu.branch')</th>
                                     <th class="text-black">@lang('menu.action')</th>
                                 </tr>
@@ -59,7 +59,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Cash Counter</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Cash Counter') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -69,17 +69,17 @@
                         enctype="multipart/form-data">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Counter Name :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.counter_name') :</b> <span class="text-danger">*</span></label>
                                 <input type="text" name="counter_name" class="form-control" id="counter_name"
-                                    placeholder="Cash Counter name"/>
+                                    placeholder="@lang('menu.counter_name')"/>
                                 <span class="error error_counter_name"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label for=""><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="short_name" class="form-control" id="short_name" placeholder="Short Name">
+                                <label for=""><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="short_name" class="form-control" id="short_name" placeholder="@lang('menu.short_name')">
                                 <span class="error error_short_name"></span>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Cash Counter</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ _('Edit Cash Counter') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

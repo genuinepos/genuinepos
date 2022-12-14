@@ -26,7 +26,7 @@
                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="create" href="{{ route('settings.branches.create') }}" class="btn btn-sm btn-primary">
-                                <i class="fas fa-plus-square"></i> Add Business Location
+                                <i class="fas fa-plus-square"></i>@lang('menu.add_business_location')
                             </a>
                         </div>
                     @endif
@@ -70,7 +70,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Business Location</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_business_location')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -84,7 +84,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Invoice Schema</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_invoice_schema')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="quick_schema_add_modal_body"></div>
@@ -97,7 +97,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Business Location</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_business_location')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>

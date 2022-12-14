@@ -12,7 +12,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-exchange-alt"></span>
-                    <h5>Process To Receive Stock</h5>
+                    <h5>@lang('menu.process_to_receive_stock')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -25,7 +25,7 @@
                     <div class="form_element rounded mt-0 mb-3">
 
                         <div class="element-body">
-                            <p class="m-0"><strong>Transfer Stock Details </strong></p>
+                            <p class="m-0"><strong>@lang('menu.transfer_stock_details') </strong></p>
                             <hr class="m-1">
                             <div class="row">
                                 <div class="col-md-6">
@@ -53,10 +53,10 @@
                                                     <thead class="staky">
                                                         <tr>
                                                             <th>@lang('menu.product')</th>
-                                                            <th class="text-center">Send Quantity</th>
+                                                            <th class="text-center">@lang('menu.send_quantity')</th>
                                                             <th class="text-center">@lang('menu.unit')</th>
                                                             <th class="text-center">@lang('menu.pending_qty')</th>
-                                                            <th class="text-center">Receive Quantity</th>
+                                                            <th class="text-center">@lang('menu.receive_quantity')</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="send_stock_list">
@@ -78,9 +78,9 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4">Receiver Note:</label>
+                                        <label class="col-4">{{ __('Receiver Note') }}:</label>
                                         <div class="col-8">
-                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
+                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="{{ __('Receiver Note') }}">
                                         </div>
                                     </div>
                                 </div>

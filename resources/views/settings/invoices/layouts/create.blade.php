@@ -11,7 +11,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h5>Add Invoice Layout</h5>
+                    <h5>@lang('menu.add_invoice_layout')</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -27,9 +27,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>Name :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>@lang('menu.name') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="name" class="form-control" placeholder="Layout Name" autofocus>
+                                            <input type="text" name="name" class="form-control" placeholder="@lang('menu.layout_name')" autofocus>
                                             <span class="error error_name"></span>
                                         </div>
                                     </div>
@@ -37,12 +37,12 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Design :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.design') :</b></label>
 
                                         <div class="col-8">
                                             <select name="design" id="design" class="form-control">
-                                                <option value="1">Classic (For normal printer)</option>
-                                                <option value="2">Slim (For POS printer)</option>
+                                                <option value="1">@lang('menu.classic_for_normal_printer')</option>
+                                                <option value="2">@lang('menu.slim_for_pos_printer')</option>
                                             </select>
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap bordered">
-                                                <input type="checkbox" checked name="show_shop_logo"> &nbsp; Show Business/Shop Logo</p>
+                                                <input type="checkbox" checked name="show_shop_logo"> &nbsp; @lang('menu.show_business_shop_logo')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" checked name="show_seller_info"> &nbsp; Show Seller Info</p>
+                                                <input type="checkbox" checked name="show_seller_info"> &nbsp; @lang('menu.show_seller_info')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@
                                         <div class="col-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" checked name="show_total_in_word"> &nbsp; Show Total In Word</p>
+                                                <input type="checkbox" checked name="show_total_in_word"> &nbsp; @lang('menu.show_total_word')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -90,14 +90,14 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Header Option</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.header_option')</b></p>
                         </div>
 
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-md-3">
                                     <p class="checkbox_input_wrap">
-                                        <input type="checkbox" name="is_header_less" id="is_header_less"> &nbsp;<b>Is Headerless ?</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you check this option then print header info will not come in the print preview. Use case, When the print page is pre-generated Like Pad.Where header info previously exists." class="fas fa-info-circle tp"></i>
+                                        <input type="checkbox" name="is_header_less" id="is_header_less"> &nbsp;<b>{{ __('Is Header less') }} ?</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you check this option then print header info will not come in the print preview. Use case, When the print page is pre-generated Like Pad.Where header info previously exists." class="fas fa-info-circle tp"></i>
                                     </p>
                                 </div>
 
@@ -135,9 +135,9 @@
                             <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-2 col-4"><b>Header Text : </b> </label>
+                                        <label for="inputEmail3" class="col-lg-2 col-4"><b>@lang('menu.header_text') : </b> </label>
                                         <div class="col-lg-10 col-8">
-                                            <input type="text" name="header_text" class="form-control form-control-sm"  placeholder="Header text">
+                                            <input type="text" name="header_text" class="form-control form-control-sm"  placeholder="@lang('menu.header_text')">
                                         </div>
                                     </div>
                                 </div>
@@ -147,16 +147,16 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Invoice Heading</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.invoice_heading')</b></p>
                         </div>
 
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Invoice Heading :</b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.invoice_heading') :</b> </label>
                                         <div class="col-lg-8 col-7">
-                                            <input type="text" name="invoice_heading" class="form-control" id="invoice_heading" placeholder="Invoice Heading">
+                                            <input type="text" name="invoice_heading" class="form-control" id="invoice_heading" placeholder="@lang('menu.invoice_heading')">
                                             <span class="error error_invoice_heading"></span>
                                         </div>
                                     </div>
@@ -164,9 +164,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Quotation Heading :</b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.quotation_heading') :</b> </label>
                                         <div class="col-lg-8 col-7">
-                                            <input type="text" name="quotation_heading" id="quotation_heading" class="form-control" placeholder="Quotation Heading">
+                                            <input type="text" name="quotation_heading" id="quotation_heading" class="form-control" placeholder="@lang('menu.quotation_heading')">
                                             <span class="error error_quotation_heading"></span>
                                         </div>
                                     </div>
@@ -176,9 +176,9 @@
                             <div class="row gx-2 mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Draft Heading : </b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.draft_heading') : </b> </label>
                                         <div class="col-lg-8 col-7">
-                                            <input type="text" name="draft_heading" id="draft_heading" class="form-control" placeholder="Draft Heading">
+                                            <input type="text" name="draft_heading" id="draft_heading" class="form-control" placeholder="@lang('menu.draft_heading')">
                                             <span class="error error_draft_heading"></span>
                                         </div>
                                     </div>
@@ -186,9 +186,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>Challan Heading : </b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.challan_heading') : </b> </label>
                                         <div class="col-lg-8 col-7">
-                                            <input type="text" name="challan_heading" id="challan_heading" class="form-control" placeholder="Challan Heading">
+                                            <input type="text" name="challan_heading" id="challan_heading" class="form-control" placeholder="@lang('menu.challan_heading')">
                                             <span class="error error_challan_heading"></span>
                                         </div>
                                     </div>
@@ -199,7 +199,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Field For Branch</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.field_for_branch')</b></p>
                         </div>
 
                         <div class="element-body">
@@ -208,7 +208,7 @@
                                     <div class="input-group">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" name="branch_landmark" > &nbsp; <b>Landmark</b> </p>
+                                            <input type="checkbox" name="branch_landmark" > &nbsp; <b>@lang('menu.landmark')</b> </p>
                                         </div>
                                     </div>
                                 </div>
@@ -305,7 +305,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Field For Product</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.field_for_product')</b></p>
                         </div>
 
                         <div class="element-body">
@@ -313,21 +313,21 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" checked name="product_w_type"> &nbsp;<b>Product Warranty Type</b></p>
+                                        <input type="checkbox" checked name="product_w_type"> &nbsp;<b>@lang('menu.product_warranty_type')</b></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" checked name="product_w_duration"> &nbsp; <b>Product Warranty Duration</b></p>
+                                        <input type="checkbox" checked name="product_w_duration"> &nbsp; <b>@lang('menu.product_warranty_duration')</b></p>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="row">
                                         <p class="checkbox_input_wrap">
-                                        <input type="checkbox" checked name="product_discount"> &nbsp; <b>Product Discount</b></p>
+                                        <input type="checkbox" checked name="product_discount"> &nbsp; <b>@lang('menu.product_discount')</b></p>
                                     </div>
                                 </div>
                             </div>
@@ -343,9 +343,9 @@
                                 <div class="col-md-4">
                                     <div class="row">
                                         <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" name="product_imei"><b>&nbsp; Show sale description</b></p>
+                                        <input type="checkbox" name="product_imei"><b>&nbsp; @lang('menu.show_sale_description')</b></p>
                                     </div>
-                                    <small class="text-muted">(Product IMEI or Serial Number)</small>
+                                    <small class="text-muted">(@lang('menu.product_serial_number'))</small>
                                 </div>
                             </div>
                         </div>
@@ -380,19 +380,19 @@
                             <div class="row mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Bank Name :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_name') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="bank_name" class="form-control" placeholder="Bank Name">
+                                            <input type="text" name="bank_name" class="form-control" placeholder="@lang('menu.bank_name')">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Bank Branch :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_branch') :</b></label>
 
                                         <div class="col-8">
-                                            <input type="text" name="bank_branch" class="form-control" placeholder="Bank Branch">
+                                            <input type="text" name="bank_branch" class="form-control" placeholder="@lang('menu.bank_branch')">
                                         </div>
                                     </div>
                                 </div>
@@ -402,7 +402,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Footer Text</b></p>
+                            <p class="p-1 text-primary"><b>@lang('menu.footer_text')</b></p>
                         </div>
 
                         <div class="element-body">
@@ -418,9 +418,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Footer Text :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.footer_text') :</b> </label>
                                         <div class="col-8">
-                                            <textarea name="footer_text" class="form-control" cols="10" rows="3" placeholder="Footer text"></textarea>
+                                            <textarea name="footer_text" class="form-control" cols="10" rows="3" placeholder="@lang('menu.footer_text')"></textarea>
                                         </div>
                                     </div>
                                 </div>

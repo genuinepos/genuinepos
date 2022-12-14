@@ -18,7 +18,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h6>Edit Transfer Stock (Business Location To Warehouse)</h6>
+                    <h6>{{ __('Edit Transfer Stock (Business Location To Warehouse)') }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>B.Location :</b><span class="text-danger">*</span></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') :</b><span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                             <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
@@ -71,7 +71,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>Ref ID :</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.ref_id') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Reference ID">
                                         </div>

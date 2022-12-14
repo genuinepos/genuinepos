@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h6 class="bill_name">Transfer Stock Details (Business Location To Business Location)</h6>
+                        <h6 class="bill_name">{{ __('Transfer Stock Details (Business Location To Business Location)') }}</h6>
                     </div>
                 </div>
             </div>
@@ -95,12 +95,12 @@
 
                 <tfoot>
                     <tr>
-                        <td class="text-end" colspan="5"><strong>Total Stock Value :</strong></td>
+                        <td class="text-end" colspan="5"><strong>@lang('menu.total_stock_value') :</strong></td>
                         <td class="text-start">{{ $transfer->total_stock_value }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-end" colspan="5">Transfer Cost</th>
+                        <th class="text-end" colspan="5">@lang('menu.transfer_cost')</th>
                         <td class="text-start">{{ $transfer->transfer_cost }}</td>
                     </tr>
                 </tfoot>

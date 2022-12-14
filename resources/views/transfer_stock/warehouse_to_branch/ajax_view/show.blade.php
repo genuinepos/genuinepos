@@ -5,7 +5,7 @@
       <div class="modal-content" >
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-              Transfer Details (@lang('menu.invoice_id') : <strong>{{ $transfer->invoice_id }}</strong>)
+            @lang('menu.transfer_details') (@lang('menu.invoice_id') : <strong>{{ $transfer->invoice_id }}</strong>)
           </h5>
           <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
             class="fas fa-times"></span></a>
@@ -108,7 +108,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start" colspan="6">Shipping Charge</th>
+                                <th class="text-start" colspan="6">@lang('menu.shipping_charge')</th>
                                 <td class="text-start" colspan="2">
                                     {{json_decode($generalSettings->business, true)['currency'] }}
                                     {{ $transfer->shipping_charge }}
@@ -140,7 +140,7 @@
 
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>Receiver Note : </h6>
+                    <h6>{{ __('Receiver Note') }} : </h6>
                     <p>{{ $transfer->receiver_note }}</p>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                     <div class="heading text-center">
                         <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
 
-                        <h6 class="bill_name">Transfer Stock Details (To Branch)</h6>
+                        <h6 class="bill_name">@lang('menu.transfer_stock_details') (To Branch)</h6>
                     </div>
                 </div>
             </div>
@@ -253,7 +253,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">Shipping Charge</th>
+                        <th class="text-start" colspan="6">@lang('menu.shipping_charge')</th>
                         <td class="text-start" colspan="2">{{ $transfer->shipping_charge }}</td>
                     </tr>
 

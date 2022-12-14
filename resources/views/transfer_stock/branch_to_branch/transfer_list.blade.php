@@ -11,7 +11,7 @@
                 <div class="sec-name">
                     <div class="name-head">
                         <span class="fas fa-shopping-cart"></span>
-                        <h5>Transfer Stocks (Business Location To Business Location)</h5>
+                        <h5>{{ __('Transfer Stocks (Business Location To Business Location)') }}</h5>
                     </div>
 
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -98,7 +98,7 @@
                 <div class="card">
                     <div class="section-header">
                         <div class="col-6">
-                            <h6>Transfer List</h6>
+                            <h6>@lang('menu.transfer_list')</h6>
                         </div>
 
                         <div class="col-6 d-flex justify-content-end">
@@ -119,14 +119,14 @@
                                         <th>@lang('menu.action')</th>
                                         <th>@lang('menu.date')</th>
                                         <th>@lang('menu.reference_id')</th>
-                                        <th>Sender B. Location</th>
+                                        <th>{{ __('Sender B. Location') }}</th>
                                         <th>@lang('menu.receiver') @lang('menu.b_location')</th>
-                                        <th>Receive Status</th>
+                                        <th>@lang('menu.receive_status')</th>
                                         <th>@lang('menu.total_item')</th>
-                                        <th>Send Qty</th>
+                                        <th>@lang('menu.send_qty')</th>
                                         <th>@lang('menu.received_qty')</th>
                                         <th>@lang('menu.pending_qty')</th>
-                                        <th>Total Transfer Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                        <th>{{ __('Total Transfer Cost') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

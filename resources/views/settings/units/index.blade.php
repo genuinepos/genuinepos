@@ -7,7 +7,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-sort-amount-up"></span>
-                    <h5>Units</h5>
+                    <h5>@lang('menu.units')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -26,14 +26,14 @@
 
                         <form id="add_unit_form" class="p-2" action="{{ route('settings.units.store') }}">
                             <div class="form-group">
-                                <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Unit Name"/>
+                                <label><b>@lang('menu.unit_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="@lang('menu.unit_name')"/>
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="form-group mt-1">
-                                <label><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="Short name"/>
+                                <label><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="@lang('menu.short_name')"/>
                                 <span class="error error_code"></span>
                             </div>
 
@@ -57,14 +57,14 @@
                         <form id="edit_unit_form" class="p-2" action="{{ route('settings.units.update') }}">
                             <input type="hidden" name="id" id="id">
                             <div class="form-group">
-                                <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="Unit Name"/>
+                                <label><b>@lang('menu.unit_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="@lang('menu.unit_name')"/>
                                 <span class="error error_e_name"></span>
                             </div>
 
                             <div class="form-group mt-1">
-                                <label><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="Short Name"/>
+                                <label><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="@lang('menu.short_name')"/>
                                 <span class="error error_e_code"></span>
                             </div>
 
@@ -83,7 +83,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>All Units</h6>
+                                <h6>@lang('menu.all_units')</h6>
                             </div>
                         </div>
 
@@ -96,8 +96,8 @@
                                     <thead>
                                         <tr>
                                             <th>@lang('menu.serial')</th>
-                                            <th>Short Name</th>
-                                            <th>Code Name</th>
+                                            <th>@lang('menu.short_name')</th>
+                                            <th>{{ __('Code Name') }}</th>
                                             <th>@lang('menu.action')</th>
                                         </tr>
                                     </thead>

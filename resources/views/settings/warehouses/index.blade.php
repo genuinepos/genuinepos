@@ -52,7 +52,7 @@
                     <div class="card" id="add_form">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Add Warehouse </h6>
+                                <h6>@lang('menu.warehouse') </h6>
                             </div>
                         </div>
 
@@ -60,14 +60,14 @@
                             <form id="add_warehouse_form" action="{{ route('settings.warehouses.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label><b>Warehouse Name :</b>  <span class="text-danger">*</span></label>
-                                    <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="Warehouse name"/>
+                                    <label><b>@lang('menu.warehouse_name') :</b>  <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="@lang('menu.warehouse_name')"/>
                                     <span class="error error_name"></span>
                                 </div>
 
                                 <div class="form-group mt-1">
-                                    <label><b>Warehouse Code :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
-                                    <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="Warehouse code"/>
+                                    <label><b>@lang('menu.warehouse_code') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
+                                    <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="@lang('menu.warehouse_code')"/>
                                     <span class="error error_code"></span>
                                 </div>
 
@@ -83,7 +83,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label><strong>Under Business Location :</strong></label>
+                                    <label><strong>@lang('menu.under_business_location') :</strong></label>
                                     <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
                                         <option value="NULL">
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
@@ -111,7 +111,7 @@
                     <div class="card" id="edit_form" style="display: none;">
                         <div class="section-header">
                             <div class="col-md-12">
-                                <h6>Edit Warehouse </h6>
+                                <h6>@lang('menu.edit_warehouse') </h6>
                             </div>
                         </div>
 
@@ -125,7 +125,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>All Warehouse</h6>
+                                <h6>@lang('menu.all_warehouse')</h6>
                             </div>
                         </div>
 
@@ -140,7 +140,7 @@
                                             <th class="text-start">@lang('menu.sl')</th>
                                             <th class="text-start">@lang('menu.name')</th>
                                             <th class="text-start">@lang('menu.business_location')</th>
-                                            <th class="text-start">Warehouse Code</th>
+                                            <th class="text-start">@lang('menu.warehouse_code')</th>
                                             <th class="text-start">@lang('menu.phone')</th>
                                             <th class="text-start">@lang('menu.address')</th>
                                             <th class="text-start">@lang('menu.action')</th>

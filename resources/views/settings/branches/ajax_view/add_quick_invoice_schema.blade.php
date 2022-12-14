@@ -30,7 +30,7 @@
 
         <div class="col-md-6">
             <label><b>@lang('menu.start_from') :</b></label>
-            <input type="number" name="start_from" class="form-control" id="q_start_from" placeholder="Start From" value="0"/>
+            <input type="number" name="start_from" class="form-control" id="q_start_from" placeholder="@lang('menu.start_from')" value="0"/>
         </div>
     </div>
 

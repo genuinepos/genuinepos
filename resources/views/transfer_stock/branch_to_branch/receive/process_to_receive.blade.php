@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-exchange-alt"></span>
-                    <h6>Process To Receive Stock <small>(Transferred From Another Business Location)</small></h6>
+                    <h6>@lang('menu.process_to_receive_stock') <small>(@lang('menu.transferred_from_another_location'))</small></h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -30,12 +30,12 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>Transfer Reference ID: </strong> {{ $transfer->ref_id }}</p>
+                                    <p class="m-0"><strong>@lang('menu.transfer_reference_id') </strong> {{ $transfer->ref_id }}</p>
                                     <p class="m-0"><strong>@lang('menu.date'): </strong> {{ $transfer->date }}</p>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <p class="m-0"><strong>Transfered From: </strong>
+                                        <p class="m-0"><strong>{{ __('Transferred From') }}: </strong>
 
                                         @if ($transfer->sender_branch)
 
@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4">Store In Location :</label>
+                                        <label class="col-4">@lang('menu.store_in_location') :</label>
                                         <div class="col-8">
                                             <input
                                                 readonly
@@ -69,7 +69,7 @@
 
                                 <div class="col-md-5">
                                     <div class="input-group">
-                                        <label class="col-4">Store In Warehouse : <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, Received stock will be added to Business Location/Shop" class="fas fa-info-circle tp"></i></label>
+                                        <label class="col-4">@lang('menu.store_in_warehouse') : <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, Received stock will be added to Business Location/Shop" class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" autofocus>
                                                 <option value="">@lang('menu.none')</option>
@@ -94,10 +94,10 @@
                                         <thead class="staky">
                                             <tr>
                                                 <th>@lang('menu.product')</th>
-                                                <th>Send Quantity</th>
+                                                <th>@lang('menu.send_quantity')</th>
                                                 <th>@lang('menu.unit')</th>
                                                 <th>@lang('menu.pending_qty')</th>
-                                                <th>Receive Quantity</th>
+                                                <th>@lang('menu.receive_quantity')</th>
                                             </tr>
                                         </thead>
                                         <tbody id="send_stock_list">
@@ -159,16 +159,16 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4">Receiver Note :</label>
+                                        <label class="col-4">{{ __('Receiver Note') }} :</label>
                                         <div class="col-8">
-                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
+                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="{{ __('Receiver Note') }}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4">Total @lang('menu.received_qty') :</label>
+                                        <label class=" col-4">@lang('menu.total') @lang('menu.received_qty') :</label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control" value="0.00">
                                         </div>

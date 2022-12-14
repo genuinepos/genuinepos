@@ -48,7 +48,7 @@
                     <div class="form-group">
                         <label><b>@lang('menu.name') :</b></label> <span class="text-danger">*</span>
                         <input type="text" name="name" class="form-control add_unit_input"
-                            data-name="Unit name" id="add_unit_name" placeholder="Unit name" />
+                            data-name="Unit name" id="add_unit_name" placeholder="@lang('menu.unit_name')" />
                         <span class="error error_add_unit_name"></span>
                     </div>
 

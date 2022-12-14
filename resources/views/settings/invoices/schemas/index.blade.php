@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-receipt"></span>
-                    <h5>Invoice Schemas</h5>
+                    <h5>@lang('menu.invoice_schemas')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -35,7 +35,7 @@
                                     <tr>
                                         <th class="text-start">@lang('menu.name')</th>
                                         <th class="text-start">@lang('menu.prefix')</th>
-                                        <th class="text-start">Start From</th>
+                                        <th class="text-start">@lang('menu.start_from')</th>
                                         <th class="text-start">@lang('menu.action')</th>
                                     </tr>
                                 </thead>
@@ -60,7 +60,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Invoice Schema</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_invoice_schema')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -87,7 +87,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label>Format : <span class="text-danger">*</span></label>
+                                <label>{{ __('Format') }} : <span class="text-danger">*</span></label>
                                 <select name="format" class="form-control form-control-sm" id="format">
                                     <option value="1">FORMAT-XXXX</option>
                                     <option value="2">FORMAT-{{ date('Y') }}/XXXX</option>
@@ -104,8 +104,8 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label>Start From :</label>
-                                <input type="number" name="start_from" class="form-control form-control-sm" id="start_from" placeholder="Start From" value="0"/>
+                                <label>@lang('menu.start_from') :</label>
+                                <input type="number" name="start_from" class="form-control form-control-sm" id="start_from" placeholder="@lang('menu.start_from')" value="0"/>
                             </div>
                         </div>
 
@@ -127,7 +127,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Invoice Schema</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_invoice_schema')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="edit_modal_body">

@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-hand-holding-usd"></span>
-                    <h5>Texes</h5>
+                    <h5>{{ __('Texes') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -20,7 +20,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>All Tax</h6>
+                        <h6>{{ __('All Tax') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
@@ -37,7 +37,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-start">@lang('menu.serial')</th>
-                                    <th class="text-start">Tax Name</th>
+                                    <th class="text-start">@lang('menu.tax_name')</th>
                                     <th class="text-start">@lang('menu.tax_percent')</th>
                                     <th class="text-start">@lang('menu.action')</th>
                                 </tr>
@@ -62,7 +62,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Tax</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_tax')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -70,8 +70,8 @@
                     <!--begin::Form-->
                     <form id="add_tax_form" action="{{ route('settings.taxes.store') }}">
                         <div class="form-group">
-                            <label><b>Tax Name :</b>  <span class="text-danger">*</span></label>
-                            <input type="text" name="tax_name" class="form-control form-control-sm add_input" data-name="Tax name" id="tax_name" placeholder="Tax Name"/>
+                            <label><b>@lang('menu.tax_name') :</b>  <span class="text-danger">*</span></label>
+                            <input type="text" name="tax_name" class="form-control form-control-sm add_input" data-name="Tax name" id="tax_name" placeholder="@lang('menu.tax_name')"/>
                             <span class="error error_tax_name"></span>
                         </div>
 
@@ -100,7 +100,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Tax</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_tax')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -109,8 +109,8 @@
                     <form id="edit_tax_form" action="{{ route('settings.taxes.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Unit Name :</b>  <span class="text-danger">*</span></label>
-                            <input type="text" name="tax_name" class="form-control edit_input" data-name="Name" id="e_tax_name" placeholder="Tax Name"/>
+                            <label><b>@lang('menu.unit_name') :</b>  <span class="text-danger">*</span></label>
+                            <input type="text" name="tax_name" class="form-control edit_input" data-name="Name" id="e_tax_name" placeholder="@lang('menu.tax_name')"/>
                             <span class="error error_e_tax_name"></span>
                         </div>
 

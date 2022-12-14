@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-file-invoice"></span>
-                    <h5>Invoice Layouts</h5>
+                    <h5>@lang('menu.invoice_layout')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -19,7 +19,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-7">
-                        <h6>All Invoice Layouts</h6>
+                        <h6>{{ __('All Invoice Layouts') }}</h6>
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
@@ -33,8 +33,8 @@
                                 <thead>
                                     <tr>
                                         <th>@lang('menu.serial')</th>
-                                        <th>Layout Name</th>
-                                        <th>Is Header Less</th>
+                                        <th>@lang('menu.layout_name')</th>
+                                        <th>{{ __('Is Header Less') }}</th>
                                         <th>@lang('menu.action')</th>
                                     </tr>
                                 </thead>

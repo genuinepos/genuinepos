@@ -21,7 +21,7 @@
                         <div class="card" id="add_form">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>Add Payment Method</h6>
+                                    <h6>{{ __('Add Payment Method') }}</h6>
                                 </div>
                             </div>
 
@@ -29,8 +29,8 @@
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label><b>Method Name :</b> <span class="text-danger">*</span></label>
-                                        <input type="text" name="name" class="form-control" id="name" placeholder="Payment Method Name" />
+                                        <label><b>{{ __('Method Name') }} :</b> <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" class="form-control" id="name" placeholder="{{ __('Method Name') }}" />
                                         <span class="error error_name"></span>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                         <div class="card" id="edit_form" style="display: none;">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>Edit Payment Method</h6>
+                                    <h6>{{ __('Edit Payment Method') }}</h6>
                                 </div>
                             </div>
 
@@ -62,7 +62,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>All Payment Methods</h6>
+                                    <h6>@lang('menu.all_payment_methods')</h6>
                                 </div>
                             </div>
 
@@ -75,7 +75,7 @@
                                         <thead>
                                             <tr>
                                                 <th>@lang('menu.serial')</th>
-                                                <th>Payment Method Name</th>
+                                                <th>{{ __('Payment Method Name') }}</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>

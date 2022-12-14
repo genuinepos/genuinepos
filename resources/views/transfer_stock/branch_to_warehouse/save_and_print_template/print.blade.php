@@ -6,7 +6,7 @@
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
                         <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                        <h6 class="bill_name">Transfer Stock Details (To Branch)</h6>
+                        <h6 class="bill_name">@lang('menu.transfer_stock_details') (To Branch)</h6>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">Shipping Charge</th>
+                        <th class="text-start" colspan="6">@lang('menu.shipping_charge')</th>
                         <td class="text-start" colspan="2">{{ $transfer->shipping_charge }}</td>
                     </tr>
 

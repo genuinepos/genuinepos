@@ -35,7 +35,7 @@
 
                                 <div class="form-group row mt-1">
                                     <div class="col-lg-4">
-                                        <strong>Type :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.type') :</strong> <span class="text-danger">*</span>
                                         <select name="type" class="form-control" id="type">
                                             <option value="1">@lang('menu.warranty')</option>
                                             <option value="2">@lang('menu.guaranty')</option>
@@ -98,7 +98,7 @@
 
                                 <div class="row mt-1">
                                     <div class="col-md-4">
-                                        <strong>Type :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.type') :</strong> <span class="text-danger">*</span>
                                         <select name="type" class="form-control" id="e_type">
                                             <option value="1">@lang('menu.warranty')</option>
                                             <option value="2">@lang('menu.guaranty')</option>

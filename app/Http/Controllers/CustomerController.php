@@ -146,7 +146,8 @@ class CustomerController extends Controller
 
         $this->userActivityLogUtil->addLog(action: 1, subject_type: 1, data_obj: $addCustomer);
 
-        return $addCustomer;
+        // return $addCustomer;
+        return response()->json('Customer added successfully');
     }
 
     public function edit($customerId)

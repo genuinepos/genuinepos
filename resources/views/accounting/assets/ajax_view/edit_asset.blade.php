@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <label><b>@lang('menu.asset_type') :</b> <span class="text-danger">*</span></label>
             <select name="type_id" class="form-control" id="e_type_id" >
-            <option value="">Select Asset Type</option>
+            <option value="">@lang('menu.select_asset_type')</option>
                 @foreach ($types as $type)
                     <option {{ $type->id == $asset->type_id ? 'SELECTED' : '' }} value="{{ $type->id }}">{{ $type->asset_type_name }}</option>
                 @endforeach

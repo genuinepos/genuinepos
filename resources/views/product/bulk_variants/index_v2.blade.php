@@ -119,7 +119,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>All Variant</h6>
+                                <h6>@lang('menu.all_variant')</h6>
                             </div>
                         </div>
 

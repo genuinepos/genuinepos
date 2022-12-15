@@ -107,7 +107,7 @@
                                                         <th>@lang('menu.sl')</th>
                                                         <th>@lang('menu.asset')</th>
                                                         <th>@lang('menu.type')</th>
-                                                        <th>Available Loaction</th>
+                                                        <th>{{ __('Available Location') }}</th>
                                                         <th>@lang('menu.quantity')</th>
                                                         <th>@lang('menu.per_unit_value')</th>
                                                         <th>@lang('menu.total_value')</th>
@@ -183,7 +183,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Asset Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Asset Type') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -221,7 +221,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.asset_type')Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.asset_type') :</b> <span class="text-danger">*</span></label>
                                 <select name="type_id" class="form-control" id="type_id" >
                                 <option value="">@lang('menu.select_asset_type')</option>
                                 </select>
@@ -295,7 +295,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Asset</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Asset') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

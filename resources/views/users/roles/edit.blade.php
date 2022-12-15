@@ -313,7 +313,7 @@
                                             <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox"
                                                     {{ $role->hasPermissionTo('stock_report') ? 'CHECKED' : '' }}
-                                                name="stock_report" class="report product"> &nbsp; stock Report</p>
+                                                name="stock_report" class="report product"> &nbsp; @lang('menu.stock_report')</p>
                                         </div>
                                     </div>
 
@@ -1108,7 +1108,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Dashboard Permission</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Dashboard Permission') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -1165,7 +1165,7 @@
                     @if ($addons->hrm == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="p-1 text-primary"><strong>HRM Permission</strong> </p>
+                                <p class="p-1 text-primary"><strong>{{ __('HRM Permission') }}</strong> </p>
                             </div>
 
                             <div class="element-body">
@@ -1200,7 +1200,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('payroll') ? 'CHECKED' : '' }} name="payroll" class="HRMS"> &nbsp; Payroll</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('payroll') ? 'CHECKED' : '' }} name="payroll" class="HRMS"> &nbsp; {{ __('Payroll') }}</p>
                                             </div>
                                         </div>
 
@@ -1316,7 +1316,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('assign_todo') ? 'CHECKED' : '' }} name="assign_todo" class="Essentials"> &nbsp; Todo</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('assign_todo') ? 'CHECKED' : '' }} name="assign_todo" class="Essentials"> &nbsp; @lang('menu.todo')</p>
                                             </div>
                                         </div>
 
@@ -1336,7 +1336,7 @@
                                                     <input
                                                             {{ $role->hasPermissionTo('memo') ? 'CHECKED' : '' }}
                                                     type="checkbox" name="memo" class="Essentials">
-                                                    &nbsp; Memo
+                                                    &nbsp; @lang('menu.memo')
                                                 </p>
                                             </div>
                                         </div>
@@ -1344,7 +1344,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('msg') ? 'CHECKED' : '' }} name="msg" class="Essentials"> &nbsp; Message</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('msg') ? 'CHECKED' : '' }} name="msg" class="Essentials"> &nbsp; @lang('menu.message')</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1371,20 +1371,20 @@
                                     <div class="col-md-6">
 
                                         <div class="col-md-12">
-                                            <p><strong>Manufacturing</strong></p>
+                                            <p><strong>@lang('menu.manufacturing')</strong></p>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('process_view') ? 'CHECKED' : '' }} name="process_view" class=" Manufacturing"> &nbsp; View Process</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('process_view') ? 'CHECKED' : '' }} name="process_view" class=" Manufacturing"> &nbsp; @lang('menu.view_process')</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('process_add') ? 'CHECKED' : '' }} name="process_add" class="Manufacturing"> &nbsp; Add Process</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('process_add') ? 'CHECKED' : '' }} name="process_add" class="Manufacturing"> &nbsp; @lang('menu.add_process')</p>
                                             </div>
                                         </div>
 
@@ -1398,7 +1398,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $role->hasPermissionTo('process_delete') ? 'CHECKED' : '' }} name="process_delete" class="Manufacturing"> &nbsp; Delete Process</p>
+                                                <input type="checkbox" {{ $role->hasPermissionTo('process_delete') ? 'CHECKED' : '' }} name="process_delete" class="Manufacturing"> &nbsp; {{ __('Delete Process') }}</p>
                                             </div>
                                         </div>
 
@@ -1451,7 +1451,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>Others Permission</b> </p>
+                            <p class="p-1 text-primary"><b>{{ __('Others Permissions') }}</b> </p>
                         </div>
 
                         <div class="element-body">

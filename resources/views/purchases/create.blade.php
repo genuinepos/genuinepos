@@ -114,7 +114,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>PUR./PO. Date:</b></label>
+                                        <label class="col-4"><b>{{ __('PUR./PO. Date') }}:</b></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control changeable"
                                                 value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date" placeholder="dd-mm-yyyy" autocomplete="off">

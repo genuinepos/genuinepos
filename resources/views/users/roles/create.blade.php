@@ -306,7 +306,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="stock_report" class="product"> &nbsp; Stock Report</p>
+                                            <input type="checkbox" name="stock_report" class="product"> &nbsp; @lang('menu.stock_report')</p>
                                         </div>
                                     </div>
 

@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-user-tag"></span>
-                    <h5>User Roles</h5>
+                    <h5>{{ __('User Roles') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                         class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -19,7 +19,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>All User Roles</h6>
+                        <h6>{{ __('All User Roles') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">

@@ -29,7 +29,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p><b>@lang('menu.user_name') :</b> {!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!} </p>
-                                            <p><b>Role :</b>
+                                            <p><b>@lang('menu.role') :</b>
                                                 @if ($user->role_type == 1)
                                                     Super-Admin
                                                 @elseif($user->role_type == 2)
@@ -55,7 +55,7 @@
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p><b>Fullname :</b> {{ $user->prefix.' '.$user->name.' '.$user->last_name }} </p>
+                                            <p><b>@lang('menu.full_name') :</b> {{ $user->prefix.' '.$user->name.' '.$user->last_name }} </p>
                                             <p><b>@lang('menu.email') :</b> {{ $user->email}} </p>
                                         </div>
                                     </div>

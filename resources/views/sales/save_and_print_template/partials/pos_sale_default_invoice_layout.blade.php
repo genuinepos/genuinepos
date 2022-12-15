@@ -118,7 +118,7 @@
                                 {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
-                                <li><strong>Address : </strong>
+                                <li><strong>@lang('menu.address') : </strong>
                                     {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
@@ -151,7 +151,7 @@
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                        Paid
+                                    @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
                                     @lang('menu.partial')
                                     @elseif($payable==$sale->due)
@@ -213,7 +213,7 @@
                                             {{ $sale_product->product->warranty->type == 1 ? 'Warranty' : 'Guaranty' }}
                                             {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->product->warranty->description . '</small>' : '' !!}
                                         @else
-                                            <b>No</b>
+                                            <b>@lang('menu.no')</b>
                                         @endif
                                     </td>
                                 @endif

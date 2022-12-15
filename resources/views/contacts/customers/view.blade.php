@@ -146,9 +146,9 @@
                                                 <tr>
                                                     <tr>
                                                         <th>@lang('menu.date')</th>
-                                                        <th>Particulars</th>
+                                                        <th>{{ __('Particulars') }}</th>
                                                         <th>@lang('menu.business_location')</th>
-                                                        <th>Voucher/Invoice</th>
+                                                        <th>{{ __('Voucher/Invoice') }}</th>
                                                         <th>@lang('menu.debit')</th>
                                                         <th>@lang('menu.credit')</th>
                                                         <th>@lang('menu.running_balance')</th>
@@ -177,7 +177,7 @@
                                 <ul class="list-unstyled">
                                     <li><strong>@lang('menu.customer_name') :</strong></li>
                                     <li><span class="name">{{ $customer->name }}</span></li><br>
-                                    <li><strong><i class="fas fa-map-marker-alt"></i> Address :</strong></li>
+                                    <li><strong><i class="fas fa-map-marker-alt"></i> @lang('menu.address') :</strong></li>
                                     <li><span class="address">{{ $customer->address }}</span></li><br>
                                     <li><strong><i class="fas fa-briefcase"></i> @lang('menu.business_name') :</strong></li>
                                     <li><span class="business">{{ $customer->business_name }}</span></li>
@@ -186,7 +186,7 @@
 
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong><i class="fas fa-phone-square"></i> Phone</strong></li>
+                                    <li><strong><i class="fas fa-phone-square"></i> @lang('menu.phone')</strong></li>
                                     <li><span class="phone">{{ $customer->phone }}</span></li>
                                 </ul>
                             </div>
@@ -328,7 +328,7 @@
                                                     <th>@lang('menu.customer')</th>
                                                     <th>@lang('menu.total_amount')</th>
                                                     <th>@lang('menu.total_paid')</th>
-                                                    <th>Sell Due</th>
+                                                    <th>@lang('menu.sell_due')</th>
                                                     <th>@lang('menu.return_amount')</th>
                                                     <th>@lang('menu.return_due')</th>
                                                     <th>@lang('menu.payment_status')</th>

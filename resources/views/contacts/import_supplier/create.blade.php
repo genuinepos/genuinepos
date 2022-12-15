@@ -27,7 +27,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"><b>>@lang('menu.file_to_import') :</b> </label>
+                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.file_to_import') :</b> </label>
                                             <div class="col-8">
                                                 <input type="file" name="import_file" class="form-control">
                                                 <span class="error" style="color: red;">

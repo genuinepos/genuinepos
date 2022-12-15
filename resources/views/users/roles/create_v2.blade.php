@@ -851,11 +851,11 @@
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="stock_report" class="inventory_report inventory_permission super_select_all"> Stock report
+                                        <input type="checkbox" name="stock_report" class="inventory_report inventory_permission super_select_all"> @lang('menu.stock_report')
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="daily_stock_report" class="inventory_report inventory_permission super_select_all"> Daily stock report
+                                        <input type="checkbox" name="daily_stock_report" class="inventory_report inventory_permission super_select_all"> {{ __('Daily stock report') }}
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
@@ -1483,12 +1483,12 @@
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6">
                                     <p class="text-info"><input type="checkbox" class="select_all super_select_all asset_permission " data-target="asset_components" autocomplete="off">
-                                        <strong>Asset components</strong></p>
+                                        <strong>{{ __('Asset components') }}</strong></p>
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="asset_components_index" class="asset_components asset_permission super_select_all">  Asset components list
+                                        <input type="checkbox" name="asset_components_index" class="asset_components asset_permission super_select_all">  {{ __('Asset components list') }}
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="asset_components_create" class="asset_components asset_permission super_select_all">  Asset components create
+                                        <input type="checkbox" name="asset_components_create" class="asset_components asset_permission super_select_all">{{ __('Asset components create') }}
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
                                         <input type="checkbox" name="asset_components_view" class="asset_components asset_permission super_select_all">  Asset components detail

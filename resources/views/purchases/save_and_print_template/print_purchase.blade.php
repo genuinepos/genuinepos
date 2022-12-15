@@ -205,7 +205,7 @@
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">{{ __('Purchase Total') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                             </td>

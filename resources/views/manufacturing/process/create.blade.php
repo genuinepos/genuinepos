@@ -96,7 +96,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant C }}ost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant Cost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 

@@ -110,7 +110,8 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>Role :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all business location." class="fas fa-info-circle tp"></i></label>
+                                                    <label class="col-4"> <b>@lang('menu.role
+                                                    ') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all business location." class="fas fa-info-circle tp"></i></label>
                                                     <div class="col-8">
                                                         <select name="role_id" id="role_id" class="form-control">
 
@@ -131,7 +132,7 @@
                                         <div class="row gx-2 pt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Password :</b> <span class="text-danger">*</span> </label>
+                                                    <label class="col-4"><b>@lang('menu.password') :</b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
                                                         <span class="error error_password"></span>
@@ -206,7 +207,7 @@
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-12"> <b>@lang('menu.commission') (%) :</b> </label>
                                                 <div class="col-sm-8 col-12">
-                                                    <input type="text" name="sales_commission_percent" class="form-control" placeholder="Sales Commission Percentage (%)" autocomplete="off" value="{{ $user->sales_commission_percent }}">
+                                                    <input type="number" name="sales_commission_percent" class="form-control" placeholder="Sales Commission Percentage (%)" autocomplete="off" value="{{ $user->sales_commission_percent }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -215,7 +216,7 @@
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-12"><b>@lang('menu.max_discount')(%) : </b> </label>
                                                 <div class="col-sm-8 col-12">
-                                                    <input type="text" name="max_sales_discount_percent" class="form-control" placeholder="Max sales discount percent" autocomplete="off" value="{{ $user->max_sales_discount_percent }}">
+                                                    <input type="number" name="max_sales_discount_percent" class="form-control" placeholder="Max sales discount percent" autocomplete="off" value="{{ $user->max_sales_discount_percent }}">
                                                 </div>
                                             </div>
                                         </div>

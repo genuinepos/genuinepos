@@ -200,7 +200,7 @@
                                     <div class="input-group">
                                         <label class="col-4"> <b>@lang('menu.commission') (%) :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="sales_commission_percent"  class="form-control" placeholder="Sales Commission Percentage (%)" autocomplete="off">
+                                            <input type="number" name="sales_commission_percent"  class="form-control" placeholder="Sales Commission Percentage (%)" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +209,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.max_discount')(%) : </b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="max_sales_discount_percent"  class="form-control" placeholder="Max sales discount percent" autocomplete="off">
+                                            <input type="number" name="max_sales_discount_percent"  class="form-control" placeholder="Max sales discount percent" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>

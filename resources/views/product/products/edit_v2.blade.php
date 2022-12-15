@@ -512,7 +512,7 @@
                         <div class="row gx-2 g-1">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Type :</b> </label>
+                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.type') :</b> </label>
                                     <div class="col-7">
                                         <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
                                     </div>

@@ -56,7 +56,7 @@
                                 <div class="col-md-12">
                                     <p class="checkbox_input_wrap">
                                         <input type="checkbox" {{ $bs->is_continuous == 1 ? 'CHECKED' : '' }} name="is_continuous" id="is_continuous">
-                                        <b>{{ __('Continous feed or rolls') }}</b>
+                                        <b>{{ __('Continuos feed or rolls') }}</b>
                                     </p>
                                 </div>
                             </div>

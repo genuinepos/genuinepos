@@ -147,6 +147,7 @@ class UserController extends Controller
             $this->validate($request, [
                 'username' => 'required',
                 'password' => 'required|confirmed',
+                'sales_commission_percent' => 'nullable|integer|min:1',
             ]);
         }
 

@@ -16,7 +16,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-desktop"></span>
-                    <h5>Stock Report</h5>
+                    <h5>@lang('menu.stock_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
@@ -28,10 +28,10 @@
                     <div class="tab_list_area row pb-0">
                         <div class="col-12">
                             <div class="btn-group">
-                                <a id="tab_btn" data-show="branch_stock" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Business Location Stock</a>
+                                <a id="tab_btn" data-show="branch_stock" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i>@lang('menu.business_location_stock')</a>
 
                                 <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-scroll"></i> Warehouse Stock</a>
+                                <i class="fas fa-scroll"></i>@lang('menu.warehouse_stock')</a>
                             </div>
                         </div>
                     </div>

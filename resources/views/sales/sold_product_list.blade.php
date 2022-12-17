@@ -97,7 +97,7 @@
                                             </div>
 
                                             <div class="col-md-2">
-                                                <label><strong>Sold By :</strong></label>
+                                                <label><strong>@lang('menu.sold_by') :</strong></label>
                                                 <select name="sold_by" id="sold_by" class="form-control">
                                                     <option value="">@lang('menu.all')</option>
                                                     <option value="1">@lang('menu.add_sale')</option>

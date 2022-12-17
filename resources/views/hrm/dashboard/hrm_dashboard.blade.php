@@ -83,7 +83,7 @@
                     <div class="card-title mt-4 ps-4">
                         <h1 class="text-start text-primary pl-5">
                             <i class="fas fa-tachometer-alt"></i>
-                            <span class="">HRM</span> Dashboard
+                            <span class="">HRM</span> @lang('menu.dashboard')
                         </h1>
                     </div>
 

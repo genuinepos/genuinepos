@@ -1,11 +1,11 @@
 <div class="section-header d-flex justify-content-between align-items-center px-3">
     <h6>
         <span class="fas fa-users"></span>
-        Users
+        @lang('menu.users')
     </h6>
     <span class="badge bg-secondary text-white">
         <div id="small-badge">
-            Total: {{ $userCount }}
+            @lang('menu.total'): {{ $userCount }}
         </div>
     </span>
 </div>

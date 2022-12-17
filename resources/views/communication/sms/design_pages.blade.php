@@ -25,7 +25,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-university"></span>
-                    <h5>SMS Design Pages</h5>
+                    <h5>{{ __('SMS Design Pages') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -34,7 +34,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>SMS Setup</strong>
+                    <strong>{{ __('SMS Setup') }}</strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -46,22 +46,22 @@
                                     <div class="row g-3 mb-1">
                                         <div class="col-sm-9">
                                             <div class="row g-3">
-                                                <label for="" class="col-4">Format Name</label>
+                                                <label for="" class="col-4">{{ __('Format Name') }}</label>
                                                 <div class="col-8">
-                                                    <input class="form-control" type="text" placeholder="Format Name">
+                                                    <input class="form-control" type="text" placeholder="{{ __('Format Name') }}">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-3 d-flex justify-content-end">
-                                            <a role="button" class="btn btn-sm btn-primary">List</a>
+                                            <a role="button" class="btn btn-sm btn-primary">{{ __('List') }}</a>
                                         </div>
                                         <div class="col-12">
-                                            <label for="smsBodyExample">SMS Body Example <i class="fas fa-info-circle"></i></label>
+                                            <label for="smsBodyExample">{{ __('SMS Body Example') }} <i class="fas fa-info-circle"></i></label>
                                             <textarea class="form-control" name="" id="smsBodyExample" rows="8"></textarea>
                                         </div>
                                         <div class="col-12">
                                             <div class="sms-example">
-                                                <p class="text-secondary"><strong>Example:</strong></p>
+                                                <p class="text-secondary"><strong>{{ __('Example') }}:</strong></p>
                                                 <p>@lang('menu.date') @date,</p>
                                                 <p>Dear Customer,</p>
                                                 <p>Today Bill No @invoice_no. Net amount @net_amount + vat (@vat) and discount @discount. Total Amount: @total_amount</p>
@@ -82,32 +82,32 @@
                 <div class="col-md-6">
                     <div class="card mb-3">
                         <div class="card-header">
-                            <span>SMS APIs</span>
+                            <span>{{ __('SMS APIs') }}</span>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label for="">API Settings Name</label>
+                                    <label for="">{{ __('API Settings Name') }}</label>
                                     <input type="text" class="form-control" placeholder="E.x. Provider Name">
                                 </div>
                                 <div class="col-12">
                                     <div class="d-flex justify-content-between mb-1">
-                                        <label for="">Get Balance</label>
+                                        <label for="">{{ __('Get Balance') }}</label>
                                         <div>
                                             <span class="balance-txt">0.00</span>
-                                            <a roole="button" class="btn btn-sm btn-success">Test</a>
+                                            <a roole="button" class="btn btn-sm btn-success">{{ __('Test') }}</a>
                                         </div>
                                     </div>
                                     <input type="text" class="form-control">
                                     <p><small class="text-secondary">E.x. https://www.example.com/key</small></p>
                                 </div>
                                 <div class="col-12">
-                                    <label for=""> Send SMS (API) <i class="fas fa-info-circle"></i></label>
+                                    <label for=""> {{ __('Send SMS') }} (API) <i class="fas fa-info-circle"></i></label>
                                     <textarea name="" id="" rows="4" class="form-control"></textarea>
                                     <p><small class="text-secondary">E.x. https://www.example.com/Key.contact=@reciever_number.senderId=@senderId.message=message</small></p>
                                 </div>
                                 <div class="col-12 d-flex justify-content-between">
-                                    <button class="btn btn-sm btn-primary">List</button>
+                                    <button class="btn btn-sm btn-primary">{{ __('List') }}</button>
                                     <button class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
@@ -115,16 +115,16 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <span>SMS Status Code Display Message</span>
+                            <span></span>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label for="">API Status Code</label>
+                                    <label for="">{{ __('API Status Code') }}</label>
                                     <input type="number" class="form-control" placeholder="E.x. 1001">
                                 </div>
                                 <div class="col-12">
-                                    <label for="">Display Message</label>
+                                    <label for="">{{ __('Display Message') }}</label>
                                     <textarea name="" id="" rows="3" class="form-control" placeholder="E.x. Insufficient balance"></textarea>
                                 </div>
                                 <div class="col-12 d-flex justify-content-between">
@@ -141,7 +141,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Module Wise SMS Activation</strong>
+                    <strong>{{ __('Module Wise SMS Activation') }}</strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -151,7 +151,7 @@
                             <form action="">
                                 <div class="row g-2 mb-2">
                                     <div class="col-sm-2">
-                                        <label for="">Module</label>
+                                        <label for="">{{ __('Module') }}</label>
                                     </div>
                                     <div class="col-sm-10">
                                         <div class="row g-1">
@@ -175,7 +175,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="saleReturnCheck">
                                                     <label class="form-check-label" for="saleReturnCheck">
-                                                        Sale Return
+                                                        @lang('menu.sale_return')
                                                     </label>
                                                 </div>
                                             </div>
@@ -183,7 +183,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="addPurchaseCheck">
                                                     <label class="form-check-label" for="addPurchaseCheck">
-                                                        Add Purchase
+                                                        @lang('menu.add_purchase')
                                                     </label>
                                                 </div>
                                             </div>
@@ -199,7 +199,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="dueCollectionCheck">
                                                     <label class="form-check-label" for="dueCollectionCheck">
-                                                        Due Collection
+                                                        {{ __('Due Collection') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -207,7 +207,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="duePaymentCheck">
                                                     <label class="form-check-label" for="duePaymentCheck">
-                                                        Due Payment
+                                                        {{ __('Due Payment') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -215,7 +215,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="returnCollectionCheck">
                                                     <label class="form-check-label" for="returnCollectionCheck">
-                                                        Return Collection
+                                                        {{ __('Return Collection') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -223,7 +223,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="returnPaymentCheck">
                                                     <label class="form-check-label" for="returnPaymentCheck">
-                                                        Return Payment
+                                                        @lang('menu.return_payment')
                                                     </label>
                                                 </div>
                                             </div>
@@ -247,7 +247,7 @@
                                 </div>
                                 <div class="row g-2 mb-2">
                                     <div class="col-sm-2">
-                                        <label for="">Format Name</label>
+                                        <label for="">{{ __('Format Name') }}</label>
                                     </div>
                                     <div class="col-sm-10">
                                         <select name="" id="" class="form-control">
@@ -562,7 +562,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-end">
-                                        <button class="btn btn-sm btn-success">Send SMS</button>
+                                        <button class="btn btn-sm btn-success">{{ __('Send SMS') }}</button>
                                     </div>
                                     <div class="col-sm-6 specific-number-field">
                                         <input type="tel" class="form-control" placeholder="Number">

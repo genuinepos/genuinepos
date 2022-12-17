@@ -62,8 +62,7 @@
 
                                     <div class="col-md-12">
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('user_view') ? 'CHECKED' : '' }} name="user_view" class="users"> &nbsp; View
-                                            User
+                                            <input type="checkbox" {{ $role->hasPermissionTo('user_view') ? 'CHECKED' : '' }} name="user_view" class="users"> &nbsp; @lang('menu.view_user')
                                         </p>
                                     </div>
 
@@ -247,7 +246,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Product Permissions</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Product Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -288,14 +287,14 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('openingStock_add') ? 'CHECKED' : '' }} name="openingStock_add" class="product"> &nbsp; Add Opening Stock </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('openingStock_add') ? 'CHECKED' : '' }} name="openingStock_add" class="product"> &nbsp; {{ __('Add opening stock') }} </p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('product_delete') ? 'CHECKED' : '' }} name="product_delete" class="product"> &nbsp; Delete Product </p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('product_delete') ? 'CHECKED' : '' }} name="product_delete" class="product"> &nbsp; {{ __('Delete Product') }} </p>
                                         </div>
                                     </div>
 
@@ -387,7 +386,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>Purchase Permission</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Purchase Permission') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -572,7 +571,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>{{ __('Expenses Permission') }}</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Expenses Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -646,7 +645,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>{{ __('Sales Permission') }}</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Sales Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -889,7 +888,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>{{ __('Cash Register Permission') }}</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Cash Register Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -990,7 +989,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>{{ __('All Report Permission') }}</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('All Report Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -1021,7 +1020,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>{{ __('Setup Permission') }}</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Setup Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -1049,7 +1048,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap">
-                                            <input type="checkbox" {{ $role->hasPermissionTo('branch') ? 'CHECKED' : '' }} name="branch" class="settings"> &nbsp; Branch</p>
+                                            <input type="checkbox" {{ $role->hasPermissionTo('branch') ? 'CHECKED' : '' }} name="branch" class="settings"> &nbsp; {{ __('Branch') }}</p>
                                         </div>
                                     </div>
 
@@ -1108,7 +1107,7 @@
 
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><strong>{{ __('Dashboard Permission') }}</strong> </p>
+                            <p class="p-1 text-primary"><strong>{{ __('Dashboard Permissions') }}</strong> </p>
                         </div>
 
                         <div class="element-body">
@@ -1165,7 +1164,7 @@
                     @if ($addons->hrm == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="p-1 text-primary"><strong>{{ __('HRM Permission') }}</strong> </p>
+                                <p class="p-1 text-primary"><strong>{{ __('HRM Permissions') }}</strong> </p>
                             </div>
 
                             <div class="element-body">

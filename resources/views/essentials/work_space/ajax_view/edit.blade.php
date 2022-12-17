@@ -72,8 +72,8 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Estimated Hours : </b></label>
-            <input type="text" name="estimated_hours" class="form-control" id="estimated_hours" placeholder="Estimated Hours" value="{{ $ws->estimated_hours }}">
+            <label><b>{{ __('Estimated Hour') }} : </b></label>
+            <input type="text" name="estimated_hours" class="form-control" id="estimated_hours" placeholder="{{ __('Estimated Hour') }}" value="{{ $ws->estimated_hours }}">
         </div>
     </div>
 

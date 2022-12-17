@@ -62,11 +62,11 @@
                                         </option>
 
                                         <option {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'user' ? 'SELECTED' : '' }}
-                                            value="user">@lang('menu.select_from_user')&#039;s list
+                                            value="user">@lang('menu.select_from_user')&#039; {{ __('list') }}
                                         </option>
 
                                         <option {{ json_decode($generalSettings->sale, true)['sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
-                                            value="select_form_cmsn_list">@lang('menu.select_from_commission_agent')&#039;s list
+                                            value="select_form_cmsn_list">@lang('menu.select_from_commission_agent')&#039; {{ __('list') }}
                                         </option>
                                     </select>
                                 </div>

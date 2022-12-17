@@ -167,7 +167,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>{{ __('Wasted Qty ') }} :</b></label>
+                                                <label class="col-5"><b>{{ __('Wasted Qty') }} :</b></label>
                                                 <div class="col-7">
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="0.00">
                                                     <span class="error error_wasted_quantity"></span>
@@ -259,7 +259,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.cost')(Inc.Tax) :</b></label>
+                                                <label class="col-5"><b>@lang('menu.cost')({{ __('Inc.Tax') }}) :</b></label>
                                                 <div class="col-7">
                                                     <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="0.00">
                                                 </div>

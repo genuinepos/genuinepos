@@ -1860,7 +1860,7 @@
                                 </div> --}}
 
                                 <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">{{ _('Account Reports') }}</p>
+                                    <p class="sub-menu-group-title">{{ __('Account Reports') }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.profit.loss.index') }}" class="switch-bar-wrap">
@@ -2206,7 +2206,7 @@
                     {{-- <div class="model__close bg-secondary-2 mb-3">
                         <div class="row align-items-center">
                             <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Set-up</strong></p>
+                                <p class="text-muted float-start mt-1"><strong>{{ __('Set-up') }}</strong></p>
                             </div>
                             <div class="col-md-4">
                                 <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
@@ -2215,7 +2215,7 @@
                     </div> --}}
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">{{ __('Set-up ') }}</p>
+                            <p class="sub-menu-group-title">{{ __('Set-up') }}</p>
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('g_settings'))
                                     <div class="sub-menu-col">

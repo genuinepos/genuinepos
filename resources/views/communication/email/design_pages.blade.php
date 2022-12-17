@@ -32,7 +32,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-university"></span>
-                    <h5>Email Design Pages</h5>
+                    <h5>{{ __('Email Design Pages') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -41,7 +41,7 @@
         <div class="p-3">
             <div class="card mb-3">
                 <div class="card-header border-0">
-                    <strong>Email Server Setup</strong>
+                    <strong>{{ __('Email Server Setup') }}</strong>
                 </div>
             </div>
             <div class="row g-3">
@@ -160,9 +160,9 @@
                                 <div class="row g-2 mb-3">
                                     <div class="col-sm-8">
                                         <div class="row g-2">
-                                            <label for="" class="col-4">Format Name</label>
+                                            <label for="" class="col-4">{{ __('Format Name') }}</label>
                                             <div class="col-8">
-                                                <input type="text" class="form-control" placeholder="Format Name">
+                                                <input type="text" class="form-control" placeholder="{{ __('Format Name') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -265,7 +265,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="dueCollectionCheck">
                                                     <label class="form-check-label" for="dueCollectionCheck">
-                                                        Due Collection
+                                                        {{ __('Due Collection') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -273,7 +273,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="duePaymentCheck">
                                                     <label class="form-check-label" for="duePaymentCheck">
-                                                        Due Payment
+                                                        {{ __('Due Payment') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -281,7 +281,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="returnCollectionCheck">
                                                     <label class="form-check-label" for="returnCollectionCheck">
-                                                        Return Collection
+                                                        {{ __('Return Collection') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -289,7 +289,7 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="returnPaymentCheck">
                                                     <label class="form-check-label" for="returnPaymentCheck">
-                                                        Return Payment
+                                                        @lang('menu.return_payment')
                                                     </label>
                                                 </div>
                                             </div>
@@ -313,7 +313,7 @@
                                 </div>
                                 <div class="row g-2 mb-2">
                                     <div class="col-sm-2">
-                                        <label for="">Format Name</label>
+                                        <label for="">{{ __('Format Name') }}</label>
                                     </div>
                                     <div class="col-sm-10">
                                         <select name="" id="" class="form-control">
@@ -362,7 +362,7 @@
                                             <td>@lang('menu.sl')</td>
                                             <td>Module</td>
                                             <td>Sender</td>
-                                            <td>Format Name</td>
+                                            <td>{{ __('Format Name') }}</td>
                                         </tr>
                                     </thead>
                                     <tbody>

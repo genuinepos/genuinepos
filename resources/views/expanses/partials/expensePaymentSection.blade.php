@@ -5,7 +5,7 @@
                 <div class="col-md-6">
                     <div class="input-group">
                         <label class=" col-4">
-                            <b>Paying :
+                            <b>{{ __('Paying') }} :
                                 ({{ json_decode($generalSettings->business, true)['currency'] }})
                             </b>
                         </label>

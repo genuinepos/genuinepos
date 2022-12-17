@@ -212,7 +212,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>{{ __('Wasted Qty ') }}:</b></label>
+                                                <label class="col-5"><b>{{ __('Wasted Qty') }}:</b></label>
                                                 <div class="col-7">
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="{{ $production->wasted_quantity }}">
                                                 </div>

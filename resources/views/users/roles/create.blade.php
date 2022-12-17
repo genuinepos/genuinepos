@@ -292,7 +292,7 @@
                                     <div class="col-md-12">
                                         <div class="row">
                                             <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="product_delete" class="product"> &nbsp; Delete Product </p>
+                                            <input type="checkbox" name="product_delete" class="product"> &nbsp; {{ __('Delete Product') }} </p>
                                         </div>
                                     </div>
 

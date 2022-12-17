@@ -95,7 +95,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>All Work Space </h6>
+                        <h6>{{ __('All Work Space') }} </h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
@@ -111,13 +111,13 @@
                                 <tr>
                                     <th>@lang('menu.entry_date')</th>
                                     <th>@lang('menu.name')</th>
-                                    <th>Workspace ID</th>
+                                    <th>@lang('menu.workspace_id')</th>
                                     <th>@lang('menu.location')</th>
                                     <th>@lang('menu.priority')</th>
                                     <th>@lang('menu.status')</th>
                                     <th>@lang('menu.start_date')</th>
                                     <th>@lang('menu.end_date')</th>
-                                    <th>Estimated Hour</th>
+                                    <th>{{ __('Estimated Hour') }}</th>
                                     <th>@lang('menu.assigned_by')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>
@@ -214,8 +214,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Estimated Hours : </b></label>
-                                <input type="text" name="estimated_hours" class="form-control" placeholder="Estimated Hours">
+                                <label><b>{{ __('Estimated Hour') }} : </b></label>
+                                <input type="text" name="estimated_hours" class="form-control" placeholder="{{ __('Estimated Hour') }}">
                             </div>
                         </div>
 

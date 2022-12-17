@@ -89,7 +89,7 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="module_settings_form" href="#">Modules Settings</a>
+                                            <a class="menu_btn" data-form="module_settings_form" href="#">{{ __('Modules Settings') }}</a>
                                         </li>
 
                                         <li class="menu_list">

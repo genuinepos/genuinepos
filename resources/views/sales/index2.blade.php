@@ -104,7 +104,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>All Sale</h6>
+                                    <h6>{{ __('All Sale') }}</h6>
                                 </div>
 
                                 @if(auth()->user()->can('create_add_sale'))

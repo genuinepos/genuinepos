@@ -21,7 +21,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-12">
-                                    <h6>All Transferred Stocks From Branch</h6>
+                                    <h6>{{ __('All Transferred Stocks From Branch') }}</h6>
                                 </div>
                             </div>
 

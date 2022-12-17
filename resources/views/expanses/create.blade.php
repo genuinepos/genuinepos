@@ -34,7 +34,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
+                                        <label class=" col-4"><b>{{ __('Expense A/C') }} :</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select required name="ex_account_id" class="form-control" id="ex_account_id">
                                                 @foreach ($expenseAccounts as $exAc)

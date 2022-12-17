@@ -19,7 +19,7 @@
                     <div class="col-md-4">
                         <div class="card" id="add_form">
                             <div class="section-header">
-                                <h6>Add Expanse Category</h6>
+                                <h6>{{ __('Add Expanse Category') }}</h6>
                             </div>
 
                             <div class="form-area px-3 pb-2">
@@ -88,7 +88,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>All Expense Categories</h6>
+                                    <h6>{{ __('All Expense Categories') }}</h6>
                                 </div>
                             </div>
                             <!--begin: Datatable-->

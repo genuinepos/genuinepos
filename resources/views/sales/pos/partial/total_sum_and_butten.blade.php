@@ -175,7 +175,7 @@
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1')
                         <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">Vat/Tax:</label>
+                            <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Vat/Tax') }}:</label>
                             <div class="col-sm-9 col-8">
                                 <div class="row g-2">
                                     <div class="col-6">

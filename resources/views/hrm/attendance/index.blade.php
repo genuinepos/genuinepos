@@ -13,7 +13,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-paste"></span>
-                    <h6>Attendances</h6>
+                    <h6>@lang('menu.attendance')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
                     class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -77,7 +77,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
+                        <h6>@lang('menu.attendance') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">

@@ -12,7 +12,7 @@
             @if (count($price_groups) > 0)
                 <th class="text-white text-start">@lang('menu.price_group')</th>
             @endif
-            <th class="text-white text-start">Variation Images</th>
+            <th class="text-white text-start">{{ __('Variation Images') }}</th>
         </tr>
     </thead>
     <tbody class="variant_product_pricing_table_body">

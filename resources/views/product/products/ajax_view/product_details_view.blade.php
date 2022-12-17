@@ -54,7 +54,7 @@
                         @if ($product->tax)
                             <li><strong>@lang('menu.tax_type'): </strong>{{ $product->tax_type == 1 ? 'Exclusive' : 'Inclusive' }}</li>
                         @endif
-                        <li><strong>Product Condition : </strong> {{ $product->product_condition }}</li>
+                        <li><strong>{{ __('Product Condition') }} : </strong> {{ $product->product_condition }}</li>
                         <li>
                             <strong>{{ __('Product Type') }} : </strong>
                             @php

@@ -1,6 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
 @endpush
 @section('title', 'Customer List - ')
 @section('content')
@@ -28,7 +29,7 @@
                                             <div class="col-xl-2 col-lg-3 col-md-4">
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
-                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                    class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
                                                     <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
@@ -127,7 +128,7 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="foo">
                     <!--begin::Form-->
                     <form id="add_customer_form" action="{{ route('contacts.customer.store') }}" method="POST"
                         enctype="multipart/form-data">
@@ -352,6 +353,7 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",

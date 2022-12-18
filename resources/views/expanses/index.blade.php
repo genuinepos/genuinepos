@@ -28,7 +28,7 @@
 
                                             <div class="col-md-2">
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
-                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
                                                     <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
@@ -43,14 +43,14 @@
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.expense_for') :</strong></label>
-                                        <select name="admin_id" class="form-control submit_able" id="admin_id" >
+                                        <select name="admin_id" class="form-control submit_able select2" id="admin_id" >
                                             <option value="">@lang('menu.all')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.category') :</strong></label>
-                                        <select name="cate_id" class="form-control submit_able" id="cate_id" >
+                                        <select name="cate_id" class="form-control submit_able select2" id="cate_id" >
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($ex_cates as $cate)
                                                 <option value="{{ $cate->id }}">{{ $cate->name }}</option>

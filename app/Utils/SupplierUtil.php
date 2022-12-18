@@ -776,7 +776,7 @@ class SupplierUtil
         return $data[$voucher_type_id];
     }
 
-    public function addSupplierLedger($voucher_type_id, $supplier_id, $branch_id, $date, $trans_id, $amount, $fixed_date = null)
+    public function addSupplierLedger($voucher_type_id, $branch_id, $supplier_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addSupplierLedger = new SupplierLedger();

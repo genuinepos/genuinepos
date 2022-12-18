@@ -354,7 +354,7 @@ return [
     'warehouse' => 'গুদাম',
     'select_account' => 'নির্বাচন অ্যাকাউন্ট',
     'price_group' => 'মূল্য গ্রুপ',
-    'default_selling_price' => 'ডিফল্ট বিক্রয় মূল্য',
+    'default_selling_price' => 'পূর্বনির্ধারিত বিক্রয় মূল্য',
     'sales_account' => 'বিক্রয় A/c',
     'stock' => 'স্টক',
     'stock_quantity' => 'স্টক পরিমাণ',

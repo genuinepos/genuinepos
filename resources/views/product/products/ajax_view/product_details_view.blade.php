@@ -104,7 +104,7 @@
                 @elseif($product->is_variant == 1)
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0"><strong>PURCHASE AND SELLING PRICING DETAILS :</strong></label>
+                            <label class="p-0 m-0"><strong>{{ __('PURCHASE AND SELLING PRICING DETAILS') }} :</strong></label>
                         </div>
 
                         <div class="table-responsive">
@@ -122,7 +122,7 @@
 
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0">OWN <strong>@lang('menu.warehouse')</strong> STOCK DETAILS :</label>
+                            <label class="p-0 m-0">OWN <strong>@lang('menu.warehouse')</strong> @lang('menu.stock_details') :</label>
                         </div>
                         <div class="table-responsive" id="warehouse_stock_details">
                             <!--Warehouse Stock Details-->
@@ -137,7 +137,7 @@
 
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0">GLOBAL <strong>@lang('menu.warehouse')</strong> STOCK DETAILS : </label>
+                            <label class="p-0 m-0">GLOBAL <strong>@lang('menu.warehouse')</strong> @lang('menu.stock_details') : </label>
                         </div>
                         <div class="table-responsive" id="warehouse_stock_details">
                             <!--Warehouse Stock Details-->
@@ -150,7 +150,7 @@
 
                 <div class="row">
                     <div class="heading">
-                        <label class="p-0 m-0">WON <strong>@lang('menu.business_location')</strong> STOCK DETAILS :</label>
+                        <label class="p-0 m-0">@lang('menu.own')<strong>@lang('menu.business_location')</strong> @lang('menu.stock_details') :</label>
                     </div>
                     <div class="table-responsive" id="branch_stock_details">
                         @include('product.products.ajax_view.partials.branch_stock_details')
@@ -162,7 +162,7 @@
                 @if ($addons->branches == 1)
                     <div class="row">
                         <div class="heading">
-                            <label class="p-0 m-0">ANOTHER <strong>@lang('menu.business_location')</strong> STOCK DETAILS :</label>
+                            <label class="p-0 m-0">@lang('menu.another') <strong>@lang('menu.business_location')</strong> @lang('menu.stock_details') :</label>
                         </div>
                         <div class="table-responsive" id="branch_stock_details">
                             @include('product.products.ajax_view.partials.another_branch_details')

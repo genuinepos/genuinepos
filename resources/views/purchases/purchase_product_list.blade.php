@@ -53,7 +53,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
@@ -68,7 +68,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.supplier') : </strong></label>
-                                                    <select name="supplier_id" class="form-control submit_able"
+                                                    <select name="supplier_id" class="form-control submit_able select2"
                                                         id="supplier_id">
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($suppliers as $supplier)
@@ -79,7 +79,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.category') :</strong></label>
-                                                    <select name="category_id" class="form-control submit_able"
+                                                    <select name="category_id" class="form-control submit_able select2"
                                                         id="category_id">
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($categories as $category)
@@ -90,7 +90,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.sub_category') :</strong></label>
-                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
+                                                    <select name="sub_category_id" class="form-control submit_able select2" id="sub_category_id">
                                                         <option value="">@lang('menu.all')</option>
                                                     </select>
                                                 </div>

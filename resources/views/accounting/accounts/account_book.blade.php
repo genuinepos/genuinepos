@@ -27,7 +27,7 @@
                                 <div class="form-group row justify-content-end">
                                     <div class="col-md-3">
                                         <label><strong>@lang('menu.transaction_type') :</strong></label>
-                                        <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
+                                        <select name="transaction_type" class="form-control submit_able select2" id="transaction_type" autofocus>
                                             <option value=""><strong>@lang('menu.all')</strong></option>
                                             <option value="debit"><strong>@lang('menu.debit')</strong></option>
                                             <option value="credit">@lang('menu.credit')</option>
@@ -36,7 +36,7 @@
 
                                     <div class="col-md-3">
                                         <label><strong>@lang('menu.voucher_type') :</strong></label>
-                                        <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
+                                        <select name="voucher_type" class="form-control submit_able  select2" id="voucher_type" autofocus>
                                             <option value="">@lang('menu.all')</option>
                                             @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
                                                 <option value="{{ $key }}">{{ $type }}</option>

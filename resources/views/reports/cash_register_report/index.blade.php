@@ -32,7 +32,7 @@
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-2">
                                                                 <label><strong>@lang('menu.business_location') :</strong></label>
-                                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
                                                                     <option value="NULL">
                                                                         {{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))
@@ -52,7 +52,7 @@
 
                                                     <div class="col-md-2">
                                                         <label><strong>User :</strong></label>
-                                                        <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
+                                                        <select name="user_id" class="form-control submit_able select2" id="user_id" autofocus>
                                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                                 <option value="">@lang('menu.all')</option>
                                                             @else
@@ -66,7 +66,7 @@
 
                                                     <div class="col-md-2">
                                                         <label><strong>@lang('menu.status') :</strong></label>
-                                                        <select name="status" class="form-control submit_able" id="status">
+                                                        <select name="status" class="form-control submit_able select2" id="status">
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="1">@lang('menu.open')</option>
                                                             <option value="2">@lang('menu.closed')</option>

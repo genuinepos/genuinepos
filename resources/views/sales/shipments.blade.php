@@ -55,7 +55,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.payment_status') :</strong></label>
-                                                    <select name="payment_status" id="payment_status" class="form-control submit_able">
+                                                    <select name="payment_status" id="payment_status" class="form-control submit_able select2">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">@lang('menu.paid')</option>
                                                         <option value="2">@lang('menu.due')</option>

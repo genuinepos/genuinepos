@@ -24,7 +24,6 @@
 {{-- <script src="{{asset('backend/js/custom-script.js')}}"></script> --}}
 <script src="{{asset('backend/asset/js/main.js')}}"></script>
 <script src="{{asset('backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
-
 <script>
     toastr.options = {"positionClass": "toast-top-center",}
     $(document).on('click', '#logout_option',function(e){
@@ -48,11 +47,25 @@
         window.location.reload(true);
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/b-print-1.7.0/datatables.min.js"></script>
 
 <script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+    $(window).scroll(function() {
+        if ($('.select2').is(':visible')) {
+            $('.select2-dropdown').css({"display":"none"});
+        }
+    });
+    $(document).on('click', '.select2', function (e) {
+        e.preventDefault();
+        $('.select2-dropdown').css({"display":""});
+    });
+
     $(document).ready(function() {
         $('.back-button').on('click', function(e) {
             e.preventDefault();

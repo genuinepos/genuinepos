@@ -26,7 +26,7 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-lg-2 col-md-3">
                                                     <label><b>@lang('menu.business_location') :</b> </label>
-                                                    <select class="form-control submit_able" name="branch_id" id="branch_id">
+                                                    <select class="form-control submit_able select2" name="branch_id" id="branch_id">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">
                                                             {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
@@ -44,7 +44,7 @@
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.type') :</b></label>
                                             <select name="product_type" id="product_type"
-                                                class="form-control submit_able" autofocus>
+                                                class="form-control submit_able select2" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="1">@lang('menu.single')</option>
                                                 <option value="2">@lang('menu.variant')</option>
@@ -55,7 +55,7 @@
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.category') :</b></label>
                                             <select id="category_id" name="category_id"
-                                                class="form-control submit_able">
+                                                class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($categories as $cate)
                                                     <option value="{{ $cate->id }}">{{ $cate->name }}</option>
@@ -66,7 +66,7 @@
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.unit') :</b></label>
                                             <select id="unit_id" name="unit_id"
-                                                class="form-control submit_able">
+                                                class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
@@ -76,7 +76,7 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.tax') :</b></label>
-                                            <select id="tax_id" name="tax_id" class="form-control submit_able">
+                                            <select id="tax_id" name="tax_id" class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($taxes as $tax)
                                                     <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
@@ -86,7 +86,7 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.status') : </b></label>
-                                            <select name="status" id="status" class="form-control submit_able">
+                                            <select name="status" id="status" class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="1">@lang('menu.active')</option>
                                                 <option value="0">{{ __('In-Active') }}</option>
@@ -96,7 +96,7 @@
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.brand'):</b></label>
                                             <select id="brand_id" name="brand_id"
-                                                class="form-control submit_able">
+                                                class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>

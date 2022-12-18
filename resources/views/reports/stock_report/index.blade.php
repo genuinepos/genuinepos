@@ -49,7 +49,7 @@
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-2 col-md-4">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
+                                                        <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $branch)
@@ -186,7 +186,7 @@
                                             <div class="col-lg-2 col-md-4">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <label><strong>@lang('menu.warehouse') :</strong></label>
-                                                    <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
+                                                    <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
                                                         <option value="">@lang('menu.select_business_location_first')</option>
                                                     </select>
                                                 @else
@@ -203,7 +203,7 @@
                                                     @endphp
 
                                                     <label><strong>@lang('menu.warehouse') :</strong></label>
-                                                    <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
+                                                    <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($wh as $row)
                                                             <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>

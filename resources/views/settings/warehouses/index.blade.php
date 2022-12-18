@@ -27,7 +27,7 @@
                                             <div class="col-md-3">
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
-                                                    class="form-control submit_able"
+                                                    class="form-control submit_able select2"
                                                     id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
                                                     <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>

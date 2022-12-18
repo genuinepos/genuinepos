@@ -1893,7 +1893,7 @@ return [
   'add_type' => 'Add Type',
   'total_value' => 'Total Value',
   'per_unit_value' => 'Per Unit Value',
-  'asset_type' => '>Asset Type',
+  'asset_type' => 'Asset Type',
   'asset_name' => 'Asset Name',
   'type_code' => 'Type Code',
   'add_account' => 'Add Account',

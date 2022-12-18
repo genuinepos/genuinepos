@@ -28,7 +28,7 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3">
                                                     <label><strong>@lang('menu.business_location') :</strong></label>
-                                                    <select name="branch_id" class="form-control submit_able" id="filter_branch_id" autofocus>
+                                                    <select name="branch_id" class="form-control submit_able  select2" id="filter_branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                         @foreach ($branches as $br)
@@ -43,7 +43,7 @@
 
                                         <div class="col-md-3">
                                             <label><strong>@lang('menu.asset_type') :</strong></label>
-                                            <select name="type_id" class="form-control submit_able" id="filter_type_id" autofocus>
+                                            <select name="type_id" class="form-control submit_able select2" id="filter_type_id" autofocus>
 
                                             </select>
                                         </div>

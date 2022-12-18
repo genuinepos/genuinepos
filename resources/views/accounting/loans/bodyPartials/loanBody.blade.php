@@ -128,14 +128,14 @@
                     <div class="form-group row">
                         <div class="col-md-3">
                             <label><strong>@lang('menu.company')/@lang('menu.people') :</strong></label>
-                            <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
+                            <select name="company_id" class="form-control submit_able select2" id="f_company_id" autofocus>
                                 <option value="">@lang('menu.all')</option>
                             </select>
                         </div>
 
                         <div class="col-md-3">
                             <label><strong>@lang('menu.loan_type') :</strong></label>
-                            <select name="type_id" class="form-control submit_able" id="type_id">
+                            <select name="type_id" class="form-control submit_able select2" id="type_id">
                                 <option value="">@lang('menu.all')</option>
                                 <option value="1">@lang('menu.loan_and_advance')</option>
                                 <option value="2">@lang('menu.loan_and_liabilities')</option>

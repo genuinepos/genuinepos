@@ -71,7 +71,7 @@
 
                                                     <div class="col-lg-3 col-md-6">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able"
+                                                        <select name="branch_id" class="form-control submit_able select2"
                                                             id="ledger_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
@@ -256,7 +256,7 @@
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-3 col-md-6">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able"
+                                                        <select name="branch_id" class="form-control submit_able select2"
                                                             id="purchase_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
@@ -378,7 +378,7 @@
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-3 col-md-6">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
-                                                        <select name="branch_id" class="form-control submit_able"
+                                                        <select name="branch_id" class="form-control submit_able select2"
                                                             id="order_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
@@ -508,7 +508,7 @@
 
                                                                 <div class="col-lg-3 col-md-6">
                                                                     <label><strong>@lang('menu.business_location') :</strong></label>
-                                                                    <select name="branch_id" class="form-control submit_able"
+                                                                    <select name="branch_id" class="form-control submit_able select2"
                                                                         id="payments_branch_id" autofocus>
                                                                         <option value="">@lang('menu.all')</option>
                                                                         <option value="NULL">

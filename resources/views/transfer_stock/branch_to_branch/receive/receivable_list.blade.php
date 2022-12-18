@@ -32,7 +32,7 @@
                                                     <div class="col-md-2">
                                                         <label><strong>@lang('menu.sender_business_location') :</strong></label>
                                                         <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
+                                                            class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
 
                                                             @if (auth()->user()->role_type == 3)

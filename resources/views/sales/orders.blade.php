@@ -30,7 +30,7 @@
                                                         <div class="col-md-2">
                                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                                class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
@@ -45,7 +45,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.customer') :</strong></label>
-                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                    <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                         @foreach ($customers as $customer)

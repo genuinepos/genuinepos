@@ -34,7 +34,7 @@
                                         <div class="col-md-2">
                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                             <select name="branch_id"
-                                                class="form-control submit_able" id="branch_id" autofocus>
+                                                class="form-control submit_able select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
@@ -50,7 +50,7 @@
                                 <div class="col-md-2">
                                     <label><strong>@lang('menu.priority') : </strong></label>
                                     <select name="priority"
-                                        class="form-control submit_able" id="priority" autofocus>
+                                        class="form-control submit_able select2" id="priority" autofocus>
                                         <option value="">@lang('menu.all')</option>
                                         <option value="Low">@lang('menu.low')</option>
                                         <option value="Medium">@lang('menu.medium')</option>
@@ -62,7 +62,7 @@
                                 <div class="col-md-2">
                                     <label><strong>@lang('menu.status') : </strong></label>
                                     <select name="status"
-                                        class="form-control submit_able" id="status" autofocus>
+                                        class="form-control submit_able select2" id="status" autofocus>
                                         <option value="">@lang('menu.all')</option>
                                         <option value="New">@lang('menu.new')</option>
                                         <option value="In-Progress">@lang('menu.in_progress')</option>

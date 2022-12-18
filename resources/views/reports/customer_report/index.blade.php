@@ -35,8 +35,7 @@
                                                 <div class="col-lg-4 col-md-6">
                                                     <form id="filter_tax_report_form" action="" method="get">
                                                         @csrf
-                                                            <label><strong>@lang('menu.customer') :</strong></label>
-                                                            <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                            <select name="customer_id" class="form-control submit_able  select2" id="customer_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 @foreach ($customers as $customer)
                                                                     <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>

@@ -29,7 +29,7 @@
                                                             <div class="col-md-2">
                                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                                 <select name="branch_id"
-                                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                                    class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
                                                                     <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
                                                                     @foreach ($branches as $branch)
@@ -44,7 +44,7 @@
 
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong>@lang('menu.customer') :</strong></label>
-                                                        <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                        <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">@lang('menu.walk_in_customer')</option>
                                                             @foreach ($customers as $customer)
@@ -55,7 +55,7 @@
 
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong>@lang('menu.payment_status') :</strong></label>
-                                                        <select name="payment_status" id="payment_status" class="form-control submit_able">
+                                                        <select name="payment_status" id="payment_status" class="form-control submit_able select2">
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="1">@lang('menu.paid')</option>
                                                             <option value="2">@lang('menu.due')</option>

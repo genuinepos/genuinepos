@@ -942,7 +942,7 @@
                                     </div> --}}
 
                                     <div class="sub-menu-group">
-                                        <p class="sub-menu-group-title">{{ __("Purchase Reports") }}</p>
+                                        <p class="sub-menu-group-title">{{ __("PURCHASE REPORTS") }}</p>
                                         <div class="sub-menu-row">
                                             @if (
                                                 auth()->user()->can('purchase_statements') &&

@@ -613,7 +613,6 @@ return [
   'two_hundred_metric_ton' => '200 METRIC TON',
   'three_hundred_metric_ton' => '300 METRIC TON',
   'four_hundred_metric_ton' => '400 METRIC TON',
-  // Numeric values
   'one' => '1',
   'two' => '2',
   'three' => '3',

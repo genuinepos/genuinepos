@@ -64,7 +64,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.category') :</strong></label>
-                                                <select id="category_id" name="category_id" class="form-control">
+                                                <select id="category_id" name="category_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($categories as $c)
                                                         <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -74,7 +74,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.brand'):</strong></label>
-                                                <select id="brand_id" name="brand_id" class="form-control">
+                                                <select id="brand_id" name="brand_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($brands as $b)
                                                         <option value="{{ $b->id }}">{{ $b->name }}</option>
@@ -84,7 +84,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.unit') :</strong></label>
-                                                <select id="unit_id" name="unit_id" class="form-control">
+                                                <select id="unit_id" name="unit_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($units as $u)
                                                         <option value="{{ $u->id }}">{{ $u->name }}</option>
@@ -94,7 +94,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.tax') :</strong></label>
-                                                <select id="tax_id" name="tax_id" class="form-control">
+                                                <select id="tax_id" name="tax_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($taxes as $t)
                                                         <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
@@ -138,7 +138,7 @@
                                                 <th>@lang('menu.unit_price')</th>
                                                 <th>@lang('menu.current_stock')</th>
                                                 <th>@lang('menu.stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
-                                                <th>Total Sold</th>
+                                                <th>@lang('menu.total_sold')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -165,12 +165,12 @@
                                 <div class="card-body">
                                     <form id="warehouse_stock_filter_form">
                                         @csrf
-                                        <div class="form-group row">
+                                        <div class="form-group row justify-content-end">
                                             @if ($addons->branches == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-2 col-md-4">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
-                                                        <select name="branch_id" class="form-control" id="w_branch_id" autofocus>
+                                                        <select name="branch_id" class="form-control select2" id="w_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $branch)
@@ -214,7 +214,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.category') :</strong></label>
-                                                <select id="w_category_id" name="category_id" class="form-control common_submitable">
+                                                <select id="w_category_id" name="category_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($categories as $c)
                                                         <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -224,7 +224,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.brand') :</strong></label>
-                                                <select id="w_brand_id" name="brand_id" class="form-control common_submitable">
+                                                <select id="w_brand_id" name="brand_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($brands as $b)
                                                         <option value="{{ $b->id }}">{{ $b->name }}</option>
@@ -234,7 +234,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.unit') :</strong></label>
-                                                <select id="w_unit_id" name="unit_id" class="form-control common_submitable">
+                                                <select id="w_unit_id" name="unit_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($units as $u)
                                                         <option value="{{ $u->id }}">{{ $u->name }}</option>
@@ -244,26 +244,28 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 <label><strong>@lang('menu.tax') :</strong></label>
-                                                <select id="w_tax_id" name="tax_id" class="form-control common_submitable">
+                                                <select id="w_tax_id" name="tax_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($taxes as $t)
                                                         <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <div class="form-group row align-items-end">
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="form-group row align-items-end">
-                                            <div class="col-md-2 offset-8">
-                                                <div class="input-group justify-content-end">
-                                                    <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                                    <div class="col-6">
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-2">
-                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
-                                            </div>
                                         </div>
+
                                     </form>
                                 </div>
                             </div>

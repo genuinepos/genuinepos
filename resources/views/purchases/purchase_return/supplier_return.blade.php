@@ -36,7 +36,7 @@
                                         <label class=" col-4"><b>@lang('menu.supplier')</b> <span
                                                 class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select name="supplier_id" class="form-control add_input"
+                                            <select name="supplier_id" class="form-control add_input select2"
                                                 data-name="Supplier" id="supplier_id">
                                                 <option value="">@lang('menu.select_supplier')</option>
                                                 @foreach ($suppliers as $sup)

@@ -48,7 +48,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.supplier') : </strong></label>
                                                     <select name="supplier_id"
-                                                        class="form-control selectpicker submit_able"
+                                                        class="form-control selectpicker submit_able select2"
                                                         id="supplier_id">
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($suppliers as $supplier)

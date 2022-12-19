@@ -143,7 +143,7 @@
                                             <th>@lang('menu.customer')</th>
                                             <th>{{ __('Stock In By') }}</th>
                                             <th>{{ __('Stock In Date') }}</th>
-                                            <th>Lot No</th>
+                                            <th>{{ __('Lot No') }}</th>
                                             {{-- <th>Stock In Qty</th> --}}
                                             <th>@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                         </tr>

@@ -133,7 +133,7 @@
           <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>Additional Note : </h6>
+                    <h6>{{ __('Additional Note') }} : </h6>
                     <p>{{ $transfer->additional_note }}</p>
                 </div>
             </div>

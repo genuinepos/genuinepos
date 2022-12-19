@@ -18,7 +18,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-edit"></span>
-                    <h6>Edit Transfer Stock</h6>
+                    <h6>{{ __('Edit Transfer Stock') }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -71,7 +71,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-3"><b>Ref. ID :</b> </label>
+                                        <label class=" col-3"><b>@lang('menu.ref_id') :</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" autocomplete="off">
                                         </div>
@@ -169,9 +169,9 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-2">Note:</label>
+                                        <label for="inputEmail3" class="col-2">@lang('menu.note') :</label>
                                         <div class="col-10">
-                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note">
+                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="{{ __('Additional Note') }}">
                                         </div>
                                     </div>
                                 </div>

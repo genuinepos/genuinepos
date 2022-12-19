@@ -179,7 +179,7 @@
                                     <div class="input-group">
                                         <label for="inputEmail3" class="col-2"><b>@lang('menu.note') :</b></label>
                                         <div class="col-10">
-                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note">
+                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="{{ __('Additional Note') }}">
                                         </div>
                                     </div>
                                 </div>

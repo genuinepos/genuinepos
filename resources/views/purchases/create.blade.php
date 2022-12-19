@@ -36,8 +36,8 @@
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><span
-                                            class="text-danger">*</span> <b>@lang('menu.supplier')</b></label>
+                                        <label class=" col-4"> <b>@lang('menu.supplier')</b><span
+                                            class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <select name="supplier_id" class="form-control add_input"
@@ -56,8 +56,8 @@
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><span
-                                                class="text-danger">*</span> <b>@lang('menu.warehouse') :</b> </label>
+                                            <label class="col-4"> <b>@lang('menu.warehouse') :</b><span
+                                                class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable add_input"
                                                     name="warehouse_id" data-name="Warehouse" id="warehouse_id">

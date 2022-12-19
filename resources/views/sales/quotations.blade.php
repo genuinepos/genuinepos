@@ -43,7 +43,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.customer') :</strong></label>
-                                                    <select name="customer_id" class="form-control selectpicker submit_able" id="customer_id">
+                                                    <select name="customer_id" class="form-control selectpicker submit_able select2" id="customer_id">
                                                     </select>
                                                 </div>
 

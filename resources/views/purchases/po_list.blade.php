@@ -62,7 +62,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.purchases_status') :</strong></label>
                                                     <select name="status" id="status"
-                                                        class="form-control  submit_able">
+                                                        class="form-control  submit_able select2">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">@lang('menu.receive')</option>
                                                         <option value="2">@lang('menu.pending')</option>

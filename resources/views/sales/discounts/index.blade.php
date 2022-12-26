@@ -49,7 +49,7 @@
                                                 <th>@lang('menu.priority')</th>
                                                 <th>@lang('menu.brand')</th>
                                                 <th>@lang('menu.category')</th>
-                                                <th>Applicable Products</th>
+                                                <th>@lang('menu.applicable_products')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
@@ -95,7 +95,7 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
                                 <label><strong>@lang('menu.priority') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</strong> <span class="text-danger">*</span> </label>
-                                <input type="text" name="priority" class="form-control add_input"
+                                <input type="number" name="priority" class="form-control add_input"
                                     data-name="Priority" id="priority" placeholder="Priority" />
                                 <span class="error error_priority"></span>
                             </div>
@@ -103,13 +103,13 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.start_at') :</strong> </label>
+                                <label><strong>@lang('menu.start_at') :</strong><span class="text-danger">*</span></label>
                                 <input type="text" name="start_at" id="start_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_start_at"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.end_at') :</strong></label>
+                                <label><strong>@lang('menu.end_at') :</strong><span class="text-danger">*</span></label>
                                 <input type="text" name="end_at" id="end_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_end_at"></span>
                             </div>
@@ -129,7 +129,7 @@
 
                         <div class="form-group row mt-1 brand_category_area">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.brand'):</strong> </label>
+                                <label><strong>@lang('menu.brand'):</strong><span class="text-danger">*</span></label>
                                 <select name="brand_id" id="brand_id" class="form-control add_input">
                                     <option value="">@lang('menu.please_select') </option>
                                     @foreach ($brands as $brand)
@@ -139,7 +139,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.category') :</strong></label>
+                                <label><strong>@lang('menu.category') :</strong><span class="text-danger">*</span></label>
                                 <select name="category_id" id="category_id" class="form-control add_input">
                                     <option value="">@lang('menu.please_select') </option>
                                     @foreach ($categories as $category)
@@ -160,7 +160,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.discount_amount') :</strong></label>
+                                <label><strong>@lang('menu.discount_amount') :</strong><span class="text-danger">*</span></label>
                                 <input type="number" name="discount_amount" id="discount_amount" class="form-control add_input">
                                 <span class="error error_discount_amount"></span>
                             </div>

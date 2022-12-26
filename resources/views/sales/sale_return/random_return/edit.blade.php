@@ -44,7 +44,7 @@
                             <div class="row gx-2">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __('Sale INV. ID ') }} :</b> </label>
+                                        <label class=" col-4"><b>{{ __('Sale INV. ID') }} :</b> </label>
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
@@ -329,9 +329,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Return Note :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.return_note') :</b></label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" name="return_note" id="return_note" class="form-control" value="{{ $return->return_note }}" placeholder="Return Note">
+                                                            <input type="number" step="any" name="return_note" id="return_note" class="form-control" value="{{ $return->return_note }}" placeholder="@lang('menu.return_note')">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -366,7 +366,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Provious Refunded Amount :</b></label>
+                                                        <label class="col-4"><b>{{ __('Previous Refunded Amount') }} :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_return_due_pay" id="total_return_due_pay" class="form-control" value="{{ $return->total_return_due_pay }}">
                                                         </div>

@@ -155,7 +155,7 @@
                         </div>
 
                         <div class="print_btn_area">
-                            <a id="print_btn" href="#" class="btn btn-sm btn-success float-end"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                            <a id="print_btn" href="#" class="btn btn-sm btn-primary float-end"><i class="fas fa-print"></i>@lang('menu.print')</a>
                         </div>
                     </div>
                 </div>

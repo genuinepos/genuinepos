@@ -25,7 +25,7 @@
                         <div class="card-body">
                             <form id="filter_account_ledgers" method="get">
                                 <div class="form-group row justify-content-end">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label><strong>@lang('menu.transaction_type') :</strong></label>
                                         <select name="transaction_type" class="form-control submit_able select2" id="transaction_type" autofocus>
                                             <option value=""><strong>@lang('menu.all')</strong></option>
@@ -34,7 +34,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label><strong>@lang('menu.voucher_type') :</strong></label>
                                         <select name="voucher_type" class="form-control submit_able  select2" id="voucher_type" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -44,7 +44,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label><strong>@lang('menu.to_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -68,21 +68,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <div class="row align-items-end">
-                                            <div class="col-md-7">
-                                                <label><strong></strong></label>
-                                                <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-5">
-                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report">
-                                                    <i class="fas fa-print "></i> @lang('menu.print')
-                                                </a>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-4 mt-4">
+                                        <button type="submit" class="btn text-white btn-sm btn-info "><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                        <a href="#" class="btn btn-sm btn-primary  ms-2" id="print_report">
+                                            <i class="fas fa-print "></i> @lang('menu.print')
+                                        </a>
                                     </div>
                                 </div>
                             </form>

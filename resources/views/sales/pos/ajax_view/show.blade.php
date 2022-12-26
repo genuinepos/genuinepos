@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-full-display">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> @lang('menu.sale_details') (Invoice ID :
+                <h5 class="modal-title" id="exampleModalLabel"> @lang('menu.sale_details') (@lang('menu.invoice_id') :
                     <strong>
                         <span class="head_invoice_id">{{ $sale->invoice_id }}</span>
                     </strong>)

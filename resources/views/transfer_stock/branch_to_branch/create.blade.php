@@ -60,7 +60,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.transfer_date') :</b>
+                                        <label class="col-4"><b>@lang('menu.transfer_date ') :</b>
                                             <span class="text-danger">*</span>
                                         </label>
 

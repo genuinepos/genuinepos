@@ -45,7 +45,7 @@
                             <div class="row gx-2">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __('Sale INV. ID ') }}:</b> </label>
+                                        <label class=" col-4"><b>{{ __('Sale INV. ID') }}:</b> </label>
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="{{ __('Sale Invoice ID') }}" autocomplete="off">

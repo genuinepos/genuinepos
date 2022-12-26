@@ -679,7 +679,7 @@
                                     <li class="mt-1">
                                         {{-- <a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a> --}}
                                         <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                        <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
+                                        <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print') sfdDvzsdf</button>
                                     </li>
                                 </ul>
                             </div>

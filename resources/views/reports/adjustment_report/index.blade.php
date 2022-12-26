@@ -76,20 +76,20 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-3 mt-4">
                                                         <label><strong></strong></label>
-                                                        <div class="input-group">
-                                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
-                                                        </div>
+                                                        {{-- <div class="input-group"> --}}
+                                                            <button type="submit" class="btn text-white btn-sm btn-info "><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                        {{-- </div> --}}
+                                                        {{-- <div class="form-group"> --}}
+                                                            <a href="#" class="btn btn-sm btn-primary ms-3" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                                                        {{-- </div> --}}
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <div class="form-group mt-4">
-                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

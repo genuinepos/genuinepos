@@ -51,7 +51,7 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                </div>
                 </div>
 
                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>

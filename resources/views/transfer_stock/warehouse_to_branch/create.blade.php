@@ -18,7 +18,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-exchange-alt"></span>
-                    <h6>Add Transfer Stock <small>(Warehouse To Business Location)</small></h6>
+                    <h6>@lang('menu.add_business_location') <small>(@lang('menu.warehouse') To @lang('menu.business_location'))</small></h6>
                 </div>
 
                 <div class="col-6">

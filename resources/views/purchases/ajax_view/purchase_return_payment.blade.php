@@ -35,7 +35,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>P. Invoice ID : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
+                                <li><strong>{{ __('P.Invoice ID') }} : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
                                 </li>
                                 <li><strong>@lang('menu.b_location') : </strong>
                                     {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)'}}

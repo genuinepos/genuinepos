@@ -203,7 +203,7 @@
     }
 
     .orange-theme .top-icon {
-        border: #ffffff 2px solid;
+        border: #ffffff 1px solid;
         background: #ff934b47;
     }
 

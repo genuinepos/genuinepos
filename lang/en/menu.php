@@ -560,7 +560,7 @@ return [
   'years' => 'Years',
   'date_of_joining' => 'Date Of Joining',
   'morning' => 'Morning',
-  'morning' => 'Add Leave',
+  'add_leave' => 'Add Leave',
   'work_shift' => 'Work Shift',
   'contract_type' => 'Contract Type',
   'faculty' => 'Faculty',

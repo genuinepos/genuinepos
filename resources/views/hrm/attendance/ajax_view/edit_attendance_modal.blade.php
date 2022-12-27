@@ -17,15 +17,15 @@
 
     <div class="form-group row">
         <div class="col-md-12">
-            <label><b>Clock In Note :</b></label>
-            <textarea name="clock_in_note" cols="10" rows="3" class="form-control" placeholder="Clock in note">{{ $attendance->clock_in_note }}</textarea>
+            <label><b>{{ __('Clock In Note') }} :</b></label>
+            <textarea name="clock_in_note" cols="10" rows="3" class="form-control" placeholder="{{ __('Clock in note') }}">{{ $attendance->clock_in_note }}</textarea>
         </div>
     </div>
 
     <div class="form-group row">
         <div class="col-md-12">
-            <label><b>Clock Out Note :</b></label>
-            <textarea name="clock_out_note" cols="10" rows="3" class="form-control" placeholder="Clock out note">{{ $attendance->clock_out_note }}</textarea>
+            <label><b>{{ __('Clock out note') }} :</b></label>
+            <textarea name="clock_out_note" cols="10" rows="3" class="form-control" placeholder="{{ __('Clock out note') }}">{{ $attendance->clock_out_note }}</textarea>
         </div>
     </div>
 

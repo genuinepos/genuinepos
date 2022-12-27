@@ -560,7 +560,7 @@ return [
 'years' => 'سنوات',
 'date_of_joining' => 'تاريخ الالتحاق',
 'morning' => 'صباح',
-'morning' => 'أضف إجازة',
+'add_leave' => 'أضف إجازة',
 'work_shift' => 'مناوبة عمل',
 'contract_type' => 'نوع العقد',
 'faculty' => 'كلية',

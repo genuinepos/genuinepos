@@ -61,7 +61,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Department</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_department')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -69,13 +69,13 @@
                     <!--begin::Form-->
                     <form id="add_department_form" action="{{ route('hrm.departments.store') }}">
                         <div class="form-group">
-                            <label><b>Department Name :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="department_name" class="form-control" data-name="Department name" placeholder="Department name" required/>
+                            <label><b>@lang('menu.department_name') :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="department_name" class="form-control" data-name="Department name" placeholder="@lang('menu.department_name')" required/>
                         </div>
 
                         <div class="form-group">
                             <label><b>{{ __('Department ID') }} :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="Department name" required/>
+                            <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="@lang('menu.department_name')" required/>
                             <small class="text-danger">{{ __('Department id must be Unique') }}</small>
                         </div>
 
@@ -113,13 +113,13 @@
                     <form id="edit_department_form" action="{{ route('hrm.departments.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Department Name :</b>  <span class="text-danger">*</span></label>
-                            <input type="text" name="department_name" class="form-control" data-name="Department name" placeholder="Department name" id="e_department_name" required/>
+                            <label><b>@lang('menu.department_name') :</b>  <span class="text-danger">*</span></label>
+                            <input type="text" name="department_name" class="form-control" data-name="Department name" placeholder="@lang('menu.department_name')" id="e_department_name" required/>
                         </div>
 
                         <div class="form-group mt-1">
                             <label><b>{{ __('Department ID') }} :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="Department name" id="e_department_id" required/>
+                            <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="@lang('menu.department_name')" id="e_department_id" required/>
                             <small class="text-danger">{{ __('Department id must be Unique') }}</small>
                         </div>
 

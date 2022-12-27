@@ -74,7 +74,7 @@
                                 <thead>
                                     <tr class="bg-secondary">
                                         <th class="text-white text-start">@lang('menu.ingredient_name')</th>
-                                        <th class="text-white text-start">Input Qty</th>
+                                        <th class="text-white text-start">@lang('menu.input_qty')</th>
                                         <th class="text-white text-start">@lang('menu.unit_cost_inc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                         <th class="text-white text-start">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     </tr>
@@ -330,7 +330,7 @@
                 <thead>
                     <tr>
                         <th scope="col">@lang('menu.ingredient_name')</th>
-                        <th scope="col">Input Qty</th>
+                        <th scope="col">@lang('menu.input_qty')</th>
                         <th scope="col">@lang('menu.unit_cost_inc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                         <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                     </tr>

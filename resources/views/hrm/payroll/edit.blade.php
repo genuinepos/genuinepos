@@ -314,7 +314,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h6 class="float-end">
-                                        {{ __('Gross Amount ') }}: <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
+                                        {{ __('Gross Amount') }}: <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
                                         <input type="hidden" name="gross_amount" id="gross_amount" {{ $payroll->gross_amount }}>
                                     </h6>
                                 </div>

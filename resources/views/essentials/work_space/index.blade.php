@@ -141,7 +141,7 @@
         <div class="modal-dialog col-55-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Work Space</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_work_space')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -150,12 +150,12 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.name') :</b></label>
+                                <label><b>@lang('menu.name') :</b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="name" class="form-control" placeholder="Workspace Name">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>@lang('menu.assigned_to') :</b></label>
+                                <label><b>@lang('menu.assigned_to') :</b><span class="text-danger"> *</span></label>
                                 <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
@@ -166,7 +166,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.priority') : </b></label>
+                                <label><b>@lang('menu.priority') : </b><span class="text-danger"> *</span></label>
                                 <select required name="priority" class="form-control">
                                     <option value="">@lang('menu.select_priority')</option>
                                     <option value="Low">@lang('menu.low')</option>
@@ -177,7 +177,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.status') : </strong></label>
+                                <label><strong>@lang('menu.status') : </strong><span class="text-danger"> *</span></label>
                                 <select required name="status" class="form-control">
                                     <option value="">@lang('menu.select_status')</option>
                                     <option value="New">@lang('menu.new')</option>
@@ -190,12 +190,12 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.start_date') : </b></label>
+                                <label><b>@lang('menu.start_date') : </b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="start_date" class="form-control datepicker" value="{{date(json_decode($generalSettings->business, true)['date_format'])}}" autocomplete="off">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>@lang('menu.end_date') : </b></label>
+                                <label><b>@lang('menu.end_date') : </b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ json_decode($generalSettings->business, true)['date_format'] }}" autocomplete="off">
                             </div>
                         </div>

@@ -134,7 +134,7 @@
                     <tbody>
                         <tr>
                             <th width="50%" class="text-start">
-                                {{ __('Gross Amount ') }} : <br>
+                                {{ __('Gross Amount') }} : <br>
                                 ({{ $payroll->total_amount }} + {{ $payroll->total_allowance_amount }} -
                                 {{ $payroll->total_deduction_amount }})
                             </th>

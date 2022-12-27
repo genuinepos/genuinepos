@@ -156,7 +156,7 @@ body.red-theme {
 }
 
 .red-theme .top-icon {
-    border: var(--red-color-1) 2px solid;
+    border: var(--red-color-1) 1px solid;
     background: var(--red-color-2);
 }
 
@@ -446,7 +446,7 @@ body.blue-theme {
 }
 
 .blue-theme .top-icon {
-    border: var(--blue-color-1) 2px solid;
+    border: var(--blue-color-1) 1px solid;
     background: var(--blue-color-2);
 }
 
@@ -1004,7 +1004,7 @@ body.light-theme {
 }
 
 .light-theme .top-icon {
-    border: var(--light-color-1) 2px solid;
+    border: var(--light-color-1) 1px solid;
     background: var(--light-color-2);
 }
 

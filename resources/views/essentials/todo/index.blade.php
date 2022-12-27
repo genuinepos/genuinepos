@@ -121,14 +121,14 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label><b>@lang('menu.task') :</b></label>
+                                        <label><b>@lang('menu.task') :</b> <span class="text-danger">*</span></label>
                                         <input required type="text" name="task" class="form-control" placeholder="Task">
                                     </div>
                                 </div>
 
                                 <div class="form-group mt-1">
                                     <div class="col-md-12">
-                                        <label><b>@lang('menu.assigned_to') :</b></label>
+                                        <label><b>@lang('menu.assigned_to') :</b> <span class="text-danger">*</span></label>
                                         <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
@@ -139,7 +139,7 @@
 
                                 <div class="form-group row mt-1">
                                     <div class="col-md-6">
-                                        <label><b>@lang('menu.priority') : </b></label>
+                                        <label><b>@lang('menu.priority') : </b> <span class="text-danger">*</span></label>
                                         <select required name="priority" class="form-control">
                                             <option value="">@lang('menu.select_priority')</option>
                                             <option value="Low">@lang('menu.low')</option>
@@ -150,7 +150,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label><strong>@lang('menu.status') : </strong></label>
+                                        <label><strong>@lang('menu.status') : </strong> <span class="text-danger">*</span></label>
                                         <select required name="status" class="form-control">
                                             <option value="">@lang('menu.select_status')</option>
                                             <option value="New">@lang('menu.new')</option>
@@ -163,7 +163,7 @@
 
                                 <div class="form-group mt-1">
                                     <div class="col-md-12">
-                                        <label><b>@lang('menu.due_date') : </b></label>
+                                        <label><b>@lang('menu.due_date') : </b> <span class="text-danger">*</span></label>
                                         <input required type="text" name="due_date" class="form-control" id="due_date" placeholder="DD-MM-YYYY" autocomplete="off">
                                     </div>
                                 </div>

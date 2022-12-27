@@ -1,4 +1,4 @@
-@php 
+@php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
@@ -30,14 +30,14 @@
                         <h6>
                             @if ($production->branch_id)
                                 {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                            @else 
+                            @else
                                 {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                             @endif
                         </h6>
                         <p style="width: 60%; margin:0 auto;">
                             @if ($production->branch_id)
                                 {{ $production->branch->city.', '.$production->branch->state.', '.$production->branch->zip_code.', '.$production->branch->country }}<b>(BL)</b>
-                            @else 
+                            @else
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             @endif
                         </p>
@@ -51,13 +51,13 @@
                         @if ($production->branch_id)
                             @if ($production->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $production->branch->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch->name }}</span>
                             @endif
-                        @else 
+                        @else
                             @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                                 <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                             @endif
                         @endif
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
-                        
+
                     </div>
                 </div>
             </div>
@@ -80,10 +80,10 @@
                             <li><strong>@lang('menu.stored_location') : </strong>
                                 @if ($production->warehouse_id)
                                     {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
-                                @else 
+                                @else
                                     @if ($production->branch_id)
                                         {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
-                                    @else 
+                                    @else
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                     @endif
                                 @endif
@@ -91,10 +91,10 @@
                             <li><strong>@lang('menu.ingredients_stock_location') : </strong>
                                 @if ($production->stock_warehouse_id)
                                     {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
-                                @else 
+                                @else
                                     @if ($production->stock_branch_id)
                                         {{ $production->stock_branch->name.'/'.$production->stock_branch->branch_code }}<b>(BL)</b>
-                                    @else 
+                                    @else
                                         {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
                                     @endif
                                 @endif
@@ -104,11 +104,11 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.production_item') : </strong> 
+                                <strong>@lang('menu.production_item') : </strong>
                                 {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                             </li>
                             <li>
-                                <strong>@lang('menu.production_status'): </strong> 
+                                <strong>@lang('menu.production_status'): </strong>
                                 @if ($production->is_final == 1)
                                     <span class="text-success"> @lang('menu.final')</span>
                                 @else
@@ -132,7 +132,7 @@
                     <thead>
                         <tr>
                             <th scope="col">@lang('menu.ingredient_name')</th>
-                            <th scope="col">Input Qty</th>
+                            <th scope="col">@lang('menu.input_qty')</th>
                             <th scope="col">@lang('menu.unit_cost_inc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                         </tr>
@@ -141,9 +141,9 @@
                         @foreach ($production->ingredients as $ingredient)
                             <tr>
                                 @php
-                                    $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : ''; 
+                                    $variant = $ingredient->variant_id ? ' ('.$ingredient->variant->variant_name.')' : '';
                                 @endphp
-                                
+
                                 <td>{{ Str::limit($ingredient->product->name, 40).' '.$variant }}</td>
                                 <td>{{ $ingredient->input_qty }}</td>
                                 <td>

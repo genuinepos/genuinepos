@@ -95,8 +95,8 @@
                                     <th>{{ __('Employee') }}</th>
                                     <th>{{ __('Clock In - Clock Out') }}</th>
                                     <th>{{ __('Work Duration') }}</th>
-                                    <th>Clockin note</th>
-                                    <th>Clockout note</th>
+                                    <th>{{ __('Clock in note') }}</th>
+                                    <th>{{ __('Clock out note') }}</th>
                                     <th>@lang('menu.shift')</th>
                                     <th>@lang('menu.action')</th>
                                 </tr>

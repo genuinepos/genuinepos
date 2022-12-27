@@ -1,6 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
-
+<style>
+    b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+</style>
 @endpush
 @section('content')
 <div class="body-wraper">
@@ -18,9 +20,8 @@
                 @csrf
                 <section>
                     <div class="row g-3">
-                        <div class="col-12">
-                            <div class="form_element rounded m-0">
-
+                        <div class="col-md-6">
+                            <div class="form_element rounded mt-0 mb-3">
                                 <div class="element-body">
                                     <div class="row gx-2">
                                         <div class="col-md-6">
@@ -35,7 +36,6 @@
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.first_name') :</b> <span class="text-danger">*</span></label>
-
                                                 <div class="col-8">
                                                     <input type="text" name="first_name" class="form-control" placeholder="@lang('menu.first_name')" id="first_name" value="{{ $user->name }}" required>
                                                     <span class="error error_first_name"></span>
@@ -78,124 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form_element rounded m-0">
-                                <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>@lang('menu.role_permission')</b> </p>
-                                </div>
-
-                                <div class="element-body">
-                                    <div class="row gx-2">
-                                        <div class="col-md-12">
-                                            <p class="checkbox_input_wrap">
-                                                <input type="checkbox" {{ $user->allow_login == 1 ? 'CHECKED' : '' }} name="allow_login" id="allow_login">
-                                                <b>@lang('menu.allow_login')</b>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="auth_field_area">
-                                        <div class="row gx-2 pt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.username') :</b> <span class="text-danger">*</span> </label>
-                                                    <div class="col-8">
-                                                        <input {{ $user->username ? 'readonly' : '' }} type="text" name="username" id="username" class="form-control " placeholder="@lang('menu.username')" autocomplete="off" value="{{ $user->username }}">
-                                                        <span class="error error_username"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"> <b>@lang('menu.role
-                                                    ') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all business location." class="fas fa-info-circle tp"></i></label>
-                                                    <div class="col-8">
-                                                        <select name="role_id" id="role_id" class="form-control">
-
-                                                            @php
-                                                                $userRole = $user?->roles?->first();
-                                                                $userRoleId = $userRole?->id;
-                                                            @endphp
-
-                                                            @foreach ($roles as $role)
-                                                                <option {{ $userRoleId == $role->id ? 'SELECTED' : '' }} value="{{ $role->id }}">{{ $role->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row gx-2 pt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.password') :</b> <span class="text-danger">*</span> </label>
-                                                    <div class="col-8">
-                                                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
-                                                        <span class="error error_password"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-sm-4 col-12"><b>@lang('menu.confirm_password') : </b> <span class="text-danger">*</span> </label>
-                                                    <div class="col-sm-8 col-12">
-                                                        <input type="password" name="password_confirmation" class="form-control" placeholder="@lang('menu.confirm_password')" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row g-2 pt-1">
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-6 access_branch">
-                                                <div class="input-group">
-                                                    <label class="col-sm-4 col-12"><b>@lang('menu.access_location') :</b> </label>
-                                                    <div class="col-sm-8 col-12">
-                                                        <select name="branch_id" id="branch_id" class="form-control">
-                                                            <option value="">@lang('menu.select_business_location')</option>
-                                                            <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
-                                                            @foreach ($branches as $branch)
-                                                                <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_branch_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 belonging_branch d-hide">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.belonging_location') :</b> <span class="text-danger">*</span> </label>
-                                                    <div class="col-8">
-                                                        <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
-                                                            <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
-                                                            @foreach ($branches as $branch)
-                                                            <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
-                                                            @endforeach
-                                                        </select>
-
-                                                        <span class="error error_belonging_branch_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">
-                                            <input type="hidden" name="belonging_branch_id" value="{{ auth()->user()->branch_id }}">
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form_element rounded m-0">
+                            <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
                                     <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.sales')</b> </p>
                                 </div>
@@ -223,14 +106,285 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="form_element rounded mt-0 mb-3">
+                                <div class="heading_area">
+                                    <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.bank_details')</b> </p>
+                                </div>
 
-                        <div class="col-12">
-                            <div class="form_element rounded m-0">
+                                <div class="element-body">
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.account_name') :</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="@lang('menu.account_holders_name')" autocomplete="off" value="{{ $user->bank_ac_holder_name }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.account_no') :</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="text" name="bank_ac_no" class="form-control" placeholder="@lang('menu.account_number')" autocomplete="off" value="{{ $user->bank_ac_no }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.bank_name'):</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="text" name="bank_name" class="form-control" placeholder="@lang('menu.bank_name')" autocomplete="off" value="{{ $user->bank_name }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.identifier_code') :</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="text" name="bank_identifier_code" class="form-control" placeholder="{{ __('Bank Identifier Code') }}" autocomplete="off" value="{{ $user->bank_identifier_code }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.branch') :</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="text" name="bank_branch" class="form-control" placeholder="@lang('menu.branch')" autocomplete="off" value="{{ $user->bank_branch }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-sm-4 col-5"><b>@lang('menu.tax_payer_id') :</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="text" name="tax_payer_id" class="form-control" placeholder="@lang('menu.tax_payer_id')" autocomplete="off" value="{{ $user->tax_payer_id }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if ($addons->hrm == 1)
+                                <div class="col-12">
+                                    <div class="form_element rounded mt-0 mb-3">
+                                        <div class="heading_area">
+                                            <p class="px-1 pt-1 pb-0 text-primary"><b>{{ __('Human Resource Details') }}</b> </p>
+                                        </div>
+
+                                        <div class="element-body">
+                                            <div class="row g-2">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>{{ __('Employee ID') }} :</b> </label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" name="emp_id" placeholder="{{ __('Employee ID') }}" value="{{ $user->emp_id }}">
+                                                            <span class="error error_emp_id"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>@lang('menu.shift') :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="shift_id" class="form-control">
+                                                                @foreach ($shifts as $shift)
+                                                                <option {{ $user->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_shift_id"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2 pt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>@lang('menu.department') :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="department_id" class="form-control">
+                                                                <option value="">@lang('menu.select_department')</option>
+                                                                @foreach ($departments as $department)
+                                                                <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <span class="error error_department_id"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>@lang('menu.designation') :</b> </label>
+                                                        <div class="col-8">
+                                                            <select name="designation_id" class="form-control">
+                                                                <option value="">{{ __('Select Designation') }}</option>
+                                                                @foreach ($designations as $designation)
+                                                                <option {{ $user->designation_id == $designation->id ? 'SELECTED' : '' }} value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2 pt-1">
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"><b>{{ __('Salary') }} :</b> <span class="text-danger">*</span></label>
+                                                        <div class="col-8">
+                                                            <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off" value="{{ $user->salary }}">
+                                                            <span class="error error_salary"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label class="col-4"> <b>{{ __('Pay Type') }} :</b> <span class="text-danger">*</span></label>
+                                                        <div class="col-8">
+                                                            <select name="pay_type" class="form-control" id="pay_type">
+                                                                <option value="">{{ __('Select Pay type') }}</option>
+                                                                <option {{ $user->salary_type == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>
+                                                                <option {{ $user->salary_type == 'Yearly' ? 'SELECTED' : '' }} value="Yearly">{{ __('Yearly') }}</option>
+                                                                <option {{ $user->salary_type == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">{{ __('Daily') }}</option>
+                                                                <option {{ $user->salary_type == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
+                                                            </select>
+                                                            <span class="error error_pay_type"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form_element rounded mt-0 mb-3">
+                                <div class="heading_area">
+                                    <p class="p-1 text-primary"><b>@lang('menu.role_permission')</b> </p>
+                                </div>
+
+                                <div class="element-body">
+                                    <div class="row gx-2">
+                                        <div class="col-md-12">
+                                            <p class="checkbox_input_wrap">
+                                                <input type="checkbox" {{ $user->allow_login == 1 ? 'CHECKED' : '' }} name="allow_login" id="allow_login">
+                                                <b>@lang('menu.allow_login')</b>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="auth_field_area">
+                                        <div class="row gx-2 pt-1">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>@lang('menu.username') :</b> <span class="text-danger">*</span> </label>
+                                                    <div class="col-8">
+                                                        <input {{ $user->username ? 'readonly' : '' }} type="text" name="username" id="username" class="form-control " placeholder="@lang('menu.username')" autocomplete="off" value="{{ $user->username }}">
+                                                        <span class="error error_username"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <label class="col-4"> <b>@lang('menu.role') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all business location." class="fas fa-info-circle tp"></i></label>
+                                                    <div class="col-8">
+                                                        <select name="role_id" id="role_id" class="form-control">
+
+                                                            @php
+                                                                $userRole = $user?->roles?->first();
+                                                                $userRoleId = $userRole?->id;
+                                                            @endphp
+
+                                                            @foreach ($roles as $role)
+                                                                <option {{ $userRoleId == $role->id ? 'SELECTED' : '' }} value="{{ $role->id }}">{{ $role->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row gx-2 pt-1">
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>@lang('menu.password') :</b> <span class="text-danger">*</span> </label>
+                                                    <div class="col-8">
+                                                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off">
+                                                        <span class="error error_password"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <label class="col-sm-4 col-12"><b>@lang('menu.confirm_password') : </b> <span class="text-danger">*</span> </label>
+                                                    <div class="col-sm-8 col-12">
+                                                        <input type="password" name="password_confirmation" class="form-control" placeholder="@lang('menu.confirm_password')" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row g-2 pt-1">
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-12 access_branch">
+                                                <div class="input-group">
+                                                    <label class="col-sm-4 col-12"><b>@lang('menu.access_location') :</b> </label>
+                                                    <div class="col-sm-8 col-12">
+                                                        <select name="branch_id" id="branch_id" class="form-control">
+                                                            <option value="">@lang('menu.select_business_location')</option>
+                                                            <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                            @foreach ($branches as $branch)
+                                                                <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="error error_branch_id"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 belonging_branch d-hide">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>@lang('menu.belonging_location') :</b> <span class="text-danger">*</span> </label>
+                                                    <div class="col-8">
+                                                        <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
+                                                            <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                            @foreach ($branches as $branch)
+                                                            <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <span class="error error_belonging_branch_id"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            <input type="hidden" name="belonging_branch_id" value="{{ auth()->user()->branch_id }}">
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_element rounded mt-0 mb-3">
                                 <div class="heading_area">
                                     <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.more_information')</b> </p>
                                 </div>
-
                                 <div class="element-body">
                                     <div class="row g-2">
                                         <div class="col-md-6">
@@ -352,7 +506,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row g-2 pt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
@@ -364,177 +517,8 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
-                        <div class="col-12">
-                            <div class="form_element rounded m-0">
-                                <div class="heading_area">
-                                    <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.bank_details')</b> </p>
-                                </div>
-
-                                <div class="element-body">
-                                    <div class="row g-2">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.account_name') :</b> </label>
-                                                <div class="col-sm-8 col-7">
-                                                    <input type="text" name="bank_ac_holder_name" class="form-control " placeholder="@lang('menu.account_holders_name')" autocomplete="off" value="{{ $user->bank_ac_holder_name }}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.account_no') :</b> </label>
-                                                <div class="col-sm-8 col-7">
-                                                    <input type="text" name="bank_ac_no" class="form-control" placeholder="@lang('menu.account_number')" autocomplete="off" value="{{ $user->bank_ac_no }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.bank_name'):</b> </label>
-                                                <div class="col-sm-8 col-7">
-                                                    <input type="text" name="bank_name" class="form-control" placeholder="@lang('menu.bank_name')" autocomplete="off" value="{{ $user->bank_name }}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.identifier_code') :</b> </label>
-                                                <div class="col-sm-8 col-7">
-                                                    <input type="text" name="bank_identifier_code" class="form-control" placeholder="{{ __('Bank Identifier Code') }}" autocomplete="off" value="{{ $user->bank_identifier_code }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.branch') :</b> </label>
-                                                <div class="col-sm-8 col-7">
-                                                    <input type="text" name="bank_branch" class="form-control" placeholder="@lang('menu.branch')" autocomplete="off" value="{{ $user->bank_branch }}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.tax_payer_id') :</b> </label>
-                                                <div class="col-sm-8 col-7">
-                                                    <input type="text" name="tax_payer_id" class="form-control" placeholder="@lang('menu.tax_payer_id')" autocomplete="off" value="{{ $user->tax_payer_id }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        @if ($addons->hrm == 1)
-                            <div class="col-12">
-                                <div class="form_element rounded m-0">
-                                    <div class="heading_area">
-                                        <p class="px-1 pt-1 pb-0 text-primary"><b>{{ __('Human Resource Details') }}</b> </p>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row g-2">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Employee ID') }} :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="text" class="form-control" name="emp_id" placeholder="{{ __('Employee ID') }}" value="{{ $user->emp_id }}">
-                                                        <span class="error error_emp_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.shift') :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="shift_id" class="form-control">
-                                                            @foreach ($shifts as $shift)
-                                                            <option {{ $user->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_shift_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-2 pt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.department') :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="department_id" class="form-control">
-                                                            <option value="">@lang('menu.select_department')</option>
-                                                            @foreach ($departments as $department)
-                                                            <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->department_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_department_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.designation') :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="designation_id" class="form-control">
-                                                            <option value="">{{ __('Select Designation') }}</option>
-                                                            @foreach ($designations as $designation)
-                                                            <option {{ $user->designation_id == $designation->id ? 'SELECTED' : '' }} value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-2 pt-1">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><span class="text-danger">*</span> <b>{{ __('Salary') }} :</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="number" step="any" name="salary" id="salary" class="form-control" placeholder="Salary Amount" autocomplete="off" value="{{ $user->salary }}">
-                                                        <span class="error error_salary"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><span class="text-danger">*</span> <b>{{ __('Pay Type') }} :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="pay_type" class="form-control" id="pay_type">
-                                                            <option value="">{{ __('Select Pay type') }}</option>
-                                                            <option {{ $user->salary_type == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>
-                                                            <option {{ $user->salary_type == 'Yearly' ? 'SELECTED' : '' }} value="Yearly">{{ __('Yearly') }}</option>
-                                                            <option {{ $user->salary_type == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">{{ __('Daily') }}</option>
-                                                            <option {{ $user->salary_type == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
-                                                        </select>
-                                                        <span class="error error_pay_type"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-
                         <div class="col-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>

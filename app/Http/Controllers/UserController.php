@@ -182,7 +182,7 @@ class UserController extends Controller
         }
 
         $addUser->sales_commission_percent = $request->sales_commission_percent ? $request->sales_commission_percent : 0;
-        $addUser->max_sales_discount_percent = $request->max_sales_discount_percent ? $request->max_sales_discount_percent : 0;;
+        $addUser->max_sales_discount_percent = $request->max_sales_discount_percent ? $request->max_sales_discount_percent : 0;
         $addUser->date_of_birth = $request->date_of_birth;
         $addUser->gender = $request->gender;
         $addUser->marital_status = $request->marital_status;

@@ -58,9 +58,22 @@ class ProductController extends Controller
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches'));
+        $total = [
+            'product' => DB::table('products')->count(),
+            'active' => DB::table('products')->where('status', 1)->count(),
+            'inActive' => DB::table('products')->where('status', 0)->count(),
+        ];
+        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches', 'total'));
     }
-
+    // public function changeStatus($id)
+    // {
+    //     $changeStatus = [
+    //         'product' => DB::table('products')->count(),
+    //         'active' => DB::table('products')->where('status', 1)->count(),
+    //         'inActive' => DB::table('products')->where('status', 0)->count(),
+    //     ];
+    //     return response()->json($changeStatus);
+    // }
     // Add product view
     public function create(Request $request)
     {

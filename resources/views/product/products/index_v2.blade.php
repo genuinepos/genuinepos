@@ -350,17 +350,49 @@
     // Show sweet alert for delete
     $(document).on('click', '#change_status', function(e) {
         e.preventDefault();
-        var url = $(this).attr('href');
+        // var url = $(this).attr('href');
+        var url = $(this).data('url');
 
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
+        $.confirm({
+            'title': 'Changes Status',
+            'message': 'Are you sure?',
+            'buttons': {
+                'Yes': {
+                    'class': 'Yes btn-danger',
+                    'action': function() {
+                        $.ajax({
+                            url: url,
+                            type: 'get',
+                            success: function(data) {
 
-                toastr.success(data);
-                product_table.ajax.reload();
+                                if (!$.isEmptyObject(data.errorMsg)) {
+                                    toastr.error(data.errorMsg);
+                                    return;
+                                }
+                                toastr.success(data);
+                                product_table.ajax.reload();
+                            }
+                        });
+                    }
+                },
+                'No': {
+                    'class': 'no btn-modal-primary',
+                    'action': function() {
+                        console.log('Confirmation canceled.');
+                    }
+                }
             }
         });
+
+        // $.ajax({
+        //     url: url,
+        //     type: 'get',
+        //     success: function(data) {
+
+        //         toastr.success(data);
+        //         product_table.ajax.reload();
+        //     }
+        // });
     });
 
     $(document).on('click', '.multipla_delete_btn',function(e){

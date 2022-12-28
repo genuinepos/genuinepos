@@ -159,13 +159,13 @@ class ProductUtil
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
-                if ($row->status == 1) {
+                // if ($row->status == 1) {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                } else {
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                // } else {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                }
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                // }
 
                 if (auth()->user()->can('openingStock_add')) {
 
@@ -206,11 +206,17 @@ class ProductUtil
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
-
-                    return '<span class="text-success">Active</span>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '</div>';
+                    return $html;
+                    // return '<span class="text-success">Active</span>';
                 } else {
-
-                    return '<span class="text-danger">Inactive</span>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '</div>';
+                    return $html;
+                    // return '<span class="text-danger">Inactive</span>';
                 }
             })
             ->editColumn('access_locations', function ($row) use ($generalSettings, $request) {
@@ -220,10 +226,10 @@ class ProductUtil
                 if ($request->branch_id) {
 
                     if ($request->branch_id == 'NULL') {
-        
+
                         $query->where('product_branches.branch_id', NULL);
                     } else {
-        
+
                         $query->where('product_branches.branch_id', $request->branch_id);
                     }
                 }
@@ -232,16 +238,16 @@ class ProductUtil
 
                     $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
                 }else {
-                    
+
                     $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
                 }
-                 
+
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 
                     $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : json_decode($generalSettings->business, true)['shop_name']).',</p>';
                 }
-                
+
                 return $text;
             })
             ->editColumn('quantity', function ($row) use ($productStock, $request) {

@@ -742,7 +742,7 @@ class ProductController extends Controller
                         $updateVariant->variant_price = $request->variant_prices_exc_tax[$index];
                         $updateVariant->delete_in_update = 0;
 
-                        if (isset($variant_images[$index])) {
+                        if (isset($variant_image[$index])) {
 
                             if ($updateVariant->variant_image != null) {
 
@@ -752,7 +752,7 @@ class ProductController extends Controller
                                 }
                             }
 
-                            $variantImage = $request->variant_images[$index];
+                            $variantImage = $request->variant_image[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                             Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $updateVariant->variant_image = $variantImageName;
@@ -770,9 +770,9 @@ class ProductController extends Controller
                         $addVariant->variant_profit = $request->variant_profits[$index];
                         $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
-                        if (isset($request->variant_images[$index])) {
+                        if (isset($request->variant_image[$index])) {
 
-                            $variantImage = $request->variant_images[$index];
+                            $variantImage = $request->variant_image[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                             Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $addVariant->variant_image = $variantImageName;

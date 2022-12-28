@@ -36,7 +36,7 @@ class ProductController extends Controller
         $this->productUtil = $productUtil;
         $this->productStockUtil = $productStockUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // index view
@@ -615,6 +615,7 @@ class ProductController extends Controller
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
+                'code' => 'required',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',

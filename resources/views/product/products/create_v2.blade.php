@@ -47,6 +47,7 @@
                                                 <div class="col-7">
                                                     <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
                                                     <input type="hidden" name="auto_generated_code" id="auto_generated_code">
+                                                    <span class="error error_code"></span>
                                                 </div>
                                             </div>
                                         </div>

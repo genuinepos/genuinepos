@@ -135,7 +135,7 @@
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>@lang('menu.last_name') :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>@lang('menu.last_name') :</strong></label>
                 <input type="text" name="Last_name" class="form-control" id="Last_name" placeholder="@lang('menu.last_name')" autocomplete="off"/>
             </div>
 

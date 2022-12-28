@@ -43,8 +43,9 @@
                                     <label for="inputEmail3" class="col-5"><b>@lang('menu.product_code')
                                         <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b></label>
                                     <div class="col-7">
-                                        <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="@lang('menu.product_code')" value="{{ $product->product_code }}">
+                                        <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="@lang('menu.product_code')" value="{{ $product->product_code }}" readonly>
                                         <input type="hidden" name="auto_generated_code" id="auto_generated_code">
+                                        <span class="error error_code"></span>
                                     </div>
                                 </div>
                             </div>

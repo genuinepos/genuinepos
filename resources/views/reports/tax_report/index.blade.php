@@ -34,7 +34,7 @@
                                     <div class="form-group row">
                                         @if ($addons->branches == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="col-md-3 offset-md-6">
+                                                <div class="col-md-3">
                                                     <label><strong>@lang('menu.branch') :</strong></label>
                                                     <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>

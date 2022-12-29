@@ -141,7 +141,7 @@
 
                             <div class="col-lg-3 col-md-6">
                               <b>@lang('menu.supplier_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
-                                <input type="text" name="contact_id" class="form-control" placeholder="{{ __('Contact ID') }}"/>
+                                <input type="text" name="contact_id" class="form-control" placeholder="{{ __('Contact ID') }}" readonly/>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
@@ -172,7 +172,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                     </div>
-                                    <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="YYYY-MM-DD">
+                                    <input type="text" name="date_of_birth" id="datepicker" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="YYYY-MM-DD">
                                 </div>
                             </div>
                         </div>
@@ -550,5 +550,23 @@
             //return false;
         }
     }
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('datepicker'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+    });
 </script>
  @endpush

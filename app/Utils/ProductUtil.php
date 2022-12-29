@@ -210,13 +210,11 @@ class ProductUtil
                     $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                     $html .= '</div>';
                     return $html;
-                    // return '<span class="text-success">Active</span>';
                 } else {
                     $html = '<div class="form-check form-switch">';
                     $html .= '<input class="form-check-input" id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
                     return $html;
-                    // return '<span class="text-danger">Inactive</span>';
                 }
             })
             ->editColumn('access_locations', function ($row) use ($generalSettings, $request) {

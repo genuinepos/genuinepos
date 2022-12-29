@@ -35,13 +35,13 @@ class SupplierUtil
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 endif;
 
-                if ($row->status == 1) :
+                // if ($row->status == 1) :
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                else :
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                // else :
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                endif;
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                // endif;
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -97,11 +97,15 @@ class SupplierUtil
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) :
-
-                    return '<i class="far fa-thumbs-up text-success"></i>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('contacts.supplier.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '</div>';
+                    return $html;
                 else :
-
-                    return '<i class="far fa-thumbs-down text-danger"></i>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.supplier.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '</div>';
+                    return $html;
                 endif;
             })
             ->rawColumns(['action', 'business_name', 'tax_number', 'opening_balance', 'total_purchase', 'total_paid', 'total_purchase_due', 'total_return', 'total_purchase_return_due', 'status'])

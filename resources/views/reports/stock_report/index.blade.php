@@ -252,7 +252,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-2 col-md-4">
-                                                <div class="form-group row align-items-end">
+                                                <div class="form-group row align-items-end mt-2">
                                                     <div class="col-6">
                                                         <div class="input-group">
                                                             <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>

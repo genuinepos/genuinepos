@@ -320,15 +320,47 @@
 
          $(document).on('click', '#change_status', function(e) {
             e.preventDefault();
-            var url = $(this).attr('href');
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-                    toastr.success(data);
-                    table.ajax.reload();
+            var url = $(this).data('url');
+
+            $.confirm({
+                'title': 'Changes Status',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'Yes btn-danger',
+                        'action': function() {
+                            $.ajax({
+                                url: url,
+                                type: 'GET',
+                                success: function(data) {
+
+                                    if (!$.isEmptyObject(data.errorMsg)) {
+                                        toastr.error(data.errorMsg);
+                                        return;
+                                    }
+                                    toastr.success(data);
+                                    table.ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary',
+                        'action': function() {
+                            // console.log('Confirmation canceled.');
+                        }
+                    }
                 }
             });
+
+            // $.ajax({
+            //     url: url,
+            //     type: 'get',
+            //     success: function(data) {
+            //         toastr.success(data);
+            //         table.ajax.reload();
+            //     }
+            // });
         });
     </script>
 @endpush

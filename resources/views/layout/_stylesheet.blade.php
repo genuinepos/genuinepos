@@ -361,4 +361,10 @@
     .widget_content .table-responsive {
         min-height: 80vh !important;
     }
+
+    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:last-child {
+        background: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
+        background-image: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
+        box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+    }
 </style>

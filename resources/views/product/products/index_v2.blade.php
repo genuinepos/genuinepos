@@ -1,5 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
+    <style>
+
+    </style>
 @endpush
 @section('title', 'Product List - ')
 @section('content')
@@ -362,7 +365,7 @@
                     'action': function() {
                         $.ajax({
                             url: url,
-                            type: 'get',
+                            type: 'GET',
                             success: function(data) {
 
                                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -378,7 +381,7 @@
                 'No': {
                     'class': 'no btn-modal-primary',
                     'action': function() {
-                        console.log('Confirmation canceled.');
+                        // console.log('Confirmation canceled.');
                     }
                 }
             }

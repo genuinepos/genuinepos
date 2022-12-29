@@ -72,5 +72,7 @@
             var menuActive = window.localStorage.getItem('menu_active');
             $('#' + menuActive).addClass('active')
         });
+
+        $('.btn-default').addClass('btn-danger');
     });
 </script>

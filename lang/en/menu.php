@@ -1166,7 +1166,7 @@ return [
   'manufacturing_settings' => 'Manufacturing settings',
   'add_process' => 'Add process',
   'view_process' => 'View process',
-  'production' => 'production',
+  'production' => 'Production',
   'manufacturing_permissions' => 'Manufacturing Permissions',
   'expanse_report' => 'Expanse report',
   'daily_profit_loss' => ' Daily profit/loss',

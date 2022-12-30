@@ -78,7 +78,7 @@ class ProductionUtil
                     endif;
                 endif;
 
-                $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
+                // $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                 $html .= '</div>';
                 $html .= '</div>';
                 return $html;

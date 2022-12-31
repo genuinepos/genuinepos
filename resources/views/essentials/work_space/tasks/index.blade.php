@@ -51,7 +51,7 @@
                                                 <li>
                                                     <b>@lang('menu.assigned_to') :</b>
                                                     @foreach ($ws->ws_users as $ws_user)
-                                                        {{ $ws_user->user->prefix.' '.$ws_user->user->name.' '.$ws_user->user->last_name }},
+                                                        {{ $ws_user?->user?->prefix.' '.$ws_user?->user?->name.' '.$ws_user?->user?->last_name }},
                                                     @endforeach
                                                 </li>
                                             </ul>

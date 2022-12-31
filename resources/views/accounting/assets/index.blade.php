@@ -19,9 +19,9 @@
             <div class="p-3">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form_element rounded mt-0 mb-3">
+                        <div class="form_element rounded mt-0 mb-3 d-none">
                             <div class="element-body">
-                                <form id="filter_tax_report_form" action="" method="get">
+                                <form id="filter_form" action="" method="get">
                                     @csrf
                                     <div class="form-group row">
                                         @if ($addons->branches == 1)
@@ -47,6 +47,12 @@
 
                                             </select>
                                         </div>
+                                        <div class="col-md-3">
+                                            <label><strong></strong></label>
+                                            <div class="input-group">
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -60,8 +66,8 @@
                         <!--begin: Datatable-->
                         <div class="tab_list_area">
                             <div class="btn-group">
-                                <a id="tab_btn" data-show="asset_type" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.asset_type')</a>
-                                <a id="tab_btn" data-show="assets" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> @lang('menu.assets')</a>
+                                <a id="tab_btn" data-show="asset_type" class="btn btn-sm btn-primary tab_btn tab_active asset_hide_heading" href="#"><i class="fas fa-info-circle"></i> @lang('menu.asset_type')</a>
+                                <a id="tab_btn" data-show="assets" class="btn btn-sm btn-primary tab_btn asset_show_heading" href="#"><i class="fas fa-scroll"></i> @lang('menu.assets')</a>
                             </div>
                         </div>
 
@@ -452,6 +458,16 @@
 </script>
 
 <script>
+    $('.asset_show_heading').on('click', function(e) {
+        e.preventDefault();
+        $('.form_element').removeClass('d-none');
+
+    });
+    $('.asset_hide_heading').on('click', function(e) {
+        e.preventDefault();
+        $('.form_element').addClass('d-none');
+
+    });
     var asset_table = $('.asset_table').DataTable({
         dom: "lBfrtip",
         buttons: [
@@ -478,11 +494,16 @@
             {data: 'per_unit_value',name: 'per_unit_value'},
             {data: 'total_value',name: 'total_value'},
             {data: 'action',name: 'action'},
-        ],
+        ],fnDrawCallback: function() {
+
+            $('.data_preloader').hide();
+        }
     });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         asset_table.ajax.reload();
     });
 

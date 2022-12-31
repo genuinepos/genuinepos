@@ -1162,7 +1162,6 @@ return [
   'manufacturing_report' => 'Manufacturing report',
   'edit_production' => 'Edit production',
   'view_production' => 'View production',
-  'process' => 'process',
   'manufacturing_settings' => 'Manufacturing settings',
   'add_process' => 'Add process',
   'view_process' => 'View process',

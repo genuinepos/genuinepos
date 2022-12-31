@@ -36,7 +36,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <table class="table table-sm">
+                                                    <table class="display table table-sm">
                                                         <thead>
                                                             <th class="text-start">@lang('menu.sl')</th>
                                                             <th class="text-start">@lang('menu.payment_method')</th>

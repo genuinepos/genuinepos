@@ -3,6 +3,12 @@
     <style>
         .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        #myEditor{
+            height: 100px;
+        }
+        .cleditorMain{
+            height: 196px !important;
+        }
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
@@ -23,300 +29,107 @@
             <form id="edit_product_form" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data"
                 method="POST">
                 @csrf
-
-                <div class="form_element rounded mt-0 mb-lg-3 mb-1">
-
-                    <div class="element-body">
-                        <div class="row gx-2 gy-1">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
-                                    <div class="col-7">
-                                        <input type="text" name="name" class="form-control" id="name" placeholder="@lang('menu.product_name')" autofocus value="{{ $product->name }}">
-                                        <span class="error error_name"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.product_code')
-                                        <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b></label>
-                                    <div class="col-7">
-                                        <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="@lang('menu.product_code')" value="{{ $product->product_code }}" readonly>
-                                        <input type="hidden" name="auto_generated_code" id="auto_generated_code">
-                                        <span class="error error_code"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.unit') :</b> <span class="text-danger">*</span></label>
-                                    <div class="col-7">
-                                        <div class="input-group">
-                                            <select class="form-control product_unit" name="unit_id" id="unit_id">
-                                                <option value="">@lang('menu.select_unit')</option>
-                                                @foreach ($units as $unit)
-                                                    <option {{ $product->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                    data-bs-target="#addUnitModal"><i class="fas fa-plus-square input_i"></i></span>
-                                            </div>
-                                        </div>
-                                        <span class="error error_unit_id"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.barcode_type')  :</b> </label>
-                                    <div class="col-7">
-                                        <select class="form-control" name="barcode_type" id="barcode_type">
-                                            <option {{ $product->barcode_type == 'CODE128' ? 'SELECTED' : '' }} value="CODE128">Code 128 (C128)</option>
-                                            <option {{ $product->barcode_type == 'CODE39' ? 'SELECTED' : '' }} value="CODE39">Code 39 (C39)</option>
-                                            <option {{ $product->barcode_type == 'EAN13' ? 'SELECTED' : '' }} value="EAN13">EAN-13</option>
-                                            <option {{ $product->barcode_type == 'UPC' ? 'SELECTED' : '' }} value="UPC">UPC</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.category') :</b> <span class="text-danger">*</span></label>
-                                        <div class="col-7">
-                                            <div class="input-group">
-                                                <select class="form-control category" name="category_id"
-                                                    id="category_id">
-                                                    <option value="">@lang('menu.select_category')</option>
-                                                    @foreach ($categories as $category)
-                                                        <option {{ $product->category_id == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                        data-bs-target="#addCategoryModal"><i
-                                                            class="fas fa-plus-square input_i"></i></span>
-                                                </div>
-                                            </div>
-                                            <span class="error error_category_id"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
-                                        <div class="col-7">
-                                            <select class="form-control" name="child_category_id"
-                                                id="child_category_id">
-                                                @php
-                                                    $subCategories = DB::table('categories')
-                                                    ->where('parent_category_id', $product->category_id)->get();
-                                                @endphp
-                                                <option value="">@lang('menu.select_child_category')</option>
-                                                @foreach ($subCategories as $subCategory)
-                                                    <option {{ $product->parent_category_id == $subCategory->id ? 'SELECTED' : '' }} value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.brand'):</b> </label>
-                                    <div class="col-7">
-                                        <div class="input-group">
-                                            <select class="form-control" name="brand_id" id="brand_id">
-                                                <option value="">@lang('menu.select_brand')</option>
-                                                @foreach ($brands as $brand)
-                                                    <option {{ $product->brand_id == $brand->id ? 'SELECTED' : '' }} value="{{$brand->id}}">{{$brand->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text add_button" data-bs-toggle="modal"
-                                                    data-bs-target="#addBrandModal"><i class="fas fa-plus-square input_i"></i></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.alert_quantity')  :</b> </label>
-                                    <div class="col-7">
-                                        <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="{{ $product->alert_quantity }}">
-                                        <span class="error error_alert_quantity"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.warranty') :</b> </label>
-                                        <div class="col-7">
-                                            <div class="input-group">
-                                                <select class="form-control" name="warranty_id" id="warranty_id">
-                                                    <option value="">@lang('menu.select_warranty')</option>
-                                                    @foreach ($warranties as $warranty)
-                                                        @php
-                                                            $type = $warranty->type == 1 ? 'Warranty' : 'Guaranty';
-                                                        @endphp
-                                                        <option {{$product->warranty_id == $warranty->id ? 'SELECTED' : '' }} value="{{ $warranty->id }}">
-                                                            {{ $warranty->name.' ('.$type.')' }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text add_button" data-bs-toggle="modal" data-bs-target="#addWarrantyModal"><i class="fas fa-plus-square input_i"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if ($addons->branches == 1)
-                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <label class="col-5"><b>@lang('menu.business_location') :</b> </label>
-                                            <div class="col-7">
-                                                <input type="hidden" name="branch_count" value="branch_count">
-                                                <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
-                                                    <option
-                                                        @foreach ($productBranches as $productBranch)
-                                                            {{ $productBranch->branch_id == NULL ? 'SELECTED' : '' }}
-                                                        @endforeach
-                                                    value="">
-                                                        {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
-                                                    </option>
-                                                    @foreach ($branches as $branch)
-                                                        <option
-                                                            @foreach ($productBranches as $productBranch)
-                                                                {{ $productBranch->branch_id == $branch->id ? 'SELECTED' : '' }}
-                                                            @endforeach
-                                                        value="{{ $branch->id }}">
-                                                            {{ $branch->name.'/'.$branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <span class="error error_branch_ids"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endif
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>@lang('menu.condition')  :</b> </label>
-                                    <div class="col-7">
-                                        <select class="form-control" name="product_condition"
-                                            id="product_condition">
-                                            <option {{ $product->product_condition == 'New' ? 'SELECTED' : '' }} value="New">@lang('menu.new')</option>
-                                            <option {{ $product->product_condition == 'Used' ? 'SELECTED' : '' }} value="Used">@lang('menu.used')</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-group mt-1">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>@lang('menu.manage_stock')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-group mt-1">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> @lang('menu.service')/ @lang('menu.product')</b> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form_element rounded mt-0 mb-lg-3 mb-1">
-                    <div class="element-body">
-                        <div class="form_part">
-                            @if ($product->type == 1)
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form_element rounded mt-0 mb-lg-3 mb-1">
+                            <div class="element-body">
                                 <div class="row gx-2 gy-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
-                                                <input readonly type="number" step="any" name="product_cost" class="form-control"
-                                                autocomplete="off" id="product_cost" placeholder="Unit cost" value="{{ $product->product_cost }}">
-                                                <span class="error error_product_cost"></span>
+                                                <input type="text" name="name" class="form-control" id="name" placeholder="@lang('menu.product_name')" autofocus value="{{ $product->name }}">
+                                                <span class="error error_name"></span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.product_code')
+                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b></label>
                                             <div class="col-7">
-                                                <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="{{ $product->product_price }}">
-                                            <span class="error error_product_price"></span>
+                                                <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" placeholder="@lang('menu.product_code')" value="{{ $product->product_code }}" readonly>
+                                                <input type="hidden" name="auto_generated_code" id="auto_generated_code">
+                                                <span class="error error_code"></span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.unit') :</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
-                                                <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="{{ $product->product_cost_with_tax }}">
-                                                <span class="error error_product_cost_with_tax"></span>
+                                                <div class="input-group">
+                                                    <select class="form-control product_unit" name="unit_id" id="unit_id">
+                                                        <option value="">@lang('menu.select_unit')</option>
+                                                        @foreach ($units as $unit)
+                                                            <option {{ $product->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                            data-bs-target="#addUnitModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                    </div>
+                                                </div>
+                                                <span class="error error_unit_id"></span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
+                                            <label for="inputEmail3" class="col-5"> <b>@lang('menu.barcode_type')  :</b> </label>
                                             <div class="col-7">
-                                                <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
-                                                <span class="error error_profit"></span>
+                                                <select class="form-control" name="barcode_type" id="barcode_type">
+                                                    <option {{ $product->barcode_type == 'CODE128' ? 'SELECTED' : '' }} value="CODE128">Code 128 (C128)</option>
+                                                    <option {{ $product->barcode_type == 'CODE39' ? 'SELECTED' : '' }} value="CODE39">Code 39 (C39)</option>
+                                                    <option {{ $product->barcode_type == 'EAN13' ? 'SELECTED' : '' }} value="EAN13">EAN-13</option>
+                                                    <option {{ $product->barcode_type == 'UPC' ? 'SELECTED' : '' }} value="UPC">UPC</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
 
-                                    @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                    @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax') :</b> </label>
+                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.category') :</b> <span class="text-danger">*</span></label>
                                                 <div class="col-7">
-                                                    <select class="form-control" name="tax_id" id="tax_id">
-                                                        <option value="">@lang('menu.no_tax')</option>
-                                                        @foreach ($taxes as $tax)
-                                                        <option {{ $product->tax_id == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id . '-' . $tax->tax_percent }}">
-                                                                {{ $tax->tax_name }}</option>
+                                                    <div class="input-group">
+                                                        <select class="form-control category" name="category_id"
+                                                            id="category_id">
+                                                            <option value="">@lang('menu.select_category')</option>
+                                                            @foreach ($categories as $category)
+                                                                <option {{ $product->category_id == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                                data-bs-target="#addCategoryModal"><i
+                                                                    class="fas fa-plus-square input_i"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="error error_category_id"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
+                                                <div class="col-7">
+                                                    <select class="form-control" name="child_category_id"
+                                                        id="child_category_id">
+                                                        @php
+                                                            $subCategories = DB::table('categories')
+                                                            ->where('parent_category_id', $product->category_id)->get();
+                                                        @endphp
+                                                        <option value="">@lang('menu.select_child_category')</option>
+                                                        @foreach ($subCategories as $subCategory)
+                                                            <option {{ $product->parent_category_id == $subCategory->id ? 'SELECTED' : '' }} value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -326,292 +139,486 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.tax_type') :</b> </label>
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.brand'):</b> </label>
                                             <div class="col-7">
-                                                <select name="tax_type" class="form-control" id="tax_type">
-                                                    <option {{ $product->tax_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.exclusive')</option>
-                                                    <option {{ $product->tax_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.exclusive')</option>
-                                                </select>
+                                                <div class="input-group">
+                                                    <select class="form-control" name="brand_id" id="brand_id">
+                                                        <option value="">@lang('menu.select_brand')</option>
+                                                        @foreach ($brands as $brand)
+                                                            <option {{ $product->brand_id == $brand->id ? 'SELECTED' : '' }} value="{{$brand->id}}">{{$brand->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button" data-bs-toggle="modal"
+                                                            data-bs-target="#addBrandModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.thumbnail_photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
+                                            <label for="inputEmail3" class="col-5"> <b>@lang('menu.alert_quantity')  :</b> </label>
                                             <div class="col-7">
-                                                <input type="file" name="photo" class="form-control" id="photo">
-                                                <span class="error error_photo"></span>
+                                                <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="{{ $product->alert_quantity }}">
+                                                <span class="error error_alert_quantity"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.warranty') :</b> </label>
+                                                <div class="col-7">
+                                                    <div class="input-group">
+                                                        <select class="form-control" name="warranty_id" id="warranty_id">
+                                                            <option value="">@lang('menu.select_warranty')</option>
+                                                            @foreach ($warranties as $warranty)
+                                                                @php
+                                                                    $type = $warranty->type == 1 ? 'Warranty' : 'Guaranty';
+                                                                @endphp
+                                                                <option {{$product->warranty_id == $warranty->id ? 'SELECTED' : '' }} value="{{ $warranty->id }}">
+                                                                    {{ $warranty->name.' ('.$type.')' }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text add_button" data-bs-toggle="modal" data-bs-target="#addWarrantyModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label class="col-5"><b>@lang('menu.business_location') :</b> </label>
+                                                    <div class="col-7">
+                                                        <input type="hidden" name="branch_count" value="branch_count">
+                                                        <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
+                                                            <option
+                                                                @foreach ($productBranches as $productBranch)
+                                                                    {{ $productBranch->branch_id == NULL ? 'SELECTED' : '' }}
+                                                                @endforeach
+                                                            value="">
+                                                                {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                            </option>
+                                                            @foreach ($branches as $branch)
+                                                                <option
+                                                                    @foreach ($productBranches as $productBranch)
+                                                                        {{ $productBranch->branch_id == $branch->id ? 'SELECTED' : '' }}
+                                                                    @endforeach
+                                                                value="{{ $branch->id }}">
+                                                                    {{ $branch->name.'/'.$branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="error error_branch_ids"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-5"> <b>@lang('menu.condition')  :</b> </label>
+                                            <div class="col-7">
+                                                <select class="form-control" name="product_condition"
+                                                    id="product_condition">
+                                                    <option {{ $product->product_condition == 'New' ? 'SELECTED' : '' }} value="New">@lang('menu.new')</option>
+                                                    <option {{ $product->product_condition == 'Used' ? 'SELECTED' : '' }} value="Used">@lang('menu.used')</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group mt-1">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap">
+                                                            <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>@lang('menu.manage_stock')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group mt-1">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <p class="checkbox_input_wrap">
+                                                            <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> @lang('menu.service')/ @lang('menu.product')</b> </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_element rounded mt-0 mb-lg-3 mb-1">
+                            <div class="element-body">
+                                <div class="form_part">
+                                    @if ($product->type == 1)
+                                        <div class="row gx-2 gy-1">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
+                                                        <input readonly type="number" step="any" name="product_cost" class="form-control"
+                                                        autocomplete="off" id="product_cost" placeholder="Unit cost" value="{{ $product->product_cost }}">
+                                                        <span class="error error_product_cost"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
+                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="{{ $product->product_price }}">
+                                                    <span class="error error_product_price"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
+                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="{{ $product->product_cost_with_tax }}">
+                                                        <span class="error error_product_cost_with_tax"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
+                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}">
+                                                        <span class="error error_profit"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                                <div class="col-md-6">
+                                                    <div class="input-group">
+                                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.tax') :</b> </label>
+                                                        <div class="col-7">
+                                                            <select class="form-control" name="tax_id" id="tax_id">
+                                                                <option value="">@lang('menu.no_tax')</option>
+                                                                @foreach ($taxes as $tax)
+                                                                <option {{ $product->tax_id == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id . '-' . $tax->tax_percent }}">
+                                                                        {{ $tax->tax_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.tax_type') :</b> </label>
+                                                    <div class="col-7">
+                                                        <select name="tax_type" class="form-control" id="tax_type">
+                                                            <option {{ $product->tax_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.exclusive')</option>
+                                                            <option {{ $product->tax_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.exclusive')</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.thumbnail_photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="Previous thumbnail photo (if exists) will be replaced." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                    <div class="col-7">
+                                                        <input type="file" name="photo" class="form-control" id="photo">
+                                                        <span class="error error_photo"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if ($product->is_variant == 1)
+                                            <div class="row mt-1">
+                                                <div class="dynamic_variant_create_area">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="col-6">
+                                                                <div class="form-group row">
+                                                                    <p class="checkbox_input_wrap"> <input type="checkbox" name="is_variant" CHECKED id="is_variant"> &nbsp; {{ __('This product has varient') }}. </p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="add_more_btn">
+                                                                <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="table-responsive mt-1 mb-5">
+                                                                <table class="table modal-table table-sm">
+                                                                    <thead>
+                                                                        <tr class="text-center bg-primary variant_header">
+                                                                            <th class="text-white text-start">@lang('menu.select_variant')</th>
+                                                                            <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
+                                                                            </th>
+                                                                            <th colspan="2" class="text-white text-start">@lang('menu.default_cost')</th>
+                                                                            <th class="text-white text-start">@lang('menu.profit')(%)</th>
+                                                                            <th class="text-white text-start">@lang('menu.default_price') (Exc.Tax)</th>
+                                                                            <th class="text-white text-start">@lang('menu.variant_image')</th>
+                                                                            <th><i class="fas fa-trash-alt text-white"></i></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="dynamic_variant_body">
+                                                                        <tr>
+                                                                            <td class="text-start">
+                                                                                <select class="form-control form-control" name=""
+                                                                                    id="variants">
+                                                                                </select>
+                                                                                <input type="text" name="variant_combinations[]"
+                                                                                    id="variant_combination" class="form-control"
+                                                                                    placeholder="Variant Combination">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
+                                                                                    placeholder="@lang('menu.variant_code')">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <input type="number" name="variant_costings[]"
+                                                                                    class="form-control" placeholder="Cost" id="variant_costing">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <input type="number" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <input type="number" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <input type="text" name="variant_prices_exc_tax[]"
+                                                                                    class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <input type="file" name="variant_image[]" class="form-control" id="variant_image">
+                                                                            </td>
+
+                                                                            <td class="text-start">
+                                                                                <a href="#" id="variant_remove_btn"
+                                                                                    class="btn btn-xs btn-sm btn-danger">X</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="row mt-1">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-8 offset-2">
+                                                        <div class="add_combo_product_input">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                                                </div>
+                                                                <input type="text" name="search_product" class="form-control form-control-sm"
+                                                                    autocomplete="off" id="search_product"
+                                                                    placeholder="Product search/scan by product code">
+                                                            </div>
+
+                                                            <div class="select_area">
+                                                                <ul class="variant_list_area">
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-10 offset-1 mt-1">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form_table_heading">
+                                                                    <p class="m-0 pb-1"><strong>@lang('menu.create_combo_product')</strong></p>
+                                                                </div>
+                                                                <div class="table-responsive">
+                                                                    <table class="table modal-table table-sm">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>@lang('menu.product')</th>
+                                                                                <th>@lang('menu.quantity')</th>
+                                                                                <th>@lang('menu.unit_price')</th>
+                                                                                <th>@lang('menu.sub_total')</th>
+                                                                                <th><i class="fas fa-trash-alt"></i></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="combo_products">
+
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <th colspan="3" class="text-center">@lang('menu.net_total_amount') :</th>
+                                                                                <th>
+                                                                                    {{ json_decode($generalSettings->business, true)['currency']}} <span class="span_total_combo_price">0.00</span>
+
+                                                                                    <input type="hidden" name="total_combo_price"
+                                                                                        id="total_combo_price"/>
+                                                                                </th>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-3 offset-3">
+                                                <label><b>@lang('menu.x_margin') :</b></label>
+                                                <input type="text" name="profit" class="form-control form-control-sm" id="profit"
+                                                    value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label><b>@lang('menu.default_price') Exc.Tax :</b></label>
+                                                <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_element rounded mt-0 mb-lg-3 mb-1">
+                            <div class="element-body">
+                                <div class="row gx-2 g-1">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-5"><b>@lang('menu.type') :</b> </label>
+                                            <div class="col-7">
+                                                <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-5"> <b>Weight :</b> </label>
+                                            <div class="col-7">
+                                                <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight" value="{{ $product->weight }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-5"><b>Custom Field1 :</b> </label>
+                                            <div class="col-7">
+                                                <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1" value="{{ $product->custom_field_1 }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-5"><b>Custom Field2 :</b> </label>
+                                            <div class="col-7">
+                                                <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2" value="{{ $product->custom_field_2 }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-5"><b>Custom Field3 :</b> </label>
+                                            <div class="col-7">
+                                                <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3" value="{{ $product->custom_field_3 }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                    <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                    <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>{{ __('Enable Product IMEI or Serial Number') }}</b> </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                    <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-2"> <b>@lang('menu.description') :</b> </label>
+                                            <div class="col-10">
+                                                <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="3" tabindex="4" style="display: none; width: 653px; height: 160px;">{{ $product->product_details }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                @if ($product->is_variant == 1)
-                                    <div class="row mt-1">
-                                        <div class="dynamic_variant_create_area">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="col-6">
-                                                        <div class="form-group row">
-                                                            <p class="checkbox_input_wrap"> <input type="checkbox" name="is_variant" CHECKED id="is_variant"> &nbsp; {{ __('This product has varient') }}. </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="add_more_btn">
-                                                        <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="table-responsive mt-1">
-                                                        <table class="table modal-table table-sm">
-                                                            <thead>
-                                                                <tr class="text-center bg-primary variant_header">
-                                                                    <th class="text-white text-start">@lang('menu.select_variant')</th>
-                                                                    <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
-                                                                    </th>
-                                                                    <th colspan="2" class="text-white text-start">@lang('menu.default_cost')</th>
-                                                                    <th class="text-white text-start">@lang('menu.profit')(%)</th>
-                                                                    <th class="text-white text-start">@lang('menu.default_price') (Exc.Tax)</th>
-                                                                    <th class="text-white text-start">@lang('menu.variant_image')</th>
-                                                                    <th><i class="fas fa-trash-alt text-white"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="dynamic_variant_body">
-                                                                <tr>
-                                                                    <td class="text-start">
-                                                                        <select class="form-control form-control" name=""
-                                                                            id="variants">
-                                                                        </select>
-                                                                        <input type="text" name="variant_combinations[]"
-                                                                            id="variant_combination" class="form-control"
-                                                                            placeholder="Variant Combination">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
-                                                                            placeholder="@lang('menu.variant_code')">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <input type="number" name="variant_costings[]"
-                                                                            class="form-control" placeholder="Cost" id="variant_costing">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <input type="number" name="variant_costings_with_tax[]"class="form-control" placeholder="Cost inc.tax" id="variant_costing_with_tax">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <input type="number" name="variant_profits[]" class="form-control" placeholder="Profit" value="0.00" id="variant_profit">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <input type="text" name="variant_prices_exc_tax[]"
-                                                                            class="form-control" placeholder="Price inc.tax" id="variant_price_exc_tax">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <input type="file" name="variant_image[]" class="form-control" id="variant_image">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <a href="#" id="variant_remove_btn"
-                                                                            class="btn btn-xs btn-sm btn-danger">X</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            @else
                                 <div class="row mt-1">
                                     <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-8 offset-2">
-                                                <div class="add_combo_product_input">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                                                        </div>
-                                                        <input type="text" name="search_product" class="form-control form-control-sm"
-                                                            autocomplete="off" id="search_product"
-                                                            placeholder="Product search/scan by product code">
-                                                    </div>
-
-                                                    <div class="select_area">
-                                                        <ul class="variant_list_area">
-
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-10 offset-1 mt-1">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form_table_heading">
-                                                            <p class="m-0 pb-1"><strong>@lang('menu.create_combo_product')</strong></p>
-                                                        </div>
-                                                        <div class="table-responsive">
-                                                            <table class="table modal-table table-sm">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>@lang('menu.product')</th>
-                                                                        <th>@lang('menu.quantity')</th>
-                                                                        <th>@lang('menu.unit_price')</th>
-                                                                        <th>@lang('menu.sub_total')</th>
-                                                                        <th><i class="fas fa-trash-alt"></i></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="combo_products">
-
-                                                                </tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <th colspan="3" class="text-center">@lang('menu.net_total_amount') :</th>
-                                                                        <th>
-                                                                            {{ json_decode($generalSettings->business, true)['currency']}} <span class="span_total_combo_price">0.00</span>
-
-                                                                            <input type="hidden" name="total_combo_price"
-                                                                                id="total_combo_price"/>
-                                                                        </th>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                            <div class="col-10">
+                                                <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
+                                                <span class="error error_image"></span>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-3 offset-3">
-                                        <label><b>@lang('menu.x_margin') :</b></label>
-                                        <input type="text" name="profit" class="form-control form-control-sm" id="profit"
-                                            value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label><b>@lang('menu.default_price') Exc.Tax :</b></label>
-                                        <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form_element rounded mt-0 mb-lg-3 mb-1">
-                    <div class="element-body">
-                        <div class="row gx-2 g-1">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>@lang('menu.type') :</b> </label>
-                                    <div class="col-7">
-                                        <input type="text" readonly class="form-control" value="{{$product->type == 1 ?'General'  : 'Combo'}}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"> <b>Weight :</b> </label>
-                                    <div class="col-7">
-                                        <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight" value="{{ $product->weight }}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Custom Field1 :</b> </label>
-                                    <div class="col-7">
-                                        <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1" value="{{ $product->custom_field_1 }}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Custom Field2 :</b> </label>
-                                    <div class="col-7">
-                                        <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2" value="{{ $product->custom_field_2 }}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-5"><b>Custom Field3 :</b> </label>
-                                    <div class="col-7">
-                                        <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3" value="{{ $product->custom_field_3 }}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <p class="checkbox_input_wrap">
-                                            <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <p class="checkbox_input_wrap">
-                                            <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>{{ __('Enable Product IMEI or Serial Number') }}</b> </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <p class="checkbox_input_wrap">
-                                            <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form_element rounded mt-0 mb-3">
-                    <div class="element-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-2"> <b>@lang('menu.description') :</b> </label>
-                                    <div class="col-10">
-                                        <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;">{{ $product->product_details }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="col-md-12">
-                                <div class="input-group">
-                                    <label for="inputEmail3" class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
-                                    <div class="col-10">
-                                        <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
-                                        <span class="error error_image"></span>
                                     </div>
                                 </div>
                             </div>

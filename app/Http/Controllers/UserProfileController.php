@@ -61,7 +61,7 @@ class UserProfileController extends Controller
     // View logged in user profile
     public function view($id)
     {
-        $user = User::with(['roles', 'department', 'designation'])->where('id', $id)->firstOrFail();
+        $user = User::with(['roles', 'department', 'shift', 'designation'])->where('id', $id)->firstOrFail();
         // $firstName = str_split($user->name)[0];
         // $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
         // $namePrefix = $firstName.' '.$lastName;

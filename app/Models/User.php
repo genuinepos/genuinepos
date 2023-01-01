@@ -7,6 +7,7 @@ use App\Models\Hrm\AllowanceEmployee;
 use App\Models\Hrm\Attendance;
 use App\Models\Hrm\Department;
 use App\Models\Hrm\Designation;
+use App\Models\Hrm\Shift;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -45,8 +46,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(AllowanceEmployee::class, 'user_id');
     }
+
     public function attendances()
     {
         return $this->hasMany(Attendance::class, 'user_id');
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'shift_id');
     }
 }

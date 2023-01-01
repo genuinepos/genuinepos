@@ -236,7 +236,6 @@ class UserController extends Controller
         }
 
         
-
         $user = User::with(['roles'])->where('id', $userId)->first();
 
         if ($user->role_type == 1 && auth()->user()->role_type != 1) {

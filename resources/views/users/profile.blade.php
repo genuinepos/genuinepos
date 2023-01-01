@@ -1,6 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
-
+<style>
+    b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+</style>
 @endpush
 @section('content')
     <div class="body-woaper">

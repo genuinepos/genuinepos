@@ -45,12 +45,11 @@
                                         <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    <i class="fas fa-calendar-week input_f"></i>
+                                                </span>
                                             </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="from_date" class="form-control" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -60,7 +59,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                             </div>
-                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                            <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -84,196 +83,194 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card">
-
-                <div class="section-header">
-                    <div class="col-md-10">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="section-header">
                         <h6>@lang('menu.profit_loss_ac_information')</h6>
                     </div>
-                </div>
 
-                <div class="widget_content mt-2">
-                    <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
-                    </div>
-                    <div class="table-responsive" id="data-list">
-                        <table class="table modal-table table-sm table-bordered">
-                            <tbody>
-                                <tr>
-                                    <td class="aiability_area">
-                                        <table class="table table-sm">
-                                            <tbody>
-                                                {{-- Cash Flow from operations --}}
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.total_sale') :</em>
-                                                    </td>
+                    <div class="widget_content mt-2">
+                        <div class="data_preloader">
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                        </div>
+                        <div class="table-responsive" id="data-list">
+                            <table class="table modal-table table-sm table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="aiability_area">
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    {{-- Cash Flow from operations --}}
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.total_sale') :</em>
+                                                        </td>
 
-                                                    <td class="text-start">
-                                                    <em>0.00</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.purchase_return') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                    <em>0.00</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.total_purchase') : </em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.sale_return') : </em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.direct_expense') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.total_production_cost') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
-
-                                                {{-- <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.opening_stock') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.closing_stock') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
+                                                        <td class="text-start">
                                                         <em>0.00</em>
-                                                    </td>
-                                                </tr> --}}
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th class="text-end">
-                                                        <em>@lang('menu.gross_profit') :</em>
-                                                    </th>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.purchase_return') :</em>
+                                                        </td>
 
-                                                    <td class="text-start">
-                                                        <b><em>0.00</em></b>
-                                                    </td>
-                                                </tr>
-
-                                                {{-- Cash Flow from investing --}}
-                                                <tr>
-                                                    <th class="text-start" colspan="2">
-                                                        <strong>@lang('menu.net_profit_loss_information') :</strong>
-                                                    </th>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>@lang('menu.gross_profit') :</em>
-                                                    </td>
-                                                    <td class="text-start"><em>0.00</em> </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>@lang('menu.total_stock_adjustment') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>@lang('menu.total_adjustment_recovered') :</em>
-                                                    </td>
-
-                                                    <td class="text-start">
+                                                        <td class="text-start">
                                                         <em>0.00</em>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>@lang('menu.total_sale_order_tax') :</em>
-                                                    </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.total_purchase') : </em>
+                                                        </td>
 
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start">
-                                                    <em>@lang('menu.item_sold_individual_tax') :</em>
-                                                    </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.sale_return') : </em>
+                                                        </td>
 
-                                                    <td class="text-start">
-                                                        <em>(0.00)</em>
-                                                    </td>
-                                                </tr>
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start">
-                                                        <em>@lang('menu.indirect_expense') :</em>
-                                                    </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.direct_expense') :</em>
+                                                        </td>
 
-                                                    <td class="text-start">
-                                                        <em>0.00</em>
-                                                    </td>
-                                                </tr>
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th class="text-end">
-                                                        <em>@lang('menu.net_profit') :</em>
-                                                    </th>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.total_production_cost') :</em>
+                                                        </td>
 
-                                                    <td class="text-start">
-                                                        <b><em>0.00</em> </b>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    {{-- <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.opening_stock') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.closing_stock') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>0.00</em>
+                                                        </td>
+                                                    </tr> --}}
+
+                                                    <tr>
+                                                        <th class="text-end">
+                                                            <em>@lang('menu.gross_profit') :</em>
+                                                        </th>
+
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em></b>
+                                                        </td>
+                                                    </tr>
+
+                                                    {{-- Cash Flow from investing --}}
+                                                    <tr>
+                                                        <th class="text-start" colspan="2">
+                                                            <strong>@lang('menu.net_profit_loss_information') :</strong>
+                                                        </th>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.gross_profit') :</em>
+                                                        </td>
+                                                        <td class="text-start"><em>0.00</em> </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_stock_adjustment') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_adjustment_recovered') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>0.00</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_sale_order_tax') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                        <em>@lang('menu.item_sold_individual_tax') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>(0.00)</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.indirect_expense') :</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <em>0.00</em>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th class="text-end">
+                                                            <em>@lang('menu.net_profit') :</em>
+                                                        </th>
+
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -290,8 +287,8 @@
 
        $('.data_preloader').show();
        var branch_id = $('#branch_id').val();
-       var from_date = $('.from_date').val();
-       var to_date = $('.to_date').val();
+       var from_date = $('#from_date').val();
+       var to_date = $('#to_date').val();
 
        $.ajax({
            url:"{{ route('accounting.profit.loss.account.amounts') }}",
@@ -312,36 +309,37 @@
         getProfitLoss();
     });
 
-    // //Print purchase Payment report
-    // $(document).on('click', '#print_report', function (e) {
-    //     e.preventDefault();
-    //     var url = "{{ route('accounting.print.cash.flow') }}";
-    //     var branch_id = $('#branch_id').val();
-    //     var from_date = $('.from_date').val();
-    //     var to_date = $('.to_date').val();
-    //     $.ajax({
-    //         url:url,
-    //         type:'get',
-    //         data: {branch_id, from_date, to_date},
-    //         success:function(data) {
-    //             $(data).printThis({
-    //                 debug: false,
-    //                 importCSS: true,
-    //                 importStyle: true,
-    //                 loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-    //                 removeInline: false,
-    //                 printDelay: 700,
-    //                 header: null,
-    //             });
-    //         }
-    //     });
-    // });
+     //Print purchase Payment report
+     $(document).on('click', '#print_report', function (e) {
+        e.preventDefault();
+        
+        var url = "{{ route('accounting.profit.loss.account.print') }}";
+        var branch_id = $('#branch_id').val();
+        var from_date = $('#from_date').val();
+        var to_date = $('#to_date').val();
+        $.ajax({
+            url:url,
+            type:'get',
+            data: {branch_id, from_date, to_date},
+            success:function(data) {
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                });
+            }
+        });
+    });
 </script>
 
 <script type="text/javascript">
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker'),
+        element: document.getElementById('from_date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,
@@ -360,7 +358,7 @@
 
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('datepicker2'),
+        element: document.getElementById('to_date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,

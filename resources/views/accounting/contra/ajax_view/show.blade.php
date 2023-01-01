@@ -44,7 +44,7 @@
 
     <div class="total_amount_table_area">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
@@ -81,7 +81,7 @@
                 </table>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <table class="table table-sm">
                     <tbody>
                         <tr>

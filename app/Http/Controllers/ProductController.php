@@ -755,7 +755,7 @@ class ProductController extends Controller
                         $updateVariant->variant_price = $request->variant_prices_exc_tax[$index];
                         $updateVariant->delete_in_update = 0;
 
-                        if (isset($variant_image[$index])) {
+                        if (isset($request->variant_image[$index])) {
 
                             if ($updateVariant->variant_image != null) {
 

@@ -27,6 +27,7 @@ class AttendanceController extends Controller
         // return  $interval->format('%R%a days');
 
         if ($request->ajax()) {
+
             $generalSettings = DB::table('general_settings')->select('business')->first();
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
@@ -34,48 +35,48 @@ class AttendanceController extends Controller
 				->leftJoin('hrm_shifts', 'users.shift_id', 'hrm_shifts.id');
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $query->where('users.branch_id', NULL);
                 } else {
+
                     $query->where('users.branch_id', $request->branch_id);
                 }
             }
 
 			if ($request->user_id) {
+
 				$query->where('hrm_attendances.user_id', $request->user_id);
 			}
 
-			if ($request->date_range) {
-				$date_range = explode('-', $request->date_range);
-				$form_date = date('Y-m-d', strtotime($date_range[0]));
-				//$form_date = date('Y-m-d', strtotime($date_range[0]. '-1 days'));
-				//$to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-				$to_date = date('Y-m-d', strtotime($date_range[1]));
-				$query->whereBetween('hrm_attendances.at_date_ts', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-				//$query->whereDate('report_date', '<=', $form_date.' 00:00:00')->whereDate('report_date', '>=', $to_date.' 00:00:00');
-			}
+            if ($request->from_date) {
+
+                $from_date = date('Y-m-d', strtotime($request->from_date));
+                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+                $query->whereBetween('hrm_attendances.at_date_ts', $date_range); // Final
+            }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $attendances = $query->select(
-                    'hrm_attendances.*',
-                    'hrm_shifts.shift_name',
-                    'users.prefix',
-                    'users.name',
-                    'users.last_name',
-                );
-            }else {
-                $attendances = $query->select(
-                    'hrm_attendances.*',
-                    'hrm_shifts.shift_name',
-                    'users.prefix',
-                    'users.name',
-                    'users.last_name',
-                )->where('branch_id', auth()->user()->branch_id);
-            }
-			
 
+                $query;
+            }else {
+
+                $query->where('branch_id', auth()->user()->branch_id);
+            }
+
+            $attendances = $query->select(
+                'hrm_attendances.*',
+                'hrm_shifts.shift_name',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
+            )->orderBy('hrm_attendances.at_date_ts', 'DESC');
+			
 			return DataTables::of($attendances)
 				->addColumn('action', function ($row) {
+
 					$html = '';
 					$html .= '<div class="dropdown table-dropdown">';
 					$html .= '<a href="' . route('hrm.attendance.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit_attendance" title="Edit">';
@@ -89,23 +90,29 @@ class AttendanceController extends Controller
 					return $html;
 				})
                 ->editColumn('name', function ($row) {
+
 					return $row->prefix.' '.$row->name.' '.$row->last_name;
 				})
 				->editColumn('date', function ($row) use ($generalSettings) {
+
 					return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->at_date));
 				})
 				->editColumn('clock_in_out', function ($row) {
+
                     $clockOut = $row->clock_out_ts ? ' - ' . date('h:i a', strtotime($row->clock_out)) : '';
                     return ' <b>'.date('h:i a', strtotime($row->clock_in)) .$clockOut.' </b>';
 				})
 				->editColumn('work_duration', function ($row) {
+
 					if ($row->clock_out_ts){
+
                         $startTime = Carbon::parse($row->clock_in);
                         $endTime = Carbon::parse($row->clock_out);
                         // $totalDuration = $startTime->diffForHumans($endTime);
                         $totalDuration = $endTime->diff($startTime)->format("%H:%I:%S");
                         return $totalDuration;
                     }else{
+
                         return 'Clock-Out-does-not-exists';
                     }
 				})
@@ -114,8 +121,7 @@ class AttendanceController extends Controller
 		}
         
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
-        $employee = DB::table('users')
-        ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $employee = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         return view('hrm.attendance.index', compact('employee', 'departments', 'branches'));
     }
@@ -131,34 +137,42 @@ class AttendanceController extends Controller
         }
 
         foreach ($request->user_ids as $key => $user_id) {
+
             $updateAttendance = Attendance::whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
                 ->where('user_id', $user_id)
                 ->where('is_completed', 0)
                 ->orderBy('id', 'desc')
                 ->first();
             if ($updateAttendance) {
+
                 // $updateAttendance->user_id = $user_id;
                 // $updateAttendance->at_date_ts = date('Y-m-d');
                 // $updateAttendance->clock_in = $request->clock_ins[$key];
                 // $updateAttendance->clock_in_ts = date('Y-m-d ') . $request->clock_ins[$key];
                 $updateAttendance->clock_out = $request->clock_outs[$key];
+
                 if ($request->clock_outs[$key]) {
+
                     $updateAttendance->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
                     $updateAttendance->is_completed = 1;
                 }
+
                 $updateAttendance->shift_id = $request->shift_ids[$key];
                 $updateAttendance->clock_in_note = $request->clock_in_notes[$key];
                 $updateAttendance->clock_out_note = $request->clock_out_notes[$key];
                 $updateAttendance->save();
             } else {
+
                 $data = new Attendance();
                 $data->user_id = $user_id;
                 $data->at_date = date('d-m-Y');
-                $data->at_date_ts = date('Y-m-d');
+                $data->at_date_ts = date('Y-m-d H:i:s');
                 $data->clock_in = $request->clock_ins[$key];
                 $data->clock_in_ts = date('Y-m-d ') . $request->clock_ins[$key];
                 $data->clock_out = $request->clock_outs[$key];
+
                 if ($request->clock_outs[$key]) {
+
                     $data->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
                     $data->is_completed = 1;
                 }
@@ -193,17 +207,22 @@ class AttendanceController extends Controller
     public function update(Request $request)
     {
         $updateAttendance = Attendance::where('id', $request->id)->first();
+
         if ($updateAttendance) {
+
             $updateAttendance->at_date_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)).$request->clock_in;
             $updateAttendance->clock_in = $request->clock_in;
             $updateAttendance->clock_in_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)).$request->clock_in;
 
             if ($request->clock_out) {
+
                 if ($updateAttendance->clock_out) {
+
                     $updateAttendance->clock_out = $request->clock_out;
                     $filteredDate = explode(' ', $updateAttendance->clock_out_ts);
                     $updateAttendance->clock_out_ts = $filteredDate[0].' '.$request->clock_out;
                 }else {
+
                     $updateAttendance->clock_out = $request->clock_out;
                     $updateAttendance->clock_out_ts = date('Y-m-d ').$request->clock_out;
                     $updateAttendance->is_completed = 1;
@@ -222,7 +241,9 @@ class AttendanceController extends Controller
     public function delete(Request $request, $attendanceId)
     {
         $deleteAttendance = Attendance::find($attendanceId);
+
         if (!is_null($deleteAttendance)) {
+
             $deleteAttendance->delete();  
         }
         return response()->json('Attendance deleted successfully');
@@ -255,10 +276,10 @@ class AttendanceController extends Controller
                 'users.prefix',
                 'users.name',
                 'users.last_name',
-            )
-            ->orderBy('hrm_attendances.id', 'desc')
-            ->first();
+            )->orderBy('hrm_attendances.id', 'desc')->first();
+
         $employee = DB::table('users')->where('id', $userId)->first();
+
         return view('hrm.attendance.ajax_view.attendance_row', compact('attendance', 'shifts', 'employee'));
     }
 }

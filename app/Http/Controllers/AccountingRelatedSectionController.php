@@ -491,4 +491,30 @@ class AccountingRelatedSectionController extends Controller
             compact('netProfitLossAccount',)
         );
     }
+    
+    public function printProfitLossAccount(Request $request)
+    {
+        $branch_id = $request->branch_id;
+
+        $fromDate = '';
+        $toDate = '';
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = isset($request->to_date) && $request->to_date
+                ? date('Y-m-d', strtotime($request->to_date))
+                : $from_date;
+
+            $fromDate = $from_date;
+            $toDate = $to_date;
+        }
+
+        $netProfitLossAccount = $this->netProfitLossAccount->netLossProfit($request);
+
+        return view(
+            'accounting.related_sections.ajax_view.print_profit_loss_ac',
+            compact('netProfitLossAccount', 'branch_id', 'fromDate', 'toDate')
+        );
+    }
 }

@@ -63,7 +63,6 @@ class SaleController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
-
     }
 
     public function index2(Request $request)

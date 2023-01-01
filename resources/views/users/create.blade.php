@@ -59,6 +59,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.email') :</b><span class="text-danger">*</span></label>
@@ -301,11 +302,14 @@
 
                                             <div class="col-md-12">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.role') :</b><span
-                                                        class="text-danger">*</span><i data-bs-toggle="tooltip" data-bs-placement="top" title="Admin has access to all branch." class="fas fa-info-circle tp"></i> </label>
+                                                    <label class="col-4"><b>@lang('menu.role') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Superadmin And Admin has access to all business Location." class="fas fa-info-circle tp"></i> </label>
                                                     <div class="col-8">
                                                         <select name="role_id" id="role_id" class="form-control">
-                                                            <option value="">{{ __('Admin') }}</option>
+                                                            <option value="">@lang('menu.select_role')</option>
+                                                            @foreach ($roles as $role)
+
+                                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -531,24 +535,14 @@
 @endsection
 @push('scripts')
 <script>
-    function setRoles() {
-        $.ajax({
-            url: "{{ route('users.all.roles') }}"
-            , success: function(roles) {
-                $.each(roles, function(key, val) {
-                    $('#role_id').append('<option value="' + val.id + '">' + val.name + '</option>');
-                });
-            }
-        });
-    }
-    setRoles();
-
     // Add user by ajax
     $(document).on('submit', '#add_user_form', function(e) {
         e.preventDefault();
+
         $('.loading_button').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
+        
         $.ajax({
             url: url
             , type: 'post'

@@ -4,7 +4,7 @@
         .top-menu-area ul li {display: inline-block;margin-right: 3px;}
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'HRM Attendances - ')
 @section('content')
@@ -25,12 +25,12 @@
                 <div class="col-md-12">
                     <div class="form_element rounded mt-0 mb-3">
                         <div class="element-body">
-                            <form action="" method="get">
+                            <form id="filter_form" action="" method="get">
                                 <div class="form-group row">
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-3">
-                                                <label><strong>@lang('menu.branch') :</strong></label>
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
@@ -45,7 +45,7 @@
                                         @endif
                                     @endif
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label><strong>@lang('menu.users') :</strong></label>
                                         <select name="user_id"
                                             class="form-control submit_able select2" id="user_id" autofocus>
@@ -56,16 +56,32 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <label><strong>@lang('menu.date_range') :</strong></label>
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                        class="fas fa-calendar-week input_f"></i></span>
                                             </div>
-                                            <input readonly type="text" name="date_range" id="date_range"
-                                                class="form-control daterange submit_able_input"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="from_date" class="form-control from_date date" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +147,7 @@
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
                                 <select  class="form-control employee" required="" id="department_id">
-                                    <option> {{ __('Select Employee') }} </option>
+                                    <option value="all"> {{ __('All') }} </option>
                                     @foreach($departments as $dep)
                                        <option value="{{ $dep->id }}">{{$dep->department_name }}</option>
                                     @endforeach
@@ -142,9 +158,9 @@
                                 <label class="text-navy-blue"><b>{{ __('Employee') }} :</b></label>
                                 <select  class="form-control" id="employee">
                                     <option disabled selected> {{ __('Select Employee') }} </option>
-                                    {{-- @foreach($employee as $row)
+                                    @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -191,8 +207,7 @@
     <!-- Edit Modal End-->
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var att_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
@@ -212,7 +227,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.user_id = $('#user_id').val();
-                d.date_range = $('#date_range').val();
+                d.from_date = $('#from_date').val();
+                d.to_date = $('#to_date').val();
             }
         },
         columns: [{data: 'date', name: 'date'},
@@ -223,17 +239,22 @@
             {data: 'clock_out_note', name: 'clock_out_note'},
             {data: 'shift_name', name: 'shift_name'},
             {data: 'action'},
-        ],
+        ],fnDrawCallback: function() {
+
+            $('.data_preloader').hide();
+        }
     });
 
-   $('#department_id').on('change', function(e){
+    $('#department_id').on('change', function(e){
         e.preventDefault();
+
         var department_id = $(this).val();
-        console.log(department_id);
+
         $.ajax({
             url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
             type:'get',
             success:function(employees){
+
                 $('#employee').empty();
                 $('#employee').append('<option value="">Select Employee</option>');
                 $.each(employees, function (key, emp) {
@@ -274,7 +295,7 @@
         $(this).closest('tr').remove();
     });
 
-   // Setup ajax for csrf token.
+    // Setup ajax for csrf token.
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -282,173 +303,181 @@
     });
 
    // call jquery method
-   $(document).ready(function(){
-       // Add attendance by ajax
-       $('#add_attendance_form').on('submit', function(e){
-           e.preventDefault();
-           $('.loading_button').show();
-           var url = $(this).attr('action');
-           var request = $(this).serialize();
-           var inputs = $('.add_input');
-               inputs.removeClass('is-invalid');
-               $('.error').html('');
-               var countErrorField = 0;
-           if(countErrorField > 0){
-               $('.loading_button').hide();
-               return;
-           }
-
-           $.ajax({
-               url:url,
-               type:'post',
-               data: request,
-               success:function(data){
-                   if (!$.isEmptyObject(data.errorMsg)) {
-                       toastr.error(data.errorMsg);
-                       $('.loading_button').hide();
-                   }else{
-                       toastr.success(data);
-                       $('#add_attendance_form')[0].reset();
-                       $('.loading_button').hide();
-                       att_table.ajax.reload();
-                       $('#addModal').modal('hide');
-                       $('#table_data').empty();
-                   }
-               }
-           });
-       });
-
-       // Add attendance by ajax
-       $(document).on('submit', '#edit_attendance_form', function(e){
-           e.preventDefault();
-           $('.loading_button').show();
-           var url = $(this).attr('action');
-           var request = $(this).serialize();
-           var inputs = $('.add_input');
-               inputs.removeClass('is-invalid');
-               $('.error').html('');
-               var countErrorField = 0;
-           if(countErrorField > 0){
-               $('.loading_button').hide();
-               return;
-           }
-
-           $.ajax({
-               url:url,
-               type:'post',
-               data: request,
-               success:function(data){
-                   toastr.success(data);
-                   $('#add_attendance_form')[0].reset();
-                   $('.loading_button').hide();
-                   att_table.ajax.reload();
-                   $('#editAttendanceModel').modal('hide');
-                   $('#table_data').empty();
-               }
-           });
-       });
-
-       // Show attendance modal with date
-       $(document).on('click', '#edit_attendance', function (e) {
-           $('.data_preloader').show();
-           e.preventDefault();
-           var url = $(this).attr('href');
-           $.ajax({
-               url : url,
-               type:'get',
-               success:function (data) {
-                   $('#edit_modal_body').html(data);
-                   $('#editAttendanceModel').modal('show');
-                   $('.data_preloader').hide();
-               }
-           });
-       });
-
-        $(document).on('click', '#delete',function(e){
+    $(document).ready(function(){
+        // Add attendance by ajax
+        $('#add_attendance_form').on('submit', function(e){
             e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Confirmation',
-                'message': 'Are you sure?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes bg-primary',
-                        'action': function() {
-                            $('#deleted_form').submit();
-                        }
-                    },
-                    'No': {
-                        'class': 'no bg-danger',
-                        'action': function() {
-                            // alert('Deleted canceled.')
-                        }
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.add_input');
+            inputs.removeClass('is-invalid');
+            $('.error').html('');
+            var countErrorField = 0;
+
+            if(countErrorField > 0){
+
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url:url,
+                type:'post',
+                data: request,
+                success:function(data){
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        $('.loading_button').hide();
+                    }else{
+                        
+                        toastr.success(data);
+                        $('#add_attendance_form')[0].reset();
+                        $('.loading_button').hide();
+                        att_table.ajax.reload();
+                        $('#addModal').modal('hide');
+                        $('#table_data').empty();
                     }
                 }
             });
         });
 
-       //data delete by ajax
-       $(document).on('submit', '#deleted_form',function(e){
-           e.preventDefault();
-           var url = $(this).attr('action');
-           var request = $(this).serialize();
-           $.ajax({
-               url:url,
-               type:'post',
-               async:false,
-               data:request,
-               success:function(data){
+        // Add attendance by ajax
+        $(document).on('submit', '#edit_attendance_form', function(e){
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            var inputs = $('.add_input');
+                inputs.removeClass('is-invalid');
+                $('.error').html('');
+                var countErrorField = 0;
+            if(countErrorField > 0){
+                $('.loading_button').hide();
+                return;
+            }
+
+            $.ajax({
+                url:url,
+                type:'post',
+                data: request,
+                success:function(data){
+                    toastr.success(data);
+                    $('#add_attendance_form')[0].reset();
+                    $('.loading_button').hide();
                     att_table.ajax.reload();
-                   toastr.error(data);
-                   $('#deleted_form')[0].reset();
-               }
-           });
-       });
-   });
+                    $('#editAttendanceModel').modal('hide');
+                    $('#table_data').empty();
+                }
+            });
+        });
+
+        // Show attendance modal with date
+        $(document).on('click', '#edit_attendance', function (e) {
+            $('.data_preloader').show();
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $.ajax({
+                url : url,
+                type:'get',
+                success:function (data) {
+                    $('#edit_modal_body').html(data);
+                    $('#editAttendanceModel').modal('show');
+                    $('.data_preloader').hide();
+                }
+            });
+        });
+
+            $(document).on('click', '#delete',function(e){
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('#deleted_form').attr('action', url);
+                $.confirm({
+                    'title': 'Confirmation',
+                    'message': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes bg-primary',
+                            'action': function() {
+                                $('#deleted_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no bg-danger',
+                            'action': function() {
+                                // alert('Deleted canceled.')
+                            }
+                        }
+                    }
+                });
+            });
+
+        //data delete by ajax
+        $(document).on('submit', '#deleted_form',function(e){
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    async:false,
+                    data:request,
+                    success:function(data){
+                        att_table.ajax.reload();
+                        toastr.error(data);
+                        $('#deleted_form')[0].reset();
+                    }
+                });
+        });
+    });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         att_table.ajax.reload();
-   });
-
-   //Submit filter form by date-range field blur
-   $(document).on('blur', '.submit_able_input', function () {
-       setTimeout(function() {
-            att_table.ajax.reload();
-       }, 500);
-   });
-
-       //Submit filter form by date-range apply button
-   $(document).on('click', '.applyBtn', function () {
-       setTimeout(function() {
-           $('.submit_able_input').addClass('.form-control:focus');
-           $('.submit_able_input').blur();
-       }, 500);
-   });
+    });
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('from_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
+    });
+
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('to_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

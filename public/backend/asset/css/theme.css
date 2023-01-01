@@ -710,6 +710,14 @@ body.dark-theme {
     color: var(--main-color-alt);
 }
 
+.dark-theme .menu_active p.title {
+    color: var(--dark-color-1);
+}
+
+.dark-theme .menu_active {
+    background: #fff !important;
+}
+
 .dark-theme .sub-menu_t {
     background: #fff;
 }

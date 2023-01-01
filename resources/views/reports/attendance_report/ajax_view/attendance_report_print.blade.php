@@ -9,13 +9,6 @@
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
 @php use Carbon\Carbon; @endphp
 <div class="print_area">
@@ -25,15 +18,23 @@
                 <div class="company_name text-center">
                     <h3><b>{{ json_decode($generalSettings->business, true)['shop_name'] }}</b> </h3>
                     @if ($branch_id != 'NULL' && $branch_id != '')
+                    
                         @php
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BL) </h5>
                     @elseif($branch_id == '')
+
                         <h5><b>@lang('menu.all_business_location')</b></h5>
                     @endif
+
                     <h6><b>@lang('menu.attendance_report')</b></h6>
-                    <h6>@lang('menu.attendance') Of {{ $s_date .' To '. $e_date }}</h6>
+                    @if ($fromDate && $toDate)
+                        <p><b>@lang('menu.date') :</b>
+                            {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
+                            <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>

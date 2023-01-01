@@ -118,20 +118,27 @@ class UserController extends Controller
     public function create()
     {
         if (!auth()->user()->can('user_add')) {
+
             abort(403, 'Access Forbidden.');
         }
+
+        $roles = Role::all();
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
         $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
-        if (auth()->user()->role_type == 1) {
-            $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        } else if (auth()->user()->role_type == 2) {
-            $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
-            $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
-        } else {
-            $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
-        }
-        return view('users.create', compact('departments', 'designations', 'shifts', 'branches'));
+
+        $branches = Branch::select('id', 'name', 'branch_code')->orderBy('name', 'asc')->get();
+
+        // if (auth()->user()->role_type == 1) {
+        //     $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        // } else if (auth()->user()->role_type == 2) {
+        //     $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
+        //     $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
+        // } else {
+        //     $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
+        // }
+
+        return view('users.create', compact('departments', 'designations', 'shifts', 'branches', 'roles'));
     }
 
     // Add/Store user
@@ -145,6 +152,7 @@ class UserController extends Controller
         if (isset($request->allow_login)) {
 
             $this->validate($request, [
+                'role_id' => 'required',
                 'username' => 'required',
                 'password' => 'required|confirmed',
                 'sales_commission_percent' => 'nullable|integer|min:1',
@@ -159,24 +167,30 @@ class UserController extends Controller
         $addUser->status = 1;
 
         if (isset($request->allow_login)) {
+
             $addUser->allow_login = 1;
             $addUser->username = $request->username;
             $addUser->password = Hash::make($request->password);
             $roleId = $request->role_id ?? 3;
             $role = Role::find($roleId);
+
             if ($role->name == 'superadmin') {
+
                 $addUser->role_type = 1;
                 $addUser->assignRole($role->name);
             } else if ($role->name == 'admin') {
+
                 $addUser->role_type = 2;
                 $addUser->assignRole($role->name);
-                $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
+                // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
+
                 $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
                 $addUser->role_type = 3;
                 $addUser->assignRole($role->name);
             }
         } else {
+
             $addUser->allow_login = 0;
             $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
         }
@@ -217,22 +231,34 @@ class UserController extends Controller
     public function edit($userId)
     {
         if (!auth()->user()->can('user_edit')) {
+
             abort(403, 'Access Forbidden.');
         }
 
+        
+
         $user = User::with(['roles'])->where('id', $userId)->first();
 
+        if ($user->role_type == 1 && auth()->user()->role_type != 1) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $roles = Role::all();
+
         $branches = Branch::select('id', 'name', 'branch_code')->orderBy('id', 'DESC')->get();
 
-        if (auth()->user()->role_type == 1) {
-            $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        } else if (auth()->user()->role_type == 2) {
-            $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
-            $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
-        } else {
-            $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
-        }
+        // if (auth()->user()->role_type == 1) {
+
+        //     $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        // } else if (auth()->user()->role_type == 2) {
+
+        //     $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
+        //     $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
+        // } else {
+            
+        //     $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
+        // }
 
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
@@ -245,7 +271,9 @@ class UserController extends Controller
     {
         // \Log::info($request->role_id);
         // dd();
+
         if (!auth()->user()->can('user_edit')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -259,6 +287,7 @@ class UserController extends Controller
         if (isset($request->allow_login)) {
 
             $this->validate($request, [
+                'role_id' => 'required',
                 'username' => 'required',
             ]);
 
@@ -274,9 +303,10 @@ class UserController extends Controller
                 ]);
             }
         }
+
         $addons = DB::table('addons')->first();
 
-        \Log::info('validation passed');
+        // \Log::info('validation passed');
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
         $updateUser->last_name = $request->last_name;
@@ -285,6 +315,7 @@ class UserController extends Controller
         $updateUser->email = $request->email;
 
         if (isset($request->allow_login)) {
+
             $updateUser->allow_login = 1;
             $updateUser->username = $request->username;
             $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
@@ -293,14 +324,18 @@ class UserController extends Controller
             $roleName = $role->name;
 
             switch ($roleName) {
+
                 case 'superadmin':
                     $updateUser->role_type = 1;
+                    $updateUser->branch_id = NULL;
                     break;
                 case 'admin':
                     $updateUser->role_type = 2;
+                    $updateUser->branch_id = NULL;
                     break;
                 default:
                     $updateUser->role_type = 3;
+                    $updateUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
                     break;
             }
 
@@ -350,6 +385,7 @@ class UserController extends Controller
     public function delete($userId)
     {
         if (!auth()->user()->can('user_delete')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -364,6 +400,7 @@ class UserController extends Controller
 
             $deleteUser->delete();
         }
+
         return response()->json('Successfully deleted');
     }
 

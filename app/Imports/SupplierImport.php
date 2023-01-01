@@ -61,6 +61,7 @@ class SupplierImport implements ToCollection
                         voucher_type_id: 0,
                         supplier_id: $addSupplier->id,
                         date: date('Y-m-d'),
+                        branch_id : auth()->user()->branch_id,
                         trans_id: NULL,
                         amount: (float)$c[9] ? (float)$c[9] : 0
                     );

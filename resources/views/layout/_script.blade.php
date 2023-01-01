@@ -56,11 +56,13 @@
     $(document).ready(function() {
         $('.select2').select2();
     });
+
     $(window).scroll(function() {
         if ($('.select2').is(':visible')) {
             $('.select2-dropdown').css({"display":"none"});
         }
     });
+    
     $(document).on('click', '.select2', function (e) {
         e.preventDefault();
         $('.select2-dropdown').css({"display":""});
@@ -74,5 +76,10 @@
         });
 
         $('.btn-default').addClass('btn-danger');
+    });
+
+    $(document).on('select2:open', () => {
+        
+        document.querySelector('.select2-search__field').focus();
     });
 </script>

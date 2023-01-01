@@ -8,6 +8,10 @@
         .data_preloader{top:2.3%}
         .sale_and_purchase_amount_area table tbody tr th{text-align: left;}
         .sale_and_purchase_amount_area table tbody tr td{text-align: left;}
+        .daily_profit_loss_amount_area table tbody tr td {
+            font-size: 12px;
+            padding: 3px!important;
+        }
     </style>
 @endpush
 @section('content')
@@ -16,7 +20,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill-wave"></span>
-                    <h5>@lang('menu.profit') / @lang('menu.loss_report')</h5>
+                    <h5>@lang('menu.daily_profit_loss_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')

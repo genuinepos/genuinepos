@@ -11,7 +11,7 @@
                 <div class="main__content">
                     <div class="welcome-user">
                         <div class="alert mb-1 py-0 w-100 h-auto alert-success">
-                            <span>@lang('menu.welcome') <strong>@lang('menu.superadmin')</strong></span>
+                            <span>@lang('menu.welcome') <strong>{{ auth()->user()->prefix.' '.auth()->user()->name.' '.auth()->user()->last_name }}</strong></span>
                         </div>
                     </div>
                     <div class="d-flex flex-wrap mt-2 switch_bar_cards">
@@ -88,12 +88,12 @@
                                     </label>
                                 </div> --}}
                                 <div class="select-dropdown">
-                                    <select name="" id="">
-                                        <option value="">@lang('menu.current_day')</option>
-                                        <option value="">@lang('menu.this_week')</option>
-                                        <option value="">@lang('menu.this_month')</option>
-                                        <option value="">@lang('menu.this_year')</option>
-                                        <option value="">@lang('menu.all_time')</option>
+                                    <select name="date" id="date">
+                                        <option value="{{ $toDay }}">@lang('menu.current_day')</option>
+                                        <option value="{{ $thisWeek }}">@lang('menu.this_week')</option>
+                                        <option value="{{ $thisMonth }}">@lang('menu.this_month')</option>
+                                        <option value="{{ $thisYear }}">@lang('menu.this_year')</option>
+                                        <option value="all_time">@lang('menu.all_time')</option>
                                     </select>
                                 </div>
                             </div>
@@ -226,6 +226,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row g-3">
                 <div class="col-md-6">
                     <section>
@@ -387,8 +388,8 @@
 @push('scripts')
     @if (auth()->user()->can('dash_data'))
         <script>
-            $(document).on('click', '#date', function() {
-                var date_range = $(this).data('value');
+            $(document).on('change', '#date', function() {
+                var date_range = $(this).val();
                 $('#date_range').val(date_range);
                 getCardAmount();
                 sale_order_table.ajax.reload();
@@ -470,6 +471,7 @@
             var __currency = "{{ json_decode($generalSettings->business, true)['currency'] }}";
 
             function getCardAmount() {
+
                 var date_range = $('#date_range').val();
                 var branch_id = $('#branch_id').val();
                 $('.card_preloader').show();

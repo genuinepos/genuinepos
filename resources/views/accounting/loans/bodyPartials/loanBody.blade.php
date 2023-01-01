@@ -3,24 +3,24 @@
         <div class="card" id="add_loan_form">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>Add Loan </h6>
+                    <h6>@lang('menu.add_loan') </h6>
                 </div>
             </div>
 
             <div class="form-area px-3 pb-2">
                 <form id="adding_loan_form" action="{{ route('accounting.loan.store') }}" method="POST">
                     @csrf
-                    <div class="form-group row">
+                    <div class="form-group row gx-3">
                         <div class="col-md-6">
-                            <label><strong>Date : <span class="text-danger">*</span></strong></label>
+                            <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
                             <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Loan A/C :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.loan_ac') :</b> <span class="text-danger">*</span></label>
                             <select required name="loan_account_id" class="form-control" id="loan_account_id">
-                                <option value="">Select Loan Account</option>
+                                <option value="">@lang('menu.select_loan_account')</option>
                                 @foreach ($loanAccounts as $loanAc)
                                     <option value="{{ $loanAc->id }}">
                                         {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}
@@ -30,37 +30,37 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row gx-3">
                         <div class="col-md-6">
-                            <label><strong>Company/People : <span class="text-danger">*</span></strong></label>
+                            <label><strong>@lang('menu.company')/@lang('menu.people') : <span class="text-danger">*</span></strong></label>
                             <select name="company_id" class="form-control" id="company_id">
-                                <option value="">Select Company</option>
+                                <option value="">@lang('menu.select_company')</option>
                             </select>
                             <span class="error error_company_id"></span>
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Type :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
                             <select name="type" class="form-control" id="type">
-                                <option value="">Select Type</option>
-                                <option value="1">Loan & Advance</option>
-                                <option value="2">Loan & Liabilities</option>
+                                <option value="">@lang('menu.select_type')</option>
+                                <option value="1">@lang('menu.loan_and_advance')</option>
+                                <option value="2">@lang('menu.loan_and_liabilities')</option>
                             </select>
                             <span class="error error_type"></span>
                         </div>
                     </div>
 
-                    <div class="form-group row mt-1">
+                    <div class="form-group row gx-3 mt-1">
                         <div class="col-md-6">
-                            <label><b>Loan Amount :</b> <span class="text-danger">*</span> </label>
-                            <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="Loan Amount"/>
+                            <label><b>@lang('menu.loan_amount') :</b> <span class="text-danger">*</span> </label>
+                            <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="@lang('menu.loan_amount')"/>
                             <span class="error error_loan_amount"></span>
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>Debit/Credit Account :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.debit')/@lang('menu.credit_account') :</b> <span class="text-danger">*</span></label>
                             <select name="account_id" class="form-control" id="account_id">
-                                <option value="">Select Account</option>
+                                <option value="">@lang('menu.select_account')</option>
                                 @foreach ($accounts as $account)
                                     <option value="{{ $account->id }}">
                                         @php
@@ -79,17 +79,17 @@
 
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
-                            <label><b>Loan Reason :</b> </label>
-                            <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="Loan Reason"></textarea>
+                            <label><b>@lang('menu.loan_reason') :</b> </label>
+                            <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="@lang('menu.loan_reason')"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group row mt-2">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Reset</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>
@@ -97,10 +97,10 @@
             </div>
         </div>
 
-        <div class="card d-none" id="edit_loan_form">
+        <div class="card d-hide" id="edit_loan_form">
             <div class="section-header">
                 <div class="col-md-12">
-                    <h6>Edit Loan </h6>
+                    <h6>@lang('menu.edit_loan')</h6>
                 </div>
             </div>
 
@@ -114,11 +114,11 @@
         <div class="card">
             <div class="section-header">
                 <div class="col-md-6">
-                    <h6>Loans</h6>
+                    <h6>@lang('menu.loans')</h6>
                 </div>
 
-                <div class="col-md-6">
-                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                <div class="col-6">
+                    <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                 </div>
             </div>
 
@@ -127,23 +127,23 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-3">
-                            <label><strong>Company/People :</strong></label>
-                            <select name="company_id" class="form-control submit_able" id="f_company_id" autofocus>
-                                <option value="">All</option>
+                            <label><strong>@lang('menu.company')/@lang('menu.people') :</strong></label>
+                            <select name="company_id" class="form-control submit_able select2" id="f_company_id" autofocus>
+                                <option value="">@lang('menu.all')</option>
                             </select>
                         </div>
 
                         <div class="col-md-3">
-                            <label><strong>Loan Type :</strong></label>
-                            <select name="type_id" class="form-control submit_able" id="type_id">
-                                <option value="">All</option>
-                                <option value="1">Loan & Advance</option>
-                                <option value="2">Loan & Liabilities</option>
+                            <label><strong>@lang('menu.loan_type') :</strong></label>
+                            <select name="type_id" class="form-control submit_able select2" id="type_id">
+                                <option value="">@lang('menu.all')</option>
+                                <option value="1">@lang('menu.loan_and_advance')</option>
+                                <option value="2">@lang('menu.loan_and_liabilities')</option>
                             </select>
                         </div>
 
                         <div class="col-md-2">
-                            <label><strong>From Date :</strong></label>
+                            <label><strong>@lang('menu.from_date') :</strong></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
@@ -157,7 +157,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label><strong>To Date :</strong></label>
+                            <label><strong>@lang('menu.to_date') :</strong></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
@@ -171,30 +171,30 @@
                         <div class="col-md-2">
                             <label><strong></strong></label>
                             <div class="input-group">
-                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-search"></i> @lang('menu.filter')</button>
                             </div>
                         </div>
                     </div>
                 </form>
 
                 <div class="data_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
 
                 <div class="table-responsive" >
                     <table class="display data_tbl2 data__table asset_table w-100">
                         <thead>
                             <tr>
-                                <th>Action</th>
-                                <th>Date</th>
-                                <th>B.Location</th>
-                                <th>Ref. No.</th>
-                                <th>Company/People</th>
-                                <th>Type</th>
-                                <th>Loan By</th>
-                                <th>Loan Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                <th>Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.action')</th>
+                                <th>@lang('menu.date')</th>
+                                <th>@lang('menu.b_location')</th>
+                                <th>@lang('menu.ref_no')</th>
+                                <th>@lang('menu.company')/@lang('menu.people')</th>
+                                <th>@lang('menu.type')</th>
+                                <th>@lang('menu.loan_by')</th>
+                                <th>@lang('menu.loan_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.due')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.total_paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -214,7 +214,7 @@
     <div class="modal-dialog four-col-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">Loan Details</h6>
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.loan_details')</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                     class="fas fa-times"></span></a>
             </div>
@@ -225,10 +225,10 @@
 
                 <div class="row">
                     <div class="col-md-12 text-end">
-                        <ul class="list-unstyled">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                            <button type="submit" id="print_loan_details" class="c-btn button-success">Print</button>
-                        </ul>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                            <button type="submit" id="print_loan_details" class="btn btn-sm btn-success">@lang('menu.print')</button>
+                        </div>
                     </div>
                 </div>
             </div>

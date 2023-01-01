@@ -1,10 +1,10 @@
 
     <thead>
         <tr>
-            <th class="text-start"><input type="checkbox" id="chack_all">All</th>
-            <th class="text-start">Product</th>
-            <th class="text-start">Supplier</th>
-            <th class="text-end">Quantity</th>
+            <th class="text-start"><input type="checkbox" id="chack_all">@lang('menu.all')</th>
+            <th class="text-start">@lang('menu.product')</th>
+            <th class="text-start">@lang('menu.supplier')</th>
+            <th class="text-end">@lang('menu.quantity')</th>
         </tr>
     </thead>
     <tbody id="purchased_product_list">
@@ -56,13 +56,13 @@
             @endforeach
         @else
             <tr>
-                <th colspan="4" class="text-center">No Data Found.</th>
+                <th colspan="4" class="text-center">@lang('menu.no_data_found').</th>
             </tr>
         @endif
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="3" class="text-end">Total Pending Qty :</th>
+            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} :</th>
             <th colspan="3" class="text-end">({{ $totalPendingQty }})</th>
         </tr>
     </tfoot>

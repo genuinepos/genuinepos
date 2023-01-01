@@ -403,10 +403,6 @@ tr.clickable_row {
     position: relative;
 }
 
-.menu_active {
-    background: #fff !important;
-}
-
 /* Add purchase table */
 span.product_name {
     font-size: 12px;

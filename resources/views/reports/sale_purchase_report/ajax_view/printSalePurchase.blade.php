@@ -50,9 +50,9 @@
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -64,52 +64,52 @@
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
-        
+
         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
+            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Sale / Purcahse Report </b></h6> 
+        <h6 style="margin-top: 10px;"><b>@lang('menu.sale') / {{ __('Purchase Report') }} </b></h6>
     </div>
 </div>
 <br>
 <div class="row">
     <div class="col-6">
         <div class="card">
-            <div class="card-body">  
+            <div class="card-body">
                 <div class="heading">
-                    <h6 class="text-primary"><b>Purchases</b></h6>
+                    <h6 class="text-primary"><b>@lang('menu.purchases')</b></h6>
                 </div>
 
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Total Purchase :</th>
+                            <th class="text-start">@lang('menu.total_purchase') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Purchase Including Tax :</th>
+                            <th class="text-start">@lang('menu.purchase_including_tax') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Purchase Return Including Tax :</th>
+                            <th class="text-start">@lang('menu.purchase_return_including_tax') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start"> Purchase Due :</th>
+                            <th class="text-start"> @lang('menu.purchase_due') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
                             </td>
                         </tr>
@@ -121,41 +121,41 @@
 
     <div class="col-6">
         <div class="card">
-            <div class="card-body"> 
+            <div class="card-body">
                 <div class="heading">
-                    <h6 class="text-primary"><b>Sales</b></h6>
+                    <h6 class="text-primary"><b>@lang('menu.sales')</b></h6>
                 </div>
 
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Total Sale :</th>
+                            <th class="text-start">@lang('menu.total_sale') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Sale Including Tax :</th>
+                            <th class="text-start">@lang('menu.sale_including_tax') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Sale Return Including Tax :</th>
+                            <th class="text-start">@lang('menu.sale_return_including_tax') :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Sale Due :</th>
+                            <th class="text-start">{{ __('Sale Due') }} :</th>
                             <td class="text-end">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                {{ json_decode($generalSettings->business, true)['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}
                             </td>
                         </tr>
@@ -165,25 +165,25 @@
         </div>
     </div>
 </div>
-  
+
 <div class="row mt-1">
     <div class="sale_purchase_due_compare_area">
         <div class="col-md-12">
-            <div class="card-body card-custom"> 
+            <div class="card-body card-custom">
                 <div class="heading">
-                    <h6 class="text-navy-blue">Overall (Sale - Sale Return - Purchase - Purchase Return)</h6>
+                    <h6 class="text-navy-blue">@lang('menu.overall_purchase_return')</h6>
                 </div>
 
                 <div class="compare_area mt-3">
-                    <h5 class="text-muted">Sale - Purchase : 
+                    <h5 class="text-muted">@lang('menu.sale') - @lang('menu.purchase') :
                         <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
-                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
                         </span>
                     </h5>
-                    <h5 class="text-muted">Due amount (Sale Due - Purchase Due) :
+                    <h5 class="text-muted">@lang('menu.due_amount') ({{ __('Sale Due') }} - @lang('menu.purchase_due')) :
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
-                            {{ json_decode($generalSettings->business, true)['currency'] }} 
+                            {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
                         </span>
                     </h5>

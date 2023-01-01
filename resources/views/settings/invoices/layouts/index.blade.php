@@ -3,62 +3,52 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-file-invoice"></span>
-                                <h5>Invoice Layouts</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+        <div class="main__content">
+            <!-- =====================================================================BODY CONTENT================== -->
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-file-invoice"></span>
+                    <h5>@lang('menu.invoice_layout')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <!-- =========================================top section button=================== -->
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-7">
+                        <h6>{{ __('All Invoice Layouts') }}</h6>
+                    </div>
+
+                    <div class="col-5 d-flex justify-content-end">
+                        <a href="{{ route('invoices.layouts.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                    </div>
+                </div>
+
+                    <div class="widget_content">
+                        <div class="table-responsive" id="data-list">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr>
+                                        <th>@lang('menu.serial')</th>
+                                        <th>@lang('menu.layout_name')</th>
+                                        <th>{{ __('Is Header Less') }}</th>
+                                        <th>@lang('menu.action')</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Invoice Layouts</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('invoices.layouts.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                    <div class="widget_content">
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Serial</th>
-                                                        <th>Layout Name</th>
-                                                        <th>Is Header Less</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>

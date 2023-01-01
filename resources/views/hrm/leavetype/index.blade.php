@@ -8,58 +8,52 @@
 @section('title', 'HRM Leaves Types - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-th-large"></span>
-                                <h6>Leave Types</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-th-large"></span>
+                    <h6>{{ __('Leave Types') }}</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>{{ __('Leave Types') }}</h6>
                     </div>
-
-                    <div class="p-3">
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Leave Types</h6>
-                                </div>
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Serial</th>
-                                                <th>Type</th>
-                                                <th>Max leave</th>
-                                                <th>Leave Count Interval</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.serial')</th>
+                                    <th>@lang('menu.type')</th>
+                                    <th>{{ __('Max leave') }}</th>
+                                    <th>{{ __('Leave Count Interval') }}</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -70,7 +64,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Leave Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Leave Type') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -78,33 +72,35 @@
                     <!--begin::Form-->
                     <form id="add_leavetype_form" action="{{ route('hrm.leavetype.store') }}">
                         <div class="form-group">
-                            <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="leave_type" class="form-control add_input" data-name="leave type" id="leave_type" placeholder="Leave Type" required="" />
                             <span class="error error_leave_type"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Max leave count :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="Max leave count"  />
+                            <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="{{ __('Max leave count') }}t"  />
                             <span class="error error_max_leave_count"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>leave Count Interval :</b> </label>
+                            <label><b>{{ __('Leave Count Interval') }} :</b> </label>
                             <select name="leave_count_interval" class="form-control">
-                            	<option value="0">None</option>
-                            	<option value="1">Current Month</option>
-                            	<option value="2">Current Financial year</option>
+                            	<option value="0">@lang('menu.none')</option>
+                            	<option value="1">{{ __('Current Month') }}</option>
+                            	<option value="2">{{ __('Current Financial Year') }}</option>
                             </select>
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide">
+                                        <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
+                                    </button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -118,7 +114,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Leave Type</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Leave Type') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -127,28 +123,31 @@
                     <form id="edit_leavetype_form" action="{{ route('hrm.leavetype.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Leave Type :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="Leave Type" required="" />
+                            <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="@lang('menu.leave_type')" required="" />
                             <span class="error error_e_leave_type"></span>
                         </div>
 
                          <div class="form-group">
-                            <label><b>Max Leave Count :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" placeholder="Max leave count"  />
+                            <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" placeholder="{{ __('Max leave count') }}"  />
                             <span class="error error_e_max_leave_count"></span>
                         </div>
 
                         <div class="form-group">
-                            <label><b>leave Count Interval :</b></label>
+                            <label><b>{{ __('Leave Count Interval') }} :</b></label>
                             <select name="leave_count_interval" class="form-control" id="e_leave_count_interval">
                             </select>
                         </div>
 
-                        <div class="form-group text-right mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="me-0 c-btn button-success float-end">Save Change</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide">
+                                    <i class="fas fa-spinner text-primary"></i><span> @lang('menu.loading')...</span>
+                                </button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
+                            </div>
                         </div>
                     </form>
                 </div>

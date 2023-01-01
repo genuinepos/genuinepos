@@ -69,16 +69,16 @@ class ProductionUtil
                 $html .= '<a class="dropdown-item details_button" href="' . route('manufacturing.productions.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) :
-                    if (!auth()->user()->can('production_edit')) :
+                    if (auth()->user()->can('production_edit')) :
                         $html .= '<a class="dropdown-item" href="' . route('manufacturing.productions.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     endif;
 
-                    if (!auth()->user()->can('production_delete')) :
+                    if (auth()->user()->can('production_delete')) :
                         $html .= '<a class="dropdown-item" id="delete" href="' . route('manufacturing.productions.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     endif;
                 endif;
 
-                $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
+                // $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                 $html .= '</div>';
                 $html .= '</div>';
                 return $html;
@@ -222,7 +222,7 @@ class ProductionUtil
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('productions.report_date', $date_range); // Final
         }
-        
+
         return $query;
     }
 }

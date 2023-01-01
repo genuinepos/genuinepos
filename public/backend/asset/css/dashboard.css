@@ -195,6 +195,9 @@ html {
 }
 
 .switch_bar_cards {
+    background: #222222;
+    padding: 10px 5px;
+    border-radius: 7px;
     justify-content: center;
     gap: 10px;
 }
@@ -234,4 +237,5 @@ html {
 }
 .switch_bar_cards .switch_bar p {
     font-size: 10px;
+    color: #ffffff;
 }

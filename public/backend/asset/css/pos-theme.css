@@ -235,7 +235,7 @@ body.dark-theme {
 }
 
 .dark-theme .pos-btn {
-    border: 1px solid #4a4a4a;
+    border: 1px solid var(--blue-color-1);
     color: #fff;
 }
 

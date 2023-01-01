@@ -94,7 +94,6 @@ use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 
-
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
 
@@ -966,7 +965,8 @@ Route::group(['prefix' => 'settings'], function () {
         Route::get('edit/{id}', [BarcodeSettingController::class, 'edit'])->name('settings.barcode.edit');
         Route::post('update/{id}', [BarcodeSettingController::class, 'update'])->name('settings.barcode.update');
         Route::delete('delete/{id}', [BarcodeSettingController::class, 'delete'])->name('settings.barcode.delete');
-        Route::get('set/default/{id}', [BarcodeSettingController::class, 'setDefault'])->name('settings.barcode.set.default');
+        Route::get('set-default/{id}', [BarcodeSettingController::class, 'setDefault'])->name('settings.barcode.set.default');
+        Route::get('design/pages', [BarcodeSettingController::class, 'designPage'])->name('settings.barcode.design.pages');
     });
 
     Route::group(['prefix' => 'invoices'], function () {
@@ -1073,13 +1073,18 @@ Route::group(['prefix' => 'communication'], function () {
     Route::group(['prefix' => 'email',], function () {
 
         Route::get('settings', [EmailController::class, 'emailSettings'])->name('communication.email.settings');
+
         Route::post('settings/store', [EmailController::class, 'emailSettingsStore'])->name('communication.email.settings.store');
+
+        Route::get('settings/server/setup/design/pages', [EmailController::class, 'emailServerSetupDesignPages'])->name('communication.email.settings.server.setup.design.pages');
     });
 
     Route::group(['prefix' => 'sms',], function () {
 
         Route::get('settings', [SmsController::class, 'smsSettings'])->name('communication.sms.settings');
         Route::post('settings/store', [SmsController::class, 'smsSettingsStore'])->name('communication.sms.settings.store');
+
+        Route::get('settings/server/setup/design/pages', [SmsController::class, 'smsServerSetupDesignPages'])->name('communication.sms.settings.server.setup.design.pages');
     });
 });
 

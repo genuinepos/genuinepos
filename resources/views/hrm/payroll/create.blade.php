@@ -20,10 +20,10 @@
                                 <div class="form_element m-0 mt-4">
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
-                                            <div class="col-8"><h5>Generate Payroll Of {{ $month.'/'.$year }}</h5></div>
+                                            <div class="col-8"><h5>{{ __('Generate Payroll Of') }} {{ $month.'/'.$year }}</h5></div>
 
                                             <div class="col-4">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                                             </div>
                                         </div>
                                     </div>
@@ -31,34 +31,34 @@
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <label><b>Total Work Duration :</b> <span class="text-danger">*
+                                                <label><b>{{ __('Total work duration') }} :</b> <span class="text-danger">*
                                                     </span> </label>
                                                 <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
-                                                    placeholder="Total Work Duration" autofocus value="{{ $totalHours }}">
+                                                    placeholder="{{ __('Total work duration') }}" autofocus value="{{ $totalHours }}">
                                                 <span class="error error_duration_time"></span>
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
+                                                <label><span class="text-danger">* </span><b>@lang('menu.unit') ({{ __('Pay Type') }}) :</b> </label>
                                                 <select name="duration_unit" id="duration_unit" class="form-control">
-                                                    <option value="Hourly">Hourly</option>
-                                                    <option value="Monthly">Monthly</option>
-                                                    <option value="Yearly">Yearly</option>
-                                                    <option value="Daliy">Daliy</option>
+                                                    <option value="Hourly">{{ __('Hourly') }}</option>
+                                                    <option value="Monthly">{{ __('Monthly') }}</option>
+                                                    <option value="Yearly">{{ __('Yearly') }}</option>
+                                                    <option value="Daliy">{{ __('Daily') }}</option>
                                                 </select>
                                                 <span class="error error_duration_unit"></span>
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><b>Amount per unit duration :</b> <span
+                                                <label><b>{{ __('Amount per unit duration') }} :</b> <span
                                                         class="text-danger">*</span></label>
                                                 <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
-                                                    class="form-control" placeholder="Amount per unit duration" value="">
+                                                    class="form-control" placeholder="{{ __('Amount per unit duration') }}" value="">
                                                 <span class="error error_amount_per_unit"></span>
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><b>Total :</b> <span class="text-danger">*</span></label>
+                                                <label><b>@lang('menu.total') :</b> <span class="text-danger">*</span></label>
                                                 <input readonly type="total" step="any" name="total_amount"
                                                     id="total_amount" class="form-control" placeholder="total" value="0.00">
                                             </div>
@@ -73,12 +73,12 @@
                                     <div class="heading_area">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <p class="p-2 text-primary"><b>Allowances</b> </p>
+                                                <p class="p-2 text-primary"><b>{{ __('Allowances') }}</b> </p>
                                             </div>
 
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="btn_30_blue_small float-end me-1" id="add_more_allowance">
-                                                    <a href="#"><i class="fas fa-plus-square"></i> Add</a>
+                                                    <a href="#"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -91,9 +91,9 @@
                                                     <table class="table modal-table table-sm">
                                                         <thead>
                                                             <tr>
-                                                                <th class="text-navy-blue">Allowance</th>
-                                                                <th class="text-navy-blue">Amount Type</th>
-                                                                <th class="text-navy-blue">Amount</th>
+                                                                <th class="text-navy-blue">{{ __('Allowance') }}</th>
+                                                                <th class="text-navy-blue">{{ __('Amount Type') }}</th>
+                                                                <th class="text-navy-blue">@lang('menu.amount')</th>
                                                                 <th class="text-right"><i
                                                                         class="fas fa-trash-alt text-dark"></i></th>
                                                             </tr>
@@ -120,14 +120,14 @@
                                                                                 id="al_amount_type">
                                                                                 <option
                                                                                     {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}
-                                                                                    value="1">Fixed</option>
+                                                                                    value="1">@lang('menu.fixed')</option>
                                                                                 <option
                                                                                     {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }}
-                                                                                    value="2">Percentage</option>
+                                                                                    value="2">@lang('menu.percentage')</option>
                                                                             </select>
 
                                                                             <div
-                                                                                class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-none' : '' }} ">
+                                                                                class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-hide' : '' }} ">
                                                                                 <input type="number" step="any"
                                                                                     name="allowance_percents[{{ $index }}]"
                                                                                     class="form-control"
@@ -147,7 +147,7 @@
                                                                             <input type="number" step="any"
                                                                                 name="allowance_amounts[{{ $index }}]"
                                                                                 class="form-control"
-                                                                                id="allowance_amount" placeholder="Amount"
+                                                                                id="allowance_amount" placeholder="@lang('menu.amount')"
                                                                                 value="{{ $allowance->amount }}">
                                                                         </td>
 
@@ -173,11 +173,11 @@
                                                                     <select class="form-control"
                                                                         name="al_amount_types[{{ $index }}]"
                                                                         id="al_amount_type">
-                                                                        <option value="1">Fixed</option>
-                                                                        <option value="2">Percentage</option>
+                                                                        <option value="1"> @lang('menu.fixed')</option>
+                                                                        <option value="2">@lang('menu.percentage')</option>
                                                                     </select>
 
-                                                                    <div class="input-group allowance_percent_field d-none">
+                                                                    <div class="input-group allowance_percent_field d-hide">
                                                                         <input type="number" step="any"
                                                                             name="allowance_percents[{{ $index }}]"
                                                                             class="form-control"
@@ -195,7 +195,7 @@
                                                                     <input type="number" step="any"
                                                                         name="allowance_amounts[{{ $index }}]"
                                                                         class="form-control"
-                                                                        id="allowance_amount" placeholder="Amount" value="0.00">
+                                                                        id="allowance_amount" placeholder="@lang('menu.amount')" value="0.00">
                                                                 </td>
 
                                                                 <td class="text-right">
@@ -206,7 +206,7 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="2" class="text-end">Total:</th>
+                                                                <th colspan="2" class="text-end">@lang('menu.total'):</th>
                                                                 <th colspan="2" class="text-start">
                                                                     <span class="span_total_allowance_amount">0.00</span>
                                                                     <input name="total_allowance_amount" type="hidden"
@@ -227,12 +227,12 @@
                                     <div class="heading_area">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <p class="p-2 text-primary"><b>Deductions</b> </p>
+                                                <p class="p-2 text-primary"><b>{{ __('Deductions') }}</b> </p>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="btn_30_blue_small float-end me-1" id="add_more_deduction">
-                                                    <a href="#"><i class="fas fa-plus-square"></i> Add</a>
+                                                    <a href="#"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                                 </div>
                                             </div>
 
@@ -246,9 +246,9 @@
                                                     <table class="table modal-table table-sm">
                                                         <thead>
                                                             <tr>
-                                                                <th class="text-navy-blue">Deduction</th>
-                                                                <th class="text-navy-blue">Amount Type</th>
-                                                                <th class="text-navy-blue">Amount</th>
+                                                                <th class="text-navy-blue">{{ __('Deduction') }}</th>
+                                                                <th class="text-navy-blue">{{ __('Amount Type') }}</th>
+                                                                <th class="text-navy-blue">@lang('menu.amount')</th>
                                                                 <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
                                                             </tr>
                                                         </thead>
@@ -264,11 +264,11 @@
 
                                                                         <td>
                                                                             <select class="form-control" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                                <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed</option>
-                                                                                <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
+                                                                                <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')</option>
+                                                                                <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')</option>
                                                                             </select>
 
-                                                                            <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-none' : '' }} ">
+                                                                            <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-hide' : '' }} ">
                                                                                 <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->amount : 0.00 }}" id="deduction_percent">
                                                                                 <div class="input-group-prepend">
                                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-percentage input_i"></i>
@@ -278,7 +278,7 @@
                                                                         </td>
 
                                                                         <td>
-                                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="Amount" value="{{ $deduction->amount }}">
+                                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="@lang('menu.amount')" value="{{ $deduction->amount }}">
                                                                         </td>
 
                                                                         <td class="text-right">
@@ -297,11 +297,11 @@
 
                                                                 <td>
                                                                     <select class="form-control" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                        <option value="1">Fixed</option>
-                                                                        <option value="2">Percentage</option>
+                                                                        <option value="1">@lang('menu.fixed')</option>
+                                                                        <option value="2">@lang('menu.percentage')</option>
                                                                     </select>
 
-                                                                    <div class="input-group deduction_percent_field d-none">
+                                                                    <div class="input-group deduction_percent_field d-hide">
                                                                         <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="" id="deduction_percent">
 
                                                                         <div class="input-group-prepend">
@@ -313,7 +313,7 @@
                                                                 </td>
 
                                                                 <td>
-                                                                    <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">
+                                                                    <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="@lang('menu.amount')" value="0.00">
                                                                 </td>
 
                                                                 <td class="text-right">
@@ -323,7 +323,7 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="2" class="text-end">Total:</th>
+                                                                <th colspan="2" class="text-end">@lang('menu.total'):</th>
                                                                 <th colspan="2" class="text-start">
                                                                     <span class="span_total_deduction_amount">0.00</span>
                                                                     <input name="total_deduction_amount" type="hidden" id="total_deduction_amount" value="0.00">
@@ -344,7 +344,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <h6 class="float-end">
-                                                    Gross Amount : <b><span class="span_gross_amount"><b>0.00</b></span></b>
+                                                    {{ __('Gross Amount') }} : <b><span class="span_gross_amount"><b>0.00</b></span></b>
                                                     <input type="hidden" name="gross_amount" id="gross_amount">
                                                 </h6>
                                             </div>
@@ -355,9 +355,9 @@
 
                             <div class="col-md-8">
                                 <div class="submit-area py-3 mb-4">
-                                    <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                    <button class="btn btn-sm btn-success submit_button float-end">Generate</button>
+                                    <button type="button" class="btn loading_button d-hide"><i
+                                            class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
+                                    <button class="btn btn-sm btn-success submit_button float-end">{{ __('Generate') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -464,7 +464,7 @@
         html += '<option value="2">Percentage</option>';
         html += '</select>';
 
-        html += '<div class="input-group allowance_percent_field d-none">';
+        html += '<div class="input-group allowance_percent_field d-hide">';
         html += '<input type="number" step="any" name="allowance_percents['+(index+1)+']" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">';
         html += '<div class="input-group-prepend">';
         html += ' <span class="input-group-text" id="basic-addon1">';
@@ -475,7 +475,7 @@
         html += '</td>';
 
         html += '<td>';
-        html += '<input type="number" step="any" name="allowance_amounts['+(index+1)+']" class="form-control" id="allowance_amount" placeholder="Amount" value="0.00">';
+        html += '<input type="number" step="any" name="allowance_amounts['+(index+1)+']" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="0.00">';
         html += '</td>';
 
         html += '<td class="text-right">';
@@ -503,7 +503,7 @@
         html += '<option value="2">Percentage</option>';
         html += '</select>';
 
-        html += '<div class="input-group deduction_percent_field d-none">';
+        html += '<div class="input-group deduction_percent_field d-hide">';
 
         html += '<input type="number" step="any" name="deduction_percents['+(index2+1)+']" class="form-control" autocomplete="off" value="0.00" id="deduction_percent">';
 
@@ -516,7 +516,7 @@
         html += '</td>';
 
         html += '<td>';
-        html += '<input type="number" step="any" name="deduction_amounts['+(index2+1)+']" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">';
+        html += '<input type="number" step="any" name="deduction_amounts['+(index2+1)+']" class="form-control" id="deduction_amount" placeholder="@lang('menu.amount')" value="0.00">';
         html += '</td>';
 
         html += '<td class="text-right">';
@@ -544,10 +544,10 @@
     $(document).on('click', '#al_amount_type', function () {
         //calculateAmount();
         if ($(this).val() == 2) {
-            $(this).closest('tr').find('.allowance_percent_field').removeClass('d-none');
+            $(this).closest('tr').find('.allowance_percent_field').removeClass('d-hide');
             $(this).closest('tr').find('#allowance_amount').prop('readonly', true);
         }else {
-            $(this).closest('tr').find('.allowance_percent_field').addClass('d-none');
+            $(this).closest('tr').find('.allowance_percent_field').addClass('d-hide');
             $(this).closest('tr').find('#allowance_amount').prop('readonly', false);
         }
     });
@@ -555,10 +555,10 @@
     $(document).on('click', '#de_amount_type', function () {
         //calculateAmount();
         if ($(this).val() == 2) {
-            $(this).closest('tr').find('.deduction_percent_field').removeClass('d-none');
+            $(this).closest('tr').find('.deduction_percent_field').removeClass('d-hide');
             $(this).closest('tr').find('#deduction_amount').prop('readonly', true);
         }else {
-            $(this).closest('tr').find('.deduction_percent_field').addClass('d-none');
+            $(this).closest('tr').find('.deduction_percent_field').addClass('d-hide');
             $(this).closest('tr').find('#deduction_amount').prop('readonly', false);
         }
     });

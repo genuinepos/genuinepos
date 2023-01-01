@@ -14,8 +14,8 @@
                                 <span class="fas fa-tasks"></span>
                                 <h6>@lang('menu.pos_sales')</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                         <div class="p-3">
                             <div class="row">
@@ -29,7 +29,7 @@
                                                             <div class="col-md-2">
                                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                                 <select name="branch_id"
-                                                                    class="form-control submit_able" id="branch_id" autofocus>
+                                                                    class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
                                                                     <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
                                                                     @foreach ($branches as $branch)
@@ -44,7 +44,7 @@
 
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong>@lang('menu.customer') :</strong></label>
-                                                        <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
+                                                        <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">@lang('menu.walk_in_customer')</option>
                                                             @foreach ($customers as $customer)
@@ -55,7 +55,7 @@
 
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong>@lang('menu.payment_status') :</strong></label>
-                                                        <select name="payment_status" id="payment_status" class="form-control submit_able">
+                                                        <select name="payment_status" id="payment_status" class="form-control submit_able select2">
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="1">@lang('menu.paid')</option>
                                                             <option value="2">@lang('menu.due')</option>
@@ -87,7 +87,7 @@
                                                     <div class="col-xl-2 col-md-4">
                                                         <label><strong></strong></label>
                                                         <div class="input-group">
-                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-secondary float-start py-1 px-2"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                            <button type="submit" id="filter_button" class="btn btn-sm btn-info float-start text-white m-0"><i class="fa-solid fa-filter-list"></i><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -210,8 +210,8 @@
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
                                     {{-- <li class="mt-3"><a href="#" id="print_payment" class="btn btn-sm btn-primary">@lang('menu.print')</a></li> --}}
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">@lang('menu.print')</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                                 </ul>
                             </div>
                         </div>
@@ -234,9 +234,9 @@
             "serverSide": true,
             dom: "lBfrtip",
             buttons: [
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> @lang('menu.pdf')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white btn-sm px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> @lang('menu.pdf')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                // {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
             "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
@@ -389,7 +389,7 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data);
+                $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
             });
         });

@@ -9,9 +9,9 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill"></span>
-                    <h5>Expenses</h5>
+                    <h5>@lang('menu.expenses')</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -27,10 +27,10 @@
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
                                             <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
-                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -42,16 +42,16 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>Expense For :</strong></label>
-                                        <select name="admin_id" class="form-control submit_able" id="admin_id" >
-                                            <option value="">All</option>
+                                        <label><strong>@lang('menu.expense_for') :</strong></label>
+                                        <select name="admin_id" class="form-control submit_able select2" id="admin_id" >
+                                            <option value="">@lang('menu.all')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>Category :</strong></label>
-                                        <select name="cate_id" class="form-control submit_able" id="cate_id" >
-                                            <option value="">All</option>
+                                        <label><strong>@lang('menu.category') :</strong></label>
+                                        <select name="cate_id" class="form-control submit_able select2" id="cate_id" >
+                                            <option value="">@lang('menu.all')</option>
                                             @foreach ($ex_cates as $cate)
                                                 <option value="{{ $cate->id }}">{{ $cate->name }}</option>
                                             @endforeach
@@ -59,7 +59,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>From Date :</strong></label>
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -72,7 +72,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>To Date :</strong></label>
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -83,16 +83,16 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <div class="row">
-                                            <div class="col-md-6">
+                                        <div class="row align-items-end">
+                                            <div class="col-6">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 mt-4">
-                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
+                                            <div class="col-6">
+                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                             </div>
                                         </div>
                                     </div>
@@ -104,40 +104,40 @@
             </div>
             <div class="card">
                 <div class="section-header">
-                    <div class="col-md-10">
+                    <div class="col-6">
                         <h6>All Expense</h6>
                     </div>
                     @if (auth()->user()->can('add_expense'))
-                        <div class="col-md-2 d-flex justify-content-end">
-                            <a href="{{ route('expanses.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="{{ route('expanses.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
                     @endif
                 </div>
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">Actions</th>
-                                    <th class="text-start">Date</th>
-                                    <th class="text-start">Reference ID</th>
-                                    <th class="text-start">B.Location</th>
-                                    <th class="text-start">Description</th>
+                                    <th class="text-start">@lang('menu.action')</th>
+                                    <th class="text-start">@lang('menu.date')</th>
+                                    <th class="text-start">@lang('menu.reference_id')</th>
+                                    <th class="text-start">@lang('menu.b_location')</th>
+                                    <th class="text-start">@lang('menu.description')</th>
                                     <th class="text-start">Expanse For</th>
-                                    <th class="text-start">Payment Status</th>
-                                    <th class="text-start">Tax</th>
-                                    <th class="text-start">Net Total</th>
-                                    <th class="text-start">Payment Due</th>
+                                    <th class="text-start">@lang('menu.payment_status')</th>
+                                    <th class="text-start">@lang('menu.tax')</th>
+                                    <th class="text-start">@lang('menu.net_total')</th>
+                                    <th class="text-start">@lang('menu.payment_due')</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="7" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th colspan="7" class="text-end text-white">@lang('menu.total') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <th class="text-white">---</th>
                                     <th id="net_total_amount" class="text-white"></th>
                                     <th id="due" class="text-white"></th>
@@ -160,7 +160,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="payment_view_modal_body"></div>
@@ -190,7 +190,7 @@
         <div class="modal-dialog col-55-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
                             class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
@@ -204,12 +204,10 @@
                             </ul>
                         </div>
                         <div class="col-md-6 text-end">
-                            <ul class="list-unstyled">
-                                <li class="mt-1">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
-                                </li>
-                            </ul>
+                            <div class="d-flex gap-2 justify-content-end">
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -419,7 +417,7 @@
                 success:function(data){
 
                     $('#admin_id').empty();
-                    $('#admin_id').append('<option value="">All</option>');
+                    $('#admin_id').append('<option value="">@lang('menu.all')</option>');
                     $.each(data, function (key, val) {
 
                         var userPrefix = val.prefix != null ? val.prefix : '';

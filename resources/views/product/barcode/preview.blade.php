@@ -105,10 +105,10 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                         <tr>
                                             <th class="product_name">
                                                 @if (isset($req->is_product_name))
-                                                    @php
+                                                    {{-- @php
                                                         $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
                                                     @endphp
-                                                    {{ Str::limit($req->product_name[$index] . '' . $variant, 14, '') }}
+                                                    {{ Str::limit($req->product_name[$index] . '' . $variant, 14, '') }} --}}
                                                     :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
                                                 @endif
                                             </th>
@@ -171,7 +171,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
                                 @if (isset($req->is_price))
                                     <p class="price_details">
-                                        <b>Price :
+                                        <b>@lang('menu.price') :
                                             {{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ bcadd($req->product_price[$index], 0, 2) }}
                                         {{ isset($req->is_tax) ? '+ ' . bcadd($req->product_tax[$index], 0, 2) . '% Tax' : '' }}
@@ -186,7 +186,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         @endif
     </div>
 
-    {{-- <button class="btn btn-success" onclick="window.print()">Print</button> --}}
+    {{-- <button class="btn btn-success" onclick="window.print()">@lang('menu.print')</button> --}}
 </body>
 <!--Jquery Cdn-->
 <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>

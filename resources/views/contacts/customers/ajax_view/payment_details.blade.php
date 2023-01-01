@@ -15,54 +15,54 @@
 @php
     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="sale_payment_print_area">
-    <div class="header_area d-none">
+    <div class="header_area d-hide">
         <div class="company_name text-center">
             <div class="company_name text-center">
                 <h4>
                     @if ($customerPayment->branch)
-    
+
                         @if ($customerPayment->branch->logo != 'default.png')
                             <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $customerPayment->branch->logo) }}">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $customerPayment->branch->name }}</span>
                         @endif
                     @else
-    
+
                         @if (json_decode($generalSettings->business, true)['business_logo'] != null)
                             <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
                         @endif
                     @endif
                 </h4>
-    
+
                 <p>
                     @if ($customerPayment->branch)
 
                         <p style="width: 60%; margin:0 auto;">{{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}</p>
                     @else
-    
+
                         <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
                     @endif
                 </p>
-    
-                <h6 style="margin-top: 10px;">Payment Receive Voucher</h6>
+
+                <h6 style="margin-top: 10px;">@lang('menu.payment_receive_voucher')</h6>
             </div>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col-6">
-            <p><strong>Customer :</strong> {{ $customerPayment->customer->name }}</p>
-            <p><strong>Phone :</strong> {{ $customerPayment->customer->phone }}</p>
-            <p><strong>Address :</strong> {{ $customerPayment->customer->address }}</p>
+            <p><strong>@lang('menu.customer') :</strong> {{ $customerPayment->customer->name }}</p>
+            <p><strong>@lang('menu.phone') :</strong> {{ $customerPayment->customer->phone }}</p>
+            <p><strong>@lang('menu.address') :</strong> {{ $customerPayment->customer->address }}</p>
         </div>
 
         <div class="col-6">
-            <p><strong>Type :</strong>
-                {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }} 
+            <p><strong>@lang('menu.type') :</strong>
+                {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }}
             </p>
         </div>
     </div>
@@ -74,21 +74,21 @@
                     <tbody>
                         <tr>
                             <td width="50%" class="text-start">
-                                <strong>Paid Amount :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <strong>@lang('menu.paid_amount') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                             </td>
-                            
+
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($customerPayment->paid_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Debit Account :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.debit_account') :</strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong> Payment Method :</strong></td>
+                            <td width="50%" class="text-start"><strong> @lang('menu.payment_method') :</strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->paymentMethod ? $customerPayment->paymentMethod->name : $customerPayment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -99,21 +99,21 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td width="50%" class="text-start"><strong>Voucher No :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.voucher_no') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->voucher_no }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Reference :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.reference') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->reference }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Paid On :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.paid_on') :</strong></td>
                             <td width="50%" class="text-start">
                                 @php
                                     $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
@@ -123,7 +123,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>Payment Note :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.payment_note') :</strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->note }}
                             </td>
@@ -145,9 +145,9 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">Sale Date</th>
-                            <th class="text-start">Sale Invoice ID</th>
-                            <th class="text-start">Paid Amount</th>
+                            <th class="text-start">@lang('menu.sale_date')</th>
+                            <th class="text-start">{{ __('Sale Invoice ID') }}</th>
+                            <th class="text-start">@lang('menu.paid_amount')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,7 +162,7 @@
                                     </td>
                                     <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
                                     <td class="text-start">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
                                         @php $total += $pi->paid_amount; @endphp
                                     </td>
@@ -174,7 +174,7 @@
                                     </td>
                                     <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
                                     <td class="text-start">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                                        {{ json_decode($generalSettings->business, true)['currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
                                         @php $total += $pi->paid_amount; @endphp
                                     </td>
@@ -185,7 +185,7 @@
 
                     <tfoot>
                         <tr>
-                            <th colspan="2" class="text-end">Total : </th>
+                            <th colspan="2" class="text-end">@lang('menu.total') : </th>
                             <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</th>
                         </tr>
                     </tfoot>
@@ -193,20 +193,20 @@
             </div>
         </div>
     @endif
-    
-    <div class="footer_area d-none">
+
+    <div class="footer_area d-hide">
         <br><br>
         <div class="row">
             <div class="col-4 text-start">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">RECEIVED BY</p>
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.perceived_by')</p>
             </div>
 
             <div class="col-4 text-center">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">PREPARED BY</p>
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;"> @lang('menu.prepared_by')</p>
             </div>
 
             <div class="col-4 text-end">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">AUTHORIZED BY</p>
+                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.authorized_by')</p>
             </div>
         </div>
 
@@ -220,17 +220,17 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+                    <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                 </div>
-        
+
                 <div class="col-4 text-center">
                     @if (env('PRINT_SD_SALE') == true)
-                        <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                        <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     @endif
                 </div>
-        
+
                 <div class="col-4 text-end">
-                    <small>Print Time : {{ date($timeFormat) }}</small>
+                    <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

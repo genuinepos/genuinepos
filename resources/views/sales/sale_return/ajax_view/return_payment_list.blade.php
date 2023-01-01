@@ -11,11 +11,11 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         {{ $return->customer ? $return->customer->name : 'Walk-In-Customer' }}
                     </li>
 
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         {{ $return->customer ? $return->customer->business_name : '' }}
                     </li>
                 </ul>
@@ -25,17 +25,16 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Return Invoice ID : </strong>{{ $return->invoice_id }}</li>
-                    <li><strong>Return Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}</li>
-                    <li><strong>Business Location: </strong>
+                    <li><strong> @lang('menu.return_invoice_id') : </strong>{{ $return->invoice_id }}</li>
+                    <li><strong>@lang('menu.return_date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}</li>
+                    <li><strong>@lang('menu.business_location'): </strong>
 
                         @if ($return->branch)
 
                             {{ $return->branch->name . '/' . $return->branch->branch_code }}
                         @else
 
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                            Office</b>)
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </li>
                 </ul>
@@ -46,11 +45,11 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li>
-                        <strong>Total Return : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_return') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                     </li>
                     <li>
-                        <strong>Total Paid/Refunded Amount : {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_due_pay) }}
                     </li>
                 </ul>
@@ -61,18 +60,18 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
-                <tr class="bg-primary">
-                    <th class="text-white text-start">Date</th>
-                    <th class="text-white text-start">Voucher No</th>
-                    <th class="text-white text-start">Method</th>
-                    <th class="text-white text-start">Account</th>
-                    <th class="text-white text-end">Amount</th>
-                    <th class="text-white text-start">Action</th>
+                <tr class="bg-secondary">
+                    <th class="text-white text-start">@lang('menu.date')</th>
+                    <th class="text-white text-start">@lang('menu.voucher_no')</th>
+                    <th class="text-white text-start">@lang('menu.method')</th>
+                    <th class="text-white text-start">@lang('menu.account')</th>
+                    <th class="text-white text-end">@lang('menu.amount')</th>
+                    <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -84,11 +83,11 @@
                             </td>
 
                             <td class="text-start">{{ $payment->invoice_id }}</td>
-                            
+
                             <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode  }}</td>
-                            
+
                             <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C :'.$payment->account->account_number.')' : 'N/A' }}</td>
-                            
+
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
@@ -96,7 +95,7 @@
                             <td>
                                 <a href="{{ route('sales.return.payment.edit', $payment->id) }}"
                                         id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
-                            
+
                                 <a href="{{ route('sales.payment.details', $payment->id) }}" id="payment_details"
                                     class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
 
@@ -109,7 +108,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

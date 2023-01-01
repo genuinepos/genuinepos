@@ -18,10 +18,10 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-square"></span>
-                    <h5>Add Stock Adjustment <small>(From Business Location.)</small></h5>
+                    <h5>@lang('menu.add_stock_adjustment') <small>(@lang('menu.from_business_location'))</small></h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back') </a>
             </div>
         </div>
         <div class="p-3">
@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>B. Location :</b> </label>
+                                        <label class="col-4"><b>{{ __('B. Location') }} :</b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control"
                                                 value="{{
@@ -46,7 +46,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Adjust. A/C : <span
+                                        <label class="col-4"><b>{{ __('Adjust. A/C') }} : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="adjustment_account_id" class="form-control add_input"
@@ -66,17 +66,17 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Voucher No :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class=" col-4"><b>@lang('menu.voucher_no') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id"
-                                                class="form-control" placeholder="Voucher No" autocomplete="off">
+                                                class="form-control" placeholder="@lang('menu.voucher_no')" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Adjust. Date :</b> <span
+                                        <label class=" col-4"><b>{{ __('Adjust. Date') }} :</b> <span
                                             class="text-danger">*</span> </label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control datepicker changeable"
@@ -88,13 +88,13 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Type :</b> <span
+                                        <label class="col-4"><b>@lang('menu.type') :</b> <span
                                             class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <select name="type" class="form-control add_input">
-                                                <option value="">Select Type</option>
-                                                <option value="1">Normal</option>
-                                                <option value="2">Abnormal</option>
+                                                <option value="">@lang('menu.select_type')</option>
+                                                <option value="1">@lang('menu.normal')</option>
+                                                <option value="2">@lang('menu.abnormal')</option>
                                             </select>
                                             <span class="error error_type"></span>
                                         </div>
@@ -114,7 +114,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.item_search')</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
@@ -138,12 +138,12 @@
                                                         <table class="display data__table table-striped">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th>Product</th>
+                                                                    <th>@lang('menu.product')</th>
                                                                     <th></th>
-                                                                    <th class="text-center">Quantity</th>
-                                                                    <th>Unit</th>
-                                                                    <th>Unit Cost.Inc.Tax</th>
-                                                                    <th>SubTotal</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
+                                                                    <th>@lang('menu.unit')</th>
+                                                                    <th>@lang('menu.unit_cost_inc_tax')</th>
+                                                                    <th>@lang('menu.subtotal')</th>
                                                                     <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                                 </tr>
                                                             </thead>
@@ -171,7 +171,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>Total Item :</b></label>
+                                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.total_item') :</b></label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" step="any" name="total_item" class="form-control"
                                                                     id="total_item" value="0.00">
@@ -181,7 +181,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class=" col-4"><b>Net Total Amount :</b> </label>
+                                                            <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total_amount') :</b> </label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" class="form-control" step="any" step="any"
                                                                     name="net_total_amount" id="net_total_amount" value="0.00">
@@ -190,7 +190,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>Reason :</b></label>
+                                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.reason') :</b></label>
                                                         <div class="col-8">
                                                             <input type="text" name="reason" class="form-control"
                                                                 autocomplete="off" placeholder="Reason">
@@ -212,7 +212,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Recovered Amount : </b> <strong>>></strong></label>
+                                                        <label class="col-4"><b>@lang('menu.recovered_amount') : </b> <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="total_recovered_amount"
                                                                 id="total_recovered_amount" class="form-control" value="0.00">
@@ -220,7 +220,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Payment Method : <span
+                                                        <label class="col-4"><b>@lang('menu.payment_method') : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -235,7 +235,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Debit A/C : <span
+                                                        <label class="col-4"><b>@lang('menu.debit') A/C : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
@@ -266,8 +266,8 @@
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                <button name="save" value="save" class="btn btn-sm btn-success submit_button float-end">Save</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button name="save" value="save" class="btn btn-sm btn-success submit_button float-end">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>

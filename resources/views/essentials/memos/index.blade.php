@@ -3,147 +3,123 @@
     <style>
         .top-menu-area ul li { display: inline-block;margin-right: 3px; }
         .top-menu-area a { border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px; }
-        .form-control { padding: 4px!important; }
     </style>
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'All Memos -')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul class="list-unstyled">
-                                        @if (!auth()->user()->can('assign_todo'))
-                                            <li>
-                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
-                                            </li>
-                                        @endif
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-file-alt"></span>
+                    <h6>@lang('menu.memo')</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                </a>
+            </div>
+        </div>
 
-                                        @if (!auth()->user()->can('work_space'))
-                                            <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('memo'))
-                                            <li>
-                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt text-primary"></i> <b>@lang('menu.memo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (!auth()->user()->can('msg'))
-                                            <li>
-                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>@lang('menu.message')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+        <div class="p-3">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <div class="card" id="add_form">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>@lang('menu.add_memo') </h6>
                             </div>
+                        </div>
+
+                        <div class="form-area px-2 pb-2">
+                            <form id="add_memo_form" action="{{ route('memos.store') }}">
+                                @csrf
+                                <div class="from-group">
+                                    <label><b>@lang('menu.heading') :</b></label>
+                                    <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
+                                </div>
+
+                                <div class="from-group mt-1">
+                                    <label><b>@lang('menu.description') :</b></label>
+                                    <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
+                                </div>
+
+                                <div class="form-group row mt-2">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-5">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Add Memo </h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-2 pb-2">
-                                    <form id="add_memo_form" action="{{ route('memos.store') }}">
-                                        @csrf
-                                        <div class="from-group">
-                                            <label><b>Heading :</b></label>
-                                            <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
-                                        </div>
-
-                                        <div class="from-group mt-1">
-                                            <label><b>Description :</b></label>
-                                            <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
-                                        </div>
-
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Edit Memo</h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-2 pb-2">
-                                    <form id="edit_memo_form" action="{{ route('memos.update') }}">
-                                        @csrf
-                                        <input type="hidden" id="id" name="id">
-                                        <div class="from-group">
-                                            <label><b>Heading :</b></label>
-                                            <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
-                                        </div>
-
-                                        <div class="from-group mt-1">
-                                            <label><b>Description :</b></label>
-                                            <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
-                                        </div>
-
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-
-                                                <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
-                                                <button type="button" class="c-btn btn_orange float-end">Close</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                    <div class="card d-hide" id="edit_form">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>{{ __('Edit Memo') }}</h6>
                             </div>
                         </div>
 
-                        <div class="col-md-7">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>All Memos </h6>
-                                    </div>
+                        <div class="form-area px-2 pb-2">
+                            <form id="edit_memo_form" action="{{ route('memos.update') }}">
+                                @csrf
+                                <input type="hidden" id="id" name="id">
+                                <div class="from-group">
+                                    <label><b>@lang('menu.heading') :</b></label>
+                                    <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
                                 </div>
 
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Heading</th>
-                                                    <th>Description</th>
-                                                    <th>Created Date</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                                <div class="from-group mt-1">
+                                    <label><b>@lang('menu.description') :</b></label>
+                                    <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                 </div>
 
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                <div class="form-group row mt-2">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                            <button type="button" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_changes')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>{{ __('All Memos') }} </h6>
                             </div>
                         </div>
+
+                        <div class="widget_content">
+                            <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                            <div class="table-responsive" id="data-list">
+                                <table class="display data_tbl data__table">
+                                    <thead>
+                                        <tr>
+                                            <th>@lang('menu.heading')</th>
+                                            <th>@lang('menu.description')</th>
+                                            <th>@lang('menu.created_date')</th>
+                                            <th>@lang('menu.action')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <form id="deleted_form" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>
@@ -156,7 +132,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Share Memo</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.share_memo')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_user_modal_body">

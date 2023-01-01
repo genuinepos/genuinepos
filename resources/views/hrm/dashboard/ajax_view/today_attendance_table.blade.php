@@ -1,9 +1,9 @@
 <table id="att_table" class="display data__table data_tble stock_table compact" width="100%">
     <thead>
         <tr>
-            <th>Employee</th>
-            <th>Clock-in Time</th>
-            <th>Clock-out Time</th>
+            <th>{{ __('Employee') }}</th>
+            <th>{{ __('Clock-in Time') }}</th>
+            <th>{{ __('Clock-out Time') }}</th>
         </tr>
     </thead>
     <tbody>

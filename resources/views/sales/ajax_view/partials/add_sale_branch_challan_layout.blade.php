@@ -1,4 +1,4 @@
-<div class="challan_print_template d-none">
+<div class="challan_print_template d-hide">
     <style>
         @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
     </style>
@@ -26,7 +26,7 @@
                         @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
                             @if ($sale->branch->logo != 'default.png')
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                            @else 
+                            @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                             @endif
                         @endif
@@ -51,18 +51,18 @@
                             </p>
 
                             @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                <p><b>Phone :</b>  {{ $sale->branch->phone }}</p>
+                                <p><b>@lang('menu.phone') :</b>  {{ $sale->branch->phone }}</p>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                <p><b>Eamil :</b> : {{ $sale->branch->email }}</p>
+                                <p><b>@lang('menu.email') :</b> : {{ $sale->branch->email }}</p>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
         @endif
-        
+
         @if ($sale->branch->add_sale_invoice_layout->is_header_less == 1)
             @for ($i = 0; $i < $sale->branch->add_sale_invoice_layout->gap_from_top; $i++)
                 <br/>
@@ -73,20 +73,20 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Customer : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                        <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         @if ($sale->branch->add_sale_invoice_layout->customer_address)
-                            <li><strong>Address : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                            <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
                         @endif
 
                         @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
-                            <li><strong>Tax Number : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                             </li>
                         @endif
 
                         @if ($sale->branch->add_sale_invoice_layout->customer_phone)
-                            <li><strong>Phone : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                             </li>
                         @endif
                     </ul>
@@ -101,9 +101,9 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong> Challan No : </strong> {{ $sale->invoice_id }}</li>
-                        <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
-                        <li><strong> Entered By : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
+                        <li><strong> @lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}</li>
+                        <li><strong>@lang('menu.date'): </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
+                        <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
             </div>
@@ -113,10 +113,10 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">SL</th>
-                        <th class="text-start">Product</th>
-                        <th class="text-start">Unit</th>
-                        <th class="text-start">Quantity</th>
+                        <th class="text-start">@lang('menu.sl')</th>
+                        <th class="text-start">@lang('menu.product')</th>
+                        <th class="text-start">@lang('menu.unit')</th>
+                        <th class="text-start">@lang('menu.quantity')</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
@@ -142,20 +142,20 @@
             <br>
             <div class="row page_break">
                 <div class="col-md-12 text-end">
-                    <h6><em>Continued To this next page....</em></h6>
+                    <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                 </div>
             </div>
         @endif
-       
+
         <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>Recevier's signature </h6>
+                    <h6>{{ __('Receivers signature') }} </h6>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="details_area text-end">
-                    <h6> Signature Of Authority </h6>
+                    <h6> @lang('menu.signature_of_authority') </h6>
                 </div>
             </div>
         </div><br>
@@ -171,18 +171,18 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-center">
-                    <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+                    <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
                 </div>
-                
+
                 <div class="col-4 text-center">
                     <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                     @if (env('PRINT_SD_SALE') == true)
-                        <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     @endif
                 </div>
 
                 <div class="col-4 text-center">
-                    <small>Print Time : {{ date($timeFormat) }}</small>
+                    <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

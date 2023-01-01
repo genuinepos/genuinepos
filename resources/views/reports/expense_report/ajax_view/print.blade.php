@@ -19,11 +19,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
         @else
             @php
@@ -37,12 +37,12 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b>
+            <p><b>@lang('menu.date') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Expense Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.expanse_report') </b></h6>
     </div>
 </div>
 <br>
@@ -51,14 +51,14 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Reference No</th>
-                    <th class="text-start">Description</th>
-                    <th class="text-start">B.Location</th>
-                    <th class="text-start">Expense For</th>
-                    <th class="text-start">Total Amount</th>
-                    <th class="text-start">Paid</th>
-                    <th class="text-start">Due</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.reference_no')</th>
+                    <th class="text-start">@lang('menu.description')</th>
+                    <th class="text-start">@lang('menu.b_location')</th>
+                    <th class="text-start">{{ __('Expense For') }}</th>
+                    <th class="text-start">@lang('menu.total_amount')</th>
+                    <th class="text-start">@lang('menu.paid')</th>
+                    <th class="text-start">@lang('menu.due')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -72,7 +72,7 @@
                         <td class="text-start">
                             {{ date($__date_format, strtotime($ex->date)) }}
                         </td>
-                        
+
                         <td class="text-start">{{ $ex->invoice_id }}</td>
 
                         <td class="text-start">
@@ -104,7 +104,7 @@
                     </tr>
                 @endforeach
             </tbody>
-          
+
         </table>
     </div>
 </div>
@@ -115,21 +115,21 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Expense : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_expense') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Paid : {{json_decode($generalSettings->business, true)['currency']}}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{json_decode($generalSettings->business, true)['currency']}}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalPaid) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalDue) }}
                     </td>
@@ -143,13 +143,13 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

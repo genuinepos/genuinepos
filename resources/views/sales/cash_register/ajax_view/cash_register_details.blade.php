@@ -3,12 +3,12 @@
 @endphp
 
 <div class="modal-header">
-    <h6 class="modal-title" id="exampleModalLabel">Register Details ( 
-        {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->created_at)->format('jS M, Y h:i A') }}  
+    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.register_details') (
+        {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->created_at)->format('jS M, Y h:i A') }}
         @if ($activeCashRegister->closed_at)
-            - {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->closed_at)->format('jS M, Y h:i A') }} 
-        @else 
-            - {{ Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'))->format('jS M, Y h:i A') }} 
+            - {{ Carbon::createFromFormat('Y-m-d H:i:s', $activeCashRegister->closed_at)->format('jS M, Y h:i A') }}
+        @else
+            - {{ Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'))->format('jS M, Y h:i A') }}
         @endif
         )
     </h6>
@@ -22,27 +22,27 @@
     <table class="cash_register_table table modal-table table-sm">
         <tbody>
             <tr>
-                <td width="50" class="text-start">Opening Balance :</td>
-                <td width="50" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 
+                <td width="50" class="text-start">@lang('menu.opening_balance') :</td>
+                <td width="50" class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }}
                     {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
                 </td>
             </tr>
-    
+
             @foreach ($paymentMethodPayments as $payment)
                 <tr>
                     <td width="50" class="text-start"> {{$payment->name.' Payment' }} :</td>
                     <td width="50" class="text-start">
-                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
                         {{ App\Utils\Converter::format_in_bdt($payment->total_paid) }}
                     </td>
                 </tr>
             @endforeach
             <tr>
-                <td width="50" class="text-start"> 
-                    Total Credit Sale:
+                <td width="50" class="text-start">
+                    @lang('menu.total_credit_sale')
                 </td>
                 <td width="50" class="text-start text-danger">
-                    {{ json_decode($generalSettings->business, true)['currency'] }} 
+                    {{ json_decode($generalSettings->business, true)['currency'] }}
                     {{ App\Utils\Converter::format_in_bdt($totalCredit->sum('total_due')) }}
                 </td>
             </tr>
@@ -50,7 +50,7 @@
     </table>
     <hr>
 
-    <p><strong>Collected Amounts By Account</strong></p>
+    <p><strong>@lang('menu.collected_amounts_by_account')</strong></p>
     <table class="cash_register_table table modal-table table-sm">
         <tbody>
             @php
@@ -63,11 +63,11 @@
                     @endphp
                 @endif
                 <tr>
-                    <td width="50" class="text-start"> 
+                    <td width="50" class="text-start">
                         {{ $accountType->account_type == 1 ? 'Cash-In-Hand' : 'Bank A/C' }} :
                     </td>
                     <td width="50" class="text-start">
-                        {{ json_decode($generalSettings->business, true)['currency'] }} 
+                        {{ json_decode($generalSettings->business, true)['currency'] }}
                         {{ App\Utils\Converter::format_in_bdt($accountType->total_paid) }}
                     </td>
                 </tr>
@@ -79,8 +79,8 @@
     @php
         $__receivedInCashAccount = $receivedInCashAccount + $activeCashRegister->cash_in_hand
     @endphp
-    <p><strong>Current Cash Amount : </strong> {{ json_decode($generalSettings->business, true)['currency'] }} 
-        {{ App\Utils\Converter::format_in_bdt($__receivedInCashAccount) }} 
+    <p><strong>@lang('menu.current_cash_amount') : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+        {{ App\Utils\Converter::format_in_bdt($__receivedInCashAccount) }}
     </p>
 
     <hr>
@@ -91,25 +91,25 @@
             </li>
 
             <li>
-                <b>Email : </b> {{ $activeCashRegister->u_email }}
+                <b>@lang('menu.email') : </b> {{ $activeCashRegister->u_email }}
             </li>
 
             <li>
-                <b>Business Location : </b> 
-                {!! 
-                    $activeCashRegister->b_name 
-                    ? $activeCashRegister->b_name.'/'.$activeCashRegister->b_code 
-                    : json_decode($generalSettings->business, true)['shop_name'].' (<b>HO</b>)' 
+                <b>@lang('menu.business_location') : </b>
+                {!!
+                    $activeCashRegister->b_name
+                    ? $activeCashRegister->b_name.'/'.$activeCashRegister->b_code
+                    : json_decode($generalSettings->business, true)['shop_name'].' (<b>HO</b>)'
                 !!}
             </li>
 
             <li>
-                <b>Cash Counter : </b> {!! $activeCashRegister->counter_name .' (<b>'.$activeCashRegister->cc_s_name.'</b>)' !!}
+                <b>@lang('menu.cash_counter') : </b> {!! $activeCashRegister->counter_name .' (<b>'.$activeCashRegister->cc_s_name.'</b>)' !!}
             </li>
         </ul>
     </div>
-    
+
     <div class="form-group text-end mt-3">
-        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
     </div>
 </div>

@@ -75,6 +75,7 @@
                 $("#edit_sub_cate_form_body").html(data);
                 $('#add_sub_cate_form').hide();
                 $('#edit_sub_cate_form').show();
+                $('#edit_sub_cate_form').removeClass('d-hide');
                 $('.data_preloader').hide();
                 document.getElementById('e_sub_name').focus();
             })

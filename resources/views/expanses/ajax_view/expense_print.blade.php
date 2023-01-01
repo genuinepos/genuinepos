@@ -7,7 +7,7 @@
                     @if ($expense->branch)
                         {{ $expense->branch->name . '/' . $expense->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -25,11 +25,11 @@
     <div class="reference_area pt-3">
         <div class="row">
             <div class="col-md-6">
-                <p><b>Reference No :</b> {{ $expense->invoice_id }}</p>
+                <p><b>@lang('menu.reference_no') :</b> {{ $expense->invoice_id }}</p>
             </div>
 
             <div class="col-md-6 text-end">
-                <p><b>Date :</b> {{ date('d/m/Y', strtotime($expense->date))  }}</p>
+                <p><b>@lang('menu.date') :</b> {{ date('d/m/Y', strtotime($expense->date))  }}</p>
             </div>
         </div>
     </div>
@@ -40,13 +40,13 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Expense For:</th>
+                            <th class="text-start">@lang('menu.expense_for'):</th>
                             <td class="text-end">{{ $expense->admin ? $expense->admin->prefix.' '.$expense->admin->name.' '.$expense->admin->last_name : 'N/A' }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Description:</th>
-                            <th class="text-end">Amount</th>
+                            <th class="text-start">@lang('menu.description')</th>
+                            <th class="text-end">@lang('menu.amount')</th>
                         </tr>
 
                         @foreach ($expense->expense_descriptions as $expense_description)
@@ -58,37 +58,37 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end">Tax :</th>
+                            <th class="text-end">@lang('menu.tax') :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $expense->tax_amount }}</b> 
+                                {{ $expense->tax_amount }}</b>
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Total :</th>
+                            <th class="text-end">@lang('menu.total') :</th>
                             <th class="text-end"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $expense->net_total_amount }}</b></th>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Paid :</th>
+                            <th class="text-end">@lang('menu.paid') :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $expense->paid }}</b> 
+                                {{ $expense->paid }}</b>
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="text-end">Due :</th>
+                            <th class="text-end">@lang('menu.due') :</th>
                             <th class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $expense->due }}</b> 
+                                {{ $expense->due }}</b>
                             </th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-         
+
         </div>
     </div>
 
@@ -116,7 +116,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="4" class="text-navy-blue text-center"><small>Software by <b>SpeedDigit Pvt. Ltd.</b></small> </td>
+                        <td colspan="4" class="text-navy-blue text-center"><small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small> </td>
                     </tr>
                 @endif
             </tbody>

@@ -1,24 +1,24 @@
 <form id="add_contra_form" action="{{ route('accounting.contras.store') }}">
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="date" class="form-control add_input" data-name="Date" id="date"
                 placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}"/>
             <span class="error error_date"></span>
         </div>
 
         <div class="col-md-6">
-            <label><strong>Voucher No :</strong></label>
+            <label><strong>@lang('menu.voucher_no') :</strong></label>
             <input type="text" name="voucher_no" class="form-control add_input" data-name="Date" id="voucher_no" placeholder="Voucher Number" autocomplete="off"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><strong>Sender A/C : </strong><span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.sender_ac') : </strong><span class="text-danger">*</span></label>
             <select name="sender_account_id" class="form-control add_input" data-name="Sender Account"
                 id="sender_account_id">
-                <option value="">Select Receiver A/C</option>
+                <option value="">@lang('menu.select_receiver_ac')</option>
                 @foreach ($accounts as $account)
                     <option value="{{ $account->id }}">
                         @php
@@ -35,10 +35,10 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>Receiver A/C : </strong><span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.receiver_ac') : </strong><span class="text-danger">*</span></label>
             <select name="receiver_account_id" class="form-control add_input" data-name="Receiver Account"
                 id="receiver_account_id">
-                <option value="">Select Receiver A/C</option>
+                <option value="">@lang('menu.select_receiver_ac')</option>
                 @foreach ($accounts as $account)
                     <option value="{{ $account->id }}">
                         @php
@@ -56,23 +56,25 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
         <input type="number" step="any" name="amount" class="form-control add_input" data-name="Amount" id="date"
-            placeholder="Amount" autocomplete="off"/>
+            placeholder="@lang('menu.amount')" autocomplete="off"/>
         <span class="error error_amount"></span>
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>Remarks :</strong></label>
-        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="Remarks"/>
+        <label><strong>@lang('menu.remarks') :</strong></label>
+        <input type="text" name="remarks" class="form-control" id="remarks" placeholder="@lang('menu.remarks')"/>
     </div>
 
-    <div class="form-group text-right py-2">
-        <button type="button" class="btn loading_button d-none">
-            <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
-        </button>
-        <button type="submit" class="c-btn me-0 button-success submit_button float-end">Save</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+    <div class="form-group d-flex justify-content-end pb-2 pt-4">
+        <div class="btn-loading">
+            <button type="button" class="btn loading_button d-hide">
+                <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
+            </button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+            <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+        </div>
     </div>
 </form>
 
@@ -118,7 +120,7 @@
             }
         });
     });
-    
+
     new Litepicker({
         singleMode: true,
         element: document.getElementById('date'),

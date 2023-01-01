@@ -19,11 +19,12 @@ class PriceGroupController extends Controller
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="' . route('product.selling.price.groups.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                     $html .= '<a href="' . route('product.selling.price.groups.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                    if ($row->status == "Active") {
-                        $html .= '<a href="'.route('product.selling.price.groups.change.status', [$row->id]).'" class="btn btn-sm btn-danger ms-1" id="change_status">Deactivate</a>';
-                    }else {
-                        $html .= '<a href="'.route('product.selling.price.groups.change.status', [$row->id]).'" class="btn btn-sm btn-info text-white ms-1" id="change_status">Active</a>';
-                    }
+
+                    // if ($row->status == "Active") {
+                    //     $html .= '<a href="'.route('product.selling.price.groups.change.status', [$row->id]).'" class="btn btn-sm btn-danger ms-1" id="change_status">Deactivate</a>';
+                    // }else {
+                    //     $html .= '<a href="'.route('product.selling.price.groups.change.status', [$row->id]).'" class="btn btn-sm btn-info text-white ms-1" id="change_status">Active</a>';
+                    // }
 
                     $html .= '</div>';
                     return $html;
@@ -31,9 +32,15 @@ class PriceGroupController extends Controller
                 ->addColumn('status', function ($row) {
                     $html = '';
                     if ($row->status == "Active") {
-                        $html .= '<a href="" class="text-success" id="change_status">Active</a>';
+                        $html = '<div class="form-check form-switch">';
+                        $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('product.selling.price.groups.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                        $html .= '</div>';
+                        return $html;
                     }else {
-                        $html .= '<span  class="text-danger" id="change_status">Deactivate</span>';
+                        $html = '<div class="form-check form-switch">';
+                        $html .= '<input class="form-check-input" id="change_status" data-url="' . route('product.selling.price.groups.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                        $html .= '</div>';
+                        return $html;
                     }
 
                     $html .= '</div>';

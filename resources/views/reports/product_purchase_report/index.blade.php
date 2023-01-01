@@ -24,10 +24,10 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Product Purchase Report</h5>
+                                <h5>@lang('menu.product_purchase_report')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
 
@@ -39,11 +39,11 @@
                                             <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                                 <div class="form-group row">
                                                     <div class="col-md-2 search_area">
-                                                        <label><strong>Search Product :</strong></label>
-                                                        <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                                        <label><strong>{{ __('Search Product') }} :</strong></label>
+                                                        <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
                                                         <input type="hidden" name="product_id" id="product_id" value="">
                                                         <input type="hidden" name="variant_id" id="variant_id" value="">
-                                                        <div class="search_result d-none">
+                                                        <div class="search_result d-hide">
                                                             <ul id="list" class="list-unstyled">
                                                                 <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
                                                             </ul>
@@ -53,10 +53,10 @@
                                                     @if ($addons->branches == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-2">
-                                                                <label><strong>Business Location :</strong></label>
-                                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                    <option value="">All</option>
-                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                                    <option value="">@lang('menu.all')</option>
+                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                     @foreach ($branches as $branch)
                                                                         <option value="{{ $branch->id }}">
                                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -70,9 +70,9 @@
                                                     @endif
 
                                                     <div class="col-md-2">
-                                                        <label><strong>Supplier :</strong></label>
-                                                        <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
-                                                            <option value="">All</option>
+                                                        <label><strong>@lang('menu.supplier') : </strong></label>
+                                                        <select name="supplier_id" class="form-control submit_able select2" id="supplier_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
                                                             @foreach ($suppliers as $sup)
                                                                 <option value="{{ $sup->id }}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
                                                             @endforeach
@@ -80,7 +80,7 @@
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <label><strong>From Date :</strong></label>
+                                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -93,7 +93,7 @@
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <label><strong>To Date :</strong></label>
+                                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -104,16 +104,16 @@
                                                     </div>
 
                                                     <div class="col-md-2">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
+                                                        <div class="row align-items-end">
+                                                            <div class="col-6">
                                                                 <label><strong></strong></label>
                                                                 <div class="input-group">
-                                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-6">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end mt-4" id="print_report"><i class="fas fa-print "></i> Print</a>
+                                                            <div class="col-6">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -125,27 +125,27 @@
                             </div>
                             <div class="card">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Product</th>
-                                                <th>P.Code</th>
-                                                <th>Supplier</th>
-                                                <th>P.Invoice ID</th>
-                                                <th>Quantity</th>
-                                                <th>Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th>Unit Price({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                                <th>Subtotal({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.p_code')</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
+                                                <th>@lang('menu.quantity')</th>
+                                                <th>@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th>@lang('menu.unit_price')({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                                <th>@lang('menu.subtotal')({{json_decode($generalSettings->business, true)['currency']}})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white">Total : </th>
+                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : </th>
                                                 <th class="text-start text-white">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>

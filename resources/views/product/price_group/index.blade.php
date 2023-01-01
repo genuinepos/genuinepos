@@ -5,119 +5,111 @@
 @section('title', 'Selling Price Groups - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-tags"></span>
-                                <h5>Selling Price Group</h5>
+        <div class="main__content">
+            <!-- =====================================================================BODY CONTENT================== -->
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-tags"></span>
+                    <h5>@lang('menu.selling_price_group')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+
+            {{-- <div class="sec-name">
+                <div class="col-md-6 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <p class="mb-3"><b>Import/Export Selling Price Group Prices</b> </p>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
-
-                        {{-- <div class="sec-name">
-                            <div class="col-md-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <p class="mb-3"><b>Import/Export Selling Price Group Prices</b> </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"><b>Import File :</b> </label>
-                                            <div class="col-8">
-                                                <input type="file" name="import_file" class="form-control">
-                                                <span class="error" style="color: red;">
-                                                    {{ $errors->first('import_file') }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class="col-4"></label>
-                                            <div class="col-8">
-                                                <button class="btn btn-sm btn-primary float-end mt-1">Upload Import File</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <div class="col-12">
-                                                <a href="{{ route('products.export.price.group.products') }}" class="btn btn-sm btn-success">Export Selling Price Group Prices</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 d-none d-md-block">
-                                <div class="col-md-12">
-                                    <div class="heading"><h4>Instructions</h4></div>
-                                    <div class="top_note">
-                                        <p class="p-0 m-0">
-                                            <b>•</b> Export Selling price group prices.
-                                        </p>
-                                        <p class="p-0 m-0">
-                                            <b>•</b> Update the exported file and import the same file.
-                                        </p>
-                                        <p class="p-0 m-0">
-                                            <b>•</b> Only selling price group prices of the product will be updated. Any blank price will be skipped.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
 
-                    <div class="container-fluid p-3">
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Selling Price Group</h6>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <label for="inputEmail3" class="col-4"><b>Import File :</b> </label>
+                                <div class="col-8">
+                                    <input type="file" name="import_file" class="form-control">
+                                    <span class="error" style="color: red;">
+                                        {{ $errors->first('import_file') }}
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="widget_content">
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>S/L</th>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
+                            <div class="input-group">
+                                <label for="inputEmail3" class="col-4"></label>
+                                <div class="col-8">
+                                    <button class="btn btn-sm btn-primary float-end mt-1">Upload Import File</button>
                                 </div>
                             </div>
+                        </div>
 
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <div class="col-12">
+                                    <a href="{{ route('products.export.price.group.products') }}" class="btn btn-sm btn-success">Export Selling Price Group Prices</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6 col-sm-12 d-hide d-md-block">
+                    <div class="col-md-12">
+                        <div class="heading"><h4>@lang('menu.instructions')</h4></div>
+                        <div class="top_note">
+                            <p class="p-0 m-0">
+                                <b>•</b> Export Selling price group prices.
+                            </p>
+                            <p class="p-0 m-0">
+                                <b>•</b> Update the exported file and import the same file.
+                            </p>
+                            <p class="p-0 m-0">
+                                <b>•</b> Only selling price group prices of the product will be updated. Any blank price will be skipped.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+        </div>
+
+        <div class="p-lg-3 p-1">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-10">
+                        <h6>{{ __('All Selling Price Group') }}</h6>
+                    </div>
+
+                    <div class="col-2 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.sl')</th>
+                                    <th>@lang('menu.name')</th>
+                                    <th>@lang('menu.description')</th>
+                                    <th>@lang('menu.status')</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -128,7 +120,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Price Group</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_price_group')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -137,7 +129,7 @@
                     <form id="add_price_group_form" action="{{ route('product.selling.price.groups.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" id="name"
                                     placeholder="Name" />
                                 <span class="error error_name"></span>
@@ -146,17 +138,19 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Description :</b></label>
+                                <label><b>@lang('menu.description') :</b></label>
                                 <textarea name="description" class="form-control" cols="10" rows="3" placeholder="Price Group Description"></textarea>
                                 <span class="error error_photo"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -170,7 +164,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Category</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_category')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -326,15 +320,47 @@
 
          $(document).on('click', '#change_status', function(e) {
             e.preventDefault();
-            var url = $(this).attr('href');
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-                    toastr.success(data);
-                    table.ajax.reload();
+            var url = $(this).data('url');
+
+            $.confirm({
+                'title': 'Changes Status',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'Yes btn-danger',
+                        'action': function() {
+                            $.ajax({
+                                url: url,
+                                type: 'GET',
+                                success: function(data) {
+
+                                    if (!$.isEmptyObject(data.errorMsg)) {
+                                        toastr.error(data.errorMsg);
+                                        return;
+                                    }
+                                    toastr.success(data);
+                                    table.ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary',
+                        'action': function() {
+                            // console.log('Confirmation canceled.');
+                        }
+                    }
                 }
             });
+
+            // $.ajax({
+            //     url: url,
+            //     type: 'get',
+            //     success: function(data) {
+            //         toastr.success(data);
+            //         table.ajax.reload();
+            //     }
+            // });
         });
     </script>
 @endpush

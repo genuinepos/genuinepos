@@ -14,332 +14,320 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h5>{{ __('Edit Payroll Of') }}
+                    <b>{{ $payroll->employee->name }}</b> for <b>{{ $payroll->month. ' '.$payroll->year }}</b> (@lang('menu.reference_no') : {{$payroll->reference_no}})</h5>
+                </div>
+
+                <div class="col-3">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="update_payroll_form" action="{{ route('hrm.payrolls.update', $payroll->id) }}" method="POST">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ $payroll->employee->id }}">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-4">
-                                    <div class="py-2 px-2 form-header">
-                                        <div class="row">
-                                            <div class="col-9"><h5>Edit Payroll Of
-                                                <b>{{ $payroll->employee->name }}</b> for <b>{{ $payroll->month. ' '.$payroll->year }}</b> (Reference No : {{$payroll->reference_no}})</h5></div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                            <div class="col-3">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label><b>Total Work Duration :</b> <span class="text-danger">*
-                                                    </span> </label>
-                                                <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
-                                                    placeholder="Total Work Duration" autofocus value="{{ $payroll->duration_time }}">
-                                                <span class="error error_duration_time"></span>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label><span class="text-danger">* </span><b>Unit (Pay Type) :</b> </label>
-                                                <select name="duration_unit" id="duration_unit" class="form-control">
-                                                    <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">Hourly</option>
-                                                    <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">Monthly</option>
-                                                    <option {{ $payroll->duration_unit == 'Yearly' ? 'SELECTED' : '' }}  value="Yearly">Hour</option>
-                                                    <option {{ $payroll->duration_unit == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">Week</option>
-                                                </select>
-                                                <span class="error error_duration_unit"></span>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label><b>Amount per unit duration :</b> <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
-                                                    class="form-control" placeholder="Amount per unit duration" value="{{ $payroll->amount_per_unit }}">
-                                                <span class="error error_amount_per_unit"></span>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label><b>Total :</b> <span class="text-danger">*</span></label>
-                                                <input readonly type="total" step="any" name="total_amount"
-                                                    id="total_amount" class="form-control" placeholder="total" value="{{ $payroll->total_amount }}">
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label><b>{{ __('Total work duration') }} :</b> <span class="text-danger">*
+                                        </span> </label>
+                                    <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
+                                        placeholder="{{ __('Total work duration') }}" autofocus value="{{ $payroll->duration_time }}">
+                                    <span class="error error_duration_time"></span>
                                 </div>
-                            </div>
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-
-                                    <div class="heading_area">
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-6">
-                                                <p class="p-2 text-primary"><b>Allowances</b> </p>
-                                            </div>
-
-                                            <div class="col-md-6 col-sm-6">
-                                                <div class="btn_30_blue_small float-end me-1" id="add_more_allowance">
-                                                    <a href="#"><i class="fas fa-plus-square"></i> Add</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                    <table class="table modal-table table-sm">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-navy-blue">Allowance</th>
-                                                                <th class="text-navy-blue">Amount Type</th>
-                                                                <th class="text-navy-blue">Amount</th>
-                                                                <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="allowance_body">
-                                                            @php $index = 0; @endphp
-                                                            @if (count($payroll->allowances) > 0)
-                                                                @foreach ($payroll->allowances as $allowance)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="hidden" name="payroll_allowance_id[{{ $index }}]" value="{{ $allowance->id }}">
-                                                                            <input type="hidden" class="allowance-{{ $index }}" id="allowances">
-                                                                            <input type="text" name="allowance_names[{{ $index }}]" class="form-control" id="allowance_name" placeholder="Allowance Name" value="{{ $allowance->allowance_name }}">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
-                                                                                <option {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}  value="1">Fixed</option>
-                                                                                <option {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
-                                                                            </select>
-
-                                                                            <div class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-none' : '' }} ">
-
-                                                                                <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="{{ $allowance->amount_type == 2 ? $allowance->allowance_percent : 0.00 }}" id="allowance_percent">
-
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text" id="basic-addon1">
-                                                                                        <i class="fas fa-percentage input_i"></i>
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="Amount" value="{{ $allowance->allowance_amount }}">
-                                                                        </td>
-
-                                                                        <td class="text-right">
-                                                                            <a href="#" id="remove_allowane" class="btn btn-sm btn-danger mt-1">X</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    @php $index++; @endphp
-                                                                @endforeach
-                                                            @else
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="hidden" name="payroll_allowance_id[{{ $index }}]" value="noid">
-                                                                        <input type="hidden" class="allowance-{{ $index }}" id="allowances">
-                                                                        <input type="text" name="allowance_names[{{ $index }}]" class="form-control" id="allowance_name" placeholder="Allowance Name">
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
-                                                                            <option value="1">Fixed</option>
-                                                                            <option value="2">Percentage</option>
-                                                                        </select>
-
-                                                                        <div class="input-group allowance_percent_field d-none">
-                                                                            <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text" id="basic-addon1">
-                                                                                    <i class="fas fa-percentage input_i"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="Amount" value="0.00">
-                                                                    </td>
-
-                                                                    <td class="text-right">
-                                                                        <a href="#" id="remove_allowane" class="btn btn-sm btn-danger mt-1">X</a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        </tbody>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <th class="text-navy-blue" colspan="2">Total</th>
-                                                                <th class="text-navy-blue" colspan="2">
-                                                                    $
-                                                                    <span class="span_total_allowance_amount">{{ $payroll->total_allowance_amount }}</span>
-                                                                    <input name="total_allowance_amount" type="hidden" id="total_allowance_amount" value="{{ $payroll->total_allowance_amount }}">
-                                                                </th>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-md-3">
+                                    <label><span class="text-danger">* </span><b>Unit ({{ __('Pay Type') }}) :</b> </label>
+                                    <select name="duration_unit" id="duration_unit" class="form-control">
+                                        <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
+                                        <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>
+                                        <option {{ $payroll->duration_unit == 'Yearly' ? 'SELECTED' : '' }}  value="Yearly">{{ __('Hourly') }}</option>
+                                        <option {{ $payroll->duration_unit == 'Daliy' ? 'SELECTED' : '' }} value="Daliy">{{ __('Week') }}</option>
+                                    </select>
+                                    <span class="error error_duration_unit"></span>
                                 </div>
-                            </div>
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="heading_area">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <p class="p-2 text-primary"><b>Deductions</b> </p>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="btn_30_blue_small float-end me-1" id="add_more_deduction">
-                                                    <a href="#"><i class="fas fa-plus-square"></i> Add</a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-navy-blue">Deduction</th>
-                                                                <th class="text-navy-blue">Amount Type</th>
-                                                                <th class="text-navy-blue">Amount</th>
-                                                                <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="deduction_body">
-                                                            @php $index2 = 0; @endphp
-                                                            @if (count($payroll->deductions) > 0)
-                                                                @foreach ($payroll->deductions as $deduction)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="hidden" name="payroll_deduction_id[{{$index2}}]" value="{{ $deduction->id }}">
-                                                                            <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
-                                                                            <input type="text" name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Deduction Name" value="{{ $deduction->deduction_name }}">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <select class="form-control" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                                <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed</option>
-                                                                                <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage</option>
-                                                                            </select>
-
-                                                                            <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-none' : '' }} ">
-
-                                                                                <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->deduction_percent : 0.00 }}" id="deduction_percent">
-
-                                                                                <div class="input-group-prepend">
-                                                                                    <span class="input-group-text" id="basic-addon1">
-                                                                                        <i class="fas fa-percentage input_i"></i>
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="Amount" value="{{ $deduction->deduction_amount }}">
-                                                                        </td>
-
-                                                                        <td class="text-right">
-                                                                            <a href="#" id="remove_deduction" class="btn btn-sm btn-danger mt-1">X</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    @php $index2++; @endphp
-                                                                @endforeach
-                                                            @else
-                                                                <tr>
-                                                                    <td>
-                                                                        <input type="hidden" name="payroll_deduction_id[{{$index2}}]" value="noid">
-                                                                        <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
-                                                                        <input type="text"  name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Allowance Name">
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <select class="form-control form-control-sm" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
-                                                                            <option value="1">Fixed</option>
-                                                                            <option value="2">Percentage</option>
-                                                                        </select>
-
-                                                                        <div class="input-group deduction_percent_field d-none">
-                                                                            <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="" id="deduction_percent">
-
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text" id="basic-addon1">
-                                                                                    <i class="fas fa-percentage input_i"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-
-                                                                    <td>
-                                                                        <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">
-                                                                    </td>
-
-                                                                    <td class="text-right">
-                                                                        <a href="#" id="remove_deduction" class="btn btn-sm btn-danger mt-1">X</a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        </tbody>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <th class="text-navy-blue" colspan="2">Total</th>
-                                                                <th class="text-navy-blue" colspan="2">
-                                                                    $ <span class="span_total_deduction_amount">
-                                                                        {{ $payroll->total_deduction_amount }}
-                                                                    </span>
-                                                                    <input name="total_deduction_amount" type="hidden" id="total_deduction_amount" value="{{ $payroll->total_deduction_amount }}">
-                                                                </th>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-md-3">
+                                    <label><b>{{ __('Amount per unit duration') }} :</b> <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
+                                        class="form-control" placeholder="{{ __('Amount per unit duration') }}" value="{{ $payroll->amount_per_unit }}">
+                                    <span class="error error_amount_per_unit"></span>
                                 </div>
-                            </div>
 
-                            <div class="col-md-8">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h6 class="float-end">
-                                                    Gross Amount : <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
-                                                    <input type="hidden" name="gross_amount" id="gross_amount" {{ $payroll->gross_amount }}>
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="submit-area py-3 mb-4">
-                                    <button type="button" class="btn loading_button d-none"><i
-                                            class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                    <button class="btn btn-sm btn-success submit_button float-end">Generate</button>
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total') :</b> <span class="text-danger">*</span></label>
+                                    <input readonly type="total" step="any" name="total_amount"
+                                        id="total_amount" class="form-control" placeholder="total" value="{{ $payroll->total_amount }}">
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="heading_area">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <p class="p-2 text-primary"><b>{{ __('Allowances') }}</b> </p>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6 d-flex justify-content-end">
+                                        <div id="add_more_allowance">
+                                            <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table modal-table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-navy-blue">{{ __('Allowance') }}</th>
+                                                    <th class="text-navy-blue">{{ __('Amount Type') }}</th>
+                                                    <th class="text-navy-blue">@lang('menu.amount')</th>
+                                                    <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="allowance_body">
+                                                @php $index = 0; @endphp
+                                                @if (count($payroll->allowances) > 0)
+                                                    @foreach ($payroll->allowances as $allowance)
+                                                        <tr>
+                                                            <td>
+                                                                <input type="hidden" name="payroll_allowance_id[{{ $index }}]" value="{{ $allowance->id }}">
+                                                                <input type="hidden" class="allowance-{{ $index }}" id="allowances">
+                                                                <input type="text" name="allowance_names[{{ $index }}]" class="form-control" id="allowance_name" placeholder="Allowance Name" value="{{ $allowance->allowance_name }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
+                                                                    <option {{ $allowance->amount_type == 1 ? 'SELECTED' : '' }}  value="1">@lang('menu.fixed')</option>
+                                                                    <option {{ $allowance->amount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')</option>
+                                                                </select>
+
+                                                                <div class="input-group allowance_percent_field {{ $allowance->amount_type == 1 ? 'd-hide' : '' }} ">
+
+                                                                    <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="{{ $allowance->amount_type == 2 ? $allowance->allowance_percent : 0.00 }}" id="allowance_percent">
+
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1">
+                                                                            <i class="fas fa-percentage input_i"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="{{ $allowance->allowance_amount }}">
+                                                            </td>
+
+                                                            <td class="text-right">
+                                                                <a href="#" id="remove_allowane" class="btn btn-sm btn-danger mt-1">X</a>
+                                                            </td>
+                                                        </tr>
+                                                        @php $index++; @endphp
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td>
+                                                            <input type="hidden" name="payroll_allowance_id[{{ $index }}]" value="noid">
+                                                            <input type="hidden" class="allowance-{{ $index }}" id="allowances">
+                                                            <input type="text" name="allowance_names[{{ $index }}]" class="form-control" id="allowance_name" placeholder="Allowance Name">
+                                                        </td>
+
+                                                        <td>
+                                                            <select class="form-control" name="al_amount_types[{{ $index }}]" id="al_amount_type">
+                                                                <option value="1">@lang('menu.fixed')</option>
+                                                                <option value="2">Percentage</option>
+                                                            </select>
+
+                                                            <div class="input-group allowance_percent_field d-hide">
+                                                                <input type="number" step="any" name="allowance_percents[{{ $index }}]" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1">
+                                                                        <i class="fas fa-percentage input_i"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="number" step="any" name="allowance_amounts[{{ $index }}]" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="0.00">
+                                                        </td>
+
+                                                        <td class="text-right">
+                                                            <a href="#" id="remove_allowane" class="btn btn-sm btn-danger mt-1">X</a>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="text-navy-blue" colspan="2">@lang('menu.total')</th>
+                                                    <th class="text-navy-blue" colspan="2">
+                                                        $
+                                                        <span class="span_total_allowance_amount">{{ $payroll->total_allowance_amount }}</span>
+                                                        <input name="total_allowance_amount" type="hidden" id="total_allowance_amount" value="{{ $payroll->total_allowance_amount }}">
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="heading_area">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="p-2 text-primary"><b>{{ __('Deductions') }}</b> </p>
+                                    </div>
+
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <div id="add_more_deduction">
+                                            <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-navy-blue">{{ __('Deduction') }}</th>
+                                                    <th class="text-navy-blue">{{ __('Amount Type') }}</th>
+                                                    <th class="text-navy-blue">@lang('menu.amount')</th>
+                                                    <th class="text-right"><i class="fas fa-trash-alt text-dark"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="deduction_body">
+                                                @php $index2 = 0; @endphp
+                                                @if (count($payroll->deductions) > 0)
+                                                    @foreach ($payroll->deductions as $deduction)
+                                                        <tr>
+                                                            <td>
+                                                                <input type="hidden" name="payroll_deduction_id[{{$index2}}]" value="{{ $deduction->id }}">
+                                                                <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
+                                                                <input type="text" name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Deduction Name" value="{{ $deduction->deduction_name }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <select class="form-control" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
+                                                                    <option {{ $deduction->amount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')</option>
+                                                                    <option {{ $deduction->amount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')</option>
+                                                                </select>
+
+                                                                <div class="input-group deduction_percent_field {{ $deduction->amount_type == 1 ? 'd-hide' : '' }} ">
+
+                                                                    <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="{{ $deduction->amount_type == 2 ? $deduction->deduction_percent : 0.00 }}" id="deduction_percent">
+
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1">
+                                                                            <i class="fas fa-percentage input_i"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" id="deduction_amount" class="form-control" placeholder="@lang('menu.amount')" value="{{ $deduction->deduction_amount }}">
+                                                            </td>
+
+                                                            <td class="text-right">
+                                                                <a href="#" id="remove_deduction" class="btn btn-sm btn-danger mt-1">X</a>
+                                                            </td>
+                                                        </tr>
+                                                        @php $index2++; @endphp
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td>
+                                                            <input type="hidden" name="payroll_deduction_id[{{$index2}}]" value="noid">
+                                                            <input type="hidden" class="deduction-{{ $index2 }}" id="deductions">
+                                                            <input type="text"  name="deduction_names[{{ $index2 }}]" id="deduction_name" class="form-control" placeholder="Allowance Name">
+                                                        </td>
+
+                                                        <td>
+                                                            <select class="form-control form-control-sm" name="de_amount_types[{{ $index2 }}]" id="de_amount_type">
+                                                                <option value="1">@lang('menu.fixed')</option>
+                                                                <option value="2">@lang('menu.percentage')</option>
+                                                            </select>
+
+                                                            <div class="input-group deduction_percent_field d-hide">
+                                                                <input type="number" step="any" name="deduction_percents[{{ $index2 }}]" class="form-control" autocomplete="off" value="" id="deduction_percent">
+
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="basic-addon1">
+                                                                        <i class="fas fa-percentage input_i"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="number" step="any" name="deduction_amounts[{{ $index2 }}]" class="form-control" id="deduction_amount" placeholder="@lang('menu.amount')" value="0.00">
+                                                        </td>
+
+                                                        <td class="text-right">
+                                                            <a href="#" id="remove_deduction" class="btn btn-sm btn-danger mt-1">X</a>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="text-navy-blue" colspan="2">@lang('menu.total')</th>
+                                                    <th class="text-navy-blue" colspan="2">
+                                                        $ <span class="span_total_deduction_amount">
+                                                            {{ $payroll->total_deduction_amount }}
+                                                        </span>
+                                                        <input name="total_deduction_amount" type="hidden" id="total_deduction_amount" value="{{ $payroll->total_deduction_amount }}">
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h6 class="float-end">
+                                        {{ __('Gross Amount') }}: <span class="span_gross_amount"><b>{{ $payroll->gross_amount }}</b></span>
+                                        <input type="hidden" name="gross_amount" id="gross_amount" {{ $payroll->gross_amount }}>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-area d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                            <button class="btn btn-sm btn-success submit_button">{{ __('Generate') }}</button>
+                        </div>
+                    </div>
                 </section>
             </form>
         </div>
@@ -444,7 +432,7 @@
         html += '<option value="2">Percentage</option>';
         html += '</select>';
 
-        html += '<div class="input-group allowance_percent_field d-none">';
+        html += '<div class="input-group allowance_percent_field d-hide">';
         html += '<input type="number" step="any" name="allowance_percents['+(index+1)+']" class="form-control" autocomplete="off" value="0.00" id="allowance_percent">';
         html += '<div class="input-group-prepend">';
         html += ' <span class="input-group-text" id="basic-addon1">';
@@ -455,7 +443,7 @@
         html += '</td>';
 
         html += '<td>';
-        html += '<input type="number" step="any" name="allowance_amounts['+(index+1)+']" class="form-control" id="allowance_amount" placeholder="Amount" value="0.00">';
+        html += '<input type="number" step="any" name="allowance_amounts['+(index+1)+']" class="form-control" id="allowance_amount" placeholder="@lang('menu.amount')" value="0.00">';
         html += '</td>';
 
         html += '<td class="text-right">';
@@ -484,7 +472,7 @@
         html += '<option value="2">Percentage</option>';
         html += '</select>';
 
-        html += '<div class="input-group deduction_percent_field d-none">';
+        html += '<div class="input-group deduction_percent_field d-hide">';
 
         html += '<input type="number" step="any" name="deduction_percents['+(index2+1)+']" class="form-control" autocomplete="off" value="0.00" id="deduction_percent">';
 
@@ -497,7 +485,7 @@
         html += '</td>';
 
         html += '<td>';
-        html += '<input type="number" step="any" name="deduction_amounts['+(index2+1)+']" class="form-control" id="deduction_amount" placeholder="Amount" value="0.00">';
+        html += '<input type="number" step="any" name="deduction_amounts['+(index2+1)+']" class="form-control" id="deduction_amount" placeholder="@lang('menu.amount')" value="0.00">';
         html += '</td>';
 
         html += '<td class="text-right">';
@@ -525,10 +513,10 @@
     $(document).on('click', '#al_amount_type', function () {
         //calculateAmount();
         if ($(this).val() == 2) {
-            $(this).closest('tr').find('.allowance_percent_field').removeClass('d-none');
+            $(this).closest('tr').find('.allowance_percent_field').removeClass('d-hide');
             $(this).closest('tr').find('#allowance_amount').prop('readonly', true);
         }else {
-            $(this).closest('tr').find('.allowance_percent_field').addClass('d-none');
+            $(this).closest('tr').find('.allowance_percent_field').addClass('d-hide');
             $(this).closest('tr').find('#allowance_amount').prop('readonly', false);
         }
     });
@@ -536,10 +524,10 @@
     $(document).on('click', '#de_amount_type', function () {
         //calculateAmount();
         if ($(this).val() == 2) {
-            $(this).closest('tr').find('.deduction_percent_field').removeClass('d-none');
+            $(this).closest('tr').find('.deduction_percent_field').removeClass('d-hide');
             $(this).closest('tr').find('#deduction_amount').prop('readonly', true);
         }else {
-            $(this).closest('tr').find('.deduction_percent_field').addClass('d-none');
+            $(this).closest('tr').find('.deduction_percent_field').addClass('d-hide');
             $(this).closest('tr').find('#deduction_amount').prop('readonly', false);
         }
     });

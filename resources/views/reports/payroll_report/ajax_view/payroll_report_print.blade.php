@@ -23,7 +23,7 @@
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
@@ -39,15 +39,15 @@
         @endif
 
         @if ($s_date && $e_date)
-            <p><b>Date :</b>
+            <p><b>@lang('menu.date') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($s_date)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
+                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;">Payroll Report</h6>
+        <h6 style="margin-top: 10px;">@lang('menu.payroll_report')</h6>
     </div>
 </div>
-   
+
 
     <br>
     <div class="row">
@@ -55,15 +55,15 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">Date</th>
-                        <th class="text-start">Employee</th>
-                        <th class="text-start">Department</th>
-                        <th class="text-start">Month/Year</th>
-                        <th class="text-start">Reference No</th>
-                        <th class="text-start">Gross Amount</th>
-                        <th class="text-start">Paid</th>
-                        <th class="text-start">Due</th>
-                        <th class="text-start">Payment Status</th>
+                        <th class="text-start">@lang('menu.date')</th>
+                        <th class="text-start">{{ __('Employee') }}</th>
+                        <th class="text-start">@lang('menu.department')</th>
+                        <th class="text-start">@lang('menu.month')/@lang('menu.years')</th>
+                        <th class="text-start">@lang('menu.reference_no')</th>
+                        <th class="text-start">{{ __('Gross Amount') }}</th>
+                        <th class="text-start">@lang('menu.paid')</th>
+                        <th class="text-start">@lang('menu.due')</th>
+                        <th class="text-start">@lang('menu.payment_status')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,12 +88,12 @@
                             <td class="text-start">{{ $row->paid }}</td>
                             <td class="text-start">{{ $row->due }}</td>
                             <td class="text-start">
-                                @if ($row->due <= 0) 
-                                    Paid
-                                @elseif($row->due > 0 && $row->due < $row->gross_amount) 
-                                    Partial
-                                @elseif($row->gross_amount == $row->due) 
-                                    Due
+                                @if ($row->due <= 0)
+                                @lang('menu.paid')
+                                @elseif($row->due > 0 && $row->due < $row->gross_amount)
+                                @lang('menu.partial')
+                                @elseif($row->gross_amount == $row->due)
+                                @lang('menu.due')
                                 @endif
                             </td>
                         </tr>
@@ -102,7 +102,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="4"></th>
-                        <th>Total : </th>
+                        <th>@lang('menu.total') : </th>
                         <th>${{ bcadd($total_gross, 0, 2) }}</th>
                         <th>${{ bcadd($total_paid, 0, 2) }}</th>
                         <th>${{ bcadd($total_due, 0, 2) }}</th>
@@ -112,17 +112,17 @@
             </table>
         </div>
     </div>
-    
+
     @if (env('PRINT_SD_OTHERS') == 'true')
         <div class="row">
             <div class="col-md-12 text-center">
-                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             </div>
         </div>
     @endif
 
     <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
         <small style="font-size: 5px;" class="text-end">
-            Print Date: {{ date('d-m-Y , h:iA') }}
+            @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
         </small>
     </div>

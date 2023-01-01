@@ -1,13 +1,13 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-start">Reference No</th>
-            <th class="text-start">Type</th>
-            <th class="text-start">Employee</th>
-            <th class="text-start">Date</th>
-            <th class="text-start">Reason</th>
-            <th class="text-start">Status</th>
-            <th class="text-start">Actions</th>
+            <th class="text-start">@lang('menu.reference_no')</th>
+            <th class="text-start">@lang('menu.type')</th>
+            <th class="text-start">{{ __('Employee') }}</th>
+            <th class="text-start">@lang('menu.date')</th>
+            <th class="text-start">@lang('menu.reason')</th>
+            <th class="text-start">@lang('menu.status')</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                 <td class="text-start">{{ $row->reason }}</td> 
                 <td class="text-start">
                 	@if($row->status == 0)
-                	   <span class="badge bg-warning">Pending</span>
+                	   <span class="badge bg-warning">@lang('menu.pending')</span>
                 	@else
                 	  <span class="badge bg-success">Success</span>
                 	@endif   

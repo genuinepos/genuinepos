@@ -14,10 +14,10 @@
 
 <div class="head-pos">
     <input type="hidden" name="action" id="action" value="">
-    <input type="text" class="d-none" name="ex_sale_id" id="ex_sale_id" value="">
+    <input type="text" class="d-hide" name="ex_sale_id" id="ex_sale_id" value="">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <input type="hidden" name="sale_account_id" value="{{ $openedCashRegister->sale_account_id }}">
-    <input type="text" class="d-none" name="button_type" id="button_type" value="0">
+    <input type="text" class="d-hide" name="button_type" id="button_type" value="0">
     <input type="hidden" id="store_url" value="{{ route('sales.pos.store') }}">
     <input type="hidden" id="exchange_url" value="{{ route('sales.pos.exchange.confirm') }}">
     <nav class="pos-navigation">
@@ -69,10 +69,10 @@
                                 </p>
                             @endif
                             <small class="login-user-name">
-                                <span class="text-highlight">Loggedin : </span> {{ auth()->user()->prefix.' '.auth()->user()->name.'
+                                <span class="text-highlight">{{ __('Loggedin') }} : </span> {{ auth()->user()->prefix.' '.auth()->user()->name.'
                                 '.auth()->user()->last_name }}.
                                 <span>
-                                    <span class="text-highlight">C.Register : </span>
+                                    <span class="text-highlight">{{ __('C.Register') }} : </span>
                                     @if ($openedCashRegister->admin)
                                         @if ($openedCashRegister->admin->role_type == 1)
                                             Super-Admin.
@@ -83,7 +83,7 @@
                                         @endif
                                     @endif
                                 </span>
-                                <span> <span class="text-highlight">Cash Counter : </span> {{ $openedCashRegister->cash_counter ?
+                                <span> <span class="text-highlight">@lang('menu.cash_counter') : </span> {{ $openedCashRegister->cash_counter ?
                                     $openedCashRegister->cash_counter->counter_name : 'N/A' }}.</span>
                             </small>
                         </div>
@@ -98,7 +98,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <select name="customer_id" class="form-control form-select" id="customer_id">
-                                        <option value="">Walk-In-Customer</option>
+                                        <option value="">{{ __('Walk-In-Customer') }}</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')'
                                             }}</option>
@@ -229,7 +229,7 @@
                             <span class="fas fa-redo-alt"></span>
                         </a>
 
-                        {{-- <a href="#" class="pos-btn d-none d-md-block" id="hard_reload" title="Hard Reload">
+                        {{-- <a href="#" class="pos-btn d-hide d-md-block" id="hard_reload" title="Hard Reload">
                             <span class="fas fa-redo-alt"></span>
                         </a> --}}
 

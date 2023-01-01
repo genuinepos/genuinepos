@@ -22,7 +22,7 @@
             @if ($branch_id == '')
                 <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                <p><b>All Business Location</b></p>
+                <p><b>@lang('menu.all_business_location')</b></p>
             @elseif ($branch_id == 'NULL')
                 <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
                 <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
@@ -36,14 +36,14 @@
                 <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
                 <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
             @endif
-    
+
             @if ($s_date && $e_date)
-                <p><b>Date :</b>
+                <p><b>@lang('menu.date') :</b>
                     {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($s_date)) }}
-                    <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
+                    <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
                 </p>
             @endif
-            <h6 style="margin-top: 10px;">Payroll Payment Report</h6>
+            <h6 style="margin-top: 10px;">@lang('menu.payroll_payment_report')</h6>
         </div>
     </div>
     <br>
@@ -52,12 +52,12 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-start">Date</th>
-                        <th class="text-start">Employee</th>
-                        <th class="text-start">Payment Voucher No</th>
-                        <th class="text-start">Paid</th>
-                        <th class="text-start">Pay For(Payroll)</th>
-                        <th class="text-start">Paid By</th>
+                        <th class="text-start">@lang('menu.date')</th>
+                        <th class="text-start">{{ __('Employee') }}</th>
+                        <th class="text-start">@lang('menu.payment_voucher_no')</th>
+                        <th class="text-start">@lang('menu.paid')</th>
+                        <th class="text-start">{{ __('Pay For(Payroll)') }}</th>
+                        <th class="text-start">@lang('menu.paid_by')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,7 +81,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="2" class="text-start"></th>
-                        <th class="text-end">Total : </th>
+                        <th class="text-end">@lang('menu.total') : </th>
                         <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_paid, 0, 2) }}</th>
                         <th>--</th>
                         <th>--</th>
@@ -90,17 +90,17 @@
             </table>
         </div>
     </div>
- 
+
     @if (env('PRINT_SD_OTHERS') == 'true')
         <div class="row">
             <div class="col-md-12 text-center">
-                <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             </div>
         </div>
     @endif
 
     <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
         <small style="font-size: 5px;" class="text-end">
-            Print Date: {{ date('d-m-Y , h:iA') }}
+            @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
         </small>
     </div>

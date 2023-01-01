@@ -25,9 +25,9 @@
 
             @if ($addons->branches == 1)
 
-                <p><strong>All Business Location</strong></p>
+                <p><strong>@lang('menu.all_business_location')</strong></p>
             @endif
-            
+
         @elseif ($branch_id == 'NULL')
 
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} </h5>
@@ -46,10 +46,10 @@
 
         @if ($fromDate && $toDate)
 
-            <p><strong>Date :</strong> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <strong>To</strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
-        @endif 
-        
-        <p><strong>Customer Ledger </strong></p> 
+            <p><strong>@lang('menu.date') :</strong> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <strong>@lang('menu.to')</strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
+        @endif
+
+        <p><strong>@lang('menu.customer_ledger') </strong></p>
     </div>
 </div>
 
@@ -57,9 +57,9 @@
     <div class="row">
         <div class="col-6">
             <ul class="list-unstyled">
-                <li><strong>Customer : </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
-                <li><strong>Phone : </strong> {{ $customer->phone }}</li>
-                <li><strong>Address : </strong> {{ $customer->address  }}</li> 
+                <li><strong>@lang('menu.customer') : </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
+                <li><strong>@lang('menu.phone') : </strong> {{ $customer->phone }}</li>
+                <li><strong>@lang('menu.address') : </strong> {{ $customer->address  }}</li>
             </ul>
         </div>
     </div>
@@ -74,15 +74,15 @@
         <table class="table modal-table table-sm table-bordered" >
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Particulars</th>
-                    <th class="text-start">Voucher/Invoice</th>
-                    <th class="text-end">Debit</th>
-                    <th class="text-end">Credit</th>
-                    <th class="text-end">Running Balance</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.particulars')</th>
+                    <th class="text-start">@lang('menu.voucher')/@lang('menu.invoice')</th>
+                    <th class="text-end">@lang('menu.debit')</th>
+                    <th class="text-end">@lang('menu.credit')</th>
+                    <th class="text-end">@lang('menu.running_balance')</th>
                 </tr>
             </thead>
-            
+
             <tbody>
                 @php
                     $previousBalance = 0;
@@ -109,7 +109,7 @@
                                 $dateFormat = json_decode($generalSettings->business, true)['date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
-                            
+
                             {{ date($__date_format, strtotime($row->report_date)) }}
                         </td>
 
@@ -119,7 +119,7 @@
                                 $__ags = $row->ags_sale ? '/' . 'AGS: ' . $row->ags_sale : '';
                                 $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-danger">' . $row->less_amount . '</b>)' : '';
                                 $particulars = '<b>' . $type['name'].($row->sale_status == 3 ? '-Order': ''). '</b>' . $__ags . $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
-                            @endphp 
+                            @endphp
 
                             {!! $particulars !!}
                         </td>
@@ -128,7 +128,7 @@
                             @php
                                 $type = $customerUtil->voucherType($row->voucher_type);
                             @endphp
-                            
+
                             {{ $row->{$type['voucher_no']} }}
                         </td>
 
@@ -161,7 +161,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>Total Debit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_debit') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
 
                     <td class="text-end">
@@ -171,26 +171,26 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>Total Credit :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_credit') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
 
-                    <td class="text-end"> 
+                    <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-end">
-                        <strong>Total Less :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
+                        <strong>@lang('menu.total_less') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}
                     </td>
 
-                    <td class="text-end"> 
+                    <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalLess) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>Closing Balance :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
+                    <td class="text-end"><strong>@lang('menu.closing_balance') :</strong> {{ json_decode($generalSettings->business, true)['currency'] }}</td>
                     <td class="text-end">
                         @php
                             $closingBalance =  $totalDebit - ($totalCredit + $totalLess);

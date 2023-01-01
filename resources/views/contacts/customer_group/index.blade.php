@@ -11,44 +11,44 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-desktop"></span>
-                                <h5>Customer Group</h5>
+                                <h5>@lang('menu.customer_group')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
                     <!-- =========================================top section button=================== -->
 
                     <div class="p-3">
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <div class="card" id="add_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
-                                            <h6>Add Customer Group</h6>
+                                            <h6>@lang('menu.add_customer_group')</h6>
                                         </div>
                                     </div>
 
                                     <div class="form-area px-3 pb-2">
                                         <form id="add_group_form" action="{{ route('contacts.customers.groups.store') }}">
                                             <div class="form-group mt-2">
-                                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control add_input"
                                                     data-name="Group name" id="name" placeholder="Group name" />
                                                 <span class="error error_name"></span>
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <label><strong>Calculation Percent (%) :</strong></label>
+                                                <label><strong>@lang('menu.calculation_percent') (%) :</strong></label>
                                                 <input type="number" step="any" name="calculation_percent" class="form-control" step="any"
-                                                    id="calculation_percent" placeholder="Calculation Percent" autocomplete="off" />
+                                                    id="calculation_percent" placeholder="@lang('menu.calculation_percent')" autocomplete="off" />
                                             </div>
 
                                             <div class="form-group row mt-3">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><span> Loading...</span></button>
-                                                        <button type="reset" class="btn btn-sm btn-danger">Reset</button>
-                                                        <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
+                                                        <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,10 +56,10 @@
                                     </div>
                                 </div>
 
-                                <div class="card d-none" id="edit_form">
+                                <div class="card d-hide" id="edit_form">
                                     <div class="section-header">
                                         <div class="col-md-6">
-                                            <h6>Edit Customer Group</h6>
+                                            <h6>@lang('menu.edit_customer_group')</h6>
                                         </div>
                                     </div>
 
@@ -67,25 +67,25 @@
                                         <form id="edit_group_form" action="{{ route('contacts.customers.groups.update') }}">
                                             <input type="hidden" name="id" id="id">
                                             <div class="form-group mt-2">
-                                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control edit_input"
                                                     data-name="Group name" id="e_name" placeholder="Group name" />
                                                 <span class="error error_e_name"></span>
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <label><strong>Calculation Percent (%) :</strong></label>
+                                                <label><strong>@lang('menu.calculation_percent') (%) :</strong></label>
                                                 <input type="number" step="any" name="calculation_percent" class="form-control"
-                                                    id="e_calculation_percent" placeholder="Calculation Percent" />
+                                                    id="e_calculation_percent" placeholder="@lang('menu.calculation_percent')" />
                                             </div>
 
                                             <div class="form-group row mt-3">
                                                 <div class="col-md-12 d-flex justify-content-end">
                                                     <div class="btn-loading">
-                                                        <button type="button" class="btn loading_button d-none"><i
-                                                                class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                        <button type="button" id="close_form" class="btn btn-sm btn-danger">Close</button>
-                                                        <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                                        <button type="button" class="btn loading_button d-hide"><i
+                                                                class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                        <button type="button" id="close_form" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                                        <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -94,26 +94,26 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-8">
+                            <div class="col-lg-8">
                                 <div class="card">
                                     <div class="section-header">
                                         <div class="col-md-6">
-                                            <h6>All Customer Groups</h6>
+                                            <h6>@lang('menu.all_customer_group')</h6>
                                         </div>
                                     </div>
 
                                     <div class="widget_content">
                                         <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                         </div>
                                         <div class="table-responsive" id="data-list">
                                             <table class="display data_tbl data__table">
                                                 <thead>
                                                     <tr>
-                                                        <th>Serial</th>
-                                                        <th>Name</th>
-                                                        <th>Calculation Percent</th>
-                                                        <th>Action</th>
+                                                        <th>@lang('menu.serial')</th>
+                                                        <th>@lang('menu.name')</th>
+                                                        <th>@lang('menu.calculation_percent')</th>
+                                                        <th>@lang('menu.action')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -211,6 +211,7 @@
                 $('#e_calculation_percent').val(group.calc_percentage);
                 $('#add_form').hide();
                 $('#edit_form').show();
+                $('#edit_form').removeClass('d-none');
                 document.getElementById('e_name').focus();
             });
 

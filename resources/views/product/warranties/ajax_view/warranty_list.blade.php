@@ -1,12 +1,12 @@
 <table id="kt_datatable" class="display data_tbl data__table">
     <thead>
         <tr>
-            <th>Serial</th>
-            <th>Name</th>
-            <th>Duration</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Action</th>
+            <th>@lang('menu.serial')</th>
+            <th>@lang('menu.name')</th>
+            <th>@lang('menu.duration')</th>
+            <th>@lang('menu.type')</th>
+            <th>@lang('menu.description')</th>
+            <th>@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

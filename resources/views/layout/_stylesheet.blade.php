@@ -26,8 +26,13 @@
 <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/asset/css/theme.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 {{-- DataTable Global CSS --}}
 <style>
+    .d-hide {
+        display: none;
+    }
+
     .dt-buttons {
         padding-top: 0px !important;
         padding-bottom: 0px !important;
@@ -182,10 +187,23 @@
         --black-color-border: rgba(0, 0, 0, .3);
         --bs-primary: var(--dark-color-gradient) !important;
         --bs-blue: var(--dark-color-gradient) !important;
+
+        --secondary-color-1: #6c757d;
+        --secondary-color-2: #57595b;
+        --success-color-1: #198754;
+        --success-color-2: #135637;
+        --danger-color-1: #dc3545;
+        --danger-color-2: #741f28;
+        --warning-color-1: #ffc107;
+        --warning-color-2: #977612;
+        --info-color-1: #0dcaf0;
+        --info-color-2: #15a1cd;
+        --light-color-1: #f8f9fa;
+        --light-color-2: #e0e0e0;
     }
 
     .orange-theme .top-icon {
-        border: #ffffff 2px solid;
+        border: #ffffff 1px solid;
         background: #ff934b47;
     }
 
@@ -221,7 +239,9 @@
     .rtl .name-head span {
         margin-left: 5px;
     }
-    .rtl .dropdown-item span, .rtl .dropdown-item i {
+
+    .rtl .dropdown-item span,
+    .rtl .dropdown-item i {
         padding: 0px 5px;
     }
 
@@ -230,6 +250,7 @@
         left: 6%;
         right: auto;
     }
+
     .orange-theme .main__nav {
         background: var(--orange-color-gradient);
     }
@@ -242,6 +263,7 @@
     .rtl .sub-menu-width .switch_text {
         font-size: 14px !important;
     }
+
     .rtl .section-header span {
         padding-left: 9px;
     }
@@ -249,8 +271,100 @@
     html {
         color: red;
     }
+
     .rtl {
         font-family: Arial, 'Noto Naskh Arabic', serif;
     }
 
+</style>
+
+{{-- Harrison Bootstrap-Custom --}}
+<style>
+    @media (min-width: 576px) {
+        .modal-full-display {
+            max-width: 93% !important;
+        }
+
+        .four-col-modal {
+            max-width: 70% !important;
+            margin: 3.8rem auto;
+        }
+
+        .five-col-modal {
+            max-width: 90% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-80-modal {
+            max-width: 80% !important;
+            margin: 3.8rem auto;
+        }
+
+        .double-col-modal {
+            max-width: 400px !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-40-modal {
+            max-width: 40% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-45-modal {
+            max-width: 45% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-50-modal {
+            max-width: 50% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-55-modal {
+            max-width: 55% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-60-modal {
+            max-width: 60% !important;
+            margin: 3.8rem auto;
+        }
+
+        .col-65-modal {
+            max-width: 65% !important;
+            margin: 3.8rem auto;
+        }
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 991px){
+        .col-60-modal {
+            max-width: 700px !important;
+        }
+    }
+
+    .modal-middle {
+        margin-top: 33%;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #cbe4ee
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        /* background-color: #EBEDF3;*/
+        background-color: #cbe4ee;
+    }
+
+    /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
+
+
+    .widget_content .table-responsive {
+        min-height: 80vh !important;
+    }
+
+    .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:first-child {
+        background: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
+        background-image: linear-gradient(var(--danger-color-1) 50%, var(--danger-color-2) 50%) !important;
+        box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
+    }
 </style>

@@ -25,23 +25,23 @@ class SupplierUtil
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.supplier.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
 
-                if (!auth()->user()->can('supplier_edit')) :
+                if (auth()->user()->can('supplier_edit')) :
 
                     $html .= '<a class="dropdown-item" href="' . route('contacts.supplier.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                 endif;
 
-                if (!auth()->user()->can('supplier_delete')) :
+                if (auth()->user()->can('supplier_delete')) :
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 endif;
 
-                if ($row->status == 1) :
+                // if ($row->status == 1) :
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                else :
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                // else :
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                endif;
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.supplier.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                // endif;
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -97,11 +97,15 @@ class SupplierUtil
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) :
-
-                    return '<i class="far fa-thumbs-up text-success"></i>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('contacts.supplier.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '</div>';
+                    return $html;
                 else :
-
-                    return '<i class="far fa-thumbs-down text-danger"></i>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.supplier.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '</div>';
+                    return $html;
                 endif;
             })
             ->rawColumns(['action', 'business_name', 'tax_number', 'opening_balance', 'total_purchase', 'total_paid', 'total_purchase_due', 'total_return', 'total_purchase_return_due', 'status'])
@@ -167,12 +171,12 @@ class SupplierUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                if (!auth()->user()->can('purchase_edit')) {
+                if (auth()->user()->can('purchase_edit')) {
 
                     $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (!auth()->user()->can('purchase_delete')) {
+                if (auth()->user()->can('purchase_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -181,7 +185,7 @@ class SupplierUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (!auth()->user()->can('purchase_payment')) {
+                    if (auth()->user()->can('purchase_payment')) {
 
                         if ($row->due > 0) {
 
@@ -197,7 +201,7 @@ class SupplierUtil
 
                 $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
-                if (!auth()->user()->can('purchase_return')) {
+                if (auth()->user()->can('purchase_return')) {
 
                     $html .= '<a class="dropdown-item" id="purchase_return" href="' . route('purchases.returns.create', $row->id) . '"><i class="fas fa-undo-alt text-primary"></i> Purchase Return</a>';
                 }
@@ -480,21 +484,21 @@ class SupplierUtil
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (!auth()->user()->can('purchase_payment')) {
+                    if (auth()->user()->can('purchase_payment')) {
 
                         if ($row->due > 0) {
 
                             $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Payment</a>';
-                        } 
+                        }
                     }
 
-                    if (!auth()->user()->can('purchase_edit')) {
+                    if (auth()->user()->can('purchase_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
-                if (!auth()->user()->can('purchase_delete')) {
+                if (auth()->user()->can('purchase_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -776,7 +780,7 @@ class SupplierUtil
         return $data[$voucher_type_id];
     }
 
-    public function addSupplierLedger($voucher_type_id, $supplier_id, $branch_id, $date, $trans_id, $amount, $fixed_date = null)
+    public function addSupplierLedger($voucher_type_id, $branch_id, $supplier_id, $date, $trans_id, $amount, $fixed_date = null)
     {
         $voucher_type = $this->voucherType($voucher_type_id);
         $addSupplierLedger = new SupplierLedger();

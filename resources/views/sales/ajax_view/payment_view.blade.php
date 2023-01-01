@@ -11,10 +11,10 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                     </li>
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         {{ $sale->customer ? $sale->customer->business_name : '' }}
                     </li>
                 </ul>
@@ -24,13 +24,12 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Invoice ID : </strong>{{ $sale->invoice_id }}</li>
-                    <li><strong>Business Location: </strong>
+                    <li><strong> @lang('menu.invoice_id') : </strong>{{ $sale->invoice_id }}</li>
+                    <li><strong>@lang('menu.business_location'): </strong>
                         @if ($sale->branch)
                             {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
                         @else
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                            Office</b>)
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </li>
                 </ul>
@@ -40,9 +39,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                    <li><strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $sale->due }}</li>
-                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}</li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) }}</li>
                 </ul>
             </div>
         </div>
@@ -51,19 +50,19 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
-                    <th class="text-white">Date</th>
-                    <th class="text-white">Voucher No</th>
-                    <th class="text-white">Amount</th>
-                    <th class="text-white">Method</th>
-                    <th class="text-white">Type</th>
-                    <th class="text-white">Account</th>
-                    <th class="text-white">Action</th>
+                    <th class="text-white">@lang('menu.date')</th>
+                    <th class="text-white">@lang('menu.voucher_no')</th>
+                    <th class="text-white">@lang('menu.amount')</th>
+                    <th class="text-white">@lang('menu.method')</th>
+                    <th class="text-white">@lang('menu.type')</th>
+                    <th class="text-white">@lang('menu.account')</th>
+                    <th class="text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -81,7 +80,7 @@
                             <td>{{ $payment->account ? $payment->account->name : 'Cash-In-Hand' }}</td>
                             <td>
                                 @if ($sale->branch_id == auth()->user()->branch_id)
-                                
+
                                     @if ($payment->payment_type == 1)
 
                                         <a href="{{ route('sales.payment.edit', $payment->id) }}" id="edit_payment"
@@ -100,7 +99,7 @@
                                     class="btn-sm"><i class="fas fa-eye text-primary"></i></a>
 
                                 @if ($payment->customer_payment_id == null)
-                                
+
                                     <a href="{{ route('sales.payment.delete', $payment->id) }}" id="delete_payment"
                                     class="btn-sm"><i class="far fa-trash-alt text-danger"></i></a>
                                 @endif
@@ -109,7 +108,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

@@ -13,36 +13,31 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h5>@lang('menu.edit_process')</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_process_form" action="{{ route('manufacturing.process.update', $process->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $process->product_id }}">
                 <input type="hidden" name="variant_id" value="{{ $process->variant_id ? $process->variant_id : 'noid' }}">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Edit Process</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            @php
-                                                $p_code = $process->v_code ? $process->v_code : $process->p_code;
-                                            @endphp
-                                            <p> <strong>Product :</strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
-                                        </div>
-                                    </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @php
+                                        $p_code = $process->v_code ? $process->v_code : $process->p_code;
+                                    @endphp
+                                    <p> <strong>@lang('menu.product') :</strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -53,12 +48,12 @@
                     <div class="sale-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
+                                <div class="card mb-3">
+                                    <div class="card-body p-2">
+                                        <div class="row mb-3">
                                             <div class="col-md-6 offset-md-3">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Select Ingredients</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.select_ingredients')</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -74,59 +69,57 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Ingredient</th>
-                                                                    <th>Final Quantity</th>
-                                                                    <th>Unit</th>
-                                                                    <th>Unit Cost</th>
-                                                                    <th>SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt"></i></th>
+                                        <div class="sale-item-sec">
+                                            <div class="sale-item-inner">
+                                                <div class="table-responsive">
+                                                    <table class="display data__table table-striped">
+                                                        <thead class="staky">
+                                                            <tr>
+                                                                <th>@lang('menu.ingredient')</th>
+                                                                <th>@lang('menu.final_quantity')</th>
+                                                                <th>@lang('menu.unit')</th>
+                                                                <th>@lang('menu.unit_cost')</th>
+                                                                <th>@lang('menu.subtotal')</th>
+                                                                <th><i class="fas fa-trash-alt"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="ingredient_list">
+                                                            @foreach ($processIngredients as $ingredient)
+                                                                <tr class="text-start">
+                                                                    <td>
+                                                                        <span class="product_name">{{ $ingredient->p_name }}</span><br>
+                                                                        <span class="product_variant">{{ $ingredient->v_name }}</span>
+                                                                        <input value="{{ $ingredient->p_id }}" type="hidden" class="productId-{{ $ingredient->p_id }}" id="product_id" name="product_ids[]">
+                                                                        <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <select name="unit_ids[]" id="unit_id" class="form-control">
+                                                                            @foreach ($units as $unit)
+                                                                                <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input readonly value="{{ $ingredient->unit_cost_inc_tax }}"  name="unit_costs_inc_tax[]" type="text" id="unit_cost_inc_tax" class="form-control text-center">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input value="{{ $ingredient->subtotal }}" type="text" class="form-control text-center" name="subtotals[]" id="subtotal">
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>
+                                                                    </td>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody id="ingredient_list">
-                                                                @foreach ($processIngredients as $ingredient)
-                                                                    <tr class="text-start">
-                                                                        <td>
-                                                                            <span class="product_name">{{ $ingredient->p_name }}</span><br>
-                                                                            <span class="product_variant">{{ $ingredient->v_name }}</span>
-                                                                            <input value="{{ $ingredient->p_id }}" type="hidden" class="productId-{{ $ingredient->p_id }}" id="product_id" name="product_ids[]">
-                                                                            <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <select name="unit_ids[]" id="unit_id" class="form-control">
-                                                                                @foreach ($units as $unit)
-                                                                                    <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input readonly value="{{ $ingredient->unit_cost_inc_tax }}"  name="unit_costs_inc_tax[]" type="text" id="unit_cost_inc_tax" class="form-control text-center">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input value="{{ $ingredient->subtotal }}" type="text" class="form-control text-center" name="subtotals[]" id="subtotal">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,39 +132,35 @@
 
                 <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $process->total_ingredient_cost }}">
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total_output_qty') :</b></label>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <label><b>Total Output Qty :</b></label>
-                                            <div class="row">
-                                                <div class="col-7">
-                                                    <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="Total Output Quantity" value="{{ $process->total_output_qty }}">
-                                                </div>
-
-                                                <div class="col-5">
-                                                    <select name="unit_id" class="form-control" id="unit_id">
-                                                        @foreach ($units as $unit)
-                                                            <option {{ $unit->id == $process->unit_id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div class="col-7">
+                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="{{ $process->total_output_qty }}">
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <label><b>Production Cost :</b></label>
-                                            <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="{{ $process->production_cost }}">
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label><b>Total Cost :</b></label>
-                                            <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="Total Cost" value="{{ $process->total_cost }}">
+                                        <div class="col-5">
+                                            <select name="unit_id" class="form-control" id="unit_id">
+                                                @foreach ($units as $unit)
+                                                    <option {{ $unit->id == $process->unit_id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.production_cost') :</b></label>
+                                    <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="@lang('menu.production_cost')" value="{{ $process->production_cost }}">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total_cost') :</b></label>
+                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')" value="{{ $process->total_cost }}">
                                 </div>
                             </div>
                         </div>
@@ -180,10 +169,11 @@
 
                 <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                            </div>
                         </div>
                     </div>
                 </div>

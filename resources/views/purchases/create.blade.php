@@ -19,30 +19,30 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-shopping-cart"></span>
-                    <h6>Add Purchase</h6>
+                    <h6>@lang('menu.add_purchase')</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-lg-3 p-1">
             <form id="add_purchase_form" action="{{ route('purchases.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                         <div class="element-body">
-                            <div class="row">
-                                <div class="col-md-3">
+                            <div class="row gx-2">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><span
-                                            class="text-danger">*</span> <b>Supplier :</b></label>
+                                        <label class=" col-4"> <b>@lang('menu.supplier')</b><span
+                                            class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <select name="supplier_id" class="form-control add_input"
                                                     data-name="Supplier" id="supplier_id">
-                                                    <option value="">Select Supplier</option>
+                                                    <option value="">@lang('menu.select_supplier')</option>
                                                 </select>
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text add_button" id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
@@ -56,12 +56,12 @@
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><span
-                                                class="text-danger">*</span> <b>Warehouse :</b> </label>
+                                            <label class="col-4"> <b>@lang('menu.warehouse') :</b><span
+                                                class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable add_input"
                                                     name="warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                    <option value="">Select Warehouse</option>
+                                                    <option value="">@lang('menu.select_warehouse')</option>
                                                     @foreach ($warehouses as $w)
                                                         <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                     @endforeach
@@ -72,7 +72,7 @@
                                     @else
 
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>Store Location :</b> </label>
+                                            <label class="col-4"><b>@lang('menu.store_location') :</b> </label>
                                             <div class="col-8">
                                                 <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}"/>
                                             </div>
@@ -80,30 +80,30 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Invoice ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class=" col-4"><b>@lang('menu.invoice_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Purchase Invoice ID" autocomplete="off">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.purchase_invoice_id')" autocomplete="off">
                                             <span class="error error_invoice_id"></span>
                                         </div>
                                     </div>
 
                                     @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
                                         <div class="input-group mt-1">
-                                            <label class=" col-4"><b>Status :</b></label>
+                                            <label class=" col-4"><b>@lang('menu.status') :</b></label>
                                             <div class="col-8">
                                                 <select class="form-control changeable" name="purchase_status" id="purchase_status">
-                                                    <option value="1">Purchase</option>
-                                                    {{-- <option value="2">Pending</option> --}}
-                                                    <option value="3">Ordered</option>
+                                                    <option value="1">@lang('menu.purchase')</option>
+                                                    {{-- <option value="2">@lang('menu.pending')</option> --}}
+                                                    <option value="3">@lang('menu.ordered')</option>
                                                 </select>
                                             </div>
                                         </div>
                                     @else
                                         <div class="input-group mt-1">
                                             <label class=" col-4"><span
-                                                class="text-danger">*</span> <b>Store Location :</b> </label>
+                                                class="text-danger">*</span> <b>@lang('menu.store_location') :</b> </label>
                                             <div class="col-8">
                                                 <input readonly type="text" class="form-control" value="{{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}">
                                                 <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
@@ -112,9 +112,9 @@
                                     @endif
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>PUR./PO. Date:</b></label>
+                                        <label class="col-4"><b>{{ __('PUR./PO. Date') }}:</b></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control changeable"
                                                 value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="date" placeholder="dd-mm-yyyy" autocomplete="off">
@@ -123,7 +123,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Pay Term :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.pay_term') :</b> </label>
                                         <div class="col-8">
                                             <div class="row">
                                                 <div class="col-5">
@@ -134,9 +134,9 @@
                                                 <div class="col-7">
                                                     <select name="pay_term" class="form-control changeable"
                                                     id="pay_term">
-                                                        <option value="">Pay Term</option>
-                                                        <option value="1">Days</option>
-                                                        <option value="2">Months</option>
+                                                        <option value="">@lang('menu.pay_term')</option>
+                                                        <option value="1">@lang('menu.days')</option>
+                                                        <option value="2">@lang('menu.months')</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -144,16 +144,16 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Delivery Date :</b></label>
+                                        <label class=" col-4"><b>@lang('menu.delivery_date') :</b></label>
                                         <div class="col-8">
                                             <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Purchase A/C : <span
+                                        <label class="col-4"><b>@lang('menu.purchase_ac') : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_account_id" class="form-control add_input"
@@ -178,13 +178,13 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="searching_area" style="position: relative;">
-                                    <label class="col-form-label">Item Search</label>
+                                    <label class="col-form-label">@lang('menu.item_search')</label>
                                     <div class="input-group ">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
                                         </div>
                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                        @if (!auth()->user()->can('product_add'))
+                                        @if(auth()->user()->can('product_add'))
                                             <div class="input-group-prepend">
                                                 <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                             </div>
@@ -204,18 +204,18 @@
                                         <table class="display data__table table-striped">
                                             <thead class="staky">
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit Cost(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
-                                                    <th>Discount</th>
-                                                    <th>Unit Cost(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
-                                                    <th>SubTotal (BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
-                                                    <th>Unit Tax</th>
-                                                    <th>Net Unit Cost</th>
-                                                    <th>Line Total</th>
+                                                    <th>@lang('menu.product')</th>
+                                                    <th>@lang('menu.quantity')</th>
+                                                    <th>@lang('menu.unit_cost')(BD <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Discount" class="fas fa-info-circle tp"></i>)</th>
+                                                    <th>@lang('menu.discount')</th>
+                                                    <th>@lang('menu.unit_cost')(BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
+                                                    <th>@lang('menu.sub_total') (BT <i data-bs-toggle="tooltip" data-bs-placement="right" title="Before Tax" class="fas fa-info-circle tp"></i>)</th>
+                                                    <th>@lang('menu.unit_tax')</th>
+                                                    <th>{{ __('Net Unit Cost') }}</th>
+                                                    <th>@lang('menu.line_total')</th>
                                                     @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
-                                                        <th>xMargin(%)</th>
-                                                        <th>Selling Price Exc.Tax</th>
+                                                        <th>@lang('menu.x_margin')(%)</th>
+                                                        <th>@lang('menu.selling_price_exc_tax')</th>
                                                     @endif
                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                 </tr>
@@ -240,7 +240,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
 
-                                                        <label class="col-4"><b>Total Item :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00" tabindex="-1">
                                                         </div>
@@ -249,7 +249,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Quantity :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_quantity') :</b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_qty" type="number" step="any" class="form-control" id="total_qty" value="0.00" tabindex="-1">
                                                         </div>
@@ -258,13 +258,13 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Order Discount :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.order_discount') :</b></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <select name="order_discount_type" class="form-control" id="order_discount_type">
-                                                                        <option value="1">Fixed(0.00)</option>
-                                                                        <option value="2">Percentage(%)</option>
+                                                                        <option value="1">@lang('menu.fixed')(0.00)</option>
+                                                                        <option value="2">@lang('menu.percentage')(%)</option>
                                                                     </select>
                                                                 </div>
 
@@ -272,42 +272,42 @@
                                                                     <input name="order_discount" type="number" class="form-control" id="order_discount" value="0.00">
                                                                 </div>
                                                             </div>
-                                                            <input name="order_discount_amount" type="number" step="any" class="d-none" id="order_discount_amount" value="0.00" tabindex="-1">
+                                                            <input name="order_discount_amount" type="number" step="any" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Order Tax :</b><span class="text-danger">*</span></label>
+                                                        <label class="col-4"><b>@lang('menu.order_tax') :</b><span class="text-danger">*</span></label>
                                                         <div class="col-8">
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                                <option value="0.00">NoTax</option>
+                                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                             </select>
-                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00" tabindex="-1">
+                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Shipment Cost :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.shipment_cost') :</b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Shipment Details :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.shipment_details') :</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="Shipment Details">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="@lang('menu.shipment_details')">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Purchase/Order Note :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.purchase') /@lang('menu.order_note') :</b></label>
                                                         <div class="col-8">
-                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="Order Note.">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" value="" placeholder="@lang('menu.order_note').">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -326,14 +326,14 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Net Total Amount : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.net_total_amount') : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Total Payable :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.total_payable') :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
@@ -342,21 +342,21 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Paying Amount :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
+                                                        <label class=" col-4"><b>@lang('menu.amount') :</b> {{ json_decode($generalSettings->business, true)['currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Payment Method : <span
+                                                        <label class="col-4"><b>@lang('menu.payment_method') : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
                                                                     <option
                                                                         data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                        value="{{ $method->id }}">
+                                                                        value="{{ $method ->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach
@@ -368,7 +368,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Credit A/C : <span
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C : <span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
@@ -389,7 +389,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Total Due :</b></label>
+                                                        <label class=" col-4"><b>@lang('menu.total_due') :</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" class="form-control" name="purchase_due" id="purchase_due" value="0.00" tabindex="-1">
                                                         </div>
@@ -398,9 +398,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Payment Note :</b> </label>
+                                                        <label class=" col-4"><b>@lang('menu.payment_note') :</b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -416,9 +416,9 @@
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">Save & Print</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">Save</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">@lang('menu.save_print')</button>
+                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                         </div>
                     </div>
                 </div>
@@ -431,7 +431,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Supplier</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_supplier')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -445,7 +445,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -460,20 +460,20 @@
         <div class="modal-dialog modal-lg description_modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Description <span id="product_name"></span></h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Description') }} <span id="product_name"></span></h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <label><strong>Description :</strong></label>
+                            <label><strong>@lang('menu.description') :</strong></label>
                             <textarea name="product_description" id="product_description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group text-end mt-3">
-                        <button type="submit" id="add_description" class="c-btn button-success float-end me-0">Add</button>
+                        <button type="submit" id="add_description" class="btn btn-sm btn-success float-end">@lang('menu.add')</button>
                     </div>
                 </div>
             </div>

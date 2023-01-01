@@ -18,112 +18,112 @@
                         @endphp
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>CASH FLOW FROM OPERATIONS :</strong>
+                                <strong>@lang('menu.cash_flow_from_operations') :</strong>
                             </th>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Net Profit Before Tax :</em> 
+                               <em>@lang('menu.net_profit_before_tax') :</em>
                             </td>
 
                             <td class="text-start">
-                               <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em> 
+                               <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em>
                                @php
-                                 $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];  
+                                 $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];
                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Customer Balance : </em>  
+                               <em>@lang('menu.customer_balance') : </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt($customerReceivable->sum('total_due')) }})</em> 
+                                <em>({{ App\Utils\Converter::format_in_bdt($customerReceivable->sum('total_due')) }})</em>
                                 @php
-                                    $oparationTotal -= $customerReceivable->sum('total_due');  
-                                @endphp   
+                                    $oparationTotal -= $customerReceivable->sum('total_due');
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Supplier Balance : </em>  
+                               <em>@lang('menu.supplier_balance') : </em>
                             </td>
 
                             <td class="text-start">
                                  <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
                                 @php
-                                    $oparationTotal += $supplierPayable->sum('total_due');  
-                                @endphp    
+                                    $oparationTotal += $supplierPayable->sum('total_due');
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Current Stock Value : </em> 
+                               <em>@lang('menu.current_stock_value') : </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['closing_stock']) }})</em>   
+                                <em>({{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['closing_stock']) }})</em>
                                 @php
-                                    $oparationTotal -= $netProfitLossAccount['closing_stock'];  
-                                @endphp  
+                                    $oparationTotal -= $netProfitLossAccount['closing_stock'];
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>Current Asset :</em>  
+                                <em>@lang('menu.current_asset') :</em>
                             </td>
 
                             <td class="text-start">
-                                 <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>   
+                                 <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>
                                 @php
-                                    $oparationTotal += $currentAssets->sum('total_current_asset');  
-                                @endphp 
+                                    $oparationTotal += $currentAssets->sum('total_current_asset');
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Current Liability :</em>  
+                               <em>@lang('menu.current_liability') :</em>
                             </td>
 
                             <td class="text-start">
-                                <em>{{ App\Utils\Converter::format_in_bdt($currentLiability->sum('current_liability')) }}</em>  
+                                <em>{{ App\Utils\Converter::format_in_bdt($currentLiability->sum('current_liability')) }}</em>
                                 @php
-                                    $oparationTotal += $currentLiability->sum('current_liability');  
-                                @endphp   
+                                    $oparationTotal += $currentLiability->sum('current_liability');
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Tax Payable :</em>  
+                               <em>@lang('menu.tax_payable') :</em>
                             </td>
 
                             <td class="text-start">
-                                <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['tax_payable']) }}</em>     
+                                <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['tax_payable']) }}</em>
                                 @php
-                                    $oparationTotal += $netProfitLossAccount['tax_payable'];  
-                                @endphp 
+                                    $oparationTotal += $netProfitLossAccount['tax_payable'];
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-end">
                                 <b>
-                                    <em>Total Operations : 
+                                    <em>@lang('menu.total_operations') :
                                         ({{ json_decode($generalSettings->business, true)['currency'] }})
-                                    </em> 
-                                </b>  
+                                    </em>
+                                </b>
                             </td>
 
                             <td class="text-start">
-                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>  
+                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>
                                 @php
                                     $totalCashFlow += $oparationTotal;
                                 @endphp
@@ -132,33 +132,33 @@
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b>Total Operations : </b>  
+                                <b>@lang('menu.total_operations') : </b>
                             </td>
 
                             <td class="text-start text-white">
-                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>  
+                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>
                                 @php
                                     $totalCashFlow += $oparationTotal;
                                 @endphp
                             </td>
                         </tr> --}}
-                    
+
                         {{-- Cash Flow from investing --}}
-                       
+
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>CASH FLOW FROM INVESTING :</strong>
+                                <strong>@lang('menu.cash_flow_from_investing') :</strong>
                             </th>
                         </tr>
-                        
+
                         <tr>
                             <td class="text-start">
-                                <em>FIXED ASSET :</em> 
+                                <em>@lang('menu.fixed_asset') :</em>
                             </td>
                             <td class="text-start">
                                 <em>
                                     ({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})
-                                </em> 
+                                </em>
                             </td>
                             @php
                                 $totalCashFlow -= $fixedAssets->sum('total_fixed_asset');
@@ -167,45 +167,45 @@
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b><em>Total Investing :</em>  </b>  
+                                <b><em>@lang('menu.total_investing') :</em>  </b>
                             </td>
 
                             <td class="text-start text-white">
-                                <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>  
+                                <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>
                             </td>
                         </tr>  --}}
 
                         <tr>
                             <td class="text-end">
                                 <b>
-                                    <em>Total Investing : 
+                                    <em>@lang('menu.total_investing') :
                                         ({{ json_decode($generalSettings->business, true)['currency'] }})
-                                    </em>  
-                                </b>  
+                                    </em>
+                                </b>
                             </td>
 
                             <td class="text-start">
-                                <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>  
+                                <b><em>({{ App\Utils\Converter::format_in_bdt($fixedAssets->sum('total_fixed_asset')) }})</em> </b>
                             </td>
-                        </tr> 
+                        </tr>
 
                         {{-- Cash Flow from financing --}}
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>CASH FLOW FROM FINANCING :</strong>
+                                <strong>@lang('menu.cash_flow_form_financing') :</strong>
                             </th>
                         </tr>
-                        
+
                         <tr>
                             <td class="text-start">
-                                <em>Capital A/C :</em> 
+                                <em>@lang('menu.capital_ac') :</em>
                             </td>
                             <td class="text-start">0.00</td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>Loan And Advance :</em> 
+                                <em>@lang('menu.loan_and_advance') :</em>
                             </td>
                             <td class="text-start">({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</td>
                         </tr>
@@ -213,50 +213,50 @@
                         <tr>
                             <td class="text-end">
                                 <b>
-                                    <em>Total financing : 
+                                    <em>@lang('menu.total_financing') :
                                         ({{ json_decode($generalSettings->business, true)['currency'] }})
                                     </em>
-                                </b>  
+                                </b>
                             </td>
 
                             <td class="text-start">
                                 <b>
-                                    <em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em> 
-                                </b>  
+                                    <em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em>
+                                </b>
                                 @php
                                     $totalCashFlow -= $loanAndAdvance->sum('current_loan_receivable');
                                 @endphp
                             </td>
-                        </tr> 
+                        </tr>
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b><em>Total financing :</em>  </b>  
+                                <b><em>@lang('menu.total_financing') :</em>  </b>
                             </td>
 
                             <td class="text-start text-white">
-                                <b><em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em> </b>  
+                                <b><em>({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</em> </b>
                                 @php
                                     $totalCashFlow -= $loanAndAdvance->sum('current_loan_receivable');
                                 @endphp
                             </td>
                         </tr>  --}}
                     </tbody>
-                    
+
                     <tfoot>
                         <tr class="bg-secondary">
                             <td class="text-end text-white">
                                 <b>
-                                    <em>Total Cash Flow : ({{ json_decode($generalSettings->business, true)['currency'] }})</em> 
-                                </b> 
+                                    <em>@lang('menu.total_cash_flow') : ({{ json_decode($generalSettings->business, true)['currency'] }})</em>
+                                </b>
                             </td>
                             <td class="text-start text-white">
                                 <b class="total_cash_flow">
                                     <em>
                                         {{ $totalCashFlow < 0 ? '('.App\Utils\Converter::format_in_bdt($totalCashFlow).')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
-                                    </em> 
+                                    </em>
                                 </b>
-                            </th>    
+                            </th>
                         </tr>
                     </tfoot>
                 </table>

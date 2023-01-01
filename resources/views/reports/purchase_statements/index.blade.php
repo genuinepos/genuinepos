@@ -12,10 +12,10 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>Purchase Statements</h5>
+                                <h5>@lang('menu.purchase_statements')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -29,11 +29,11 @@
                                                 @if ($addons->branches == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                class="form-control submit_able select2" id="branch_id" autofocus>
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -45,11 +45,11 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Supplier :</strong></label>
+                                                    <label><strong>@lang('menu.supplier') : </strong></label>
                                                     <select name="supplier_id"
-                                                        class="form-control submit_able"
+                                                        class="form-control submit_able select2"
                                                         id="supplier_id" autofocus>
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         @foreach ($suppliers as $sup)
                                                             <option value="{{ $sup->id }}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
                                                         @endforeach
@@ -57,18 +57,18 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Purchase Status :</strong></label>
+                                                    <label><strong>@lang('menu.purchases_status') :</strong></label>
                                                     <select name="status" id="status"
-                                                        class="form-control  submit_able">
-                                                        <option value="">All</option>
-                                                        <option value="1">Purchased</option>
-                                                        <option value="2">Pending</option>
-                                                        <option value="3">Purchased By Order</option>
+                                                        class="form-control  submit_able select2">
+                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="1">@lang('menu.purchased')</option>
+                                                        <option value="2">@lang('menu.pending')</option>
+                                                        <option value="3">@lang('menu.purchased_by_order')</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -82,7 +82,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -98,8 +98,8 @@
                                                         <div class="col-md-6">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start">
-                                                                    <i class="fas fa-funnel-dollar"></i> Filter
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
+                                                                    <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -107,7 +107,7 @@
                                                         <div class="col-md-6">
                                                             <label></label>
                                                             <div class="input-group">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_purchase_statement_report"><i class="fas fa-print "></i> Print</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_purchase_statement_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -121,44 +121,44 @@
 
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>Purchase Statement List</h6>
+                                <div class="col-9">
+                                    <h6>{{ __('Purchase Statement List') }}</h6>
                                 </div>
-                                @if (!auth()->user()->can('purchase_add'))
-                                    <div class="col-md-2 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add</a>
+                                @if(auth()->user()->can('purchase_add'))
+                                    <div class="col-3 d-flex justify-content-end">
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                     </div>
                                 @endif
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>P.Invoice ID</th>
-                                                <th>Purchase From</th>
-                                                <th>Supplier</th>
-                                                <th>Created By</th>
-                                                <th>Purchase Status</th>
-                                                <th>Total Item</th>
-                                                <th>Net Total Amt.</th>
-                                                <th>Order Discount</th>
-                                                <th>Order Tax</th>
-                                                <th>Grand Total</th>
-                                                <th>Paid</th>
-                                                <th>Return Amount</th>
-                                                <th>Due</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
+                                                <th>@lang('menu.purchase_from')</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>@lang('menu.created_by')</th>
+                                                <th>@lang('menu.purchases_status')</th>
+                                                <th>@lang('menu.total_item')</th>
+                                                <th>{{ __('Net total Amt') }}.</th>
+                                                <th>@lang('menu.order_discount')</th>
+                                                <th>@lang('menu.order_tax')</th>
+                                                <th>@lang('menu.grand_total')</th>
+                                                <th>@lang('menu.paid')</th>
+                                                <th>@lang('menu.return_amount')</th>
+                                                <th>@lang('menu.due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th colspan="6" class="text-end text-white">@lang('menu.total') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                                 <th id="total_item" class="text-white"></th>
                                                 <th id="net_total_amount" class="text-white"></th>
                                                 <th id="order_discount_amount" class="text-white"></th>

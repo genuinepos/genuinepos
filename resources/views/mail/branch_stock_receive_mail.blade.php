@@ -6,14 +6,14 @@
         <th style="text-align:left;">
             @if ($transfer->branch)
                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $transfer->branch->logo) }}">
-            @else 
+            @else
                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
             @endif
         </th>
       </tr>
       <tr>
         <th style="text-align:left;">
-            <p><b>Receive Stock Details</b></p>
+            <p><b>{{ __('Receive Stock Details') }}</b></p>
         </th>
       </tr>
     </thead>
@@ -24,19 +24,19 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:150px">Paid Status :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} :</span>
                 <b style="color:green;font-weight:normal;margin:0">
-                  @if ($transfer->status == 1) 
-                    Pending
+                  @if ($transfer->status == 1)
+                    @lang('menu.pending')
                   @elseif($transfer->status == 2)
-                    Partial
+                    @lang('menu.partial')
                   @elseif($transfer->status == 3)
-                    Completed
+                    @lang('menu.completed')
                   @endif
                 </b>
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">Reference ID :</span> 
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.reference_id') :</span>
                 {{ $transfer->invoice_id }}
             </p>
         </td>
@@ -47,44 +47,44 @@
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px"><strong>Warehouse (From):</strong></span> 
+              <span style="display:block;font-weight:bold;font-size:13px"><strong>@lang('menu.warehouse') (From):</strong></span>
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px">Name : </span> 
+                <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.name') :</span>
                 {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">Address :</span> 
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
                  {{ $transfer->warehouse->address }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $transfer->warehouse->phone }}
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->warehouse->phone }}
             </p>
         </td>
 
         <td style="width:50%;padding:20px;vertical-align:top">
-            <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Business Location(To)</span> </h6>
+            <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.business_location')(To)</span> </h6>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px;"> Name :</span>
+              <span style="display:block;font-weight:bold;font-size:13px;"> @lang('menu.name') :</span>
               {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
             </p>
-            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</p>
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</p>
 
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px;">Address :</span> 
+              <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
               @if ($transfer->branch)
                   {{ $transfer->branch->city }},
                   {{ $transfer->branch->state }},
                   {{ $transfer->branch->zip_code }},
                   {{ $transfer->branch->country }}.
-              @else 
+              @else
                   {{ json_decode($generalSettings->business, true)['address'] }}
               @endif
             </p>
         </td>
-       
+
       </tr>
       <tr>
-        <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Description</td>
+        <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
       </tr>
       @foreach ($transfer->transfer_products as $transfer_product)
         @php
@@ -98,8 +98,8 @@
                     $variant = $transfer_product->variant ? ' ('.$transfer_product->variant->variant_name.')' : '';
                   @endphp
                   {{ $transfer_product->product->name.$variant }}
-                </span>Send Stock- {{ $transfer_product->quantity.' ('.$transfer_product->unit.')' }}
-                    <b style="font-size:12px;font-weight:300;"> /Pending Qty-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/Receive Qty-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
+                </span>{{ __('Send Stock') }}- {{ $transfer_product->quantity.' ('.$transfer_product->unit.')' }}
+                    <b style="font-size:12px;font-weight:300;"> /@lang('menu.pending_qty')-{{ bcadd($panding_qty, 0, 2).' ('.$transfer_product->unit.')' }}/@lang('menu.receive_qty')-{{ $transfer_product->received_qty.' ('.$transfer_product->unit.')' }}</b>
                 </p>
             </td>
         </tr>
@@ -109,7 +109,7 @@
       <tfoot>
         <tr>
           <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
-            <strong style="display:block;margin:0 0 10px 0;">Mail Note: </strong> <br>  
+            <strong style="display:block;margin:0 0 10px 0;">@lang('menu.mail_note'): </strong> <br>
                 {{ $mail_note }}
               <br>
           </td>

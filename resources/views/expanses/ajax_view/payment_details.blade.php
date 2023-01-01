@@ -9,7 +9,7 @@
                     @if ($payment->expense->branch)
                         {{ $payment->expense->branch->name . '/' . $payment->expense->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -27,12 +27,12 @@
     <div class="reference_area pt-3">
         <div class="row">
             <div class="col-md-6">
-                <p><b>Reference No :</b> {{ $payment->expense->invoice_id }}</p>
-                <p><b>Voucher No :</b> {{ $payment->invoice_id }}</p>
+                <p><b>@lang('menu.reference_no') :</b> {{ $payment->expense->invoice_id }}</p>
+                <p><b>@lang('menu.voucher_no') :</b> {{ $payment->invoice_id }}</p>
             </div>
 
             <div class="col-md-6 text-end">
-                <p><b>Date :</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  }}</p>
+                <p><b>@lang('menu.date') :</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date))  }}</p>
             </div>
         </div>
     </div>
@@ -43,13 +43,13 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Expense For:</th>
+                            <th class="text-start">@lang('menu.expense_for'):</th>
                             <td class="text-end">{{ $payment->expense->admin ? $payment->expense->admin->prefix.' '.$payment->expense->admin->name.' '.$payment->expense->admin->last_name : 'N/A' }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Description:</th>
-                            <th class="text-end">Amount</th>
+                            <th class="text-start">@lang('menu.description'):</th>
+                            <th class="text-end">@lang('menu.amount')</th>
                         </tr>
 
                         @foreach ($payment->expense->expense_descriptions as $expense_description)
@@ -58,38 +58,38 @@
                                 <td class="text-end">{{ json_decode($generalSettings->business, true)['currency'] }} {{ $expense_description->amount }}</td>
                             </tr>
                         @endforeach
-                       
+
                         <tr>
-                            <th class="text-start">Total :</th>
+                            <th class="text-start">@lang('menu.total') :</th>
                             <td class="text-end"><b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $payment->expense->net_total_amount }}</b></td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Paid:</th>
+                            <th class="text-start">@lang('menu.paid'):</th>
                             <td class="text-end">
                                <b>{{ json_decode($generalSettings->business, true)['currency'] }}
-                                {{ $payment->paid_amount }}</b> 
+                                {{ $payment->paid_amount }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">In Word :</th>
+                            <th class="text-start">@lang('menu.in_word'):</th>
                             <td class="text-end"><span id="inword"></span></td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Method :</th>
+                            <th class="text-start">@lang('menu.method') :</th>
                             <td class="text-end">
                                 @if ($payment->payment_method)
                                       {{ $payment->payment_method->name }}
-                                @else 
+                                @else
                                     {{ $payment->pay_mode }}
                                 @endif
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Note :</th>
+                            <th class="text-start">@lang('menu.note') :</th>
                             <td class="text-end">{{ $payment->note }}</td>
                         </tr>
                     </tbody>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div class="signature_area pt-5 mt-5 d-none">
+    <div class="signature_area pt-5 mt-5 d-hide">
         <table class="w-100 mt-5">
             <tbody>
                 <tr>
@@ -122,7 +122,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="4" class="text-navy-blue text-center"><small>Software by <b>SpeedDigit Pvt. Ltd.</b></small> </td>
+                        <td colspan="4" class="text-navy-blue text-center"><small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small> </td>
                     </tr>
                 @endif
             </tbody>

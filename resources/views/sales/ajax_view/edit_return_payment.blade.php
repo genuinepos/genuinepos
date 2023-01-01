@@ -10,25 +10,25 @@
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="payment_heading">Edit Return Payment</h6>
+            <h6 class="modal-title" id="payment_heading">{{ __('Edit Return Payment') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
-        <div class="modal-body" id="payment-modal-body"> 
+        <div class="modal-body" id="payment-modal-body">
             <div class="info_area mb-2">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Customer : </strong><span>{{ $payment->customer ? $payment->customer->name : 'Walk-In-Customer' }}</span> </li>
-                                <li><strong>Business : </strong><span>{{ $payment->customer ? $payment->customer->business_name : '' }}</span> </li>
+                                <li><strong>@lang('menu.customer') : </strong><span>{{ $payment->customer ? $payment->customer->name : 'Walk-In-Customer' }}</span> </li>
+                                <li><strong>@lang('menu.business') : </strong><span>{{ $payment->customer ? $payment->customer->business_name : '' }}</span> </li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Invoice ID : </strong><span>{{ $payment->sale_return->invoice_id }}</span> </li>
-                                <li><strong>Business Location : </strong>
+                                <li><strong> @lang('menu.invoice_id') : </strong><span>{{ $payment->sale_return->invoice_id }}</span> </li>
+                                <li><strong>@lang('menu.business_location') : </strong>
                                     <span>
                                         @if ($payment->sale_return->branch)
 
@@ -37,7 +37,7 @@
 
                                             {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                         @endif
-                                    </span>  
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -47,13 +47,13 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>Total Return Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span>{{ $payment->sale_return->total_return_amount }}</span> 
+                                    <strong>@lang('menu.total_return_amount'): {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <span>{{ $payment->sale_return->total_return_amount }}</span>
                                 </li>
 
                                 <li class="sale_due">
-                                    <strong>Total Paid/Refunded Amount: {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
-                                    <span>{{ $payment->sale_return->total_return_due_pay }}</span> 
+                                    <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <span>{{ $payment->sale_return->total_return_due_pay }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -65,7 +65,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -101,9 +101,9 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
+                                    <option
                                         {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }}
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -116,7 +116,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') :</strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -139,21 +139,21 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> Payment Note :</strong></label>
+                    <label><strong> @lang('menu.payment_note') :</strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
                 </div>
 
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
+                        <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.save')</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
             </form>
@@ -206,11 +206,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to support team.'); 
+                    toastr.error('Server Error. Please contact to support team.');
                     return;
                 }
 

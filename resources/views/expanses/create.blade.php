@@ -12,9 +12,9 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-square"></span>
-                    <h6>Add Expense</h6>
+                    <h6>{{ __('Add Expense') }}</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -27,14 +27,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Voucher No:</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class=" col-4"><b>@lang('menu.voucher_no'):</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" autofocus>
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
+                                        <label class=" col-4"><b>{{ __('Expense A/C') }} :</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select required name="ex_account_id" class="form-control" id="ex_account_id">
                                                 @foreach ($expenseAccounts as $exAc)
@@ -61,7 +61,7 @@
                                         <label class=" col-4"><b>Expanse For :</b></label>
                                         <div class="col-8">
                                             <select name="admin_id" class="form-control" id="admin_id">
-                                                <option value="">None</option>
+                                                <option value="">@lang('menu.none')</option>
                                                 @foreach ($users as $user)
                                                     <option value="{{$user->id}}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
                                                 @endforeach
@@ -80,7 +80,7 @@
                             <div class="row">
 
                                 <div class="col-md-6">
-                                    <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>Descriptions</b></p>
+                                    <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>@lang('menu.description')</b></p>
                                 </div>
 
                                 <div class="col-md-6">
@@ -108,7 +108,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">
+                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="@lang('menu.amount')">
                                                         </td>
 
                                                         <td>
@@ -131,7 +131,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Total : </b> </label>
+                                        <label class=" col-4"><b>@lang('menu.total') : </b> </label>
                                         <div class="col-8">
                                             <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
                                             <span class="error error_total_amount"></span>
@@ -141,10 +141,10 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Tax :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.tax') :</b> </label>
                                         <div class="col-8">
                                             <select name="tax" class="form-control" id="tax">
-                                                <option value="0.00">NoTax</option>
+                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                 @foreach ($taxes as $tax)
                                                     <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                 @endforeach
@@ -155,7 +155,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Net Total : </b>  </label>
+                                        <label class=" col-4"><b>@lang('menu.net_total') : </b>  </label>
                                         <div class="col-8">
                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
                                         </div>
@@ -184,8 +184,8 @@
                     <form id="add_quick_expense_category_form" action="{{ route('expanses.add.quick.expense.category') }}">
                         @csrf
                         <div class="form-group">
-                            <label><b>Name</b> : <span class="text-danger">*</span></label>
-                            <input required type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Expense Category Name"/>
+                            <label><b>@lang('menu.name')</b> : <span class="text-danger">*</span></label>
+                            <input required type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="@lang('menu.expense_category')"/>
                             <span class="error error_ex_name"></span>
                         </div>
 
@@ -197,9 +197,9 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -441,7 +441,7 @@
             html += '</td>';
 
             html += '<td>';
-            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">';
+            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="@lang('menu.amount')">';
             html += '</td>';
 
             html += '<td>';

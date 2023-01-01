@@ -56,7 +56,7 @@ class POSController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // Create pos view
@@ -66,7 +66,7 @@ class POSController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $openedCashRegister = CashRegister::with('admin', 'admin.role', 'cash_counter')
+        $openedCashRegister = CashRegister::with('admin', 'cash_counter')
             ->where('admin_id', auth()->user()->id)
             ->where('status', 1)
             ->first();
@@ -447,7 +447,7 @@ class POSController extends Controller
     // Get invoice info by edit invoice method
     public function edit($saleId)
     {
-        $sale = Sale::with('branch', 'sale_products', 'customer', 'admin', 'admin.role')->where('id', $saleId)->first();
+        $sale = Sale::with('branch', 'sale_products', 'customer', 'admin')->where('id', $saleId)->first();
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
@@ -1032,6 +1032,8 @@ class POSController extends Controller
             $this->customerUtil->updateCustomerLedger(
                 voucher_type_id: 1,
                 customer_id: $updateSale->customer_id,
+                previous_branch_id: $updateSale->branch_id,
+                new_branch_id: $updateSale->branch_id,
                 date: $updateSale->date,
                 trans_id: $updateSale->id,
                 amount: $updateSale->total_payable_amount

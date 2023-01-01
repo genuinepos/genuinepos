@@ -12,292 +12,289 @@
 @section('title', 'Stock Report - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-desktop"></span>
-                                <h5>Stock Report</h5>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-desktop"></span>
+                    <h5>@lang('menu.stock_report')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                </a>
+            </div>
+
+            <div class="p-lg-3 p-1">
+                <div class="card p-3 mb-lg-3 mb-1">
+                    <div class="tab_list_area row pb-0">
+                        <div class="col-12">
+                            <div class="btn-group">
+                                <a id="tab_btn" data-show="branch_stock" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i>@lang('menu.business_location_stock')</a>
+
+                                <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
+                                <i class="fas fa-scroll"></i>@lang('menu.warehouse_stock')</a>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab_contant branch_stock">
+                    <div class="row g-lg-3 g-1">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="branch_stock_filter_form">
+                                        @csrf
+                                        <div class="form-group row">
+                                            @if ($addons->branches == 1)
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-lg-2 col-md-4">
+                                                        <label><strong>@lang('menu.business_location') :</strong></label>
+                                                        <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
+                                            @endif
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.category') :</strong></label>
+                                                <select id="category_id" name="category_id" class="form-control select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($categories as $c)
+                                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.brand'):</strong></label>
+                                                <select id="brand_id" name="brand_id" class="form-control select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($brands as $b)
+                                                        <option value="{{ $b->id }}">{{ $b->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.unit') :</strong></label>
+                                                <select id="unit_id" name="unit_id" class="form-control select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($units as $u)
+                                                        <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.tax') :</strong></label>
+                                                <select id="tax_id" name="tax_id" class="form-control select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($taxes as $t)
+                                                        <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <div class="row align-items-end">
+                                                    <div class="col-6">
+                                                        <label><strong></strong></label>
+                                                        <div class="input-group">
+                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-group justify-content-end">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end m-0" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="p-3">
-                            <div class="card p-3 mb-3">
-                                <div class="tab_list_area row pb-0">
-                                    <div class="col-md-8">
-                                        <div class="btn-group">
-                                            <a id="tab_btn" data-show="branch_stock" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Business Location Stock</a>
-
-                                            <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
-                                            <i class="fas fa-scroll"></i> Warehouse Stock</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="input-group justify-content-end">
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i> Print</a>
-                                        </div>
-                                    </div>
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="data_preloader">
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                </div>
+                                <div class="table-responsive" id="data_list1">
+                                    <table class="display data_tbl data__table b_data_tbl">
+                                        <thead>
+                                            <tr class="text-start">
+                                                <th>@lang('menu.p_code')</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.business_location')</th>
+                                                <th>@lang('menu.unit_price')</th>
+                                                <th>@lang('menu.current_stock')</th>
+                                                <th>@lang('menu.stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+                                                <th>@lang('menu.total_sold')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                            <tr class="bg-secondary">
+                                                <th class="text-white text-end" colspan="3">@lang('menu.total') : </th>
+                                                <th class="text-white text-end">---</th>
+                                                <th class="text-white text-end" id="stock"></th>
+                                                <th class="text-white text-end" id="stock_value"></th>
+                                                <th class="text-white text-end" id="total_sale"></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <div class="tab_contant branch_stock">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <div class="card py-2">
-                                            <div class="col-md-12">
-                                                <form id="branch_stock_filter_form" class="px-2">
-                                                    @csrf
-                                                    <div class="form-group row">
-                                                        @if ($addons->branches == 1)
-                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                <div class="col-md-2">
-                                                                    <label><strong>Business Location :</strong></label>
-                                                                    <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                        @foreach ($branches as $branch)
-                                                                            <option value="{{ $branch->id }}">
-                                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            @endif
-                                                        @endif
+                <div class="tab_contant warehouse_stock d-hide">
+                    <div class="row g-lg-3 g-1">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="warehouse_stock_filter_form">
+                                        @csrf
+                                        <div class="form-group row justify-content-end">
+                                            @if ($addons->branches == 1)
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-lg-2 col-md-4">
+                                                        <label><strong>@lang('menu.business_location') :</strong></label>
+                                                        <select name="branch_id" class="form-control select2" id="w_branch_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
+                                            @endif
 
-                                                        <div class="col-md-2">
-                                                            <label><strong>Category :</strong></label>
-                                                            <select id="category_id" name="category_id" class="form-control">
-                                                                <option value="">All</option>
-                                                                @foreach ($categories as $c)
-                                                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <label><strong>@lang('menu.warehouse') :</strong></label>
+                                                    <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
+                                                        <option value="">@lang('menu.select_business_location_first')</option>
+                                                    </select>
+                                                @else
+                                                    @php
+                                                        $wh = DB::table('warehouse_branches')
+                                                            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
+                                                            ->orWhere('warehouse_branches.is_global', 1)
+                                                            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+                                                            ->select(
+                                                                'warehouses.id',
+                                                                'warehouses.warehouse_name',
+                                                                'warehouses.warehouse_code',
+                                                            )->get();
+                                                    @endphp
 
-                                                        <div class="col-md-2">
-                                                            <label><strong>Brand :</strong></label>
-                                                            <select id="brand_id" name="brand_id" class="form-control">
-                                                                <option value="">All</option>
-                                                                @foreach ($brands as $b)
-                                                                    <option value="{{ $b->id }}">{{ $b->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                                    <label><strong>@lang('menu.warehouse') :</strong></label>
+                                                    <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
+                                                        <option value="">@lang('menu.all')</option>
+                                                        @foreach ($wh as $row)
+                                                            <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @endif
+                                            </div>
 
-                                                        <div class="col-md-2">
-                                                            <label><strong>Unit :</strong></label>
-                                                            <select id="unit_id" name="unit_id" class="form-control">
-                                                                <option value="">All</option>
-                                                                @foreach ($units as $u)
-                                                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.category') :</strong></label>
+                                                <select id="w_category_id" name="category_id" class="form-control common_submitable select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($categories as $c)
+                                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                                        <div class="col-md-2">
-                                                            <label><strong>Tax :</strong></label>
-                                                            <select id="tax_id" name="tax_id" class="form-control">
-                                                                <option value="">All</option>
-                                                                @foreach ($taxes as $t)
-                                                                    <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.brand') :</strong></label>
+                                                <select id="w_brand_id" name="brand_id" class="form-control common_submitable select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($brands as $b)
+                                                        <option value="{{ $b->id }}">{{ $b->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                                        <div class="col-md-2">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <label><strong></strong></label>
-                                                                    <div class="input-group">
-                                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.unit') :</strong></label>
+                                                <select id="w_unit_id" name="unit_id" class="form-control common_submitable select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($units as $u)
+                                                        <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.tax') :</strong></label>
+                                                <select id="w_tax_id" name="tax_id" class="form-control common_submitable select2">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($taxes as $t)
+                                                        <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <div class="form-group row align-items-end mt-2">
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="branch_stock_print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                         </div>
                                                     </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="data_preloader">
-                                                <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                            </div>
-                                            <div class="table-responsive" id="data_list1">
-                                                <table class="display data_tbl data__table b_data_tbl">
-                                                    <thead>
-                                                        <tr class="text-start">
-                                                            <th>P.Code</th>
-                                                            <th>Product</th>
-                                                            <th>Business Location</th>
-                                                            <th>Unit Price</th>
-                                                            <th>Current Stock</th>
-                                                            <th>Stock Value <b><small>(By Unit Cost)</small></b></th>
-                                                            <th>Total Sold</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                    <tfoot>
-                                                        <tr class="bg-secondary">
-                                                            <th class="text-white text-end" colspan="3">Total : </th>
-                                                            <th class="text-white text-end">---</th>
-                                                            <th class="text-white text-end" id="stock"></th>
-                                                            <th class="text-white text-end" id="stock_value"></th>
-                                                            <th class="text-white text-end" id="total_sale"></th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
+                                                    <div class="col-6">
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                    </form>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="tab_contant warehouse_stock d-none">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <div class="card py-2">
-                                            <div class="col-md-12">
-                                                <form id="warehouse_stock_filter_form" class="px-2">
-                                                    @csrf
-                                                    <div class="form-group row">
-                                                        @if ($addons->branches == 1)
-                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                <div class="col-md-2">
-                                                                    <label><strong>Business Location :</strong></label>
-                                                                    <select name="branch_id" class="form-control" id="w_branch_id" autofocus>
-                                                                        <option value="">All</option>
-                                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                        @foreach ($branches as $branch)
-                                                                            <option value="{{ $branch->id }}">
-                                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-
-                                                        <div class="col-md-2">
-                                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                                <label><strong>Warehouse :</strong></label>
-                                                                <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                                    <option value="">Select Business Location First</option>
-                                                                </select>
-                                                            @else
-                                                                @php
-                                                                    $wh = DB::table('warehouse_branches')
-                                                                        ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
-                                                                        ->orWhere('warehouse_branches.is_global', 1)
-                                                                        ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
-                                                                        ->select(
-                                                                            'warehouses.id',
-                                                                            'warehouses.warehouse_name',
-                                                                            'warehouses.warehouse_code',
-                                                                        )->get();
-                                                                @endphp
-
-                                                                <label><strong>Warehouse :</strong></label>
-                                                                <select name="warehouse_id" class="form-control submit_able" id="warehouse_id" autofocus>
-                                                                    <option value="">All</option>
-                                                                    @foreach ($wh as $row)
-                                                                        <option value="{{ $row->id }}">{{ $row->warehouse_name.'/'.$row->warehouse_code }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            @endif
-                                                        </div>
-
-                                                        <div class="col-md-2">
-                                                            <label><strong>Category :</strong></label>
-                                                            <select id="w_category_id" name="category_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
-                                                                @foreach ($categories as $c)
-                                                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-2">
-                                                            <label><strong>Brand :</strong></label>
-                                                            <select id="w_brand_id" name="brand_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
-                                                                @foreach ($brands as $b)
-                                                                    <option value="{{ $b->id }}">{{ $b->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            </div>
-
-                                                        <div class="col-md-2">
-                                                            <label><strong>Unit :</strong></label>
-                                                            <select id="w_unit_id" name="unit_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
-                                                                @foreach ($units as $u)
-                                                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-2">
-                                                            <label><strong>Tax :</strong></label>
-                                                            <select id="w_tax_id" name="tax_id" class="form-control common_submitable">
-                                                                <option value="">All</option>
-                                                                @foreach ($taxes as $t)
-                                                                    <option value="{{ $t->id }}">{{ $t->tax_name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row">
-                                                        <div class="col-md-2 offset-8">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end mt-1" id="w_print_report"><i class="fas fa-print"></i> Print</a>
-                                                        </div>
-
-                                                        <div class="col-md-2">
-                                                            <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary mt-1 float-end"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="data_preloader" id="w_data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                            <div class="table-responsive" id="data_list">
-                                                <table class="display data_tbl data__table w_data_tbl w-100">
-                                                    <thead>
-                                                        <tr class="text-start">
-                                                            <th>P.Code</th>
-                                                            <th>Product</th>
-                                                            <th>Business Location</th>
-                                                            <th>Warehouse</th>
-                                                            <th>Unit Price</th>
-                                                            <th>Current Stock</th>
-                                                            <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                    <tr class="bg-secondary">
-                                                        <th class="text-white text-end" colspan="4">Total : </th>
-                                                        <th class="text-white text-end">---</th>
-                                                        <th class="text-white text-end" id="w_stock"></th>
-                                                        <th class="text-white text-end" id="w_stock_value"></th>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="data_preloader" id="w_data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                                <div class="table-responsive" id="data_list">
+                                    <table class="display data_tbl data__table w_data_tbl w-100">
+                                        <thead>
+                                            <tr class="text-start">
+                                                <th>@lang('menu.p_code')</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.business_location')</th>
+                                                <th>@lang('menu.warehouse')</th>
+                                                <th>@lang('menu.unit_price')</th>
+                                                <th>@lang('menu.current_stock')</th>
+                                                <th>@lang('menu.current_stock_value')<b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                        <tr class="bg-secondary">
+                                            <th class="text-white text-end" colspan="4">@lang('menu.total') : </th>
+                                            <th class="text-white text-end">---</th>
+                                            <th class="text-white text-end" id="w_stock"></th>
+                                            <th class="text-white text-end" id="w_stock_value"></th>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -430,7 +427,7 @@
             success:function(data){
 
                 $('#warehouse_id').empty();
-                $('#warehouse_id').append('<option value="">All</option>');
+                $('#warehouse_id').append('<option value="">@lang('menu.all')</option>');
                 $.each(data, function (key, val) {
 
                     $('#warehouse_id').append('<option value="'+val.id+'">'+val.warehouse_name+'/'+val.warehouse_code+'</option>');

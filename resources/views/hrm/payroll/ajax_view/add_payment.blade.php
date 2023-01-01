@@ -11,16 +11,16 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Employee : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name}}</li>
+                    <li><strong>{{ __('Employee') }} : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name}}</li>
                     <li>
-                        <strong>Business Location : </strong>
+                        <strong>@lang('menu.business_location') : </strong>
                         <span>
                             @if ($payroll->employee->branch)
                                 {{ $payroll->employee->branch->name.'/'.$payroll->employee->branch->branch_code }}
                             @else
-                                {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) 
+                                {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>)
                             @endif
-                        </span>  
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -28,8 +28,8 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Referance ID : </strong><span>{{ $payroll->reference_no }}</span> </li>
-                    
+                    <li><strong> @lang('menu.reference_id') : </strong><span>{{ $payroll->reference_no }}</span> </li>
+
                 </ul>
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li class="sale_due">
-                        <strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                        <strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
                         <span class="card_text total_due">{{ $payroll->due }}</span> </li>
                 </ul>
             </div>
@@ -50,7 +50,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-4">
-            <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="col-md-4">
-            <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="col-md-4">
-            <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
@@ -92,7 +92,7 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-4">
-            <label><strong>Credit Account :</strong> </label>
+            <label><strong>@lang('menu.credit_account') :</strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -113,21 +113,23 @@
         </div>
 
         <div class="col-md-4">
-            <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+            <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
             <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
         </div>
     </div>
 
     <div class="form-group mt-2">
-        <label><strong> Payment Note :</strong></label>
+        <label><strong> @lang('menu.payment_note') :</strong></label>
         <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
     </div>
 
     <div class="form-group row mt-3">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+            </div>
         </div>
     </div>
 </form>
@@ -156,7 +158,7 @@
             processData: false,
             success:function(data){
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                 }else{
@@ -164,7 +166,7 @@
                     table.ajax.reload();
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
-                    toastr.success(data); 
+                    toastr.success(data);
                 }
             },error: function(err) {
                 $('.submit_button').prop('type', 'submit');
@@ -172,10 +174,10 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    toastr.error('Server Error. Please contact the support team.'); 
+                    toastr.error('Server Error. Please contact the support team.');
                     return;
                 }
 

@@ -675,28 +675,28 @@ class SaleUtil
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     if ($row->due > 0) {
+                    if ($row->due > 0) {
 
-                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    }
+                }
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                // }
+                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                    data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                        class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                }
 
-                // if ($row->sale_return_due > 0) {
+                if ($row->sale_return_due > 0) {
 
-                //     if (auth()->user()->can('sale_payment')) {
+                    if (auth()->user()->can('sale_payment')) {
 
-                //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                    }
+                }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -791,7 +791,7 @@ class SaleUtil
                 ->orderBy('sales.report_date', 'desc');
         } else {
 
-            if (!auth()->user()->can('view_own_sale')) {
+            if (auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }
@@ -815,41 +815,41 @@ class SaleUtil
 
                 $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
 
-                if (!auth()->user()->can('shipment_access')) {
+                if (auth()->user()->can('shipment_access')) {
 
                     $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
-                // if (!auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     if ($row->due > 0) {
+                    if ($row->due > 0) {
 
-                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    }
+                }
 
-                // if (!auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                // }
+                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                }
 
-                // if ($row->sale_return_due > 0) {
+                if ($row->sale_return_due > 0) {
 
-                //     if (!auth()->user()->can('sale_payment')) {
+                    if (auth()->user()->can('sale_payment')) {
 
-                //         $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                    }
+                }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (!auth()->user()->can('pos_edit')) {
+                    if (auth()->user()->can('pos_edit')) {
 
                         $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
-                if (!auth()->user()->can('pos_delete')) {
+                if (auth()->user()->can('pos_delete')) {
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
@@ -956,20 +956,20 @@ class SaleUtil
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     if ($row->due > 0) {
+                    if ($row->due > 0) {
 
-                //         $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
-                //     }
-                // }
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                    }
+                }
 
-                // if (auth()->user()->can('sale_payment')) {
+                if (auth()->user()->can('sale_payment')) {
 
-                //     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                //     data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
-                //         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
-                // }
+                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
+                    data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                        class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -1126,7 +1126,7 @@ class SaleUtil
             $saleProducts = $query->orderBy('sales.report_date', 'desc');
         } else {
 
-            if (!auth()->user()->can('view_own_sale')) {
+            if (auth()->user()->can('view_own_sale')) {
 
                 $query->where('sales.admin_id', auth()->user()->id);
             }

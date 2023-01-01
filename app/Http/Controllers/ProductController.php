@@ -36,7 +36,7 @@ class ProductController extends Controller
         $this->productUtil = $productUtil;
         $this->productStockUtil = $productStockUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // index view
@@ -58,9 +58,22 @@ class ProductController extends Controller
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches'));
+        $total = [
+            'product' => DB::table('products')->count(),
+            'active' => DB::table('products')->where('status', 1)->count(),
+            'inActive' => DB::table('products')->where('status', 0)->count(),
+        ];
+        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches', 'total'));
     }
-
+    // public function changeStatus($id)
+    // {
+    //     $changeStatus = [
+    //         'product' => DB::table('products')->count(),
+    //         'active' => DB::table('products')->where('status', 1)->count(),
+    //         'inActive' => DB::table('products')->where('status', 0)->count(),
+    //     ];
+    //     return response()->json($changeStatus);
+    // }
     // Add product view
     public function create(Request $request)
     {
@@ -442,6 +455,7 @@ class ProductController extends Controller
         foreach ($request->product_ids as $product_id) {
 
             $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+
             $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
@@ -614,6 +628,7 @@ class ProductController extends Controller
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
+                'code' => 'required',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',
@@ -740,7 +755,7 @@ class ProductController extends Controller
                         $updateVariant->variant_price = $request->variant_prices_exc_tax[$index];
                         $updateVariant->delete_in_update = 0;
 
-                        if (isset($variant_images[$index])) {
+                        if (isset($variant_image[$index])) {
 
                             if ($updateVariant->variant_image != null) {
 
@@ -750,7 +765,7 @@ class ProductController extends Controller
                                 }
                             }
 
-                            $variantImage = $request->variant_images[$index];
+                            $variantImage = $request->variant_image[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                             Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $updateVariant->variant_image = $variantImageName;
@@ -768,9 +783,9 @@ class ProductController extends Controller
                         $addVariant->variant_profit = $request->variant_profits[$index];
                         $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
-                        if (isset($request->variant_images[$index])) {
+                        if (isset($request->variant_image[$index])) {
 
-                            $variantImage = $request->variant_images[$index];
+                            $variantImage = $request->variant_image[$index];
                             $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                             Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $addVariant->variant_image = $variantImageName;

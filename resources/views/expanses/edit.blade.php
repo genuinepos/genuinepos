@@ -8,74 +8,65 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h5>@lang('menu.edit_expense')</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_expanse_form" action="{{ route('expanses.update', $expense->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element">
-                                    <div class="section-header">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h5>Edit Expense</h5>
-                                                </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                                <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                                        class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                                </div>
-                                            </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>Voucher :</b> </label>
+                                        <div class="col-8">
+                                            <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
                                         </div>
                                     </div>
 
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>Voucher :</b> </label>
-                                                    <div class="col-8">
-                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
-                                                    </div>
-                                                </div>
+                                    <div class="input-group mt-1">
+                                        <label class=" col-4"><b>{{ __('Expense A/C') }} :</b> <span class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select required name="ex_account_id" class="form-control" id="ex_account_id">
+                                                @foreach ($expenseAccounts as $exAc)
+                                                    <option {{ $exAc->id == $expense->expense_account_id ? 'SELECTED' : '' }} value="{{ $exAc->id }}">
+                                                        {{ $exAc->name.' ('.App\Utils\Util::accountType($exAc->account_type).')' }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>Expense A/C :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <select required name="ex_account_id" class="form-control" id="ex_account_id">
-                                                            @foreach ($expenseAccounts as $exAc)
-                                                                <option {{ $exAc->id == $expense->expense_account_id ? 'SELECTED' : '' }} value="{{ $exAc->id }}">
-                                                                    {{ $exAc->name.' ('.App\Utils\Util::accountType($exAc->account_type).')' }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="col-md-6">
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>Expense Date :</b> </label>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control datepicker changeable"
+                                                value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="datepicker">
+                                        </div>
+                                    </div>
 
-                                            <div class="col-md-6">
-                                                <div class="input-group mt-1">
-                                                    <label class="col-4"><b>Expense Date :</b> </label>
-                                                    <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control datepicker changeable"
-                                                            value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="datepicker">
-                                                    </div>
-                                                </div>
-
-                                                <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>Expanse For :</b></label>
-                                                    <div class="col-8">
-                                                        <select name="admin_id" class="form-control" id="admin_id">
-                                                            <option value="">None</option>
-                                                            @foreach ($users as $user)
-                                                                <option {{ $user->id == $expense->admin_id ? 'SELECTED' : '' }} value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class=" col-4"><b>Expanse For :</b></label>
+                                        <div class="col-8">
+                                            <select name="admin_id" class="form-control" id="admin_id">
+                                                <option value="">@lang('menu.none')</option>
+                                                @foreach ($users as $user)
+                                                    <option {{ $user->id == $expense->admin_id ? 'SELECTED' : '' }} value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -84,66 +75,60 @@
                     </div>
                 </section>
 
-                <section class="mb-3">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element m-0">
-                                    <div class="heading_area">
-                                        <div class="row">
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="heading_area">
+                            <div class="row">
 
-                                            <div class="col-md-6">
-                                                <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>Descriptions</b></p>
-                                            </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted m-0 p-0 ps-1 float-start mt-1"><b>Descriptions</b></p>
+                                </div>
 
-                                            <div class="col-md-6">
-                                                <a href="#" class="text-primary m-0 p-0 ps-1 float-end me-1" data-bs-toggle="modal" data-bs-target="#addModal"><b>Add New Category</b></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="expense_description_table">
-                                                    <div class="table-responsive">
-                                                        <table class="table modal-table table-sm">
-                                                            <tbody id="description_body">
-                                                                @foreach ($expense->expense_descriptions as $description)
-                                                                    <tr>
-                                                                        <td id="index">
-                                                                            <b><span class="serial">{{ $loop->index + 1 }}</span></b>
-                                                                            <input class="index-{{ $loop->index + 1 }}" type="hidden" id="index">
-                                                                            <input type="hidden" name="description_ids[]" id="description_id" value="{{ $description->id }}">
-                                                                        </td>
-                                                                        <td>
-                                                                            <select required name="category_ids[]" class="form-control category_id" id="category_id">
-                                                                                <option value="">Select Expense Category</option>
-                                                                                @foreach ($categories as $category)
-                                                                                    <option {{ $category->id == $description->expense_category_id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </td>
+                                <div class="col-md-6">
+                                    <a href="#" class="text-primary m-0 p-0 ps-1 float-end me-1" data-bs-toggle="modal" data-bs-target="#addModal"><b>Add New Category</b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="expense_description_table">
+                                        <div class="table-responsive">
+                                            <table class="table modal-table table-sm">
+                                                <tbody id="description_body">
+                                                    @foreach ($expense->expense_descriptions as $description)
+                                                        <tr>
+                                                            <td id="index">
+                                                                <b><span class="serial">{{ $loop->index + 1 }}</span></b>
+                                                                <input class="index-{{ $loop->index + 1 }}" type="hidden" id="index">
+                                                                <input type="hidden" name="description_ids[]" id="description_id" value="{{ $description->id }}">
+                                                            </td>
+                                                            <td>
+                                                                <select required name="category_ids[]" class="form-control category_id" id="category_id">
+                                                                    <option value="">Select Expense Category</option>
+                                                                    @foreach ($categories as $category)
+                                                                        <option {{ $category->id == $description->expense_category_id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
 
-                                                                        <td>
-                                                                            <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" placeholder="Amount" value="{{ $description->amount }}">
-                                                                        </td>
+                                                            <td>
+                                                                <input required type="number" name="amounts[]" step="any" class="form-control" id="amount" placeholder="@lang('menu.amount')" value="{{ $description->amount }}">
+                                                            </td>
 
-                                                                        <td>
-                                                                            @if ($loop->index == 0)
-                                                                                <div class="btn_30_blue" >
-                                                                                    <a id="addMore" href=""><i class="fas fa-plus-square"></i></a>
-                                                                                </div>
-                                                                            @else
-                                                                                <a href="#" class="action-btn c-delete" id="remove_btn"><span class="fas fa-trash "></span></a>
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                            <td>
+                                                                @if ($loop->index == 0)
+                                                                    <div class="btn_30_blue" >
+                                                                        <a id="addMore" href=""><i class="fas fa-plus-square"></i></a>
+                                                                    </div>
+                                                                @else
+                                                                    <a href="#" class="action-btn c-delete" id="remove_btn"><span class="fas fa-trash "></span></a>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -152,45 +137,39 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form_element m-0">
-                                    <div class="element-body">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
-                                                    <div class="col-8">
-                                                        <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
-                                                        <span class="error error_total_amount"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
+                                        <div class="col-8">
+                                            <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
+                                            <span class="error error_total_amount"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class="col-4"><b>Tax :</b> </label>
-                                                    <div class="col-8">
-                                                        <select name="tax" class="form-control" id="tax">
-                                                            <option value="0.00">NoTax</option>
-                                                            @foreach ($taxes as $tax)
-                                                                <option {{ $tax->tax_percent == $expense->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') :</b> </label>
+                                        <div class="col-8">
+                                            <select name="tax" class="form-control" id="tax">
+                                                <option value="0.00">@lang('menu.no_tax')</option>
+                                                @foreach ($taxes as $tax)
+                                                    <option {{ $tax->tax_percent == $expense->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label for="inputEmail3" class=" col-4"><b>Net Total : </b>  </label>
-                                                    <div class="col-8">
-                                                        <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : </b>  </label>
+                                        <div class="col-8">
+                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -200,13 +179,11 @@
                 </section>
 
                 <section class="">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="submit-area py-3 mb-4">
-                                <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button class="btn btn-sm btn-success submit_button float-end">Save Changes</button>
-                            </div>
+                    <div class="submit-area d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i
+                                class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                            <button class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
                         </div>
                     </div>
                 </section>
@@ -228,7 +205,7 @@
                     <form id="add_quick_expense_category_form" action="{{ route('expanses.add.quick.expense.category') }}">
                         @csrf
                         <div class="form-group">
-                            <label><b>Name</b> : <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name')</b> : <span class="text-danger">*</span></label>
                             <input required type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Expense Category Name"/>
                             <span class="error error_ex_name"></span>
                         </div>
@@ -239,12 +216,13 @@
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i
+                                            class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -452,7 +430,7 @@
             html += '</td>';
 
             html += '<td>';
-            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="Amount">';
+            html += '<input required type="number" name="amounts[]" step="any" class="form-control" id="amount" value="" placeholder="@lang('menu.amount')">';
             html += '</td>';
 
             html += '<td>';

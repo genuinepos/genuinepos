@@ -29,14 +29,14 @@
                                 <div class="main-form">
                                    <div class="form_inner">
                                         <div class="form-title">
-                                            <p>User Login</p>
+                                            <p>@lang('menu.user_login')</p>
                                         </div>
                                         <form action="{{ route('login') }}" method="POST">
                                             @csrf
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
                                                 <input type="text" name="username" class="form-control form-st"
-                                                    value="{{ old('username') }}" placeholder="Username" required />
+                                                    value="{{ old('username') }}" placeholder="@lang('menu.username')" required />
                                             </div>
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>
@@ -60,7 +60,7 @@
                                                 @endif
                                                 <div class="form-group cx-box">
                                                     <input type="checkbox" id="remembar" class="form-control">
-                                                    <label for="remembar">Remembar me</label>
+                                                    <label for="remembar">@lang('menu.remember_me')</label>
                                                 </div>
                                             </div>
                                         </form>
@@ -78,10 +78,10 @@
                                             <p class="logo-main-sec">
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  config('speeddigit.app_logo_alt') }}">
                                             </p>
-                                            <p class="version"><span>Version:</span> {{ config('speeddigit.version')  }}</p>
-                                            <p class="details"><span>Address:</span> {{ config('speeddigit.address')  }}</p>
-                                            <p class="details"><span>Support:</span> {{ config('speeddigit.support_email')  }}</p>
-                                            <p class="details"><span>Website:</span> {{ config('speeddigit.website')  }}</p>
+                                            <p class="version"><span>@lang('menu.version')</span> {{ config('speeddigit.version')  }}</p>
+                                            <p class="details"><span>@lang('menu.address'):</span> {{ config('speeddigit.address')  }}</p>
+                                            <p class="details"><span>@lang('menu.support'):</span> {{ config('speeddigit.support_email')  }}</p>
+                                            <p class="details"><span>@lang('menu.website')</span> {{ config('speeddigit.website')  }}</p>
 
                                             <div class="function-btn">
                                                 <a href="{{ config('speeddigit.facebook')  }}" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
@@ -101,7 +101,7 @@
 
     {{-- <div class="back_btn_wrapper">
         <div class="back_btn">
-            <a href="#" class="btn">Back</a>
+            <a href="#" class="btn">@lang('menu.back')</a>
         </div>
     </div> --}}
 @endsection

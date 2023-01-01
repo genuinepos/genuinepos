@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-full-display">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> Sale Details (Invoice ID :
+                <h5 class="modal-title" id="exampleModalLabel"> @lang('menu.sale_details') (@lang('menu.invoice_id') :
                     <strong>
                         <span class="head_invoice_id">{{ $sale->invoice_id }}</span>
                     </strong>)
@@ -20,7 +20,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.customer') :- </strong></li>
-                            <li><strong>Name : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li><strong>@lang('menu.name') :</strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>Sale From : </strong></li>
+                            <li><strong>@lang('menu.sale_from') : </strong></li>
                             @if ($sale->branch)
                             <li>
                                 <strong>@lang('menu.stock_location') : </strong>
@@ -57,13 +57,13 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong>@lang('menu.invoice_id') : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>Sale Status : </strong>
+                            <li><strong>@lang('menu.sale_status') : </strong>
                                 @if ($sale->status == 1)
-                                    <span class="badge bg-success">Final</span>
+                                    <span class="badge bg-success">@lang('menu.final')</span>
                                 @elseif($sale->status == 2)
-                                    <span class="badge bg-primary">Draft</span>
+                                    <span class="badge bg-primary">@lang('menu.draft')</span>
                                 @elseif($sale->status == 3)
-                                    <span class="badge bg-info">Quotation</span>
+                                    <span class="badge bg-info">@lang('menu.quotation')</span>
                                 @endif
                             </li>
                             <li><strong>@lang('menu.payment_status') : </strong>
@@ -73,9 +73,9 @@
                                 @if ($sale->due <= 0)
                                     <span class="badge bg-success"> @lang('menu.paid') </span>
                                 @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    <span class="badge bg-primary text-white">Partial</span>
+                                    <span class="badge bg-primary text-white">@lang('menu.partial')</span>
                                 @elseif ($payable == $sale->due)
-                                    <span class="badge bg-danger text-white">Due</span>
+                                    <span class="badge bg-danger text-white">@lang('menu.due')</span>
                                 @endif
                             </li>
 
@@ -113,9 +113,9 @@
                                     <th class="text-startx">@lang('menu.item')</th>
                                     <th class="text-startx">@lang('menu.quantity')</th>
                                     <th class="text-startx">@lang('menu.unit_price_exc_tax')</th>
-                                    <th class="text-startx">Unit Discount</th>
+                                    <th class="text-startx">@lang('menu.unit_cost')</th>
                                     <th class="text-startx">@lang('menu.unit_tax')</th>
-                                    <th class="text-startx">Unit Price Inc.Tax</th>
+                                    <th class="text-startx">@lang('menu.unit_price') Inc.Tax</th>
                                     <th sclass="text-start">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
@@ -192,7 +192,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-startx">Shipment Charge</th>
+                                    <th class="text-startx">@lang('menu.shipment_charge')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="shipment_charge">
                                             {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
@@ -210,7 +210,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-startx">Sale Return</th>
+                                    <th class="text-startx">@lang('menu.sale_return')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="sale_return_amount">
                                             {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
@@ -228,7 +228,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-startx">Total Due</th>
+                                    <th class="text-startx">@lang('menu.total_due')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         <span class="total_due">
                                             {{ App\Utils\Converter::format_in_bdt($sale->due) }}
@@ -243,7 +243,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p><b>Shipping Details</b> : </p>
+                            <p><b>@lang('menu.shipping_details')</b> : </p>
                             <p class="shipping_details">
                                 {{ $sale->shipment_details ? $sale->shipment_details : 'N/A' }}</p>
                         </div>
@@ -258,16 +258,16 @@
             </div>
             <div class="modal-footer">
                 @if (auth()->user()->can('pos_edit'))
-                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}" tabindex="-1"> Edit</a>
+                    <a class="btn btn-sm btn-secondary" class="btn btn-sm btn-secondary" href="{{ route('sales.pos.edit', $sale->id) }}" tabindex="-1"> @lang('menu.edit')</a>
                 @endif
 
                 @if (auth()->user()->can('shipment_access'))
                     <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
-                    class="btn btn-sm btn-success">Print Packing Slip</button>
+                    class="btn btn-sm btn-success">{{ __('Print Packing Slip') }}</button>
                 @endif
 
-                <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">Print Challan</button>
-                <button type="button" class="btn btn-sm btn-primary print_btn">Print Invoice</button>
+                <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">@lang('menu.print_challan')</button>
+                <button type="button" class="btn btn-sm btn-primary print_btn">@lang('menu.print_invoice')</button>
                 <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">@lang('menu.close')</button>
             </div>
         </div>

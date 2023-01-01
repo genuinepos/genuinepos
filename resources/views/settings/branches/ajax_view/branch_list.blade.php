@@ -1,16 +1,16 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-start">Logo</th>
-            <th class="text-start">B.Location Name</th>
-            <th class="text-start">B.Location Code</th>
-            <th class="text-start">Phone</th>
-            <th class="text-start">City</th>
-            <th class="text-start">State</th>
-            <th class="text-start">Zip-Code</th>
-            <th class="text-start">Country</th>
-            <th class="text-start">Email</th>
-            <th class="text-start">Actions</th>
+            <th class="text-start">@lang('menu.logo')</th>
+            <th class="text-start">{{ __('B.Location Name') }}</th>
+            <th class="text-start">{{ __('B.Location Code') }}</th>
+            <th class="text-start">@lang('menu.phone')</th>
+            <th class="text-start">@lang('menu.city')</th>
+            <th class="text-start">@lang('menu.state')</th>
+            <th class="text-start">@lang('menu.zip_code')</th>
+            <th class="text-start">@lang('menu.country')</th>
+            <th class="text-start">@lang('menu.email')</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

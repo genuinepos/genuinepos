@@ -13,36 +13,30 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus-circle"></span>
+                    <h5>@lang('menu.create_process')</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_process_form" action="{{ route('manufacturing.process.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product['p_id'] }}">
                 <input type="hidden" name="variant_id" value="{{ $product['v_id'] ? $product['v_id'] : 'noid' }}">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Create Process</h5>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            @php
-                                                $p_code = $product['v_code'] ? $product['v_code'] : $product['p_code'];
-                                            @endphp
-                                            <p> <strong>Product :</strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
-                                        </div>
-                                    </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @php
+                                        $p_code = $product['v_code'] ? $product['v_code'] : $product['p_code'];
+                                    @endphp
+                                    <p> <strong>@lang('menu.product') :</strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -53,12 +47,12 @@
                     <div class="sale-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
+                                <div class="card mb-3">
+                                    <div class="card-body p-2">
+                                        <div class="row mb-3">
                                             <div class="col-md-6 offset-md-3">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Select Ingredients</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.select_ingredients')</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -72,27 +66,26 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Ingredient</th>
-                                                                    <th>Final Quantity</th>
-                                                                    <th>Unit</th>
-                                                                    <th>Unit Cost</th>
-                                                                    <th>SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="ingredient_list"></tbody>
-                                                        </table>
-                                                    </div>
+                                        <div class="sale-item-sec">
+                                            <div class="sale-item-inner">
+                                                <div class="table-responsive">
+                                                    <table class="display data__table table-striped">
+                                                        <thead class="staky">
+                                                            <tr>
+                                                                <th>@lang('menu.ingredient')</th>
+                                                                <th>@lang('menu.final_quantity')</th>
+                                                                <th>@lang('menu.unit')</th>
+                                                                <th>@lang('menu.unit_cost')</th>
+                                                                <th>@lang('menu.sub_total')</th>
+                                                                <th><i class="fas fa-trash-alt"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="ingredient_list"></tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -103,39 +96,35 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="mt-1 float-end clearfix"><strong>Total Ingrediant Cost : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant Cost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total_output_qty') :</b></label>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <label><b>Total Output Qty :</b></label>
-                                            <div class="row">
-                                                <div class="col-7">
-                                                    <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="Total Output Quantity" value="1.00">
-                                                </div>
-
-                                                <div class="col-5">
-                                                    <select name="unit_id" class="form-control" id="unit_id"></select>
-                                                </div>
-                                            </div>
+                                        <div class="col-7">
+                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="1.00">
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <label><b>Addtional Production Cost :</b></label>
-                                            <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label><b>Total Cost :</b></label>
-                                            <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="Total Cost">
+                                        <div class="col-5">
+                                            <select name="unit_id" class="form-control" id="unit_id"></select>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label><b>{{ __('Additional Production Cost') }} :</b></label>
+                                    <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total_cost') :</b></label>
+                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')">
                                 </div>
                             </div>
                         </div>
@@ -144,10 +133,11 @@
 
                 <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                            </div>
                         </div>
                     </div>
                 </div>

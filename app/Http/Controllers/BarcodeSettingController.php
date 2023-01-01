@@ -28,9 +28,7 @@ class BarcodeSettingController extends Controller
                     $html .= '<a href="' . route('settings.barcode.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                     if ($row->is_default == 0) {
                         $html .= '<a href="' . route('settings.barcode.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                        $html .= '<a href="' . route('settings.barcode.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
-                        Set Default
-                        </a>';
+                        $html .= '<a href="' . route('settings.barcode.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn"> Set Default</a>';
                     }
 
                     $html .= '</div>';
@@ -88,8 +86,8 @@ class BarcodeSettingController extends Controller
             'is_default' => isset($request->set_as_default) ? 1 : 0,
         ]);
 
-        $barcodeSetting = BarcodeSetting::all();
-        if (count($barcodeSetting) == 1) {
+        $barcodeSettingCount = BarcodeSetting::count();
+        if ($barcodeSettingCount == 1) {
             $barcodeSetting = BarcodeSetting::first();
             $barcodeSetting->is_default = 1;
             $barcodeSetting->save();
@@ -120,6 +118,14 @@ class BarcodeSettingController extends Controller
             'stickers_in_one_sheet' => 'required',
         ]);
 
+        if (isset($request->set_as_default)) {
+            $defaultBarcodeSetting = BarcodeSetting::where('is_default', 1)->first();
+            if ($defaultBarcodeSetting) {
+                $defaultBarcodeSetting->is_default = 0;
+                $defaultBarcodeSetting->save();
+            }
+        }
+
         $updateBs = BarcodeSetting::where('id', $id)->first();
 
         $updateBs->update([
@@ -136,8 +142,8 @@ class BarcodeSettingController extends Controller
             'column_distance' => $request->column_distance,
             'stickers_in_a_row' => $request->stickers_in_a_row,
             'stickers_in_one_sheet' => $request->stickers_in_one_sheet,
+            'is_default' => isset($request->set_as_default) ? 1 : 0,
         ]);
-
         return response()->json('Barcode sticker setting updated Successfully.');
     }
 
@@ -163,5 +169,10 @@ class BarcodeSettingController extends Controller
         $updateBs->is_default = 1;
         $updateBs->save();
         return response()->json('Default set successfully');
+    }
+
+    public function designPage()
+    {
+        return view('settings.barcode_settings.design_pages');
     }
 }

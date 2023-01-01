@@ -16,25 +16,25 @@
                             <div class="breadCrumbHolder module w-100">
                                 <div id="breadCrumb3" class="breadCrumb module">
                                     <ul>
-                                        @if (!auth()->user()->can('process_view'))
+                                        @if(auth()->user()->can('process_view'))
                                             <li>
                                                 <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (!auth()->user()->can('production_view'))
+                                        @if(auth()->user()->can('production_view'))
                                             <li>
                                                 <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (!auth()->user()->can('manuf_settings'))
+                                        @if(auth()->user()->can('manuf_settings'))
                                             <li>
                                                 <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h text-primary"></i> <b>@lang('menu.manufacturing_setting')</b></a>
                                             </li>
                                         @endif
 
-                                        @if (!auth()->user()->can('manuf_report'))
+                                        @if(auth()->user()->can('manuf_report'))
                                             <li>
                                                 <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
                                             </li>
@@ -48,8 +48,8 @@
                                 <span class="fas fa-sliders-h"></span>
                                 <h6>Settings</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
                             </a>
                         </div>
                         <div class="p-3">
@@ -58,7 +58,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-3">
-                                            <label><strong>Production Reference prefix :</strong></label>
+                                            <label><strong>@lang('menu.production_reference_prefix') :</strong></label>
                                             @php
                                                 $voucherPrefix = '';
                                                 if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix'])){
@@ -66,7 +66,7 @@
                                                 }
                                             @endphp
                                             <input type="text" name="production_ref_prefix" class="form-control"
-                                                autocomplete="off" placeholder="Production Reference prefix"
+                                                autocomplete="off" placeholder="@lang('menu.production_reference_prefix')"
                                                 value="{{ $voucherPrefix }}">
                                         </div>
 
@@ -77,7 +77,7 @@
                                                         @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
                                                             {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
-                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>Enable editing ingredients quantity in production</b>
+                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>@lang('menu.enable_editing_ingredients_quantity_in_production')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                         @if(isset(json_decode($generalSettings->mf_settings, true)['enable_updating_product_price']))
                                                             {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
-                                                        name="enable_updating_product_price"> &nbsp; <b>Update product cost and selling price based on total production cost, on finalizing production</b>
+                                                        name="enable_updating_product_price"> &nbsp; <b>@lang('menu.update_selling_finalizing_production')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -98,8 +98,8 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
                                             </div>
                                         </div>
                                     </div>

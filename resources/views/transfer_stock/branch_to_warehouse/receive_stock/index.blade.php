@@ -10,10 +10,10 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-check-double"></span>
-                                <h5>Receive Stocks</h5>
+                                <h5>@lang('menu.receive_stocks')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -21,26 +21,26 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Transferred Stocks <small>(From Business Location)</small></h6>
+                                    <h6>@lang('menu.all_transferred_stocks') <small>(@lang('menu.from_business_location'))</small></h6>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Reference ID</th>
-                                                <th class="text-start">Warehouse(From)</th>
-                                                <th class="text-start">B.Location(To)</th>
-                                                <th class="text-start">Total Item</th>
-                                                <th class="text-start">Total Qty</th>
-                                                <th class="text-start">Status</th>
-                                                <th class="text-center">Actions</th>
+                                                <th class="text-start">@lang('menu.date')</th>
+                                                <th class="text-start">@lang('menu.reference_id')</th>
+                                                <th class="text-start">@lang('menu.warehouse')(From)</th>
+                                                <th class="text-start">@lang('menu.b_location')(To)</th>
+                                                <th class="text-start">@lang('menu.total_item')</th>
+                                                <th class="text-start">@lang('menu.total_qty')</th>
+                                                <th class="text-start">@lang('menu.status')</th>
+                                                <th class="text-center">@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -70,7 +70,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Send Mail</h6>
+                    <h6 class="modal-title" id="product_info">@lang('menu.send_mail')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -79,9 +79,9 @@
                     <form id="send_mail_form" action="" method="POST">
                         @csrf
                         <div class="form-group mt-1">
-                            <label><strong>To :</strong> </label>
+                            <label><strong>@lang('menu.to') :</strong> </label>
                             <select required name="user_email" class="form-control" id="user_email">
-                                <option value="">Select User</option>
+                                <option value="">@lang('menu.select_user')</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->email }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name.' ('.$user->email.')' }}</option>
                                 @endforeach
@@ -89,12 +89,12 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>Mail Note:</strong> </label>
+                            <label><strong>@lang('menu.mail_note')</strong> </label>
                             <textarea name="mail_note" class="form-control" cols="30" rows="4"></textarea>
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Send</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.send')</button>
                         </div>
                     </form>
                 </div>
@@ -133,7 +133,9 @@
 
         function transferDetails(url) {
             $('.data_preloader').show();
+            console.log("URL", url);
             $.get(url, function(data) {
+                console.log(data);
                 $('#transfer_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
@@ -142,7 +144,9 @@
 
         $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
-            var url = $(this).closest('tr').data('href');
+            // console.log("Getting", $(this).attr('href'))
+            // var url = $(this).closest('tr').data('href');
+            var url = $(this).attr('href');
             transferDetails(url);
         });
 

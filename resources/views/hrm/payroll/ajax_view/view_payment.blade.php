@@ -11,15 +11,15 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Employee : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name }}
+                    <li><strong>{{ __('Employee') }} : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name }}
                     </li>
 
-                    <li><strong>Branch: </strong>
+                    <li><strong>@lang('menu.branch') : </strong>
                         @if ($payroll->employee->branch)
                             {{ $payroll->employee->branch->name . '/' . $payroll->employee->branch->branch_code }}
                         @else
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head
-                            Office</b>)
+                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')
+                            </b>)
                         @endif
                     </li>
                 </ul>
@@ -29,8 +29,8 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Referance No : </strong>{{ $payroll->reference_no }} </li>
-                    
+                    <li><strong> @lang('menu.reference_no') : </strong>{{ $payroll->reference_no }} </li>
+
                 </ul>
             </div>
         </div>
@@ -38,9 +38,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                    <li><strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
                         </strong>{{ $payroll->due }} </li>
-                    <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
                 </ul>
             </div>
         </div>
@@ -49,18 +49,18 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
-                <tr class="bg-primary">
-                    <th class="text-white">Date</th>
-                    <th class="text-white">Voucher No</th>
-                    <th class="text-white">Amount</th>
-                    <th class="text-white">Method</th>
-                    <th class="text-white">Account</th>
-                    <th class="text-white">Action</th>
+                <tr class="bg-secondary">
+                    <th class="text-white">@lang('menu.date')</th>
+                    <th class="text-white">@lang('menu.voucher_no')</th>
+                    <th class="text-white">@lang('menu.amount')</th>
+                    <th class="text-white">@lang('menu.method')</th>
+                    <th class="text-white">@lang('menu.account')</th>
+                    <th class="text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -90,7 +90,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="6" class="text-center">No Data Found</td>
+                        <td colspan="6" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

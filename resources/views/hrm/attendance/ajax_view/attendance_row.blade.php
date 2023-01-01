@@ -22,11 +22,11 @@
         </td>
 
         <td>
-            <input type="text" name="clock_in_notes[{{ $attendance->user_id }}]" class="form-control" value="{{ $attendance->clock_in_note }}" placeholder="Clock in note" />
+            <input type="text" name="clock_in_notes[{{ $attendance->user_id }}]" class="form-control" value="{{ $attendance->clock_in_note }}" placeholder="{{ __('Clock in note') }}" />
         </td>
 
         <td>
-            <input type="text" name="clock_out_notes[{{ $attendance->user_id }}]" class="form-control" placeholder="clock out note" value="{{ $attendance->clock_out_note }}" />
+            <input type="text" name="clock_out_notes[{{ $attendance->user_id }}]" class="form-control" placeholder="{{ __('Clock out note') }}" value="{{ $attendance->clock_out_note }}" />
         </td>
 
         <td>
@@ -51,11 +51,11 @@
     </td>
 
     <td>
-        <input type="text" name="clock_in_notes[{{ $employee->id }}]" class="form-control" placeholder="Clock in note" />
+        <input type="text" name="clock_in_notes[{{ $employee->id }}]" class="form-control" placeholder="{{ __('Clock in note') }}" />
     </td>
 
     <td>
-        <input type="text" name="clock_out_notes[{{ $employee->id }}]" class="form-control" placeholder="clock out note"/>
+        <input type="text" name="clock_out_notes[{{ $employee->id }}]" class="form-control" placeholder="{{ __('Clock out note') }}"/>
     </td>
 
     <td>

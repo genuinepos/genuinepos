@@ -1,10 +1,10 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr>
-            <th class="text-start">SL</th>
-            <th class="text-start">Variant</th>
-            <th class="text-start">Childs</th>
-            <th class="text-start">Action</th>
+            <th class="text-start">@lang('menu.sl')</th>
+            <th class="text-start">@lang('menu.variant')</th>
+            <th class="text-start">@lang('menu.child')</th>
+            <th class="text-start">@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>

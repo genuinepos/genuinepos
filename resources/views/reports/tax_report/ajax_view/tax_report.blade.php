@@ -1,15 +1,15 @@
 <div class="sale_and_expense_sum_area">
-    <div class="card-body card-custom">
+    <div class="card-body card-custom px-0">
 
         <div class="heading mb-1">
-            <h6 class="text-navy-blue">Overall (Output - Input - Expense) </h6>
+            <h6 class="text-navy-blue">@lang('menu.overall_output_expense') </h6>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="tax_sum">
-                    <h6 class="text-muted">Output Tax - Input Tax - Expense Tax :
-                        {{ json_decode($generalSettings->business, true)['currency'] }} <span id="tax_sum"></span> 
+                    <h6 class="text-muted">@lang('menu.output_tax_input_expense_tax') :
+                        {{ json_decode($generalSettings->business, true)['currency'] }} <span id="tax_sum"></span>
                     </h6>
                 </div>
             </div>
@@ -22,22 +22,11 @@
         <div class="card-body">
             <!--begin: Datatable-->
             <div class="tab_list_area">
-                <ul class="list-unstyled">
-                    <li>
-                        <a id="tab_btn" data-show="purchase" class="tab_btn tab_active" href="#"><i
-                                class="fas fa-info-circle"></i> Input Tax</a>
-                    </li>
-
-                    <li>
-                        <a id="tab_btn" data-show="sale" class="tab_btn" href="#">
-                            <i class="fas fa-scroll"></i>Output Tax</a>
-                    </li>
-
-                    <li>
-                        <a id="tab_btn" data-show="expense" class="tab_btn" href="#">
-                            <i class="fas fa-scroll"></i>Expense Tax</a>
-                    </li>
-                </ul>
+                <div class="btn-group">
+                    <a id="tab_btn" data-show="purchase" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.input_tax')</a>
+                    <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i>@lang('menu.output_tax')</a>
+                    <a id="tab_btn" data-show="expense" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i>@lang('menu.expense_tax')</a>
+                </div>
             </div>
 
             <div class="tab_contant purchase mt-1">
@@ -47,14 +36,14 @@
                             <table class="display data_tbl data__table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Invoice ID</th>
-                                        <th>Supplier</th>
-                                        <th>Tax Number</th>
-                                        <th>Total Amount</th>
-                                        <th>Discount</th>
-                                        <th>Tax Percent</th>
-                                        <th>Tax Amount</th>
+                                        <th>@lang('menu.date')</th>
+                                        <th>@lang('menu.invoice_id')</th>
+                                        <th>@lang('menu.supplier')</th>
+                                        <th>@lang('menu.tax_number')</th>
+                                        <th>@lang('menu.total_amount')</th>
+                                        <th>@lang('menu.discount')</th>
+                                        <th>@lang('menu.tax_percent')</th>
+                                        <th>@lang('menu.tax_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -83,15 +72,15 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr class="bg-primary">
-                                        <th colspan="4" class="text-white"><b>Total :</b></th>
-                                        <th  class="text-white"> 
+                                    <tr class="bg-secondary">
+                                        <th colspan="4" class="text-white"><b>@lang('menu.total') :</b></th>
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalPurchaseAmount, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white"> </th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalPurchaseTax, 2, '.', '') }}</b>
                                         </th>
@@ -103,21 +92,21 @@
                 </div>
             </div>
 
-            <div class="tab_contant sale d-none mt-1">
+            <div class="tab_contant sale d-hide mt-1">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table class="display data_tbl data__table table-striped" id="s-tax">
                                 <thead>
                                     <tr class="bg-navey-blue">
-                                        <th>Date</th>
-                                        <th>Invoice ID</th>
-                                        <th>Customer</th>
-                                        <th>Tax Number</th>
-                                        <th>Total Amount</th>
-                                        <th>Discount</th>
-                                        <th>Tax Percent</th>
-                                        <th>Tax Amount</th>
+                                        <th>@lang('menu.date')</th>
+                                        <th>@lang('menu.invoice_id')</th>
+                                        <th>@lang('menu.customer')</th>
+                                        <th>@lang('menu.tax_number')</th>
+                                        <th>@lang('menu.total_amount')</th>
+                                        <th>@lang('menu.discount')</th>
+                                        <th>@lang('menu.tax_percent')</th>
+                                        <th>@lang('menu.tax_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,9 +117,9 @@
                                     @foreach ($sales as $sale)
                                         <tr>
                                             <td class="text-navy-blue">{{ date('d/m/Y', strtotime($sale->date)) }}</td>
-                                          
+
                                             <td class="text-navy-blue">{{ $sale->invoice_id }}</td>
-                                           
+
                                             <td class="text-navy-blue">{{ $sale->customer_name ? $sale->customer_name : 'Walk-In-Customer' }}</td>
                                             <td class="text-navy-blue">{{ $sale->tax_number }}</td>
                                             <td class="text-navy-blue">
@@ -153,15 +142,15 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr class="bg-primary">
-                                        <th colspan="4" class="text-center text-white"><b>Total :</b></th>
-                                        <th  class="text-white"> 
+                                    <tr class="bg-secondary">
+                                        <th colspan="4" class="text-center text-white"><b>@lang('menu.total') :</b></th>
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalSaleAmount, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white"> </th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $TotalsaleTax, 2, '.', '') }}</b>
                                         </th>
@@ -173,18 +162,18 @@
                 </div>
             </div>
 
-            <div class="tab_contant expense d-none mt-1">
+            <div class="tab_contant expense d-hide mt-1">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table class="display data_tbl data__table table-striped" id="e-tax">
                                 <thead>
                                     <tr class="bg-navey-blue">
-                                        <th>Date</th>
-                                        <th>Invoice ID</th>
-                                        <th>Total Amount</th>
-                                        <th>Tax Percent</th>
-                                        <th>Tax Amount</th>
+                                        <th>@lang('menu.date')</th>
+                                        <th>@lang('menu.invoice_id')</th>
+                                        <th>@lang('menu.total_amount')</th>
+                                        <th>@lang('menu.tax_percent')</th>
+                                        <th>@lang('menu.tax_amount')</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -204,24 +193,24 @@
                                                 $taxAmount = $expense->total_amount / 100 * $expense->tax_percent;
                                             @endphp
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'].' '.$taxAmount}} 
+                                                {{ json_decode($generalSettings->business, true)['currency'].' '.$taxAmount}}
                                                 @php
                                                     $totalExpense += $expense->total_amount;
-                                                    $totalExpenseTax += $taxAmount;  
+                                                    $totalExpenseTax += $taxAmount;
                                                 @endphp
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <tr class="bg-primary">
-                                        <th colspan="2" class="text-center text-white"><b>Total :</b></th>
-                                        <th  class="text-white"> 
+                                    <tr class="bg-secondary">
+                                        <th colspan="2" class="text-center text-white"><b>@lang('menu.total') :</b></th>
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalExpense, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
-                                        <th  class="text-white"> 
+                                        <th  class="text-white">
                                             <b>{{ json_decode($generalSettings->business, true)['currency'] }}
                                             {{ number_format((float) $totalExpenseTax, 2, '.', '') }}</b>
                                         </th>

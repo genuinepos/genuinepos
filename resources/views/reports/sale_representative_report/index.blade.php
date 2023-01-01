@@ -16,206 +16,207 @@
 @section('title', 'Sales Representative Report - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-desktop"></span>
-                                <h5>Sales Representative Report</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-desktop"></span>
+                    <h5>@lang('menu.sales_representative_report')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                </a>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form>
-                                            @csrf
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3 offset-md-3">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @else
-                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    @endif
-                                                @endif
-                                                <div class="col-md-3">
-                                                    <label><strong>User :</strong></label>
-                                                    <select name="user_id" class="form-control submit_able" id="user_id" autofocus>
-                                                        <option value="">All</option>
-                                                    </select>
-                                                </div>
+            <div class="p-3">
+                <div class="form_element rounded mt-0 mb-3">
+                    <div class="element-body">
+                        <form>
+                            @csrf
+                            <div class="form-group row align-items-end">
+                                @if ($addons->branches == 1)
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-3">
+                                            <label><strong>@lang('menu.business_location') :</strong></label>
+                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @else
+                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                    @endif
+                                @endif
+                                <div class="col-md-3">
+                                    <label><strong>User :</strong></label>
+                                    <select name="user_id" class="form-control submit_able select2" id="user_id" autofocus>
+                                        <option value="">@lang('menu.all')</option>
+                                    </select>
+                                </div>
 
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submitable_input"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                                <div class="col-md-3">
+                                    <label><strong>@lang('menu.date_range') :</strong></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i
+                                                    class="fas fa-calendar-week input_i"></i></span>
+                                        </div>
+                                        <input readonly type="text" name="date_range" id="date_range"
+                                            class="form-control daterange submitable_input"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row align-items-end pt-md-0 pt-3">
+                                        <div class="col-6">
+                                            <div class="input-group">
+                                                <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start">
+                                                    <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
+                                                </button>
                                             </div>
-                                        </form>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card report_data_area p-2">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="report_data">
+                        <div class="sale_and_expense_sum_area">
+                            <div class="card-body card-custom px-0">
+
+                                <div class="heading">
+                                    <h6 class="text-muted">@lang('menu.total_sale_return') : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="tax_sum">
+                                            <h6 class="text-muted">@lang('menu.expense')  : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="expense_amount"></span></h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row margin_row mt-1">
-                            <div class="report_data_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="report_data">
-                                    <div class="sale_and_expense_sum_area">
-                                        <div class="card-body card-custom">
+                        <div class="user_sale_and_expense_list">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <div class="tab_list_area">
+                                        <div class="btn-group">
+                                            <a id="tab_btn" data-show="sales" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.sales')</a>
 
-                                            <div class="heading">
-                                                <h6 class="text-muted">Total Sale - Total Sales Return : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
-                                            </div>
+                                            <a id="tab_btn" data-show="expense" class="btn btn-sm btn-primary tab_btn" href="#">
+                                            <i class="fas fa-scroll"></i> @lang('menu.expense')</a>
+                                        </div>
+                                    </div>
 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="tax_sum">
-                                                        <h6 class="text-muted">Expense  : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="expense_amount"></span></h6>
-                                                    </div>
+                                    <div class="tab_contant sales">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive" >
+                                                    <table class="display data_tbl data__table" id="sale_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>@lang('menu.date')</th>
+                                                                <th>@lang('menu.invoice_id')</th>
+                                                                <th>@lang('menu.customer')</th>
+                                                                <th>@lang('menu.branch')</th>
+                                                                <th>@lang('menu.payment_status')</th>
+                                                                <th>@lang('menu.total_amount')</th>
+                                                                <th>@lang('menu.total_return')</th>
+                                                                <th>@lang('menu.total_paid')</th>
+                                                                <th>@lang('menu.total_remaining')</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr class="bg-secondary">
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th class="text-white">@lang('menu.total') :</th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="total_amount"></span>
+                                                                </th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="total_return"></span>
+                                                                </th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="paid"></span>
+                                                                </th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="due"></span>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="user_sale_and_expense_list">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <!--begin: Datatable-->
-                                                <div class="tab_list_area">
-                                                    <ul class="list-unstyled">
-                                                        <li>
-                                                            <a id="tab_btn" data-show="sales" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Seles</a>
-                                                        </li>
+                                    <div class="tab_contant expense d-hide">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive">
+                                                    <table class="display data_tbl data__table w-100" id="expense_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>@lang('menu.date')</th>
+                                                                <th>@lang('menu.reference_no')</th>
+                                                                <th>@lang('menu.branch')</th>
+                                                                <th>@lang('menu.expense_for')</th>
+                                                                <th>@lang('menu.payment_status')</th>
+                                                                <th>@lang('menu.total_amount')</th>
+                                                                <th>@lang('menu.total_paid')</th>
+                                                                <th>@lang('menu.total_due')</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                        <li>
-                                                            <a id="tab_btn" data-show="expense" class="tab_btn" href="#">
-                                                            <i class="fas fa-scroll"></i> Expense</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="tab_contant sales">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-responsive" >
-                                                                <table class="display data_tbl data__table" id="sale_table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Date</th>
-                                                                            <th>Invoice ID</th>
-                                                                            <th>Customer</th>
-                                                                            <th>Branch</th>
-                                                                            <th>Payment Status</th>
-                                                                            <th>Total Amount</th>
-                                                                            <th>Total Return</th>
-                                                                            <th>Total Paid</th>
-                                                                            <th>Total Remaining</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-
-                                                                    </tbody>
-                                                                    <tfoot>
-                                                                        <tr class="bg-secondary">
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th class="text-white">Total :</th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="total_amount"></span>
-                                                                            </th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="total_return"></span>
-                                                                            </th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="paid"></span>
-                                                                            </th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="due"></span>
-                                                                            </th>
-                                                                        </tr>
-                                                                    </tfoot>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="tab_contant expense d-none">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-responsive">
-                                                                <table class="display data_tbl data__table w-100" id="expense_table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Date</th>
-                                                                            <th>Reference No</th>
-                                                                            <th>Branch</th>
-                                                                            <th>Expense For</th>
-                                                                            <th>Payment Status</th>
-                                                                            <th>Total Amount</th>
-                                                                            <th>Total Paid</th>
-                                                                            <th>Total Due</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-
-                                                                    </tbody>
-                                                                    <tfoot>
-                                                                        <tr class="bg-secondary">
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th class="text-white">Total :</th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="ex_total_amount"></span>
-                                                                            </th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="ex_paid"></span>
-                                                                            </th>
-                                                                            <th class="text-white">
-                                                                                {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                                                <span id="ex_due"></span>
-                                                                            </th>
-                                                                        </tr>
-                                                                    </tfoot>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr class="bg-secondary">
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th class="text-white">@lang('menu.total') :</th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="ex_total_amount"></span>
+                                                                </th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="ex_paid"></span>
+                                                                </th>
+                                                                <th class="text-white">
+                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    <span id="ex_due"></span>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -329,7 +330,7 @@
 </script>
 
 <script type="text/javascript">
-    {{-- 
+    {{--
     //Set accounts in payment and payment edit form
     function setAdmin(){
         $.ajax({

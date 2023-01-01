@@ -12,18 +12,18 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Customer : </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li><strong>Phone : </strong>
+                    <li><strong>@lang('menu.phone') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
                     </li>
                     <li>
-                        <strong>Business : </strong>
+                        <strong>@lang('menu.business') : </strong>
                         <span class="card_text customer_business">{{ $customer->business_name }}</span>
                     </li>
                 </ul>
@@ -33,19 +33,19 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Sale : </strong>
+                    <li><strong>@lang('menu.total_sale') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li><strong>Total Paid : </strong>
+                    <li><strong>@lang('menu.total_paid') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li><strong>Total Due : </strong>
+                    <li><strong>@lang('menu.total_due') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale_due }}
@@ -61,13 +61,13 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Receiving Amount :</b> </label>
-            <input type="text" name="amount" class="form-control mr_input" id="mr_amount" placeholder="Receiving Amount" data-name="Receiving amount"/>
+            <label><b>@lang('menu.receiving_amount') :</b> </label>
+            <input type="text" name="amount" class="form-control mr_input" id="mr_amount" placeholder="@lang('menu.receiving_amount')" data-name="@lang('menu.receiving_amount')"/>
             <span class="error error_mr_amount"></span>
         </div>
 
         <div class="col-md-3">
-            <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+            <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
@@ -79,50 +79,52 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>Account Details :</b> </label>
+            <label><b>{{ __('Account Details ') }} :</b> </label>
             <input type="text" name="account_details" class="form-control mr_input" id="mr_amount" placeholder="Account Details"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Receiver :</b> </label>
+            <label><b>@lang('menu.receiver') :</b> </label>
             <input type="text" name="receiver" class="form-control mr_input" id="mr_amount" placeholder="Receiver Name"/>
         </div>
     </div>
 
     <div class="form-group row mt-2">
         <div class="col-md-12">
-            <label><strong>Paper Note :</strong></label>
+            <label><strong>@lang('menu.paper_note') :</strong></label>
             <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                placeholder="Paper Note"></textarea>
+                placeholder="@lang('menu.paper_note')"></textarea>
         </div>
     </div>
 
     <div class="extra_label">
         <div class="form-group row mt-2">
             <div class="col-md-3">
-                <p> <input type="checkbox" CHECKED name="is_customer_name" value="1"> &nbsp; <b>Show Customer Name</b></p>
+                <p> <input type="checkbox" CHECKED name="is_customer_name" value="1"> &nbsp; <b>@lang('menu.show_customer_name')</b></p>
             </div>
 
             <div class="col-md-3">
-                <p> <input type="checkbox" CHECKED name="is_date" value="1"> &nbsp; <b>Show Date</b></p>
+                <p> <input type="checkbox" CHECKED name="is_date" value="1"> &nbsp; <b>@lang('menu.show_date')</b></p>
             </div>
 
             <div class="col-md-4">
-                <p> <input type="checkbox" name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>Is Header Less For Pad Print?</b> </p>
+                <p> <input type="checkbox" name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>@lang('menu.is_header_less_for_pad_print')?</b> </p>
             </div>
 
-            <div class="col-md-4 gap-from-top-add d-none">
-                <label><b>Gap From Top :</b> </label>
-                <input type="text" name="gap_from_top" class="form-control" placeholder="Gap From Top"/>
+            <div class="col-md-4 gap-from-top-add d-hide">
+                <label><b>@lang('menu.gap_from_top') :</b> </label>
+                <input type="text" name="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')"/>
             </div>
         </div>
     </div>
 
     <div class="form-group row mt-3">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success float-end">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+            </div>
         </div>
     </div>
 </form>

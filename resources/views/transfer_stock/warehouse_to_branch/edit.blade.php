@@ -14,71 +14,66 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h6>{{ __('Edit Transfer Stock') }}</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_transfer_to_branch_form" action="{{ route('transfer.stock.to.branch.update', $transferId) }}" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h6>Edit Transfer Stock</h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4"> <b>@lang('menu.warehouse') :</b><span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                <option value="">@lang('menu.select_warehouse')</option>
+                                                @foreach ($warehouses as $warehouse)
+                                                    <option {{ $transfer->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-hide" value="{{ $transfer->warehouse_id }}">
+                                            <span class="error error_warehouse_id"></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"> <b>Warehouse :</b><span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $warehouse)
-                                                            <option {{ $transfer->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <input type="text" name="warehouse_id" id="req_warehouse_id" class="d-none" value="{{ $transfer->warehouse_id }}">
-                                                    <span class="error error_warehouse_id"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4"> <b>@lang('menu.b_location') :</b></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"> <b>B.Location :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-2"><b>@lang('menu.date'):</b></label>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control changeable" autocomplete="off" id="datepicker"
+                                                value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-2"><b>Date :</b></label>
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off" id="datepicker"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-3"><b>Ref. ID :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" autocomplete="off">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-3"><b>@lang('menu.ref_id') :</b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -88,23 +83,20 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
+                    <div class="sale-content mb-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
+                                <div class="card">
+                                    <div class="card-body p-2">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
+                                                    <label class="col-form-label">@lang('menu.item_search')</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
                                                         <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
-                                                        <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark"></i></span>
-                                                        </div>
                                                     </div>
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
@@ -120,11 +112,11 @@
                                                         <table class="table display table-sm data__table">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th>Product</th>
+                                                                    <th>@lang('menu.product')</th>
                                                                     <th></th>
-                                                                    <th class="text-center">Quantity</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">SubTotal</th>
+                                                                    <th class="text-center">@lang('menu.quantity')</th>
+                                                                    <th class="text-center">@lang('menu.unit')</th>
+                                                                    <th class="text-center">@lang('menu.sub_total')</th>
                                                                     <th><i class="fas fa-trash-alt text-white"></i></th>
                                                                 </tr>
                                                             </thead>
@@ -143,47 +135,43 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Total Item:</label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                                    <input type="number" step="any" class="d-none" name="total_send_quantity" id="total_send_quantity">
-                                                </div>
-                                            </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4">@lang('menu.total_item'):</label>
+                                        <div class="col-8">
+                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
+                                            <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4">@lang('menu.net_total') : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                        <div class="col-8">
+                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Ship Cost:</label>
-                                                <div class="col-8">
-                                                    <input name="shipping_charge" type="number" class="form-control form-control-sm" id="shipping_charge" value="0.00">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4">{{ __('Ship Cost') }}:</label>
+                                        <div class="col-8">
+                                            <input name="shipping_charge" type="number" class="form-control form-control-sm" id="shipping_charge" value="0.00">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-2">Note:</label>
-                                                <div class="col-10">
-                                                    <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-2">@lang('menu.note') :</label>
+                                        <div class="col-10">
+                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="{{ __('Additional Note') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -192,11 +180,13 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area py-3">
+                <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" class="btn btn-sm btn-success submit_button">Update </button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">Update </button>
+                            </div>
                         </div>
                     </div>
                 </div>

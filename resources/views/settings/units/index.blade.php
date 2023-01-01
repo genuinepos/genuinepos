@@ -3,119 +3,113 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-sort-amount-up"></span>
-                                <h5>Units</h5>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-sort-amount-up"></span>
+                    <h5>@lang('menu.units')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-lg-3 p-1">
+            <div class="row g-lg-3 g-1">
+                <div class="col-lg-4">
+                    <div class="card" id="add_form">
+                        <div class="section-header">
+                            <div class="col-md-6">
+                                <h6>@lang('menu.add_unit')</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
                         </div>
+
+                        <form id="add_unit_form" class="p-2" action="{{ route('settings.units.store') }}">
+                            <div class="form-group">
+                                <label><b>@lang('menu.unit_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="@lang('menu.unit_name')"/>
+                                <span class="error error_name"></span>
+                            </div>
+
+                            <div class="form-group mt-1">
+                                <label><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="@lang('menu.short_name')"/>
+                                <span class="error error_code"></span>
+                            </div>
+
+                            <div class="form-group d-flex justify-content-end mt-3">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
-                    <div class="p-3">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="card" id="add_form">
-                                    <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>Add Unit</h6>
-                                        </div>
-                                    </div>
-
-                                    <form id="add_unit_form" class="p-2" action="{{ route('settings.units.store') }}">
-                                        <div class="form-group">
-                                            <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="Unit Name"/>
-                                            <span class="error error_name"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                            <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="Short name"/>
-                                            <span class="error error_code"></span>
-                                        </div>
-
-                                        <div class="form-group d-flex justify-content-end mt-3">
-                                            <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                <button type="reset" class="btn btn-sm btn-danger">Reset</button>
-                                                <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="card d-none" id="edit_form">
-                                    <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>Edit Unit</h6>
-                                        </div>
-                                    </div>
-
-                                    <form id="edit_unit_form" class="p-2" action="{{ route('settings.units.update') }}">
-                                        <input type="hidden" name="id" id="id">
-                                        <div class="form-group">
-                                            <label><b>Unit Name :</b> <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="Unit Name"/>
-                                            <span class="error error_e_name"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Short Name :</b> <span class="text-danger">*</span></label>
-                                            <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="Short Name"/>
-                                            <span class="error error_e_code"></span>
-                                        </div>
-
-                                        <div class="form-group d-flex justify-content-end mt-3">
-                                            <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                                <button type="button" id="close_form" class="btn btn-sm btn-danger">Close</button>
-                                                <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="col-md-8">
-                                <div class="card">
-                                    <div class="section-header">
-                                        <div class="col-md-6">
-                                            <h6>All Units</h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget_content">
-                                        <div class="data_preloader">
-                                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                        </div>
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Serial</th>
-                                                        <th>Short Name</th>
-                                                        <th>Code Name</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                </div>
+                    <div class="card d-hide" id="edit_form">
+                        <div class="section-header">
+                            <div class="col-md-6">
+                                <h6>Edit Unit</h6>
                             </div>
                         </div>
+
+                        <form id="edit_unit_form" class="p-2" action="{{ route('settings.units.update') }}">
+                            <input type="hidden" name="id" id="id">
+                            <div class="form-group">
+                                <label><b>@lang('menu.unit_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" data-name="Name" id="e_name" placeholder="@lang('menu.unit_name')"/>
+                                <span class="error error_e_name"></span>
+                            </div>
+
+                            <div class="form-group mt-1">
+                                <label><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="code" class="form-control" data-name="Code name" id="e_code" placeholder="@lang('menu.short_name')"/>
+                                <span class="error error_e_code"></span>
+                            </div>
+
+                            <div class="form-group d-flex justify-content-end mt-3">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="button" id="close_form" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-6">
+                                <h6>@lang('menu.all_units')</h6>
+                            </div>
+                        </div>
+
+                        <div class="widget_content">
+                            <div class="data_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                            </div>
+                            <div class="table-responsive" id="data-list">
+                                <table class="display data_tbl data__table">
+                                    <thead>
+                                        <tr>
+                                            <th>@lang('menu.serial')</th>
+                                            <th>@lang('menu.short_name')</th>
+                                            <th>{{ __('Code Name') }}</th>
+                                            <th>@lang('menu.action')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <form id="deleted_form" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>
@@ -182,6 +176,7 @@
             $('#e_code').val(unitInfo.code_name);
             $('#add_form').hide();
             $('#edit_form').show();
+            $('#edit_form').removeClass('d-hide');
             document.getElementById('e_name').focus();
         });
 

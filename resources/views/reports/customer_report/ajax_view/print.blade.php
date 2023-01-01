@@ -26,9 +26,9 @@
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</h5>
+        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
         <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-        <h6 style="margin-top: 10px;"><b>Customer Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.customer_report') </b></h6>
     </div>
 </div>
 <br/>
@@ -37,12 +37,12 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Customer</th>
-                    <th class="text-end">Total Sale</th>
-                    <th class="text-end">Total Paid</th>
-                    <th class="text-end">Opening Balance Due</th>
-                    <th class="text-end">Total Due</th>
-                    <th class="text-end">Total Return Due</th>
+                    <th class="text-start">@lang('menu.customer')</th>
+                    <th class="text-end">@lang('menu.total_sale')</th>
+                    <th class="text-end">@lang('menu.total_paid')</th>
+                    <th class="text-end">@lang('menu.opening_balance')</th>
+                    <th class="text-end">@lang('menu.total_due')</th>
+                    <th class="text-end">@lang('menu.total_return_due')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -74,27 +74,27 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-end">Opening Balance Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Sale : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalSale) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Sale Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Returnable Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Returnable Due') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>
@@ -105,13 +105,13 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

@@ -8,60 +8,53 @@
 @section('title', 'HRM Holidays - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-toggle-off"></span>
-                                <h6>Holidays</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-toggle-off"></span>
+                    <h6>{{ __('Holidays') }}</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>{{ __('Holidays') }}</h6>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
-                    <div class="p-3">
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Holidays</h6>
-                                </div>
-
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>S/L</th>
-                                                <th>Name</th>
-                                                <th>Date</th>
-                                                <th>Allowed Branch</th>
-                                                <th>Note</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.sl')</th>
+                                    <th>@lang('menu.name')</th>
+                                    <th>@lang('menu.date')</th>
+                                    <th>{{ __('Allowed Branch') }}</th>
+                                    <th>@lang('menu.note')</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -72,7 +65,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Holiday</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Holiday') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -80,28 +73,28 @@
                     <!--begin::Form-->
                     <form id="add_holiday_form" action="{{ route('hrm.holidays.store') }}">
                         <div class="form-group ">
-                            <label><b>Holiday Name :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="holiday_name" required class="form-control" placeholder="Holiday Name">
+                            <label><b>{{ __('Holiday Name') }} :</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="holiday_name" required class="form-control" placeholder="{{ __('Holiday Name') }}">
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Start Date :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
                                 <input type="date" name="start_date" required class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>End Date :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
                                 <input type="date" name="end_date" required class="form-control">
                             </div>
                         </div>
 
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="form-group mt-1">
-                                <label><b>Allowed Branch</b> <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Allowed Branch') }}</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="branch_id" required>
                                     <option value="All"> All </option>
-                                    <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>Head Office</b>) </option>
+                                    <option value=""> {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
                                     @foreach($branches as $row)
                                         <option value="{{ $row->id }}"> {{ $row->name.'/'.$row->branch_code }}</option>
                                     @endforeach
@@ -110,16 +103,16 @@
                         @endif
 
                         <div class="form-group mt-1">
-                            <label><b>Note :</b> </label>
-                            <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="Note"></textarea>
+                            <label><b>@lang('menu.note') :</b> </label>
+                            <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="@lang('menu.note')"></textarea>
 
                         </div>
 
                         <div class="form-group d-flex justify-content-end mt-3">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                             </div>
                         </div>
                     </form>

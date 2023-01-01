@@ -1,4 +1,4 @@
-<div class="row mt-1 d-lg-flex d-none">
+<div class="row mt-1 d-lg-flex d-hide">
     <div class="col-12">
         <div class="pos-footer">
             <div class="logo_wrapper d-block w-100 text-center">
@@ -6,8 +6,8 @@
                     style="max-width: 100%; height: 20px; width: auto;margin-top: 12px;">
             </div>
             @if (json_decode($generalSettings->pos, true)['is_show_recent_transactions'] == '1')
-                <div class="pos-foot-con d-inline-block position-absolute" style="right: 10px; top: 10px;">
-                    <a href="#" class="resent-tn" tabindex="-1"><span class="fas fa-clock"></span> @lang('menu.recent_transaction')</a>
+                <div class="pos-foot-con d-inline-block position-absolute" style="right: -10px; top: 50%; transform: translateY(-41%)">
+                    <a href="#" class="btn btn-sm btn-primary resent-tn h-auto py-1" tabindex="-1">@lang('menu.recent_transaction')</a>
                 </div>
             @endif
         </div>

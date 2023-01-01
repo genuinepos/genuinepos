@@ -215,7 +215,7 @@
                                 var tr = '';
                                 tr += '<tr class="text-start">';
                                 tr += '<td>';
-                                tr += '<a class="text-success product_name" id="select_product">'+product.name.substring(0, 20)+'</a>';
+                                tr += '<a class="text-success product_name product_dscr_btn" id="select_product">'+product.name.substring(0, 20)+'</a>';
                                 tr += '<input type="hidden" name="descriptions[]" id="description" value="">';
                                 tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -403,7 +403,7 @@
                             var tr = '';
                             tr += '<tr class="text-start">';
                             tr += '<td>';
-                            tr += '<a class="text-success product_name" id="select_product">'+variant_product.product.name.substring(0, 20)+' - '+variant_product.variant_name+'</a>';
+                            tr += '<a class="text-success product_name product_dscr_btn" id="select_product">'+variant_product.product.name.substring(0, 20)+' - '+variant_product.variant_name+'</a>';
                             tr += '<input type="hidden" name="descriptions[]" id="description" value="">';
                             tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -565,7 +565,7 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<a class="product_name text-success" id="select_product">'+product_name.substring(0, 28)+'</a>';
+            tr += '<a class="product_name product_dscr_btn text-success" id="select_product">'+product_name.substring(0, 28)+'</a>';
             tr += '<input type="hidden" name="descriptions[]" id="description" value="">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
@@ -730,7 +730,7 @@
             var tr = '';
             tr += '<tr class="text-start">';
             tr += '<td>';
-            tr += '<a class="text-success product_name" id="select_product">'+product_name.substring(0, 20)+' - '+variant_name+'</a>';
+            tr += '<a class="text-success product_name product_dscr_btn" id="select_product">'+product_name.substring(0, 20)+' - '+variant_name+'</a>';
             tr += '<input type="hidden" name="descriptions[]" id="description" value="">';
             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';

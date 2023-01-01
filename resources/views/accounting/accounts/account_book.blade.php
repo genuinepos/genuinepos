@@ -8,171 +8,154 @@
         $balanceType = $accountUtil->accountBalanceType($account->account_type);
     @endphp
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-book"></span>
-                                <h5>Account Book</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-book"></span>
+                    <h5>@lang('menu.account_book')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="sec-name mt-1">
-                                    <div class="col-md-12">
-                                        <table class="table modal-table table-sm">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-start"> <strong>Bank :</strong> </td>
-                                                    <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
-                                                </tr>
+        <div class="p-3">
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="display table modal-table table-sm mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-start"> <strong>@lang('menu.bank') :</strong> </td>
+                                        <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
+                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start"> <strong>A/C Name :</strong> </td>
-                                                    <td class="account_name text-start">{{ $account->name }}</td>
-                                                </tr>
+                                    <tr>
+                                        <td class="text-start"> <strong>A/C @lang('menu.name') :</strong> </td>
+                                        <td class="account_name text-start">{{ $account->name }}</td>
+                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start"><strong>A/C No. :</strong></td>
-                                                    <td class="account_number text-start">{{ $account->account_number }}</td>
-                                                </tr>
+                                    <tr>
+                                        <td class="text-start"><strong>A/C No. :</strong></td>
+                                        <td class="account_number text-start">{{ $account->account_number }}</td>
+                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start"><strong>A/C Type :</strong></td>
-                                                    <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
-                                                </tr>
+                                    <tr>
+                                        <td class="text-start"><strong>A/C Type :</strong></td>
+                                        <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
+                                    </tr>
 
-                                                <tr>
-                                                    <td class="text-start"><strong>Balance :</strong> </td>
-                                                    <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-9">
-                                <div class="sec-name mt-1 t">
-                                    <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form id="filter_account_ledgers" method="get" class="px-2">
-                                            <div class="form-group row mt-4">
-                                                <div class="col-md-2">
-                                                    <label><strong>Transaction Type :</strong></label>
-                                                    <select name="transaction_type" class="form-control submit_able" id="transaction_type" autofocus>
-                                                        <option value=""><strong>All</strong></option>
-                                                        <option value="debit"><strong>Debit</strong></option>
-                                                        <option value="credit">Credit</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>Voucher Type :</strong></label>
-                                                    <select name="voucher_type" class="form-control submit_able" id="voucher_type" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
-                                                            <option value="{{ $key }}">{{ $type }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="col-md-7">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-5 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report">
-                                                                <i class="fas fa-print "></i> Print
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                                    <tr>
+                                        <td class="text-start"><strong>@lang('menu.balance') :</strong> </td>
+                                        <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
+                <div class="col-9">
+                    <div class="card p-3">
+                        <div class="card-body">
+                            <form id="filter_account_ledgers" method="get">
+                                <div class="form-group row justify-content-end">
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.transaction_type') :</strong></label>
+                                        <select name="transaction_type" class="form-control submit_able select2" id="transaction_type" autofocus>
+                                            <option value=""><strong>@lang('menu.all')</strong></option>
+                                            <option value="debit"><strong>@lang('menu.debit')</strong></option>
+                                            <option value="credit">@lang('menu.credit')</option>
+                                        </select>
+                                    </div>
 
-                    <div class="row margin_row mt-1">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>Account Ledgers</h6>
-                                </div>
-                            </div>
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Perticulars</th>
-                                                <th class="text-start">Voucher/Invoice</th>
-                                                <th class="text-start">Debit</th>
-                                                <th class="text-start">Credit</th>
-                                                <th class="text-start">Running Balance</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="2" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th class="text-white text-end"></th>
-                                                <th id="debit" class="text-white text-end"></th>
-                                                <th id="credit" class="text-white text-end"></th>
-                                                <th id="due" class="text-white text-end">---</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.voucher_type') :</strong></label>
+                                        <select name="voucher_type" class="form-control submit_able  select2" id="voucher_type" autofocus>
+                                            <option value="">@lang('menu.all')</option>
+                                            @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
+                                                <option value="{{ $key }}">{{ $type }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="from_date" id="datepicker"
+                                                class="form-control from_date date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mt-4">
+                                        <button type="submit" class="btn text-white btn-sm btn-info "><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                        <a href="#" class="btn btn-sm btn-primary  ms-2" id="print_report">
+                                            <i class="fas fa-print "></i> @lang('menu.print')
+                                        </a>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
+                </div>
 
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-10">
+                                <h6>@lang('menu.account_ledgers')</h6>
+                            </div>
+                        </div>
+                        <div class="widget_content">
+                            <div class="data_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                            </div>
+                            <div class="table-responsive" id="data-list">
+                                <table class="display data_tbl data__table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-start">@lang('menu.date')</th>
+                                            <th class="text-start">@lang('menu.particulars')</th>
+                                            <th class="text-start">@lang('menu.voucher')/@lang('menu.invoice')</th>
+                                            <th class="text-start">@lang('menu.debit')</th>
+                                            <th class="text-start">@lang('menu.credit')</th>
+                                            <th class="text-start">@lang('menu.running_balance')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    <tfoot>
+                                        <tr class="bg-secondary">
+                                            <th colspan="2" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            <th class="text-white text-end"></th>
+                                            <th id="debit" class="text-white text-end"></th>
+                                            <th id="credit" class="text-white text-end"></th>
+                                            <th id="due" class="text-white text-end">---</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <form id="deleted_form" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

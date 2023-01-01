@@ -16,10 +16,10 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h6>Add Purchase Return</h6>
+                    <h6>@lang('menu.add_purchase_return')</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -33,12 +33,12 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Supplier :</b> <span
+                                        <label class=" col-4"><b>@lang('menu.supplier')</b> <span
                                                 class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select name="supplier_id" class="form-control add_input"
+                                            <select name="supplier_id" class="form-control add_input select2"
                                                 data-name="Supplier" id="supplier_id">
-                                                <option value="">Select Supplier</option>
+                                                <option value="">@lang('menu.select_supplier')</option>
                                                 @foreach ($suppliers as $sup)
                                                     <option value="{{$sup->id}}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
                                                 @endforeach
@@ -49,7 +49,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>B.Location :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.b_location') :</b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
                                         </div>
@@ -58,18 +58,18 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>R. Invoice ID :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.r_invoice_id') :</b> </label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.invoice_id')">
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Warehouse :</b></label>
+                                        <label class="col-4"><b>@lang('menu.warehouse') :</b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                <option value="">Select Warehouse</option>
+                                                <option value="">@lang('menu.select_warehouse')</option>
                                                 @foreach ($warehouses as $w)
                                                     <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                 @endforeach
@@ -80,7 +80,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Date :</b> <span
+                                        <label class="col-4"><b>@lang('menu.date') :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" autocomplete="off"
@@ -89,7 +89,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Return A/C : <span
+                                        <label class="col-4"><b>{{ __('Return A/C') }} : <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_return_account_id" class="form-control add_input"
@@ -107,7 +107,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>Attachment :</b></label>
+                                        <label class="col-4"><b>@lang('menu.attachment') :</b></label>
                                         <div class="col-8">
                                             <input type="file" class="form-control" name="attachment">
                                         </div>
@@ -125,7 +125,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="searching_area" style="position: relative;">
-                                        <label class="col-form-label">Item Search</label>
+                                        <label class="col-form-label">@lang('menu.item_search')</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
@@ -148,11 +148,11 @@
                                             <table class="display data__table table-striped">
                                                 <thead class="staky">
                                                     <tr>
-                                                        <th>Product</th>
-                                                        <th>Purchase Price</th>
-                                                        <th>Current Stock</th>
-                                                        <th>Return Quantity</th>
-                                                        <th>Return Subtotal</th>
+                                                        <th>@lang('menu.product')</th>
+                                                        <th>@lang('menu.purchase_price')</th>
+                                                        <th>@lang('menu.current_stock')</th>
+                                                        <th>@lang('menu.return_quantity')</th>
+                                                        <th>@lang('menu.return_subtotal')</th>
                                                         <th><i class="fas fa-trash-alt"></i></th>
                                                     </tr>
                                                 </thead>
@@ -172,11 +172,11 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group mt-1">
-                                        <label for="inputEmail3" class="col-4"><b>Tax :</b>  <span class="text-danger">*</span></label>
-                                        <div class="col-8">
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.tax') :</b>  <span class="text-danger">*</span></label>
+                                        <div class="col-6">
                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                             </select>
-                                            <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
+                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -189,8 +189,8 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4 text-center"><b>Net Total Amount</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                        <div class="col-8">
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.net_total_amount')</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                        <div class="col-6">
                                             <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00" >
                                         </div>
                                     </div>
@@ -203,11 +203,11 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-none">
-                                <i class="fas fa-spinner"></i> <span>Loading...</span>
+                            <button type="button" class="btn loading_button d-hide">
+                                <i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span>
                             </button>
                             <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">
-                                Save & Print (Ctrl+Enter)
+                                @lang('menu.save_print') (Ctrl+Enter)
                             </button>
                             <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">
                                 Save (Shift+Enter)

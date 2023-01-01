@@ -26,9 +26,9 @@
 
             @if ($addons->branches == 1)
 
-                <p><strong>All Business Location</strong></p>
+                <p><strong>@lang('menu.all_business_location')</strong></p>
             @endif
-            
+
         @elseif ($branch_id == 'NULL')
 
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} </h5>
@@ -46,10 +46,10 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p> 
-        @endif 
+            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
+        @endif
 
-        <p class="mt-2"><b>Customer Payments </b></p> 
+        <p class="mt-2"><b>@lang('menu.customer_payments') </b></p>
     </div>
 </div>
 
@@ -57,9 +57,9 @@
     <div class="row">
         <div class="col-8">
             <ul class="list-unstyled">
-                <li><strong>Customer : </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
-                <li><strong>Phone : </strong> {{ $customer->phone }}</li>
-                <li><strong>Address : </strong> {{ $customer->address  }}</li> 
+                <li><strong>@lang('menu.customer') : </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
+                <li><strong>@lang('menu.phone') : </strong> {{ $customer->phone }}</li>
+                <li><strong>@lang('menu.address') : </strong> {{ $customer->address  }}</li>
             </ul>
         </div>
     </div>
@@ -70,19 +70,19 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Voucher No</th>
-                    <th class="text-start">Reference</th>
-                    <th class="text-start">Against Invoice</th>
-                    {{-- <th>Created By</th> --}}
-                    <th class="text-start">Payment Status</th>
-                    <th class="text-start">Payment Type</th>
-                    <th class="text-start">Account</th>
-                    <th class="text-end">Less Amount</th>
-                    <th class="text-end">Paid Amount</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.voucher_no')</th>
+                    <th class="text-start">@lang('menu.reference')</th>
+                    <th class="text-start">@lang('menu.against_invoice')</th>
+                    {{-- <th>@lang('menu.created_by')</th> --}}
+                    <th class="text-start">@lang('menu.payment_status')</th>
+                    <th class="text-start">@lang('menu.payment_type')</th>
+                    <th class="text-start">@lang('menu.account')</th>
+                    <th class="text-end">@lang('menu.less_amount')</th>
+                    <th class="text-end">@lang('menu.paid_amount')</th>
                 </tr>
             </thead>
-        
+
             <tbody>
                 @foreach ($payments as $row)
                     <tr>
@@ -91,7 +91,7 @@
                                 $dateFormat = json_decode($generalSettings->business, true)['date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
-                            
+
                             {{ date($__date_format, strtotime($row->report_date)) }}
                         </td>
 
@@ -102,24 +102,24 @@
                         <td class="text-start">{{ $row->reference }}</td>
 
                         <td class="text-start">
-                            @if ($row->sale_inv || $row->return_inv) 
+                            @if ($row->sale_inv || $row->return_inv)
 
-                                @if ($row->sale_inv) 
-        
+                                @if ($row->sale_inv)
+
                                     {{ 'Sale : ' . $row->sale_inv}}
-                                @else 
-        
+                                @else
+
                                     {{ 'Sale Return : ' . $row->return_inv }}
                                 @endif
                             @endif
                         </td>
 
                         <td class="text-start">
-                            @if ($row->voucher_type == 3 || $row->voucher_type == 5) 
+                            @if ($row->voucher_type == 3 || $row->voucher_type == 5)
 
                                 {{ 'Received Payment' }}
-                            @else 
-        
+                            @else
+
                                 {{ 'Return Payment' }}
                             @endif
                         </td>
@@ -129,10 +129,10 @@
                         </td>
 
                         <td class="text-start">
-                            @if ($row->sp_account) 
+                            @if ($row->sp_account)
 
                                 {{ $row->cp_account . '(A/C:' . $row->cp_account_number . ')' }}
-                            @else 
+                            @else
 
                                 {{ $row->sp_account . '(A/C:' . $row->sp_account_number . ')' }}
                             @endif
@@ -155,13 +155,13 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small> 
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
     <small style="font-size: 5px;float:right;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

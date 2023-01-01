@@ -2,166 +2,160 @@
 @push('stylesheets') @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
+        <div class="main__content">
 
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-balance-scale-left"></span>
-                                <h5>Trial Balance</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-balance-scale-left"></span>
+                    <h5>@lang('menu.trial_balance')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
 
-                        <div class="p-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
-                                    <div class="trial_balance_area">
-                                        <div class="print_header d-none">
-                                            <div class="text-center pb-3">
-                                                <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-                                                <h6><strong>TRIAL BALANCE</h6>
-                                            </div>
-                                        </div>
-
-                                        <div id="data-list">
-                                            <table class="table modal-table table-sm table-bordered">
-                                                <thead>
-                                                    <tr class="bg-primary">
-                                                        <th class="trial_balance text-start text-white">Accounts</th>
-                                                        <th class="debit text-white">Debit</th>
-                                                        <th class="credit text-white">Credit</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-start"><strong>Supplier Balance :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Supplier Return Balance :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Customer Balance :</strong></td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Customer Return Balance :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Purchase A/C :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Sale A/C :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Opening Stock :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="text-start"><strong>Difference In Opening Balance :</strong> </td>
-
-                                                        <td>
-                                                            <em class="debit">0.00</em>
-                                                        </td>
-
-                                                        <td>
-                                                            <em class="credit">0.00</em>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-
-                                                <tfoot>
-                                                    <tr class="bg-primary">
-                                                        <th class="text-white text-start">Total :</th>
-                                                        <th class="text-white">
-                                                            <span class="total_credit">0.00</span>
-                                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                        </th>
-                                                        <th class="text-white">
-                                                            <span class="total_debit">0.00</span>
-                                                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                                                        </th>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-
-                                        <div class="print_footer d-none">
-                                            <div class="text-center">
-                                                <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="print_btn_area">
-                                        <a id="print_btn" href="#" class="btn btn-sm btn-primary float-end"><i class="fas fa-print"></i> Print</a>
-                                    </div>
+            <div class="p-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="data_preloader mt-5 pt-5"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
+                        <div class="trial_balance_area">
+                            <div class="print_header d-hide">
+                                <div class="text-center pb-3">
+                                    <h6>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
+                                    <h6><strong>@lang('menu.trial_balance')</h6>
                                 </div>
                             </div>
+
+                            <div id="data-list">
+                                <table class="table modal-table table-sm table-bordered">
+                                    <thead>
+                                        <tr class="bg-secondary">
+                                            <th class="trial_balance text-start text-white">@lang('menu.accounts')</th>
+                                            <th class="debit text-white">@lang('menu.debit')</th>
+                                            <th class="credit text-white">@lang('menu.credit')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.supplier_balance') :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            @lang('menu.supplier_return_balance')     <td class="text-start"><strong> :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.customer_balance') :</strong></td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.customer_return_balance') :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.purchase_ac') :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.sale_ac') :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.opening_stock') :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-start"><strong>@lang('menu.difference_in_opening_balance') :</strong> </td>
+
+                                            <td>
+                                                <em class="debit">0.00</em>
+                                            </td>
+
+                                            <td>
+                                                <em class="credit">0.00</em>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr class="bg-secondary">
+                                            <th class="text-white text-start">@lang('menu.total') :</th>
+                                            <th class="text-white">
+                                                <span class="total_credit">0.00</span>
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                            </th>
+                                            <th class="text-white">
+                                                <span class="total_debit">0.00</span>
+                                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="print_footer d-hide">
+                                <div class="text-center">
+                                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="print_btn_area">
+                            <a id="print_btn" href="#" class="btn btn-sm btn-primary float-end"><i class="fas fa-print"></i>@lang('menu.print')</a>
                         </div>
                     </div>
                 </div>

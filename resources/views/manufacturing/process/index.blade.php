@@ -5,84 +5,78 @@
 @section('title', 'All Process - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-dumpster-fire"></span>
-                                <h6>Process</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-dumpster-fire"></span>
+                    <h6>@lang('menu.process')</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>@lang('menu.process')</h6>
                     </div>
 
-                    <div class="p-3">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Process</h6>
-                                </div>
-
-                                @if (auth()->user()->can('process_add'))
-                                    <div class="col-md-6 d-flex justify-content-end">
-                                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <form id="update_product_cost_form" action="">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr class="bg-navey-blue">
-                                                    <th data-bSortable="false">
-                                                        <input class="all" type="checkbox" name="all_checked"/>
-                                                    </th>
-                                                    <th class="text-black">Actions</th>
-                                                    <th class="text-black">Product Name</th>
-                                                    <th class="text-black">Category</th>
-                                                    <th class="text-black">SubCategory</th>
-                                                    <th class="text-black">Wastage</th>
-                                                    <th class="text-black">Output Quantity</th>
-                                                    <th class="text-black">Total Ingrediant Cost</th>
-                                                    <th class="text-black">Production Cost</th>
-                                                    <th class="text-black">Total Cost</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-
-                            @if (auth()->user()->can('process_delete'))
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            @endif
+                    @if (auth()->user()->can('process_add'))
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
+                    @endif
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <form id="update_product_cost_form" action="">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr class="bg-navey-blue">
+                                        <th data-bSortable="false">
+                                            <input class="all" type="checkbox" name="all_checked"/>
+                                        </th>
+                                        <th class="text-black">@lang('menu.action')</th>
+                                        <th class="text-black">@lang('menu.product_name')</th>
+                                        <th class="text-black">@lang('menu.category')</th>
+                                        <th class="text-black">@lang('menu.sub_category')</th>
+                                        <th class="text-black">@lang('menu.wastage')</th>
+                                        <th class="text-black">@lang('menu.output_quantity')</th>
+                                        <th class="text-black">{{ __('Total Ingredient Cost') }}</th>
+                                        <th class="text-black">@lang('menu.production_cost')</th>
+                                        <th class="text-black">@lang('menu.total_cost')</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
+
+                @if (auth()->user()->can('process_delete'))
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
+                @endif
             </div>
         </div>
     </div>
 
-    @if (!auth()->user()->can('process_add'))
+    @if(auth()->user()->can('process_add'))
         <div class="modal fade" id="addModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog double-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Choose Product</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.choose_product')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                                 class="fas fa-times"></span></a>
                     </div>
@@ -90,7 +84,7 @@
                         <!--begin::Form-->
                         <form action="{{ route('manufacturing.process.create') }}" method="GET">
                             <div class="form-group">
-                                <label><b>Select Product</b> : <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.select_product')</b> : <span class="text-danger">*</span></label>
                                 <select required name="product_id" class="form-control select2">
                                     @foreach ($products as $product)
                                         @php
@@ -105,11 +99,11 @@
                             <div class="form-group row mt-3">
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <div class="btn-loading">
-                                        <button type="button" class="btn loading_button d-none">
-                                            <i class="fas fa-spinner"></i><span> Loading...</span>
+                                        <button type="button" class="btn loading_button d-hide">
+                                            <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
                                         </button>
-                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                        <button type="submit" class="btn btn-sm btn-success submit_button">Save</button>
+                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                        <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
                                     </div>
                                 </div>
                             </div>

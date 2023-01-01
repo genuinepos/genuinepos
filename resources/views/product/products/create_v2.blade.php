@@ -15,26 +15,26 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h6>Add Product</h6>
+                    <h6>@lang('menu.add_product')</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.add.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <section class="p-3">
+            <section class="p-lg-3 p-1">
                 <div class="row g-3">
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
 
                                 <div class="element-body">
-                                    <div class="row">
+                                    <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Product Name :</b> <span class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" autofocus>
+                                                <label class="col-5"><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
+                                                <div class="col-7">
+                                                    <input type="text" name="name" class="form-control" id="name" placeholder="@lang('menu.product_name')" autofocus>
                                                     <span class="error error_name"></span>
                                                 </div>
                                             </div>
@@ -42,24 +42,23 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Product code
+                                                <label class="col-5"><b>@lang('menu.product_code')
                                                     <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b> </label>
-                                                <div class="col-8">
+                                                <div class="col-7">
                                                     <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
                                                     <input type="hidden" name="auto_generated_code" id="auto_generated_code">
+                                                    <span class="error error_code"></span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Unit :</b> <span class="text-danger">*</span></label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>@lang('menu.unit') :</b> <span class="text-danger">*</span></label>
+                                                <div class="col-7">
                                                     <div class="input-group">
                                                         <select class="form-control product_unit" name="unit_id" id="unit_id">
-                                                            <option value="">Select Unit</option>
+                                                            <option value="">@lang('menu.select_unit')</option>
                                                             @php
                                                                 $defaultUnit = json_decode($generalSettings->product, true)['default_unit_id'];
                                                             @endphp
@@ -79,8 +78,8 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Barcode Type  :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>@lang('menu.barcode_type')  :</b> </label>
+                                                <div class="col-7">
                                                     <select class="form-control" name="barcode_type" id="barcode_type">
                                                         <option value="CODE128">Code 128 (C128)</option>
                                                         <option value="CODE39">Code 39 (C39)</option>
@@ -90,18 +89,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Category :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>@lang('menu.category') :</b> </label>
+                                                    <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control category" name="category_id"
                                                                 id="category_id">
-                                                                <option value="">Select Category</option>
+                                                                <option value="">@lang('menu.select_category')</option>
                                                                 @foreach ($categories as $category)
                                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                                 @endforeach
@@ -120,27 +117,25 @@
                                         @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>Sub-category :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
+                                                    <div class="col-7">
                                                         <select class="form-control" name="child_category_id"
                                                             id="child_category_id">
-                                                            <option value="">Select Category First</option>
+                                                            <option value="">@lang('menu.select_category_first')</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         @endif
-                                    </div>
 
-                                    <div class="row mt-1">
                                         @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Brand :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>@lang('menu.brand'):</b> </label>
+                                                    <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control" name="brand_id" id="brand_id">
-                                                                <option value="">Select Brand</option>
+                                                                <option value="">@lang('menu.select_brand')</option>
                                                                 @foreach ($brands as $brand)
                                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                                 @endforeach
@@ -156,24 +151,22 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Alert quentity  :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>@lang('menu.alert_quantity')  :</b> </label>
+                                                <div class="col-7">
                                                     <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="0">
                                                     <span class="error error_alert_quantity"></span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Warranty :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>@lang('menu.warranty') :</b> </label>
+                                                    <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control" name="warranty_id" id="warranty_id">
-                                                                <option value="">Select Warranty</option>
+                                                                <option value="">@lang('menu.select_warranty')</option>
                                                                 @foreach ($warranties as $warranty)
                                                                     <option value="{{ $warranty->id }}">{{ $warranty->name }}</option>
                                                                 @endforeach
@@ -192,8 +185,8 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Business Location :</b> </label>
-                                                        <div class="col-8">
+                                                        <label class="col-5"><b>@lang('menu.business_location') :</b> </label>
+                                                        <div class="col-7">
                                                             <input type="hidden" name="branch_count" value="branch_count">
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
                                                                 <option selected value="">
@@ -211,17 +204,15 @@
                                                 </div>
                                             @endif
                                         @endif
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Condition  :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>@lang('menu.condition')  :</b> </label>
+                                                <div class="col-7">
                                                     <select class="form-control" name="product_condition"
                                                         id="product_condition">
-                                                        <option value="New">New</option>
-                                                        <option value="Used">Used</option>
+                                                        <option value="New">@lang('menu.new')</option>
+                                                        <option value="Used">@lang('menu.used')</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -234,7 +225,7 @@
                                                         <div class="col-12">
                                                             <div class="row">
                                                                 <p class="checkbox_input_wrap">
-                                                                <input checked type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>Manage Stock</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
+                                                                <input checked type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>@lang('menu.manage_stock')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -245,7 +236,7 @@
                                                         <div class="col-12">
                                                             <div class="row">
                                                                 <p class="checkbox_input_wrap">
-                                                                <input type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> Service/Degital Product</b> </p>
+                                                                <input type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> @lang('menu.service')/ @lang('menu.product')</b> </p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -258,14 +249,14 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                                 <div class="element-body">
                                     <div class="form_part">
-                                        <div class="row mt-1">
+                                        <div class="row gx-2 gy-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Unit Cost :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
                                                         <input type="number" step="any" name="product_cost" class="form-control"
                                                         autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
                                                         <span class="error error_product_cost"></span>
@@ -275,21 +266,19 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Price Exc.Tax :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="Selling Price Exc.Tax">
+                                                    <label class="col-5"><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
+                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')">
                                                         <span class="error error_product_price"></span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Unit Cost(Inc.Tax) :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="Unit cost Inc.Tax" value="0.00">
+                                                    <label class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
+                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="0.00">
                                                         <span class="error error_product_cost_with_tax"></span>
                                                     </div>
                                                 </div>
@@ -297,23 +286,21 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Profit Margin(%) :</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-7">
                                                         <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
                                                         <span class="error error_profit"></span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
-                                            <div class="row mt-1">
+                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Tax :</b> </label>
-                                                        <div class="col-8">
+                                                        <label class="col-5"><b>@lang('menu.tax') :</b> </label>
+                                                        <div class="col-7">
                                                             <select class="form-control" name="tax_id" id="tax_id">
-                                                                <option value="">NoTax</option>
+                                                                <option value="">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
                                                                     <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
@@ -324,23 +311,21 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Tax Type :</b> </label>
-                                                        <div class="col-8">
+                                                        <label class="col-5"><b>@lang('menu.tax_type') :</b> </label>
+                                                        <div class="col-7">
                                                             <select name="tax_type" class="form-control" id="tax_type">
-                                                                <option value="1">Exclusive</option>
-                                                                <option value="2">Inclusive</option>
+                                                                <option value="1">@lang('menu.exclusive')</option>
+                                                                <option value="2">@lang('menu.exclusive')</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endif
+                                            @endif
 
-                                        <div class="row mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Thumbnail Photo :</b> </label>
-                                                    <div class="col-8">
+                                                    <label class="col-5"><b>@lang('menu.thumbnail_photo') :</b> </label>
+                                                    <div class="col-7">
                                                         <input type="file" name="photo" class="form-control" id="photo">
                                                         <span class="error error_photo"></span>
                                                     </div>
@@ -352,7 +337,7 @@
                                                     <div class="col-12">
                                                         <div class="row">
                                                             <p class="checkbox_input_wrap">
-                                                            <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>This product has varient.</b> </p>
+                                                            <input type="checkbox" name="is_variant" id="is_variant"> &nbsp; <b>{{ __('This product has varient') }}.</b> </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -360,25 +345,25 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="dynamic_variant_create_area d-none">
+                                            <div class="dynamic_variant_create_area d-hide">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="add_more_btn">
-                                                            <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">Add More</a>
+                                                            <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="">@lang('menu.add_more')</a>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="table-responsive mt-1">
                                                             <table class="table modal-table table-sm">
                                                                 <thead>
-                                                                    <tr class="text-center bg-primary variant_header">
-                                                                        <th class="text-white text-start">Select Variant</th>
-                                                                        <th class="text-white text-start">Varient code <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
+                                                                    <tr class="text-center bg-secondary variant_header">
+                                                                        <th class="text-white text-start">@lang('menu.select_variant')</th>
+                                                                        <th class="text-white text-start">{{ __('Variant code') }}<i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Variant code(SKU) must be unique." class="fas fa-info-circle tp"></i>
                                                                         </th>
-                                                                        <th colspan="2" class="text-white text-start">Default Cost</th>
-                                                                        <th class="text-white text-start">Profit(%)</th>
-                                                                        <th class="text-white text-start">Default Price (Exc.Tax)</th>
-                                                                        <th class="text-white text-start">Variant Image</th>
+                                                                        <th colspan="2" class="text-white text-start">@lang('menu.default_cost')</th>
+                                                                        <th class="text-white text-start">@lang('menu.profit')(%)</th>
+                                                                        <th class="text-white text-start">@lang('menu.default_price') (Exc.Tax)</th>
+                                                                        <th class="text-white text-start">@lang('menu.variant_image')</th>
                                                                         <th><i class="fas fa-trash-alt text-white"></i></th>
                                                                     </tr>
                                                                 </thead>
@@ -394,7 +379,7 @@
 
                                                                         <td class="text-start">
                                                                             <input type="text" name="variant_codes[]" id="variant_code" class="form-control reqireable"
-                                                                                placeholder="Variant Code">
+                                                                                placeholder="@lang('menu.variant_code')">
                                                                         </td>
 
                                                                         <td class="text-start">
@@ -412,7 +397,7 @@
                                                                         </td>
 
                                                                         <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable" placeholder="Price inc.tax" id="variant_price_exc_tax">
+                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable" placeholder="@lang('menu.price_inc_tax')" id="variant_price_exc_tax">
                                                                         </td>
 
                                                                         <td class="text-start">
@@ -436,27 +421,25 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
+                            <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                                 <div class="element-body">
-                                    <div class="row">
+                                    <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Type :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>@lang('menu.type') :</b> </label>
+                                                <div class="col-7">
                                                     <select name="type" class="form-control" id="type">
-                                                        <option value="1">General</option>
-                                                        <option value="2">Combo</option>
+                                                        <option value="1">@lang('menu.general')</option>
+                                                        <option value="2">@lang('menu.combo')</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"> <b>Weight :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"> <b>@lang('menu.weight') :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
                                                 </div>
                                             </div>
@@ -464,19 +447,17 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Custom Field1 :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Custom Field1 :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Custom Field2 :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Custom Field2 :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
                                                 </div>
                                             </div>
@@ -484,21 +465,19 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>Custom Field3 :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-5"><b>Custom Field3 :</b> </label>
+                                                <div class="col-7">
                                                     <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>Product wil be displayed in E-Commerce.</b></p>
+                                                        <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -509,7 +488,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>Enable Product IMEI or Serial Number</b> </p>
+                                                        <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>{{ __('Enable Product IMEI or Serial Number') }}</b> </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -520,7 +499,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>Show Not For Sale</b> </p>
+                                                        <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -536,7 +515,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>Description :</b> </label>
+                                                <label class="col-2"> <b>@lang('menu.description') :</b> </label>
                                                 <div class="col-10">
                                                     <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
                                                 </div>
@@ -547,7 +526,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>Photos <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                <label class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
                                                 <div class="col-10">
                                                     <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
                                                     <span class="error error_image"></span>
@@ -561,18 +540,18 @@
 
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i> <span>Loading</span> </button>
-                                <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm" id="save_and_new">Save And Add Another</button>
-                                <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm" id="save">Save</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')</span> </button>
+                                <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm" id="save_and_new">@lang('menu.save_and_add_another')</button>
+                                <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm" id="save">@lang('menu.save')</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>All Product</h6>
+                                    <h6>{{ __('All Product') }}</h6>
                                 </div>
                             </div>
 
@@ -581,10 +560,10 @@
                                     <table class="display table-hover data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Product</th>
-                                                <th>Unit Cost</th>
-                                                <th>Unit Price</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.unit_cost')</th>
+                                                <th>@lang('menu.unit_price')</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -1317,7 +1296,7 @@
         $('#add_product_form').on('submit', function(e) {
 
             e.preventDefault();
-            $('.loading_button').removeClass('d-none');
+            $('.loading_button').removeClass('d-hide');
             $('.submit_button').prop('type', 'button');
             var url = $(this).attr('action');
 
@@ -1330,7 +1309,7 @@
                 processData: false,
                 success: function(data) {
 
-                    $('.loading_button').addClass('d-none');
+                    $('.loading_button').addClass('d-hide');
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
 
@@ -1362,7 +1341,7 @@
                     }
                 },error: function(err) {
 
-                    $('.loading_button').addClass('d-none');
+                    $('.loading_button').addClass('d-hide');
                     $('.submit_button').prop('type', 'submit');
                     $('.error').html('');
 
@@ -1400,7 +1379,7 @@
     $(document).on('submit', '#add_category_form', function(e) {
 
         e.preventDefault();
-        $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1423,7 +1402,7 @@
 
         if (countErrorField > 0) {
 
-            $('.loading_button').addClass('d-none');
+            $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1432,7 +1411,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 $('#addCategoryModal').modal('hide');
                 $('#add_category_form')[0].reset();
                 $('#category_id').append('<option value="' + data.id + '">' + data.name +
@@ -1447,7 +1426,7 @@
     $(document).on('submit', '#add_brand_form', function(e) {
 
         e.preventDefault();
-        $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1479,7 +1458,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 $('#brand_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 $('#brand_id').val(data.id);
                 $('#addBrandModal').modal('hide');
@@ -1493,7 +1472,7 @@
     $(document).on('submit', '#add_unit_form', function(e) {
 
         e.preventDefault();
-         $('.loading_button').removeClass('d-none');
+         $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1516,7 +1495,7 @@
 
         if (countErrorField > 0) {
 
-             $('.loading_button').addClass('d-none');
+             $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1525,7 +1504,7 @@
             type: 'post',
             data: request,
             success: function(data) {
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully brand is added.');
                 $('#unit_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
                     .code_name + ')' + '</option>');
@@ -1539,7 +1518,7 @@
     // Add warranty from create product by ajax
     $(document).on('submit', '#add_warranty_form', function(e) {
         e.preventDefault();
-        $('.loading_button').removeClass('d-none');
+        $('.loading_button').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -1561,7 +1540,7 @@
 
         if (countErrorField > 0) {
 
-             $('.loading_button').addClass('d-none');
+             $('.loading_button').addClass('d-hide');
             return;
         }
 
@@ -1571,7 +1550,7 @@
             data: request,
             success: function(data) {
 
-                $('.loading_button').addClass('d-none');
+                $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully warranty is added.');
                 $('#warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 $('#warranty_id').val(data.id);

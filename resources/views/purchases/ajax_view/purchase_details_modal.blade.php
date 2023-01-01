@@ -8,7 +8,7 @@
          <div class="modal-content">
              <div class="modal-header">
                  <h5 class="modal-title" id="exampleModalLabel">
-                     Purchase Details (Reference ID : <strong>{{ $purchase->invoice_id }}</strong>)
+                     @lang('menu.purchase_details') (@lang('menu.reference_id') : <strong>{{ $purchase->invoice_id }}</strong>)
                  </h5>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
@@ -16,21 +16,21 @@
                  <div class="row">
                      <div class="col-md-4">
                          <ul class="list-unstyled">
-                             <li><strong>Supplier :- </strong></li>
-                             <li><strong>Name : </strong> <span
+                             <li><strong>@lang('menu.supplier') : - </strong></li>
+                             <li><strong>@lang('menu.name') :</strong> <span
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
-                             <li><strong>Address : </strong> <span
+                             <li><strong>@lang('menu.address') : </strong> <span
                                      class="supplier_address">{{ $purchase->supplier->address }}</span></li>
-                             <li><strong>Tax Number : </strong> <span
+                             <li><strong>@lang('menu.tax_number') : </strong> <span
                                      class="supplier_tax_number">{{ $purchase->supplier->tax_number }}</span></li>
-                             <li><strong>Phone : </strong> <span
+                             <li><strong>@lang('menu.phone') : </strong> <span
                                      class="supplier_phone">{{ $purchase->supplier->phone }}</span></li>
                          </ul>
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Purchase From : </strong></li>
-                             <li><strong>Business Location : </strong>
+                             <li><strong>@lang('menu.purchase_from') : </strong></li>
+                             <li><strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>BL</b>)
                                 @else
@@ -38,7 +38,7 @@
                                 @endif
                             </li>
 
-                             <li><strong>Phone : </strong>
+                             <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}, <br>
                                 @elseif($purchase->warehouse_id)
@@ -51,34 +51,35 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                             <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
+                             <li><strong>@lang('menu.date') : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                             <li><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
 
                              <li>
-                                <strong>Purchase Status : </strong>
+                                <strong>@lang('menu.purchases_status') : </strong>
                                 @if ($purchase->purchase_status == 1)
-                                    <span class="badge bg-success">Purchased</span>
+                                    <span class="badge bg-success">@lang('menu.purchased')</span>
                                 @elseif($purchase->purchase_status == 2){
-                                    <span class="badge bg-warning text-white">Pending</span>
+                                    <span class="badge bg-warning text-white">@lang('menu.pending')</span>
+                                }
                                 @else
-                                    <span class="badge bg-primary">Purchased By Order</span>
+                                    <span class="badge bg-primary">@lang('menu.purchased_by_order')</span>
                                 @endif
                              </li>
 
-                             <li><strong>Payment Status : </strong>
+                             <li><strong>@lang('menu.payment_status') : </strong>
                                 @php
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                 @endphp
                                 @if ($purchase->due <= 0)
-                                     <span class="badge bg-success">Paid</span>
+                                     <span class="badge bg-success">@lang('menu.paid')</span>
                                 @elseif($purchase->due > 0 && $purchase->due < $payable)
-                                    <span class="badge bg-primary text-white">Partial</span>
+                                    <span class="badge bg-primary text-white">@lang('menu.partial')</span>
                                 @elseif($payable == $purchase->due)
-                                    <span class="badge bg-danger text-white">Due</span>
+                                    <span class="badge bg-danger text-white">@lang('menu.due')</span>
                                 @endif
                              </li>
                              <li>
-                                 <strong>Created By : </strong>
+                                 <strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : 'N/A' }}
                              </li>
                          </ul>
@@ -90,18 +91,18 @@
                          <div class="table-responsive">
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
-                                     <tr class="bg-primary">
-                                         <th class="text-white text-start">Product</th>
-                                         <th class="text-white text-start">Quantity</th>
-                                         <th class="text-white text-start">Unit Cost(Before Discount)</th>
-                                         <th class="text-white text-start">Unit Discount</th>
-                                         <th class="text-white text-start">Unit Cost(Before Tax)</th>
-                                         <th class="text-white text-start">SubTotal (Before Tax)</th>
-                                         <th class="text-white text-start">Tax(%)</th>
-                                         <th class="text-white text-start">Unit Cost(After Tax)</th>
-                                         <th class="text-white text-start">Unit Selling Price</th>
-                                         <th class="text-white text-start">SubTotal</th>
-                                         <th class="text-white text-start">Lot Number</th>
+                                     <tr class="bg-secondary">
+                                         <th class="text-white text-start">@lang('menu.product')</th>
+                                         <th class="text-white text-start">@lang('menu.quantity')</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_discount'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.tax')(%)</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_selling_price')</th>
+                                         <th class="text-white text-start">@lang('menu.sub_total')</th>
+                                         <th class="text-white text-start">@lang('menu.lot_number')</th>
                                      </tr>
                                  </thead>
                                  <tbody class="purchase_product_list">
@@ -139,16 +140,16 @@
                              <div class="table-responsive">
                                 <table class="table modal-table table-striped table-sm">
                                     <thead>
-                                        <tr class="bg-primary text-white">
-                                            <th>Date</th>
-                                            <th>Voucher No</th>
-                                            <th>Method</th>
-                                            <th>Type</th>
-                                            <th>Account</th>
+                                        <tr class="bg-secondary text-white">
+                                            <th>@lang('menu.date')</th>
+                                            <th>@lang('menu.voucher_no')</th>
+                                            <th>@lang('menu.method')</th>
+                                            <th>@lang('menu.type')</th>
+                                            <th>@lang('menu.account')</th>
                                             <th>
-                                                Amount({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                @lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency'] }})
                                             </th>
-                                            <th class="action_hideable">Action</th>
+                                            <th class="action_hideable">@lang('menu.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody id="p_details_payment_list">
@@ -160,7 +161,7 @@
                                                    <td>{{ $payment->pay_mode }}</td>
                                                    <td>
                                                         @if ($payment->is_advanced == 1)
-                                                            <b>PO Advance Payment</b>
+                                                            <b>@lang('menu.po_advance_payment')</b>
                                                         @else
                                                             {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                                         @endif
@@ -185,7 +186,7 @@
                                            @endforeach
                                        @else
                                            <tr>
-                                               <td colspan="7" class="text-center">No Data Found</td>
+                                               <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                                            </tr>
                                        @endif
                                     </tbody>
@@ -198,49 +199,49 @@
                          <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-start">Net Total Amount</th>
+                                    <th class="text-start">@lang('menu.net_total_amount')</th>
                                     <td class="text-start">
                                         <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Purchase Discount</th>
+                                    <th class="text-start">@lang('menu.purchase_discount')</th>
                                     <td class="text-start">
                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Purchase Tax</th>
+                                    <th class="text-start">@lang('menu.purchase_tax')</th>
                                     <td class="text-start">
                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">Shipment Charge</th>
+                                    <th class="text-start">@lang('menu.shipment_charge')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Grand Total</th>
+                                    <th class="text-start">@lang('menu.grand_total')</th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Paid : </th>
+                                    <th class="text-start">@lang('menu.paid') : </th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">Due : </th>
+                                    <th class="text-start">@lang('menu.due') : </th>
                                     <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
                                         {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                    </td>
@@ -253,13 +254,13 @@
                  <div class="row">
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p><b>Shipping Details</b> : </p>
+                             <p><b>@lang('menu.shipping_details')</b> : </p>
                              <p class="shipping_details">{{ $purchase->shipment_details }}</p>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p><b>Purchase Note</b> : </p>
+                             <p><b>@lang('menu.purchase_not')</b> : </p>
                              <p class="purchase_note">{{ $purchase->purchase_note }}</p>
                          </div>
                      </div>
@@ -270,9 +271,9 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">Edit</a>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                            <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">Print</button>
+                            <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                            <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                         </div>
                     </div>
                 </div>
@@ -301,7 +302,7 @@
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
  <!-- Purchase print templete-->
-    <div class="purchase_print_template d-none">
+    <div class="purchase_print_template d-hide">
         <div class="details_area">
             <div class="heading_area">
                 <div class="row">
@@ -322,7 +323,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-center">
-                            <h1 class="bill_name">Purchase Invoice</h1>
+                            <h1 class="bill_name">{{ __('PURCHASE Invoice') }}</h1>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-lg-4">
@@ -335,25 +336,25 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Supplier :- </strong></li>
-                            <li><strong>Namne : </strong>{{ $purchase->supplier->name }}</li>
-                            <li><strong>Address : </strong>{{ $purchase->supplier->address }}</li>
-                            <li><strong>Tax Number : </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>Phone : </strong> {{ $purchase->supplier->phone }}</li>
+                            <li><strong>@lang('menu.supplier') : - </strong></li>
+                            <li><strong>@lang('menu.name') : </strong>{{ $purchase->supplier->name }}</li>
+                            <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $purchase->supplier->tax_number }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>Purchase From : </strong></li>
+                            <li><strong>@lang('menu.purchase_from') : </strong></li>
                             <li>
-                                <strong>Business Location : </strong>
+                                <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
-                            <li><strong>Stored Location : </strong>
+                            <li><strong>@lang('menu.stored_location') : </strong>
                                 @if ($purchase->warehouse_id )
                                     {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
                                     (<b>WH</b>)
@@ -364,7 +365,7 @@
                                     {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}
                                 @elseif($purchase->warehouse_id)
@@ -377,32 +378,32 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>P.Invoice ID : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>Purchase Status : </strong>
+                            <li><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>@lang('menu.purchases_status') : </strong>
                                 <span class="purchase_status">
                                     @if ($purchase->purchase_status == 1)
                                         Purchased
                                     @elseif($purchase->purchase_status == 2){
-                                        Pending
+                                        @lang('menu.pending')
                                     @else
-                                        Purchased By Order
+                                    @lang('menu.purchased_by_order')
                                     @endif
                                 </span>
                             </li>
-                            <li><strong>Payment Status : </strong>
+                            <li><strong>@lang('menu.payment_status') : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
                                @if ($purchase->due <= 0)
-                                   Paid
+                               @lang('menu.paid')
                                @elseif($purchase->due > 0 && $purchase->due < $payable)
-                                   Partial
+                               @lang('menu.partial')
                                @elseif($payable == $purchase->due)
-                                   Due
+                               @lang('menu.due')
                                @endif
                             </li>
-                            <li><strong>Created By : </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : '' }}
                             </li>
                         </ul>
@@ -414,14 +415,14 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Description</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
-                            <th scope="col">Unit Discount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Tax(%)</th>
-                            <th scope="col">Net Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">Lot Number</th>
-                            <th scope="col">SubTotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.description')</th>
+                            <th scope="col">@lang('menu.quantity')</th>
+                            <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }}) </th>
+                            <th scope="col">@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.tax')(%)</th>
+                            <th scope="col">{{ __('Net Unit Cost') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.lot_number')</th>
+                            <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -449,47 +450,47 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="7" class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="7" class="text-end">Purchase Discount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.purchase_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="7" class="text-end">Purchase Tax : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.purchase_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Shipment Charge : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Purchase Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">{{ __('Purchase Total') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Paid : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th colspan="7" class="text-end">Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                            <th colspan="7" class="text-end">@lang('menu.due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                             </td>
@@ -501,11 +502,11 @@
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <h6>CHECKED BY : </h6>
+                    <h6>@lang('menu.checked_by') : </h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6>APPROVED BY : </h6>
+                    <h6>@lang('menu.approved_by') : </h6>
                 </div>
             </div>
 
@@ -519,14 +520,14 @@
             @if (env('PRINT_SD_PURCHASE') == true)
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                        <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             @endif
 
             <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
                 <small style="font-size: 5px; float: right;" class="text-end">
-                    Print Date: {{ date('d-m-Y , h:iA') }}
+                    @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
                 </small>
             </div>
         </div>

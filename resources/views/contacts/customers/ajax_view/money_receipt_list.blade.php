@@ -12,18 +12,18 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Customer : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.customer') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Phone : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.phone') : </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
                     </li>
                     <li class="text-navy-blue">
-                        <strong>Business : </strong>
+                        <strong>@lang('menu.business') : </strong>
                         <span class="card_text customer_business">{{ $customer->business_name }}</span>
                     </li>
                 </ul>
@@ -33,19 +33,19 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>Total Sale : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_sale') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Total Paid : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_paid') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>Total Due : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_due') : </strong>
                         <span class="card_text">
                             {{ json_decode($generalSettings->business, true)['currency'] }}
                             {{ $customer->total_sale_due }}
@@ -59,20 +59,20 @@
 
 <div class="receipt_list_table">
     <div class="data_preloader receipt_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <div class="data_preloader receipt_preloader">
-            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
         </div>
         <table class="display data_tbl data__table table-striped">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>From</th>
-                    <th>Voucher No</th>
-                    <th>Amount</th>
-                    <th>Action</th>
+                    <th>@lang('menu.date')</th>
+                    <th>@lang('menu.from')</th>
+                    <th>@lang('menu.voucher_no')</th>
+                    <th>@lang('menu.amount')</th>
+                    <th>@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="receipt_list_body">
@@ -80,12 +80,12 @@
                     @foreach ($customer->receipts as $receipt)
                         <tr>
                             <td>{{ date('d/m/Y', strtotime($receipt->date)) }}</td>
-                            
+
                             <td>
                                 @if ($receipt->branch)
                                     {{ $receipt->branch->name }}/{{ $receipt->branch->branch_code }}
-                                @else 
-                                    Head Office
+                                @else
+                                    @lang('menu.head_office')
                                 @endif
                             </td>
 
@@ -94,20 +94,20 @@
                             <td>
                                 {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $receipt->amount }}
                             </td>
-                       
+
                             <td>
                                 <div class="btn-group" role="group">
                                     <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Action
+                                        @lang('menu.action')
                                     </button>
-            
+
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if ($receipt->status != 'Completed')
-                                            <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i> Print</a>
-                                            <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i> Edit</a>
-                                            <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt text-primary"></i> Change Status</a>
+                                            <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i>@lang('menu.print')</a>
+                                            <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i>@lang('menu.edit')</a>
+                                            <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt text-primary"></i>@lang('menu.change_status')</a>
                                         @endif
-                                        <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}"><i class="far fa-trash-alt text-primary"></i> Delete</a>
+                                        <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}"><i class="far fa-trash-alt text-primary"></i> @lang('menu.delete')</a>
                                     </div>
                                 </div>
                             </td>
@@ -115,7 +115,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>
@@ -128,9 +128,9 @@
 </div>
 
 <div class="form-group row mt-3">
-    <div class="col-md-12">
-        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="c-btn button-success float-end">Generate New</a>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+    <div class="col-md-12 d-flex justify-content-end gap-2">
+        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+        <a href="{{ route('money.receipt.voucher.create', [$customer->id]) }}" id="generate_receipt" class="btn btn-sm btn-success">{{ __('Generate New') }}</a>
     </div>
 </div>
 

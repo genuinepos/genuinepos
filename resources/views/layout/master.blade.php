@@ -18,7 +18,7 @@
 </head>
 
 <body id="dashboard-8"
-class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }} 
+class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }}
 @if($rtl) rtl @endif" @if($rtl) dir="rtl" @endif>
 
     <div class="all__content">
@@ -30,10 +30,15 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
                 @yield('content')
             </div>
         </div>
+
+        @include('partials.right_sidebar')
+
         <footer>
             <div class="logo_wrapper">
                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
             </div>
+
+            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>
         </footer>
     </div>
 
@@ -41,7 +46,7 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Today Summery</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Today Summery') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -50,7 +55,7 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
 
                     </div>
                     <div class="print-button-area">
-                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">Print</a>
+                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">@lang('menu.print')</a>
                     </div>
                 </div>
             </div>
@@ -102,7 +107,7 @@ class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-t
         });
     </script>
     <!-- Logout form for global -->
-    <form id="logout_form" class="d-none" action="{{ route('logout') }}" method="POST">@csrf</form>
+    <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
     <!-- Logout form for global end -->
 </body>
 

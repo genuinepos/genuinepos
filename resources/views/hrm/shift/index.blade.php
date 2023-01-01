@@ -15,35 +15,35 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-network-wired"></span>
-                                <h6>Shifts</h6>
+                                <h6>{{ __('Shifts') }}</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
                     <div class="p-3">
                         <div class="form_element rounded m-0">
                             <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Shifts</h6>
+                                <div class="col-6">
+                                    <h6>{{ __('Shifts') }}</h6>
                                 </div>
 
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                 </div>
                             </div>
 
                             <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Shift Name</th>
-                                                <th>Start Time</th>
-                                                <th>End Time</th>
-                                                <th>Actions</th>
+                                                <th>{{ __('Shift Name') }}</th>
+                                                <th>@lang('menu.start_time')</th>
+                                                <th>@lang('menu.end_time')</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -68,7 +68,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Shift</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Shift') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -77,31 +77,31 @@
                     <form id="add_shift_form" action="{{ route('hrm.shift.store') }}">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Shift Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="shift_name" class="form-control" placeholder="Shift Name" required="" />
+                                <label><b>{{ __('Shift Name') }} :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="shift_name" class="form-control" placeholder="{{ __('Shift Name') }}" required="" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>Start Time :</b> <span class="text-danger">*</span></label>
-                                <input type="time" name="start_time" class="form-control" placeholder="start time" />
+                                <label><b>@lang('menu.start_time') :</b> <span class="text-danger">*</span></label>
+                                <input type="time" name="start_time" class="form-control" placeholder="@lang('menu.start_time')" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>End Time :</b> <span class="text-danger">*</span></label>
-                                <input type="time" name="endtime" class="form-control" placeholder="End Time"/>
+                                <label><b>@lang('menu.end_time') :</b> <span class="text-danger">*</span></label>
+                                <input type="time" name="endtime" class="form-control" placeholder="@lang('menu.end_time')"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Shift</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Shift') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -126,30 +126,30 @@
                         <input type="hidden" name="id" id="id">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>Shift Name :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="shift_name" class="form-control" id="e_shift_name" placeholder="Shift Name" required="" />
+                                <label><b>{{ __('Shift Name') }} :</b> <span class="text-danger">*</span></label>
+                                <input type="text" name="shift_name" class="form-control" id="e_shift_name" placeholder="{{ __('Shift Name') }}" required="" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>Start Time :</b> <span class="text-danger">*</span></label>
-                                <input type="time" name="start_time" class="form-control" id="e_start_time" placeholder="start time" />
+                                <label><b>@lang('menu.start_time') :</b> <span class="text-danger">*</span></label>
+                                <input type="time" name="start_time" class="form-control" id="e_start_time" placeholder="@lang('menu.start_time')" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>End Time :</b> <span class="text-danger">*</span></label>
-                                <input type="time" name="endtime" class="form-control"  id="e_endtime" placeholder="End Time"/>
+                                <label><b>@lang('menu.end_time') :</b> <span class="text-danger">*</span></label>
+                                <input type="time" name="endtime" class="form-control"  id="e_endtime" placeholder="@lang('menu.end_time')"/>
                             </div>
                         </div>
 
                         <div class="form-group d-flex justify-content-end mt-3">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                <button type="submit" class="btn btn-sm btn-success">Save Change</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
                             </div>
                         </div>
                     </form>

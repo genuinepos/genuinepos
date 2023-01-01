@@ -28,7 +28,7 @@ class CashRegisterController extends Controller
             ->where('accounts.account_type', 5)
             ->get(['accounts.id', 'accounts.name']);
 
-        $openedCashRegister = CashRegister::with('branch', 'admin', 'admin.role')
+        $openedCashRegister = CashRegister::with('branch', 'admin')
             ->where('admin_id', auth()->user()->id)->where('status', 1)
             ->first();
 

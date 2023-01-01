@@ -27,7 +27,7 @@
         @if ($branch_id == '')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
@@ -43,12 +43,12 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>Date :</b>
+            <p><b>@lang('menu.date') :</b>
                 {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
             </p>
         @endif
-        <h6 style="margin-top: 10px;"><b>Product Purchase Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.product_purchase_report') </b></h6>
     </div>
 </div>
 <br>
@@ -57,14 +57,14 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Product</th>
-                    <th class="text-start">P.Code(SKU)</th>
-                    <th class="text-start">Supplier</th>
-                    <th class="text-start">P.Invoice ID</th>
-                    <th class="text-start">Qty</th>
-                    <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-end">SubTotal({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.product')</th>
+                    <th class="text-start">@lang('menu.p_code')(SKU)</th>
+                    <th class="text-start">@lang('menu.supplier')</th>
+                    <th class="text-start">{{ __('P.Invoice ID') }}</th>
+                    <th class="text-start">@lang('menu.qty')</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.subtotal')({{json_decode($generalSettings->business, true)['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -99,17 +99,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Quantity :</th>
+                    <th class="text-end">@lang('menu.total_quantity') :</th>
                     <td class="text-end">{{ bcadd($totalQty, 0, 2) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Cost : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalUnitCost) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Net Total Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
                 </tr>
             </thead>
@@ -120,13 +120,13 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

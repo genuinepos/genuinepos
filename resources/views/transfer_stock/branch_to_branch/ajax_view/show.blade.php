@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">
-                    Transfer Details (Reference ID : <strong>{{ $transfer->ref_id }}</strong>)
+                    @lang('menu.transfer_details') (@lang('menu.reference_id') : <strong>{{ $transfer->ref_id }}</strong>)
                 </h6>
 
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
@@ -15,15 +15,15 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>From : </strong></li>
-                            <li><strong>B.Location Name :</strong>
+                            <li><strong>@lang('menu.from') : </strong></li>
+                            <li><strong>{{ __('B.Location Name') }} :</strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->name . '/' . $transfer->sender_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->phone: json_decode($generalSettings->business, true)['phone'] }}
                             </li>
 
-                            <li><strong>Stock Location : </strong>
+                            <li><strong>@lang('menu.stock_location') : </strong>
                                 @if ($transfer->sender_warehouse)
                                     {{ $transfer->sender_warehouse->warehouse_name . '/' . $transfer->sender_warehouse->warehouse_code . '(WH)' }}
                                 @else
@@ -34,23 +34,23 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>To : </strong></li>
-                            <li><strong>B.Location Name :</strong>
+                            <li><strong>@lang('menu.to') : </strong></li>
+                            <li><strong>{{ __('B.Location Name') }} :</strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->name . '/' . $transfer->receiver_branch->branch_code: json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
                             </li>
-                            <li><strong>Phone : </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->phone: json_decode($generalSettings->business, true)['phone'] }}
                             </li>
 
                             @if ($transfer->receiver_branch)
-                                <li><strong>Address : </strong>
+                                <li><strong>@lang('menu.address') : </strong>
                                     {{ $transfer->receiver_branch->city }},
                                     {{ $transfer->receiver_branch->state }},
                                     {{ $transfer->receiver_branch->zip_code }},
                                     {{ $transfer->receiver_branch->country }}.
                                 </li>
                             @else
-                                <li><strong>Address : </strong>
+                                <li><strong>@lang('menu.address') : </strong>
                                     {{ json_decode($generalSettings->business, true)['address'] }}
                                 </li>
                             @endif
@@ -59,17 +59,17 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-end">
-                            <li><strong>Date : </strong> {{ $transfer->date }}</li>
-                            <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
-                            <li><strong>Status : </strong>
+                            <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                            <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
+                            <li><strong>@lang('menu.status') : </strong>
                                 @if ($transfer->receive_status == 1)
 
-                                    <span class="text-danger">Pending</span> 
+                                    <span class="text-danger">@lang('menu.pending')</span>
                                 @elseif($transfer->receive_status == 2)
 
-                                    <span class="text-primary">Partial</span> 
+                                    <span class="text-primary">@lang('menu.partial')</span>
                                 @elseif($transfer->receive_status == 3)
-                                    <span class="text-success">Completed</span> 
+                                    <span class="text-success">@lang('menu.completed')</span>
                                 @endif
                             </li>
                         </ul>
@@ -80,13 +80,13 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm table-striped">
                             <thead>
-                                <tr class="bg-primary text-white">
-                                    <th class="text-start">SL</th>
-                                    <th class="text-start">Product</th>
-                                    <th class="text-start">Unit Cost Inc.Tax</th>
-                                    <th class="text-start">Quantity</th>
-                                    <th class="text-start">Receive Qty</th>
-                                    <th class="text-start">SubTotal</th>
+                                <tr class="bg-secondary text-white">
+                                    <th class="text-start">@lang('menu.sl')</th>
+                                    <th class="text-start">@lang('menu.product')</th>
+                                    <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
+                                    <th class="text-start">@lang('menu.quantity')</th>
+                                    <th class="text-start">@lang('menu.receive_qty')</th>
+                                    <th class="text-start">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
                             <tbody class="transfer_print_product_list">
@@ -112,12 +112,12 @@
                         <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">Total Stock Value :</th>
+                                    <th class="text-end">@lang('menu.total_stock_value') :</th>
                                     <td class="text-start">{{ $transfer->total_stock_value }}</td>
                                 </tr>
-                               
+
                                 <tr>
-                                    <th class="text-end">Transfer Cost :</th>
+                                    <th class="text-end">@lang('menu.transfer_cost') :</th>
                                     <td class="text-start">{{ $transfer->transfer_cost }}</td>
                                 </tr>
                             </table>
@@ -128,14 +128,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>Transfer Note : </h6>
+                            <h6>@lang('menu.transfer_note') : </h6>
                             <p>{{ $transfer->transfer_note }}</p>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>Receiver Note : </h6>
+                            <h6>{{ __('Receiver Note') }} : </h6>
                             <p>{{ $transfer->receiver_note }}</p>
                         </div>
                     </div>
@@ -143,22 +143,22 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white">Print Challan</button>
-                <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">Print Details</button>
-                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button> 
+                <button type="button" class="footer_btn btn btn-sm btn-info print_challan_btn text-white">@lang('menu.print_challan')</button>
+                <button type="button" class="footer_btn btn btn-sm btn-primary print_btn">@lang('menu.print_details')</button>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">@lang('menu.close')</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Details Modal End-->
 
-<div class="transfer_print_template d-none">
+<div class="transfer_print_template d-hide">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h6 class="bill_name">Transfer Stock Details (Business Location To Business Location)</h6>
+                        <h6 class="bill_name">{{ __('Transfer Stock Details (Business Location To Business Location)') }}</h6>
                     </div>
                 </div>
             </div>
@@ -168,15 +168,15 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>From : </strong></li>
-                        <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
-                        <li><strong>Stock Location : </strong> 
+                        <li><strong>@lang('menu.from') : </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+
+                        <li><strong>@lang('menu.stock_location') : </strong>
                             @if ($transfer->sender_warehouse)
 
                                 {{ $transfer->sender_warehouse->warehouse_name.'/'.$transfer->sender_warehouse->warehouse_code.'(WH)' }}
-                            @else     
+                            @else
 
                                 {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code.'(B.L)' : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
                             @endif
@@ -185,19 +185,19 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>To : </strong></li>
-                        <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
+                        <li><strong>@lang('menu.to') : </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+
                         @if ($transfer->receiver_branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
+                        @else
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -206,18 +206,18 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
-                        <li><strong>Status : </strong> 
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->receive_status == 1)
 
-                                <span class="text-danger">Pending</span> 
+                                <span class="text-danger">@lang('menu.pending')</span>
                             @elseif($transfer->receive_status == 2)
 
-                                <span class="text-primary">Partial</span> 
+                                <span class="text-primary">@lang('menu.partial')</span>
                             @elseif($transfer->receive_status == 3)
-                            
-                                <span class="text-success">Completed</span> 
+
+                                <span class="text-success">@lang('menu.completed')</span>
                             @endif
                         </li>
                     </ul>
@@ -230,12 +230,12 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th class="text-start">SL</th>
-                            <th class="text-start">Product</th>
-                            <th class="text-start">Unit Cost Inc.Tax</th>
-                            <th class="text-start">Quantity</th>
-                            <th class="text-start">Receive Qty</th>
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sl')</th>
+                            <th class="text-start">@lang('menu.product')</th>
+                            <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
+                            <th class="text-start">@lang('menu.quantity')</th>
+                            <th class="text-start">@lang('menu.receive_qty')</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>
@@ -257,12 +257,12 @@
 
                 <tfoot>
                     <tr>
-                        <td class="text-end" colspan="5"><strong>Total Stock Value :</strong></td>
+                        <td class="text-end" colspan="5"><strong>@lang('menu.total_stock_value') :</strong></td>
                         <td class="text-start">{{ $transfer->total_stock_value }}</td>
                     </tr>
-                   
+
                     <tr>
-                        <th class="text-end" colspan="5">Transfer Cost</th>
+                        <th class="text-end" colspan="5">@lang('menu.transfer_cost')</th>
                         <td class="text-start">{{ $transfer->transfer_cost }}</td>
                     </tr>
                 </tfoot>
@@ -273,10 +273,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>CHECKED BY</strong></p>
+                    <p><strong>@lang('menu.checked_by')</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p><strong>APPROVED BY</strong></p>
+                    <p><strong>@lang('menu.approved_by')</strong></p>
                 </div>
             </div>
         </div>
@@ -288,20 +288,20 @@
                 <p class="p-0 m-0">{{ $transfer->ref_id }}</b></small>
 
                 @if (env('PRINT_SD_OTHERS') == true)
-                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 @endif
             </div>
         </div>
     </div>
 </div>
 
-<div class="challan_print_template d-none">
+<div class="challan_print_template d-hide">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h6 class="bill_name">Transfer Challan</h6>
+                        <h6 class="bill_name">@lang('menu.transfer_challan')</h6>
                     </div>
                 </div>
             </div>
@@ -311,19 +311,19 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>From : </strong></li>
-                        <li><strong>B.Location Name :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
+                        <li><strong>@lang('menu.from') : </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+
                         @if ($transfer->sender_branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->sender_branch->city }},
                                 {{ $transfer->sender_branch->state }},
                                 {{ $transfer->sender_branch->zip_code }},
                                 {{ $transfer->sender_branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
+                        @else
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -331,19 +331,19 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>To : </strong></li>
-                        <li><strong>B.Location Name :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
-                        
+                        <li><strong>@lang('menu.to') : </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+
                         @if ($transfer->receiver_branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
+                        @else
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ json_decode($generalSettings->business, true)['address'] }}
                             </li>
                         @endif
@@ -352,8 +352,8 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->ref_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
                     </ul>
                 </div>
             </div>
@@ -364,10 +364,10 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th class="text-start">SL</th>
-                            <th class="text-start">Product</th>
-                            <th class="text-start">Send Qty</th>
-                            <th class="text-start">Unit</th>
+                            <th class="text-start">@lang('menu.sl')</th>
+                            <th class="text-start">@lang('menu.product')</th>
+                            <th class="text-start">@lang('menu.send_qty')</th>
+                            <th class="text-start">@lang('menu.unit')</th>
                         </tr>
                     </tr>
                 </thead>
@@ -391,10 +391,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>CHECKED BY</strong></p>
+                    <p><strong>@lang('menu.checked_by')</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p><strong>APPROVED BY</strong></p>
+                    <p><strong>@lang('menu.approved_by')</strong></p>
                 </div>
             </div>
         </div>
@@ -406,7 +406,7 @@
                 <p class="p-0 m-0">{{ $transfer->ref_id }}</b></small>
 
                 @if (env('PRINT_SD_OTHERS') == true)
-                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 @endif
             </div>
         </div>

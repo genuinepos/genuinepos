@@ -14,7 +14,7 @@ class LeaveController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //leave page method
@@ -23,6 +23,12 @@ class LeaveController extends Controller
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
         $leavetypes = DB::table('hrm_leavetypes')->get(['id', 'leave_type']);
         $employees = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $employees = $employees->map(function($employee) {
+            $employee->name = $employee->name ?? '';
+            $employee->prefix = $employee->prefix ?? '';
+            $employee->last_name = $employee->last_name ?? '';
+            return $employee;
+        });
         return view('hrm.leave.index', compact('departments', 'leavetypes', 'employees'));
     }
 
@@ -87,7 +93,7 @@ class LeaveController extends Controller
     public function departmentEmployees($depId)
     {
         $employees = DB::table('users')->where('department_id', $depId)
-        ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+            ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         return response()->json($employees);
     }
 }

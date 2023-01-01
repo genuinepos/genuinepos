@@ -7,122 +7,123 @@
         th.task-assign-to {width: 15%;}
         th.task-status {width: 10%;}
         .custom-modify {padding: 3px 5px!important;line-height: 31px!important;}
+        .edit_task_name {
+            min-width: 150px !important;
+        }
+        .task_area {
+            min-width: 150px;
+        }
     </style>
 @endpush
 @section('title', 'Manage Tasks - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-tasks"></span>
-                                <h5>Manage Task</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <!-- =====================================================================BODY CONTENT================== -->
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-tasks"></span>
+                    <h5>@lang('menu.manage_task')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <i class="fas fa-paperclip ms-2"></i> <b class="text-danger">({{ $ws->ws_id }})</b> {{ $ws->name }}
-                                        <div class="px-2">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <ul class="list-unstyled ws_description">
-                                                        <li><b>Start Date :</b> {{ date('d-m-Y', strtotime($ws->start_date)) }}</li>
-                                                        <li><b>End Date :</b> {{ date('d-m-Y', strtotime($ws->end_date)) }}</li>
-                                                        <li><b>Estimated Hours :</b> {{ $ws->estimated_hours }}</li>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <ul class="list-unstyled ws_description">
-                                                        <li><b>Assigned By :</b> {{ $ws->admin->prefix.' '.$ws->admin->name.' '.$ws->admin->last_name}}</li>
-                                                        <li>
-                                                            <b>Assigned To :</b>
-                                                            @foreach ($ws->ws_users as $ws_user)
-                                                                {{ $ws_user->user->prefix.' '.$ws_user->user->name.' '.$ws_user->user->last_name }},
-                                                            @endforeach
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <ul class="list-unstyled ws_description">
-                                                        <li><b>Priority  :</b> {{ $ws->priority }}</li>
-                                                        <li><b>Status :</b> {{ $ws->status }}</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+            <div class="p-lg-3 p-1">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <i class="fas fa-paperclip ms-2"></i> <b class="text-danger">({{ $ws->ws_id }})</b> {{ $ws->name }}
+                                <div class="px-2">
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <ul class="list-unstyled ws_description">
+                                                <li><b>@lang('menu.start_date') :</b> {{ date('d-m-Y', strtotime($ws->start_date)) }}</li>
+                                                <li><b>@lang('menu.end_date') :</b> {{ date('d-m-Y', strtotime($ws->end_date)) }}</li>
+                                                <li><b>{{ __('Estimated Hour') }} :</b> {{ $ws->estimated_hours }}</li>
+                                            </ul>
                                         </div>
 
+                                        <div class="col-md-4">
+                                            <ul class="list-unstyled ws_description">
+                                                <li><b>@lang('menu.assigned_by') :</b> {{ $ws->admin->prefix.' '.$ws->admin->name.' '.$ws->admin->last_name}}</li>
+                                                <li>
+                                                    <b>@lang('menu.assigned_to') :</b>
+                                                    @foreach ($ws->ws_users as $ws_user)
+                                                        {{ $ws_user?->user?->prefix.' '.$ws_user?->user?->name.' '.$ws_user?->user?->last_name }},
+                                                    @endforeach
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <ul class="list-unstyled ws_description">
+                                                <li><b>@lang('menu.priority')  :</b> {{ $ws->priority }}</li>
+                                                <li><b>@lang('menu.status') :</b> {{ $ws->status }}</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- =========================================top section button=================== -->
-                    <div class="row mt-1">
-                        <div class="card">
-                            <div class="py-2 px-2 form-header">
-                                <div class="col-md-12">
-                                    <form id="add_task_form" action="{{ route('workspace.task.store') }}">
-                                        @csrf
-                                        <input type="hidden" name="ws_id" id="ws_id" value="{{ $ws->id }}">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <input required type="text" name="task_name" id="task_name" class="form-control form-control-sm" placeholder="Wright task and press enter">
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <select name="task_status" id="task_status" class="form-control form-control-sm">
-                                                    <option value="In-Progress">In-Progress</option>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Completed">Completed</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <button type="submit" class="c-btn button-success me-0 float-start submit_button">Add</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="widget_content px-1">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-
-                                <table class="table modal-table table-sm">
-                                    {{-- <thead class="d-none">
-                                        <tr class="bg-secondary">
-                                            <th class="task-name text-white text-start">Task</th>
-                                            <th class="task-assign-to text-white text-start">Assigned To</th>
-                                            <th class="task-status text-white text-start">Status</th>
-                                        </tr>
-                                    </thead> --}}
-
-                                    <tbody id="task_list">
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
+                <div class="card">
+                    <div class="py-2 px-2 form-header">
+                        <div class="col-md-12">
+                            <form id="add_task_form" action="{{ route('workspace.task.store') }}">
                                 @csrf
+                                <input type="hidden" name="ws_id" id="ws_id" value="{{ $ws->id }}">
+                                <div class="row g-2">
+                                    <div class="col-md-8">
+                                        <input required type="text" name="task_name" id="task_name" class="form-control form-control-sm" placeholder="Wright task and press enter">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <select name="task_status" id="task_status" class="form-control form-control-sm">
+                                            <option value="In-Progress">@lang('menu.in_progress')</option>
+                                            <option value="Pending">@lang('menu.pending')</option>
+                                            <option value="Completed">@lang('menu.completed')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-sm btn-success submit_button">Add</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
+
+                    <div class="widget_content px-1">
+                        <div class="data_preloader">
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table modal-table table-sm">
+                                {{-- <thead class="d-hide">
+                                    <tr class="bg-secondary">
+                                        <th class="task-name text-white text-start">Task</th>
+                                        <th class="task-assign-to text-white text-start">@lang('menu.assigned_to')</th>
+                                        <th class="task-status text-white text-start">@lang('menu.status')</th>
+                                    </tr>
+                                </thead> --}}
+
+                                <tbody id="task_list">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>

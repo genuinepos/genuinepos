@@ -4,159 +4,157 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-warehouse"></span>
-                                <h5>Warehouses</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-warehouse"></span>
+                    <h5>@lang('menu.warehouse')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
 
-                        @if ($addons->branches == 1)
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="sec-name">
-                                        <div class="col-md-12">
-                                            <form action="" method="get" class="px-2">
-                                                <div class="form-group row">
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able"
-                                                                id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </form>
-                                        </div>
+        <div class="p-3">
+            @if ($addons->branches == 1)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <form action="" method="get" class="px-2">
+                                    <div class="form-group row">
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-3">
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able select2"
+                                                    id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option selected value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
                                     </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="row mt-1">
-                        <div class="col-md-4">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Add Warehouse </h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-3 pb-2">
-                                    <form id="add_warehouse_form" action="{{ route('settings.warehouses.store') }}" method="POST">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label><b>Warehouse Name :</b>  <span class="text-danger">*</span></label>
-                                            <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="Warehouse name"/>
-                                            <span class="error error_name"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Warehouse Code :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
-                                            <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="Warehouse code"/>
-                                            <span class="error error_code"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Phone :</b>  <span class="text-danger">*</span></label>
-                                            <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
-                                            <span class="error error_phone"></span>
-                                        </div>
-
-                                        <div class="form-group mt-1">
-                                            <label><b>Address :</b>  </label>
-                                            <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label><strong>Under Business Location :</strong></label>
-                                            <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
-                                                <option value="NULL">
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
-                                                </option>
-
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_business_location"></span>
-                                        </div>
-
-                                        <div class="form-group text-end mt-3">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button type="submit" class="me-0 c-btn button-success float-end">Save</button>
-                                            <button type="reset" class="c-btn btn_orange float-end">Reset</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Edit Warehouse </h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-3 pb-2" id="edit_form_body">
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Warehouse</h6>
-                                    </div>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">SL</th>
-                                                    <th class="text-start">Name</th>
-                                                    <th class="text-start">Business Location</th>
-                                                    <th class="text-start">Warehouse Code</th>
-                                                    <th class="text-start">Phone</th>
-                                                    <th class="text-start">Address</th>
-                                                    <th class="text-start">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+            @endif
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card" id="add_form">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>@lang('menu.warehouse') </h6>
+                            </div>
+                        </div>
+
+                        <div class="form-area px-3 pb-2">
+                            <form id="add_warehouse_form" action="{{ route('settings.warehouses.store') }}" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label><b>@lang('menu.warehouse_name') :</b>  <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="@lang('menu.warehouse_name')"/>
+                                    <span class="error error_name"></span>
+                                </div>
+
+                                <div class="form-group mt-1">
+                                    <label><b>@lang('menu.warehouse_code') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
+                                    <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="@lang('menu.warehouse_code')"/>
+                                    <span class="error error_code"></span>
+                                </div>
+
+                                <div class="form-group mt-1">
+                                    <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
+                                    <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
+                                    <span class="error error_phone"></span>
+                                </div>
+
+                                <div class="form-group mt-1">
+                                    <label><b>@lang('menu.address') :</b>  </label>
+                                    <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label><strong>@lang('menu.under_business_location') :</strong></label>
+                                    <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
+                                        <option value="NULL">
+                                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
+                                        </option>
+
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_business_location"></span>
+                                </div>
+
+                                <div class="form-group d-flex justify-content-end mt-3">
+                                    <div class="btn-loading">
+                                        <button type="button" class="btn loading_button d-hide"><i
+                                            class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                        <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
+                                        <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card" id="edit_form" style="display: none;">
+                        <div class="section-header">
+                            <div class="col-md-12">
+                                <h6>@lang('menu.edit_warehouse') </h6>
+                            </div>
+                        </div>
+
+                        <div class="form-area px-3 pb-2" id="edit_form_body">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-6">
+                                <h6>@lang('menu.all_warehouse')</h6>
+                            </div>
+                        </div>
+
+                        <div class="widget_content">
+                            <div class="data_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="display data_tbl data__table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-start">@lang('menu.sl')</th>
+                                            <th class="text-start">@lang('menu.name')</th>
+                                            <th class="text-start">@lang('menu.business_location')</th>
+                                            <th class="text-start">@lang('menu.warehouse_code')</th>
+                                            <th class="text-start">@lang('menu.phone')</th>
+                                            <th class="text-start">@lang('menu.address')</th>
+                                            <th class="text-start">@lang('menu.action')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <form id="deleted_form" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>

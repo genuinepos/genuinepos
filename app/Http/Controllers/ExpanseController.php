@@ -36,7 +36,7 @@ class ExpanseController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->util = $util;
-        
+
     }
 
     // Expanse index view
@@ -520,7 +520,7 @@ class ExpanseController extends Controller
         $storedExpenseId = $deleteExpensePayment->expanse_id;
 
         if (!is_null($deleteExpensePayment)) {
-            // Update expanse 
+            // Update expanse
             if ($deleteExpensePayment->attachment != null) {
 
                 if (file_exists(public_path('uploads/payment_attachment/' . $deleteExpansePayment->attachment))) {

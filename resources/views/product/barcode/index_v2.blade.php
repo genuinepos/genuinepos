@@ -18,18 +18,21 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Generate Barcode</h5>
+                                <h5>@lang('menu.generate_barcode')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
-                    <div class="p-3">
-                        <div class="row g-3">
+                    <div class="p-lg-3 p-1">
+                        <div class="row g-lg-3 g-1">
                             <div class="col-md-7">
                                 <div class="card ">
-                                    <form id="multiple_completed_form" class="d-none"
+                                    <div class="card-header">
+                                        <p><b>@lang('menu.barcode_settings') :</b></p>
+                                    </div>
+                                    <form id="multiple_completed_form" class="d-hide"
                                         action="{{ route('barcode.multiple.generate.completed') }}" method="post">
                                         @csrf
                                         <table>
@@ -44,7 +47,6 @@
                                                 value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
                                             <div class="form-group row">
                                                 <div class="col-md-8">
-                                                    <label><b>Barcode Setting :</b></label>
                                                     <select name="br_setting_id" class="form-control">
                                                         @foreach ($bc_settings as $bc_setting)
                                                             <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
@@ -60,27 +62,27 @@
                                                     <div class="row">
                                                         <ul class="list-unstyled">
                                                             <li>
-                                                                <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price inc.Tax &nbsp;</p>
+                                                                <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; @lang('menu.price_inc_tax') &nbsp;</p>
                                                             </li>
 
                                                             <li>
-                                                                <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name. &nbsp; </p>
+                                                                <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; @lang('menu.product_name'). &nbsp; </p>
                                                             </li>
 
                                                             <li>
-                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Variant Name. &nbsp; </p>
+                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; @lang('menu.variant_name'). &nbsp; </p>
                                                             </li>
 
                                                             <li>
-                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Tax &nbsp; </p>
+                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.tax') &nbsp; </p>
                                                             </li>
 
                                                             <li>
-                                                                <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name. &nbsp; </p>
+                                                                <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; @lang('menu.business_name'). &nbsp; </p>
                                                             </li>
 
                                                             <li>
-                                                                <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix. &nbsp; </p>
+                                                                <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; @lang('menu.supplier_prefix') &nbsp; </p>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -107,20 +109,20 @@
                                                 <div class="col-md-12">
                                                     <div class="barcode_product_table_area mt-2">
                                                         <div class="table_heading">
-                                                            <p class="p-0 m-0"><strong>Product List</strong></p>
+                                                            <p class="p-0 m-0"><strong>@lang('menu.product_list')</strong></p>
                                                         </div>
                                                         <div class="table_area">
-                                                            <div class="data_preloader d-none">
-                                                                <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                                            <div class="data_preloader d-hide">
+                                                                <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                                             </div>
                                                             <div class="table-responsive">
                                                                 <table class="table modal-table table-sm">
                                                                     <thead>
-                                                                        <tr class="bg-primary text-white text-start">
-                                                                            <th class="text-start">Product</th>
-                                                                            <th class="text-start">Supplier</th>
-                                                                            <th class="text-start">Quantity</th>
-                                                                            <th class="text-start">Action</th>
+                                                                        <tr class="bg-secondary text-white text-start">
+                                                                            <th class="text-start">@lang('menu.product')</th>
+                                                                            <th class="text-start">@lang('menu.supplier')</th>
+                                                                            <th class="text-start">@lang('menu.quantity')</th>
+                                                                            <th class="text-start">@lang('menu.action')</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody id="barcode_product_list"></tbody>
@@ -140,11 +142,11 @@
                                             <div class="row mt-3">
                                                 <div class="col-md-6">
                                                     <div class="multiple_cmp_btn_area">
-                                                        <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> DELETE SELECTED ALL </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
+                                                        <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> @lang('menu.delete_selected_all') </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button type="submit" class="btn btn-sm btn-primary float-end">Preview & Print</button>
+                                                    <button type="submit" class="btn btn-sm btn-primary float-end">{{ __("Preview & Print") }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,27 +156,31 @@
 
                             <div class="col-md-5">
                                 <div class="table_product_list">
-                                    <div class="card p-1">
-                                        <div class="heading">
-                                            <p><strong>Purchased Product List</strong></p>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <p><strong>@lang('menu.purchase_product_list')</strong></p>
                                         </div>
-                                        <table class="display data_tbl data__table table-hover" id="data">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start"><input type="checkbox" id="chack_all">All</th>
-                                                    <th class="text-start">Product</th>
-                                                    <th class="text-start">Supplier</th>
-                                                    <th class="text-start">Quantity</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="purchased_product_list"></tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="3" class="text-end">Total Pending Qty :</th>
-                                                    <th colspan="3" class="text-end">0</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
+                                        <div class="card-body p-2">
+                                            <div class="table-responsive">
+                                                <table class="display data_tbl data__table table-hover" id="data">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-start"><input type="checkbox" id="chack_all">@lang('menu.all')</th>
+                                                            <th class="text-start">@lang('menu.product')</th>
+                                                            <th class="text-start">@lang('menu.supplier')</th>
+                                                            <th class="text-start">@lang('menu.quantity')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="purchased_product_list"></tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} :</th>
+                                                            <th colspan="3" class="text-end">0</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

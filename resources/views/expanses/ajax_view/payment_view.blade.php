@@ -12,8 +12,8 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> Reference ID : </strong>{{ $expense->invoice_id }} </li>
-                    <li><strong>Business Location : </strong>
+                    <li><strong> @lang('menu.reference_id') : </strong>{{ $expense->invoice_id }} </li>
+                    <li><strong>@lang('menu.business_location') : </strong>
                         {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
                     </li>
                 </ul>
@@ -23,19 +23,19 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Total Due : </strong>{{ $expense->due }}</li>
-                    <li><strong>Date : </strong>{{ $expense->date }}</li>
-                    <li><strong>Payment Status : </strong> 
+                    <li><strong>@lang('menu.total_due') : </strong>{{ $expense->due }}</li>
+                    <li><strong>@lang('menu.date') : </strong>{{ $expense->date }}</li>
+                    <li><strong>@lang('menu.payment_status') : </strong>
                         @php
-                           $payable = $expense->net_total_amount; 
+                           $payable = $expense->net_total_amount;
                         @endphp
-                        
-                        @if ($expense->due <= 0) 
-                            <span class="badge bg-success">Paid</span>
-                        @elseif ($expense->due > 0 && $expense->due < $payable) 
-                            <span class="badge bg-primary text-white">Partial</span>
-                        @elseif ($payable == $expense->due) 
-                            <span class="badge bg-danger text-white">Due</span>
+
+                        @if ($expense->due <= 0)
+                            <span class="badge bg-success">@lang('menu.paid')</span>
+                        @elseif ($expense->due > 0 && $expense->due < $payable)
+                            <span class="badge bg-primary text-white">@lang('menu.partial')</span>
+                        @elseif ($payable == $expense->due)
+                            <span class="badge bg-danger text-white">@lang('menu.due')</span>
                         @endif
                     </li>
                 </ul>
@@ -45,19 +45,19 @@
 </div>
 
 <div class="payment_list_table">
-    <div class="data_preloader modal_preloader"> <h6><i class="fas fa-spinner"></i> Processing...</h6></div>
+    <div class="data_preloader modal_preloader"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
     <div class="table-responsive">
         <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr>
-                    <th class="text-start">Date</th>
-                    <th class="text-start">Voucher No</th>
-                    <th class="text-start">Note</th>
-                    <th class="text-start">Amount</th>
-                    <th class="text-start">Method</th>
-                    <th class="text-start">Type</th>
-                    <th class="text-start">Account</th>
-                    <th class="text-start">Action</th>
+                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.voucher_no')</th>
+                    <th class="text-start">@lang('menu.note')</th>
+                    <th class="text-start">@lang('menu.amount')</th>
+                    <th class="text-start">@lang('menu.method')</th>
+                    <th class="text-start">@lang('menu.type')</th>
+                    <th class="text-start">@lang('menu.account')</th>
+                    <th class="text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -71,7 +71,7 @@
                             <td class="text-start">
                                 @if ($payment->payment_method)
                                       {{ $payment->payment_method->name }}
-                                @else 
+                                @else
                                     {{ $payment->pay_mode }}
                                 @endif
                             </td>
@@ -84,9 +84,9 @@
                             </td>
                         </tr>
                     @endforeach
-                @else   
+                @else
                     <tr>
-                        <td colspan="7" class="text-center">No Data Found</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
                     </tr>
                 @endif
             </tbody>

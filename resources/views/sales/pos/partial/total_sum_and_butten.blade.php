@@ -26,7 +26,7 @@
                                         toastr.error('Creating draft is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Draft<p>F2</p>
+                                class="function-card" tabindex="-1">@lang('menu.draft')<p>F2</p>
                             </a>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                         toastr.error('Creating quotaion is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Quotation<p>F4</p>
+                                class="function-card" tabindex="-1">@lang('menu.quotation')<p>F4</p>
                             </a>
                         </div>
                     </div>
@@ -52,14 +52,14 @@
                     <div class="col-4">
                         <div class="btn-bg">
                             <a href="#" class="function-card" id="exchange_btn" data-bs-toggle="modal" data-bs-target="#exchangeModal" tabindex="-1">
-                                Exchange<p>F6</p>
+                                @lang('menu.exchange')<p>F6</p>
                             </a>
                         </div>
                     </div>
 
                     <div class="col-4">
                         <div class="btn-bg">
-                            <a href="#" class="function-card" id="show_stock" tabindex="-1">Stock<p>Alt+C</p>
+                            <a href="#" class="function-card" id="show_stock" tabindex="-1">@lang('menu.stock')<p>Alt+C</p>
                             </a>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Hold Invoice<p>F8</p>
+                                class="function-card" tabindex="-1">@lang('menu.hold_invoices')<p>F8</p>
                             </a>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card" tabindex="-1">Pick Hold <p>F9</p>
+                                class="function-card" tabindex="-1">{{ __('Pick Hold') }} <p>F9</p>
                             </a>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                                         toastr.error('Suspend is disabled in POS.');
                                     "
                                 @endif
-                                class="function-card function-card-danger" tabindex="-1">Suspend<p>Alt+A</p>
+                                class="function-card function-card-danger" tabindex="-1">{{ __('Suspend') }}<p>Alt+A</p>
                             </a>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row g-1">
-                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>Total:</b></label>
+                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>@lang('menu.total'):</b></label>
                         <div class="col-sm-9 col-8">
                             <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                         </div>
@@ -145,7 +145,7 @@
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
                         <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">Discount:</label>
+                            <label class="col-sm-3 col-4 col-form-label text-white">@lang('menu.discount'):</label>
                             <div class="col-sm-9 col-8">
 
                                 <div class="row g-2">
@@ -162,20 +162,20 @@
                                     </div>
                                 </div>
 
-                                <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                                <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
                                     value="0.00" tabindex="-1">
                             </div>
                         </div>
                     @else
                         <input name="order_discount" type="hidden" id="order_discount" value="0.00" tabindex="-1">
-                        <input name="order_discount_amount" type="number" class="d-none" id="order_discount_amount"
+                        <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
                             value="0.00" tabindex="-1">
-                        <input name="order_discount_type" class="d-none" id="order_discount_type" value="1">
+                        <input name="order_discount_type" class="d-hide" id="order_discount_type" value="1">
                     @endif
 
                     @if (json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1')
                         <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">Vat/Tax:</label>
+                            <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Vat/Tax') }}:</label>
                             <div class="col-sm-9 col-8">
                                 <div class="row g-2">
                                     <div class="col-6">
@@ -195,7 +195,7 @@
                     @endif
 
                     <div class="row g-1">
-                        <label class="col-sm-3 col-4 col-form-label text-white">Pre. Due:</label>
+                        <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Pre. Due') }}:</label>
 
                         <div class="col-sm-9 col-8">
                             <input readonly class="form-control pos-amounts" type="number" step="any" name="previous_due"
@@ -207,7 +207,7 @@
                             <input readonly class="form-control pos-amounts" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
 
-                            <input class="d-none" type="number" step="any" name="total_invoice_payable"
+                            <input class="d-hide" type="number" step="any" name="total_invoice_payable"
                                 id="total_invoice_payable" value="0.00" tabindex="-1">
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                     </div>
 
                     <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-white">Change Amount:</label>
+                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.change_amount'):</label>
                         <div class="col-sm-6 col-7">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control pos-amounts" tabindex="-1">
@@ -257,18 +257,18 @@
                                             toastr.error('Full credit sale is disabled.');
                                         "
                                     @endif
-                                    tabindex="-1">Credit Sale</a>
+                                    tabindex="-1">@lang('menu.credit_sale')</a>
                             </div>
 
                             <div class="btn-bg">
-                                <a href="#" class="btn-pos" id="reedem_point_button" tabindex="-1">Reedem Point</a>
+                                <a href="#" class="btn-pos" id="reedem_point_button" tabindex="-1">@lang('menu.reedem_oint')</a>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-6 btn-bottom m-order-3">
                             <div class="btn-bg">
                                 <a href="#" class="function-card other_payment_method" tabindex="-1">
-                                    <span>Other Method</span>
+                                    <span>@lang('menu.other_method')</span>
                                     <p>Ctrl+B</p>
                                 </a>
                             </div>
@@ -278,7 +278,7 @@
                             <div class="btn-bg">
                                 <a href="#" class="function-card cash-btn" id="submit_btn" data-button_type="1"
                                     data-action_id="1" tabindex="-1">
-                                    <span>Cash </span>
+                                    <span>@lang('menu.cash') </span>
                                     <p>F10</p>
                                 </a>
                             </div>

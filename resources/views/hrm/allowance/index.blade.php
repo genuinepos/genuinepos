@@ -8,57 +8,51 @@
 @section('title', 'HRM Allowances/Deductions - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-plus"></span>
-                                <h6>Allowances/Deductions</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus"></span>
+                    <h6>{{ __('Allowances') }}/{{ __('Deductions') }}</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-8">
+                        <h6>{{ __('Allowances') }}/{{ __('Deductions') }}</h6>
                     </div>
 
-                    <div class="p-3">
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Allowances/Deductions</h6>
-                                </div>
-
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Serial</th>
-                                                <th>Type</th>
-                                                <th>Max leave</th>
-                                                <th>Leave Count Interval</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="col-4 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.serial')</th>
+                                    <th>@lang('menu.type')</th>
+                                    <th>{{ __('Max leave') }}</th>
+                                    <th>{{ __('Leave Count Interval') }}</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -69,7 +63,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Allowance/{{ __('Deduction') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -84,26 +78,26 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="type" required="">
-                                    <option value="Allowance">Allowance</option>
-                                    <option value="Deduction">Deduction</option>
+                                    <option value="Allowance">{{ __('Allowance') }}</option>
+                                    <option value="Deduction">{{ __('Deduction') }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-6">
-                                <label><b>Amount Type :</b>  <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Amount Type') }} :</b>  <span class="text-danger">*</span></label>
                                 <select class="form-control" name="amount_type" id="amount_type">
-                                    <option value="1">Fixed (0.0)</option>
-                                    <option value="2">Percentage (%)</option>
+                                    <option value="1">@lang('menu.fixed') (0.0)</option>
+                                    <option value="2">@lang('menu.percentage') (%)</option>
                                 </select>
                             </div>
 
                             <div class="col-6">
-                                <label><b>Amount :</b>  <span class="text-danger">*</span></label>
-                                <input type="number" step="any" name="amount" class="form-control" placeholder="Amount"/>
+                                <label><b>@lang('menu.amount') :</b>  <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="amount" class="form-control" placeholder="@lang('menu.amount')"/>
                                 <span class="error error_amount"></span>
                             </div>
                         </div>
@@ -111,9 +105,9 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +122,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/{{ __('Deduction') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>

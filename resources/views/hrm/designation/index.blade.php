@@ -8,57 +8,51 @@
 @section('title', 'HRM Designations - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-map-marker-alt"></span>
-                                <h6>Designations</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-map-marker-alt"></span>
+                    <h6>{{ __('Designations') }}</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>{{ __('Designations') }}</h6>
                     </div>
 
-                    <div class="p-3">
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Designations</h6>
-                                </div>
-
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>S/L</th>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
-                        </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.sl')</th>
+                                    <th>@lang('menu.name')</th>
+                                    <th>@lang('menu.description')</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -69,7 +63,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Designation</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Designation') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -77,21 +71,23 @@
                     <!--begin::Form-->
                     <form id="add_designation_form" action="{{ route('hrm.designations.store') }}">
                         <div class="form-group">
-                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" data-name="Designation name" placeholder="Designation name" />
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Designation Details :</b> </label>
-                            <textarea name="description" class="form-control" id="description" placeholder="Designation details"></textarea>
+                            <label><b>{{ __('Designation Details') }} :</b> </label>
+                            <textarea name="description" class="form-control" id="description" placeholder="{{ __('Designation Details') }}"></textarea>
                         </div>
 
-                        <div class="form-group mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide">
+                                    <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
+                                </button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -113,21 +109,23 @@
                     <form id="edit_designation_form" action="{{ route('hrm.designations.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>Name :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" id="e_designation_name" placeholder="Designation name"/>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Designation Details :</b> </label>
-                            <textarea name="description" class="form-control" id="e_description" placeholder="Designation details"></textarea>
+                            <label><b>{{ __('Designation Details') }} :</b> </label>
+                            <textarea name="description" class="form-control" id="e_description" placeholder="{{ __('Designation Details') }}"></textarea>
                         </div>
 
-                        <div class="form-group mt-3">
-                            <button type="button" class="btn loading_button d-none"><i
-                                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn me-0 button-success float-end">Save Change</button>
-                            <button type="reset" data-bs-dismiss="modal"
-                                class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide">
+                                    <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
+                                </button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
+                            </div>
                         </div>
                     </form>
                 </div>

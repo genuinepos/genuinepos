@@ -9,113 +9,107 @@
 @section('title', 'HRM Attendances - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-paste"></span>
+                    <h6>@lang('menu.attendance')</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-paste"></span>
-                                <h6>Attendances</h6>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
-                    </div>
-
-                    <div class="p-3">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form_element rounded mt-0 mb-3">
-                                    <div class="element-body">
-                                        <form action="" method="get">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Branch :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Users :</strong></label>
-                                                    <select name="user_id"
-                                                        class="form-control submit_able" id="user_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach($employee as $row)
-                                                            <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form action="" method="get">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-3">
+                                                <label><strong>@lang('menu.branch') :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-3">
+                                        <label><strong>@lang('menu.users') :</strong></label>
+                                        <select name="user_id"
+                                            class="form-control submit_able select2" id="user_id" autofocus>
+                                            <option value="">@lang('menu.all')</option>
+                                            @foreach($employee as $row)
+                                                <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><strong>@lang('menu.date_range') :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_i"></i></span>
+                                            </div>
+                                            <input readonly type="text" name="date_range" id="date_range"
+                                                class="form-control daterange submit_able_input"
+                                                autocomplete="off">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form_element rounded m-0">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Attendances <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
-                                </div>
-
-                                <div class="col-md-6 d-flex justify-content-end">
-                                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Employee</th>
-                                                <th>Clock IN - CLock Out</th>
-                                                <th>Work Duration</th>
-                                                <th>Clockin note</th>
-                                                <th>Clockout note</th>
-                                                <th>Shift</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>@lang('menu.attendance') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Note: Initially current year's data is available here, if need another year's data go to the data filter." class="fas fa-info-circle tp"></i></h6>
+                    </div>
+
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.date')</th>
+                                    <th>{{ __('Employee') }}</th>
+                                    <th>{{ __('Clock In - Clock Out') }}</th>
+                                    <th>{{ __('Work Duration') }}</th>
+                                    <th>{{ __('Clock in note') }}</th>
+                                    <th>{{ __('Clock out note') }}</th>
+                                    <th>@lang('menu.shift')</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -135,9 +129,9 @@
                     <form id="add_attendance_form" action="{{ route('hrm.attendance.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>Department :</b></label>
+                                <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
                                 <select  class="form-control employee" required="" id="department_id">
-                                    <option> Select Employee </option>
+                                    <option> {{ __('Select Employee') }} </option>
                                     @foreach($departments as $dep)
                                        <option value="{{ $dep->id }}">{{$dep->department_name }}</option>
                                     @endforeach
@@ -145,18 +139,18 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>Employee :</b></label>
+                                <label class="text-navy-blue"><b>{{ __('Employee') }} :</b></label>
                                 <select  class="form-control" id="employee">
-                                    <option disabled selected> Select Employee </option>
-                                    @foreach($employee as $row)
+                                    <option disabled selected> {{ __('Select Employee') }} </option>
+                                    {{-- @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
 
                         <div class="attendance_table">
-                            <div class="data_preloader d-none" id="attendance_row_loader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
+                            <div class="data_preloader d-hide" id="attendance_row_loader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                             <table class="table modal-table table-sm" id="table_data">
 
                             </table>
@@ -165,9 +159,9 @@
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner"></i><span> Loading...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">Close</button>
-                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +172,7 @@
     </div>
     <!-- Add Modal End-->
 
-    <!-- Add Modal -->
+    <!-- Edit Modal -->
     <div class="modal fade" id="editAttendanceModel" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-45-modal" role="document">
@@ -194,7 +188,7 @@
             </div>
         </div>
     </div>
-    <!-- Add Modal End-->
+    <!-- Edit Modal End-->
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
@@ -243,6 +237,9 @@
                 $('#employee').empty();
                 $('#employee').append('<option value="">Select Employee</option>');
                 $.each(employees, function (key, emp) {
+                    emp.prefix = emp.prefix || '';
+                    emp.name = emp.name || '';
+                    emp.last_name = emp.last_name || '';
                     $('#employee').append('<option value="'+emp.id+'">'+ emp.prefix+' '+emp.name+' '+emp.last_name +'</option>');
                 });
             }

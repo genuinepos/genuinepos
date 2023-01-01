@@ -1,15 +1,15 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr class="bg-navey-blue">
-            <th>P.Code(SKU)</th>
-            <th>Product</th>
-            <th>Unit Price</th>
-            <th>Current Stock</th>
-            <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
-            <th>Current Stock Value <b><small>(By Unit Price)</small></b></th>
-            <th>Potential profit</th>
-            <th>Total Unit Sold</th>
-            <th>Total Adjusted</th>
+            <th>@lang('menu.p_code')(SKU)</th>
+            <th>@lang('menu.product')</th>
+            <th>@lang('menu.unit_price')</th>
+            <th>@lang('menu.current_stock')</th>
+            <th>@lang('menu.current_stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>({{ __('By Unit Price') }})</small></b></th>
+            <th>{{ __('Potential profit') }}</th>
+            <th>{{ __('Total Unit Sold') }}</th>
+            <th>@lang('menu.total_adjusted')</th>
         </tr>
     </thead>
     <tbody>

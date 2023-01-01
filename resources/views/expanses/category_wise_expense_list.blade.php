@@ -9,9 +9,9 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill"></span>
-                    <h5>Category Wise Expenses</h5>
+                    <h5>{{ __('Category Wise Expenses') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -25,10 +25,10 @@
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>Business Location :</strong></label>
-                                                <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                    <option value="">All</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -40,21 +40,21 @@
                                     @endif
 
                                     {{-- <div class="col-md-2">
-                                        <label><strong>Expense For :</strong></label>
+                                        <label><strong>@lang('menu.expense_for') :</strong></label>
                                         <select name="admin_id" class="form-control submit_able" id="admin_id" >
-                                            <option value="">All</option>
+                                            <option value="">@lang('menu.all')</option>
                                         </select>
                                     </div> --}}
 
                                     <div class="col-md-2">
-                                        <label><strong>Category :</strong></label>
-                                        <select name="category_id" class="form-control submit_able" id="category_id" >
-                                            <option value="">All</option>
+                                        <label><strong>@lang('menu.category') :</strong></label>
+                                        <select name="category_id" class="form-control submit_able select2" id="category_id" >
+                                            <option value="">@lang('menu.all')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>From Date :</strong></label>
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -67,7 +67,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>To Date :</strong></label>
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -78,17 +78,17 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <div class="row">
-                                            <div class="col-md-6">
+                                        <div class="row align-items-end">
+                                            <div class="col-6">
                                                 <label><strong></strong></label>
                                                 <div class="input-group">
-                                                    <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                    <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 mt-4">
-                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
-                                            </div>
+                                            {{-- <div class="col-6">
+                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -100,30 +100,30 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-10">
-                        <h6>Category Wise Expense List</h6>
+                        <h6>{{ __('Category Wise Expense List') }}</h6>
                     </div>
                 </div>
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">Date</th>
-                                    <th class="text-start">Expense Category</th>
-                                    <th class="text-start">Reference ID</th>
-                                    <th class="text-start">B.Location</th>
+                                    <th class="text-start">@lang('menu.date')</th>
+                                    <th class="text-start">@lang('menu.expense_category')</th>
+                                    <th class="text-start">@lang('menu.reference_id')</th>
+                                    <th class="text-start">@lang('menu.b_location')</th>
                                     <th class="text-start">Expanse For</th>
-                                    <th class="text-start">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th class="text-start">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="4" class="text-end text-white">Total :</th>
+                                    <th colspan="4" class="text-end text-white">@lang('menu.total') :</th>
                                     <th></th>
                                     <th class="text-white" id="total_amount"></th>
                                 </tr>

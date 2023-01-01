@@ -30,10 +30,10 @@
                         @endphp
                         <h5><b>{{ $branch->name.'/'.$branch->branch_code }}</b>(BL) </h5>
                     @elseif($branch_id == '')
-                        <h5><b>All Business Location</b></h5> 
+                        <h5><b>@lang('menu.all_business_location')</b></h5>
                     @endif
-                    <h6><b>Attendance Report</b></h6>
-                    <h6>Attendance Of {{ $s_date .' To '. $e_date }}</h6>
+                    <h6><b>@lang('menu.attendance_report')</b></h6>
+                    <h6>@lang('menu.attendance') Of {{ $s_date .' To '. $e_date }}</h6>
                 </div>
             </div>
         </div>
@@ -42,11 +42,11 @@
     <table class="table modal-table table-sm table-bordered">
         <thead>
             <tr>
-                <th class="text-start">Date</th>
-                <th class="text-start">Employee</th>
-                <th class="text-start">Clock In - Clock Out</th>
-                <th class="text-start">Work Duration</th>
-                <th class="text-start">Shift</th>
+                <th class="text-start">@lang('menu.date')</th>
+                <th class="text-start">{{ __('Employee') }}</th>
+                <th class="text-start">{{ __('Clock In - Clock Out') }}</th>
+                <th class="text-start">{{ __('Work Duration') }}</th>
+                <th class="text-start">@lang('menu.shift')</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +61,7 @@
                         <b> {{ date('h:i a', strtotime($row->clock_in)) . $clockOut }}</b>
                     </td>
                     <td class="text-start">
-                        @if ($row->clock_out_ts) 
+                        @if ($row->clock_out_ts)
                             @php
                                 $startTime = Carbon::parse($row->clock_in);
                                 $endTime = Carbon::parse($row->clock_out);
@@ -69,8 +69,8 @@
                                 $totalDuration = $endTime->diff($startTime)->format("%H:%I:%S");
                             @endphp
                             {{ $totalDuration }}
-                        @else 
-                            Clock-Out-does-not-exists
+                        @else
+                            {{ __('Clock-Out-does-not-exists') }}
                         @endif
                     </td>
                     <td class="text-start">{{ $row->shift_name ? $row->shift_name : 'N/A' }}</td>
@@ -84,13 +84,13 @@
 @if (env('PRINT_SD_OTHERS') == 'true')
     <div class="row">
         <div class="col-md-12 text-center">
-            <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+            <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
         </div>
     </div>
 @endif
 
 <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer text-end">
     <small style="font-size: 5px;" class="text-end">
-        Print Date: {{ date('d-m-Y , h:iA') }}
+        @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
     </small>
 </div>

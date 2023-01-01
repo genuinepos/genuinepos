@@ -1,4 +1,4 @@
-<div class="challan_print_template d-none">
+<div class="challan_print_template d-hide">
     <style>
         @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
     </style>
@@ -50,7 +50,7 @@
                             @endif
 
                             @if ($sale->branch->pos_sale_invoice_layout->branch_email)
-                                <h6>Eamil : {{ $sale->branch->email }}</h6>
+                                <h6>@lang('menu.email') : {{ $sale->branch->email }}</h6>
                             @endif
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     <ul class="list-unstyled">
                         <li><strong> @lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}
                             </li>
-                        <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
+                        <li><strong>@lang('menu.date'): </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
                         <li><strong> @lang('menu.user') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
@@ -108,7 +108,7 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-startx">SL</th>
+                        <th class="text-startx">@lang('menu.sl')</th>
                         <th class="text-startx">@lang('menu.product')</th>
                         <th class="text-startx">@lang('menu.unit')</th>
                         <th class="text-startx">@lang('menu.quantity')</th>
@@ -138,7 +138,7 @@
             <br>
             <div class="row page_break">
                 <div class="col-md-12 text-end">
-                    <h6><em>Continued To this next page....</em></h6>
+                    <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                 </div>
             </div>
         @endif

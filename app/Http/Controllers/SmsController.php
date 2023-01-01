@@ -9,9 +9,9 @@ class SmsController extends Controller
 {
     public function __construct()
     {
-        
+
     }
-    
+
     public function smsSettings(Request $request)
     {
         return view('communication.sms.settings.index');
@@ -30,5 +30,10 @@ class SmsController extends Controller
         Artisan::call("env:set SMS_ACTIVE='" . $SMS_ACTIVE . "'");
 
         return response()->json('SMS settings updated successfully');
+    }
+
+    public function smsServerSetupDesignPages()
+    {
+        return view('communication.sms.design_pages');
     }
 }

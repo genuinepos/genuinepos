@@ -1,13 +1,13 @@
 <section>
     <div class="form_element rounded mt-0 mb-3">
         <div class="element-body">
-            <div class="row mt-1">
+            <div class="row gx-2 mt-1">
                 <div class="col-md-6">
                     <div class="input-group">
                         <label class=" col-4">
-                            <b>Paying : 
+                            <b>{{ __('Paying') }} :
                                 ({{ json_decode($generalSettings->business, true)['currency'] }})
-                            </b> 
+                            </b>
                         </label>
 
                         <div class="col-8">
@@ -19,12 +19,12 @@
 
                 <div class="col-md-6">
                     <div class="input-group mt-1">
-                        <label class="col-4"><b>Pay Method :</b></label>
+                        <label class="col-4"><b>{{ __('Pay Method') }} :</b></label>
                         <div class="col-8">
                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -35,10 +35,10 @@
                 </div>
             </div>
 
-            <div class="row mt-1">
+            <div class="row gx-2 mt-1">
                 <div class="col-md-6">
                     <div class="input-group">
-                        <label class="col-4"><b>Credit Account :</b></label>
+                        <label class="col-4"><b>@lang('menu.credit_account') :</b></label>
                         <div class="col-8">
                             <select required name="account_id" class="form-control" id="account_id">
                                 @foreach ($accounts as $account)
@@ -60,7 +60,7 @@
 
                 <div class="col-md-6">
                     <div class="input-group">
-                        <label class="col-4"><b>Total Due :</b> </label>
+                        <label class="col-4"><b>@lang('menu.total_due') :</b> </label>
                         <div class="col-8">
                             <input readonly name="total_due" type="number" step="any" id="total_due" class="form-control text-danger" value="0.00">
                         </div>
@@ -71,10 +71,10 @@
             <div class="row mt-1">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <label class=" col-2"><b>Payment Note :</b></label>
+                        <label class="col-lg-2 col-4"><b>@lang('menu.payment_note') :</b></label>
 
-                        <div class="col-10">
-                            <input type="text" name="payment_note" class="form-control form-control-sm" id="payment_note" placeholder="Payment note">
+                        <div class="col-lg-10 col-8">
+                            <input type="text" name="payment_note" class="form-control form-control-sm" id="payment_note" placeholder="@lang('menu.payment_note')">
                         </div>
                     </div>
                 </div>
@@ -84,16 +84,16 @@
 
     <div class="submit-area d-flex justify-content-end mt-3">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-none">
-                <i class="fas fa-spinner"></i><span> Loading...</span>
+            <button type="button" class="btn loading_button d-hide">
+                <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
             </button>
 
             <button data-action="save" id="save" class="btn btn-sm btn-success submit_button">
                 Save (Shift+Enter)
             </button>
-            
+
             <button data-action="sale_and_print" id="save_and_print" class="btn btn-sm btn-success submit_button">
-                Save & Print (Ctrl+Enter)
+                @lang('menu.save_print') (Ctrl+Enter)
             </button>
         </div>
     </div>

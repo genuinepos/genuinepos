@@ -1,30 +1,61 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {border: 1px solid #7e0d3d;}
-        label {font-size: 12px !important;}
-        ul.menus_unorder_list {list-style: none;float: left;width: 100%;}
-        ul.menus_unorder_list .menu_list {border: 1px solid lightgray;display: block;text-align: center;background: linear-gradient(#8c0437ee, #1e000d);}
-        ul.menus_unorder_list .menu_list .menu_btn {color: white;padding: 6px 1px;display: block; font-size: 11px;}
-        .menu_active {background: white;color: #504d4d!important;font-weight: 700;}
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
+        label {
+            font-size: 12px !important;
+        }
+        ul.menus_unorder_list {
+            list-style: none;
+            float: left;
+            width: 100%;
+        }
+        ul.menus_unorder_list .menu_list {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        ul.menus_unorder_list .menu_list:last-child {
+            margin-bottom: 0;
+        }
+        ul.menus_unorder_list .menu_list .menu_btn {
+            color: black;
+            padding: 6px 1px;
+            display: block;
+            font-size: 11px;
+            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid transparent;
+            border-radius: 5px;
+            background: white;
+            transition: .2s;
+        }
+        ul.menus_unorder_list .menu_list .menu_btn.menu_active {
+            border-color: var(--dark-color-1);
+            color: #504d4d!important;
+            font-weight: 600;
+        }
         .hide-all {
             display: none;
         }
     </style>
 @endpush
 @section('content')
-    <div class="body-woaper mt-5">
-        <div class="container-fluid pt-1">
-            <div class="form_element">
-                <div class="py-2 px-2 form-header">
-                    <div class="row align-items-center">
-                        <div class="col-6"><h5>General Settings</h5></div>
-
-                        <div class="col-6">
-                            <a href="{{ url()->previous() }}" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
-                        </div>
-                    </div>
+    <div class="body-woaper">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-cogs"></span>
+                    <h5>@lang('menu.general_settings')</h5>
                 </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                </a>
+            </div>
+        </div>
+        <div class="p-3">
+            <div class="form_element rounded m-0">
 
                 <div class="element-body">
                     <div class="settings_form_area">
@@ -34,35 +65,35 @@
                                     <ul class="menus_unorder_list">
                                         <li class="menu_list">
                                             <a class="menu_btn menu_active" data-form="business_settings_form"
-                                                href="#">Business Settings</a>
+                                                href="#">@lang('menu.business_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="tax_settings_form" href="#">Tax Settings</a>
+                                            <a class="menu_btn" data-form="tax_settings_form" href="#">@lang('menu.tax_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="dashboard_settings_form" href="#">Dashboard Settings</a>
+                                            <a class="menu_btn" data-form="dashboard_settings_form" href="#">@lang('menu.dashboard_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="prefix_settings_form" href="#">Prefix Settings</a>
+                                            <a class="menu_btn" data-form="prefix_settings_form" href="#">@lang('menu.prefix_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="system_settings_form" href="#">System Settings</a>
+                                            <a class="menu_btn" data-form="system_settings_form" href="#">@lang('menu.system_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="point_settings_form" href="#">Reward Point Settings</a>
+                                            <a class="menu_btn" data-form="point_settings_form" href="#">@lang('menu.reward_point_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="module_settings_form" href="#">Modules Settings</a>
+                                            <a class="menu_btn" data-form="module_settings_form" href="#">{{ __('Modules Settings') }}</a>
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="es_settings_form" href="#">Send Email & SMS Settings</a>
+                                            <a class="menu_btn" data-form="es_settings_form" href="#">@lang('menu.send_email_sms_settings')</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -74,27 +105,27 @@
                                     enctype="multipart/form-data">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">Business Settings </h6>
+                                            <h6 class="text-primary">@lang('menu.business_settings') </h6>
                                         </div>
                                     </div>
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Business Name :</strong></label>
+                                            <label><strong>@lang('menu.business_name') :</strong></label>
                                             <input type="text" name="shop_name" class="form-control bs_input"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Address :</strong></label>
+                                            <label><strong>@lang('menu.address') :</strong></label>
                                             <input type="text" name="address" class="form-control bs_input"
                                                 autocomplete="off" placeholder="Business address"
                                                 value="{{ json_decode($generalSettings->business, true)['address'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Phone :</strong></label>
+                                            <label><strong>@lang('menu.phone') :</strong></label>
                                             <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
                                                 value="{{ json_decode($generalSettings->business, true)['phone'] }}">
                                         </div>
@@ -102,13 +133,13 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>Email :</strong></label>
+                                            <label><strong>@lang('menu.email') :</strong></label>
                                             <input type="text" name="email" class="form-control bs_input" placeholder="Business email address"
                                                 value="{{ json_decode($generalSettings->business, true)['email'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Start Date :</strong></label>
+                                            <label><strong>@lang('menu.start_date') :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -119,7 +150,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Default Profit(%) :</strong><span
+                                            <label><strong>{{ __('Default Profit') }}(%) :</strong><span
                                                     class="text-danger">*</span></label>
                                             <input type="number" name="default_profit" class="form-control bs_input"
                                                 autocomplete="off" data-name="Default profit" id="default_profit"
@@ -130,15 +161,15 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>Business Logo :</strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
+                                            <label><strong>{{ __('Business Logo') }} :</strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
-                                            <small>Previous logo (if exists) will be replaced</small><br>
+                                            <small>{{ __('Previous logo (if exists) will be replaced') }}</small><br>
 
                                             <span class="error error_business_logo"></span>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Currency :</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Currency') }}:</strong><span class="text-danger">*</span></label>
                                             <select name="currency" class="form-control bs_input" data-name="Currency"
                                                 id="currency">
                                                 @foreach ($currencies as $currency)
@@ -167,7 +198,7 @@
                                         </div> --}}
 
                                         <div class="col-md-4">
-                                            <label><strong>Stock Accounting Method : </strong> <span
+                                            <label><strong>{{ __('Stock Accounting Method') }} : </strong> <span
                                                     class="text-danger">*</span></label>
                                             <select name="stock_accounting_method" class="form-control bs_input"
                                                 data-name="Stock Accounting Method" id="stock_accounting_method">
@@ -184,7 +215,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>Date Format:</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Date Format') }}:</strong><span class="text-danger">*</span></label>
                                             <select name="date_format" class="form-control bs_input" data-name="Date format"
                                                 id="date_format">
                                                 <option value="d-m-Y"
@@ -200,7 +231,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Time Format:</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Time Format') }}:</strong><span class="text-danger">*</span></label>
                                             <select name="time_format" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
                                                 <option value="12"
@@ -214,10 +245,10 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Time Zone:</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Time Zone') }} :</strong><span class="text-danger">*</span></label>
                                             <select name="timezone" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
-                                                <option value="">TimeZone</option>
+                                                <option value="">{{ __('Time Zone') }}</option>
                                                 @foreach ($timezones as $timezone)
                                                     <option
                                                         {{ json_decode($generalSettings->business, true)['timezone'] == $timezone->name ? 'SELECTED' : '' }}
@@ -229,10 +260,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -242,7 +274,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">Tax Settings</h6>
+                                            <h6 class="text-primary">@lang('menu.tax_settings')</h6>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -277,17 +309,18 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->tax, true)['is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale">
-                                                        &nbsp; Enable inline tax in purchase and sell
+                                                        &nbsp; {{ __('Enable inline tax in purchase and sell') }}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -296,7 +329,7 @@
                                     action="{{ route('settings.dashboard.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">Dashboard Settings</h6>
+                                            <h6 class="text-primary">@lang('menu.dashboard_settings')</h6>
                                         </div>
                                     </div>
                                     @csrf
@@ -311,7 +344,7 @@
                                                     value="{{ json_decode($generalSettings->dashboard, true)['view_stock_expiry_alert_for'] }}">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text input-group-text-sm"
-                                                        id="basic-addon1">Days</span>
+                                                        id="basic-addon1">@lang('menu.days')</span>
                                                 </div>
                                             </div>
                                             <span class="error error_dbs_view_stock_expiry_alert_for"></span>
@@ -319,10 +352,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -331,13 +365,13 @@
                                     action="{{ route('settings.prefix.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">Prefix Settings</h6>
+                                            <h6 class="text-primary">@lang('menu.prefix_settings')</h6>
                                         </div>
                                     </div>
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Purchase Invoice :</strong></label>
+                                            <label><strong>{{ __('PURCHASE Invoice') }} :</strong></label>
                                             <input type="text" name="purchase_invoice" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['purchase_invoice'] }}">
@@ -350,14 +384,14 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Purchase Return :</strong></label>
+                                            <label><strong>@lang('menu.purchase_return') :</strong></label>
                                             <input type="text" name="purchase_return" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['purchase_return'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Stock Transfer :</strong></label>
+                                            <label><strong>{{ __('Stock Transfer') }} :</strong></label>
                                             <input type="text" name="stock_transfer" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['stock_transfer'] }}">
                                         </div>
@@ -365,20 +399,20 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Stock Adjustment :</strong></label>
+                                            <label><strong>@lang('menu.stock_adjustment') :</strong></label>
                                             <input type="text" name="stock_djustment" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['stock_djustment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Sale Return :</strong></label>
+                                            <label><strong>@lang('menu.sale_return') :</strong></label>
                                             <input type="text" name="sale_return" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['sale_return'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Expenses :</strong></label>
+                                            <label><strong>@lang('menu.expenses') :</strong></label>
                                             <input type="text" name="expenses" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['expenses'] }}">
                                         </div>
@@ -386,21 +420,21 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Expense Payment :</strong></label>
+                                            <label><strong>{{ __('Expense Payment') }} :</strong></label>
                                             <input type="text" name="expanse_payment" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['expanse_payment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Purchase Payment :</strong></label>
+                                            <label><strong>{{ __('Purchase Payment') }} :</strong></label>
                                             <input type="text" name="purchase_payment" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['purchase_payment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Sale Payment :</strong></label>
+                                            <label><strong>{{ __('Sale Payment') }} :</strong></label>
                                             <input type="text" name="sale_payment" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['sale_payment'] }}">
                                         </div>
@@ -408,32 +442,32 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Supplier ID:</strong></label>
+                                            <label><strong>@lang('menu.supplier_id'):</strong></label>
                                             <input type="text" name="supplier_id" class="form-control"
                                                 autocomplete="off" value="{{ json_decode($generalSettings->prefix, true)['supplier_id'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Customer ID :</strong></label>
+                                            <label><strong>@lang('menu.customer') ID :</strong></label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off"
                                                 value="{{ json_decode($generalSettings->prefix, true)['customer_id'] }}">
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="system_settings_form" class="setting_form hide-all"
-                                action="{{ route('settings.system.settings') }}" method="post">
+                                <form id="system_settings_form" class="setting_form hide-all" action="{{ route('settings.system.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">System Settings</h6>
+                                            <h6 class="text-primary">@lang('menu.system_settings')</h6>
                                         </div>
                                     </div>
                                     @csrf
@@ -463,10 +497,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -475,61 +510,61 @@
                                     action="{{ route('settings.reward.point.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <h6 class="text-primary mb-3"><b>Reward Point Settings</b></h6>
+                                        <h6 class="text-primary mb-3"><b>@lang('menu.reward_point_settings')</b></h6>
                                     </div>
 
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>Enable Reward Point</b>
+                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>{{ __('Enable Reward Point') }}</b>
                                                 </p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Reward Point Display Name :</strong></label>
+                                            <label><strong>{{ __('Reward Point Display Name') }} :</strong></label>
                                             <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row mt-2">
-                                        <h6 class="text-primary mb-1"><b>Earning Settings</b></h6>
+                                        <h6 class="text-primary mb-1"><b>{{ __('Earning Settings') }}</b></h6>
                                         <div class="col-md-4">
-                                            <label><strong>Amount spend for unit point : </strong>
+                                            <label><strong>{{ __('Amount spend for unit point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="left" title="Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['amount_for_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Minimum order total to earn reward :</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
+                                            <label><strong>{{ __('Minimum order total to earn reward') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Maximum points per order :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
+                                            <label><strong>{{ __('Maximum points per order') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_rp_per_order'] }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row mt-2">
 
-                                        <h6 class="text-primary mb-1"><b>Redeem Points Settings</b></h6>
+                                        <h6 class="text-primary mb-1"><b>{{ __('Redeem Points Settings') }}</b></h6>
 
                                         <div class="col-md-4">
-                                            <label><strong>Redeem amount per unit point : </strong>
+                                            <label><strong>{{ __('Redeem amount per unit point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Minimum order total to redeem points : </strong>
+                                            <label><strong>{{ __('Minimum order total to redeem points') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Minimum redeem point : </strong>
+                                            <label><strong>{{ __('Minimum redeem point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}">
                                         </div>
@@ -537,17 +572,18 @@
 
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
-                                            <label><strong>Maximum redeem point per order : </strong>
+                                            <label><strong>{{ __('Maximum redeem point per order') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum points that can be used in one order. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}">
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -557,7 +593,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary"><b>Module Settings</b></h6>
+                                            <h6 class="text-primary"><b>{{ __('Module Settings') }}</b></h6>
                                         </div>
                                     </div>
 
@@ -567,7 +603,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['purchases'] == '1' ? 'CHECKED' : '' }}
-                                                        name="purchases" autocomplete="off"> &nbsp; <b>Purchases</b>
+                                                        name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -577,7 +613,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['add_sale'] == '1' ? 'CHECKED' : '' }}
-                                                        name="add_sale" autocomplete="off"> &nbsp; <b>Add Sale</b>
+                                                        name="add_sale" autocomplete="off"> &nbsp; <b>@lang('menu.add_sale')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -587,7 +623,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['pos'] == '1' ? 'CHECKED' : '' }}
-                                                        name="pos" autocomplete="off"> &nbsp; <b>POS</b>
+                                                        name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -600,7 +636,7 @@
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['transfer_stock'] == '1' ? 'CHECKED' : '' }}
                                                         name="transfer_stock" autocomplete="off">
-                                                    &nbsp; <b>Transfers Stock</b>
+                                                    &nbsp; <b>{{ __('Transfers Stock') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -610,7 +646,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['stock_adjustment'] == '1' ? 'CHECKED' : '' }}
-                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>Stock Adjustment</b>
+                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -620,7 +656,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['expenses'] == '1' ? 'CHECKED' : '' }}
-                                                        name="expenses" autocomplete="off"> &nbsp; <b>Expenses</b>
+                                                        name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -632,7 +668,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['accounting'] == '1' ? 'CHECKED' : '' }}
-                                                        name="accounting" autocomplete="off"> &nbsp; <b>Accounting</b>
+                                                        name="accounting" autocomplete="off"> &nbsp; <b>@lang('menu.accounting')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -642,7 +678,7 @@
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
                                                         {{ json_decode($generalSettings->modules, true)['contacts'] == '1' ? 'CHECKED' : '' }}
-                                                        name="contacts" autocomplete="off"> &nbsp; <b>Contacts</b>
+                                                        name="contacts" autocomplete="off"> &nbsp; <b>@lang('menu.contacts')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -653,7 +689,7 @@
                                                     <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
                                                             {{ json_decode($generalSettings->modules, true)['hrms'] == '1' ? 'CHECKED' : '' }}
-                                                            name="hrms" autocomplete="off"> &nbsp; <b>Human Resource Management</b>
+                                                            name="hrms" autocomplete="off"> &nbsp; <b>@lang('menu.human_resource_management')</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -664,7 +700,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->modules, true)['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>Requisite</b>
+                                                    <input type="checkbox" {{ json_decode($generalSettings->modules, true)['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>{{ __('Requisite') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -678,7 +714,7 @@
                                                                 {{ json_decode($generalSettings->modules, true)['manufacturing'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
                                                             name="manufacturing" autocomplete="off">
-                                                        &nbsp;<b>Manufacture</b>
+                                                        &nbsp;<b>{{ __('Manufacture') }}</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -693,7 +729,7 @@
                                                                 {{ json_decode($generalSettings->modules, true)['service'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
                                                             name="service" autocomplete="off">
-                                                        &nbsp;<b>Service</b>
+                                                        &nbsp;<b>@lang('menu.service')</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -701,10 +737,11 @@
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -714,7 +751,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">Send Email & SMS Settings</h6>
+                                            <h6 class="text-primary">@lang('menu.send_email_sms_settings')</h6>
                                         </div>
                                     </div>
 
@@ -722,7 +759,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>Send Invoice After Sale Via Email</b>
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -730,7 +767,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>Send Notification After Sale Via SMS</b>
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -738,7 +775,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>Customer Due Remainder Via Email</b>
+                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>@lang('menu.customer_remainder_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -748,17 +785,18 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>Customer Due Remainder Via SMS</b>
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-12 text-end">
-                                            <button type="button" class="btn loading_button d-none"><i
-                                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                            <button class="btn btn-sm btn-success submit_button float-end">Save Change</button>
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

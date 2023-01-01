@@ -11,11 +11,11 @@
                 <div class="sec-name">
                     <div class="name-head">
                         <span class="fas fa-shopping-cart"></span>
-                        <h5>Transfer Stocks (Business Location To Business Location)</h5>
+                        <h5>{{ __('Transfer Stocks (Business Location To Business Location)') }}</h5>
                     </div>
 
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button">
-                        <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                 </div>
             </div>
 
@@ -29,12 +29,12 @@
                                         @if ($addons->branches == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-2">
-                                                    <label><strong>Business Location :</strong></label>
+                                                    <label><strong>@lang('menu.business_location') :</strong></label>
                                                     <select name="branch_id"
-                                                        class="form-control submit_able" id="branch_id" autofocus>
-                                                        <option value="">All</option>
+                                                        class="form-control submit_able select2" id="branch_id" autofocus>
+                                                        <option value="">@lang('menu.all')</option>
 
-                                                        <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                        <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
 
                                                         @foreach ($branches as $branch)
                                                             @if (auth()->user()->branch_id != $branch->id)
@@ -49,17 +49,17 @@
                                         @endif
 
                                         <div class="col-md-2">
-                                            <label><strong>Payment Status :</strong></label>
+                                            <label><strong>@lang('menu.payment_status') :</strong></label>
                                             <select name="receive_status" id="receive_status" class="form-control">
-                                                <option value="">All</option>
-                                                <option value="1">Pending</option>
-                                                <option value="2">Partial</option>
-                                                <option value="3">Completed</option>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="1">@lang('menu.pending')</option>
+                                                <option value="2">@lang('menu.partial')</option>
+                                                <option value="3">@lang('menu.completed')</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label><strong>From Date :</strong></label>
+                                            <label><strong>@lang('menu.from_date') :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -72,7 +72,7 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label><strong>To Date :</strong></label>
+                                            <label><strong>@lang('menu.to_date') :</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -85,7 +85,7 @@
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                             </div>
                                         </div>
                                     </div>
@@ -97,42 +97,42 @@
 
                 <div class="card">
                     <div class="section-header">
-                        <div class="col-md-10">
-                            <h6>Transfer List</h6>
+                        <div class="col-6">
+                            <h6>@lang('menu.transfer_list')</h6>
                         </div>
 
-                        <div class="col-md-2 d-flex justify-content-end">
-                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl + Enter)</a>
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                         </div>
 
                     </div>
 
                     <div class="widget_content">
                         <div class="data_preloader">
-                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                         </div>
                         <div class="table-responsive" id="data-list">
                             {{-- <table class="display data_tbl data__table table-hover"> --}}
                             <table class="display data_tbl table-sm table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Actions</th>
-                                        <th>Date</th>
-                                        <th>Reference ID</th>
-                                        <th>Sender B. Location</th>
-                                        <th>Receiver B.Location</th>
-                                        <th>Receive Status</th>
-                                        <th>Total Item</th>
-                                        <th>Send Qty</th>
-                                        <th>Received Qty</th>
-                                        <th>Pending Qty</th>
-                                        <th>Total Transfer Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                        <th>@lang('menu.action')</th>
+                                        <th>@lang('menu.date')</th>
+                                        <th>@lang('menu.reference_id')</th>
+                                        <th>{{ __('Sender B. Location') }}</th>
+                                        <th>@lang('menu.receiver') @lang('menu.b_location')</th>
+                                        <th>@lang('menu.receive_status')</th>
+                                        <th>@lang('menu.total_item')</th>
+                                        <th>@lang('menu.send_qty')</th>
+                                        <th>@lang('menu.received_qty')</th>
+                                        <th>@lang('menu.pending_qty')</th>
+                                        <th>{{ __('Total Transfer Cost') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                        <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                         <th id="total_item" class="text-white text-end"></th>
                                         <th id="total_send_qty" class="text-white text-end"></th>
                                         <th id="total_received_qty" class="text-white text-end"></th>
@@ -159,7 +159,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Send Notification</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.send_notification')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>

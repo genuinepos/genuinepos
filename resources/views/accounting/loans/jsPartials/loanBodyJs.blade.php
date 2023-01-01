@@ -167,7 +167,7 @@
                 $('#company_id').empty();
                 $('#f_company_id').empty();
                 $('#company_id').append('<option value="">Select Company</option>');
-                $('#f_company_id').append('<option value="">All</option>');
+                $('#f_company_id').append('<option value="">@lang('menu.all')</option>');
                 $.each(companies, function (key, com) {
                     $('#company_id').append('<option value="'+com.id +'">'+com.name+'</option>');
                     $('#f_company_id').append('<option value="'+com.id +'">'+com.name+'</option>');

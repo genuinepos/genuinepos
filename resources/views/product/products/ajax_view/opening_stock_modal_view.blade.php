@@ -8,18 +8,18 @@
     @csrf
     <div class="card mt-3">
         <div class="card-header">
-            <p class="m-0"><b>Business Location : {{ auth()->user()->branch ? auth()->user()->branch->name .'/'. auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</b> </p>
+            <p class="m-0"><b>@lang('menu.business_location') : {{ auth()->user()->branch ? auth()->user()->branch->name .'/'. auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}</b> </p>
         </div>
         <div class="card_body">
             <div class="product_stock_table_area">
                 <div class="table-responsive">
                     <table class="table table-sm table-striped">
                         <thead>
-                            <tr class="bg-primary">
-                                <th class="text-white">Product Name</th>
-                                <th class="text-white">Quantity Remaining</th>
-                                <th class="text-white">Unit Cost Exc.Tax</th>
-                                <th class="text-white">SubTotal</th>
+                            <tr class="bg-secondary">
+                                <th class="text-white">@lang('menu.product_name')</th>
+                                <th class="text-white">@lang('menu.quantity_remaining')</th>
+                                <th class="text-white">@lang('menu.unit_cost_exc_tax')</th>
+                                <th class="text-white">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,7 +60,7 @@
                                             <input type="hidden" id="subtotal" name="subtotals[]" value="{{ $os->subtotal }}">
                                         </td>
                                     </tr>
-                                @else 
+                                @else
                                     <tr>
                                         <td class="text">{{ $pro->p_name.' '.$pro->v_name }}</td>
                                         <td>
@@ -98,11 +98,13 @@
             </div>
         </div>
     </div>
-  
-    <div class="modal-footer">
-        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
+
+    <div class="d-flex justify-content-end mt-3">
+        <div class="btn-loading">
+            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+        </div>
     </div>
 </form>
 

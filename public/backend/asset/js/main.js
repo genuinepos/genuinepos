@@ -8,6 +8,7 @@ $(document).ready(function () {
         $('.main__nav ul li').removeClass('menu_active');
         $(this).addClass('menu_active');
         let menuID = $(this).data('menu')
+        window.localStorage.setItem('menu_active', menuID);
         $('#sidebar_t div').removeClass('active');
         $('#' + menuID).addClass('active')
     })

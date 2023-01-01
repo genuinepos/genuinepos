@@ -22,7 +22,7 @@
 
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
             <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
@@ -38,7 +38,7 @@
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Business Location Stock Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.business_location_stock_report') </b></h6>
     </div>
 </div>
 <br>
@@ -47,13 +47,13 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">P.Code</th>
-                    <th class="text-start">Product</th>
-                    <th class="text-start">Business Location</th>
-                    <th class="text-end">Unit Price</th>
-                    <th class="text-end">Current Stock</th>
-                    <th class="text-end">Stock Value <b><small>(By Unit Cost)</small></b></th>
-                    <th class="text-end">Total Sold</th>
+                    <th class="text-start">@lang('menu.p_code')</th>
+                    <th class="text-start">@lang('menu.product')</th>
+                    <th class="text-start">@lang('menu.business_location')</th>
+                    <th class="text-end">@lang('menu.unit_price')</th>
+                    <th class="text-end">@lang('menu.current_stock')</th>
+                    <th class="text-end">@lang('menu.stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+                    <th class="text-end">@lang('menu.total_sold')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -98,17 +98,17 @@
 <div id="footer">
     <div class="row mt-1">
         <div class="col-4 text-start">
-            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
         </div>
 
         <div class="col-4 text-center">
             @if (env('PRINT_SD_SALE') == true)
-                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             @endif
         </div>
 
         <div class="col-4 text-end">
-            <small>Print Time : {{ date($timeFormat) }}</small>
+            <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
         </div>
     </div>
 </div>

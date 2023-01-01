@@ -1,7 +1,7 @@
 @php
     $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
 @endphp
-<div class="challan_print_template d-none">
+<div class="challan_print_template d-hide">
     <style>
         @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
     </style>
@@ -12,9 +12,9 @@
                     <div class="col-md-12">
                         <div class="header_text text-center">
                             <h4>{{ $defaultLayout->header_text }}</h4>
-                            <p>{{ $defaultLayout->sub_heading_1 }}<p/>
-                            <p>{{ $defaultLayout->sub_heading_2 }}<p/>
-                            <p>{{ $defaultLayout->sub_heading_3 }}<p/>
+                            <p>{{ $defaultLayout->sub_heading_1 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_2 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_3 }}</p>
                         </div>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}
                             </li>
-                        <li><strong> Date : </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
+                        <li><strong>@lang('menu.date'): </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
                         <li><strong> @lang('menu.user') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
@@ -124,7 +124,7 @@
                 <thead>
                     <tr>
                     <tr>
-                        <th class="text-startx">Serial</th>
+                        <th class="text-startx">@lang('menu.serial')</th>
                         <th class="text-startx">@lang('menu.description')</th>
                         <th class="text-startx">@lang('menu.unit')</th>
                         <th class="text-startx">@lang('menu.quantity')</th>
@@ -153,7 +153,7 @@
         @if (count($sale->sale_products) > 11)
             <div class="row page_break">
                 <div class="col-md-12 text-end">
-                    <h6><em>Continued To this next page....</em></h6>
+                    <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
                 </div>
             </div>
         @endif

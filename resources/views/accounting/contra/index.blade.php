@@ -7,124 +7,118 @@
 @section('title', 'Contra List - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-money-check-alt"></span>
+                    <h5>@lang('menu.contras')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-money-check-alt"></span>
-                                <h5>Contras</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
-                    </div>
-
-                    <div class="p-3">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form_element rounded mt-0 mb-3">
-                                    <div class="element-body">
-                                        <form id="filter_form" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="f_branch_id" autofocus>
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_form" class="px-2">
+                                <div class="form-group row">
+                                    @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able select2" id="f_branch_id" autofocus>
+                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="from_date" id="datepicker"
+                                                class="form-control from_date date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>Contra List</h6>
-                                </div>
-
-                                <div class="col-md-2 d-flex justify-content-end">
-                                    <a href="{{ route('accounting.contras.create') }}" class="btn btn-sm btn-primary" id="create">
-                                        <i class="fas fa-plus-square"></i> Add
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Voucher No.</th>
-                                                <th class="text-start">Receiver A/C</th>
-                                                <th class="text-start">Sender A/C </th>
-                                                <th class="text-start">Business Location</th>
-                                                <th class="text-start">Remarks</th>
-                                                <th class="text-start">Amount</th>
-                                                <th class="text-start">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>@lang('menu.contra_list')</h6>
+                    </div>
+
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="{{ route('accounting.contras.create') }}" class="btn btn-sm btn-primary" id="create">
+                            <i class="fas fa-plus-square"></i> @lang('menu.add')
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">@lang('menu.date')</th>
+                                    <th class="text-start">@lang('menu.voucher_no').</th>
+                                    <th class="text-start">@lang('menu.receiver_ac')</th>
+                                    <th class="text-start">@lang('menu.sender_ac') </th>
+                                    <th class="text-start">@lang('menu.business_location')</th>
+                                    <th class="text-start">@lang('menu.remarks')</th>
+                                    <th class="text-start">@lang('menu.amount')</th>
+                                    <th class="text-start">@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -134,7 +128,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Contra</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_contra')</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fas fa-times"></span>
                     </a>
@@ -151,7 +145,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Contra</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_contra')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -165,7 +159,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Contra Details (<span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.contra_details') (<span
                             class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
@@ -176,12 +170,10 @@
 
                     <div class="row">
                         <div class="col-md-12 text-end">
-                            <ul class="list-unstyled">
-                                <li class="mt-1">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn me-0 button-success">Print</button>
-                                </li>
-                            </ul>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
+                            </div>
                         </div>
                     </div>
                 </div>

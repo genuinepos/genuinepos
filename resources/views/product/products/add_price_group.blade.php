@@ -7,124 +7,117 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus-square"></span>
+                    <h5>@lang('menu.add_edit_price_group') </h5>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                </div>
+            </div>
+        </div>
+        <div class="p-lg-3 p-1">
             <form id="add_product_price_group_form" action="{{ route('products.save.price.groups') }}" method="POST">
                 @csrf
                 <input type="hidden" name="action_type" id="action_type" value="">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form_element m-0 mt-4">
-                                    <div class="py-2 px-2 form-header">
-                                        <div class="row">
-                                            <div class="col-6"><h5>Add or edit Price Group </h5></div>
-
-                                            <div class="col-6">
-                                                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                            </div>
-                                        </div>
+                <div class="form_element rounded mt-0 mb-3">
+                    <div class="element-body">
+                        <div class="form_part">
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <div class="heading_area">
+                                        <p><strong>@lang('menu.product') : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p>
+                                        <small class="text-danger">{{ __('Tax (If Exists) will be added to all price group') }}.</small>
                                     </div>
-                                </div>
-                            </div>
+                                    <div class="table-responsive mt-1">
+                                        <table class="table modal-table table-sm">
+                                            <thead>
+                                                <tr class="bg-secondary">
+                                                    @if ($type == 1)
+                                                        <th class="text-white text-start" scope="col">@lang('menu.variant')</th>
+                                                    @endif
+                                                    <th class="text-white text-center" scope="col">
+                                                        @lang('menu.default_selling_price') Exc.Tax
+                                                    </th>
+                                                    @foreach ($priceGroups as $pg)
+                                                        <th class="text-white text-start" scope="col">
+                                                            {{ $pg->name }}
+                                                        </th>
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($products as $item)
+                                                    @if ($item->is_variant == 1)
+                                                        <tr>
+                                                            <td class="text-start">
+                                                                <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
+                                                                <input type="hidden" name="variant_ids[]" value="{{ $item->v_id }}">
+                                                                {{ $item->variant_name }}
+                                                            </td>
+                                                            <td class="text-center">
 
-                            <div class="col-md-12">
-                                <div class="form_element m-0 mt-2">
-                                    <div class="element-body">
-                                        <div class="form_part">
-                                            <div class="row mt-2">
-                                                <div class="col-md-12">
-                                                    <div class="heading_area">
-                                                        <p><strong>Product : {{ $product_name->name.' ('.$product_name->product_code.')' }}</strong> </p>
-                                                        <small class="text-danger">Tax (If Exists) will be added to all price group.</small>
-                                                    </div>
-                                                    <div class="table-responsive mt-1">
-                                                        <table class="table modal-table table-sm">
-                                                            <thead>
-                                                                <tr class="bg-primary">
-                                                                    @if ($type == 1)
-                                                                        <th class="text-white text-start" scope="col">Variant</th>
-                                                                    @endif
-                                                                    <th class="text-white text-center" scope="col">
-                                                                        Default Selling Price Exc.Tax
-                                                                    </th>
-                                                                    @foreach ($priceGroups as $pg)
-                                                                        <th class="text-white text-start" scope="col">
-                                                                            {{ $pg->name }}
-                                                                        </th>
-                                                                    @endforeach
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($products as $item)
-                                                                    @if ($item->is_variant == 1)
-                                                                        <tr>
-                                                                            <td class="text-start">
-                                                                                <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
-                                                                                <input type="hidden" name="variant_ids[]" value="{{ $item->v_id }}">
-                                                                                {{ $item->variant_name }}
-                                                                            </td>
-                                                                            <td class="text-center">
-
-                                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->variant_price}}</b>
-                                                                            </td>
-                                                                            @foreach ($priceGroups as $pg)
-                                                                                <td class="text-start">
-                                                                                    @php
-                                                                                        $existsPrice = DB::table('price_group_products')
-                                                                                        ->where('price_group_id', $pg->id)
-                                                                                        ->where('product_id', $item->p_id)
-                                                                                        ->where('variant_id', $item->v_id)->first(['price']);
-                                                                                    @endphp
-                                                                                    @if ($existsPrice)
-                                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][{{ $item->v_id }}]" type="number" step="any" class="form-control" value="{{ ($existsPrice->price) }}">
-                                                                                    @else
-                                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][{{ $item->v_id }}]" type="number" step="any" class="form-control" value="0.00">
-                                                                                    @endif
-                                                                                </td>
-                                                                            @endforeach
-                                                                        </tr>
+                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->variant_price}}</b>
+                                                            </td>
+                                                            @foreach ($priceGroups as $pg)
+                                                                <td class="text-start">
+                                                                    @php
+                                                                        $existsPrice = DB::table('price_group_products')
+                                                                        ->where('price_group_id', $pg->id)
+                                                                        ->where('product_id', $item->p_id)
+                                                                        ->where('variant_id', $item->v_id)->first(['price']);
+                                                                    @endphp
+                                                                    @if ($existsPrice)
+                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][{{ $item->v_id }}]" type="number" step="any" class="form-control" value="{{ ($existsPrice->price) }}">
                                                                     @else
-                                                                        <tr>
-                                                                            <td class="text-center">
-                                                                                <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
-                                                                                <input type="hidden" name="variant_ids[]" value="noid">
-                                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->product_price }}</b>
-                                                                            </td>
-                                                                            @foreach ($priceGroups as $pg)
-                                                                                <td>
-                                                                                    @php
-                                                                                        $existsPrice = DB::table('price_group_products')
-                                                                                        ->where('price_group_id', $pg->id)
-                                                                                        ->where('product_id', $item->p_id)->first(['price']);
-                                                                                    @endphp
-                                                                                    @if ($existsPrice)
-                                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][noid]" type="number" step="any" class="form-control" value="{{ $existsPrice->price }}">
-                                                                                    @else
-                                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][noid]" type="number" step="any" class="form-control" value="0.00">
-                                                                                    @endif
-                                                                                </td>
-                                                                            @endforeach
-                                                                        </tr>
+                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][{{ $item->v_id }}]" type="number" step="any" class="form-control" value="0.00">
                                                                     @endif
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                                </td>
+                                                            @endforeach
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
+                                                                <input type="hidden" name="variant_ids[]" value="noid">
+                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->product_price }}</b>
+                                                            </td>
+                                                            @foreach ($priceGroups as $pg)
+                                                                <td>
+                                                                    @php
+                                                                        $existsPrice = DB::table('price_group_products')
+                                                                        ->where('price_group_id', $pg->id)
+                                                                        ->where('product_id', $item->p_id)->first(['price']);
+                                                                    @endphp
+                                                                    @if ($existsPrice)
+                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][noid]" type="number" step="any" class="form-control" value="{{ $existsPrice->price }}">
+                                                                    @else
+                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][noid]" type="number" step="any" class="form-control" value="0.00">
+                                                                    @endif
+                                                                </td>
+                                                            @endforeach
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="col-md-12 text-end">
-                                <button type="button" class="btn loading_button btn-sm d-none"><i class="fas fa-spinner"></i><strong>Loading</strong> </button>
-                                <button type="submit" name="action" value="save_and_new" class="btn btn-primary submit_button btn-sm">Save And Add Another</button>
-                                <button type="submit" name="action" value="save" class="btn btn-primary submit_button btn-sm">Save</button>
                             </div>
                         </div>
-                </section>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <div class="btn-loading">
+                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner"></i><span>@lang('menu.loading')</span> </button>
+                        <button type="submit" name="action" value="save_and_new" class="btn btn-success submit_button btn-sm">@lang('menu.save_and_add_another')</button>
+                        <button type="submit" name="action" value="save" class="btn btn-success submit_button btn-sm">@lang('menu.save')</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

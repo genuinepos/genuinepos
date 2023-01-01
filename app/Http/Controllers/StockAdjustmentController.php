@@ -461,6 +461,9 @@ class StockAdjustmentController extends Controller
                 );
             }
         }
+
+        DB::statement('ALTER TABLE stock_adjustments AUTO_INCREMENT = 1');
+
         return response()->json('Stock adjustment deleted successfully.');
     }
 

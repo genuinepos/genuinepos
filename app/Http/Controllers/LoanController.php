@@ -363,6 +363,8 @@ class LoanController extends Controller
             $this->accountUtil->adjustAccountBalance('debit', $storeAccountId);
         }
 
+        DB::statement('ALTER TABLE loans AUTO_INCREMENT = 1');
+
         return response()->json('Loan deleted Successfully');
     }
 

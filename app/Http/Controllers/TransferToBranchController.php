@@ -367,6 +367,8 @@ class TransferToBranchController extends Controller
             $delectableTransferProduct->delete();
         }
 
+        DB::statement('ALTER TABLE transfer_stock_to_branches AUTO_INCREMENT = 1');
+
         session()->flash('successMsg', 'Successfully transfer stock is updated');
         return response()->json(['successMsg' => 'Successfully transfer stock is updated']);
     }

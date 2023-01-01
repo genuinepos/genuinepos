@@ -241,6 +241,8 @@ class ExpanseController extends Controller
 
         $this->expenseUtil->expenseDelete($deleteExpense);
 
+        DB::statement('ALTER TABLE expanses AUTO_INCREMENT = 1');
+
         return response()->json('Successfully expanse is deleted');
     }
 
@@ -539,6 +541,8 @@ class ExpanseController extends Controller
 
             $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
+
+        DB::statement('ALTER TABLE expanse_payments AUTO_INCREMENT = 1');
 
         return response()->json('Successfully payment is deleted.');
     }

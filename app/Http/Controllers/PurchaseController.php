@@ -979,6 +979,8 @@ class PurchaseController extends Controller
 
         $this->supplierUtil->adjustSupplierForPurchasePaymentDue($supplier->id);
 
+         DB::statement('ALTER TABLE purchases AUTO_INCREMENT = 1');
+
         return response()->json('Successfully purchase is deleted');
     }
 
@@ -1474,6 +1476,8 @@ class PurchaseController extends Controller
                 $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
             }
         }
+
+        DB::statement('ALTER TABLE purchase_payments AUTO_INCREMENT = 1');
 
         return response()->json('Successfully payment is deleted.');
     }

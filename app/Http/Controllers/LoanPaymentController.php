@@ -260,6 +260,8 @@ class LoanPaymentController extends Controller
             $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
 
+        DB::statement('ALTER TABLE loan_payments AUTO_INCREMENT = 1');
+
         return response()->json('Loan payment deleted Successfully');
     }
 

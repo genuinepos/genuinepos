@@ -66,7 +66,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <table class="table modal-table table-sm">
+                <table class="display table modal-table table-sm">
                     <tbody>
                         <tr>
                             <th class="text-start">@lang('menu.total_purchase') :</th>
@@ -131,7 +131,7 @@
             </div>
 
             <div class="col-md-6">
-                <table class="table modal-table table-sm">
+                <table class="display table modal-table table-sm">
                     <tbody>
                         <tr>
                             <th class="text-start">@lang('menu.current_stock') :</th>

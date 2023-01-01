@@ -20,8 +20,42 @@
 
         <div class="p-3">
             <div class="row g-3 mb-3">
-                <div class="col-12">
+                <div class="col-md-3">
                     <div class="card">
+                        <div class="card-body">
+                            <table class="display table modal-table table-sm mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-start"> <strong>@lang('menu.bank') :</strong> </td>
+                                        <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-start"> <strong>A/C @lang('menu.name') :</strong> </td>
+                                        <td class="account_name text-start">{{ $account->name }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-start"><strong>A/C No. :</strong></td>
+                                        <td class="account_number text-start">{{ $account->account_number }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-start"><strong>A/C Type :</strong></td>
+                                        <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-start"><strong>@lang('menu.balance') :</strong> </td>
+                                        <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="card p-3">
                         <div class="card-body">
                             <form id="filter_account_ledgers" method="get">
                                 <div class="form-group row justify-content-end">
@@ -80,42 +114,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <table class="table modal-table table-sm mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-start"> <strong>@lang('menu.bank') :</strong> </td>
-                                        <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="text-start"> <strong>A/C @lang('menu.name') :</strong> </td>
-                                        <td class="account_name text-start">{{ $account->name }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="text-start"><strong>A/C No. :</strong></td>
-                                        <td class="account_number text-start">{{ $account->account_number }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="text-start"><strong>A/C Type :</strong></td>
-                                        <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="text-start"><strong>@lang('menu.balance') :</strong> </td>
-                                        <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-10">

@@ -207,3 +207,12 @@
     </div>
 @endsection
 
+@push('scripts')
+    <script>
+        // Show session message by toster alert.
+        @if (Session::has('successMsg'))
+            toastr.success('{{ session('successMsg') }}');
+        @endif
+    </script>
+@endpush
+

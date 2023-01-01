@@ -232,6 +232,7 @@ class PurchaseController extends Controller
         try {
 
             DB::beginTransaction();
+            
             $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
             $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
             $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];

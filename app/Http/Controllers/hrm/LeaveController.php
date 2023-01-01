@@ -92,8 +92,16 @@ class LeaveController extends Controller
 
     public function departmentEmployees($depId)
     {
-        $employees = DB::table('users')->where('department_id', $depId)
-            ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $employees = '';
+        $query = DB::table('users');
+
+        if ($depId != 'all') {
+
+            $query->where('department_id', $depId);
+        }
+
+        $employees = $query->where('branch_id', auth()->user()->branch_id)->orderBy('name', 'asc')->get(['id', 'prefix', 'name', 'last_name']);
+
         return response()->json($employees);
     }
 }

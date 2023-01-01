@@ -5,7 +5,7 @@
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
         .form-control {padding: 4px!important;}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'Attendance Report - ')
 @section('content')
@@ -31,7 +31,7 @@
                                 <div class="form-group row align-items-end">
                                     @if ($addons->branches == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
@@ -47,7 +47,7 @@
                                         @endif
                                     @endif
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label><strong>@lang('menu.department') :</strong></label>
                                         <select name="department_id"
                                             class="form-control submit_able select2" id="department_id" autofocus>
@@ -64,27 +64,29 @@
                                         <label><strong>@lang('menu.from_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                             </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="from_date" class="form-control" autocomplete="off">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <label><strong>@lang('menu.date_range') :</strong></label>
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.to_date') :</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                             </div>
-                                            <input readonly type="text" name="date_range" id="date_range"
-                                                class="form-control daterange submit_able_input"
-                                                autocomplete="off">
+                                            <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                         </div>
                                     </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                        </div>
+                                    </div>
+                
                                     <div class="col-md-1 mt-md-0 mt-3">
                                         <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                     </div>
@@ -126,9 +128,7 @@
 @endsection
 
 @push('scripts')
-<script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.js') }}"></script>
-<script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
      var att_table = $('.data_tbl').DataTable({
         "processing": true,
@@ -147,8 +147,8 @@
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.department_id = $('#department_id').val();
-                d.from_date = $('.from_date').val();
-                d.to_date = $('.to_date').val();
+                d.from_date = $('#from_date').val();
+                d.to_date = $('#to_date').val();
             }
         },
         columns: [{data: 'date', name: 'date'},
@@ -156,38 +156,29 @@
             {data: 'clock_in_out', name: 'clock_in_out'},
             {data: 'work_duration', name: 'work_duration'},
             {data: 'shift_name', name: 'hrm_shifts.shift_name'},
-        ],
+        ],fnDrawCallback: function() {
+
+            $('.data_preloader').hide();
+        }
     });
 
     //Submit filter form by select input changing
-    $(document).on('change', '.submit_able', function () {
+    $(document).on('submit', '#filter_form', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
         att_table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur
-    $(document).on('blur', '.submit_able_input', function () {
-        setTimeout(function() {
-            att_table.ajax.reload();
-        }, 800);
-    });
-
-    //Submit filter form by date-range apply button
-    $(document).on('click', '.applyBtn', function () {
-        setTimeout(function() {
-            $('.submit_able_input').addClass('.form-control:focus');
-            $('.submit_able_input').blur();
-        }, 1000);
-    });
-
-
     $(document).on('click', '#print_report',function (e) {
         e.preventDefault();
+
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
         var department_id = $('#department_id').val();
-        var from_date = $('.tofrom_date_date').val();
-        var to_date = $('.to_date').val();
+        var from_date = $('#from_date').val();
+        var to_date = $('#to_date').val();
         var url = $(this).attr('href');
+
         $.ajax({
             url:url,
             type:'get',
@@ -199,10 +190,9 @@
                     importStyle: true,
                     loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                     removeInline: true,
-                    printDelay: 500,
-                    header : null,
-                    footer : null,
+                    printDelay: 700,
                 });
+
                 $('.data_preloader').hide();
             }
         });
@@ -210,32 +200,42 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        var start = moment().startOf('year');
-        var end = moment().endOf('year');
-        $('.daterange').daterangepicker({
-            buttonClasses: ' btn',
-            applyClass: 'btn-primary',
-            cancelClass: 'btn-secondary',
-            startDate: start,
-            endDate: end,
-            locale: {cancelLabel: 'Clear'},
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('year')],
-                'Last Year': [moment().startOf('year').subtract(1, 'year'), moment().endOf('year').subtract(1, 'year')],
-            }
-        });
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('from_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
     });
 
-    $(document).on('click', '.cancelBtn ', function () {
-        $('.daterange').val('');
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('to_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY',
     });
 </script>
 @endpush

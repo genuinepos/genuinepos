@@ -1931,4 +1931,6 @@ return [
 'receive' => 'গ্রহণ করুন',
 'essentials' => 'অপরিহার্য',
 'sale_payment_report' => 'বিক্রয় পেমেন্ট রিপোর্ট',
+'select_role' => 'ভূমিকা নির্বাচন করুন',
+'daily_profit_loss_report' => 'দৈনিক লাভ/লোকসান রিপোর্ট',
 ];

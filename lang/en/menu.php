@@ -1932,4 +1932,6 @@ return [
   'receive' => 'Receive',
   'essentials' => 'Essentials',
   'sale_payment_report' => 'Sale Payment Report',
+  'select_role' => 'Select Role',
+  'daily_profit_loss_report' => 'Daily Profit/Loss Report',
 ];

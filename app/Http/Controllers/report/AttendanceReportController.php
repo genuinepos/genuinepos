@@ -45,27 +45,21 @@ class AttendanceReportController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $attendances = $query->select(
-                    'hrm_attendances.*',
-                    'hrm_department.department_name',
-                    'hrm_shifts.shift_name',
-                    'users.prefix',
-                    'users.name',
-                    'users.last_name',
-                    'users.emp_id',
-                )->orderBy('hrm_attendances.id', 'desc');
+                $query;
             } else {
                 
-                $attendances = $query->select(
-                    'hrm_attendances.*',
-                    'hrm_department.department_name',
-                    'hrm_shifts.shift_name',
-                    'users.prefix',
-                    'users.name',
-                    'users.last_name',
-                    'users.emp_id',
-                )->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc');
+                $query->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc');
             }
+
+            $attendances = $query->select(
+                'hrm_attendances.*',
+                'hrm_department.department_name',
+                'hrm_shifts.shift_name',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
+                'users.emp_id',
+            )->orderBy('hrm_attendances.at_date_ts', 'desc');
 
             return DataTables::of($attendances)
                 ->editColumn('name', function ($row) {
@@ -102,8 +96,8 @@ class AttendanceReportController extends Controller
     public function attendanceReportPrint(Request $request)
     {
         $branch_id = '';
-        $s_date = '';
-        $e_date = '';
+        $fromDate = '';
+        $toDate = '';
         $attendances = '';
         $query = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
@@ -111,10 +105,14 @@ class AttendanceReportController extends Controller
             ->leftJoin('hrm_shifts', 'users.shift_id', 'hrm_shifts.id');
 
         if ($request->branch_id) {
+
             $branch_id = $request->branch_id;
+
             if ($request->branch_id == 'NULL') {
+                
                 $query->where('users.branch_id', NULL);
             } else {
+
                 $query->where('users.branch_id', $request->branch_id);
             }
         }
@@ -124,35 +122,32 @@ class AttendanceReportController extends Controller
         }
 
         if ($request->from_date) {
-            $s_date = date('Y-m-d', strtotime($request->from_date));
-            $e_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $s_date;
+
+            $fromDate = date('Y-m-d', strtotime($request->from_date));
+            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             //$date_range = [$s_date . ' 00:00:00', $e_date . ' 00:00:00'];
             $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $query->whereBetween('hrm_attendances.at_date_ts', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $attendances = $query->select(
-                'hrm_attendances.*',
-                'hrm_department.department_name',
-                'hrm_shifts.shift_name',
-                'users.prefix',
-                'users.name',
-                'users.last_name',
-                'users.emp_id',
-            )->orderBy('hrm_attendances.id', 'desc')->get();
+
+            $attendances = $query;
         } else {
-            $attendances = $query->select(
-                'hrm_attendances.*',
-                'hrm_department.department_name',
-                'hrm_shifts.shift_name',
-                'users.prefix',
-                'users.name',
-                'users.last_name',
-                'users.emp_id',
-            )->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc')->get();
+
+            $query->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc')->get();
         }
 
-        return view('reports.attendance_report.ajax_view.attendance_report_print', compact('attendances', 'branch_id', 's_date', 'e_date'));
+        $attendances = $query->select(
+            'hrm_attendances.*',
+            'hrm_department.department_name',
+            'hrm_shifts.shift_name',
+            'users.prefix',
+            'users.name',
+            'users.last_name',
+            'users.emp_id',
+        )->orderBy('hrm_attendances.at_date_ts', 'desc')->get();
+
+        return view('reports.attendance_report.ajax_view.attendance_report_print', compact('attendances', 'branch_id', 'fromDate', 'toDate'));
     }
 }

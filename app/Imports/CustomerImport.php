@@ -21,7 +21,7 @@ class CustomerImport implements ToCollection
     public function collection(Collection $collection)
     {
         $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
-        //dd($collection);
+
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
         
@@ -30,8 +30,11 @@ class CustomerImport implements ToCollection
         $this->customerUtil = new CustomerUtil();
 
         foreach ($collection as $c) {
+
             if ($index != 0) {
+
                 if ($c[2] && $c[3]) {
+
                     $addCustomer = Customer::create([
                         'contact_id' => $c[0] ? $c[0] : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
                         'business_name' => $c[1],
@@ -61,6 +64,7 @@ class CustomerImport implements ToCollection
                         customer_id: $addCustomer->id,
                         date: date('Y-m-d'),
                         trans_id: NULL,
+                        branch_id: auth()->user()->branch_id,
                         amount: (float)$c[9] ? (float)$c[9] : 0
                     );
                 }

@@ -286,6 +286,7 @@
     //Print purchase Payment report
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
+        
         var url = "{{ route('accounting.print.cash.flow') }}";
         var branch_id = $('#branch_id').val();
         var from_date = $('.from_date').val();

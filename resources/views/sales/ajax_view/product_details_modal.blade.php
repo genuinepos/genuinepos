@@ -215,7 +215,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="table-responsive">
-                            <table class="table modal-table table-sm">
+                            <table class="display table modal-table table-sm">
                                 <tr>
                                     <th class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
                                     <td class="text-end">

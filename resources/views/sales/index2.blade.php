@@ -356,8 +356,7 @@
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            $('#payment_heading').html('Add Payment');
-
+ 
             $.get(url, function(data) {
 
                 $('#paymentModal').html(data);

@@ -102,8 +102,8 @@
                                 <tr>
                                     <th class="text-start">@lang('menu.date')</th>
                                     <th class="text-start">@lang('menu.voucher_no').</th>
-                                    <th class="text-start">@lang('menu.receiver_ac')</th>
                                     <th class="text-start">@lang('menu.sender_ac') </th>
+                                    <th class="text-start">@lang('menu.receiver_ac')</th>
                                     <th class="text-start">@lang('menu.business_location')</th>
                                     <th class="text-start">@lang('menu.remarks')</th>
                                     <th class="text-start">@lang('menu.amount')</th>
@@ -172,7 +172,6 @@
                         <div class="col-md-12 text-end">
                             <div class="d-flex justify-content-end gap-2">
                                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                             </div>
                         </div>
                     </div>

@@ -158,7 +158,7 @@
         </div>
     </div>
 
-    @if (auth()->user()->can('receive_payment_index'))
+    @if(auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -174,18 +174,7 @@
         </div>
 
         <!--Add Payment modal-->
-        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">@lang('menu.payment')</h6>
-                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="payment-modal-body"></div>
-                </div>
-            </div>
-        </div>
+        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
         <!--Payment list modal-->
         <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -339,11 +328,10 @@
 
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            $('#payment_heading').html('Add Payment');
 
             $.get(url, function(data) {
 
-                $('#payment-modal-body').html(data);
+                $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
@@ -636,5 +624,7 @@
             $('.payment_method').hide();
             $('#'+value).show();
         });
+
+        function getCustomer() {}
     </script>
 @endpush

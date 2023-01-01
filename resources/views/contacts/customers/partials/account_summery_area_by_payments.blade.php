@@ -4,7 +4,7 @@
     </div>
 
     <div class="account_summary_table">
-        <table class="table modal-table table-sm">
+        <table class="display table modal-table table-sm">
             <tbody>
                 <tr>
                     <td class="text-end">
@@ -34,14 +34,14 @@
 
                 <tr>
                     <td class="text-end"><strong>@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_paid" id="cus_payments_total_paid">
+                    <td class="text-end total_paid text-success" id="cus_payments_total_paid">
                         0.00
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-end"><strong>@lang('menu.balance_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
-                    <td class="text-end total_sale_due" id="cus_payments_total_sale_due">0.00</td>
+                    <td class="text-end total_sale_due text-danger" id="cus_payments_total_sale_due">0.00</td>
                 </tr>
 
                 <tr>

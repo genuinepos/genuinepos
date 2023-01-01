@@ -197,52 +197,49 @@
 
                      <div class="col-md-6">
                          <div class="table-responsive">
-                            <table class="table modal-table table-sm">
+                            <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-start">@lang('menu.net_total_amount')</th>
-                                    <td class="text-start">
-                                        <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <th class="text-end">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">@lang('menu.purchase_discount')</th>
-                                    <td class="text-start">
-                                       <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                           {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
+                                    <th class="text-end">@lang('menu.purchase_discount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <td class="text-end">
+                                        {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">@lang('menu.purchase_tax')</th>
-                                    <td class="text-start">
-                                       <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                           {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
+                                    <th class="text-end">@lang('menu.purchase_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-start">@lang('menu.shipment_charge')</th>
-                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
-                                           {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
+                                    <th class="text-end">@lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">@lang('menu.grand_total')</th>
-                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <th class="text-end">@lang('menu.grand_total') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
                                            {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">@lang('menu.paid') : </th>
-                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <th class="text-end">@lang('menu.paid') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">@lang('menu.due') : </th>
-                                    <td class="text-start"><b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <th class="text-end">@lang('menu.due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                    </td>
                                 </tr>

@@ -1,75 +1,68 @@
 
-<div class="sale_and_purchase_amount_area mb-3">
+<div class="daily_profit_loss_amount_area">
     <div class="row g-3">
         <div class="col-md-12 col-sm-12 col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <table class="table modal-table table-sm">
+                    <table class="display table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <th class="text-start">
-                                    {{ __('Sold Product Total Unit Cost') }} :
+                                <td class="text-end">
+                                    <strong>{{ __('Sold Product Total Unit Cost') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</strong>
                                     <br>
                                     <small>(Inc.Tax)</small>
-                                </th>
+                                </td>
 
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalTotalUnitCost) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">{{ __('Total Order Tax') }} : </th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>{{ __('Total Order Tax') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalOrderTax) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>@lang('menu.total_stock_adjustment') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentAmount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start"> @lang('menu.total_expense') : </th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>@lang('menu.total_expense') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_transfer_shipping_charge') : </th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>@lang('menu.total_transfer_shipping_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalTransferShipmentCost) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_sell_return') : </th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>@lang('menu.total_sell_return') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalSaleReturn) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_payroll') :</th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>@lang('menu.total_payroll') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_production_cost') :</th>
-                                <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} 0.00 (P)</td>
+                                <td class="text-end"><strong>@lang('menu.total_production_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"> 0.00 (P)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,24 +73,22 @@
         <div class="col-md-12 col-sm-12 col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <table class="table modal-table table-sm">
+                    <table class="display table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <th class="text-start">
-                                    @lang('menu.total_sale') : <br>
+                                <td class="text-end">
+                                    <strong> @lang('menu.total_sale') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong><br>
                                     <small>(Inc.Tax)</small>
-                                </th>
+                                </td>
 
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalSale) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">{{ __('Total Stock Adjustment Recovered') }} : </th>
-                                <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ json_decode($generalSettings->business, true)['currency'] }}:</strong></td>
+                                <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentRecovered) }}
                                 </td>
                             </tr>
@@ -105,32 +96,30 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-@php
-    $grossProfit = ($totalSale + $totalStockAdjustmentRecovered)
-                - $totalStockAdjustmentAmount
-                - $totalExpense
-                - $totalSaleReturn
-                - $totalOrderTax
-                - $totalPayroll
-                - $totalTotalUnitCost
-                - $totalTransferShipmentCost;
-@endphp
+            @php
+                $grossProfit = ($totalSale + $totalStockAdjustmentRecovered)
+                            - $totalStockAdjustmentAmount
+                            - $totalExpense
+                            - $totalSaleReturn
+                            - $totalOrderTax
+                            - $totalPayroll
+                            - $totalTotalUnitCost
+                            - $totalTransferShipmentCost;
+            @endphp
 
-<div class="profit_area">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="gross_profit_area">
-                        <h6 class="text-muted m-0">{{ __('Total Daily Profit') }} :
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
-                            <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
-                            <p class="text-muted m-0">@lang('menu.gross_profit') (Total Sale + Total Stock Adjustment Recovered)
-                                - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
+            <div class="card mt-2">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="gross_profit_area">
+                                <h6 class="text-muted m-0">{{ __('Total Daily Profit') }} :
+                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
+                                    <p class="text-muted m-0">@lang('menu.gross_profit') (Total Sale + Total Stock Adjustment Recovered)
+                                        - <br>( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,8 @@
-<table class="table modal-table table-sm table-bordered">
+<table class="table modal-table table-sm table-bordered financial_report_table">
     <tbody>
         <tr>
             <td class="aiability_area">
-                <table class="table table-sm">
+                <table class="display table table-sm">
                     <tbody>
                         {{-- Cash Flow from investing --}}
                         <tr>

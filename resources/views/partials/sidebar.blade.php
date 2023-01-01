@@ -298,7 +298,7 @@
                             <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
                                 <a href="#">
                                     <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
-                                    <p class="title">@lang('menu.essentials')</p>
+                                    <p class="title">@lang('menu.manage_task')</p>
                                 </a>
                             </li>
                         @endif
@@ -1869,7 +1869,7 @@
                                                         <span><i class="fas fa-chart-line"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.profit_loss')</p>
+                                                <p class="switch_text">@lang('menu.daily_profit_loss_report')</p>
                                             </a>
                                         </div>
 

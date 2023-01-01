@@ -151,7 +151,7 @@
                             <div class="col-md-3">
                                 <label><strong>@lang('menu.customer') ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="contact_id" class="form-control"
-                                    placeholder="@lang('menu.customer') ID"/>
+                                    placeholder="@lang('menu.customer') ID" readonly/>
                             </div>
 
                             <div class="col-md-3">

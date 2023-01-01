@@ -16,7 +16,7 @@
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
         </div>
         <div class="p-3">
-            <form id="update_user_form" action="{{ route('users.update', $user->id) }}" method="POST">
+            <form id="update_user_form" action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <section>
                     <div class="row g-3">
@@ -516,6 +516,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <label class="col-lg-2 col-4"><b>{{ __('Profile image') }} :</b> </label>
+                                                <div class="col-lg-10 col-8">
+                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -540,17 +552,18 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var request = $(this).serialize();
         $.ajax({
-            url: url
-            , type: 'post'
-            , data: request
-            , success: function(data) {
+            url: url, 
+            type: 'post', 
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
                 toastr.success(data);
                 $('.loading_button').hide();
-                window.location = "{{ route('users.index') }}";
-            }
-            , error: function(err) {
+                // window.location = "{{ route('users.index') }}";
+            }, error: function(err) {
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 $('.error').html('');

@@ -59,7 +59,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.email') :</b><span class="text-danger">*</span></label>
@@ -517,6 +517,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <label class="col-lg-2 col-4"><b>{{ __('Profile image') }} :</b> </label>
+                                                <div class="col-lg-10 col-8">
+                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -538,17 +548,17 @@
     // Add user by ajax
     $(document).on('submit', '#add_user_form', function(e) {
         e.preventDefault();
-
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var request = $(this).serialize();
-        
-        $.ajax({
-            url: url
-            , type: 'post'
-            , data: request
-            , success: function(data) {
 
+        $.ajax({
+            url: url, 
+            type: 'post', 
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false
+            , success: function(data) {
                 toastr.success(data);
                 $('.loading_button').hide();
                 window.location = "{{ route('users.index') }}";

@@ -432,7 +432,7 @@ class UserActivityLogUtil
 
     public function addLog($action, $subject_type, $data_obj, $branch_id = NULL, $user_id = NULL)
     {
-        $generalSettings = DB::table('general_settings')->select('business')->first();
+        $generalSettings = \Cache::get('generalSettings');
 
         $dateFormat = $generalSettings['business']['date_format'];
 

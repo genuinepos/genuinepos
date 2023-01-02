@@ -62,7 +62,7 @@
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)
+                            <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
                         <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
                         <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> Print All</a>

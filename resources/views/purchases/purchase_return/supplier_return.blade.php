@@ -207,10 +207,9 @@
                                 <i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span>
                             </button>
                             <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">
-                                @lang('menu.save_print') (Ctrl+Enter)
+                                @lang('menu.save_print')
                             </button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">
-                                Save (Shift+Enter)
+                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">@lang('menu.save')
                             </button>
                         </div>
                     </div>

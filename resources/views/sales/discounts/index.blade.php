@@ -27,7 +27,7 @@
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="#" data-bs-toggle="modal" class="btn btn-sm btn-primary" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
+                                    <a href="#" data-bs-toggle="modal" class="btn btn-sm btn-primary" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                                 </div>
                             </div>
 

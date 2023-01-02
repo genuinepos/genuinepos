@@ -116,7 +116,7 @@
                                     <th class="text-start">@lang('menu.expense_category')</th>
                                     <th class="text-start">@lang('menu.reference_id')</th>
                                     <th class="text-start">@lang('menu.b_location')</th>
-                                    <th class="text-start">Expanse For</th>
+                                    <th class="text-start">{{ __('Expanse For') }}</th>
                                     <th class="text-start">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
                                 </tr>
                             </thead>

@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="col-md-6 d-flex justify-content-end gap-2">
-                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
+                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
 
                     <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_suppliers')</a>
                 </div>

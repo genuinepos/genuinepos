@@ -275,7 +275,7 @@
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i
                             class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button id="save" class="btn btn-sm btn-primary float-end">@lang('menu.save') (Shift+Enter)</button>
+                        <button id="save" class="btn btn-sm btn-primary float-end">@lang('menu.save')</button>
                     </div>
                 </div>
 

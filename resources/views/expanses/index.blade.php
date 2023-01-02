@@ -127,7 +127,7 @@
                                     <th class="text-start">@lang('menu.reference_id')</th>
                                     <th class="text-start">@lang('menu.b_location')</th>
                                     <th class="text-start">@lang('menu.description')</th>
-                                    <th class="text-start">Expanse For</th>
+                                    <th class="text-start">{{ __('Expanse For') }}</th>
                                     <th class="text-start">@lang('menu.payment_status')</th>
                                     <th class="text-start">@lang('menu.tax')</th>
                                     <th class="text-start">@lang('menu.net_total')</th>

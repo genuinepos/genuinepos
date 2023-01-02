@@ -89,11 +89,11 @@
             </button>
 
             <button data-action="save" id="save" class="btn btn-sm btn-success submit_button">
-                Save (Shift+Enter)
+                @lang('menu.save')
             </button>
 
             <button data-action="sale_and_print" id="save_and_print" class="btn btn-sm btn-success submit_button">
-                @lang('menu.save_print') (Ctrl+Enter)
+                @lang('menu.save_print')
             </button>
         </div>
     </div>

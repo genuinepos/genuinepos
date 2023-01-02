@@ -288,7 +288,7 @@ class SupplierUtil
 
     public function supplierLedgers($request, $supplierId)
     {
-        $settings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
 
         $supplierLedgers = '';
 
@@ -360,9 +360,9 @@ class SupplierUtil
         }
 
         return DataTables::of($supplierLedgers)
-            ->editColumn('date', function ($row) use ($settings) {
+            ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $dateFormat = json_decode($settings->business, true)['date_format'];
+                $dateFormat = $generalSettings['business']['date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);
                 return date($__date_format, strtotime($row->report_date));
             })
@@ -375,14 +375,11 @@ class SupplierUtil
                 return '<b>' . $type['name'] . '</b>' . $__agp .$__less. ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
             })
 
-            ->editColumn('b_name', function ($row) use ($settings) {
-
+            ->editColumn('b_name', function ($row) use ($generalSettings) {
                 if ($row->b_name) {
-
                     return $row->b_name;
                 } else {
-
-                    return json_decode($settings->business, true)['shop_name'];
+                    return $generalSettings['business']['shop_name'];
                 }
             })
 

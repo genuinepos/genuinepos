@@ -79,7 +79,7 @@ class SupplierController extends Controller
             'phone' => 'required',
         ]);
 
-        $generalSettings = DB::table('general_settings')->first('prefix');
+        $generalSettings = \Cache::get('generalSettings');
         $firstLetterOfSupplier = str_split($request->name)[0];
         $supIdPrefix = $generalSettings['prefix']['supplier_id'];
         $addSupplier = Supplier::create([
@@ -944,7 +944,7 @@ class SupplierController extends Controller
         $this->supplierUtil->adjustSupplierForPurchasePaymentDue($deleteSupplierPayment->supplier_id);
 
         DB::statement('ALTER TABLE supplier_payments AUTO_INCREMENT = 1');
-        
+
         return response()->json('Payment deleted successfully.');
     }
 

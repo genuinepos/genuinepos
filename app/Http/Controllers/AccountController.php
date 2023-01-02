@@ -144,7 +144,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $settings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $ledgers = '';
 
@@ -252,9 +252,9 @@ class AccountController extends Controller
             }
 
             return DataTables::of($ledgers)
-                ->editColumn('date', function ($row) use ($settings) {
+                ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $dateFormat = $generalSettings['business']['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })

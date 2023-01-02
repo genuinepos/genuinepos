@@ -20,7 +20,8 @@ class ProductImportController extends Controller
             'import_file' => 'required'
         ]);
 
+        // dd($request->import_file);
         Excel::import(new ProductImport, $request->import_file);
-        return redirect()->back();
+        return redirect()->back()->with('successMsg', 'Product created Successfully');
     }
 }

@@ -9,6 +9,12 @@ class GeneralSetting extends Model
 {
     use HasFactory;
 
+    public static function boot()
+    {
+        parent::boot();
+        \Log::info("GeneralSetting Called");
+    }
+
     protected $casts = [
         'business' => 'array',
         'tax' => 'array',

@@ -15,7 +15,7 @@ class SaleStatementController extends Controller
     public function __construct(
         Converter $converter
     ) {
-        
+
         $this->converter = $converter;
     }
 
@@ -23,7 +23,7 @@ class SaleStatementController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $sales = '';
 
@@ -158,7 +158,7 @@ class SaleStatementController extends Controller
             'users.name as u_name',
             'users.last_name as u_last_name',
         );
-        
+
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $sales = $this->filteredQuery($request, $query)

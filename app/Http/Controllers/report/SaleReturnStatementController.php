@@ -15,7 +15,7 @@ class SaleReturnStatementController extends Controller
     public function __construct(
         Converter $converter
     ) {
-        
+
         $this->converter = $converter;
     }
 
@@ -23,7 +23,7 @@ class SaleReturnStatementController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $returns = '';
 

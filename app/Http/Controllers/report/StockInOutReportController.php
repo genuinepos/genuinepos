@@ -21,7 +21,7 @@ class StockInOutReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $stockInOuts = '';
             $query = DB::table('purchase_sale_product_chains')
                 ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
@@ -227,7 +227,7 @@ class StockInOutReportController extends Controller
 
     public function print(Request $request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $branch_id = $request->branch_id;
         $stockInOuts = '';
         $fromDate = '';

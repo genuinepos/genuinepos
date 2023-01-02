@@ -610,7 +610,7 @@ class SaleUtil
 
     public function addSaleTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $sales = '';
 
         $query = DB::table('sales')
@@ -772,7 +772,7 @@ class SaleUtil
 
     public function posSaleTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $sales = '';
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id');
@@ -909,7 +909,7 @@ class SaleUtil
 
     public function SaleOrderTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $sales = '';
 
         $query = DB::table('sales')
@@ -1034,7 +1034,7 @@ class SaleUtil
 
     public function soldProductListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $saleProducts = '';
         $query = DB::table('sale_products')
             ->leftJoin('sales', 'sale_products.sale_id', '=', 'sales.id')
@@ -1166,7 +1166,7 @@ class SaleUtil
 
     public function saleDraftTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
 
         $drafts = '';
 
@@ -1260,7 +1260,7 @@ class SaleUtil
 
     public function saleQuotationTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $quotations = '';
 
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -1341,7 +1341,7 @@ class SaleUtil
 
     public function saleShipmentListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $sales = '';
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')

@@ -15,7 +15,7 @@ class LoanCompanyController extends Controller
     public function __construct(AccountUtil $accountUtil)
     {
         $this->accountUtil = $accountUtil;
-        
+
     }
 
     public function index(Request $request)
@@ -23,7 +23,7 @@ class LoanCompanyController extends Controller
         if ($request->ajax()) {
             $companies = DB::table('loan_companies')->orderBy('id', 'DESC')
                 ->where('branch_id', auth()->user()->branch_id)->get();
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             return DataTables::of($companies)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {

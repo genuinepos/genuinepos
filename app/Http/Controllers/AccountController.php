@@ -34,7 +34,7 @@ class AccountController extends Controller
         $this->util = $util;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // Bank main page/index page
@@ -47,7 +47,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $accounts = '';
             $query = DB::table('account_branches')
                 ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

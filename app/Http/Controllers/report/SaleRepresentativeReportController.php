@@ -11,14 +11,14 @@ class SaleRepresentativeReportController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     // Index view of cash register report
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $sales = '';
             $sale_query = DB::table('sales')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -124,7 +124,7 @@ class SaleRepresentativeReportController extends Controller
     public function SaleRepresentativeExpenseReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $expenses = '';
             $expense_query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')

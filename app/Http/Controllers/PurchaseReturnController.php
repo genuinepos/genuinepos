@@ -68,7 +68,7 @@ class PurchaseReturnController extends Controller
         if ($request->ajax()) {
 
             $returns = '';
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $query = DB::table('purchase_returns')
                 ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
                 ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')

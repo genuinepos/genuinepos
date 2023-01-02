@@ -15,15 +15,15 @@ class PurchaseStatementController extends Controller
     public function __construct(
         Converter $converter
     ) {
-        
+
         $this->converter = $converter;
     }
-    
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $purchases = '';
 
             $query = DB::table('purchases')

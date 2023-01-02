@@ -25,7 +25,7 @@ class PurchaseUtil
 
     public function purchaseListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -170,7 +170,7 @@ class PurchaseUtil
 
     public function poListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -314,7 +314,7 @@ class PurchaseUtil
 
     public function purchaseProductListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $converter = $this->converter;
         $purchaseProducts = '';
         $query = DB::table('purchase_products')

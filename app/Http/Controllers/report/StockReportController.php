@@ -16,7 +16,7 @@ class StockReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     // Index view of Stock report
@@ -25,7 +25,7 @@ class StockReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $branch_stock = '';
             $query = DB::table('product_branches')
                 ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
@@ -133,7 +133,7 @@ class StockReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $warehouse_stock = '';
             $query = DB::table('product_warehouses')
                 ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
@@ -178,7 +178,7 @@ class StockReportController extends Controller
             } else {
 
                 if (empty($request->warehouse_id)) {
-                    
+
                     $query->where('warehouse_branches.branch_id', auth()->user()->branch_id);
                     $query->orWhere('warehouse_branches.is_global', 1);
                 }

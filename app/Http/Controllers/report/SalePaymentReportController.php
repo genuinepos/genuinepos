@@ -15,14 +15,14 @@ class SalePaymentReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     // Index view of purchase payment report
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payments = '';
             $query = DB::table('sale_payments')
                 ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')

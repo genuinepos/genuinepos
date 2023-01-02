@@ -13,7 +13,7 @@ class PayrollReportController extends Controller
     public function payrollReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payrolls = '';
             $query = DB::table('hrm_payrolls')
                 ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')

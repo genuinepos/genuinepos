@@ -29,7 +29,7 @@ class LoanController extends Controller
         $this->loanUtil = $loanUtil;
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        
+
     }
 
     public function index(Request $request)
@@ -53,7 +53,7 @@ class LoanController extends Controller
                 $query->whereBetween('loans.report_date', $date_range); // Final
             }
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $converter = $this->converter;
 
             $loans = $query->select(
@@ -174,7 +174,7 @@ class LoanController extends Controller
         $addLoan->save();
 
         if ($request->type == 1) {
-            
+
             $this->loanUtil->adjustCompanyLoanAdvanceAmount($request->company_id);
             // Add Loan A/C ledger
             $this->accountUtil->addAccountLedger(
@@ -225,7 +225,7 @@ class LoanController extends Controller
     public function edit($loanId)
     {
         $loan = DB::table('loans')->where('id', $loanId)->first();
-        
+
         if ($loan->total_paid > 0) {
 
             return response()->json(['errorMsg' => 'This loan is not editable. Some or full amount has been paid/received on this loan.']);
@@ -402,7 +402,7 @@ class LoanController extends Controller
             $query->whereBetween('loans.report_date', $date_range); // Final
         }
 
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
 
         $loans = $query->select(
             'loans.*',

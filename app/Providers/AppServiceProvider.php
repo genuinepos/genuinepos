@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Exception;
 use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +17,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->singleton(GeneralSetting::class, function() {
+            return new GeneralSetting();
+        });
+        $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 
     /**
@@ -27,9 +31,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         try {
-            // $generalSettings = DB::table('general_settings')->first();
-            $generalSettings = GeneralSetting::first()->toArray();
-            // dd($generalSettings);
+            // $generalSettings = \Cache::get('generalSettings');
+            // $generalSettings = GeneralSetting::first()->toArray();
+            Cache::rememberForever('generalSettings', function() {
+                return GeneralSetting::first()->toArray();
+            });
+
+            $generalSettings = \Cache::get('generalSettings') ?? GeneralSetting::first()->toArray();
             $addons = DB::table('addons')->first();
             // $warehouseCount = DB::table('warehouses')->count();
             $dateFormat = $generalSettings['business']['date_format'];

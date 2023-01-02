@@ -16,7 +16,7 @@ class ExpanseReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     // Index view of expense report
@@ -25,7 +25,7 @@ class ExpanseReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $expenses = '';
             $query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
@@ -42,7 +42,7 @@ class ExpanseReportController extends Controller
             }
 
             if ($request->admin_id) {
-                
+
                 $query->where('expanses.admin_id', $request->admin_id);
             }
 

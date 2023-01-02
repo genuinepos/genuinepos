@@ -17,14 +17,14 @@ class DiscountController extends Controller
     {
         $this->converter = $converter;
 
-        
+
     }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $discounts = DB::table('discounts')->where('branch_id', auth()->user()->branch_id)
                 ->leftJoin('brands', 'discounts.brand_id', 'brands.id')

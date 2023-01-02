@@ -13,7 +13,7 @@ class PayrollPaymentReportController extends Controller
     public function payrollPaymentReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payrollPayments = '';
             $payrollPaymentQ = DB::table('hrm_payroll_payments')
                 ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')

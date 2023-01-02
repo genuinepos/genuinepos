@@ -19,7 +19,7 @@ class TodoController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $todos = '';
             $query = DB::table('todos')->leftJoin('branches', 'todos.branch_id', 'branches.id')
@@ -136,7 +136,7 @@ class TodoController extends Controller
         }
 
         if (!auth()->user()->can('assign_todo')) {
-            
+
             return response()->json(['errorMsg' => 'You do\'t have any permission to assign the todo.']);
         }
 

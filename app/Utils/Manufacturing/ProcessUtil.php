@@ -10,7 +10,7 @@ class ProcessUtil
 {
     public function processTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $process = DB::table('processes')
             ->leftJoin('products', 'processes.product_id', 'products.id')
             ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')

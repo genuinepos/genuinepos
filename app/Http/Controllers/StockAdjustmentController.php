@@ -43,7 +43,7 @@ class StockAdjustmentController extends Controller
         $this->accountUtil = $accountUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // Index view of stock adjustment
@@ -55,7 +55,7 @@ class StockAdjustmentController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')

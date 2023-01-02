@@ -16,7 +16,7 @@ class ReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     public function index(Request $request)
@@ -26,7 +26,7 @@ class ReportController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $productions = '';
             $query = DB::table('productions')
                 ->leftJoin('branches', 'productions.branch_id', 'branches.id')

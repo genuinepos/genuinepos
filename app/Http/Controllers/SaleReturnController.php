@@ -50,7 +50,7 @@ class SaleReturnController extends Controller
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // Sale return index view
@@ -64,7 +64,7 @@ class SaleReturnController extends Controller
         if ($request->ajax()) {
 
             $returns = '';
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $query = DB::table('sale_returns')
                 ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
                 ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
@@ -127,10 +127,10 @@ class SaleReturnController extends Controller
 
                 ->editColumn('total_return_due_pay', fn ($row) => '<span class="total_return_due_pay text-success" data-value="' . $row->total_return_due_pay . '">' . $this->converter->format_in_bdt($row->total_return_due_pay) . '</span>')
 
-                // ->editColumn('total_return_due', function ($row) { 
+                // ->editColumn('total_return_due', function ($row) {
 
                 //     if ($row->sale_id) {
-                        
+
                 //         if ($row->total_return_due >= 0) {
 
                 //             return '<span class="text-danger">' . $this->converter->format_in_bdt($row->total_return_due) . '</span>';
@@ -149,16 +149,16 @@ class SaleReturnController extends Controller
 
                 //             return '<span class="text-danger"><b>Due</b></span>';
                 //         } else {
-    
+
                 //             return '<span class="text-success"><b>Paid</b></span>';
                 //         }
                 //     }else{
 
                 //         return '<span class="text-danger"><b>CHECK CUSTOMER DUE</b></span>';
                 //     }
-                    
+
                 // })
-                
+
                 ->editColumn('customer', function ($row) {
 
                     return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';
@@ -185,7 +185,7 @@ class SaleReturnController extends Controller
         return view('sales.sale_return.ajax_view.show', compact('saleReturn'));
     }
 
-    //Deleted sale return 
+    //Deleted sale return
     public function delete($saleReturnId)
     {
         $saleReturn = SaleReturn::with(['sale', 'customer', 'sale_return_products'])->where('id', $saleReturnId)->first();

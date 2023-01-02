@@ -321,7 +321,7 @@ class CustomerController extends Controller
         $customerId = $customerId;
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $sales = '';
             $query = DB::table('sales')
@@ -1131,7 +1131,7 @@ class CustomerController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payments = '';
             $paymentsQuery = DB::table('customer_ledgers')
                 ->where('customer_ledgers.customer_id', $customerId)

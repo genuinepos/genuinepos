@@ -136,8 +136,8 @@
         "searching" : false,
         dom: "lBfrtip",
         buttons: [
-            {extend: 'excel',text: 'Export To Excel',className: 'btn btn-primary',},
-            {extend: 'pdf',text: 'Export To Pdf',className: 'btn btn-primary',},
+            {extend: 'excel',text: '@lang('menu.excel')',className: 'btn btn-primary',},
+            {extend: 'pdf',text: '@lang('menu.pdf')',className: 'btn btn-primary',},
         ],
         aaSorting: [[1, 'asc']],
         "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),

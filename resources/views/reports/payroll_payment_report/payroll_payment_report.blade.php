@@ -139,12 +139,12 @@
         buttons: [
             {
                 extend: 'excel',
-                text: 'Export To Excel',
+                text: '@lang('menu.excel')',
                 className: 'btn btn-primary',
             },
             {
                 extend: 'pdf',
-                text: 'Export To Pdf',
+                text: '@lang('menu.pdf')',
                 className: 'btn btn-primary',
             },
         ],

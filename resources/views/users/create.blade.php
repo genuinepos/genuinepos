@@ -387,13 +387,19 @@
                                     <div class="row g-2">
                                         <div class="col-md-6">
                                             <div class="input-group">
+                                                <label class="col-4"> <b>{{ __('Profile image') }}:</b> </label>
+                                                <div class="col-8">
+                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
                                                 <label class="col-4"> <b>@lang('menu.date_of_birth'):</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="@lang('menu.date_of_birth')">
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.gender') :</b> </label>
@@ -407,9 +413,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.marital_status') :</b> </label>
@@ -432,9 +435,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.facebook_link') :</b> </label>
@@ -486,10 +486,10 @@
                                     </div>
 
                                     <div class="row g-2 pt-1">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>@lang('menu.id_proof_number') :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-lg-2 col-4"><b>@lang('menu.id_proof_number'):</b> </label>
+                                                <div class="col-lg-10 col-8">
                                                     <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="@lang('menu.id_proof_number')">
                                                 </div>
                                             </div>
@@ -499,7 +499,7 @@
                                     <div class="row g-2 pt-1">
                                         <div class="col-md-12">
                                             <div class="input-group ">
-                                                <label class="col-lg-2 col-4"><b>@lang('menu.permanent_address') :</b> </label>
+                                                <label class="col-lg-2 col-4"><b>@lang('menu.permanent_address'):</b> </label>
                                                 <div class="col-lg-10 col-8">
                                                     <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="@lang('menu.permanent_address')">
                                                 </div>
@@ -517,16 +517,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row g-2 pt-1">
-                                        <div class="col-md-12">
-                                            <div class="input-group">
-                                                <label class="col-lg-2 col-4"><b>{{ __('Profile image') }} :</b> </label>
-                                                <div class="col-lg-10 col-8">
-                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

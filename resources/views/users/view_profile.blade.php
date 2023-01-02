@@ -20,7 +20,7 @@
                             <div class="profile-sidebar">
                                 <div class="profile-top">
                                     <div class="part-img">
-                                        <img src="{{ asset('assets/images/profile-picture.jpg') }}" alt="Image">
+                                        <img src="{{ asset('uploads/user_photo') }}/{{ $user->photo }}" alt="Not found">
                                     </div>
                                     <div class="part-txt text-center">
                                         <h4>{!! $user->username ? $user->username : '<span class="badge bg-secondary">Not-Allowed-to-Login</span>' !!}</h4>

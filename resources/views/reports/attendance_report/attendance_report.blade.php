@@ -140,7 +140,7 @@
             {extend: 'pdf',text: 'Export To Pdf',className: 'btn btn-primary',},
         ],
         aaSorting: [[1, 'asc']],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.attendance') }}",

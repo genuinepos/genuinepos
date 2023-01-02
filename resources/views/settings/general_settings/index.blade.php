@@ -245,14 +245,14 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Time Zone') }} :</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Time Zone') }} :</strong><span class="text-danger">*</span> {{  now()->format('Y-m-d') }}</label>
                                             <select name="timezone" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
                                                 <option value="">{{ __('Time Zone') }}</option>
-                                                @foreach ($timezones as $timezone)
+                                                @foreach ($timezones as $key => $timezone)
                                                     <option
-                                                        {{ json_decode($generalSettings->business, true)['timezone'] == $timezone->name ? 'SELECTED' : '' }}
-                                                        value="{{ $timezone->name }}">{{ $timezone->name }}</option>
+                                                        {{ (json_decode($generalSettings?->business, true)['timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }}
+                                                        value="{{ $key }}">{{ $timezone }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_time_format"></span>
@@ -475,23 +475,23 @@
                                         <div class="col-md-4">
                                             <label><strong>Theme Color :</strong></label>
                                             <select name="theme_color" class="form-control" id="theme_color">
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
-                                                <option  {{ json_decode($generalSettings->system, true)['theme_color'] == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
+                                                <option  {{ (json_decode($generalSettings?->system, true)['theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>Default datatable page entries :</strong></label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 10 ? 'SELECTED' : '' }} value="10">10</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 25 ? 'SELECTED' : '' }} value="25">25</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 50 ? 'SELECTED' : '' }} value="50">50</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 100 ? 'SELECTED' : '' }} value="100">100</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 500 ? 'SELECTED' : '' }} value="500">500</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['datatable_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">10</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['datatable_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">25</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['datatable_page_entry'] ?? 0) == 50 ? 'SELECTED' : '' }} value="50">50</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['datatable_page_entry'] ?? 0) == 100 ? 'SELECTED' : '' }} value="100">100</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['datatable_page_entry'] ?? 0) == 500 ? 'SELECTED' : '' }} value="500">500</option>
+                                                <option {{ (json_decode($generalSettings?->system, true)['datatable_page_entry'] ?? 0) == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
                                             </select>
                                         </div>
                                     </div>
@@ -517,14 +517,14 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>{{ __('Enable Reward Point') }}</b>
+                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>{{ __('Enable Reward Point') }}</b>
                                                 </p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Reward Point Display Name') }} :</strong></label>
-                                            <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }}">
+                                            <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['point_display_name'] }}">
                                         </div>
                                     </div>
 
@@ -533,17 +533,17 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Amount spend for unit point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="left" title="Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['amount_for_unit_rp'] }}">
+                                            <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['amount_for_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Minimum order total to earn reward') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_rp'] }}">
+                                            <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['min_order_total_for_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Maximum points per order') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_rp_per_order'] }}">
+                                            <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['max_rp_per_order'] }}">
                                         </div>
                                     </div>
 
@@ -554,19 +554,19 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Redeem amount per unit point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}">
+                                            <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['redeem_amount_per_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Minimum order total to redeem points') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}">
+                                            <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['min_order_total_for_redeem'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Minimum redeem point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}">
+                                            <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['min_redeem_point'] }}">
                                         </div>
                                     </div>
 
@@ -574,7 +574,7 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Maximum redeem point per order') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum points that can be used in one order. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}">
+                                            <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_point_settings, true)['max_redeem_point'] }}">
                                         </div>
                                     </div>
 

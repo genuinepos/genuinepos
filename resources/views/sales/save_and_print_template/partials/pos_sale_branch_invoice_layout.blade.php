@@ -101,9 +101,9 @@
                                 </li>
                             @endif
 
-                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                            @if (json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] == 1)
                                 <li>
-                                    <strong>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </strong> {{ $sale->customer ? $sale->customer->point : 0 }}
+                                    <strong>{{ json_decode($generalSettings->reward_point_settings, true)['point_display_name'] }} : </strong> {{ $sale->customer ? $sale->customer->point : 0 }}
                                 </li>
                             @endif
                         </ul>
@@ -454,10 +454,10 @@
                                 </th>
                             </tr>
 
-                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                            @if (json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] == 1)
                                 <tr>
                                     <th class="text-center">
-                                        <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} :</b>
+                                        <b>{{ json_decode($generalSettings->reward_point_settings, true)['point_display_name'] }} :</b>
                                         <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span>
                                     </th>
                                 </tr>

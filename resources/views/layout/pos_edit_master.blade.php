@@ -46,7 +46,7 @@
     </style>
 </head>
 
-<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
+<body class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.update') }}" method="POST">
         @csrf
         <div class="pos-body">

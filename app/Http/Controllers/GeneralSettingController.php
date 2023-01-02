@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\Month;
+use App\Utils\TimeZone;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Artisan;
 
 class GeneralSettingController extends Controller
 {
@@ -30,7 +29,7 @@ class GeneralSettingController extends Controller
         $months = Month::select(['id', 'month'])->get();
         $currencies = Currency::all();
         $units = Unit::all();
-        $timezones = DB::table('timezones')->get();
+        $timezones = TimeZone::all();
 
         return view('settings.general_settings.index', compact(
             'bussinessSettings',
@@ -205,7 +204,7 @@ class GeneralSettingController extends Controller
             'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
 
-        $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);
+        $updateRewardPointgSettings->reward_point_settings = json_encode($RewardPointgSettings);
         $updateRewardPointgSettings->save();
         return response()->json('Reward point settings updated Successfully');
     }

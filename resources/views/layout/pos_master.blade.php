@@ -127,7 +127,7 @@
     </style>
 </head>
 
-<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'dark-theme' }}">
+<body class="{{ json_decode($generalSettings?->system, true)['theme_color'] ?? 'dark-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -206,7 +206,7 @@
         </div>
         <!--Add Payment modal End-->
 
-        @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
+        @if (json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] == '1')
         <!--Redeem Point modal-->
             <div class="modal fade" id="pointReedemModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
                 <div class="modal-dialog col-40-modal" role="document">

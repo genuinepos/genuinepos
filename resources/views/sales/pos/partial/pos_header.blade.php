@@ -306,11 +306,11 @@
     getPriceGroupProducts();
 
     var rp_settings = {
-        enable_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] }}",
-        redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}",
-        min_order_total_for_redeem : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}",
-        min_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}",
-        max_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}",
+        enable_rp : "{{ json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] }}",
+        redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_point_settings, true)['redeem_amount_per_unit_rp'] }}",
+        min_order_total_for_redeem : "{{ json_decode($generalSettings->reward_point_settings, true)['min_order_total_for_redeem'] }}",
+        min_redeem_point : "{{ json_decode($generalSettings->reward_point_settings, true)['min_redeem_point'] }}",
+        max_redeem_point : "{{ json_decode($generalSettings->reward_point_settings, true)['max_redeem_point'] }}",
     }
 
     $('#customer_id').on('change', function () {

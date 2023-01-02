@@ -28,9 +28,13 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.20.0",
         "mockery/mockery": "^1.5.1",
-        "nunomaduro/collision": "^6.1",
+        "nunomaduro/collision": "^6.3.1",
         "phpunit/phpunit": "^9.5.26",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-ignition": "^1.6.1",
+        "kitloong/laravel-migrations-generator": "^5.0",
+        "laravel/pint": "^1.0",
+        "laravel/sail": "^1.0.1",
+        "thedoctor0/laravel-factory-generator": "^1.2"
     },
     "config": {
         "optimize-autoloader": true,

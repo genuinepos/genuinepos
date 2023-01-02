@@ -1,6 +1,6 @@
 TRUNCATE `accounts`;
 TRUNCATE `account_types`;
-TRUNCATE `admin_and_user_logs`;
+TRUNCATE `users_logs`;
 TRUNCATE `allowance_employees`;
 TRUNCATE `assets`;
 TRUNCATE `asset_types`;

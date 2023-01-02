@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\GeneralSetting;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use App\Providers\EmailSettingServiceProvider;
-
-// use Doctrine\DBAL\Types\Type;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
+
     }
 
     /**
@@ -28,9 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // The application will send a exception(warning) message if anything goes wrong. But will work.
         try {
-            $generalSettings = DB::table('general_settings')->first();
+            // $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = GeneralSetting::first()->toArray();
+            dd($generalSettings);
             $addons = DB::table('addons')->first();
             // $warehouseCount = DB::table('warehouses')->count();
             $dateFormat = json_decode($generalSettings->business, true)['date_format'];
@@ -41,8 +40,20 @@ class AppServiceProvider extends ServiceProvider
                 // view()->share('warehouseCount', $warehouseCount);
                 view()->share('__date_format', $__date_format);
             }
-        } catch (Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+
+            $mailSettings = GeneralSetting::email();
+            if(isset($mailSettings)) {
+                config([
+                    'mail.mailers.smtp.transport' => $mailSettings['MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
+                    'mail.mailers.smtp.host' => $mailSettings['MAIL_HOST'] ?? config('mail.mailers.smtp.host'),
+                    'mail.mailers.smtp.port' => $mailSettings['MAIL_PORT'] ?? config('mail.mailers.smtp.port'),
+                    'mail.mailers.smtp.encryption' => $mailSettings['MAIL_ENCRYPTION'] ?? config('mail.mailers.smtp.encryption'),
+                    'mail.mailers.smtp.username' => $mailSettings['MAIL_USERNAME'] ?? config('mail.mailers.smtp.username'),
+                    'mail.mailers.smtp.password' => $mailSettings['MAIL_PASSWORD'] ?? config('mail.mailers.smtp.password'),
+                    // 'mail.mailers.smtp.timeout' => $mailSettings->MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
+                    // 'mail.mailers.smtp.auth_mode' => $mailSettings->MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
+                ]);
+            }
+        } catch(Exception $e) {}
     }
 }

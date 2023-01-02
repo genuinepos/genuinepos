@@ -93,7 +93,7 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
+                                @if (json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] == '1')
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text valus">Point</span>

@@ -35,19 +35,19 @@
                 <ul class="list-unstyled">
                     <li class="text-navy-blue"><strong>@lang('menu.total_sale') : </strong>
                         <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
                     <li class="text-navy-blue"><strong>@lang('menu.total_paid') : </strong>
                         <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
                     <li class="text-navy-blue"><strong>@lang('menu.total_due') : </strong>
                         <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ $customer->total_sale_due }}
                         </span>
                     </li>
@@ -92,7 +92,7 @@
                             <td>{{ $receipt->invoice_id }}</td>
 
                             <td>
-                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $receipt->amount }}
+                                {{ $generalSettings['business']['currency'] . ' ' . $receipt->amount }}
                             </td>
 
                             <td>

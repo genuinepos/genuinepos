@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 
  <style>
@@ -35,10 +35,10 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                             @endif
                         @else
-                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            @if ($generalSettings['business']['business_logo'] != null)
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business']['shop_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -72,7 +72,7 @@
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                                    {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                                 @endif
                             </li>
                             <li><strong>{{ __('Ordered Location') }} : </strong>
@@ -80,7 +80,7 @@
                                     {{ $purchase->branch->city }}, {{ $purchase->branch->state }},
                                     {{ $purchase->branch->zip_code }}, {{ $purchase->branch->country }}
                                 @else
-                                    {{ json_decode($generalSettings->business, true)['address'] }}
+                                    {{ $generalSettings['business']['address'] }}
                                 @endif
                             </li>
                         </ul>
@@ -89,11 +89,11 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.po_invoice_id') : </strong> {{ $purchase->invoice_id }}</li>
                             <li><strong>@lang('menu.purchase_date') : </strong>
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
+                                {{ date($generalSettings['business']['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
                             </li>
 
                             <li><strong>@lang('menu.delivery_date') : </strong>
-                                {{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}
+                                {{ $purchase->delivery_date ? date($generalSettings['business']['date_format'], strtotime($purchase->delivery_date)) : '' }}
                             </li>
 
                             <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>

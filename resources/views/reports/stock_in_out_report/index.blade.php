@@ -57,7 +57,7 @@
                                                     <label><strong>@lang('menu.business_location') :</strong></label>
                                                     <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                        <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}">
                                                                 {{ $branch->name . '/' . $branch->branch_code }}
@@ -139,13 +139,13 @@
                                             <th>@lang('menu.sale')</th>
                                             <th>{{ __('B. Location') }}</th>
                                             <th>{{ __('Sold Qty') }}</th>
-                                            <th>{{ __('Sold Price') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            <th>{{ __('Sold Price') }}({{ $generalSettings['business']['currency'] }})</th>
                                             <th>@lang('menu.customer')</th>
                                             <th>{{ __('Stock In By') }}</th>
                                             <th>{{ __('Stock In Date') }}</th>
                                             <th>{{ __('Lot No') }}</th>
                                             {{-- <th>Stock In Qty</th> --}}
-                                            <th>@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            <th>@lang('menu.unit_cost')({{ $generalSettings['business']['currency'] }})</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -185,7 +185,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.stock.in.out.index') }}",

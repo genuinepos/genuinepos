@@ -43,7 +43,7 @@ class StockAdjustmentController extends Controller
         $this->accountUtil = $accountUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     // Index view of stock adjustment
@@ -55,7 +55,7 @@ class StockAdjustmentController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')
@@ -129,7 +129,7 @@ class StockAdjustmentController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('business_location',  function ($row) use ($generalSettings) {
 
@@ -138,7 +138,7 @@ class StockAdjustmentController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('adjustment_location',  function ($row) use ($generalSettings) {
@@ -151,7 +151,7 @@ class StockAdjustmentController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('type',  function ($row) {

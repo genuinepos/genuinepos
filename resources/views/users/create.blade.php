@@ -347,7 +347,7 @@
                                                     <label class="col-4"><b>@lang('menu.access_location') :</b> </label>
                                                     <div class="col-8">
                                                         <select name="branch_id" id="branch_id" class="form-control">
-                                                            <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            <option value="">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $b)
                                                                 <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                             @endforeach
@@ -363,7 +363,7 @@
                                                         class="text-danger">*</span></label>
                                                     <div class="col-6">
                                                         <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
-                                                            <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            <option value="head_office">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $b)
                                                             <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                             @endforeach

@@ -26,7 +26,7 @@
                                         <label><strong>@lang('menu.business_location') :</strong></label>
                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id">
                                             <option value="">@lang('menu.all')</option>
-                                            <option value="NULL"> {{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                            <option value="NULL"> {{ $generalSettings['business']['shop_name'] }} </option>
                                             @foreach ($branches as $branch)
                                             <option value="{{ $branch->id }}">
                                                 {{ $branch->name . '/' . $branch->branch_code }}
@@ -92,7 +92,7 @@
         "processing": true
         , "serverSide": true,
         // aaSorting: [[8, 'asc']],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}")
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}")
         , "lengthMenu": [
             [10, 25, 50, 100, 500, 1000, -1]
             , [10, 25, 50, 100, 500, 1000, "All"]

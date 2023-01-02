@@ -140,7 +140,7 @@
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr class="bg-secondary">
-                                            <th colspan="2" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                            <th colspan="2" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
                                             <th class="text-white text-end"></th>
                                             <th id="debit" class="text-white text-end"></th>
                                             <th id="credit" class="text-white text-end"></th>

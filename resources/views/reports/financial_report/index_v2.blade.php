@@ -37,7 +37,7 @@
                                                 <select name="branch_id"
                                                     class="form-control" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option SELECTED value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}

@@ -62,7 +62,7 @@ class AssetController extends Controller
             'asset_type_name' => $request->asset_type_name,
             'asset_type_code' => $request->asset_type_code,
         ]);
-        
+
         return response()->json('Asset type updated successfully.');
     }
 
@@ -72,7 +72,7 @@ class AssetController extends Controller
 
         if (!is_null($deleteType)) {
 
-            $deleteType->delete();  
+            $deleteType->delete();
         }
         return response()->json('Asset type deleted Successfully.');
     }
@@ -108,7 +108,7 @@ class AssetController extends Controller
     public function allAsset(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $assets = '';
             $assetsQ = DB::table('assets')
             ->leftJoin('asset_types', 'assets.type_id', 'asset_types.id')
@@ -125,7 +125,7 @@ class AssetController extends Controller
 
                     $assetsQ->where('assets.branch_id', NULL);
                 } else {
-                    
+
                     $assetsQ->where('assets.branch_id', $request->branch_id);
                 }
             }
@@ -149,7 +149,7 @@ class AssetController extends Controller
                 )
                 ->where('assets.branch_id', auth()->user()->branch_id)->orderBy('assets.id', 'desc')->get();
             }
-            
+
 
             return DataTables::of($assets)
             ->addIndexColumn()
@@ -167,14 +167,14 @@ class AssetController extends Controller
                 if ($row->branch_name) {
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                 } else {
-                    return json_decode($generalSettings->business, true)['shop_name']. '(<b>HO</b>)';
+                    return $generalSettings['business']['shop_name']. '(<b>HO</b>)';
                 }
             })
             ->editColumn('per_unit_value', function($row) use ($generalSettings){
-                return json_decode($generalSettings->business, true)['currency']. $row->per_unit_value;
+                return $generalSettings['business']['currency']. $row->per_unit_value;
             })
             ->editColumn('total_value', function($row) use ($generalSettings){
-                return json_decode($generalSettings->business, true)['currency']. $row->total_value;
+                return $generalSettings['business']['currency']. $row->total_value;
             })
             ->rawColumns(['action', 'branch', 'per_unit_value', 'total_value'])
             ->make(true);
@@ -189,7 +189,7 @@ class AssetController extends Controller
         return view('accounting.assets.ajax_view.edit_asset', compact('asset', 'types', 'branches'));
     }
 
-    
+
     public function assetUpdate(Request $request, $assetId)
     {
         $this->validate($request, [
@@ -217,7 +217,7 @@ class AssetController extends Controller
     {
         $delete = Asset::find($assetId);
         if (!is_null($delete)) {
-            $delete->delete();  
+            $delete->delete();
         }
         return response()->json('Asset deleted Successfully.');
     }

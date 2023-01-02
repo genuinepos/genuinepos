@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col-md-12 text-center">
             @if ($branch_id == '')
-                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+                <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
+                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
                 <p><b>@lang('menu.all_business_location')</b></p>
             @elseif ($branch_id == 'NULL')
-                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+                <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
+                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
             @else
                 @php
                     $branch = DB::table('branches')
@@ -39,8 +39,8 @@
 
             @if ($s_date && $e_date)
                 <p><b>@lang('menu.date') :</b>
-                    {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($s_date)) }}
-                    <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($e_date)) }}
+                    {{ date($generalSettings['business']['date_format'], strtotime($s_date)) }}
+                    <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($e_date)) }}
                 </p>
             @endif
             <h6 style="margin-top: 10px;">@lang('menu.payroll_payment_report')</h6>
@@ -82,7 +82,7 @@
                     <tr>
                         <th colspan="2" class="text-start"></th>
                         <th class="text-end">@lang('menu.total') : </th>
-                        <th class="text-start">{{ json_decode($generalSettings->business, true)['currency'] }} {{ bcadd($total_paid, 0, 2) }}</th>
+                        <th class="text-start">{{ $generalSettings['business']['currency'] }} {{ bcadd($total_paid, 0, 2) }}</th>
                         <th>--</th>
                         <th>--</th>
                     </tr>

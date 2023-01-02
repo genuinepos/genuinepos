@@ -17,15 +17,15 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
+            <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">
-                {{ json_decode($generalSettings->business, true)['address'] }}
+                {{ $generalSettings['business']['address'] }}
             </p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
         @else
 
             @php
@@ -42,8 +42,8 @@
         @if ($fromDate && $toDate)
 
             <p><b>@lang('menu.date') :</b>
-                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
             </p>
         @endif
 
@@ -53,7 +53,7 @@
 <br>
 
 @php
-    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
 
     $totalItems = 0;
     $totalIQty = 0;
@@ -95,7 +95,7 @@
                                  {!! $return->branch_name . '/' . $return->branch_code . '(<b>BL</b>)' !!}
                             @else
 
-                                {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
+                                {!! $generalSettings['business']['shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
@@ -177,42 +177,42 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_return_qty') : {{json_decode($generalSettings->business, true)['currency']}}</th>
+                    <th class="text-end">@lang('menu.total_return_qty') : {{$generalSettings['business']['currency']}}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalIQty) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Net Return Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Net Return Amount') }} : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalNetTotal) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total') @lang('menu.return_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total') @lang('menu.return_discount') : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnDiscount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Return Tax') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Return Tax') }} : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnTax) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_return_amount') : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnAmount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Refunded Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Refunded Amount') }} : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalRefundedAmount) }}
                     </td>

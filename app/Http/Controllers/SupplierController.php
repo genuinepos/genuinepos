@@ -53,7 +53,7 @@ class SupplierController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->supplierPaymentUtil = $supplierPaymentUtil;
         $this->branchWiseSupplierAmountsUtil = $branchWiseSupplierAmountsUtil;
-        
+
     }
 
     public function index(Request $request)
@@ -81,7 +81,7 @@ class SupplierController extends Controller
 
         $generalSettings = DB::table('general_settings')->first('prefix');
         $firstLetterOfSupplier = str_split($request->name)[0];
-        $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
+        $supIdPrefix = $generalSettings['prefix']['supplier_id'];
         $addSupplier = Supplier::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -128,7 +128,7 @@ class SupplierController extends Controller
     public function edit($supplierId)
     {
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select('suppliers.*')->first();
-        
+
         $branchOpeningBalance = DB::table('supplier_opening_balances')->where('supplier_id', $supplierId)
             ->where('branch_id', auth()->user()->branch_id)->first();
 
@@ -952,7 +952,7 @@ class SupplierController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payments = '';
             $paymentsQuery = DB::table('supplier_ledgers')->where('supplier_ledgers.supplier_id', $supplierId)->whereIn('supplier_ledgers.voucher_type', [3, 4, 5, 6])
                 ->leftJoin('supplier_payments', 'supplier_ledgers.supplier_payment_id', 'supplier_payments.id')
@@ -1041,7 +1041,7 @@ class SupplierController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 

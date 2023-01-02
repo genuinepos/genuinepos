@@ -37,8 +37,8 @@
                                                 <th>@lang('menu.reference_id')</th>
                                                 <th>@lang('menu.warehouse')(From) </th>
                                                 <th>@lang('menu.b_location')(To)</th>
-                                                <th>@lang('menu.shipping_charge')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>@lang('menu.total_amount') ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.shipping_charge')({{ $generalSettings['business']['currency'] }})</th>
+                                                <th>@lang('menu.total_amount') ({{ $generalSettings['business']['currency'] }})</th>
                                                 <th>@lang('menu.status')</th>
                                                 <th>@lang('menu.action')</th>
                                             </tr>
@@ -74,7 +74,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
             columnDefs: [{"targets": [4, 7],"orderable": false,"searchable": false}],

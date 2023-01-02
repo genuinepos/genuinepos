@@ -30,21 +30,21 @@
                                 @if (auth()->user()->branch)
                                     @if (auth()->user()->branch->logo != 'default.png')
                                         <img
-                                        src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}">
+                                        src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}">
                                         {{-- src="{{ asset(config('speeddigit.app_logo')) }}"> --}}
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
                                         auth()->user()->branch->name }}</span>
                                     @endif
                                 @else
-                                    @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                                    @if ($generalSettings['business']['business_logo'] != null)
                                     <img
                                         {{-- src="{{ asset(config('speeddigit.app_logo'))}}" --}}
-                                        src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                        src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}"
                                         alt="logo" class="logo__img">
                                     @else
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{
-                                        json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                        $generalSettings['business']['shop_name'] }}</span>
                                     @endif
                                 @endif
                             </div>
@@ -62,10 +62,10 @@
                                 </p>
                             @else
                                 <p class="store-name">
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    {{ $generalSettings['business']['shop_name'] }}
                                 </p>
                                 <p class="address-name">
-                                    {{ Str::limit(json_decode($generalSettings->business, true)['address'], 45) }}
+                                    {{ Str::limit($generalSettings['business']['address'], 45) }}
                                 </p>
                             @endif
                             <small class="login-user-name">
@@ -140,7 +140,7 @@
 
                                     <div class="input-group-prepend ms-1">
                                         <span class="input-group-text valus"> = {{
-                                            json_decode($generalSettings->business, true)['currency'] }}</span>
+                                            $generalSettings['business']['currency'] }}</span>
                                     </div>
                                     <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">
                                 </div>
@@ -306,11 +306,11 @@
     getPriceGroupProducts();
 
     var rp_settings = {
-        enable_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] }}",
-        redeem_amount_per_unit_rp : "{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}",
-        min_order_total_for_redeem : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}",
-        min_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}",
-        max_redeem_point : "{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}",
+        enable_rp : "{{ $generalSettings['reward_point_settings']['enable_cus_point'] }}",
+        redeem_amount_per_unit_rp : "{{ $generalSettings['reward_point_settings']['redeem_amount_per_unit_rp'] }}",
+        min_order_total_for_redeem : "{{ $generalSettings['reward_point_settings']['min_order_total_for_redeem'] }}",
+        min_redeem_point : "{{ $generalSettings['reward_point_settings']['min_redeem_point'] }}",
+        max_redeem_point : "{{ $generalSettings['reward_point_settings']['max_redeem_point'] }}",
     }
 
     $('#customer_id').on('change', function () {

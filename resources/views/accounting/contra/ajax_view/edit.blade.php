@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="date" class="form-control add_input" data-name="Date" id="e_date"
-                placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($contra->date)) }}"/>
+                placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date($generalSettings['business']['date_format'], strtotime($contra->date)) }}"/>
             <span class="error error_e_date"></span>
         </div>
 

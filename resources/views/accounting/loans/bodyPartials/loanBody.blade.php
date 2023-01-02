@@ -13,7 +13,7 @@
                     <div class="form-group row gx-3">
                         <div class="col-md-6">
                             <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
-                            <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date(json_decode($generalSettings->business, true)['date_format'])) }}">
+                            <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date($generalSettings['business']['date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
 
@@ -192,9 +192,9 @@
                                 <th>@lang('menu.company')/@lang('menu.people')</th>
                                 <th>@lang('menu.type')</th>
                                 <th>@lang('menu.loan_by')</th>
-                                <th>@lang('menu.loan_amount')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                <th>@lang('menu.due')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                <th>@lang('menu.total_paid')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                <th>@lang('menu.loan_amount')({{ $generalSettings['business']['currency'] }})</th>
+                                <th>@lang('menu.due')({{ $generalSettings['business']['currency'] }})</th>
+                                <th>@lang('menu.total_paid')({{ $generalSettings['business']['currency'] }})</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

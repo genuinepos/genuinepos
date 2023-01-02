@@ -36,7 +36,7 @@
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -86,7 +86,7 @@
                                             <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                         </div>
                                     </div>
-                
+
                                     <div class="col-md-1 mt-md-0 mt-3">
                                         <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                     </div>
@@ -140,7 +140,7 @@
             {extend: 'pdf',text: 'Export To Pdf',className: 'btn btn-primary',},
         ],
         aaSorting: [[1, 'asc']],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.attendance') }}",

@@ -10,7 +10,7 @@ class ProcessUtil
 {
     public function processTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $process = DB::table('processes')
             ->leftJoin('products', 'processes.product_id', 'products.id')
             ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
@@ -62,13 +62,13 @@ class ProcessUtil
                 return bcadd($qtyWithWastage, 0, 2) . ' ' . $row->u_name;
             })
             ->editColumn('total_ingredient_cost', function ($row) use ($generalSettings) {
-                return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_ingredient_cost;
+                return $generalSettings['business']['currency'] . ' ' . $row->total_ingredient_cost;
             })
             ->editColumn('production_cost', function ($row) use ($generalSettings) {
-                return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->production_cost;
+                return $generalSettings['business']['currency'] . ' ' . $row->production_cost;
             })
             ->editColumn('total_cost', function ($row) use ($generalSettings) {
-                return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_cost;
+                return $generalSettings['business']['currency'] . ' ' . $row->total_cost;
             })
             ->rawColumns(['multiple_update', 'action', 'product', 'wastage_percent', 'total_output_qty', 'total_ingredient_cost', 'production_cost', 'total_cost'])
             ->make(true);

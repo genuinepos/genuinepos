@@ -79,7 +79,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <label><strong>@lang('menu.business_location') : </strong> </label>
-                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
                             <div class="col-md-12 mt-2">
@@ -357,7 +357,7 @@
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
                                     </div>
 
-                                    <input type="text" name="date" class="form-control cp_input" id="cp_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off">
+                                    <input type="text" name="date" class="form-control cp_input" id="cp_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}" autocomplete="off">
                                 </div>
                                 <span class="error error_cp_date"></span>
                             </div>
@@ -525,7 +525,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
 
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');

@@ -25,7 +25,7 @@ class CustomerImport implements ToCollection
         $index = 0;
         $generalSettings = DB::table('general_settings')->first('prefix');
         
-        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+        $cusIdPrefix = $generalSettings['prefix']['customer_id'];
 
         $this->customerUtil = new CustomerUtil();
 

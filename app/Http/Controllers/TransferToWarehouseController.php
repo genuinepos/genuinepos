@@ -33,15 +33,15 @@ class TransferToWarehouseController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
-    // Index view of Transfer stock to branch 
+    // Index view of Transfer stock to branch
     public function index(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $transfers = DB::table('transfer_stock_to_warehouses')
                 ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_warehouses.branch_id', 'branches.id')->select(
@@ -79,7 +79,7 @@ class TransferToWarehouseController extends Controller
                         return  $row->branch_name . '/' . $row->branch_code;
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('to_name',  function ($row) {
@@ -347,7 +347,7 @@ class TransferToWarehouseController extends Controller
                 $addTransferStockToBranchProduct->subtotal = $subtotals[$index2];
                 $addTransferStockToBranchProduct->save();
             }
-            
+
             $index2++;
         }
 
@@ -533,7 +533,7 @@ class TransferToWarehouseController extends Controller
         }
     }
 
-    // Check branch product variant qty 
+    // Check branch product variant qty
     public function checkBranchProductVariant($product_id, $variant_id)
     {
         $branch_id = auth()->user()->branch_id;

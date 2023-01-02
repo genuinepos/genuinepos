@@ -20,7 +20,7 @@ class WorkSpaceController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $workspaces = '';
             $query = DB::table('workspaces')->leftJoin('branches', 'workspaces.branch_id', 'branches.id')
@@ -124,7 +124,7 @@ class WorkSpaceController extends Controller
         if ($addons->todo == 0) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $this->validate($request, [
             'name' => 'required',
             'start_date' => 'required',
@@ -288,7 +288,7 @@ class WorkSpaceController extends Controller
         if ($addons->todo == 0) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
         if (!is_null($deleteDoc)) {
             if (file_exists(public_path('uploads/workspace_docs/'.$deleteDoc->attachment))) {

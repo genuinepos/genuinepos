@@ -60,7 +60,7 @@
                                                             </td>
                                                             <td class="text-center">
 
-                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->variant_price}}</b>
+                                                                <b>{{ $generalSettings['business']['currency'] }} {{ $item->variant_price}}</b>
                                                             </td>
                                                             @foreach ($priceGroups as $pg)
                                                                 <td class="text-start">
@@ -83,7 +83,7 @@
                                                             <td class="text-center">
                                                                 <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
                                                                 <input type="hidden" name="variant_ids[]" value="noid">
-                                                                <b>{{ json_decode($generalSettings->business, true)['currency'] }} {{ $item->product_price }}</b>
+                                                                <b>{{ $generalSettings['business']['currency'] }} {{ $item->product_price }}</b>
                                                             </td>
                                                             @foreach ($priceGroups as $pg)
                                                                 <td>

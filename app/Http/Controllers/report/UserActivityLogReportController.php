@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+// use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserActivityLogReportController extends Controller
@@ -20,13 +21,9 @@ class UserActivityLogReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
             $actions = $this->userActivityLogUtil->actions();
             $subject_types = $this->userActivityLogUtil->subjectTypes();
-
-            $generalSettings = DB::table('general_settings')->first();
             $logs = '';
-
             $query = DB::table('user_activity_logs')
                 ->leftJoin('branches', 'user_activity_logs.branch_id', 'branches.id')
                 ->leftJoin('users', 'user_activity_logs.user_id', 'users.id');
@@ -55,22 +52,18 @@ class UserActivityLogReportController extends Controller
                     ->where('user_activity_logs.branch_id', auth()->user()->branch_id)
                     ->orderBy('user_activity_logs.report_date', 'desc');
             }
+            $generalSettings = \Cache::get('generalSettings');
 
             return DataTables::of($logs)
                 ->editColumn('date', function ($row) use ($generalSettings) {
-
-                    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
                     return date($__date_format.' h:i:s a', strtotime($row->report_date));
                 })
-
                 ->editColumn('branch',  function ($row) use ($generalSettings) {
-
                     if ($row->branch_name) {
-
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
-
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('action_by', fn ($row) => $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name)

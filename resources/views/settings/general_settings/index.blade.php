@@ -114,20 +114,20 @@
                                             <label><strong>@lang('menu.business_name') :</strong></label>
                                             <input type="text" name="shop_name" class="form-control bs_input"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                value="{{ $generalSettings['business']['shop_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.address') :</strong></label>
                                             <input type="text" name="address" class="form-control bs_input"
                                                 autocomplete="off" placeholder="Business address"
-                                                value="{{ json_decode($generalSettings->business, true)['address'] }}">
+                                                value="{{ $generalSettings['business']['address'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.phone') :</strong></label>
                                             <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
-                                                value="{{ json_decode($generalSettings->business, true)['phone'] }}">
+                                                value="{{ $generalSettings['business']['phone'] }}">
                                         </div>
                                     </div>
 
@@ -135,7 +135,7 @@
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.email') :</strong></label>
                                             <input type="text" name="email" class="form-control bs_input" placeholder="Business email address"
-                                                value="{{ json_decode($generalSettings->business, true)['email'] }}">
+                                                value="{{ $generalSettings['business']['email'] }}">
                                         </div>
 
                                         <div class="col-md-4">
@@ -145,7 +145,7 @@
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                 </div>
                                                 <input type="text" name="start_date" class="form-control" autocomplete="off"
-                                                    value="{{ json_decode($generalSettings->business, true)['start_date'] }}">
+                                                    value="{{ $generalSettings['business']['start_date'] }}">
                                             </div>
                                         </div>
 
@@ -154,7 +154,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="number" name="default_profit" class="form-control bs_input"
                                                 autocomplete="off" data-name="Default profit" id="default_profit"
-                                                value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
+                                                value="{{ $generalSettings['business']['default_profit'] }}">
                                             <span class="error error_default_profit"></span>
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                                 id="currency">
                                                 @foreach ($currencies as $currency)
                                                     <option
-                                                        {{ json_decode($generalSettings->business, true)['currency'] == $currency->symbol ? 'SELECTED' : '' }}
+                                                        {{ $generalSettings['business']['currency'] == $currency->symbol ? 'SELECTED' : '' }}
                                                         value="{{ $currency->symbol }}">
                                                         {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
                                                     </option>
@@ -183,27 +183,13 @@
                                             <span class="error error_currency"></span>
                                         </div>
 
-                                        {{-- <div class="col-md-4">
-                                            <label><strong>Financial year start month:</strong> <span
-                                                    class="text-danger">*</span></label>
-                                            <select name="financial_year_start" class="form-control bs_input"
-                                                data-name="Financial year start month" id="financial_year_start">
-                                                @foreach ($months as $month)
-                                                    <option value="{{ $month->month }}"
-                                                        {{ json_decode($generalSettings->business, true)['financial_year_start'] == $month->month ? 'SELECTED' : '' }}>
-                                                        {{ $month->month }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_financial_year_start"></span>
-                                        </div> --}}
-
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Stock Accounting Method') }} : </strong> <span
                                                     class="text-danger">*</span></label>
                                             <select name="stock_accounting_method" class="form-control bs_input"
                                                 data-name="Stock Accounting Method" id="stock_accounting_method">
                                                 @php
-                                                    $stock_accounting_method = json_decode($generalSettings->business, true)['stock_accounting_method'] ?? NULL;
+                                                    $stock_accounting_method = $generalSettings['business']['stock_accounting_method'] ?? NULL;
                                                 @endphp
                                                 @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
                                                     <option {{ $stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
@@ -219,12 +205,12 @@
                                             <select name="date_format" class="form-control bs_input" data-name="Date format"
                                                 id="date_format">
                                                 <option value="d-m-Y"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
+                                                    {{ $generalSettings['business']['date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
                                                     dd-mm-yyyy</option>
                                                 <option value="m-d-Y"
-                                                    {{ json_decode($generalSettings->business, true)['date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
+                                                    {{ $generalSettings['business']['date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
                                                     mm-dd-yyyy</option>
-                                                <option value="Y-m-d" {{ json_decode($generalSettings->business, true)['date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>
+                                                <option value="Y-m-d" {{ $generalSettings['business']['date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>
                                                     yyyy-mm-dd</option>
                                             </select>
                                             <span class="error error_date_format"></span>
@@ -235,24 +221,24 @@
                                             <select name="time_format" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
                                                 <option value="12"
-                                                    {{ json_decode($generalSettings->business, true)['time_format'] == '12' ? 'SELECTED' : '' }}>
+                                                    {{ $generalSettings['business']['time_format'] == '12' ? 'SELECTED' : '' }}>
                                                     12 Hour</option>
                                                 <option value="24"
-                                                    {{ json_decode($generalSettings->business, true)['time_format'] == '24' ? 'SELECTED' : '' }}>
+                                                    {{ $generalSettings['business']['time_format'] == '24' ? 'SELECTED' : '' }}>
                                                     24 Hour</option>
                                             </select>
                                             <span class="error error_time_format"></span>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Time Zone') }} :</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Time Zone') }} :</strong><span class="text-danger">*</span> {{  now()->format('Y-m-d') }}</label>
                                             <select name="timezone" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
                                                 <option value="">{{ __('Time Zone') }}</option>
-                                                @foreach ($timezones as $timezone)
+                                                @foreach ($timezones as $key => $timezone)
                                                     <option
-                                                        {{ json_decode($generalSettings->business, true)['timezone'] == $timezone->name ? 'SELECTED' : '' }}
-                                                        value="{{ $timezone->name }}">{{ $timezone->name }}</option>
+                                                        {{ ($generalSettings['business']['timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }}
+                                                        value="{{ $key }}">{{ $timezone }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_time_format"></span>
@@ -282,33 +268,33 @@
                                             <label>Tax 1 Name : <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_1_name" class="form-control" autocomplete="off"
                                                 placeholder="GST / VAT / Other"
-                                                value="{{ json_decode($generalSettings->tax, true)['tax_1_name'] }}">
+                                                value="{{ $generalSettings['tax']['tax_1_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label>Tax 1 No : <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_1_no" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->tax, true)['tax_1_no'] }}">
+                                                value="{{ $generalSettings['tax']['tax_1_no'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label>Tax 2 Name : <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_2_name" class="form-control" autocomplete="off"
                                                 placeholder="GST / VAT / Other"
-                                                value="{{ json_decode($generalSettings->tax, true)['tax_2_name'] }}">
+                                                value="{{ $generalSettings['tax']['tax_2_name'] }}">
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <label>Tax 2 No : <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_2_no" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->tax, true)['tax_2_no'] }}">
+                                                value="{{ $generalSettings['tax']['tax_2_no'] }}">
                                         </div>
 
                                         <div class="col-md-8">
                                             <div class="row mt-5">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->tax, true)['is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale">
+                                                        {{ $generalSettings['tax']['is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale">
                                                         &nbsp; {{ __('Enable inline tax in purchase and sell') }}
                                                 </p>
                                             </div>
@@ -341,7 +327,7 @@
                                                 <input type="number" name="view_stock_expiry_alert_for"
                                                     class="form-control dbs_input" id="dbs_view_stock_expiry_alert_for"
                                                     data-name="Day amount" autocomplete="off"
-                                                    value="{{ json_decode($generalSettings->dashboard, true)['view_stock_expiry_alert_for'] }}">
+                                                    value="{{ $generalSettings['dashboard']['view_stock_expiry_alert_for'] }}">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text input-group-text-sm"
                                                         id="basic-addon1">@lang('menu.days')</span>
@@ -374,26 +360,26 @@
                                             <label><strong>{{ __('PURCHASE Invoice') }} :</strong></label>
                                             <input type="text" name="purchase_invoice" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['purchase_invoice'] }}">
+                                                value="{{ $generalSettings['prefix']['purchase_invoice'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>Sale Invoice :</strong></label>
                                             <input type="text" name="sale_invoice" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['sale_invoice'] }}">
+                                                value="{{ $generalSettings['prefix']['sale_invoice'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.purchase_return') :</strong></label>
                                             <input type="text" name="purchase_return" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['purchase_return'] }}">
+                                                value="{{ $generalSettings['prefix']['purchase_return'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Stock Transfer') }} :</strong></label>
                                             <input type="text" name="stock_transfer" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['stock_transfer'] }}">
+                                                value="{{ $generalSettings['prefix']['stock_transfer'] }}">
                                         </div>
                                     </div>
 
@@ -402,19 +388,19 @@
                                             <label><strong>@lang('menu.stock_adjustment') :</strong></label>
                                             <input type="text" name="stock_djustment" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['stock_djustment'] }}">
+                                                value="{{ $generalSettings['prefix']['stock_djustment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.sale_return') :</strong></label>
                                             <input type="text" name="sale_return" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['sale_return'] }}">
+                                                value="{{ $generalSettings['prefix']['sale_return'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.expenses') :</strong></label>
                                             <input type="text" name="expenses" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['expenses'] }}">
+                                                value="{{ $generalSettings['prefix']['expenses'] }}">
                                         </div>
                                     </div>
 
@@ -423,20 +409,20 @@
                                             <label><strong>{{ __('Expense Payment') }} :</strong></label>
                                             <input type="text" name="expanse_payment" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['expanse_payment'] }}">
+                                                value="{{ $generalSettings['prefix']['expanse_payment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Purchase Payment') }} :</strong></label>
                                             <input type="text" name="purchase_payment" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['purchase_payment'] }}">
+                                                value="{{ $generalSettings['prefix']['purchase_payment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Sale Payment') }} :</strong></label>
                                             <input type="text" name="sale_payment" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['sale_payment'] }}">
+                                                value="{{ $generalSettings['prefix']['sale_payment'] }}">
                                         </div>
                                     </div>
 
@@ -444,13 +430,13 @@
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.supplier_id'):</strong></label>
                                             <input type="text" name="supplier_id" class="form-control"
-                                                autocomplete="off" value="{{ json_decode($generalSettings->prefix, true)['supplier_id'] }}">
+                                                autocomplete="off" value="{{ $generalSettings['prefix']['supplier_id'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.customer') ID :</strong></label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off"
-                                                value="{{ json_decode($generalSettings->prefix, true)['customer_id'] }}">
+                                                value="{{ $generalSettings['prefix']['customer_id'] }}">
                                         </div>
                                     </div>
 
@@ -475,23 +461,23 @@
                                         <div class="col-md-4">
                                             <label><strong>Theme Color :</strong></label>
                                             <select name="theme_color" class="form-control" id="theme_color">
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
-                                                <option  {{ json_decode($generalSettings->system, true)['theme_color'] == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
-                                                <option {{ json_decode($generalSettings->system, true)['theme_color'] == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
+                                                <option {{ ($generalSettings['system']['theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
+                                                <option  {{ ($generalSettings['system']['theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
+                                                <option {{ ($generalSettings['system']['theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
+                                                <option {{ ($generalSettings['system']['theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
+                                                <option {{ ($generalSettings['system']['theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>Default datatable page entries :</strong></label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 10 ? 'SELECTED' : '' }} value="10">10</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 25 ? 'SELECTED' : '' }} value="25">25</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 50 ? 'SELECTED' : '' }} value="50">50</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 100 ? 'SELECTED' : '' }} value="100">100</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 500 ? 'SELECTED' : '' }} value="500">500</option>
-                                                <option {{ json_decode($generalSettings->system, true)['datatable_page_entry'] == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
+                                                <option {{ ($generalSettings['system']['datatable_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">10</option>
+                                                <option {{ ($generalSettings['system']['datatable_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">25</option>
+                                                <option {{ ($generalSettings['system']['datatable_page_entry'] ?? 0) == 50 ? 'SELECTED' : '' }} value="50">50</option>
+                                                <option {{ ($generalSettings['system']['datatable_page_entry'] ?? 0) == 100 ? 'SELECTED' : '' }} value="100">100</option>
+                                                <option {{ ($generalSettings['system']['datatable_page_entry'] ?? 0) == 500 ? 'SELECTED' : '' }} value="500">500</option>
+                                                <option {{ ($generalSettings['system']['datatable_page_entry'] ?? 0) == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
                                             </select>
                                         </div>
                                     </div>
@@ -517,14 +503,14 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>{{ __('Enable Reward Point') }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['reward_point_settings']['enable_cus_point'] == '1' ? 'CHECKED' : '' }} name="enable_cus_point"> &nbsp; <b>{{ __('Enable Reward Point') }}</b>
                                                 </p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Reward Point Display Name') }} :</strong></label>
-                                            <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }}">
+                                            <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['point_display_name'] }}">
                                         </div>
                                     </div>
 
@@ -533,17 +519,17 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Amount spend for unit point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="left" title="Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['amount_for_unit_rp'] }}">
+                                            <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['amount_for_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Minimum order total to earn reward') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_rp'] }}">
+                                            <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['min_order_total_for_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Maximum points per order') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_rp_per_order'] }}">
+                                            <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['max_rp_per_order'] }}">
                                         </div>
                                     </div>
 
@@ -554,19 +540,19 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Redeem amount per unit point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['redeem_amount_per_unit_rp'] }}">
+                                            <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['redeem_amount_per_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Minimum order total to redeem points') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_order_total_for_redeem'] }}">
+                                            <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['min_order_total_for_redeem'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Minimum redeem point') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['min_redeem_point'] }}">
+                                            <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['min_redeem_point'] }}">
                                         </div>
                                     </div>
 
@@ -574,7 +560,7 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Maximum redeem point per order') }} : </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum points that can be used in one order. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
-                                            <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ json_decode($generalSettings->reward_poing_settings, true)['max_redeem_point'] }}">
+                                            <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings']['max_redeem_point'] }}">
                                         </div>
                                     </div>
 
@@ -602,7 +588,7 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['purchases'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['purchases'] == '1' ? 'CHECKED' : '' }}
                                                         name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
                                                 </p>
                                             </div>
@@ -612,7 +598,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['add_sale'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['add_sale'] == '1' ? 'CHECKED' : '' }}
                                                         name="add_sale" autocomplete="off"> &nbsp; <b>@lang('menu.add_sale')</b>
                                                 </p>
                                             </div>
@@ -622,7 +608,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['pos'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['pos'] == '1' ? 'CHECKED' : '' }}
                                                         name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
                                                 </p>
                                             </div>
@@ -634,7 +620,7 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['transfer_stock'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['transfer_stock'] == '1' ? 'CHECKED' : '' }}
                                                         name="transfer_stock" autocomplete="off">
                                                     &nbsp; <b>{{ __('Transfers Stock') }}</b>
                                                 </p>
@@ -645,7 +631,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['stock_adjustment'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['stock_adjustment'] == '1' ? 'CHECKED' : '' }}
                                                         name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
                                                 </p>
                                             </div>
@@ -655,7 +641,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['expenses'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['expenses'] == '1' ? 'CHECKED' : '' }}
                                                         name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
                                                 </p>
                                             </div>
@@ -667,7 +653,7 @@
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['accounting'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['accounting'] == '1' ? 'CHECKED' : '' }}
                                                         name="accounting" autocomplete="off"> &nbsp; <b>@lang('menu.accounting')</b>
                                                 </p>
                                             </div>
@@ -677,7 +663,7 @@
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
                                                     <input type="checkbox"
-                                                        {{ json_decode($generalSettings->modules, true)['contacts'] == '1' ? 'CHECKED' : '' }}
+                                                        {{ $generalSettings['modules']['contacts'] == '1' ? 'CHECKED' : '' }}
                                                         name="contacts" autocomplete="off"> &nbsp; <b>@lang('menu.contacts')</b>
                                                 </p>
                                             </div>
@@ -688,7 +674,7 @@
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
-                                                            {{ json_decode($generalSettings->modules, true)['hrms'] == '1' ? 'CHECKED' : '' }}
+                                                            {{ $generalSettings['modules']['hrms'] == '1' ? 'CHECKED' : '' }}
                                                             name="hrms" autocomplete="off"> &nbsp; <b>@lang('menu.human_resource_management')</b>
                                                     </p>
                                                 </div>
@@ -700,7 +686,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->modules, true)['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>{{ __('Requisite') }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules']['requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>{{ __('Requisite') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -710,8 +696,8 @@
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
-                                                            @if (isset(json_decode($generalSettings->modules, true)['manufacturing']))
-                                                                {{ json_decode($generalSettings->modules, true)['manufacturing'] == '1' ? 'CHECKED' : '' }}
+                                                            @if (isset($generalSettings['modules']['manufacturing']))
+                                                                {{ $generalSettings['modules']['manufacturing'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
                                                             name="manufacturing" autocomplete="off">
                                                         &nbsp;<b>{{ __('Manufacture') }}</b>
@@ -725,8 +711,8 @@
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
                                                         <input type="checkbox"
-                                                            @if (isset(json_decode($generalSettings->modules, true)['service']))
-                                                                {{ json_decode($generalSettings->modules, true)['service'] == '1' ? 'CHECKED' : '' }}
+                                                            @if (isset($generalSettings['modules']['service']))
+                                                                {{ $generalSettings['modules']['service'] == '1' ? 'CHECKED' : '' }}
                                                             @endif
                                                             name="service" autocomplete="off">
                                                         &nbsp;<b>@lang('menu.service')</b>
@@ -759,7 +745,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_es_settings']['send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -767,7 +753,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_es_settings']['send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -775,7 +761,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>@lang('menu.customer_remainder_via_email')</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_es_settings']['cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>@lang('menu.customer_remainder_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -785,7 +771,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ json_decode($generalSettings->send_es_settings, true)['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['send_es_settings']['cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
                                                 </p>
                                             </div>
                                         </div>

@@ -26,8 +26,8 @@
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</h5>
-        <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
+        <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
         <h6 style="margin-top: 10px;"><b>@lang('menu.supplier_report')</b></h6>
     </div>
 </div>
@@ -74,27 +74,27 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-end">@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_purchase') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_purchase') : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPurchase) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_purchase_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_purchase_due') : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Returnable/Refundable Due') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Returnable/Refundable Due') }} : {{ $generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>

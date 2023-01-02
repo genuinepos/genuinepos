@@ -9,6 +9,31 @@ class GeneralSetting extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'business' => 'array',
+        'tax' => 'array',
+        'product' => 'array',
+        'sale' => 'array',
+        'pos' => 'array',
+        'purchase' => 'array',
+        'system' => 'array',
+        'prefix' => 'array',
+        'send_es_settings' => 'array',
+        'email_setting' => 'array',
+        'sms_setting' => 'array',
+        'modules' => 'array',
+        'reward_point_settings' => 'array',
+        'mf_settings' => 'array',
+        'multi_branches' => 'array',
+        'hrm' => 'array',
+        'services' => 'array',
+        'manufacturing' => 'array',
+        'projects' => 'array',
+        'essentials' => 'array',
+        'e_commerce' => 'array',
+        'dashboard' => 'array',
+    ];
+
     public function scopeSms($query)
     {
         return json_decode($query->first()->sms_setting, true);

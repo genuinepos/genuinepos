@@ -1,6 +1,6 @@
 <!--begin::Form-->
 @php
-    $currency = json_decode($generalSettings->business, true)['currency'];
+    $currency = $generalSettings['business']['currency'];
 @endphp
 <div class="form-group row">
     @if ($addons->branches == 1)
@@ -8,7 +8,7 @@
             <div class="col-md-6">
                 <select name="branch_id" id="today_branch_id" class="form-control">
                     <option value="">@lang('menu.all_business_locations')</option>
-                    <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ json_decode($generalSettings->business, true)['shop_name'] }}(@lang('menu.head_office'))</option>
+                    <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ $generalSettings['business']['shop_name'] }}(@lang('menu.head_office'))</option>
                     @foreach ($branches as $br)
                         <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                     @endforeach
@@ -48,7 +48,7 @@
                 @if ($addons->branches == 1)
                     <h4>
                         @if ($branch_id == 'HF')
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(@lang('menu.head_office'))</strong>
+                            {{ $generalSettings['business']['shop_name'] }} <strong>(@lang('menu.head_office'))</strong>
                         @elseif($branch_id == '')
                         @lang('menu.all_business_locations').
                         @else
@@ -56,7 +56,7 @@
                         @endif
                     </h4>
                 @else
-                    <h4>{{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(HO)</strong></h4>
+                    <h4>{{ $generalSettings['business']['shop_name'] }} <strong>(HO)</strong></h4>
                 @endif
             </div>
 

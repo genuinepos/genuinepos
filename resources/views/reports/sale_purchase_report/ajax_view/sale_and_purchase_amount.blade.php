@@ -40,7 +40,7 @@
                             <tr>
                                 <th>@lang('menu.total_purchase') :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
                                 </td>
                             </tr>
@@ -48,7 +48,7 @@
                             <tr>
                                 <th>@lang('menu.purchase_including_tax') : </th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
                                 </td>
                             </tr>
@@ -56,7 +56,7 @@
                             <tr>
                                 <th>@lang('menu.purchase_return_including_tax') : </th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
                                 </td>
                             </tr>
@@ -64,7 +64,7 @@
                             <tr>
                                 <th> @lang('menu.purchase_due'): </th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
                                 </td>
                             </tr>
@@ -86,7 +86,7 @@
                             <tr>
                                 <th>@lang('menu.total_sale') :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale) }}
                                 </td>
                             </tr>
@@ -94,7 +94,7 @@
                             <tr>
                                 <th>@lang('menu.sale_including_tax') :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
                                 </td>
                             </tr>
@@ -102,14 +102,14 @@
                             <tr>
                                 <th>@lang('menu.sale_return_including_tax') :</th>
                                 <td>
-                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                    {{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
                                 </td>
                             </tr>
 
                             <tr>
                                 <th> {{ __('Sale Due') }} :</th>
-                                <td>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                <td>{{ $generalSettings['business']['currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}</td>
                             </tr>
                         </tbody>
@@ -132,13 +132,13 @@
                     <div class="compare_area mt-3">
                         <h5 class="text-muted">@lang('menu.sale') - @lang('menu.purchase'):
                             <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business']['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
                             </span>
                         </h5>
                         <h5 class="text-muted">@lang('menu.due_amount') ({{ __('Sale Due') }} - @lang('menu.purchase_due')) :
                             <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business']['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
                             </span>
                         </h5>

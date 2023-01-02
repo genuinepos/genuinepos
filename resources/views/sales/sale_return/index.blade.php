@@ -144,7 +144,7 @@
             "serverSide": true,
             // aaSorting: [[1, 'asc']],
             ajax: "{{ route('sales.returns.index') }}",
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             columnDefs: [{
                 "targets": [0, 6,],

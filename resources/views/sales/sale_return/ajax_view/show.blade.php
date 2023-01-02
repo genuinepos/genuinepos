@@ -17,7 +17,7 @@
                             <li><strong>@lang('menu.return_invoice_id') : </strong> {{ $saleReturn->invoice_id }}</li>
                             <li><strong>@lang('menu.return_date') : </strong> {{ $saleReturn->date }}</li>
                             <li><strong>@lang('menu.customer_name') : </strong> {{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>@lang('menu.stock_location') : </strong> {!! $saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'].'<b>(HO)</b>' !!} </li>
+                            <li><strong>@lang('menu.stock_location') : </strong> {!! $saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code.'<b>(BL)</b>' : $generalSettings['business']['shop_name'].'<b>(HO)</b>' !!} </li>
                         </ul>
                     </div>
                     <div class="col-6 text-left">
@@ -82,28 +82,28 @@
                         <div class="table-responsive">
                             <table class="table modal-table tabl-sm">
                                 <tr>
-                                    <th class="text-start">@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.net_total_amount') : {{ $generalSettings['business']['currency'] }} </th>
                                     <td class="text-start net_total ">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->net_total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">@lang('menu.return_discount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.return_discount') : {{ $generalSettings['business']['currency'] }} </th>
                                     <td class="text-start return_discount">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->return_discount_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.total_return_amount') : {{ $generalSettings['business']['currency'] }} </th>
                                     <td class="text-start total_return_amount">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-start">@lang('menu.total_paid')/@lang('menu.refunded_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                    <th class="text-start">@lang('menu.total_paid')/@lang('menu.refunded_amount') : {{ $generalSettings['business']['currency'] }} </th>
                                     <td class="text-start total_return_amount">
                                         {{ App\Utils\Converter::format_in_bdt($saleReturn->total_return_due_pay) }}
                                     </td>
@@ -155,9 +155,9 @@
                                 </p>
                                 <p class="company_phone">@lang('menu.phone') : {{ $saleReturn->branch->phone }}</p>
                             @else
-                                <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                                <p class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                                <p class="company_address">@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                                <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
+                                <p class="company_address">{{ $generalSettings['business']['address'] }}</p>
+                                <p class="company_address">@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</p>
                             @endif
                             <h6 class="bill_name">{{ __('Sale Return Invoice') }}</h6>
                         </div>
@@ -173,7 +173,7 @@
                             <li><strong>@lang('menu.invoice_id') : </strong>{{ $saleReturn->invoice }}</li>
                             <li><strong>@lang('menu.return_date') : </strong>{{ $saleReturn->date }}</li>
                             <li><strong>@lang('menu.customer_name') : </strong>{{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                            <li><strong>@lang('menu.stock_location') : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.stock_location') : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">

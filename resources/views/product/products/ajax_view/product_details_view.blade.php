@@ -48,7 +48,7 @@
 
                 <div class="col-md-3">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.expire_date') : </strong> {{$product->expire_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($product->expire_date)) : 'N/A' }}
+                        <li><strong>@lang('menu.expire_date') : </strong> {{$product->expire_date ? date($generalSettings['business']['date_format'], strtotime($product->expire_date)) : 'N/A' }}
                         </li>
                         <li><strong>@lang('menu.tax') : </strong>{{ $product->tax ? $product->tax->tax_name : 'N/A' }}</li>
                         @if ($product->tax)

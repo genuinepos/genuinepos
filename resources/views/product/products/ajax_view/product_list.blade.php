@@ -64,11 +64,11 @@
                 <td>{{ $product->name }}</td>
 
                 <td>
-                   <b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $product->product_cost_with_tax }}</b>
+                   <b>{{ $generalSettings['business']['currency'] .' '. $product->product_cost_with_tax }}</b>
                 </td>
 
                 <td>
-                    <b>{{ json_decode($generalSettings->business, true)['currency'] .' '. $product->product_price}} </b>
+                    <b>{{ $generalSettings['business']['currency'] .' '. $product->product_price}} </b>
                 </td>
 
                 <td>

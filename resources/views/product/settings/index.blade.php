@@ -26,7 +26,7 @@
                         <div class="col-lg-3 col-sm-6">
                             <label><strong>{{ __('Product Code Prefix') }} (SKU) :</strong></label>
                             <input type="text" name="product_code_prefix" class="form-control"
-                                autocomplete="off" value="{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}">
+                                autocomplete="off" value="{{ $generalSettings['product']['product_code_prefix'] }}">
                         </div>
 
                         <div class="col-lg-3 col-sm-6">
@@ -34,7 +34,7 @@
                             <select name="default_unit_id" class="form-control" id="default_unit_id">
                                 <option value="null">@lang('menu.none')</option>
                                 @foreach ($units as $unit)
-                                    <option {{ json_decode($generalSettings->product, true)['default_unit_id'] == $unit->id ? 'SELECTED' : '' }}
+                                    <option {{ $generalSettings['product']['default_unit_id'] == $unit->id ? 'SELECTED' : '' }}
                                         value="{{ $unit->id }}">{{ $unit->name }}
                                     </option>
                                 @endforeach
@@ -47,7 +47,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ json_decode($generalSettings->product, true)['is_enable_brands'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['product']['is_enable_brands'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enable_brands"> &nbsp; <b>@lang('menu.enable_brands')</b>
                                 </p>
                             </div>
@@ -57,7 +57,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ json_decode($generalSettings->product, true)['is_enable_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_categories"> &nbsp; <b>@lang('menu.enable_categories')</b>
+                                        {{ $generalSettings['product']['is_enable_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_categories"> &nbsp; <b>@lang('menu.enable_categories')</b>
                                 </p>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_sub_categories"> &nbsp; <b>@lang('menu.enable_sub_categories')</b>
+                                        {{ $generalSettings['product']['is_enable_sub_categories'] == '1' ? 'CHECKED' : '' }} name="is_enable_sub_categories"> &nbsp; <b>@lang('menu.enable_sub_categories')</b>
                                 </p>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['product']['is_enable_price_tax'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enable_price_tax"> &nbsp; <b>@lang('menu.enable_price_tax_info')</b>
                                 </p>
                             </div>
@@ -85,7 +85,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ json_decode($generalSettings->product, true)['is_enable_warranty'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['product']['is_enable_warranty'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enable_warranty"> &nbsp; <b>@lang('menu.enable_warranty')</b>
                                 </p>
                             </div>

@@ -639,10 +639,10 @@ INSERT INTO `users` (`id`, `prefix`, `name`, `last_name`, `emp_id`, `username`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_and_user_logs`
+-- Table structure for table `users_logs`
 --
 
-CREATE TABLE `admin_and_user_logs` (
+CREATE TABLE `users_logs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `ip_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1678,7 +1678,7 @@ CREATE TABLE `general_settings` (
   `email_setting` longtext COLLATE utf8mb4_unicode_ci,
   `sms_setting` longtext COLLATE utf8mb4_unicode_ci,
   `modules` longtext COLLATE utf8mb4_unicode_ci,
-  `reward_poing_settings` longtext COLLATE utf8mb4_unicode_ci,
+  `reward_point_settings` longtext COLLATE utf8mb4_unicode_ci,
   `mf_settings` text COLLATE utf8mb4_unicode_ci COMMENT 'manufacturing_settings',
   `multi_branches` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is_activated',
   `hrm` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is_activated',
@@ -1695,7 +1695,7 @@ CREATE TABLE `general_settings` (
 -- Dumping data for table `general_settings`
 --
 
-INSERT INTO `general_settings` (`id`, `business`, `tax`, `product`, `sale`, `pos`, `purchase`, `dashboard`, `system`, `prefix`, `send_es_settings`, `email_setting`, `sms_setting`, `modules`, `reward_poing_settings`, `mf_settings`, `multi_branches`, `hrm`, `services`, `manufacturing`, `projects`, `essentials`, `e_commerce`, `created_at`, `updated_at`) VALUES
+INSERT INTO `general_settings` (`id`, `business`, `tax`, `product`, `sale`, `pos`, `purchase`, `dashboard`, `system`, `prefix`, `send_es_settings`, `email_setting`, `sms_setting`, `modules`, `reward_point_settings`, `mf_settings`, `multi_branches`, `hrm`, `services`, `manufacturing`, `projects`, `essentials`, `e_commerce`, `created_at`, `updated_at`) VALUES
 (1, '{\"shop_name\":\"Gollachut TeleCare\",\"address\":\"Ship #04, 6th Floor, Block A, Basundhara City, Shopping Complex, Panthapath, Dhaka-1215\",\"phone\":\"01719244933, 1722789897\",\"email\":\"gollachuttelecare@gmail.com\",\"start_date\":null,\"default_profit\":0,\"currency\":\"TK.\",\"currency_placement\":null,\"date_format\":\"d-m-Y\",\"stock_accounting_method\":\"2\",\"time_format\":\"12\",\"business_logo\":\"631ee0ea63369-.png\",\"timezone\":\"Asia\\/Dhaka\"}', '{\"tax_1_name\":null,\"tax_1_no\":null,\"tax_2_name\":null,\"tax_2_no\":null,\"is_tax_en_purchase_sale\":0}', '{\"product_code_prefix\":\"SD\",\"default_unit_id\":\"null\",\"is_enable_brands\":1,\"is_enable_categories\":1,\"is_enable_sub_categories\":1,\"is_enable_price_tax\":1,\"is_enable_warranty\":1}', '{\"default_sale_discount\":\"0.00\",\"default_tax_id\":\"null\",\"sales_cmsn_agnt\":\"select_form_cmsn_list\",\"default_price_group_id\":\"null\"}', '{\"is_enabled_multiple_pay\":1,\"is_enabled_draft\":1,\"is_enabled_quotation\":1,\"is_enabled_suspend\":1,\"is_enabled_discount\":1,\"is_enabled_order_tax\":1,\"is_show_recent_transactions\":1,\"is_enabled_credit_full_sale\":1,\"is_enabled_hold_invoice\":1}', '{\"is_edit_pro_price\":1,\"is_enable_status\":1,\"is_enable_lot_no\":1}', '{\"view_stock_expiry_alert_for\":\"31\"}', '{\"theme_color\":\"dark-theme\",\"datatable_page_entry\":\"50\"}', '{\"purchase_invoice\":\"PI\",\"sale_invoice\":\"GTC\",\"purchase_return\":\"PRI\",\"stock_transfer\":\"ST\",\"stock_djustment\":\"SA\",\"sale_return\":\"SRI\",\"expenses\":\"ER\",\"supplier_id\":\"S-\",\"customer_id\":\"C-\",\"purchase_payment\":\"PPV\",\"sale_payment\":\"SPV\",\"expanse_payment\":\"EPV\"}', '{\"send_inv_via_email\":0,\"send_notice_via_sms\":0,\"cmr_due_rmdr_via_email\":0,\"cmr_due_rmdr_via_sms\":0}', '[]', '[]', '{\"purchases\":1,\"add_sale\":1,\"pos\":1,\"transfer_stock\":1,\"stock_adjustment\":1,\"expenses\":1,\"accounting\":1,\"contacts\":1,\"hrms\":1,\"requisite\":1,\"manufacturing\":1,\"service\":1}', '{\"enable_cus_point\":0,\"point_display_name\":\"Reward Point\",\"amount_for_unit_rp\":\"10\",\"min_order_total_for_rp\":\"100\",\"max_rp_per_order\":\"50\",\"redeem_amount_per_unit_rp\":\"0.10\",\"min_order_total_for_redeem\":\"500\",\"min_redeem_point\":\"30\",\"max_redeem_point\":\"\"}', '{\"production_ref_prefix\":\"MF\",\"enable_editing_ingredient_qty\":1,\"enable_updating_product_price\":1}', 0, 0, 0, 0, 0, 0, 0, NULL, '2022-09-12 07:34:02');
 
 -- --------------------------------------------------------
@@ -2330,7 +2330,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (170, '2021_06_23_104749_create_price_group_products_table', 84),
 (171, '2021_06_26_131932_add_column_branch_id_from_cash_counters_table', 85),
 (172, '2020_11_23_093915_create_supplier_products_table', 86),
-(173, '2021_07_04_133321_create_admin_and_user_logs_table', 87),
+(173, '2021_07_04_133321_create_users_logs_table', 87),
 (174, '2021_07_05_143024_create_workspaces_table', 88),
 (175, '2021_07_05_144604_create_workspace_attachments_table', 88),
 (176, '2021_07_05_150048_create_workspace_users_table', 89),
@@ -4891,11 +4891,11 @@ ALTER TABLE `users`
   ADD KEY `users_shift_id_foreign` (`shift_id`);
 
 --
--- Indexes for table `admin_and_user_logs`
+-- Indexes for table `users_logs`
 --
-ALTER TABLE `admin_and_user_logs`
+ALTER TABLE `users_logs`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `admin_and_user_logs_user_id_foreign` (`user_id`);
+  ADD KEY `users_logs_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `allowance_employees`
@@ -6012,9 +6012,9 @@ ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `admin_and_user_logs`
+-- AUTO_INCREMENT for table `users_logs`
 --
-ALTER TABLE `admin_and_user_logs`
+ALTER TABLE `users_logs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -6847,10 +6847,10 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_shift_id_foreign` FOREIGN KEY (`shift_id`) REFERENCES `hrm_shifts` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `admin_and_user_logs`
+-- Constraints for table `users_logs`
 --
-ALTER TABLE `admin_and_user_logs`
-  ADD CONSTRAINT `admin_and_user_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `users_logs`
+  ADD CONSTRAINT `users_logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `allowance_employees`

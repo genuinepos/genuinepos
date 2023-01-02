@@ -18,7 +18,7 @@
                         @if ($payroll->employee->branch)
                             {{ $payroll->employee->branch->name . '/' . $payroll->employee->branch->branch_code }}
                         @else
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')
+                            {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')
                             </b>)
                         @endif
                     </li>
@@ -38,9 +38,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
+                    <li><strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}
                         </strong>{{ $payroll->due }} </li>
-                    <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payroll->date))}} </li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business']['date_format'], strtotime($payroll->date))}} </li>
                 </ul>
             </div>
         </div>
@@ -67,9 +67,9 @@
                 @if (count($payroll->payments) > 0)
                     @foreach ($payroll->payments as $payment)
                         <tr>
-                            <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}</td>
+                            <td>{{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}</td>
                             <td>{{ $payment->reference_no }}</td>
-                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $payment->paid }}
+                            <td>{{ $generalSettings['business']['currency'] . ' ' . $payment->paid }}
                             </td>
                             <td>{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                             <td>{{ $payment->account ? $payment->account->name : 'N/A' }}</td>

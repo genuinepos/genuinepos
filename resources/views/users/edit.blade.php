@@ -349,7 +349,7 @@
                                                     <div class="col-sm-8 col-12">
                                                         <select name="branch_id" id="branch_id" class="form-control">
                                                             <option value="">@lang('menu.select_business_location')</option>
-                                                            <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                            <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ $generalSettings['business']['shop_name'] }} </option>
                                                             @foreach ($branches as $branch)
                                                                 <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
                                                             @endforeach
@@ -364,7 +364,7 @@
                                                     <label class="col-4"><b>@lang('menu.belonging_location') :</b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
-                                                            <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                            <option value="head_office">{{ $generalSettings['business']['shop_name'] }} </option>
                                                             @foreach ($branches as $branch)
                                                             <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
                                                             @endforeach

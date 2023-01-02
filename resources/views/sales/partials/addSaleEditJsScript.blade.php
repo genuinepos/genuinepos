@@ -2,7 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var branch_id = "{{ auth()->user()->branch_id }}";
-    var branch_name = "{{  auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}";
+    var branch_name = "{{  auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}";
 
     calculateTotalAmount();
 
@@ -1515,7 +1515,7 @@
         $('#show_cost_section').toggle(500);
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

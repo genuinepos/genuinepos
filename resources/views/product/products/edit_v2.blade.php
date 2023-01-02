@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
 
-                                    @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+                                    @if ( $generalSettings['product']['is_enable_categories'] == '1')
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-5"><b>@lang('menu.category') :</b> <span class="text-danger">*</span></label>
@@ -116,7 +116,7 @@
                                         </div>
                                     @endif
 
-                                    @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+                                    @if ($generalSettings['product']['is_enable_categories'] == '1' && $generalSettings['product']['is_enable_categories'] == '1')
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
@@ -167,7 +167,7 @@
                                         </div>
                                     </div>
 
-                                    @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+                                    @if ($generalSettings['product']['is_enable_warranty'] == '1')
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-5"><b>@lang('menu.warranty') :</b> </label>
@@ -206,7 +206,7 @@
                                                                     {{ $productBranch->branch_id == NULL ? 'SELECTED' : '' }}
                                                                 @endforeach
                                                             value="">
-                                                                {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                                {{ $generalSettings['business']['shop_name'] . '(HO)' }}
                                                             </option>
                                                             @foreach ($branches as $branch)
                                                                 <option
@@ -312,7 +312,7 @@
                                                 </div>
                                             </div>
 
-                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                            @if ( $generalSettings['product']['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label for="inputEmail3" class="col-5"><b>@lang('menu.tax') :</b> </label>
@@ -480,7 +480,7 @@
                                                                             <tr>
                                                                                 <th colspan="3" class="text-center">@lang('menu.net_total_amount') :</th>
                                                                                 <th>
-                                                                                    {{ json_decode($generalSettings->business, true)['currency']}} <span class="span_total_combo_price">0.00</span>
+                                                                                    {{ $generalSettings['business']['currency']}} <span class="span_total_combo_price">0.00</span>
 
                                                                                     <input type="hidden" name="total_combo_price"
                                                                                         id="total_combo_price"/>
@@ -500,7 +500,7 @@
                                             <div class="col-md-3 offset-3">
                                                 <label><b>@lang('menu.x_margin') :</b></label>
                                                 <input type="text" name="profit" class="form-control form-control-sm" id="profit"
-                                                    value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                                    value="{{ $generalSettings['business']['default_profit'] > 0 ? $generalSettings['business']['default_profit'] : 0 }}">
                                             </div>
 
                                             <div class="col-md-3">
@@ -1023,7 +1023,7 @@
     }
 
     // Get default profit
-    var defaultProfit = {{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }};
+    var defaultProfit = {{ $generalSettings['business']['default_profit'] > 0 ? $generalSettings['business']['default_profit'] : 0 }};
     $(document).on('click', '#add_more_variant_btn',function(e) {
         e.preventDefault();
         var product_cost = $('#product_cost').val();
@@ -1084,7 +1084,7 @@
                 code += rand.toString();
                 length++;
             }
-            $('#auto_generated_code').val("{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}" +code);
+            $('#auto_generated_code').val("{{ $generalSettings['product']['product_code_prefix'] }}" +code);
         };
         autoGeneratedCode();
 

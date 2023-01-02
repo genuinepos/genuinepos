@@ -131,7 +131,7 @@ class POSController extends Controller
             // database queries here. Access any $var_N directly
 
             $settings = DB::table('general_settings')
-                ->select(['id', 'business', 'prefix', 'reward_poing_settings', 'send_es_settings'])->first();
+                ->select(['id', 'business', 'prefix', 'reward_point_settings', 'send_es_settings'])->first();
 
             $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
 
@@ -283,7 +283,7 @@ class POSController extends Controller
 
                 if ($customer) {
 
-                    if (json_decode($settings->reward_poing_settings, true)['enable_cus_point'] == '1') {
+                    if (json_decode($settings->reward_point_settings, true)['enable_cus_point'] == '1') {
 
                         $customer->point = $customer->point - $request->pre_redeemed;
                         $customer->point = $customer->point + $this->calculateCustomerPoint($settings, $request->total_invoice_payable);
@@ -1190,13 +1190,13 @@ class POSController extends Controller
 
     private function calculateCustomerPoint($point_settings, $total_amount)
     {
-        $enable_cus_point = json_decode($point_settings->reward_poing_settings, true)['enable_cus_point'];
+        $enable_cus_point = json_decode($point_settings->reward_point_settings, true)['enable_cus_point'];
 
-        (int)$amount_for_unit_rp = json_decode($point_settings->reward_poing_settings, true)['amount_for_unit_rp'];
+        (int)$amount_for_unit_rp = json_decode($point_settings->reward_point_settings, true)['amount_for_unit_rp'];
 
-        (int)$min_order_total_for_rp = json_decode($point_settings->reward_poing_settings, true)['min_order_total_for_rp'];
+        (int)$min_order_total_for_rp = json_decode($point_settings->reward_point_settings, true)['min_order_total_for_rp'];
 
-        (int)$max_rp_per_order = json_decode($point_settings->reward_poing_settings, true)['max_rp_per_order'];
+        (int)$max_rp_per_order = json_decode($point_settings->reward_point_settings, true)['max_rp_per_order'];
 
         if ($enable_cus_point == '1') {
 

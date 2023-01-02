@@ -23,21 +23,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <p>
-                            <b >@lang('menu.total_loan_advance') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b >@lang('menu.total_loan_advance') : </b> {{ $generalSettings['business']['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-success">@lang('menu.total_received') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">@lang('menu.total_received') : </b> {{ $generalSettings['business']['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_receive) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">@lang('menu.total_due') : </b>  {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger">@lang('menu.total_due') : </b>  {{ $generalSettings['business']['currency'] }}
                              {{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}
                         </p>
                     </li>
@@ -50,21 +50,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <p>
-                            <b>@lang('menu.total_loan_liability')  : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b>@lang('menu.total_loan_liability')  : </b> {{ $generalSettings['business']['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-success">@lang('menu.total_paid') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-success">@lang('menu.total_paid') : </b> {{ $generalSettings['business']['currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_pay) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">@lang('menu.total_due') : </b> {{ json_decode($generalSettings->business, true)['currency'] }}
+                            <b class="text-danger">@lang('menu.total_due') : </b> {{ $generalSettings['business']['currency'] }}
                              {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}
                         </p>
                     </li>
@@ -89,7 +89,7 @@
                     <th class="text-white text-start">@lang('menu.payment_type')</th>
                     <th class="text-white text-start">@lang('menu.method')</th>
                     <th class="text-white text-start">@lang('menu.account')</th>
-                    <th class="text-white text-end">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business']['currency']}})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -99,7 +99,7 @@
                     @foreach ($loan_payments as $payment)
                         <tr>
                             <td class="text-start">
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}
                             </td>
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">

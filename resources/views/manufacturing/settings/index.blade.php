@@ -61,8 +61,8 @@
                                             <label><strong>@lang('menu.production_reference_prefix') :</strong></label>
                                             @php
                                                 $voucherPrefix = '';
-                                                if(isset(json_decode($generalSettings->mf_settings, true)['production_ref_prefix'])){
-                                                    $voucherPrefix = json_decode($generalSettings->mf_settings, true)['production_ref_prefix'];
+                                                if(isset($generalSettings['mf_settings']['production_ref_prefix'])){
+                                                    $voucherPrefix = $generalSettings['mf_settings']['production_ref_prefix'];
                                                 }
                                             @endphp
                                             <input type="text" name="production_ref_prefix" class="form-control"
@@ -74,8 +74,8 @@
                                             <div class="row mt-1">
                                                 <p class="checkbox_input_wrap mt-4">
                                                     <input type="checkbox"
-                                                        @if(isset(json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty']))
-                                                            {{ json_decode($generalSettings->mf_settings, true)['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
+                                                        @if(isset($generalSettings['mf_settings']['enable_editing_ingredient_qty']))
+                                                            {{ $generalSettings['mf_settings']['enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
                                                         name="enable_editing_ingredient_qty"> &nbsp; <b>@lang('menu.enable_editing_ingredients_quantity_in_production')</b>
                                                 </p>
@@ -86,8 +86,8 @@
                                             <div class="row mt-1">
                                                 <p class="checkbox_input_wrap mt-4">
                                                     <input type="checkbox"
-                                                        @if(isset(json_decode($generalSettings->mf_settings, true)['enable_updating_product_price']))
-                                                            {{ json_decode($generalSettings->mf_settings, true)['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
+                                                        @if(isset($generalSettings['mf_settings']['enable_updating_product_price']))
+                                                            {{ $generalSettings['mf_settings']['enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
                                                         @endif
                                                         name="enable_updating_product_price"> &nbsp; <b>@lang('menu.update_selling_finalizing_production')</b>
                                                 </p>

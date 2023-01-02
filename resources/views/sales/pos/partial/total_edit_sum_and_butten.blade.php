@@ -6,7 +6,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#"
-                                @if (json_decode($generalSettings->pos, true)['is_enabled_draft'] == '1')
+                                @if ($generalSettings['pos']['is_enabled_draft'] == '1')
                                     data-button_type="0"
                                     data-action_id="2"
                                     id="submit_btn"
@@ -24,7 +24,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#"
-                                @if (json_decode($generalSettings->pos, true)['is_enabled_quotation'] == '1')
+                                @if ($generalSettings['pos']['is_enabled_quotation'] == '1')
                                     data-action_id="4"
                                     data-button_type="0"
                                     id="submit_btn"
@@ -63,7 +63,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#"
-                                @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
+                                @if ($generalSettings['pos']['is_enabled_hold_invoice'] == '1')
                                     data-button_type="0"
                                     data-action_id="5"
                                     id="submit_btn"
@@ -81,7 +81,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#"
-                                @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
+                                @if ($generalSettings['pos']['is_enabled_hold_invoice'] == '1')
                                     id="pick_hold_btn"
                                 @else
                                     onclick="
@@ -105,7 +105,7 @@
                     <div class="col-4 px-2 py-1">
                         <div class="btn-bg">
                             <a href="#"
-                                @if (json_decode($generalSettings->pos, true)['is_enabled_suspend'] == '1')
+                                @if ($generalSettings['pos']['is_enabled_suspend'] == '1')
                                     data-button_type="0"
                                     data-action_id="6"
                                     id="submit_btn"
@@ -139,7 +139,7 @@
                         </div>
                     </div>
 
-                    @if (json_decode($generalSettings->pos, true)['is_enabled_order_tax'] == '1')
+                    @if ($generalSettings['pos']['is_enabled_order_tax'] == '1')
                         <div class="row">
                             <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Vat/Tax') }}:</label>
                             <div class="col-sm-9 ">
@@ -155,7 +155,7 @@
                         <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00">
                     @endif
 
-                    @if (json_decode($generalSettings->pos, true)['is_enabled_discount'] == '1')
+                    @if ($generalSettings['pos']['is_enabled_discount'] == '1')
                         <div class="row">
                             <label for="inputEmail3" class="col-sm-3 col-form-label text-white">@lang('menu.discount'):</label>
                             <div class="col-sm-9 ">
@@ -218,7 +218,7 @@
                         <div class="col-lg-4 col-12 p-1 pb-1">
                             <div class="btn-bg mb-1">
                                 <a href="#" class="bg-orange btn-pos"
-                                    @if (json_decode($generalSettings->pos, true)['is_enabled_credit_full_sale'] == '1')
+                                    @if ($generalSettings['pos']['is_enabled_credit_full_sale'] == '1')
                                         data-button_type="0"
                                         id="full_due_button"
                                     @else
@@ -418,7 +418,7 @@
         showRecentTransectionModal();
     });
 
-    @if (json_decode($generalSettings->pos, true)['is_enabled_hold_invoice'] == '1')
+    @if ($generalSettings['pos']['is_enabled_hold_invoice'] == '1')
         //Key shorcut for pic hold invoice
         shortcuts.add('f9',function() {
             $('#hold_invoice_preloader').show();

@@ -16,14 +16,14 @@ class ProductSaleReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $saleProducts = '';
             $query = DB::table('sale_products')
                 ->leftJoin('sales', 'sale_products.sale_id', '=', 'sales.id')
@@ -180,11 +180,11 @@ class ProductSaleReportController extends Controller
             $saleProducts = $query->where('sales.branch_id', auth()->user()->branch_id)
                 ->orderBy('sales.report_date', 'desc')->get();
         }
-        
+
         return view('reports.product_sale_report.ajax_view.print', compact('saleProducts', 'fromDate', 'toDate', 'branch_id'));
     }
 
-    // Search product 
+    // Search product
     public function searchProduct($product_name)
     {
         $products = DB::table('products')
@@ -204,7 +204,7 @@ class ProductSaleReportController extends Controller
 
             return view('reports.product_sale_report.ajax_view.search_result', compact('products'));
         } else {
-            
+
             return response()->json(['noResult' => 'no result']);
         }
     }

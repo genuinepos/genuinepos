@@ -434,7 +434,7 @@ class UserActivityLogUtil
     {
         $generalSettings = DB::table('general_settings')->select('business')->first();
 
-        $dateFormat = json_decode($generalSettings->business, true)['date_format'];
+        $dateFormat = $generalSettings['business']['date_format'];
 
         $__dateFormat = str_replace('y', 'Y', $dateFormat);
 

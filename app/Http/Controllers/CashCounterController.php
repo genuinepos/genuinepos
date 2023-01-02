@@ -56,7 +56,7 @@ class CashCounterController extends Controller
                     if ($row->br_name) {
                         return $row->br_name . '/' . $row->br_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->rawColumns(['branch', 'action'])

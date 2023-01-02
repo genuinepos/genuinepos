@@ -6,7 +6,7 @@
                     <div class="input-group">
                         <label class=" col-4">
                             <b>{{ __('Paying') }} :
-                                ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                ({{ $generalSettings['business']['currency'] }})
                             </b>
                         </label>
 

@@ -39,7 +39,7 @@
                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -97,13 +97,13 @@
                             <div class="card-body card-custom px-0">
 
                                 <div class="heading">
-                                    <h6 class="text-muted">@lang('menu.total_sale_return') : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="sale_amount"></span></h6>
+                                    <h6 class="text-muted">@lang('menu.total_sale_return') : {{ $generalSettings['business']['currency'] }} <span id="sale_amount"></span></h6>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="tax_sum">
-                                            <h6 class="text-muted">@lang('menu.expense')  : {{ json_decode($generalSettings->business, true)['currency'] }} <span id="expense_amount"></span></h6>
+                                            <h6 class="text-muted">@lang('menu.expense')  : {{ $generalSettings['business']['currency'] }} <span id="expense_amount"></span></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -152,19 +152,19 @@
                                                                 <th></th>
                                                                 <th class="text-white">@lang('menu.total') :</th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="total_amount"></span>
                                                                 </th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="total_return"></span>
                                                                 </th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="paid"></span>
                                                                 </th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="due"></span>
                                                                 </th>
                                                             </tr>
@@ -203,15 +203,15 @@
                                                                 <th></th>
                                                                 <th class="text-white">@lang('menu.total') :</th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="ex_total_amount"></span>
                                                                 </th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="ex_paid"></span>
                                                                 </th>
                                                                 <th class="text-white">
-                                                                    {{ json_decode($generalSettings->business, true)['currency'] }}
+                                                                    {{ $generalSettings['business']['currency'] }}
                                                                     <span id="ex_due"></span>
                                                                 </th>
                                                             </tr>

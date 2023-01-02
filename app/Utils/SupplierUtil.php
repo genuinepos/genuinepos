@@ -114,7 +114,7 @@ class SupplierUtil
 
     public function supplierPurchaseList($request, $supplierId)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->where('purchases.supplier_id', $supplierId)
@@ -233,7 +233,7 @@ class SupplierUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
                 }
             })
 
@@ -404,7 +404,7 @@ class SupplierUtil
 
     public function uncompletedPurchaseOrderList($request, $supplierId)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->where('purchases.supplier_id', $supplierId)
@@ -510,7 +510,7 @@ class SupplierUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                return date($generalSettings['business']['date_format'], strtotime($row->date));
             })->editColumn('from',  function ($row) use ($generalSettings) {
 
                 if ($row->warehouse_name) {
@@ -521,7 +521,7 @@ class SupplierUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
                 }
             })
 

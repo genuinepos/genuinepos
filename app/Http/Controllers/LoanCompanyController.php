@@ -15,7 +15,7 @@ class LoanCompanyController extends Controller
     public function __construct(AccountUtil $accountUtil)
     {
         $this->accountUtil = $accountUtil;
-        
+
     }
 
     public function index(Request $request)
@@ -23,7 +23,7 @@ class LoanCompanyController extends Controller
         if ($request->ajax()) {
             $companies = DB::table('loan_companies')->orderBy('id', 'DESC')
                 ->where('branch_id', auth()->user()->branch_id)->get();
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             return DataTables::of($companies)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -47,13 +47,13 @@ class LoanCompanyController extends Controller
                     $html .= '</div>';
                     return $html;
                 })->editColumn('pay_loan_amount', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->pay_loan_amount . '<br/>Due : ' . json_decode($generalSettings->business, true)['currency'] . ' <span class="text-danger">' . $row->pay_loan_due . '</span>';
+                    return $generalSettings['business']['currency'] . ' ' . $row->pay_loan_amount . '<br/>Due : ' . $generalSettings['business']['currency'] . ' <span class="text-danger">' . $row->pay_loan_due . '</span>';
                 })->editColumn('get_loan_amount', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->get_loan_amount . '<br/>Due : ' . json_decode($generalSettings->business, true)['currency'] . ' <span class="text-danger">' . $row->get_loan_due . '</span>';
+                    return $generalSettings['business']['currency'] . ' ' . $row->get_loan_amount . '<br/>Due : ' . $generalSettings['business']['currency'] . ' <span class="text-danger">' . $row->get_loan_due . '</span>';
                 })->editColumn('total_pay', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_pay;
+                    return $generalSettings['business']['currency'] . ' ' . $row->total_pay;
                 })->editColumn('total_receive', function ($row) use ($generalSettings) {
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_receive;
+                    return $generalSettings['business']['currency'] . ' ' . $row->total_receive;
                 })
                 ->rawColumns(['pay_loan_amount', 'get_loan_amount', 'action'])->smart(true)->make(true);
         }

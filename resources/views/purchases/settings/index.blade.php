@@ -30,7 +30,7 @@
                                     <div class="row mt-2">
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox"
-                                                {{ json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1' ? 'CHECKED' : '' }}
+                                                {{ $generalSettings['purchase']['is_edit_pro_price'] == '1' ? 'CHECKED' : '' }}
                                                 name="is_edit_pro_price"> &nbsp; <b>{{ __('Enable editing  product price from purchase screen') }}</b>
                                         </p>
                                     </div>
@@ -40,7 +40,7 @@
                                     <div class="row mt-2">
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox"
-                                                {{ json_decode($generalSettings->purchase, true)['is_enable_status'] == '1' ? 'CHECKED' : '' }}
+                                                {{ $generalSettings['purchase']['is_enable_status'] == '1' ? 'CHECKED' : '' }}
                                                 name="is_enable_status"> &nbsp; <b>{{ __('Enable Purchase Status') }}</b>
                                         </p>
                                     </div>
@@ -52,7 +52,7 @@
                                     <div class="row mt-2">
                                         <p class="checkbox_input_wrap">
                                             <input type="checkbox"
-                                                {{ json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1' ? 'CHECKED' : '' }}
+                                                {{ $generalSettings['purchase']['is_enable_lot_no'] == '1' ? 'CHECKED' : '' }}
                                                 name="is_enable_lot_no"> &nbsp; <b>{{ __('Enable Lot number') }}</b>
                                         </p>
                                     </div>

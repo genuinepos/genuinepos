@@ -916,7 +916,7 @@
                 $.each(taxes, function(key, val){
                     $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                 });
-                $('#order_tax').val("{{json_decode($generalSettings->sale, true)['default_tax_id'] != 'null' ? json_decode($generalSettings->sale, true)['default_tax_id'] : '' }}");
+                $('#order_tax').val("{{$generalSettings['sale']['default_tax_id'] != 'null' ? $generalSettings['sale']['default_tax_id'] : '' }}");
             }
         });
     }

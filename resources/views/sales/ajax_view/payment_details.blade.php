@@ -26,7 +26,7 @@
                     @if ($payment->sale->branch)
                         {{ $payment->sale->branch->name . '/' . $payment->sale->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -35,7 +35,7 @@
                 @if ($payment->sale->branch)
                     {{ $payment->sale->branch->city . ', ' . $payment->sale->branch->state . ', ' . $payment->sale->branch->zip_code . ', ' . $payment->sale->branch->country }}
                 @else
-                    {{ json_decode($generalSettings->business, true)['address'] }}
+                    {{ $generalSettings['business']['address'] }}
                 @endif
             </p>
             <h6 style="margin-top: 10px;"><b>@lang('menu.payment_details')</b></h6>
@@ -62,7 +62,7 @@
                         <tr>
                             <th width="50%" class="text-start">@lang('menu.paid_amount') :</th>
                             <td width="50%">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business']['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
                         </tr>
@@ -88,9 +88,9 @@
                             <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
                             <td width="50%">
                                 @php
-                                    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+                                    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) . ' ' . date($timeFormat, strtotime($payment->time)) }}
+                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date)) . ' ' . date($timeFormat, strtotime($payment->time)) }}
                             </td>
                         </tr>
 

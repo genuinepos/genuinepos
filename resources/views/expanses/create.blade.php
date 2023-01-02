@@ -53,7 +53,7 @@
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable"
-                                                value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
                                         </div>
                                     </div>
 
@@ -459,7 +459,7 @@
             action = $(this).data('action');
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -90,7 +90,7 @@ class CustomerController extends Controller
 
         $generalSettings = DB::table('general_settings')->first('prefix');
 
-        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+        $cusIdPrefix = $generalSettings['prefix']['customer_id'];
 
         $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
 
@@ -321,7 +321,7 @@ class CustomerController extends Controller
         $customerId = $customerId;
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $sales = '';
             $query = DB::table('sales')
@@ -450,7 +450,7 @@ class CustomerController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -1131,7 +1131,7 @@ class CustomerController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payments = '';
             $paymentsQuery = DB::table('customer_ledgers')
                 ->where('customer_ledgers.customer_id', $customerId)
@@ -1220,7 +1220,7 @@ class CustomerController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 

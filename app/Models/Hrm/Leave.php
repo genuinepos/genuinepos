@@ -12,7 +12,7 @@ class Leave extends Model
     protected $table = 'hrm_leaves';
     protected $fillable = ['reference_number','employee_id','leave_id','start_date','end_date','reason','status'];
 
-     public function admin_and_user()
+     public function users()
     {
         return $this->belongsTo(User::class,'employee_id');
     }

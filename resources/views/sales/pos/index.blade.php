@@ -31,7 +31,7 @@
                                                                 <select name="branch_id"
                                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
-                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                                    <option value="NULL">{{ $generalSettings['business']['shop_name'] }} </option>
                                                                     @foreach ($branches as $branch)
                                                                         <option value="{{ $branch->id }}">
                                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -123,7 +123,7 @@
                                                 <tbody></tbody>
                                                 <tfoot>
                                                     <tr class="bg-secondary">
-                                                        <th colspan="5" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                        <th colspan="5" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
                                                         <th id="sale_return_amount" class="text-white text-end"></th>
                                                         <th id="sale_return_due" class="text-white text-end"></th>
                                                         <th class="text-white text-end">---</th>
@@ -227,7 +227,7 @@
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
                 // {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.pos.list') }}",

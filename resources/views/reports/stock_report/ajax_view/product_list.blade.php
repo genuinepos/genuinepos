@@ -24,7 +24,7 @@
                         <td>{{ $product_variant->variant_price }}</td>
                         <td>{{ $product_variant->variant_quantity. '('.$product->unit->code_name.')' }}</td>
                         <td>
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ number_format((float) $product_variant->variant_quantity * $product_variant->variant_cost_with_tax, 2, '.', '') }}
                         </td>
 
@@ -33,7 +33,7 @@
                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                 $sellingPriceIncTax = ($product_variant->variant_price / 100 * $tax) + $product_variant->variant_price;
                             @endphp
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ number_format((float) $product_variant->variant_quantity * $sellingPriceIncTax, 2, '.', '') }}
                         </td>
 
@@ -46,7 +46,7 @@
                                     }
                                 }
                             @endphp
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ number_format((float) $frofit, 2, '.', '') }}
                         </td>
 
@@ -61,7 +61,7 @@
                     <td>{{ $product->product_price }}</td>
                     <td>{{ $product->quantity. '('.$product->unit->code_name.')' }}</td>
                     <td>
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $generalSettings['business']['currency'] }}
                         {{ number_format((float) $product->quantity * $product->product_cost_with_tax, 2, '.', '') }}
                     </td>
                     <td>
@@ -69,7 +69,7 @@
                             $tax = $product->tax ? $product->tax->tax_percent : 0;
                             $sellingPriceIncTax = ($product->product_price / 100 * $tax) + $product->product_price;
                         @endphp
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $generalSettings['business']['currency'] }}
                         {{ number_format((float) $product->quantity * $sellingPriceIncTax, 2, '.', '') }}
                     </td>
 
@@ -82,7 +82,7 @@
                                 }
                             }
                         @endphp
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $generalSettings['business']['currency'] }}
                         {{ number_format((float) $frofit, 2, '.', '') }}
                     </td>
 

@@ -33,7 +33,7 @@
                                         @if ($sale->branch)
                                             {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
                                         @else
-                                            {{json_decode($generalSettings->business, true)['shop_name']}}  (<b>HO</b>)
+                                            {{$generalSettings['business']['shop_name']}}  (<b>HO</b>)
                                         @endif
                                     </span>
                                 </li>
@@ -45,7 +45,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                    <strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }} </strong>
                                     <span class="card_text total_due text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($sale->due) }}</strong></span>
                                 </li>
                             </ul>
@@ -75,7 +75,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -211,7 +211,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

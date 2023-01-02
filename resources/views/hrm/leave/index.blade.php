@@ -295,7 +295,7 @@
             $('#e_reason').val(data.reason);
             $('#e_employee_id').val(data.employee_id);
             $('#e_leave_id').val(data.leave_id);
-            $('#e_department_id').val(data.admin_and_user.department_id);
+            $('#e_department_id').val(data.users.department_id);
             $('#editModal').modal('show');
         });
 
@@ -339,7 +339,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'dd');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');

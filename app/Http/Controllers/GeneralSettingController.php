@@ -4,37 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Tax;
 use App\Models\Unit;
-use App\Models\Month;
+use App\Utils\TimeZone;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Artisan;
 
 class GeneralSettingController extends Controller
 {
     public function __construct()
     {
-        
     }
 
     public function index()
     {
         if (!auth()->user()->can('g_settings')) {
-
             abort(403, 'Access Forbidden.');
         }
 
         $bussinessSettings = GeneralSetting::first();
-
-        $months = Month::select(['id', 'month'])->get();
         $currencies = Currency::all();
         $units = Unit::all();
-        $timezones = DB::table('timezones')->get();
+        $timezones = TimeZone::all();
 
         return view('settings.general_settings.index', compact(
             'bussinessSettings',
-            'months',
             'currencies',
             'timezones',
         ));
@@ -45,25 +38,19 @@ class GeneralSettingController extends Controller
     {
         $updateBusinessSettings = GeneralSetting::first();
         $business_logo = null;
-
         if ($request->hasFile('business_logo')) {
-
-            if (json_decode($updateBusinessSettings->business, true)['business_logo'] != null) {
-
-                $bLogo = json_decode($updateBusinessSettings->business, true)['business_logo'];
+            if ($updateBusinessSettings['business']['business_logo'] != null) {
+                $bLogo = $updateBusinessSettings['business']['business_logo'];
                 if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
-
                     unlink(public_path('uploads/business_logo/' . $bLogo));
                 }
             }
-
             $logo = $request->file('business_logo');
             $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
-
-            $business_logo = json_decode($updateBusinessSettings->business, true)['business_logo'] != null ? json_decode($updateBusinessSettings->business, true)['business_logo'] : null;
+            $business_logo = $updateBusinessSettings['business']['business_logo'] != null ? $updateBusinessSettings['business']['business_logo'] : null;
         }
 
         $businessSettings = [
@@ -81,8 +68,7 @@ class GeneralSettingController extends Controller
             'business_logo' => $business_logo,
             'timezone' => $request->timezone,
         ];
-
-        $updateBusinessSettings->business = json_encode($businessSettings);
+        $updateBusinessSettings->business = $businessSettings;
         $updateBusinessSettings->save();
         return response()->json('Business settings updated successfully');
     }
@@ -205,7 +191,7 @@ class GeneralSettingController extends Controller
             'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
 
-        $updateRewardPointgSettings->reward_poing_settings = json_encode($RewardPointgSettings);
+        $updateRewardPointgSettings->reward_point_settings = json_encode($RewardPointgSettings);
         $updateRewardPointgSettings->save();
         return response()->json('Reward point settings updated Successfully');
     }

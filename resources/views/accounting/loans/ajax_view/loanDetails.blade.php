@@ -26,7 +26,7 @@
                     @if ($loan->branch)
                         {{ $loan->branch->name . '/' . $loan->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -35,7 +35,7 @@
                 @if ($loan->branch)
                     {{ $loan->branch->city . ', ' . $loan->branch->branch->state . ', ' . $loan->branch->zip_code . ', ' . $loan->branch->country }}
                 @else
-                    {{ json_decode($generalSettings->business, true)['address'] }}
+                    {{ $generalSettings['business']['address'] }}
                 @endif
             </p>
             <br>
@@ -66,7 +66,7 @@
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Pay Loan Amount :' : 'Receive Loan Amount :' }}</th>
                             <td width="50%" class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business']['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
                             </td>
                         </tr>

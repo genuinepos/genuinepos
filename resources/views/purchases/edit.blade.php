@@ -63,7 +63,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('B. Location') }} :</b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}">
+                                                <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}">
                                             </div>
                                         </div>
                                     @endif
@@ -86,7 +86,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        @if (json_decode($generalSettings->purchase, true)['is_enable_status'] == '1')
+                                        @if ($generalSettings['purchase']['is_enable_status'] == '1')
                                             <div class="input-group mt-1">
                                                 <label class="col-4"><b>@lang('menu.status') :</b></label>
                                                 <div class="col-8">
@@ -108,7 +108,7 @@
                                         <label class="col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control changeable"
-                                                    id="date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) }}">
+                                                    id="date" value="{{ date($generalSettings['business']['date_format'], strtotime($purchase->date)) }}">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.delivery_date') :</b></label>
                                         <div class="col-8">
-                                            <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off" value="{{ $purchase->delivery_date ? date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->delivery_date)) : '' }}">
+                                            <input type="text" name="delivery_date" class="form-control changeable" id="delivery_date" placeholder="DD-MM-YYYY" autocomplete="off" value="{{ $purchase->delivery_date ? date($generalSettings['business']['date_format'], strtotime($purchase->delivery_date)) : '' }}">
                                         </div>
                                     </div>
 
@@ -205,7 +205,7 @@
                                                         <th>@lang('menu.unit_tax')</th>
                                                         <th>{{ __('Net Unit Cost') }}</th>
                                                         <th>@lang('menu.line_total')</th>
-                                                        @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
+                                                        @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
                                                             <th>@lang('menu.profit_margin')(%)</th>
                                                             <th>@lang('menu.selling_price_exc_tax')</th>
                                                         @endif
@@ -288,14 +288,14 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.net_total') :</b>  {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                        <label class="col-4"><b>@lang('menu.net_total') :</b>  {{ $generalSettings['business']['currency'] }}</label>
                                         <div class="col-8">
                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.payable') :</b>{{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                        <label class="col-4"><b>@lang('menu.payable') :</b>{{ $generalSettings['business']['currency'] }}</label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00">
                                         </div>

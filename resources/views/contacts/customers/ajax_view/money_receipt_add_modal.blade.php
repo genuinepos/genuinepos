@@ -35,19 +35,19 @@
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.total_sale') : </strong>
                         <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
                     <li><strong>@lang('menu.total_paid') : </strong>
                         <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
                     <li><strong>@lang('menu.total_due') : </strong>
                         <span class="card_text">
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business']['currency'] }}
                             {{ $customer->total_sale_due }}
                         </span>
                     </li>
@@ -74,7 +74,7 @@
                             class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
                 <input type="text" name="date" class="form-control"
-                    autocomplete="off" id="mr_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                    autocomplete="off" id="mr_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}">
             </div>
         </div>
 
@@ -129,7 +129,7 @@
     </div>
 </form>
 <script>
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

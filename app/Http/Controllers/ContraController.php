@@ -313,6 +313,8 @@ class ContraController extends Controller
             }
         }
 
+        DB::statement('ALTER TABLE contras AUTO_INCREMENT = 1');
+
         return response()->json('Contra deleted successfully');
     }
 }

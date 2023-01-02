@@ -57,6 +57,7 @@ class AssetController extends Controller
         ]);
 
         $updateType = AssetType::where('id', $typeId)->first();
+
         $updateType->update([
             'asset_type_name' => $request->asset_type_name,
             'asset_type_code' => $request->asset_type_code,
@@ -68,7 +69,9 @@ class AssetController extends Controller
     public function assetTypeDelete(Request $request, $typeId)
     {
         $deleteType = AssetType::find($typeId);
+
         if (!is_null($deleteType)) {
+
             $deleteType->delete();
         }
         return response()->json('Asset type deleted Successfully.');
@@ -112,13 +115,17 @@ class AssetController extends Controller
             ->leftJoin('branches', 'assets.branch_id', 'branches.id');
 
             if ($request->type_id) {
+
                 $assetsQ->where('assets.type_id', $request->type_id);
             }
 
             if ($request->branch_id) {
+
                 if ($request->branch_id == 'NULL') {
+
                     $assetsQ->where('assets.branch_id', NULL);
                 } else {
+
                     $assetsQ->where('assets.branch_id', $request->branch_id);
                 }
             }

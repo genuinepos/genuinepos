@@ -396,6 +396,8 @@ class TransferToWarehouseController extends Controller
             }
         }
 
+        DB::statement('ALTER TABLE transfer_stock_to_warehouses AUTO_INCREMENT = 1');
+
         return response()->json('Successfully transfer stock is deleted');
     }
 

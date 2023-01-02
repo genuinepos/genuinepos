@@ -602,10 +602,6 @@ class SaleUtil
 
             $this->customerUtil->adjustCustomerAmountForSalePaymentDue($storedCustomerId);
         }
-
-        $count = DB::table('sales')->count();
-
-        if ($count == 0) DB::statement('ALTER TABLE sales AUTO_INCREMENT = 1');
     }
 
     public function addSaleTable($request)

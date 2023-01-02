@@ -508,8 +508,11 @@ class ProductionController extends Controller
 
             return response()->json('Access Denied');
         }
-
+        
         $this->productionUtil->deleteProduction($productionId);
+
+        DB::statement('ALTER TABLE productions AUTO_INCREMENT = 1');
+
         return response()->json('Successfully production is deleted');
     }
 

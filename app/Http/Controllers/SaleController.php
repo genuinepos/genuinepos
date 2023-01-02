@@ -1006,6 +1006,8 @@ class SaleController extends Controller
 
         $this->saleUtil->deleteSale($request, $saleId);
 
+        DB::statement('ALTER TABLE sales AUTO_INCREMENT = 1');
+
         return response()->json('Sale deleted successfully');
     }
 
@@ -1535,6 +1537,7 @@ class SaleController extends Controller
     public function paymentDelete(Request $request, $paymentId)
     {
         if (!auth()->user()->can('sale_payment')) {
+
             return response()->json('Access Denied');
         }
 
@@ -1629,6 +1632,9 @@ class SaleController extends Controller
                 }
             }
         }
+
+        DB::statement('ALTER TABLE sale_payments AUTO_INCREMENT = 1');
+
         return response()->json('Payment deleted successfully.');
     }
 

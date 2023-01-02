@@ -222,6 +222,9 @@ class SupplierController extends Controller
 
             $deleteSupplier->delete();
         }
+
+        DB::statement('ALTER TABLE suppliers AUTO_INCREMENT = 1');
+
         return response()->json('supplier deleted successfully');
     }
 
@@ -939,6 +942,9 @@ class SupplierController extends Controller
         }
 
         $this->supplierUtil->adjustSupplierForPurchasePaymentDue($deleteSupplierPayment->supplier_id);
+
+        DB::statement('ALTER TABLE supplier_payments AUTO_INCREMENT = 1');
+        
         return response()->json('Payment deleted successfully.');
     }
 

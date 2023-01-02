@@ -292,6 +292,9 @@ class CustomerController extends Controller
 
             $deleteCustomer->delete();
         }
+
+        DB::statement('ALTER TABLE customers AUTO_INCREMENT = 1');
+
         return response()->json('Customer deleted successfully');
     }
 
@@ -1123,6 +1126,8 @@ class CustomerController extends Controller
 
             DB::rollBack();
         }
+
+        DB::statement('ALTER TABLE customer_payments AUTO_INCREMENT = 1');
 
         return response()->json('Payment deleted successfully.');
     }

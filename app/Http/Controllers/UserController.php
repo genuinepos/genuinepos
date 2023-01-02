@@ -233,32 +233,22 @@ class UserController extends Controller
     public function edit($userId)
     {
         if (!auth()->user()->can('user_edit')) {
-
             abort(403, 'Access Forbidden.');
         }
-
-
-
         $user = User::with(['roles'])->where('id', $userId)->first();
 
         if ($user->role_type == 1 && auth()->user()->role_type != 1) {
-
             abort(403, 'Access Forbidden.');
         }
 
         $roles = Role::all();
-
         $branches = Branch::select('id', 'name', 'branch_code')->orderBy('id', 'DESC')->get();
-
         // if (auth()->user()->role_type == 1) {
-
         //     $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         // } else if (auth()->user()->role_type == 2) {
-
         //     $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
         //     $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
         // } else {
-
         //     $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
         // }
 

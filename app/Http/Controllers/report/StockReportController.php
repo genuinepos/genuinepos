@@ -104,7 +104,7 @@ class StockReportController extends Controller
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? '<strong>' . $row->variant_quantity . '</strong>' : '<strong>' . $row->product_quantity . '</strong>') . '/' . $row->code_name . '</span>')
@@ -218,7 +218,7 @@ class StockReportController extends Controller
                             return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                         } else {
 
-                            return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                            return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                         }
                     }
                 })

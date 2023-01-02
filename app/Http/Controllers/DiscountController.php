@@ -55,12 +55,12 @@ class DiscountController extends Controller
 
                 ->editColumn('start_at', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
                     return date($__date_format, strtotime($row->start_at));
                 })
                 ->editColumn('end_at', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
                     return date($__date_format, strtotime($row->end_at));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -70,7 +70,7 @@ class DiscountController extends Controller
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('discount_type', function ($row) {

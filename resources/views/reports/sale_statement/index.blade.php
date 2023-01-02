@@ -33,7 +33,7 @@
                                                             <select name="branch_id"
                                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -146,7 +146,7 @@
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="5" class="text-white text-end">
-                                                    @lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                    @lang('menu.total') : ({{ $generalSettings['business']['currency'] }})
                                                 </th>
 
                                                 <th id="total_item" class="text-white text-end"></th>
@@ -188,7 +188,7 @@
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
             ],
-            "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('reports.sale.statement.index') }}",

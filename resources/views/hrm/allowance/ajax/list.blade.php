@@ -18,7 +18,7 @@
                 	    <span class="badge bg-danger"> {{ $row->type }} </span>
                 	@endif
                 </td>
-                <td>{{ $row->amount }} {{ $row->amount_type == 1 ? json_decode($generalSettings->business, true)['currency'] : '%' }}</td>
+                <td>{{ $row->amount }} {{ $row->amount_type == 1 ? $generalSettings['business']['currency'] : '%' }}</td>
 
                 <td>
                     <div class="dropdown table-dropdown">

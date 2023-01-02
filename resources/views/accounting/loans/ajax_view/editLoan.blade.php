@@ -3,7 +3,7 @@
     <div class="form-group row">
         <div class="col-md-6">
             <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
-            <input type="text" name="date" class="form-control" id="e_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
+            <input type="text" name="date" class="form-control" id="e_date" value="{{ date($generalSettings['business']['date_format'], strtotime($loan->report_date)) }}">
             <span class="error error_e_date"></span>
         </div>
 
@@ -89,14 +89,14 @@
 </form>
 
 <script>
-    // var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    // var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     // var _expectedDateFormat = '';
     // _expectedDateFormat = dateFormat.replace('d', 'dd');
     // _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
     // _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
     // $('.datepicker').datepicker({ format: _expectedDateFormat })
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

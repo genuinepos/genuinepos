@@ -121,7 +121,7 @@ class SaleReturnController extends Controller
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
 
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                 })
                 ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount text-danger" data-value="' . $row->total_return_amount . '">' . $this->converter->format_in_bdt($row->total_return_amount) . '</span>')
 

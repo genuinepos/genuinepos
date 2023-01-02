@@ -279,7 +279,7 @@ class DashboardController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('shipment_status',  function ($row) {
@@ -365,7 +365,7 @@ class DashboardController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -374,7 +374,7 @@ class DashboardController extends Controller
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
 
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
+                    return $generalSettings['business']['currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'due'])
                 ->make(true);
@@ -439,12 +439,12 @@ class DashboardController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
 
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
+                    return $generalSettings['business']['currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'due'])
                 ->make(true);

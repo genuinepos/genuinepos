@@ -28,21 +28,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <h6>
-                            @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}
                             <b class="text-success">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            @lang('menu.total_sale_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_sale_due') : {{ $generalSettings['business']['currency'] }}
                             <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            @lang('menu.total_return_due') : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_return_due') : {{ $generalSettings['business']['currency'] }}
                             <b class="text-danger"> {{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</b>
                         </h6>
                     </li>
@@ -65,7 +65,7 @@
                     <th class="text-white text-start">@lang('menu.type')</th>
                     <th class="text-white text-start">@lang('menu.method')</th>
                     <th class="text-white text-start">@lang('menu.account')</th>
-                    <th class="text-white text-end">@lang('menu.amount')({{ json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business']['currency']}})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -75,7 +75,7 @@
                     @foreach ($customer_payments as $payment)
                         <tr>
                             <td class="text-start">
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}
                             </td>
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Sale Due' : 'Return due' }}</td>
@@ -101,7 +101,7 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
+                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{$generalSettings['business']['currency'] }}</b> </th>
                     <th class="text-white text-end"><b>{{App\Utils\Converter::format_in_bdt($total) }}</b></th>
                     <th></th>
                 </tr>

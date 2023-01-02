@@ -13,7 +13,7 @@
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
 @php
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
     $totalStockInQty = 0;
     $totalStockOutQty = 0;
 @endphp
@@ -22,13 +22,13 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}                                                                                            </h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business']['shop_name'] }}                                                                                            </h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
         @else
 
             @php
@@ -46,8 +46,8 @@
         @if ($fromDate && $toDate)
 
             <p style="margin-top: 10px;"><b>@lang('menu.from') :</b>
-                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
             </p>
         @endif
     </div>
@@ -63,12 +63,12 @@
                     <th class="text-start">@lang('menu.sale_date')</th>
                     <th class="text-start">{{ __('B. Location') }}</th>
                     <th class="text-end">{{ __('Sold/Out Qty') }}</th>
-                    <th class="text-end">{{ __('Sold Price') }}({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">{{ __('Sold Price') }}({{$generalSettings['business']['currency']}})</th>
 
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">{{ __('Stock In By') }}</th>
                     <th class="text-start">{{ __('Stock In Date') }}</th>
-                    <th class="text-end">@lang('menu.unit_cost')({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{$generalSettings['business']['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -92,7 +92,7 @@
                             @if ($row->branch_name)
                                 {{ $row->branch_name }}
                             @else
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                {{ $generalSettings['business']['shop_name'] }}
                             @endif
                         </td>
 
@@ -164,7 +164,7 @@
 <div id="footer">
     <div class="row mt-1">
         <div class="col-4 text-start">
-            <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
         </div>
 
         <div class="col-4 text-center">

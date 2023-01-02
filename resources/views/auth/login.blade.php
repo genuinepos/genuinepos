@@ -13,11 +13,11 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                            <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                        @if ($generalSettings['business']['business_logo'] != null)
+                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">
-                                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                {{ $generalSettings['business']['shop_name'] }}
                                             </span>
                                         @endif
                                         <span class="head-text">

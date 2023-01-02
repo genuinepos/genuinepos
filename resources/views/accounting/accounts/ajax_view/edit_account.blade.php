@@ -48,7 +48,7 @@
                 <label><strong>@lang('menu.access_business_location') :</strong> <span class="text-danger">*</span></label>
                 <select name="business_location[]" id="e_business_location" class="form-control select2" multiple="multiple">
                     <option {{ $isExistsHeadOffice ? 'SELECTED' : '' }} value="NULL">
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (HO)
+                        {{ $generalSettings['business']['shop_name'] }} (HO)
                     </option>
 
                     @foreach ($branches as $branch)

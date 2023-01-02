@@ -8,9 +8,9 @@
                 {{ $payment->payroll->employee->branch->zip_code == 1 ? $payment->payroll->employee->branch->zip_code : '' }},
                 {{ $payment->payroll->employee->branch->country == 1 ? $payment->payroll->employee->branch->country : '' }}.
             @else
-                <h6>{{json_decode($generalSettings->business, true)['shop_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
-                <p>{{json_decode($generalSettings->business, true)['address']}} </p>
-                <p><b>@lang('menu.phone') :</b>  {{json_decode($generalSettings->business, true)['phone']}} </p>
+                <h6>{{$generalSettings['business']['shop_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
+                <p>{{$generalSettings['business']['address']}} </p>
+                <p><b>@lang('menu.phone') :</b>  {{$generalSettings['business']['phone']}} </p>
             @endif
             <h6 class="modal-title" id="exampleModalLabel">Payroll Of
                 <b>{{ $payment->payroll->employee->prefix . ' ' . $payment->payroll->employee->name . ' ' . $payment->payroll->employee->last_name }}</b>
@@ -32,7 +32,7 @@
                         <tr>
                             <th width="50%" class="text-start">@lang('menu.paid_amount') :</th>
                             <td width="50%" class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business']['currency'] }}
                                 {{ $payment->paid }}
                             </td>
                         </tr>
@@ -40,7 +40,7 @@
                         <tr>
                             <th width="50%" class="text-start">@lang('menu.due') :</th>
                             <td width="50%" class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }} {{ $payment->due }}
+                                {{ $generalSettings['business']['currency'] }} {{ $payment->due }}
                             </td>
                         </tr>
 
@@ -64,7 +64,7 @@
                         <tr>
                             <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
                             <td width="50%" class="text-start">
-                                {{date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
+                                {{date($generalSettings['business']['date_format'], strtotime($payment->date)) }}
                             </td>
                         </tr>
 

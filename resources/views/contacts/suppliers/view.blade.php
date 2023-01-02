@@ -75,7 +75,7 @@
                                                             id="ledger_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
-                                                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                {{ $generalSettings['business']['shop_name'] }}
                                                             </option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -154,7 +154,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
                                                 <th id="debit" class="text-white text-end"></th>
                                                 <th id="credit" class="text-white text-end"></th>
                                                 <th class="text-white text-end">---</th>
@@ -201,7 +201,7 @@
                                 </li>
 
                                 <li>
-                                    <b>{{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <b>{{ $generalSettings['business']['currency'] }}</b>
                                     <span class="total_purchase">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase) }}</span>
                                 </li>
 
@@ -210,7 +210,7 @@
                                 </li>
 
                                 <li>
-                                    <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <b> {{ $generalSettings['business']['currency'] }}</b>
                                     <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</span>
                                 </li>
 
@@ -219,7 +219,7 @@
                                 </li>
 
                                 <li>
-                                    <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <b> {{ $generalSettings['business']['currency'] }}</b>
                                     <span class="total_less">{{ App\Utils\Converter::format_in_bdt($supplier->total_less) }}</span>
                                 </li>
 
@@ -228,7 +228,7 @@
                                 </li>
 
                                 <li>
-                                    <b> {{ json_decode($generalSettings->business, true)['currency'] }}</b>
+                                    <b> {{ $generalSettings['business']['currency'] }}</b>
                                     <span class="total_purchase_due">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</span>
                                 </li>
                             </ul>
@@ -260,7 +260,7 @@
                                                             id="purchase_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
-                                                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                {{ $generalSettings['business']['shop_name'] }}
                                                             </option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -338,7 +338,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-end text-white">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="7" class="text-end text-white">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
                                                 <th class="text-start text-white" id="total_purchase_amount"></th>
                                                 <th class="text-start text-white" id="paid"></th>
                                                 <th class="text-start text-white" id="due"></th>
@@ -382,7 +382,7 @@
                                                             id="order_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
-                                                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                {{ $generalSettings['business']['shop_name'] }}
                                                             </option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -461,7 +461,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-end text-white">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="7" class="text-end text-white">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
                                                 <th class="text-start text-white" id="po_qty"></th>
                                                 <th class="text-start text-white" id="po_received_qty"></th>
                                                 <th class="text-start text-white" id="po_pending_qty"></th>
@@ -512,7 +512,7 @@
                                                                         id="payments_branch_id" autofocus>
                                                                         <option value="">@lang('menu.all')</option>
                                                                         <option value="NULL">
-                                                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                                                            {{ $generalSettings['business']['shop_name'] }}
                                                                         </option>
                                                                         @foreach ($branches as $branch)
                                                                             <option value="{{ $branch->id }}">
@@ -717,7 +717,7 @@
                 {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
             ],
 
-            "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -751,7 +751,7 @@
         var table = $('.purchase_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -807,7 +807,7 @@
         var table = $('.uncompleted_orders_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -877,7 +877,7 @@
                     {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
                 ],
 
-                "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+                "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
                 "ajax": {

@@ -62,13 +62,13 @@ class ProcessUtil
                 return bcadd($qtyWithWastage, 0, 2) . ' ' . $row->u_name;
             })
             ->editColumn('total_ingredient_cost', function ($row) use ($generalSettings) {
-                return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_ingredient_cost;
+                return $generalSettings['business']['currency'] . ' ' . $row->total_ingredient_cost;
             })
             ->editColumn('production_cost', function ($row) use ($generalSettings) {
-                return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->production_cost;
+                return $generalSettings['business']['currency'] . ' ' . $row->production_cost;
             })
             ->editColumn('total_cost', function ($row) use ($generalSettings) {
-                return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->total_cost;
+                return $generalSettings['business']['currency'] . ' ' . $row->total_cost;
             })
             ->rawColumns(['multiple_update', 'action', 'product', 'wastage_percent', 'total_output_qty', 'total_ingredient_cost', 'production_cost', 'total_cost'])
             ->make(true);

@@ -54,7 +54,7 @@
                                         <label class="col-4"><b>Expense Date :</b> </label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control datepicker changeable"
-                                                value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business']['date_format'], strtotime( $expense->date)) }}" id="datepicker">
                                         </div>
                                     </div>
 
@@ -143,7 +143,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</b> </label>
                                         <div class="col-8">
                                             <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
                                             <span class="error error_total_amount"></span>
@@ -442,7 +442,7 @@
             index++;
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

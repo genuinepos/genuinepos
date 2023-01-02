@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use Exception;
-use App\Models\GeneralSetting;
 use Illuminate\Support\ServiceProvider;
 
 class EmailSettingServiceProvider extends ServiceProvider

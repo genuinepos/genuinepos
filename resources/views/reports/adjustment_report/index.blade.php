@@ -39,7 +39,7 @@
                                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
-                                                                    <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                    <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                     @foreach ($branches as $branch)
                                                                         <option value="{{ $branch->id }}">
                                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -155,8 +155,8 @@
                                         <th class="text-start">@lang('menu.reference_no')</th>
                                         <th class="text-start">{{ __('Adjustment From') }}</th>
                                         <th class="text-start">@lang('menu.type')</th>
-                                        <th class="text-start">@lang('menu.total_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                                        <th class="text-start">@lang('menu.total_recovered_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
+                                        <th class="text-start">@lang('menu.total_amount')({{$generalSettings['business']['currency']}})</th>
+                                        <th class="text-start">@lang('menu.total_recovered_amount')({{$generalSettings['business']['currency']}})</th>
                                         <th class="text-start">@lang('menu.reason')</th>
                                         <th class="text-start">@lang('menu.created_by')</th>
                                     </tr>
@@ -173,7 +173,7 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    var __currency_symbol = "{{ json_decode($generalSettings->business, true)['currency'] }}";
+    var __currency_symbol = "{{ $generalSettings['business']['currency'] }}";
     function getAdjustmentAmounts() {
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
@@ -202,7 +202,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.stock.adjustments.all') }}",

@@ -39,7 +39,7 @@
     </div>
 
     <div class="form-group row mt-1">
-        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+        @if ($generalSettings['product']['is_enable_categories'] == '1')
             <div class="col-md-3">
                 <label><b>@lang('menu.category') :</b> </label>
                 <select class="form-control category" name="category_id" id="add_category_id">
@@ -52,7 +52,7 @@
             </div>
         @endif
 
-        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+        @if ($generalSettings['product']['is_enable_categories'] == '1' && $generalSettings['product']['is_enable_sub_categories'] == '1')
             <div class="col-md-3 parent_category">
                 <label><b>@lang('menu.child_category') :</b></label>
                 <select class="form-control" name="child_category_id"
@@ -62,7 +62,7 @@
             </div>
         @endif
 
-        @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
+        @if ($generalSettings['product']['is_enable_brands'] == '1')
             <div class="col-md-3">
                 <label><b>@lang('menu.brand') :</b></label>
                 <select class="form-control" data-live-search="true" name="brand_id"
@@ -75,7 +75,7 @@
             </div>
         @endif
 
-        @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+        @if ($generalSettings['product']['is_enable_warranty'] == '1')
             <div class="col-md-3">
                 <label><b>@lang('menu.warranty') :</b></label>
                 <select class="form-control" name="warranty_id" id="add_warranty_id">
@@ -104,7 +104,7 @@
     </div>
 
     <div class="form-group row mt-1">
-        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+        @if ($generalSettings['product']['is_enable_price_tax'] == '1')
             <div class="col-md-3 ">
                 <label><b>@lang('menu.tax') :</b> </label>
                 <select class="form-control" name="tax_id" id="add_tax_id">
@@ -154,7 +154,7 @@
 
                         <td>
                             <label></label>
-                            <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="add_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}"
+                            <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="add_profit" value="{{ $generalSettings['business']['default_profit'] }}"
                             placeholder="Profix Margin">
                         </td>
 

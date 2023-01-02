@@ -169,7 +169,7 @@
         serverSide: true,
         aaSorting: [[2, 'desc']],
         ajax: "{{ route('memos.index') }}",
-        "pageLength": parseInt("{{ json_decode($generalSettings?->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         columns: [
             {data: 'heading', name: 'heading'},

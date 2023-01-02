@@ -24,8 +24,8 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business']['phone'] }}</li>
                         @if ($transfer->branch)
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
@@ -34,7 +34,7 @@
                                 {{ $transfer->branch->country }}.
                             </li>
                         @else
-                            {{ json_decode($generalSettings->business, true)['address'] }}
+                            {{ $generalSettings['business']['address'] }}
                         @endif
                     </ul>
                 </div>
@@ -102,7 +102,7 @@
                             <tr>
                                 <th class="text-start" colspan="6">@lang('menu.net_total_amount') :</th>
                                 <td class="text-start" colspan="2">
-                                    {{json_decode($generalSettings->business, true)['currency'] }}
+                                    {{$generalSettings['business']['currency'] }}
                                     {{ $transfer->net_total_amount }}
                                 </td>
                             </tr>
@@ -110,7 +110,7 @@
                             <tr>
                                 <th class="text-start" colspan="6">@lang('menu.shipping_charge')</th>
                                 <td class="text-start" colspan="2">
-                                    {{json_decode($generalSettings->business, true)['currency'] }}
+                                    {{$generalSettings['business']['currency'] }}
                                     {{ $transfer->shipping_charge }}
                                 </td>
                             </tr>
@@ -121,7 +121,7 @@
                                     $grandTotal = $transfer->net_total_amount  + $transfer->shipping_charge;
                                 @endphp
                                 <td class="text-start" colspan="2">
-                                    {{json_decode($generalSettings->business, true)['currency'] }}
+                                    {{$generalSettings['business']['currency'] }}
                                     {{ bcadd($grandTotal, 0, 2) }}
                                 </td>
                             </tr>
@@ -162,7 +162,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                        <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
 
                         <h6 class="bill_name">@lang('menu.transfer_stock_details') (To Branch)</h6>
                     </div>
@@ -183,8 +183,8 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business']['phone'] }}</li>
                         @if ($transfer->branch)
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
@@ -193,7 +193,7 @@
                                 {{ $transfer->branch->country }}.
                             </li>
                         @else
-                            {{ json_decode($generalSettings->business, true)['address'] }}
+                            {{ $generalSettings['business']['address'] }}
                         @endif
                     </ul>
                 </div>

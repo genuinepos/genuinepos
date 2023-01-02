@@ -178,7 +178,7 @@ class PurchaseReturnController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('return_from',  function ($row) use ($generalSettings) {
@@ -191,7 +191,7 @@ class PurchaseReturnController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('total_return_amount', fn ($row) => $this->converter->format_in_bdt($row->total_return_amount))

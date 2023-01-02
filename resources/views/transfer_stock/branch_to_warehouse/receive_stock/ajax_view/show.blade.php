@@ -23,8 +23,8 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business']['phone'] }}</li>
                             @if ($sendStock->branch)
                                 <li><strong>@lang('menu.address') : </strong>
                                     {{ $sendStock->branch->city }},
@@ -33,7 +33,7 @@
                                     {{ $sendStock->branch->country }}.
                                 </li>
                             @else
-                                <li><strong>@lang('menu.address') : </strong> {{ json_decode($generalSettings->business, true)['address'] }}</li>
+                                <li><strong>@lang('menu.address') : </strong> {{ $generalSettings['business']['address'] }}</li>
                             @endif
                         </ul>
                     </div>
@@ -120,9 +120,9 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <div class="heading text-center">
-                            <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                            <small class="company_address">{{ json_decode($generalSettings->business, true)['address'] }}</small><br>
-                            <small class="company_address">@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</small>
+                            <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
+                            <small class="company_address">{{ $generalSettings['business']['address'] }}</small><br>
+                            <small class="company_address">@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</small>
                             <h6 class="bill_name">@lang('menu.send_stock_invoice')</h6>
                         </div>
                     </div>
@@ -142,8 +142,8 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business']['phone'] }}</li>
                             @if ($sendStock->branch)
                                 <li><strong>@lang('menu.address') : </strong>
                                     {{ $sendStock->branch->city }},
@@ -153,7 +153,7 @@
                                 </li>
                             @else
                             <li>
-                                <strong>@lang('menu.address') : </strong> {{ json_decode($generalSettings->business, true)['address'] }}
+                                <strong>@lang('menu.address') : </strong> {{ $generalSettings['business']['address'] }}
                             </li>
                             @endif
                         </ul>

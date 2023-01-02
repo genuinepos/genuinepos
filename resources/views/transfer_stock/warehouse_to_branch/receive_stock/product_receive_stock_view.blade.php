@@ -114,7 +114,7 @@
 @endsection
 @push('scripts')
 <script>
-     var headBranch = "{{json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}";
+     var headBranch = "{{$generalSettings['business']['shop_name'].'(HO)' }}";
     // Get editable data by ajax
     function getReceiveableStock(){
         $.ajax({

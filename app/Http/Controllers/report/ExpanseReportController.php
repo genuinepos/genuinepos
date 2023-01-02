@@ -76,13 +76,13 @@ class ExpanseReportController extends Controller
 
             return DataTables::of($expenses)
                 ->editColumn('date', function ($row) use ($generalSettings) {
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user_name',  function ($row) {

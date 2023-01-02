@@ -223,7 +223,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.total_liability') : ({{ json_decode($generalSettings->business, true)['currency'] }}) </em> </td>
+                                <td class="text-start"><em>@lang('menu.total_liability') : ({{ $generalSettings['business']['currency'] }}) </em> </td>
                                 <td class="text-end">
                                     <em class="total_liability">{{ App\Utils\Converter::format_in_bdt($totalLiability) }}</em>
                                 </td>
@@ -235,7 +235,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.total_asset') : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></td>
+                                <td class="text-start"><em>@lang('menu.total_asset') : ({{ $generalSettings['business']['currency'] }})</em></td>
                                 <td class="text-end">
                                     <em class="total_asset">{{ App\Utils\Converter::format_in_bdt($totalAsset) }}</em>
                                 </td>

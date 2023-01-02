@@ -48,7 +48,7 @@
                             class="fas fa-calendar-week input_i"></i></span>
                 </div>
                 <input type="text" name="date" class="form-control" id="mr_date"
-                    autocomplete="off" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                    autocomplete="off" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}">
             </div>
         </div>
 
@@ -102,7 +102,7 @@
 </form>
 
 <script>
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

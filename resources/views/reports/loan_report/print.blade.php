@@ -21,8 +21,8 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if (!auth()->user()->branch_id)
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(@lang('menu.head_office'))</b></h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business']['shop_name'] }} <b>(@lang('menu.head_office'))</b></h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -36,8 +36,8 @@
 
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') :</b>
-                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>{{ __('Loan Report') }} </b></h6>
@@ -73,9 +73,9 @@
                     <th class="text-start">@lang('menu.company')/@lang('menu.people')</th>
                     <th class="text-start">@lang('menu.type')</th>
                     <th class="text-start">@lang('menu.loan_by')</th>
-                    <th class="text-end">@lang('menu.loan_amount')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-end">@lang('menu.total_paid')({{json_decode($generalSettings->business, true)['currency']}})</th>
-                    <th class="text-end">{{ __('Loan Due') }}({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-end">@lang('menu.loan_amount')({{$generalSettings['business']['currency']}})</th>
+                    <th class="text-end">@lang('menu.total_paid')({{$generalSettings['business']['currency']}})</th>
+                    <th class="text-end">{{ __('Loan Due') }}({{$generalSettings['business']['currency']}})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -89,12 +89,12 @@
                 @endphp
                 @foreach ($loans as $loan)
                     <tr>
-                        <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}</td>
+                        <td class="text-start">{{ date($generalSettings['business']['date_format'], strtotime($loan->report_date)) }}</td>
                         <td class="text-start">
                             @if ($loan->b_name)
                                 {!! $loan->b_name . '/' . $loan->b_code . '(<b>BL</b>)' !!}
                              @else
-                                {!! json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}
+                                {!! $generalSettings['business']['shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
@@ -154,17 +154,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">{{ __('Total Get loan') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Get loan') }} : {{$generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalGetLoan) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_due_paid') : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_due_paid') : {{$generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Get Loan Due') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Get Loan Due') }} : {{$generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalGetLoanDue) }}</td>
                 </tr>
             </thead>
@@ -175,17 +175,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">{{ __('Total Pay loan') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Pay loan') }} : {{$generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPayLoan) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Due Receive') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Due Receive') }} : {{$generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Pay Loan Due') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Pay Loan Due') }} : {{$generalSettings['business']['currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPayLoanDue) }}</td>
                 </tr>
             </thead>

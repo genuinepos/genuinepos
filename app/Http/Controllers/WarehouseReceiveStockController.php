@@ -56,7 +56,7 @@ class WarehouseReceiveStockController extends Controller
                         return $row->branch_name . '/' . $row->branch_code;
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('to',  function ($row) {

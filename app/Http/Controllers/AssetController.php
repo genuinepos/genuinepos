@@ -160,14 +160,14 @@ class AssetController extends Controller
                 if ($row->branch_name) {
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                 } else {
-                    return json_decode($generalSettings->business, true)['shop_name']. '(<b>HO</b>)';
+                    return $generalSettings['business']['shop_name']. '(<b>HO</b>)';
                 }
             })
             ->editColumn('per_unit_value', function($row) use ($generalSettings){
-                return json_decode($generalSettings->business, true)['currency']. $row->per_unit_value;
+                return $generalSettings['business']['currency']. $row->per_unit_value;
             })
             ->editColumn('total_value', function($row) use ($generalSettings){
-                return json_decode($generalSettings->business, true)['currency']. $row->total_value;
+                return $generalSettings['business']['currency']. $row->total_value;
             })
             ->rawColumns(['action', 'branch', 'per_unit_value', 'total_value'])
             ->make(true);

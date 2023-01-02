@@ -23,10 +23,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
                         @endif
                     @else
-                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business']['business_logo'] != null)
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business']['shop_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -34,7 +34,7 @@
 
             <div class="col-lg-8 col-sm-12 col-12 address">
                 <p class="store-name">
-                    {{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))
+                    {{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))
                 </p>
                 <p class="address-name">
                     @if ($sale->branch)
@@ -43,7 +43,7 @@
                         {{ $sale->branch->state ? ','.$sale->branch->state : ''}}
                         {{ $sale->branch->country ? ','.$sale->branch->country : ''}}
                     @else
-                        {{ json_decode($generalSettings->business, true)['address'] }}
+                        {{ $generalSettings['business']['address'] }}
                     @endif
                 </p>
                 <small class="login-user-name">
@@ -93,14 +93,14 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                @if (json_decode($generalSettings->reward_point_settings, true)['enable_cus_point'] == '1')
+                                @if ($generalSettings['reward_point_settings']['enable_cus_point'] == '1')
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text valus">Point</span>
                                         </div>
                                         <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
                                         <div class="input-group-prepend ms-1">
-                                            <span class="input-group-text valus"> = {{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                            <span class="input-group-text valus"> = {{ $generalSettings['business']['currency'] }}</span>
                                         </div>
                                         <input readonly type="text" class="form-control" id="trial_point_amount">
                                     </div>

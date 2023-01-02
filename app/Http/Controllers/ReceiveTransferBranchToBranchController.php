@@ -89,7 +89,7 @@ class ReceiveTransferBranchToBranchController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
 
                     return date($__date_format, strtotime($row->date));
                 })
@@ -100,7 +100,7 @@ class ReceiveTransferBranchToBranchController extends Controller
                         return $row->sender_branch_name . '/' . $row->sender_branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
 

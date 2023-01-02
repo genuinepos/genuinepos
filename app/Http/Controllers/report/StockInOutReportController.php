@@ -138,7 +138,7 @@ class StockInOutReportController extends Controller
                         return $row->branch_name;
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'];
+                        return $generalSettings['business']['shop_name'];
                     }
                 })
 

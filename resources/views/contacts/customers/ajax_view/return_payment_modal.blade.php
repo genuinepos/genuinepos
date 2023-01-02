@@ -33,7 +33,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>{{ __('Total Sale Return Due') }} : </strong>
                                     <span class="card_text branch">
-                                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                                        {{ $generalSettings['business']['currency'] }}
                                         {{ $returnDue }}
                                     </span>
                                 </li>
@@ -67,7 +67,7 @@
                                         class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
                             <input type="text" name="date" class="form-control p_input"
-                                autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}"/>
+                                autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}"/>
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -203,7 +203,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

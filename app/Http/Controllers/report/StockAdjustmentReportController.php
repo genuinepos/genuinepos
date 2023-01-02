@@ -111,7 +111,7 @@ class StockAdjustmentReportController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })->editColumn('from',  function ($row) use ($generalSettings) {
                     if (!$row->branch_name && !$row->warehouse_name) {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     } else {
                         if ($row->branch_name) {
                             return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';

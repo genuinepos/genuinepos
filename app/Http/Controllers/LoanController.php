@@ -81,12 +81,12 @@ class LoanController extends Controller
                     $html .= '</div>';
                     return $html;
                 })->editColumn('report_date', function ($row) use ($generalSettings) {
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->report_date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->report_date));
                 })->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->b_name) {
                         return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })->editColumn('type', function ($row) {
                     if ($row->type == 1) {

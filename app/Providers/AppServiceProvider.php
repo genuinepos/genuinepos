@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\GeneralSetting;
 use Exception;
+use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,10 +29,10 @@ class AppServiceProvider extends ServiceProvider
         try {
             // $generalSettings = DB::table('general_settings')->first();
             $generalSettings = GeneralSetting::first()->toArray();
-            dd($generalSettings);
+            // dd($generalSettings);
             $addons = DB::table('addons')->first();
             // $warehouseCount = DB::table('warehouses')->count();
-            $dateFormat = json_decode($generalSettings->business, true)['date_format'];
+            $dateFormat = $generalSettings['business']['date_format'];
             $__date_format = str_replace('-', '/', $dateFormat);
             if (isset($generalSettings) && isset($addons)) {
                 view()->share('generalSettings', $generalSettings);
@@ -41,7 +41,8 @@ class AppServiceProvider extends ServiceProvider
                 view()->share('__date_format', $__date_format);
             }
 
-            $mailSettings = GeneralSetting::email();
+            // $mailSettings = GeneralSetting::email();
+            $mailSettings =  $generalSettings['email_setting'];
             if(isset($mailSettings)) {
                 config([
                     'mail.mailers.smtp.transport' => $mailSettings['MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),

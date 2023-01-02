@@ -81,7 +81,7 @@ class SupplierController extends Controller
 
         $generalSettings = DB::table('general_settings')->first('prefix');
         $firstLetterOfSupplier = str_split($request->name)[0];
-        $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
+        $supIdPrefix = $generalSettings['prefix']['supplier_id'];
         $addSupplier = Supplier::create([
             'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, "0", STR_PAD_LEFT),
             'name' => $request->name,
@@ -1035,7 +1035,7 @@ class SupplierController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 

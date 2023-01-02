@@ -129,7 +129,7 @@ class StockAdjustmentController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('business_location',  function ($row) use ($generalSettings) {
 
@@ -138,7 +138,7 @@ class StockAdjustmentController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('adjustment_location',  function ($row) use ($generalSettings) {
@@ -151,7 +151,7 @@ class StockAdjustmentController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('type',  function ($row) {

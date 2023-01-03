@@ -371,7 +371,9 @@ class UserController extends Controller
             $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
             if (isset($updateUser->photo) && file_exists(public_path('uploads/user_photo/' . $updateUser->photo))) {
                 try {
-                    unlink(public_path('uploads/user_photo/' . $updateUser->photo));
+                    if(!'default.png') {
+                        unlink(public_path('uploads/user_photo/' . $updateUser->photo));
+                    }
                 } catch (Exception $e) {
                 }
             }

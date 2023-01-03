@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use Exception;
 use App\Models\GeneralSetting;
-use Illuminate\Support\Facades\Cache;
+use App\Services\CacheService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use App\Services\CacheServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GeneralSetting::class, function() {
             return new GeneralSetting();
         });
+        $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 

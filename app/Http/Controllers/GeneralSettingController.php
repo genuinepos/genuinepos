@@ -8,11 +8,13 @@ use App\Utils\TimeZone;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
+use App\Services\CacheServiceInterface;
 
 class GeneralSettingController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private CacheServiceInterface $cacheService
+    ) {
     }
 
     public function index()
@@ -20,14 +22,12 @@ class GeneralSettingController extends Controller
         if (!auth()->user()->can('g_settings')) {
             abort(403, 'Access Forbidden.');
         }
-
-        $bussinessSettings = GeneralSetting::first();
+        $generalSettings = \Cache::get('generalSettings');
         $currencies = Currency::all();
         $units = Unit::all();
         $timezones = TimeZone::all();
-
         return view('settings.general_settings.index', compact(
-            'bussinessSettings',
+            'generalSettings',
             'currencies',
             'timezones',
         ));
@@ -36,11 +36,11 @@ class GeneralSettingController extends Controller
     // Add business settings
     public function businessSettings(Request $request)
     {
-        $updateBusinessSettings = GeneralSetting::first();
+        $generalSettings = \Cache::get('generalSettings');
         $business_logo = null;
         if ($request->hasFile('business_logo')) {
-            if ($updateBusinessSettings['business']['business_logo'] != null) {
-                $bLogo = $updateBusinessSettings['business']['business_logo'];
+            if ($generalSettings['business']['business_logo'] != null) {
+                $bLogo = $generalSettings['business']['business_logo'];
                 if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
                     unlink(public_path('uploads/business_logo/' . $bLogo));
                 }
@@ -50,7 +50,7 @@ class GeneralSettingController extends Controller
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
-            $business_logo = $updateBusinessSettings['business']['business_logo'] != null ? $updateBusinessSettings['business']['business_logo'] : null;
+            $business_logo = $generalSettings['business']['business_logo'] != null ? $generalSettings['business']['business_logo'] : null;
         }
 
         $businessSettings = [
@@ -68,15 +68,16 @@ class GeneralSettingController extends Controller
             'business_logo' => $business_logo,
             'timezone' => $request->timezone,
         ];
-        $updateBusinessSettings->business = $businessSettings;
-        $updateBusinessSettings->save();
+        GeneralSetting::query()->update([
+            'business' => $businessSettings,
+        ]);
+        $this->cacheService->syncGeneralSettings();
         return response()->json('Business settings updated successfully');
     }
 
     // Add tax settings
     public function taxSettings(Request $request)
     {
-        $updateTaxSettings = GeneralSetting::first();
         $taxSettings = [
             'tax_1_name' => $request->tax_1_name,
             'tax_1_no' => $request->tax_1_no,
@@ -84,27 +85,30 @@ class GeneralSettingController extends Controller
             'tax_2_no' => $request->tax_2_no,
             'is_tax_en_purchase_sale' => isset($request->is_tax_en_purchase_sale) ? 1 : 0,
         ];
+        $updateTaxSettings = GeneralSetting::query()->update([
+            'tax' => $taxSettings
+        ]);
 
-        $updateTaxSettings->tax = json_encode($taxSettings);
-        $updateTaxSettings->save();
+        // $updateTaxSettings->tax = json_encode($taxSettings);
+        // $updateTaxSettings->save();
+        $this->cacheService->syncGeneralSettings();
         return response()->json('Tax settings updated successfully');
     }
 
     public function dashboardSettings(Request $request)
     {
-        $updateDashboardSettings = GeneralSetting::first();
         $dashboardSettings = [
             'view_stock_expiry_alert_for' => $request->view_stock_expiry_alert_for,
         ];
-
-        $updateDashboardSettings->dashboard = json_encode($dashboardSettings);
-        $updateDashboardSettings->save();
+        $updateDashboardSettings = GeneralSetting::query([
+            'dashboard' => $dashboardSettings,
+        ]);
+        $this->cacheService->syncGeneralSettings();
         return response()->json('Dashboard settings updated successfully.');
     }
 
     public function prefixSettings(Request $request)
     {
-        $updatePrefixSettings = GeneralSetting::first();
         $prefixSettings = [
             'purchase_invoice' => $request->purchase_invoice,
             'sale_invoice' => $request->sale_invoice,
@@ -119,28 +123,29 @@ class GeneralSettingController extends Controller
             'sale_payment' => $request->sale_payment,
             'expanse_payment' => $request->expanse_payment,
         ];
-
-        $updatePrefixSettings->prefix = json_encode($prefixSettings);
-        $updatePrefixSettings->save();
+        $updatePrefixSettings = GeneralSetting::query()->update([
+            'prefix' => $prefixSettings
+        ]);
+        $this->cacheService->syncGeneralSettings();
         return response()->json('Prefix settings updated Successfully');
     }
 
     public function systemSettings(Request $request)
     {
-        $updateSystemSettings = GeneralSetting::first();
-        $SystemSettings = [
+        $settings = [
             'theme_color' => $request->theme_color,
             'datatable_page_entry' => $request->datatable_page_entry,
         ];
-
-        $updateSystemSettings->system = json_encode($SystemSettings);
-        $updateSystemSettings->save();
+        $updateSystemSettings = GeneralSetting::query()->update([
+            'system' => $settings
+        ]);
+        $this->cacheService->syncGeneralSettings();
         return response()->json('System settings updated Successfully.');
     }
 
     public function moduleSettings(Request $request)
     {
-        $updateModuleSettings = GeneralSetting::first();
+
         $moduleSettings = [
             'purchases' => isset($request->purchases) ? 1 : 0,
             'add_sale' => isset($request->add_sale) ? 1 : 0,
@@ -155,30 +160,32 @@ class GeneralSettingController extends Controller
             'manufacturing' => isset($request->manufacturing) ? 1 : 0,
             'service' => isset($request->service) ? 1 : 0,
         ];
+        $updateModuleSettings = GeneralSetting::query()->update([
+            'modules' => $moduleSettings,
+        ]);
 
-        $updateModuleSettings->modules = json_encode($moduleSettings);
-        $updateModuleSettings->save();
+
+        $this->cacheService->syncGeneralSettings();
         return response()->json('modules settings updated successfully');
     }
 
     public function SendEmailSmsSettings(Request $request)
     {
-        $updateEmailSmsSettings = GeneralSetting::first();
         $moduleSettings = [
             'send_inv_via_email' => isset($request->send_inv_via_email) ? 1 : 0,
             'send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
             'cmr_due_rmdr_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
             'cmr_due_rmdr_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
         ];
-
-        $updateEmailSmsSettings->send_es_settings = json_encode($moduleSettings);
-        $updateEmailSmsSettings->save();
+        $updateEmailSmsSettings = GeneralSetting::query()->update([
+            'send_es_settings' => $moduleSettings,
+        ]);
+        $this->cacheService->syncGeneralSettings();
         return response()->json('Send Email & SMS settings updated successfully');
     }
 
     public function rewardPointSettings(Request $request)
     {
-        $updateRewardPointgSettings = GeneralSetting::first();
         $RewardPointgSettings = [
             'enable_cus_point' => isset($request->enable_cus_point) ? 1 : 0,
             'point_display_name' => $request->point_display_name ? $request->point_display_name : 0,
@@ -190,9 +197,11 @@ class GeneralSettingController extends Controller
             'min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : '',
             'max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
+        $updateRewardPointgSettings = GeneralSetting::query()->update([
+            'reward_point_settings' => $RewardPointgSettings,
+        ]);
 
-        $updateRewardPointgSettings->reward_point_settings = json_encode($RewardPointgSettings);
-        $updateRewardPointgSettings->save();
+        $this->cacheService->syncGeneralSettings();
         return response()->json('Reward point settings updated Successfully');
     }
 }

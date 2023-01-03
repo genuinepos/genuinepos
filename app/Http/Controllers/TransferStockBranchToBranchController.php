@@ -37,14 +37,14 @@ class TransferStockBranchToBranchController extends Controller
         $this->transferStockUtil = $transferStockUtil;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     public function transferList(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->select('id', 'business')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $transfers = '';
 

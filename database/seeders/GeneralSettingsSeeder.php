@@ -16,6 +16,7 @@ class GeneralSettingsSeeder extends Seeder
      */
     public function run()
     {
+        \Cache::forget('generalSettings');
         GeneralSetting::truncate();
         
         DB::statement('ALTER TABLE general_settings AUTO_INCREMENT = 1');

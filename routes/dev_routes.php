@@ -1,1 +1,68 @@
 <?php
+
+
+Route::get('change/lang/{lang}', [DashboardController::class, 'changeLang'])->name('change.lang');
+
+Route::get('maintenance/mode', function () {
+
+    return view('maintenance/maintenance');
+})->name('maintenance.mode');
+
+Route::get('add-user', function () {
+
+    $addAdmin = new User();
+    $addAdmin->prefix = 'Mr.';
+    $addAdmin->name = 'Super';
+    $addAdmin->last_name = 'Admin';
+    $addAdmin->email = 'superadmin@gmail.com';
+    $addAdmin->username = 'superadmin';
+    $addAdmin->password = Hash::make('12345');
+    $addAdmin->role_type = 3;
+    $addAdmin->role_permission_id = 1;
+    $addAdmin->allow_login = 1;
+    $addAdmin->save();
+    //1=super_admin;2=admin;3=Other;
+
+});
+
+Route::get('/test', function () {
+
+    //return str_pad(10, 10, "0", STR_PAD_LEFT);
+    // $purchases = Purchase::all();
+    // foreach ($purchases as $p) {
+    //     $p->is_last_created = 0;
+    //     $p->save();
+    // }
+
+    $customers = DB::table('customers')->get();
+
+    foreach ($customers as $customer){
+
+        $customerOpeningBalance = new CustomerOpeningBalance();
+        $customerOpeningBalance->customer_id = $customer->id;
+        $customerOpeningBalance->amount = $customer->opening_balance;
+        $customerOpeningBalance->created_by_id = auth()->user()->id;
+        $customerOpeningBalance->save();
+
+        $customerCreditLimit = new CustomerCreditLimit();
+        $customerCreditLimit->customer_id = $customer->id;
+        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+        $customerCreditLimit->created_by_id = auth()->user()->id;
+        $customerCreditLimit->save();
+    }
+
+    $suppliers = DB::table('suppliers')->get();
+
+    foreach ($suppliers as $supplier){
+
+        $supplierOpeningBalance = new SupplierOpeningBalance();
+        $supplierOpeningBalance->supplier_id = $supplier->id;
+        $supplierOpeningBalance->amount = $supplier->opening_balance;
+        $supplierOpeningBalance->created_by_id = auth()->user()->id;
+        $supplierOpeningBalance->save();
+    }
+});
+
+// Route::get('dbal', function() {
+//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
+// });

@@ -171,9 +171,9 @@
                                 <label><b>{{ __('Employee') }} :</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="employee_id" id="e_employee_id" required="">
                                     <option value="">{{ __('Select Employee') }}</option>
-                                    {{-- @foreach ($employees as $emp)
+                                    @foreach ($employees as $emp)
                                         <option value="{{ $emp->id }}">{{ $emp->prefix.' '.$emp->name.' '.$emp->last_name }}</option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -251,7 +251,9 @@
             url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
             type:'get',
             success:function(employees){
+
                 $('#employee_id').empty();
+
                 $('#employee_id').append('<option value="">Select Employee</option>');
                 $.each(employees, function (key, emp) {
                     emp.prefix = emp.prefix || '';

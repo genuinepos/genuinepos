@@ -80,9 +80,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6">
+                                        {{-- <div class="col-6">
                                             <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

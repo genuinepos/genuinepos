@@ -369,7 +369,11 @@ class UserController extends Controller
         $updateUser->salary_type = $request->pay_type;
         if($request->hasFile('photo')) {
             $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
-            if (isset($updateUser->photo) && file_exists(public_path('uploads/user_photo/' . $updateUser->photo))) {
+            if (
+                isset($updateUser->photo) &&
+                file_exists(public_path('uploads/user_photo/' . $updateUser->photo)) &&
+                $updateUser->photo != 'default.png'
+            ) {
                 try {
                     unlink(public_path('uploads/user_photo/' . $updateUser->photo));
                 } catch (Exception $e) {

@@ -389,7 +389,8 @@
                                             <div class="input-group">
                                                 <label class="col-4"> <b>{{ __('Profile image') }}:</b> </label>
                                                 <div class="col-8">
-                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">                                                </div>
+                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -517,7 +518,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -543,8 +544,8 @@
         var url = $(this).attr('action');
 
         $.ajax({
-            url: url, 
-            type: 'post', 
+            url: url,
+            type: 'post',
             data: new FormData(this),
             contentType: false,
             cache: false,

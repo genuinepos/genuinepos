@@ -37,7 +37,7 @@
                             <div class="widget_content">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
                                 <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
+                                    <table class="display data_tbl data__table shift_table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('Shift Name') }}</th>
@@ -112,7 +112,7 @@
     </div>
 
     <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal fade" id="editShiftModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -120,39 +120,9 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="edit_shift_modal_body">
                     <!--begin::Form-->
-                    <form id="edit_shift_form" action="{{ route('hrm.shift.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label><b>{{ __('Shift Name') }} :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="shift_name" class="form-control" id="e_shift_name" placeholder="{{ __('Shift Name') }}" required="" />
-                            </div>
-                        </div>
 
-                        <div class="form-group row mt-1">
-                            <div class="form-group col-12">
-                                <label><b>@lang('menu.start_time') :</b> <span class="text-danger">*</span></label>
-                                <input type="time" name="start_time" class="form-control" id="e_start_time" placeholder="@lang('menu.start_time')" />
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="form-group col-12">
-                                <label><b>@lang('menu.end_time') :</b> <span class="text-danger">*</span></label>
-                                <input type="time" name="endtime" class="form-control"  id="e_endtime" placeholder="@lang('menu.end_time')"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group d-flex justify-content-end mt-3">
-                            <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -161,19 +131,25 @@
 @push('scripts')
 
 <script>
-    // Get all Shift by ajax
-    function getAllShift(){
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{ route('hrm.shift.all') }}",
-            type:'get',
-            success:function(data){
-                $('.table-responsive').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getAllShift();
+    var shift_table = $('.shift_table').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: 'Excel', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print', messageTop: '<b>Asset types</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+        ],
+        processing: true,
+        serverSide: true,
+        searchable: true,
+        "lengthMenu" : [25, 100, 500, 1000, 2000],
+        ajax: "{{ route('hrm.attendance.shift') }}",
+        columns: [
+            {data: 'shift_name',name: 'shift_name'},
+            {data: 'start_time',name: 'start_time'},
+            {data: 'endtime',name: 'endtime'},
+            {data: 'action',name: 'action'},
+        ],
+    });
 
      // Setup ajax for csrf token.
     $.ajaxSetup({
@@ -192,7 +168,6 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
-
             $.ajax({
                 url:url,
                 type:'post',
@@ -201,48 +176,55 @@
                     toastr.success(data);
                     $('#add_shift_form')[0].reset();
                     $('.loading_button').hide();
-                    getAllShift();
+                    shift_table.ajax.reload();
                     $('#addModal').modal('hide');
                 }
             });
         });
 
-
-        // pass editable data to edit modal fields
-        $(document).on('click', '#edit', function(e){
+        $(document).on('click', '#edit', function(e) {
             e.preventDefault();
-            $('#edit_shift_form')[0].reset();
-            $('.error').html('');
-            var typeInfo = $(this).closest('tr').data('info');
-            $('#id').val(typeInfo.id);
-            $('#e_shift_name').val(typeInfo.shift_name);
-            $('#e_start_time').val(typeInfo.start_time);
-            $('#e_endtime').val(typeInfo.endtime);
-            $('#editModal').modal('show');
-        });
-
-        // edit category by ajax
-        $('#edit_shift_form').on('submit', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            $('.submit_button').hide();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-
+            var url = $(this).attr('href');
             $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data){
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('#edit_shift_form')[0].reset();
-                    getAllShift();
-                    $('#editModal').modal('hide');
+                url: url,
+                type: 'get',
+                success: function(data) {
+                    $('#edit_shift_modal_body').html(data);
+                    $('#editShiftModal').modal('show');
                 }
             });
         });
-
+        $(document).on('submit', '#edit_shift_form', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            // var request = $(this).serialize();
+            console.log(new FormData(this));
+            $.ajax({
+                url: url,
+                type: 'post',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: new FormData(this),
+                success: function(data) {
+                    console.log(data);
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                    $('#editShiftModal').modal('hide');
+                    $('.error').html('');
+                    shift_table.ajax.reload();
+                },
+                error: function(err) {
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $.each(err.responseJSON.errors, function(key, error) {
+                        $('.error_e_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+        // edit category by ajax
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
@@ -279,7 +261,7 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    getAllShift();
+                    shift_table.ajax.reload();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }

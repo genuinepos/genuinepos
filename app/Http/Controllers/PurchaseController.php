@@ -24,6 +24,7 @@ use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseReturnUtil;
 use App\Utils\UserActivityLogUtil;
 use App\Models\PurchaseOrderProduct;
+use App\Services\CacheServiceInterface;
 use App\Utils\InvoiceVoucherRefIdUtil;
 
 class PurchaseController extends Controller
@@ -232,11 +233,10 @@ class PurchaseController extends Controller
         try {
 
             DB::beginTransaction();
-            
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
-            $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
-            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
-            $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
+            $generalSettings = \Cache::get('generalSettings');
+            $invoicePrefix = $generalSettings['prefix']['purchase_invoice'];
+            $paymentInvoicePrefix = $generalSettings['prefix']['purchase_payment'];
+            $isEditProductPrice = $generalSettings['purchase']['is_edit_pro_price'];
 
             $product_ids = $request->product_ids;
             $variant_ids = $request->variant_ids;
@@ -546,9 +546,9 @@ class PurchaseController extends Controller
 
             DB::beginTransaction();
 
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
-            $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
-            $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
+            $generalSettings = \Cache::get('generalSettings');
+            $invoicePrefix = $generalSettings['prefix']['purchase_invoice'];
+            $isEditProductPrice = $generalSettings['purchase']['is_edit_pro_price'];
 
             $product_ids = $request->product_ids;
             $variant_ids = $request->variant_ids;
@@ -1064,9 +1064,9 @@ class PurchaseController extends Controller
             'account_id' => 'required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
+        $generalSettings = \Cache::get('generalSettings');
 
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
+        $paymentInvoicePrefix = $generalSettings['prefix']['purchase_payment'];
 
         $purchase = Purchase::where('id', $purchaseId)->first();
 
@@ -1489,17 +1489,17 @@ class PurchaseController extends Controller
     }
 
     //Show Change status modal
-    public function settingsStore(Request $request)
+    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
     {
-        $updatePurchaseSettings = GeneralSetting::first();
         $purchaseSettings = [
             'is_edit_pro_price' => isset($request->is_edit_pro_price) ? 1 : 0,
             'is_enable_status' => isset($request->is_enable_status) ? 1 : 0,
             'is_enable_lot_no' => isset($request->is_enable_lot_no) ? 1 : 0,
         ];
-
-        $updatePurchaseSettings->purchase = json_encode($purchaseSettings);
-        $updatePurchaseSettings->save();
+        $updatePurchaseSettings = GeneralSetting::query()->update([
+            'purchase' => $purchaseSettings
+        ]);
+        $cacheService->syncGeneralSettings();
         return response()->json('Purchase settings updated successfully.');
     }
 }

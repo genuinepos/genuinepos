@@ -65,7 +65,7 @@
                             <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
                         <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
-                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> Print All</a>
+                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i>@lang('menu.print')</a>
 
                     </div>
                 </div>
@@ -531,7 +531,7 @@
             // Show sweet alert for delete
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
-                var url = $(this).attr('href');
+                var url = $(this).data('url');
                  $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',

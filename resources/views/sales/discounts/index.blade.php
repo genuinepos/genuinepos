@@ -383,7 +383,7 @@
             // Show sweet alert for delete
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
-                var url = $(this).attr('href');
+                var url = $(this).data('url');
                  $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',

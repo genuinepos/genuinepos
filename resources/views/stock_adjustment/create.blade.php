@@ -552,7 +552,7 @@
                                     if (product.is_variant == 1) {
 
                                         li += '<li class="mt-1">';
-                                        li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-unit="' + product.unit_name +'" data-v_code="'+variant.variant_code+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+variant.variant_cost_with_tax+'</a>';
+                                        li += '<a class="select_variant_product" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-unit="' + product.unit_name +'" data-v_code="'+variant.variant_code+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+'</a>';
                                         li +='</li>';
 
                                     }else{

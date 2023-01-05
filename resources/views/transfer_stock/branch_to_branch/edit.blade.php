@@ -37,7 +37,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}">
 
                                             <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
                                         </div>
@@ -69,7 +69,7 @@
 
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" autocomplete="off"
-                                                value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business']['date_format'], strtotime($transfer->date)) }}" id="datepicker">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -102,7 +102,7 @@
                                                 name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
                                                 <option value="">@lang('menu.select_receiver_b_location')</option>
                                                 <option value="NULL">
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
+                                                    {{ $generalSettings['business']['shop_name'].'(HO)' }}
                                                 </option>
 
                                                 @foreach ($branches as $b)
@@ -1171,7 +1171,7 @@
             calculateTotalAmount();
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

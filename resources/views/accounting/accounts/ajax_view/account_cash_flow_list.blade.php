@@ -66,7 +66,7 @@
                         <b>@lang('menu.reference_no') : </b> {{ $cashFlow->loan->reference_no }}
                     @elseif($cashFlow->transaction_type == 11)  
                         <b>{{ $cashFlow->loan_payment->payment_type == 1 ? 'Pay Loan Due Receive' : 'Get Loan Due Paid' }}</b><br/>
-                        <b>@lang('menu.b_location') :</b> {{ $cashFlow->loan_payment->branch ? $cashFlow->loan_payment->branch->name.'/'.$cashFlow->loan_payment->branch->branch_code.'(BL)' : json_decode($generalSettings->business, true)['shop_name'] .'(HO)' }}<br/>
+                        <b>@lang('menu.b_location') :</b> {{ $cashFlow->loan_payment->branch ? $cashFlow->loan_payment->branch->name.'/'.$cashFlow->loan_payment->branch->branch_code.'(BL)' : $generalSettings['business']['shop_name'] .'(HO)' }}<br/>
                         <b>@lang('menu.company')/@lang('menu.person'): </b> {{ $cashFlow->loan_payment->company->name }}<br/>
                         <b>@lang('menu.payment_voucher_no') : </b> {{ $cashFlow->loan_payment->voucher_no }}
                     @elseif($cashFlow->transaction_type == 12)  

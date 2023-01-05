@@ -16,7 +16,7 @@ class ExpanseReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     // Index view of expense report
@@ -25,7 +25,7 @@ class ExpanseReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $expenses = '';
             $query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
@@ -42,7 +42,7 @@ class ExpanseReportController extends Controller
             }
 
             if ($request->admin_id) {
-                
+
                 $query->where('expanses.admin_id', $request->admin_id);
             }
 
@@ -76,13 +76,13 @@ class ExpanseReportController extends Controller
 
             return DataTables::of($expenses)
                 ->editColumn('date', function ($row) use ($generalSettings) {
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user_name',  function ($row) {

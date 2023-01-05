@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="tax_sum">
                     <h6 class="text-muted">@lang('menu.output_tax_input_expense_tax') :
-                        {{ json_decode($generalSettings->business, true)['currency'] }} <span id="tax_sum"></span>
+                        {{ $generalSettings['business']['currency'] }} <span id="tax_sum"></span>
                     </h6>
                 </div>
             </div>
@@ -57,12 +57,12 @@
                                             <td>{{ $purchase->invoice_id }}</td>
                                             <td>{{ $purchase->supplier_name }}</td>
                                             <td>{{ $purchase->tax_number }}</td>
-                                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $purchase->net_total_amount }}
+                                            <td>{{ $generalSettings['business']['currency'] . ' ' . $purchase->net_total_amount }}
                                             </td>
-                                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $purchase->order_discount_amount }}
+                                            <td>{{ $generalSettings['business']['currency'] . ' ' . $purchase->order_discount_amount }}
                                             </td>
                                             <td>({{ $purchase->purchase_tax_percent }}%)</td>
-                                            <td>{{ json_decode($generalSettings->business, true)['currency'] . ' ' . $purchase->purchase_tax_amount }}
+                                            <td>{{ $generalSettings['business']['currency'] . ' ' . $purchase->purchase_tax_amount }}
                                             </td>
                                             @php
                                                 $totalPurchaseAmount += $purchase->net_total_amount;
@@ -75,13 +75,13 @@
                                     <tr class="bg-secondary">
                                         <th colspan="4" class="text-white"><b>@lang('menu.total') :</b></th>
                                         <th  class="text-white">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                            <b>{{ $generalSettings['business']['currency'] }}
                                             {{ number_format((float) $totalPurchaseAmount, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                            <b>{{ $generalSettings['business']['currency'] }}
                                             {{ number_format((float) $totalPurchaseTax, 2, '.', '') }}</b>
                                         </th>
                                     </tr>
@@ -123,16 +123,16 @@
                                             <td class="text-navy-blue">{{ $sale->customer_name ? $sale->customer_name : 'Walk-In-Customer' }}</td>
                                             <td class="text-navy-blue">{{ $sale->tax_number }}</td>
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $sale->net_total_amount }}
+                                                {{ $generalSettings['business']['currency'] . ' ' . $sale->net_total_amount }}
                                             </td>
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $sale->order_discount_amount }}
+                                                {{ $generalSettings['business']['currency'] . ' ' . $sale->order_discount_amount }}
                                             </td>
                                             <td class="text-navy-blue">
                                                 ({{ $sale->order_tax_percent }}%)
                                             </td>
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $sale->order_tax_amount }}
+                                                {{ $generalSettings['business']['currency'] . ' ' . $sale->order_tax_amount }}
                                                 @php
                                                     $totalSaleAmount += $sale->net_total_amount;
                                                     $TotalsaleTax += $sale->order_tax_amount;
@@ -145,13 +145,13 @@
                                     <tr class="bg-secondary">
                                         <th colspan="4" class="text-center text-white"><b>@lang('menu.total') :</b></th>
                                         <th  class="text-white">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                            <b>{{ $generalSettings['business']['currency'] }}
                                             {{ number_format((float) $totalSaleAmount, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                            <b>{{ $generalSettings['business']['currency'] }}
                                             {{ number_format((float) $TotalsaleTax, 2, '.', '') }}</b>
                                         </th>
                                     </tr>
@@ -186,14 +186,14 @@
                                             <td class="text-navy-blue">{{ date('d/m/Y', strtotime($expense->date)) }}</td>
                                             <td class="text-navy-blue">{{ $expense->invoice_id }}</td>
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'] . ' ' . $expense->total_amount }}
+                                                {{ $generalSettings['business']['currency'] . ' ' . $expense->total_amount }}
                                             </td>
                                             <td class="text-navy-blue">({{ $expense->tax_percent }}%)</td>
                                             @php
                                                 $taxAmount = $expense->total_amount / 100 * $expense->tax_percent;
                                             @endphp
                                             <td class="text-navy-blue">
-                                                {{ json_decode($generalSettings->business, true)['currency'].' '.$taxAmount}}
+                                                {{ $generalSettings['business']['currency'].' '.$taxAmount}}
                                                 @php
                                                     $totalExpense += $expense->total_amount;
                                                     $totalExpenseTax += $taxAmount;
@@ -206,12 +206,12 @@
                                     <tr class="bg-secondary">
                                         <th colspan="2" class="text-center text-white"><b>@lang('menu.total') :</b></th>
                                         <th  class="text-white">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                            <b>{{ $generalSettings['business']['currency'] }}
                                             {{ number_format((float) $totalExpense, 2, '.', '') }}</b>
                                         </th>
                                         <th  class="text-white"> </th>
                                         <th  class="text-white">
-                                            <b>{{ json_decode($generalSettings->business, true)['currency'] }}
+                                            <b>{{ $generalSettings['business']['currency'] }}
                                             {{ number_format((float) $totalExpenseTax, 2, '.', '') }}</b>
                                         </th>
                                     </tr>

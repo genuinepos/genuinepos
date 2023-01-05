@@ -23,9 +23,9 @@ class CustomerImport implements ToCollection
         $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
 
         $index = 0;
-        $generalSettings = DB::table('general_settings')->first('prefix');
+        $generalSettings = \Cache::get('generalSettings');
         
-        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+        $cusIdPrefix = $generalSettings['prefix']['customer_id'];
 
         $this->customerUtil = new CustomerUtil();
 

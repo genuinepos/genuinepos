@@ -55,7 +55,7 @@
                                                             <select name="branch_id"
                                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -162,14 +162,14 @@
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.quantity')</th>
-                                                <th>@lang('menu.unit_cost')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.unit_cost')({{ $generalSettings['business']['currency'] }})</th>
+                                                <th>@lang('menu.subtotal')({{ $generalSettings['business']['currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business']['currency'] }}</th>
                                                 <th class="text-start text-white">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white"><span id="total_subtotal"></span></th>
@@ -206,7 +206,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('purchases.product.list') }}",

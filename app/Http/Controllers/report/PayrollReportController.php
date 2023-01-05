@@ -13,7 +13,7 @@ class PayrollReportController extends Controller
     public function payrollReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payrolls = '';
             $query = DB::table('hrm_payrolls')
                 ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
@@ -86,13 +86,13 @@ class PayrollReportController extends Controller
                     return $html;
                 })
                 ->editColumn('gross_amount', function ($row) use ($generalSettings) {
-                    return '<span class="gross_amount" data-value="' . $row->gross_amount . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->gross_amount . '</span>';
+                    return '<span class="gross_amount" data-value="' . $row->gross_amount . '">' . $generalSettings['business']['currency'] . ' ' . $row->gross_amount . '</span>';
                 })
                 ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<span class="paid" data-value="' . $row->paid . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->paid . '</span>';
+                    return '<span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business']['currency'] . ' ' . $row->paid . '</span>';
                 })
                 ->editColumn('due', function ($row) use ($generalSettings) {
-                    return '<span class="due" data-value="' . $row->due . '">' . json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due . '</span>';
+                    return '<span class="due" data-value="' . $row->due . '">' . $generalSettings['business']['currency'] . ' ' . $row->due . '</span>';
                 })
                 ->editColumn('created_by', function ($row) {
                     return $row->user_prefix . ' ' . $row->user_name . ' ' . $row->user_last_name;

@@ -127,7 +127,7 @@
 
         <tfoot>
             <tr class="bg-secondary">
-                <th class="text-white text-end"><em>@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</em></th>
+                <th class="text-white text-end"><em>@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</em></th>
 
                 <th class="text-white text-end">
                     <em class="total_debit">{{ App\Utils\Converter::format_in_bdt($totalDebit) }}</em>

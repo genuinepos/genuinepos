@@ -1,5 +1,5 @@
 @php
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp 
 <style>
     .payment_top_card {background: #d7dfe8;}
@@ -41,7 +41,7 @@
                                     {{ $payment->purchase->invoice_id }}
                                 </li>
                                 <li><strong>@lang('menu.b_location') : </strong>
-                                    {!! $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(<b>HO</b>)' !!}
+                                    {!! $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : $generalSettings['business']['shop_name'].'(<b>HO</b>)' !!}
                                 </li>
                             </ul>
                         </div>
@@ -50,12 +50,12 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                <li><strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }} </strong>
                                     <span class="total_due">{{ $payment->purchase->due }}</span>
                                 </li>
                                 <li><strong>@lang('menu.date') : </strong>
                                     {{ 
-                                        date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->purchase->date)) . ' ' . date($timeFormat, strtotime($payment->purchase->time)) 
+                                        date($generalSettings['business']['date_format'], strtotime($payment->purchase->date)) . ' ' . date($timeFormat, strtotime($payment->purchase->time)) 
                                     }}
                                 </span> </li>
                                 <li><strong>@lang('menu.purchases_status') : </strong>
@@ -107,7 +107,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -247,7 +247,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

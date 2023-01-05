@@ -24,10 +24,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch->name }}</span>
                         @endif
                     @else
-                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business']['business_logo'] != null)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business']['shop_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -71,7 +71,7 @@
                                 {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
                             @else
 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(@lang('menu.head_office'))</b>
+                                {{ $generalSettings['business']['shop_name'] }}<b>(@lang('menu.head_office'))</b>
                             @endif
                         </li>
                     </ul>
@@ -141,12 +141,12 @@
 
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">@lang('menu.total_return_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <th colspan="4" class="text-end">@lang('menu.total_return_amount') : {{ $generalSettings['business']['currency'] }}</th>
                         <td colspan="2" class="text-end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
                     </tr>
 
                     <tr>
-                        <th colspan="4" class="text-end">@lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <th colspan="4" class="text-end">@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}</th>
 
                         <td colspan="2" class="text-end">
 

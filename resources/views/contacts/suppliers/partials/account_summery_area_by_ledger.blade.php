@@ -7,37 +7,37 @@
         <table class="table modal-table table-sm">
             <tbody>
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.opening_balance') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.opening_balance') : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end opening_balance" id="ledger_opening_balance"></td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_purchase') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_purchase') : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end total_purchase" id="ledger_total_purchase"></td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end text-success total_paid" id="ledger_total_paid"></td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_return') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_return') : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end total_return" id="ledger_total_return"></td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_less') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_less') : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end total_less" id="ledger_total_less"></td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end text-danger total_purchase_due" id="ledger_total_purchase_due"></td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>{{ __('Total Returnable/Refundable Amount') }} : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                    <td class="text-end"><strong>{{ __('Total Returnable/Refundable Amount') }} : {{ $generalSettings['business']['currency'] }}</strong></td>
                     <td class="text-end total_purchase_return_due" id="ledger_total_purchase_return_due"></td>
                 </tr>
             </tbody>

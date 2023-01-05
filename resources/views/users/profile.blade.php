@@ -43,9 +43,9 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-sm-3"><b>@lang('menu.new_password') :</b> <span
+                                    <label for="inputEmail3" class="col-sm-4"><b>@lang('menu.new_password') :</b> <span
                                             class="text-danger">*</span></label>
-                                    <div class="col-sm-9 col-8">
+                                    <div class="col-sm-8 col-8">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -85,7 +85,7 @@
                     </div>
                 </form>
             </div>
-            <form id="update_profile_form" action="{{ route('users.profile.update') }}" method="POST">
+            <form id="update_profile_form" action="{{ route('users.profile.update') }}" method="POST" >
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -261,6 +261,15 @@
 
                             <div class="element-body">
                                 <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-lg-4 col-5"> <b>{{ __('Profile image') }} :</b> </label>
+                                            <div class="col-lg-8 col-7">
+                                                <input type="file" name="photo" class="form-control"
+                                                    autocomplete="off" placeholder="{{ __('Profile image') }}">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label for="inputEmail3" class="col-lg-4 col-5"> <b>@lang('menu.date_of_birth') :</b> </label>
@@ -465,12 +474,15 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var request = $(this).serialize();
+        // var request = $(this).serialize();
         $.ajax({
-            url: url
-            , type: 'post'
-            , data: request
-            , success: function(data) {
+            url: url,
+            type: 'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+             success: function(data) {
                 toastr.success(data);
                 $('.loading_button').hide();
                 window.location = "{{ route('dashboard.dashboard') }}";

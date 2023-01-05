@@ -24,7 +24,7 @@ class BranchReceiveStockController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $transfers = DB::table('transfer_stock_to_branches')
                 ->leftJoin('warehouses', 'transfer_stock_to_branches.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_branches.branch_id', 'branches.id')->select(
@@ -65,7 +65,7 @@ class BranchReceiveStockController extends Controller
                         return  $row->branch_name . '/' . $row->branch_code;
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('status', function ($row) {

@@ -7,7 +7,7 @@
             @if ($transfer->branch)
                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $transfer->branch->logo) }}">
             @else
-                <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.$generalSettings['business']['business_logo']) }}">
             @endif
         </th>
       </tr>
@@ -65,9 +65,9 @@
             <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.business_location')(To)</span> </h6>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
               <span style="display:block;font-weight:bold;font-size:13px;"> @lang('menu.name') :</span>
-              {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
+              {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}
             </p>
-            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</p>
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business']['phone'] }}</p>
 
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
               <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
@@ -77,7 +77,7 @@
                   {{ $transfer->branch->zip_code }},
                   {{ $transfer->branch->country }}.
               @else
-                  {{ json_decode($generalSettings->business, true)['address'] }}
+                  {{ $generalSettings['business']['address'] }}
               @endif
             </p>
         </td>

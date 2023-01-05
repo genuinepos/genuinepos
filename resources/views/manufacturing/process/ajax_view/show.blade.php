@@ -9,8 +9,8 @@
                 <tr class="bg-secondary">
                     <th class="text-start text-white">@lang('menu.ingredients')</th>
                     <th class="text-start text-white">@lang('menu.quantity')</th>
-                    <th class="text-start text-white">{{ __('Cost Inc.Tax') }}({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                    <th class="text-start text-white">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                    <th class="text-start text-white">{{ __('Cost Inc.Tax') }}({{ $generalSettings['business']['currency'] }})</th>
+                    <th class="text-start text-white">@lang('menu.subtotal')({{ $generalSettings['business']['currency'] }})</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,7 @@
             </tbody>
             <tfoot class="display data_tbl data__table">
                 <tr>
-                    <th colspan="3" class="text-end">{{ __('Total Ingredients') }} : {{json_decode($generalSettings->business, true)['currency'] }}</th>
+                    <th colspan="3" class="text-end">{{ __('Total Ingredients') }} : {{$generalSettings['business']['currency'] }}</th>
                     <th>{{ $process->total_ingredient_cost }}</th>
                 </tr>
             </tfoot>
@@ -59,11 +59,11 @@
                 <tbody>
                     <tr>
                         <th class="text-start">@lang('menu.additional_cost') : </th>
-                        <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->production_cost }}</td>
+                        <td class="text-start"> {{ $generalSettings['business']['currency'].' '.$process->production_cost }}</td>
                     </tr>
                     <tr>
                         <th class="text-start">@lang('menu.total_cost') :</th>
-                        <td class="text-start"> {{ json_decode($generalSettings->business, true)['currency'].' '.$process->total_cost }}</td>
+                        <td class="text-start"> {{ $generalSettings['business']['currency'].' '.$process->total_cost }}</td>
                     </tr>
                 </tbody>
             </table>

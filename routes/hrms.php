@@ -76,8 +76,10 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], fun
 
         Route::get('/', 'ShiftController@index')->name('hrm.attendance.shift');
         Route::get('/ajax-all-shift', 'ShiftController@allshift')->name('hrm.shift.all');
+        Route::get('/hrm/shift/edit/{id}', 'ShiftController@shiftEdit')->name('hrm.shift.edit');
         Route::post('/hrm/shift/store', 'ShiftController@storeshift')->name('hrm.shift.store');
-        Route::post('/hrm/shift/update', 'ShiftController@updateshift')->name('hrm.shift.update');
+        Route::post('/hrm/shift/update', 'ShiftController@updateShift')->name('hrm.shift.update');
+        Route::delete('/hrm/shift/delete/{id}', 'ShiftController@deleteShift')->name('hrm.shift.delete');
     });
 
     //Attendance  routes group

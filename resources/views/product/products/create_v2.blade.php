@@ -60,7 +60,7 @@
                                                         <select class="form-control product_unit" name="unit_id" id="unit_id">
                                                             <option value="">@lang('menu.select_unit')</option>
                                                             @php
-                                                                $defaultUnit = json_decode($generalSettings->product, true)['default_unit_id'];
+                                                                $defaultUnit = $generalSettings['product']['default_unit_id'];
                                                             @endphp
                                                             @foreach ($units as $unit)
                                                                 <option {{ $defaultUnit ==  $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
@@ -90,7 +90,7 @@
                                             </div>
                                         </div>
 
-                                        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+                                        @if ($generalSettings['product']['is_enable_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.category') :</b> </label>
@@ -114,7 +114,7 @@
                                             </div>
                                         @endif
 
-                                        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+                                        @if ($generalSettings['product']['is_enable_categories'] == '1' && $generalSettings['product']['is_enable_sub_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
@@ -128,7 +128,7 @@
                                             </div>
                                         @endif
 
-                                        @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
+                                        @if ($generalSettings['product']['is_enable_brands'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.brand'):</b> </label>
@@ -159,7 +159,7 @@
                                             </div>
                                         </div>
 
-                                        @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+                                        @if ($generalSettings['product']['is_enable_warranty'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.warranty') :</b> </label>
@@ -190,7 +190,7 @@
                                                             <input type="hidden" name="branch_count" value="branch_count">
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
                                                                 <option selected value="">
-                                                                    {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                                    {{ $generalSettings['business']['shop_name'] . '(HO)' }}
                                                                 </option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
@@ -288,13 +288,13 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }}">
+                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business']['default_profit'] > 0 ? $generalSettings['business']['default_profit'] : 0 }}">
                                                         <span class="error error_profit"></span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+                                            @if ($generalSettings['product']['is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-5"><b>@lang('menu.tax') :</b> </label>
@@ -814,7 +814,7 @@
     });
 
     // Get default profit
-    var defaultProfit = {{ json_decode($generalSettings->business, true)['default_profit'] > 0 ? json_decode($generalSettings->business, true)['default_profit'] : 0 }};
+    var defaultProfit = {{ $generalSettings['business']['default_profit'] > 0 ? $generalSettings['business']['default_profit'] : 0 }};
 
     $(document).on('click', '#add_more_variant_btn',function(e) {
         e.preventDefault();
@@ -941,7 +941,7 @@
                 length++;
             }
 
-            $('#auto_generated_code').val("{{ json_decode($generalSettings->product, true)['product_code_prefix'] }}" + code);
+            $('#auto_generated_code').val("{{ $generalSettings['product']['product_code_prefix'] }}" + code);
         }
         autoGeneratedCode();
 

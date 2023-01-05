@@ -11,6 +11,7 @@ use App\Models\AdminUserBranch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Utils\FileUploader;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -147,6 +148,7 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'required|unique:users,email',
+            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
         if (isset($request->allow_login)) {
@@ -167,7 +169,6 @@ class UserController extends Controller
         $addUser->status = 1;
 
         if (isset($request->allow_login)) {
-
             $addUser->allow_login = 1;
             $addUser->username = $request->username;
             $addUser->password = Hash::make($request->password);
@@ -175,22 +176,18 @@ class UserController extends Controller
             $role = Role::find($roleId);
 
             if ($role->name == 'superadmin') {
-
                 $addUser->role_type = 1;
                 $addUser->assignRole($role->name);
             } else if ($role->name == 'admin') {
-
                 $addUser->role_type = 2;
                 $addUser->assignRole($role->name);
                 // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
-
                 $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
                 $addUser->role_type = 3;
                 $addUser->assignRole($role->name);
             }
         } else {
-
             $addUser->allow_login = 0;
             $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
         }
@@ -221,9 +218,14 @@ class UserController extends Controller
         $addUser->designation_id = $request->designation_id;
         $addUser->salary = $request->salary ? $request->salary : 0;
         $addUser->salary_type = $request->pay_type;
-        $addUser->save();
 
-        session()->flash('successMsg', 'User created successfully');
+        if($request->hasFile('photo')) {
+            $addUser->photo = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
+        } else {
+            $addUser->photo = null;
+        }
+
+        $addUser->save();
         return response()->json('User created successfully');
     }
 
@@ -231,31 +233,22 @@ class UserController extends Controller
     public function edit($userId)
     {
         if (!auth()->user()->can('user_edit')) {
-
             abort(403, 'Access Forbidden.');
         }
-
-        
         $user = User::with(['roles'])->where('id', $userId)->first();
 
         if ($user->role_type == 1 && auth()->user()->role_type != 1) {
-
             abort(403, 'Access Forbidden.');
         }
 
         $roles = Role::all();
-
         $branches = Branch::select('id', 'name', 'branch_code')->orderBy('id', 'DESC')->get();
-
         // if (auth()->user()->role_type == 1) {
-
         //     $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         // } else if (auth()->user()->role_type == 2) {
-
         //     $branchIds = AdminUserBranch::select("branch_id")->where('admin_user_id', auth()->user()->id)->get()->toArray();
         //     $branches = DB::table('branches')->whereIn('id', $branchIds)->get(['id', 'name', 'branch_code']);
         // } else {
-            
         //     $branches = Branch::where('id', auth()->user()->branch_id)->get(['id', 'name', 'branch_code']);
         // }
 
@@ -268,6 +261,7 @@ class UserController extends Controller
     // Update user
     public function update(Request $request, $userId)
     {
+        // dd($request->all());
         // \Log::info($request->role_id);
         // dd();
 
@@ -279,6 +273,7 @@ class UserController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'email' => 'unique:users,email,' . $userId,
+            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
         $updateUser = User::where('id', $userId)->first();
@@ -347,7 +342,7 @@ class UserController extends Controller
         }
 
         $updateUser->sales_commission_percent = $request->sales_commission_percent ? $request->sales_commission_percent : 0;
-        $updateUser->max_sales_discount_percent = $request->max_sales_discount_percent ? $request->max_sales_discount_percent : 0;;
+        $updateUser->max_sales_discount_percent = $request->max_sales_discount_percent ? $request->max_sales_discount_percent : 0;
         $updateUser->date_of_birth = $request->date_of_birth;
         $updateUser->gender = $request->gender;
         $updateUser->marital_status = $request->marital_status;
@@ -372,8 +367,20 @@ class UserController extends Controller
         $updateUser->designation_id = $request->designation_id;
         $updateUser->salary = $request->salary ? $request->salary : 0;
         $updateUser->salary_type = $request->pay_type;
-
-        // dd($updateUser);
+        if($request->hasFile('photo')) {
+            $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
+            if (
+                isset($updateUser->photo) &&
+                file_exists(public_path('uploads/user_photo/' . $updateUser->photo)) &&
+                $updateUser->photo != 'default.png'
+            ) {
+                try {
+                    unlink(public_path('uploads/user_photo/' . $updateUser->photo));
+                } catch (Exception $e) {
+                }
+            }
+            $updateUser->photo = $newFile;
+        }
         $updateUser->save();
 
         session()->flash('successMsg', 'Successfully user updated');

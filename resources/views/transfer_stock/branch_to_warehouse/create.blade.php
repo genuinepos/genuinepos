@@ -37,7 +37,7 @@
                                     <div class="input-group">
                                         <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}">
                                             <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                                         <label for="inputEmail3" class=" col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control  changeable" autocomplete="off"
-                                                value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : {{ json_decode($generalSettings->business, true)['currency'] }}</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : {{ $generalSettings['business']['currency'] }}</b> </label>
                                         <div class="col-8">
                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                         </div>
@@ -859,7 +859,7 @@
             document.getElementById('search_product').focus();
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

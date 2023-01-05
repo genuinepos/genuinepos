@@ -16,7 +16,7 @@
             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
         </div>
         <div class="p-3">
-            <form id="update_user_form" action="{{ route('users.update', $user->id) }}" method="POST">
+            <form id="update_user_form" action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <section>
                     <div class="row g-3">
@@ -349,7 +349,7 @@
                                                     <div class="col-sm-8 col-12">
                                                         <select name="branch_id" id="branch_id" class="form-control">
                                                             <option value="">@lang('menu.select_business_location')</option>
-                                                            <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                            <option {{ $user->branch_id == NULL ? 'SELECTED' : '' }} value="head_office">{{ $generalSettings['business']['shop_name'] }} </option>
                                                             @foreach ($branches as $branch)
                                                                 <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
                                                             @endforeach
@@ -364,7 +364,7 @@
                                                     <label class="col-4"><b>@lang('menu.belonging_location') :</b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
-                                                            <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} </option>
+                                                            <option value="head_office">{{ $generalSettings['business']['shop_name'] }} </option>
                                                             @foreach ($branches as $branch)
                                                             <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">{{ $branch->name.' - '.$branch->branch_code }}</option>
                                                             @endforeach
@@ -389,6 +389,14 @@
                                     <div class="row g-2">
                                         <div class="col-md-6">
                                             <div class="input-group">
+                                                <label class="col-sm-4 col-5"> <b>{{ __('Profile image') }} :</b> </label>
+                                                <div class="col-sm-8 col-7">
+                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
                                                 <label class="col-sm-4 col-5"> <b>@lang('menu.date_of_birth') :</b> </label>
                                                 <div class="col-sm-8 col-7">
                                                     <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="@lang('menu.date_of_birth')" value="{{ $user->date_of_birth }}">
@@ -409,9 +417,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {{-- </div>
 
-                                    <div class="row g-2 pt-1">
+                                    <div class="row g-2 pt-1"> --}}
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.marital_status') :</b> </label>
@@ -434,9 +442,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {{-- </div>
 
-                                    <div class="row g-2 pt-1">
+                                    <div class="row g-2 pt-1"> --}}
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.twitter_link') :</b> </label>
@@ -454,9 +462,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {{-- </div>
 
-                                    <div class="row g-2 pt-1">
+                                    <div class="row g-2 pt-1"> --}}
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.guardian_name'):</b> </label>
@@ -474,9 +482,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-sm-4 col-5"><b>@lang('menu.facebook_link') :</b> </label>
@@ -485,11 +490,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-6">
+                                    <div class="row g-2 pt-1">
+                                    </div>
+                                    <div class="row g-2 pt-1">
+                                        <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-sm-4 col-5"><b>@lang('menu.id_proof_number') :</b> </label>
-                                                <div class="col-sm-8 col-7">
+                                                <label class="col-lg-2 col-sm-4 col-12"><b>@lang('menu.id_proof_number'):</b> </label>
+                                                <div class="col-lg-10 col-sm-8 col-12">
                                                     <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="@lang('menu.id_proof_number')" value="{{ $user->id_proof_number }}">
                                                 </div>
                                             </div>
@@ -540,17 +549,18 @@
         e.preventDefault();
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var request = $(this).serialize();
         $.ajax({
-            url: url
-            , type: 'post'
-            , data: request
-            , success: function(data) {
+            url: url, 
+            type: 'post', 
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
                 toastr.success(data);
                 $('.loading_button').hide();
                 window.location = "{{ route('users.index') }}";
-            }
-            , error: function(err) {
+            }, error: function(err) {
                 $('.loading_button').hide();
                 toastr.error('Please check again all form fields.', 'Some thing went wrong.');
                 $('.error').html('');

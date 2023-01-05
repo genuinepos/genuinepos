@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Utils\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Intervention\Image\Facades\Image;
@@ -11,7 +12,6 @@ class UserProfileController extends Controller
 {
     public function __construct()
     {
-
     }
 
     // Profile index view
@@ -25,7 +25,8 @@ class UserProfileController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'required|unique:users,email,'.auth()->user()->id,
+            'email' => 'required|unique:users,email,' . auth()->user()->id,
+            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
         //return $request->all();
@@ -53,8 +54,23 @@ class UserProfileController extends Controller
         $updateProfile->bank_branch = $request->bank_branch;
         $updateProfile->tax_payer_id = $request->tax_payer_id;
         $updateProfile->language = $request->language;
+        if ($request->hasFile('photo')) {
+            $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
+            if (
+                isset($updateProfile->photo) &&
+                file_exists(public_path('uploads/user_photo/' . $updateProfile->photo)) &&
+                $updateProfile->photo != 'default.png'
+            ) {
+                try {
+                    unlink(public_path('uploads/user_photo/' . $updateProfile->photo));
+                } catch (Exception $e) {
+                }
+            }
+            $updateProfile->photo = $newFile;
+        }
         $updateProfile->save();
         session(['lang' => $updateProfile->language]);
+        session()->flash('successMsg', 'Successfully user updated');
         return response()->json('Successfully user profile is updated');
     }
 

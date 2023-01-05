@@ -16,6 +16,7 @@ use App\Models\PurchaseProduct;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TransferStockToBranchProduct;
 use App\Models\TransferStockToWarehouseProduct;
 
 class Product extends Model

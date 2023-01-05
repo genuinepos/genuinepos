@@ -35,7 +35,8 @@ class ProductUtil
     public function productListTable($request)
     {
         $productStock = $this->productStockUtil;
-        $generalSettings = DB::table('general_settings')->select('business')->first();
+        // $generalSettings = DB::table('general_settings')->select('business')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
         $img_url = asset('uploads/product/thumbnail');
         $products = '';
@@ -243,7 +244,7 @@ class ProductUtil
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 
-                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : json_decode($generalSettings->business, true)['shop_name']).',</p>';
+                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business']['shop_name']).',</p>';
                 }
 
                 return $text;

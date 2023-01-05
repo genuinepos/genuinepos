@@ -300,8 +300,8 @@ class ProductController extends Controller
 
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
 
-        session()->flash('successMsg', 'Product create Successfully');
-        return response()->json('Product create Successfully');
+        session()->flash('successMsg', 'Product created Successfully');
+        return response()->json('Product created Successfully');
     }
 
     public function view($productId)

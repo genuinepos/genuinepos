@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <style>
     .packing_slip_print_template{font-family: monospace!important;font-weight: bolder;}
@@ -16,9 +16,9 @@
                             <p style="width: 60%; margin:0 auto;">{{ $sale->branch->city . ', ' . $sale->branch->state . ', ' . $sale->branch->zip_code . ', ' . $sale->branch->country }}</p>
                             <p><strong>@lang('menu.phone') :</strong> {{ $sale->branch->phone }}</p>
                         @else
-                            <h3>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
-                            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                            <p><strong>@lang('menu.phone') : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</p>
+                            <h3>{{ $generalSettings['business']['shop_name'] }}</h3>
+                            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+                            <p><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business']['phone'] }}</p>
                         @endif
                         <h6 >@lang('menu.packing_slip')</h6>
                     </div>
@@ -53,7 +53,7 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.invoice_id') : </strong> {{ $sale->invoice_id }}
                         </li>
-                        <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business']['date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                         <li><img style="width: 100%; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}"></li>
 
                     </ul>

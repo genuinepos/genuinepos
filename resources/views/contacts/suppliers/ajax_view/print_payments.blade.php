@@ -20,11 +20,11 @@
 <div class="row">
     <div class="col-12 text-center">
 
-        <h6 style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h6>
-        <p>{{ json_decode($generalSettings->business, true)['address'] }}</p>
+        <h6 style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['shop_name'] }}</h6>
+        <p>{{ $generalSettings['business']['address'] }}</p>
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b> {{date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') :</b> {{date($generalSettings['business']['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
         <p class="mt-2"><b>@lang('menu.supplier_payments') </b></p>
@@ -66,7 +66,7 @@
                     <tr>
                         <td class="text-start">
                             @php
-                                $dateFormat = json_decode($generalSettings->business, true)['date_format'];
+                                $dateFormat = $generalSettings['business']['date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
 

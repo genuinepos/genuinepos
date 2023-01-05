@@ -18,7 +18,7 @@ class CashCounterController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first(['business']);
+            $generalSettings = \Cache::get('generalSettings');
             $cashCounters = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
@@ -56,7 +56,7 @@ class CashCounterController extends Controller
                     if ($row->br_name) {
                         return $row->br_name . '/' . $row->br_code . '(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->rawColumns(['branch', 'action'])

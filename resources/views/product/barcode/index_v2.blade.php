@@ -44,7 +44,7 @@
                                         @csrf
                                         <div class="card-body">
                                             <input type="hidden" id="business_name"
-                                                value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                value="{{ $generalSettings['business']['shop_name'] }}">
                                             <div class="form-group row">
                                                 <div class="col-md-8">
                                                     <select name="br_setting_id" class="form-control">

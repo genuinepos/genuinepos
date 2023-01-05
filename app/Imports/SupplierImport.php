@@ -23,8 +23,8 @@ class SupplierImport implements ToCollection
         //dd($collection);
 
         $index = 0;
-        $generalSettings = DB::table('general_settings')->first('prefix');
-        $supIdPrefix = json_decode($generalSettings->prefix, true)['supplier_id'];
+        $generalSettings = \Cache::get('generalSettings');
+        $supIdPrefix = $generalSettings['prefix']['supplier_id'];
         $this->supplierUtil = new SupplierUtil();
         foreach ($collection as $c) {
             if ($index != 0) {

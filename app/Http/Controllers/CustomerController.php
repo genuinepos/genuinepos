@@ -88,9 +88,9 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
-        $generalSettings = DB::table('general_settings')->first('prefix');
+        $generalSettings = \Cache::get('generalSettings');
 
-        $cusIdPrefix = json_decode($generalSettings->prefix, true)['customer_id'];
+        $cusIdPrefix = $generalSettings['prefix']['customer_id'];
 
         $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
 
@@ -324,7 +324,7 @@ class CustomerController extends Controller
         $customerId = $customerId;
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $sales = '';
             $query = DB::table('sales')
@@ -453,7 +453,7 @@ class CustomerController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -498,7 +498,7 @@ class CustomerController extends Controller
     {
         if ($request->ajax()) {
 
-            $settings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $customerUtil = $this->customerUtil;
 
@@ -573,9 +573,9 @@ class CustomerController extends Controller
             }
 
             return DataTables::of($customerLedgers)
-                ->editColumn('date', function ($row) use ($settings) {
+                ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $dateFormat = $generalSettings['business']['date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->report_date));
                 })
@@ -588,14 +588,14 @@ class CustomerController extends Controller
                     return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp .$__less. ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
-                ->editColumn('b_name', function ($row) use ($settings) {
+                ->editColumn('b_name', function ($row) use ($generalSettings) {
 
                     if ($row->b_name) {
 
                         return $row->b_name;
                     } else {
 
-                        return json_decode($settings->business, true)['shop_name'];
+                        return $generalSettings['business']['shop_name'];
                     }
                 })
 
@@ -1136,7 +1136,7 @@ class CustomerController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $payments = '';
             $paymentsQuery = DB::table('customer_ledgers')
                 ->where('customer_ledgers.customer_id', $customerId)
@@ -1225,7 +1225,7 @@ class CustomerController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 

@@ -49,16 +49,16 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Expense Date :</b> <span
+                                        <label class=" col-4"><b>{{ __('Expense Date') }} :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable"
-                                                value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Expanse For :</b></label>
+                                        <label class=" col-4"><b>{{ __('Expanse For') }} :</b></label>
                                         <div class="col-8">
                                             <select name="admin_id" class="form-control" id="admin_id">
                                                 <option value="">@lang('menu.none')</option>
@@ -175,7 +175,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Expense Category</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Expense Category') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -190,7 +190,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Category ID</b> : </label>
+                            <label><b>{{ __('Category ID') }}</b> : </label>
                             <input type="text" name="code" class="form-control" data-name="Expanse category ID" placeholder="Expanse category ID"/>
                         </div>
 
@@ -459,7 +459,7 @@
             action = $(this).data('action');
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -29,7 +29,7 @@
                                         <select name="branch_id"
                                             class="form-control submit_able select2" id="branch_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
-                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                            <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">
                                                     {{ $branch->name . '/' . $branch->branch_code }}
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="col-md-6 d-flex justify-content-end gap-2">
-                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add') (Ctrl+Enter)</a>
+                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
 
                     <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_suppliers')</a>
                 </div>
@@ -91,7 +91,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                    <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>
                                     <th id="total_paid" class="text-white text-end"></th>
@@ -290,7 +290,7 @@
         "serverSide": true,
         aaSorting: [[0, 'asc']],
         ajax: "{{ route('contacts.supplier.index') }}",
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('contacts.supplier.index') }}",

@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <style>
     @media print
@@ -31,14 +31,14 @@
                             @if ($production->branch_id)
                                 {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
                             @else
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                                {{ $generalSettings['business']['shop_name'] }}<b>(HO)</b>
                             @endif
                         </h6>
                         <p style="width: 60%; margin:0 auto;">
                             @if ($production->branch_id)
                                 {{ $production->branch->city.', '.$production->branch->state.', '.$production->branch->zip_code.', '.$production->branch->country }}<b>(BL)</b>
                             @else
-                                {{ json_decode($generalSettings->business, true)['address'] }}
+                                {{ $generalSettings['business']['address'] }}
                             @endif
                         </p>
                     </div>
@@ -55,10 +55,10 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $production->branch->name }}</span>
                             @endif
                         @else
-                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                            @if ($generalSettings['business']['business_logo'] != null)
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business']['shop_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -84,7 +84,7 @@
                                     @if ($production->branch_id)
                                         {{ $production->branch->name.'/'.$production->branch->branch_code }}<b>(BL)</b>
                                     @else
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                                        {{ $generalSettings['business']['shop_name'] }}<b>(HO)</b>
                                     @endif
                                 @endif
                             </li>
@@ -95,7 +95,7 @@
                                     @if ($production->stock_branch_id)
                                         {{ $production->stock_branch->name.'/'.$production->stock_branch->branch_code }}<b>(BL)</b>
                                     @else
-                                        {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
+                                        {{ $generalSettings['business']['shop_name'] }}<b>(HO)</b>
                                     @endif
                                 @endif
                             </li>
@@ -120,7 +120,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
-                            <li><strong>@lang('menu.date') : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
+                            <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business']['date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                         </ul>
                     </div>
                 </div>
@@ -133,8 +133,8 @@
                         <tr>
                             <th scope="col">@lang('menu.ingredient_name')</th>
                             <th scope="col">@lang('menu.input_qty')</th>
-                            <th scope="col">@lang('menu.unit_cost_inc_tax')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                            <th scope="col">@lang('menu.subtotal')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost_inc_tax')({{ $generalSettings['business']['currency'] }})</th>
+                            <th scope="col">@lang('menu.subtotal')({{ $generalSettings['business']['currency'] }})</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
@@ -184,14 +184,14 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.additional_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.additional_cost') : {{ $generalSettings['business']['currency'] }}</th>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($production->production_cost) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.total_cost') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.total_cost') : {{ $generalSettings['business']['currency'] }}</th>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($production->total_cost) }}
                                 </td>
@@ -212,14 +212,14 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.per_unit_cost_exc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.per_unit_cost_exc_tax') : {{ $generalSettings['business']['currency'] }}</th>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($production->unit_cost_exc_tax) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.per_unit_cost_inc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.per_unit_cost_inc_tax') : {{ $generalSettings['business']['currency'] }}</th>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($production->unit_cost_inc_tax) }}
                                 </td>
@@ -233,7 +233,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.selling_price_exc_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.selling_price_exc_tax') : {{ $generalSettings['business']['currency'] }}</th>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($production->price_exc_tax) }}
                                 </td>

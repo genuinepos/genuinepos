@@ -54,7 +54,7 @@
                                         <span class="error error_warehouse_id"></span>
                                     @else
                                         <label><b>@lang('menu.store_location') :</b> </label>
-                                        <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" tabindex="-1"/>
+                                        <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}" tabindex="-1"/>
                                     @endif
                                 </div>
 
@@ -65,7 +65,7 @@
 
                                 <div class="col-md-2">
                                     <label><b>@lang('menu.date'):</b></label>
-                                    <input required type="text" name="date" class="form-control changeable" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($production->date)) }}" id="datepicker">
+                                    <input required type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business']['date_format'], strtotime($production->date)) }}" id="datepicker">
                                 </div>
 
                                 <div class="col-md-2">
@@ -74,7 +74,7 @@
                                         <input readonly type="text" class="form-control" value="{{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}" tabindex="-1">
                                     @else
                                         <label><b>{{ __('Ingredient Stock Location') }} :</b> </label>
-                                        <input readonly type="text" name="stock_branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" tabindex="-1"/>
+                                        <input readonly type="text" name="stock_branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}" tabindex="-1"/>
                                     @endif
                                 </div>
 
@@ -606,7 +606,7 @@
             });
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

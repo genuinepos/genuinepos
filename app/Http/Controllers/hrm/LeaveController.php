@@ -4,10 +4,7 @@ namespace App\Http\Controllers\HRM;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Hrm\Leavetype;
 use App\Models\Hrm\Leave;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class LeaveController extends Controller
@@ -35,7 +32,7 @@ class LeaveController extends Controller
     //all leave data for ajax
     public function allLeave()
     {
-        $leave = Leave::with(['admin_and_user', 'leave_type'])->orderBy('id', 'DESC')->get();
+        $leave = Leave::with(['users', 'leave_type'])->orderBy('id', 'DESC')->get();
         return view('hrm.leave.ajax.list', compact('leave'));
     }
 

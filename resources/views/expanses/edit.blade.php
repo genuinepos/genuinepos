@@ -51,15 +51,15 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>Expense Date :</b> </label>
+                                        <label class="col-4"><b>{{ __('Expense Date') }} :</b> </label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control datepicker changeable"
-                                                value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime( $expense->date)) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business']['date_format'], strtotime( $expense->date)) }}" id="datepicker">
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>Expanse For :</b></label>
+                                        <label class=" col-4"><b>{{ __('Expanse For') }} :</b></label>
                                         <div class="col-8">
                                             <select name="admin_id" class="form-control" id="admin_id">
                                                 <option value="">@lang('menu.none')</option>
@@ -143,7 +143,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total') : ({{ json_decode($generalSettings->business, true)['currency'] }})</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</b> </label>
                                         <div class="col-8">
                                             <input readonly class="form-control add_input" name="total_amount" type="number" data-name="Total amount" id="total_amount" value="0.00" step="any" placeholder="Total amount">
                                             <span class="error error_total_amount"></span>
@@ -196,7 +196,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Expense Category</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Expense Category') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -211,7 +211,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>Category ID</b> : </label>
+                            <label><b>{{ __('Category ID') }}</b> : </label>
                             <input type="text" name="code" class="form-control" data-name="Expanse category ID" placeholder="Expanse category ID"/>
                         </div>
 
@@ -442,7 +442,7 @@
             index++;
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

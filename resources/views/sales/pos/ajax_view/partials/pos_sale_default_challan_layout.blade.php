@@ -24,7 +24,7 @@
                             @if ($sale->branch)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                             @else
-                                <img style="height: 60px; width:200px;" src="{{asset('uploads/business_logo/'.json_decode($generalSettings->business, true)['business_logo']) }}">
+                                <img style="height: 60px; width:200px;" src="{{asset('uploads/business_logo/'.$generalSettings['business']['business_logo']) }}">
                             @endif
                         @endif
                     </div>
@@ -37,7 +37,7 @@
                         <div class="heading text-end">
                             @if ($sale->branch)
                                 <h3 class="company_name">
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
+                                    {{ $generalSettings['business']['shop_name'] }}</h3>
                                 <h6 class="company_address">
                                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                     {{ $sale->branch->pos_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -55,17 +55,17 @@
                                 @endif
                             @else
                                 <h3 class="company_name">
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}</h3>
+                                    {{ $generalSettings['business']['shop_name'] }}</h3>
                                 <h6 class="company_address">
-                                    {{ json_decode($generalSettings->business, true)['address'] }}
+                                    {{ $generalSettings['business']['address'] }}
                                 </h6>
 
                                 @if ($defaultLayout->branch_phone)
-                                    <h6>@lang('menu.phone') : {{ json_decode($generalSettings->business, true)['phone'] }}</h6>
+                                    <h6>@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</h6>
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
-                                    <h6>@lang('menu.email') : {{ json_decode($generalSettings->business, true)['email'] }}</h6>
+                                    <h6>@lang('menu.email') : {{ $generalSettings['business']['email'] }}</h6>
                                 @endif
                             @endif
                         </div>
@@ -112,7 +112,7 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}
                             </li>
-                        <li><strong>@lang('menu.date'): </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
+                        <li><strong>@lang('menu.date'): </strong> {{ date($generalSettings['business']['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
                         <li><strong> @lang('menu.user') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
@@ -182,7 +182,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-center">
-                    <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+                    <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
                 </div>
 
                 @if (config('company.print_on_sale'))

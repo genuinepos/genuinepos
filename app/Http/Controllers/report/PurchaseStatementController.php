@@ -15,15 +15,15 @@ class PurchaseStatementController extends Controller
     public function __construct(
         Converter $converter
     ) {
-        
+
         $this->converter = $converter;
     }
-    
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $purchases = '';
 
             $query = DB::table('purchases')
@@ -105,7 +105,7 @@ class PurchaseStatementController extends Controller
 
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business']['date_format'], strtotime($row->date));
                 })
 
                 ->editColumn('from',  function ($row) use ($generalSettings) {
@@ -118,7 +118,7 @@ class PurchaseStatementController extends Controller
                         return $row->branch_name . '<b>(BL)</b>';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
+                        return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
                     }
                 })
 

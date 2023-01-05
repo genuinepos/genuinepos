@@ -59,7 +59,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.email') :</b><span class="text-danger">*</span></label>
@@ -347,7 +347,7 @@
                                                     <label class="col-4"><b>@lang('menu.access_location') :</b> </label>
                                                     <div class="col-8">
                                                         <select name="branch_id" id="branch_id" class="form-control">
-                                                            <option value="">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            <option value="">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $b)
                                                                 <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                             @endforeach
@@ -363,7 +363,7 @@
                                                         class="text-danger">*</span></label>
                                                     <div class="col-6">
                                                         <select name="belonging_branch_id" id="belonging_branch_id" class="form-control">
-                                                            <option value="head_office">{{ json_decode($generalSettings->business, true)['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            <option value="head_office">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $b)
                                                             <option value="{{ $b->id }}">{{$b->name.'/'.$b->branch_code}}</option>
                                                             @endforeach
@@ -387,13 +387,20 @@
                                     <div class="row g-2">
                                         <div class="col-md-6">
                                             <div class="input-group">
+                                                <label class="col-4"> <b>{{ __('Profile image') }}:</b> </label>
+                                                <div class="col-8">
+                                                    <input type="file" name="photo" class="form-control form-control-sm" placeholder="{{ __('Profile image') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
                                                 <label class="col-4"> <b>@lang('menu.date_of_birth'):</b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="date_of_birth" class="form-control" autocomplete="off" placeholder="@lang('menu.date_of_birth')">
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.gender') :</b> </label>
@@ -407,9 +414,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.marital_status') :</b> </label>
@@ -432,9 +436,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="row g-2 pt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>@lang('menu.facebook_link') :</b> </label>
@@ -486,10 +487,10 @@
                                     </div>
 
                                     <div class="row g-2 pt-1">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-4"><b>@lang('menu.id_proof_number') :</b> </label>
-                                                <div class="col-8">
+                                                <label class="col-lg-2 col-4"><b>@lang('menu.id_proof_number'):</b> </label>
+                                                <div class="col-lg-10 col-8">
                                                     <input type="text" name="id_proof_number" class="form-control" autocomplete="off" placeholder="@lang('menu.id_proof_number')">
                                                 </div>
                                             </div>
@@ -499,7 +500,7 @@
                                     <div class="row g-2 pt-1">
                                         <div class="col-md-12">
                                             <div class="input-group ">
-                                                <label class="col-lg-2 col-4"><b>@lang('menu.permanent_address') :</b> </label>
+                                                <label class="col-lg-2 col-4"><b>@lang('menu.permanent_address'):</b> </label>
                                                 <div class="col-lg-10 col-8">
                                                     <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="@lang('menu.permanent_address')">
                                                 </div>
@@ -517,6 +518,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -538,17 +540,17 @@
     // Add user by ajax
     $(document).on('submit', '#add_user_form', function(e) {
         e.preventDefault();
-
         $('.loading_button').show();
         var url = $(this).attr('action');
-        var request = $(this).serialize();
-        
-        $.ajax({
-            url: url
-            , type: 'post'
-            , data: request
-            , success: function(data) {
 
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false
+            , success: function(data) {
                 toastr.success(data);
                 $('.loading_button').hide();
                 window.location = "{{ route('users.index') }}";

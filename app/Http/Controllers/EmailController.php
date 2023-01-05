@@ -20,7 +20,8 @@ class EmailController extends Controller
 
     public function emailSettings(Request $request)
     {
-        $data = GeneralSetting::email();
+        $generalSettings = \Cache::get('generalSettings');
+        $data = $generalSettings['email_setting'];
         $emailSetting = [];
         $emailSetting['MAIL_MAILER'] =  $data['MAIL_MAILER'] ?? '';
         $emailSetting['MAIL_HOST'] = $data['MAIL_HOST'] ?? '';
@@ -48,9 +49,12 @@ class EmailController extends Controller
         $data['MAIL_FROM_NAME'] = $request->get('MAIL_FROM_NAME');
         $data['MAIL_ACTIVE'] = $request->MAIL_ACTIVE == 'on' ? true : false;
 
-        $generalSetting = GeneralSetting::first();
-        $generalSetting->email_setting = $data;
-        $generalSetting->save();
+        $generalSetting = GeneralSetting::query()->update([
+            'email_setting' => $data
+        ]);
+        \Cache::forget('generalSettings');
+        // $generalSetting->email_setting = $data;
+        // $generalSetting->save();
 
         return response()->json('Email settings updated successfully');
     }

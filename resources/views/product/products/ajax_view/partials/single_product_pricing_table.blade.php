@@ -1,13 +1,13 @@
 <table id="single_product_pricing_table" class="table modal-table table-sm">
     <thead>
         <tr class="bg-secondary">
-            <th class="text-white text-start">{{ __('Product cost') }}({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc.Tax)</th>
-            <th class="text-white text-start">{{ __('Product cost') }}({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc.Tax)</th>
+            <th class="text-white text-start">{{ __('Product cost') }}({{ $generalSettings['business']['currency'] }}) (Exc.Tax)</th>
+            <th class="text-white text-start">{{ __('Product cost') }}({{ $generalSettings['business']['currency'] }}) (Inc.Tax)</th>
             <th class="text-white text-start">@lang('menu.profit_margin')(%)</th>
-            <th class="text-white text-start">@lang('menu.default_selling_price')({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc.Tax)</th>
-            <th class="text-white text-start">@lang('menu.default_selling_price')({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc.Tax)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business']['currency'] }}) (Exc.Tax)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business']['currency'] }}) (Inc.Tax)</th>
             @if (count($price_groups) > 0)
-                <th class="text-white text-start">@lang('menu.price_group')({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                <th class="text-white text-start">@lang('menu.price_group')({{ $generalSettings['business']['currency'] }})</th>
             @endif
             @php
                 $priceIncTax = ($product->product_price / 100) * $tax + $product->product_price;
@@ -34,7 +34,7 @@
                 {{ App\Utils\Converter::format_in_bdt($product->product_price) }}
             </td>
             <td class="text-start">
-                {{ json_decode($generalSettings->business, true)['currency'] }}
+                {{ $generalSettings['business']['currency'] }}
                 {{ App\Utils\Converter::format_in_bdt($priceIncTax) }}
             </td>
             @if (count($price_groups) > 0)

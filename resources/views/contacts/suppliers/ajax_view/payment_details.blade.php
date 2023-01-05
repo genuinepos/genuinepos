@@ -9,7 +9,7 @@
                         {{ $supplierPayment->branch->name . '/' . $supplierPayment->branch->branch_code }}
                     @else
 
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                        {{ $generalSettings['business']['shop_name'] }}
                     @endif
                 </strong>
             </h3>
@@ -17,7 +17,7 @@
                 @if ($supplierPayment->branch)
                     {{ $supplierPayment->branch->city . ', ' . $supplierPayment->branch->state . ', ' . $supplierPayment->branch->zip_code . ', ' . $supplierPayment->branch->country }}
                 @else
-                    {{ json_decode($generalSettings->business, true)['address'] }}
+                    {{ $generalSettings['business']['address'] }}
                 @endif
             </h6>
             <h6>@lang('menu.payment_details')</h6>
@@ -41,7 +41,7 @@
                         <tr>
                             <td width="50%" class="text-start"><strong>@lang('menu.paid_amount') :</strong></td>
                             <td width="50%" class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business']['currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($supplierPayment->paid_amount) }}
                             </td>
                         </tr>
@@ -81,10 +81,10 @@
                             <td width="50%" class="text-start">
 
                                 @php
-                                    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+                                    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
 
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($supplierPayment->date)) . ' ' . date($timeFormat, strtotime($supplierPayment->time)) }}
+                                {{ date($generalSettings['business']['date_format'], strtotime($supplierPayment->date)) . ' ' . date($timeFormat, strtotime($supplierPayment->time)) }}
                             </td>
                         </tr>
 
@@ -121,7 +121,7 @@
                     @endphp
                     @foreach ($supplierPayment->supplier_payment_invoices as $pi)
                         <tr>
-                            <td class="text-start">{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($pi->purchase->date)) }}</td>
+                            <td class="text-start">{{ date($generalSettings['business']['date_format'], strtotime($pi->purchase->date)) }}</td>
                             <td class="text-start">{{ $pi->purchase->invoice_id }}</h6></td>
                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}</td>
                             @php

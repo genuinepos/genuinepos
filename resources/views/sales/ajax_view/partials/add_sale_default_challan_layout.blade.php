@@ -29,10 +29,10 @@
                                     <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                 @endif
                             @else
-                                @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                                    <img src="{{ asset('uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                @if ($generalSettings['business']['business_logo'] != null)
+                                    <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
                                 @else
-                                    <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                    <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business']['shop_name'] }}</span>
                                 @endif
                             @endif
                         @endif
@@ -46,7 +46,7 @@
                         <div class="heading text-end">
                             @if ($sale->branch)
                                 <h5 class="company_name">
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                    {{ $generalSettings['business']['shop_name'] }}
                                 </h5>
                                 <p class="company_address">
                                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
@@ -64,20 +64,20 @@
                                     <p><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</p>
                                 @endif
                             @else
-                                <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
+                                <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
                                 <p class="company_address">
-                                    {{ json_decode($generalSettings->business, true)['address'] }}
+                                    {{ $generalSettings['business']['address'] }}
                                 </p>
 
                                 @if ($defaultLayout->branch_phone)
                                     <p><b>@lang('menu.phone') :</b>
-                                        {{ json_decode($generalSettings->business, true)['phone'] }}
+                                        {{ $generalSettings['business']['phone'] }}
                                     </p>
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
                                     <p><b>@lang('menu.email') :</b>
-                                        {{ json_decode($generalSettings->business, true)['email'] }}
+                                        {{ $generalSettings['business']['email'] }}
                                     </p>
                                 @endif
                             @endif
@@ -126,7 +126,7 @@
                     <ul class="list-unstyled">
                         <li><strong> @lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}
                             </li>
-                        <li><strong>@lang('menu.date'): </strong> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }} </li>
+                        <li><strong>@lang('menu.date'): </strong> {{ date($generalSettings['business']['date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }} </li>
                         <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
@@ -198,7 +198,7 @@
             <div class="row mt-1">
                 <div class="col-4 text-center">
                     <small>@lang('menu.print_date') :
-                        {{ date(json_decode($generalSettings->business, true)['date_format']) }}
+                        {{ date($generalSettings['business']['date_format']) }}
                     </small>
                 </div>
 

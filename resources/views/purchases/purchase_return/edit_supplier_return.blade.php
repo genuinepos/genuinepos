@@ -46,7 +46,7 @@
                                                 <label class="col-4"><b>@lang('menu.location') :</b> </label>
                                                 <div class="col-8">
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
+                                                    <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'] }}">
                                                 </div>
                                             </div>
 
@@ -86,7 +86,7 @@
 
                                                 <div class="col-8">
                                                     <input type="text" name="date" class="form-control changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}" id="date" autocomplete="off">
+                                                        value="{{ date($generalSettings['business']['date_format'], strtotime($return->date)) }}" id="date" autocomplete="off">
                                                         <span class="error error_date"></span>
                                                 </div>
                                             </div>
@@ -258,7 +258,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4 text-center"><strong>@lang('menu.net_total_amount') : </strong> {{ json_decode($generalSettings->business, true)['currency'] }}</label>
+                                                <label class="col-4 text-center"><strong>@lang('menu.net_total_amount') : </strong> {{ $generalSettings['business']['currency'] }}</label>
                                                 <div class="col-8">
                                                     <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                                 </div>
@@ -275,7 +275,7 @@
                     <div class="col-md-12">
                         <button type="button" class="btn loading_button d-hide"><i
                             class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                        <button id="save" class="btn btn-sm btn-primary float-end">@lang('menu.save') (Shift+Enter)</button>
+                        <button id="save" class="btn btn-sm btn-primary float-end">@lang('menu.save')</button>
                     </div>
                 </div>
 
@@ -933,7 +933,7 @@
             }
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

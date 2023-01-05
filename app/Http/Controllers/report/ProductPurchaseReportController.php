@@ -16,7 +16,7 @@ class ProductPurchaseReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     // Index view of supplier report
@@ -24,7 +24,7 @@ class ProductPurchaseReportController extends Controller
     {
         if ($request->ajax()) {
             $converter = $this->converter;
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $purchaseProducts = '';
             $query = DB::table('purchase_products')
                 ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')

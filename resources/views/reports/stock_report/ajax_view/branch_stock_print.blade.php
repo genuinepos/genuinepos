@@ -13,20 +13,20 @@
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
 @php
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -62,7 +62,7 @@
                         <tr>
                             <td class="text-start">{{ $row->variant_code }}</td>
                             <td class="text-start">{{ $row->name.'-'.$row->variant_name }}</td>
-                            <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}</td>
+                            <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : $generalSettings['business']['shop_name'] . '(<b>HO</b>)' !!}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->variant_price) }}</td>
                             <td class="text-end">{{ $row->variant_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
@@ -77,7 +77,7 @@
                         <tr>
                             <td class="text-start">{{ $row->product_code }}</td>
                             <td class="text-start">{{ $row->name }}</td>
-                            <td class="text-start">{!! $row->b_name ? $row->b_name : json_decode($generalSettings->business, true)['shop_name'] !!}</td>
+                            <td class="text-start">{!! $row->b_name ? $row->b_name : $generalSettings['business']['shop_name'] !!}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->product_price) }}</td>
                             <td class="text-end">{{ $row->product_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
@@ -98,7 +98,7 @@
 <div id="footer">
     <div class="row mt-1">
         <div class="col-4 text-start">
-            <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
         </div>
 
         <div class="col-4 text-center">

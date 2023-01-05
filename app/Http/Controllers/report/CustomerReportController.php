@@ -14,14 +14,14 @@ class CustomerReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-        
+
     }
 
     // Index view of supplier report
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $customers = '';
             $query = DB::table('customers')->where('status', 1);
             if ($request->customer_id) {

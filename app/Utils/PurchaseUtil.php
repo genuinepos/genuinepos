@@ -25,7 +25,7 @@ class PurchaseUtil
 
     public function purchaseListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -105,7 +105,7 @@ class PurchaseUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                return date($generalSettings['business']['date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -122,7 +122,7 @@ class PurchaseUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
                 }
             })
             ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
@@ -170,7 +170,7 @@ class PurchaseUtil
 
     public function poListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -253,7 +253,7 @@ class PurchaseUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                return date($generalSettings['business']['date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -270,7 +270,7 @@ class PurchaseUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return json_decode($generalSettings->business, true)['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
                 }
             })
             ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
@@ -314,7 +314,7 @@ class PurchaseUtil
 
     public function purchaseProductListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = \Cache::get('generalSettings');
         $converter = $this->converter;
         $purchaseProducts = '';
         $query = DB::table('purchase_products')

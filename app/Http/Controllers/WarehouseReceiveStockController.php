@@ -15,7 +15,7 @@ class WarehouseReceiveStockController extends Controller
     public function __construct(ProductStockUtil $productStockUtil,)
     {
         $this->productStockUtil = $productStockUtil;
-        
+
     }
 
     //Branch receiving stock index view
@@ -23,7 +23,7 @@ class WarehouseReceiveStockController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = \Cache::get('generalSettings');
             $transfers = DB::table('transfer_stock_to_warehouses')
                 ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_warehouses.branch_id', 'branches.id')->select(
@@ -56,7 +56,7 @@ class WarehouseReceiveStockController extends Controller
                         return $row->branch_name . '/' . $row->branch_code;
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
                     }
                 })
                 ->editColumn('to',  function ($row) {
@@ -137,7 +137,7 @@ class WarehouseReceiveStockController extends Controller
 
         $index = 0;
         foreach ($product_ids as $product_id) {
-            
+
             $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
             $updateTransferProduct = TransferStockToWarehouseProduct::where('transfer_stock_id', $updateSandStocks->id)
                 ->where('product_id', $product_id)
@@ -149,7 +149,7 @@ class WarehouseReceiveStockController extends Controller
             $this->productStockUtil->addWarehouseProduct($product_id, $variant_id, $updateSandStocks->warehouse_id);
             $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateSandStocks->warehouse_id);
             $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $updateSandStocks->branch_id);
-            
+
             $index++;
         }
 

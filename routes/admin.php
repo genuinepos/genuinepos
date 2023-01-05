@@ -4,7 +4,6 @@ use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\CustomerCreditLimit;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Models\CustomerOpeningBalance;
@@ -94,13 +93,12 @@ use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard.dashboard');
+
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
-
-
 Route::get('change/lang/{lang}', [DashboardController::class, 'changeLang'])->name('change.lang');
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard.dashboard');
 Route::get('dashboard/card/amount', [DashboardController::class, 'cardData'])->name('dashboard.card.data');
 Route::get('dashboard/stock/alert', [DashboardController::class, 'stockAlert'])->name('dashboard.stock.alert');
 Route::get('dashboard/sale/order', [DashboardController::class, 'saleOrder'])->name('dashboard.sale.order');
@@ -800,7 +798,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('balance/sheet', [AccountingRelatedSectionController::class, 'balanceSheet'])->name('accounting.balance.sheet');
         Route::get('balance/sheet/amounts', [AccountingRelatedSectionController::class, 'balanceSheetAmounts'])->name('accounting.balance.sheet.amounts');
-        
+
         Route::get('trial/balance', [AccountingRelatedSectionController::class, 'trialBalance'])->name('accounting.trial.balance');
         Route::get('trial/balance/amounts', [AccountingRelatedSectionController::class, 'trialBalanceAmounts'])->name('accounting.trial.balance.amounts');
 
@@ -808,7 +806,7 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('cash/flow/amounts', [AccountingRelatedSectionController::class, 'cashFlowAmounts'])->name('accounting.cash.flow.amounts');
         Route::get('filter/cash/flow', [AccountingRelatedSectionController::class, 'filterCashflow'])->name('accounting.filter.cash.flow');
         Route::get('print/cash/flow', [AccountingRelatedSectionController::class, 'printCashflow'])->name('accounting.print.cash.flow');
-        
+
         Route::get('profit/loss/account', [AccountingRelatedSectionController::class, 'profitLossAccount'])->name('accounting.profit.loss.account');
         Route::get('profit/loss/account/amounts', [AccountingRelatedSectionController::class, 'profitLossAccountAmounts'])->name('accounting.profit.loss.account.amounts');
         Route::get('print/profit/loss/account', [AccountingRelatedSectionController::class, 'printProfitLossAccount'])->name('accounting.profit.loss.account.print');
@@ -1089,69 +1087,3 @@ Route::group(['prefix' => 'communication'], function () {
         Route::get('settings/server/setup/design/pages', [SmsController::class, 'smsServerSetupDesignPages'])->name('communication.sms.settings.server.setup.design.pages');
     });
 });
-
-Route::get('change/lang/{lang}', [DashboardController::class, 'changeLang'])->name('change.lang');
-
-Route::get('maintenance/mode', function () {
-
-    return view('maintenance/maintenance');
-})->name('maintenance.mode');
-
-Route::get('add-user', function () {
-
-    $addAdmin = new User();
-    $addAdmin->prefix = 'Mr.';
-    $addAdmin->name = 'Super';
-    $addAdmin->last_name = 'Admin';
-    $addAdmin->email = 'superadmin@gmail.com';
-    $addAdmin->username = 'superadmin';
-    $addAdmin->password = Hash::make('12345');
-    $addAdmin->role_type = 3;
-    $addAdmin->role_permission_id = 1;
-    $addAdmin->allow_login = 1;
-    $addAdmin->save();
-    //1=super_admin;2=admin;3=Other;
-
-});
-
-Route::get('/test', function () {
-
-    //return str_pad(10, 10, "0", STR_PAD_LEFT);
-    // $purchases = Purchase::all();
-    // foreach ($purchases as $p) {
-    //     $p->is_last_created = 0;
-    //     $p->save();
-    // }
-
-    $customers = DB::table('customers')->get();
-
-    foreach ($customers as $customer){
-
-        $customerOpeningBalance = new CustomerOpeningBalance();
-        $customerOpeningBalance->customer_id = $customer->id;
-        $customerOpeningBalance->amount = $customer->opening_balance;
-        $customerOpeningBalance->created_by_id = auth()->user()->id;
-        $customerOpeningBalance->save();
-
-        $customerCreditLimit = new CustomerCreditLimit();
-        $customerCreditLimit->customer_id = $customer->id;
-        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
-        $customerCreditLimit->created_by_id = auth()->user()->id;
-        $customerCreditLimit->save();
-    }
-
-    $suppliers = DB::table('suppliers')->get();
-
-    foreach ($suppliers as $supplier){
-
-        $supplierOpeningBalance = new SupplierOpeningBalance();
-        $supplierOpeningBalance->supplier_id = $supplier->id;
-        $supplierOpeningBalance->amount = $supplier->opening_balance;
-        $supplierOpeningBalance->created_by_id = auth()->user()->id;
-        $supplierOpeningBalance->save();
-    }
-});
-
-// Route::get('dbal', function() {
-//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
-// });

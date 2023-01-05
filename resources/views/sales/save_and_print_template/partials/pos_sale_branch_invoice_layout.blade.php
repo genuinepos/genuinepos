@@ -101,9 +101,9 @@
                                 </li>
                             @endif
 
-                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                            @if ($generalSettings['reward_point_settings']['enable_cus_point'] == 1)
                                 <li>
-                                    <strong>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} : </strong> {{ $sale->customer ? $sale->customer->point : 0 }}
+                                    <strong>{{ $generalSettings['reward_point_settings']['point_display_name'] }} : </strong> {{ $sale->customer ? $sale->customer->point : 0 }}
                                 </li>
                             @endif
                         </ul>
@@ -134,7 +134,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong> @lang('menu.invoice_no') : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>@lang('menu.date'):  </strong> {{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat ,strtotime($sale->time )) }}</li>
+                            <li><strong>@lang('menu.date'):  </strong> {{ date($generalSettings['business']['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat ,strtotime($sale->time )) }}</li>
                             <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
                     </div>
@@ -255,14 +255,14 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end"><strong>@lang('menu.net_total_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong>@lang('menu.net_total_amount') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="net_total text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.order_discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.order_discount') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="order_discount text-end">
                                     @if ($sale->order_discount_type == 1)
                                         {{ $sale->order_discount_amount }} (Fixed)
@@ -273,14 +273,14 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.order_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.order_tax') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="order_tax text-end">
                                     ({{ $sale->order_tax_percent }} %)
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.shipment_charge') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.shipment_charge') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="shipment_charge text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
@@ -288,7 +288,7 @@
 
                             @if ($previous_due != 0)
                                 <tr>
-                                    <td class="text-end"><strong> @lang('menu.previous_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="text-end"><strong> @lang('menu.previous_due') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                     <td class="total_payable text-end">
                                         {{ App\Utils\Converter::format_in_bdt($previous_due) }}
                                     </td>
@@ -296,14 +296,14 @@
                             @endif
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_payable') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_payable') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="total_payable text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="total_paid text-end">
                                     {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
                                 </td>
@@ -311,7 +311,7 @@
 
                             @if ($change_amount > 0)
                                 <tr>
-                                    <td class="text-end"><strong> @lang('menu.change_amount') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                    <td class="text-end"><strong> @lang('menu.change_amount') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                     <td class="total_paid text-end">
                                         {{ App\Utils\Converter::format_in_bdt($change_amount) }}
                                     </td>
@@ -319,7 +319,7 @@
                             @endif
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}</strong></td>
                                 <td class="total_due text-end">
                                     {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                 </td>
@@ -372,7 +372,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small>@lang('menu.print_date') : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+                        <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
                     </div>
 
                     <div class="col-4 text-center">
@@ -438,7 +438,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.date'):</b> <span>{{ date(json_decode($generalSettings->business, true)['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <b>@lang('menu.date'):</b> <span>{{ date($generalSettings['business']['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
                                 </th>
                             </tr>
 
@@ -454,10 +454,10 @@
                                 </th>
                             </tr>
 
-                            @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == 1)
+                            @if ($generalSettings['reward_point_settings']['enable_cus_point'] == 1)
                                 <tr>
                                     <th class="text-center">
-                                        <b>{{ json_decode($generalSettings->reward_poing_settings, true)['point_display_name'] }} :</b>
+                                        <b>{{ $generalSettings['reward_point_settings']['point_display_name'] }} :</b>
                                         <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span>
                                     </th>
                                 </tr>
@@ -496,7 +496,7 @@
                     <table class="w-100">
                         <thead>
                             <tr>
-                                <th class="text-end">@lang('menu.net_total') : {{ json_decode($generalSettings->business, true)['currency'] }} </th>
+                                <th class="text-end">@lang('menu.net_total') : {{ $generalSettings['business']['currency'] }} </th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
@@ -505,7 +505,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.discount') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.discount') : {{ $generalSettings['business']['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
@@ -514,7 +514,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.order_tax') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business']['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)
@@ -524,7 +524,7 @@
 
                             @if ($previous_due != 0)
                                 <tr>
-                                    <th class="text-end">@lang('menu.previous_due') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.previous_due') : {{ $generalSettings['business']['currency'] }}</th>
                                     <th class="text-end">
                                         <span>
                                             {{ App\Utils\Converter::format_in_bdt($previous_due) }}
@@ -534,7 +534,7 @@
                             @endif
 
                             <tr>
-                                <th class="text-end">@lang('menu.payable') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end">@lang('menu.payable') : {{ $generalSettings['business']['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
@@ -543,7 +543,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end"> @lang('menu.paid') : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                <th class="text-end"> @lang('menu.paid') : {{ $generalSettings['business']['currency'] }}</th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
@@ -554,7 +554,7 @@
                             @if ($sale->ex_status == 0)
                                 @if ($change_amount > 0)
                                     <tr>
-                                        <th class="text-end"><strong> @lang('menu.change_amount') : {{ json_decode($generalSettings->business, true)['currency'] }} </strong></th>
+                                        <th class="text-end"><strong> @lang('menu.change_amount') : {{ $generalSettings['business']['currency'] }} </strong></th>
                                         <th class="total_paid text-end">
                                             <span>
                                                 {{ App\Utils\Converter::format_in_bdt($change_amount) }}
@@ -565,7 +565,7 @@
                             @endif
 
                             <tr>
-                                <th class="text-end"> <strong>@lang('menu.due') : {{ json_decode($generalSettings->business, true)['currency'] }}</strong></th>
+                                <th class="text-end"> <strong>@lang('menu.due') : {{ $generalSettings['business']['currency'] }}</strong></th>
                                 <th class="text-end">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($total_due) }}

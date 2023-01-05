@@ -8,7 +8,7 @@
        processing: true,
        serverSide: true,
        searchable: true,
-       "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+       "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
        ajax: "{{ route('product.subcategories.index') }}",
        columnDefs: [{"targets": [0, 1, 3, 4], "orderable": false, "searchable": false}],

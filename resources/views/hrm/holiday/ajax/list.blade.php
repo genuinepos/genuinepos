@@ -14,14 +14,14 @@
             <tr data-info="{{ $row }}" class="text-center">
                 <td>{{ $key+1 }}</td>
                 <td>{{ $row->holiday_name }}</td>
-                <td>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->start_date)) }} to {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->end_date)) }} </td>
+                <td>{{date($generalSettings['business']['date_format'], strtotime($row->start_date)) }} to {{ date($generalSettings['business']['date_format'], strtotime($row->end_date)) }} </td>
                 <td>
                     @if ($row->is_all)
                         All
                     @elseif($row->branch_id)
                         {{ $row->branch->name.'/'.$row->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }}  (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business']['shop_name'] }}  (<b>@lang('menu.head_office')</b>)
                     @endif
                 </td>
                 <td>{{ $row->notes }}</td>

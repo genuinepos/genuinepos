@@ -45,13 +45,13 @@ class CustomerUtil
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
-                if ($row->status == 1) {
+                // if ($row->status == 1) {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                } else {
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                // } else {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                }
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                // }
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -115,11 +115,15 @@ class CustomerUtil
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
-
-                    return '<i class="far fa-thumbs-up text-success"></i>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('contacts.customer.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '</div>';
+                    return $html;
                 } else {
-
-                    return '<i class="far fa-thumbs-down text-danger"></i>';
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.customer.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '</div>';
+                    return $html;
                 }
             })
             ->rawColumns(['action', 'credit_limit', 'business_name', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due', 'status'])

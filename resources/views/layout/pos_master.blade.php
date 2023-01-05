@@ -127,7 +127,7 @@
     </style>
 </head>
 
-<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'dark-theme' }}">
+<body class="{{ $generalSettings['system']['theme_color'] ?? 'dark-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.store') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -206,7 +206,7 @@
         </div>
         <!--Add Payment modal End-->
 
-        @if (json_decode($generalSettings->reward_poing_settings, true)['enable_cus_point'] == '1')
+        @if ($generalSettings['reward_point_settings']['enable_cus_point'] == '1')
         <!--Redeem Point modal-->
             <div class="modal fade" id="pointReedemModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
                 <div class="modal-dialog col-40-modal" role="document">
@@ -403,7 +403,7 @@
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ json_decode($generalSettings->business, true)['currency'] }}</span>
+                                    <span>{{ $generalSettings['business']['currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
 

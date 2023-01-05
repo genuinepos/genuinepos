@@ -32,7 +32,7 @@
                                                     <select class="form-control submit_able select2" name="branch_id" id="branch_id">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">
-                                                            {{ json_decode($generalSettings->business, true)['shop_name'] . '(HO)' }}
+                                                            {{ $generalSettings['business']['shop_name'] . '(HO)' }}
                                                         </option>
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}">
@@ -125,7 +125,7 @@
                                 @if(auth()->user()->can('product_add'))
 
                                     <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
-                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add_product') (Ctrl+Enter)</a>
+                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add_product')</a>
 
                                         <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
 
@@ -224,7 +224,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[0, 'asc']],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('products.all.product') }}",

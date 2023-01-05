@@ -15,7 +15,7 @@ class AttendanceController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //attendance index page
@@ -28,7 +28,7 @@ class AttendanceController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->select('business')->first();
+            $generalSettings = \Cache::get('generalSettings');
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
 				->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
@@ -73,7 +73,7 @@ class AttendanceController extends Controller
                 'users.name',
                 'users.last_name',
             )->orderBy('hrm_attendances.at_date_ts', 'DESC');
-			
+
 			return DataTables::of($attendances)
 				->addColumn('action', function ($row) {
 
@@ -95,7 +95,7 @@ class AttendanceController extends Controller
 				})
 				->editColumn('date', function ($row) use ($generalSettings) {
 
-					return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->at_date));
+					return date($generalSettings['business']['date_format'], strtotime($row->at_date));
 				})
 				->editColumn('clock_in_out', function ($row) {
 
@@ -119,7 +119,7 @@ class AttendanceController extends Controller
 				->rawColumns(['action', 'date', 'clock_in_out', 'work_duration'])
 				->make(true);
 		}
-        
+
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
         $employee = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
@@ -237,14 +237,14 @@ class AttendanceController extends Controller
         return response()->json('Attendances updated successfully!');
     }
 
-    // Delete attendance 
+    // Delete attendance
     public function delete(Request $request, $attendanceId)
     {
         $deleteAttendance = Attendance::find($attendanceId);
 
         if (!is_null($deleteAttendance)) {
 
-            $deleteAttendance->delete();  
+            $deleteAttendance->delete();
         }
         return response()->json('Attendance deleted successfully');
     }

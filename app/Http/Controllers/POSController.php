@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\CashRegisterTransaction;
+use App\Services\CacheServiceInterface;
 
 class POSController extends Controller
 {
@@ -1233,9 +1234,8 @@ class POSController extends Controller
         return view('sales.pos.settings.index');
     }
 
-    public function settingsStore(Request $request)
+    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
     {
-        $updatePosSettings = GeneralSetting::first();
         $posSettings = [
             'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
             'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
@@ -1247,9 +1247,10 @@ class POSController extends Controller
             'is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
             'is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
         ];
-
-        $updatePosSettings->pos = json_encode($posSettings);
-        $updatePosSettings->save();
+        GeneralSetting::query()->update([
+            'pos' => $posSettings,
+        ]);
+        $cacheService->syncGeneralSettings();
         return response()->json('POS settings updated successfully');
     }
 }

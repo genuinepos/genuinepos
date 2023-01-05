@@ -1370,14 +1370,11 @@
                 __chackStockLimitation($(this));
             });
         }
-
         if (status == 1 && stockErrors > 0) {
-
             $('.loading_button').hide();
             toastr.error('Stock Limitation Error.', 'Some thing went wrong.');
             return;
         }
-
         $('.submit_button').prop('type', 'button');
         $.ajax({
             url:url,

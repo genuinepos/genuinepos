@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manufacturing;
 use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
+use App\Services\CacheServiceInterface;
 
 class SettingsController extends Controller
 {
@@ -23,21 +24,21 @@ class SettingsController extends Controller
     }
 
     // Add tax settings
-    public function store(Request $request)
+    public function store(Request $request, CacheServiceInterface $cacheService)
     {
         if (!auth()->user()->can('manuf_settings')) {
             return response()->json('Access Denied');
         }
 
-        $updateTaxSettings = GeneralSetting::first();
-        $mfSettings = [
+        $settings = [
             'production_ref_prefix' => $request->production_ref_prefix,
             'enable_editing_ingredient_qty' => isset($request->enable_editing_ingredient_qty) ? 1 : 0,
             'enable_updating_product_price' => isset($request->enable_updating_product_price) ? 1 : 0,
         ];
-
-        $updateTaxSettings->mf_settings = json_encode($mfSettings);
-        $updateTaxSettings->save();
+        GeneralSetting::query()->update([
+            'mf_settings' => $settings,
+        ]);
+        $cacheService->syncGeneralSettings();
         return response()->json('Manufacturing settings updated successfully');
     }
 }

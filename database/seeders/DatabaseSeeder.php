@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\InvoiceLayout;
 use Exception;
 use Illuminate\Database\Seeder;
 
@@ -24,6 +25,12 @@ class DatabaseSeeder extends Seeder
             $this->call(UserRoleSeeder::class);
             $this->call(DefaultUsersSeeder::class);
             $this->call(RolePermissionSeeder::class);
+            $this->call(BarcodeSettingsSeeder::class);
+            $this->call(InvoiceLayoutSeeder::class);
+            $this->call(InvoiceSchemaSeeder::class);
+            $this->call(UnitSeeder::class);
+            $this->call(AccountSeeder::class);
+            $this->call(PermissionSeeder::class);
             $mailSettings = '{"MAIL_MAILER":"smtp","MAIL_HOST":"smtp.gmail.com","MAIL_PORT":"587","MAIL_USERNAME":"s1@gmail.com","MAIL_PASSWORD":"speeddigit@54321","MAIL_ENCRYPTION":"tls","MAIL_FROM_ADDRESS":"s1@gmail.com","MAIL_FROM_NAME":"SpeedDigit","MAIL_ACTIVE":true}';
 
         } catch (Exception $e) {

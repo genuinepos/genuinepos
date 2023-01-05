@@ -20,6 +20,7 @@ use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
+use App\Services\CacheServiceInterface;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -36,7 +37,6 @@ class ProductController extends Controller
         $this->productUtil = $productUtil;
         $this->productStockUtil = $productStockUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-
     }
 
     // index view
@@ -1082,10 +1082,8 @@ class ProductController extends Controller
         return view('product.settings.index', compact('units'));
     }
 
-    public function settingsStore(Request $request)
+    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
     {
-        $updateProductSettings = GeneralSetting::first();
-
         $productSettings = [
             'product_code_prefix' => $request->product_code_prefix,
             'default_unit_id' => $request->default_unit_id,
@@ -1095,9 +1093,10 @@ class ProductController extends Controller
             'is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
             'is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
         ];
-
-        $updateProductSettings->product = json_encode($productSettings);
-        $updateProductSettings->save();
+        $updateProductSettings = GeneralSetting::query()->update([
+            'product' => $productSettings,
+        ]);
+        $cacheService->syncGeneralSettings();
         return response()->json('Product settings updated successfully');
     }
 }

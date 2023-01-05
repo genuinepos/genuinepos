@@ -1199,7 +1199,7 @@ class SaleUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.drafts.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 

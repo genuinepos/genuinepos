@@ -248,8 +248,10 @@
         // Make print
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault();
+
             var body = $('.draft_print_template').html();
             var header = $('.heading_area').html();
+            console.log({body});
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -339,9 +341,11 @@
 
         //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
+            e.preventDefault();
+            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#payment_view_modal_body').html(data);
                 $('#paymentViewModal').modal('show');
             });

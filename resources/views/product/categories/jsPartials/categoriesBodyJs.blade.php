@@ -85,10 +85,14 @@
                     $('.data_preloader').hide();
                     document.getElementById('e_name').focus();
                 },error:function(err){
+
                     $('.data_preloader').hide();
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
+                        
                         toastr.error('Server Error, Please contact to the support team.');
                     }
                 }

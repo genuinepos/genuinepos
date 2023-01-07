@@ -1164,6 +1164,7 @@ class SaleUtil
     {
         $generalSettings = \Cache::get('generalSettings');
 
+        
         $drafts = '';
 
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')

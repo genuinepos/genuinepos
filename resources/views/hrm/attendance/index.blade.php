@@ -390,29 +390,29 @@
             });
         });
 
-            $(document).on('click', '#delete',function(e){
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);
-                $.confirm({
-                    'title': 'Confirmation',
-                    'message': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {
-                            'class': 'yes bg-primary',
-                            'action': function() {
-                                $('#deleted_form').submit();
-                            }
-                        },
-                        'No': {
-                            'class': 'no bg-danger',
-                            'action': function() {
-                                // alert('Deleted canceled.')
-                            }
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            $.confirm({
+                'title': 'Confirmation',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes bg-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no bg-danger',
+                        'action': function() {
+                            // alert('Deleted canceled.')
                         }
                     }
-                });
+                }
             });
+        });
 
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){

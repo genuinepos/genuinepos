@@ -1999,8 +1999,9 @@
                                     @endif
 
                                     @if (auth()->user()->can('leave_type'))
+
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.leave.type') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.leave.type.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-th-large"></i></span>
@@ -2013,7 +2014,7 @@
 
                                     @if (auth()->user()->can('leave_assign'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.leave') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.leaves.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-level-down-alt"></i></span>

@@ -258,6 +258,13 @@
                 async:false,
                 data:request,
                 success:function(data){
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
                     getAllCateogry();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();

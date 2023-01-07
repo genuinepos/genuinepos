@@ -70,16 +70,16 @@
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form id="add_leavetype_form" action="{{ route('hrm.leavetype.store') }}">
+                    <form id="add_leave_type_form" action="{{ route('hrm.leave.type.store') }}">
                         <div class="form-group">
                             <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="leave_type" class="form-control add_input" data-name="leave type" id="leave_type" placeholder="Leave Type" required="" />
+                            <input required type="text" name="leave_type" class="form-control add_input" data-name="leave type" id="leave_type" placeholder="Leave Type" required="" />
                             <span class="error error_leave_type"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="{{ __('Max leave count') }}t"  />
+                            <input required type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="{{ __('Max leave count') }}t"  />
                             <span class="error error_max_leave_count"></span>
                         </div>
 
@@ -110,66 +110,30 @@
     </div>
 
     <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Leave Type') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="edit_leavetype_form" action="{{ route('hrm.leavetype.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" placeholder="@lang('menu.leave_type')" required="" />
-                            <span class="error error_e_leave_type"></span>
-                        </div>
-
-                         <div class="form-group">
-                            <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
-                            <input type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" placeholder="{{ __('Max leave count') }}"  />
-                            <span class="error error_e_max_leave_count"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label><b>{{ __('Leave Count Interval') }} :</b></label>
-                            <select name="leave_count_interval" class="form-control" id="e_leave_count_interval">
-                            </select>
-                        </div>
-
-                        <div class="form-group d-flex justify-content-end mt-3">
-                            <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide">
-                                    <i class="fas fa-spinner text-primary"></i><span> @lang('menu.loading')...</span>
-                                </button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
 <script>
-    // Get all category by ajax
-    function getAllType(){
-        $('.data_preloader').show();
-        $.ajax({
-            url:"{{ route('hrm.leavetype.all') }}",
-            type:'get',
-            success:function(data){
-                $('.table-responsive').html(data);
-                $('.data_preloader').hide();
-            }
-        });
-    }
-    getAllType();
+    var table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',className: 'btn btn-primary',autoPrint: true,exportOptions: {columns: ':visible'}}
+        ],
+        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        processing: true,
+        serverSide: true,
+        searchable: true,
+        ajax: "{{ route('hrm.leave.type.index') }}",
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'leave_type',name: 'leave_type'},
+            {data: 'max_leave_count',name: 'max_leave_count'},
+            {data: 'leave_count_interval',name: 'leave_count_interval'},
+            {data: 'action'},
+        ],
+    });
 
      // Setup ajax for csrf token.
     $.ajaxSetup({
@@ -181,9 +145,10 @@
     // call jquery method
     $(document).ready(function(){
         // Add department by ajax
-        $('#add_leavetype_form').on('submit', function(e){
+        $('#add_leave_type_form').on('submit', function(e){
             e.preventDefault();
             $('.loading_button').show();
+            $('.submit_button').prop('type', 'submit');
             var request = $(this).serialize();
             var url = $(this).attr('action');
             $.ajax({
@@ -191,64 +156,59 @@
                 type:'post',
                 data: request,
                 success:function(data){
+                    
+                    table.ajax.reload();
                     toastr.success(data);
-                    $('#add_leavetype_form')[0].reset();
+                    $('#add_leave_type_form')[0].reset();
                     $('.loading_button').hide();
-                    getAllType();
+                    $('.submit_button').prop('type', 'submit');
                     $('#addModal').modal('hide');
+                },error: function(err) {
+
+                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $('.submit_button').prop('type', 'submit');
+
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
+                        return;
+                    }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
         // pass editable data to edit modal fields
-        $(document).on('click', '#edit', function(e){
+        $(document).on('click', '#edit', function(e) {
             e.preventDefault();
-            var typeInfo = $(this).closest('tr').data('info');
-            $('#id').val(typeInfo.id);
-            $('#e_leave_type').val(typeInfo.leave_type);
-            $('#e_max_leave_count').val(typeInfo.max_leave_count);
-            $('#e_leave_count_interval').empty();
-            if (typeInfo.leave_count_interval==1) {
-            	$('#e_leave_count_interval').append(
-            		'<option value="1">Current Month</option>',
-            		'<option value="0"  >None</option>',
-            		'<option value="2"  >Current Financial Year</option>'
-            	)
-            }
-            if (typeInfo.leave_count_interval==0) {
-            	$('#e_leave_count_interval').append(
-            		'<option value="0"  >None</option>',
-            		'<option value="1">Current Month</option>',
-            		'<option value="2"  >Current Financial Year</option>'
-            	)
-            }
-            if (typeInfo.leave_count_interval==2) {
-            	$('#e_leave_count_interval').append(
-            		'<option value="2"  >Current Financial Year</option>',
-            		'<option value="0"  >None</option>',
-            		'<option value="1">Current Month</option>'
-            	)
-            }
 
-            $('#editModal').modal('show');
-        });
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
 
-        // edit category by ajax
-        $('#edit_leavetype_form').on('submit', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data){
-                    console.log(data);
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    getAllType();
-                    $('#editModal').modal('hide');
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#editModal').html(data);
+                    $('#editModal').modal('show');
+                    $('.data_preloader').hide();
+                },error:function(err){
+
+                    $('.data_preloader').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
+                    }else{
+
+                        toastr.error('Server Error, Please contact to the support team.');
+                    }
                 }
             });
         });
@@ -288,7 +248,7 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    getAllType();
+                    table.ajax.reload();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }

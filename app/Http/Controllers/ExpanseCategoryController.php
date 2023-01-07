@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class ExpanseCategoryController extends Controller
 {
-    
+
     public function __construct()
     {
-        
     }
 
     // Category main page/index page
@@ -39,7 +38,7 @@ class ExpanseCategoryController extends Controller
         $code = 0;
         if ($lastExpenseCategory) {
             $code = ++$lastExpenseCategory->id;
-        }else {
+        } else {
             $code = 1;
         }
 
@@ -70,12 +69,20 @@ class ExpanseCategoryController extends Controller
     public function delete(Request $request, $categoryId)
     {
         //return $categoryId;
-        $deleteCategory = ExpanseCategory::find($categoryId);
+        $deleteCategory = ExpanseCategory::with('expenseDescriptions')->where('id', $categoryId)->first();
+
+        if(count($deleteCategory->expenseDescriptions) > 0) {
+
+            return response()->json(['errorMsg' => 'Expanse category can\'t be deleted. This Category associated with expense']);
+        }
 
         if (!is_null($deleteCategory)) {
 
             $deleteCategory->delete();
         }
+
+        DB::statement('ALTER TABLE expanse_categories AUTO_INCREMENT = 1');
+
         return response()->json('Expanse category deleted successfully');
     }
 }

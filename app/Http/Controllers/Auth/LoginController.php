@@ -48,6 +48,16 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function showLoginForm()
+    {
+        if (Auth::check('web')) {
+
+            return redirect()->back();
+        }
+        
+        return view('auth.login');
+    }
+
     public function login(Request $request)
     {
         $this->validate($request, [
@@ -58,10 +68,14 @@ class LoginController extends Controller
         $admin = User::where('username', $request->username)->where('allow_login', 1)->first();
 
         if (isset($admin) && $admin->allow_login == 1) {
+
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+
                 if (! Session::has($admin->language)) {
+
                     session(['lang' => $admin->language]);
                 }
+
                 $this->userActivityLogUtil->addLog(
                     action: 4,
                     subject_type: 18,
@@ -69,8 +83,11 @@ class LoginController extends Controller
                     branch_id: $admin->branch_id,
                     user_id: $admin->id,
                 );
+
                 return redirect()->intended(route('dashboard.dashboard'));
+
             } else {
+
                 session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
                 return redirect()->back();
             }
@@ -79,6 +96,8 @@ class LoginController extends Controller
             return redirect()->back();
         }
     }
+
+
 
     public function logout(Request $request)
     {

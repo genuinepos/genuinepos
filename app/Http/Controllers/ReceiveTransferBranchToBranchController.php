@@ -32,7 +32,7 @@ class ReceiveTransferBranchToBranchController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->select('id', 'business')->first();
+            $generalSettings = \Cache::get('generalSettings');
 
             $receivables = '';
 

@@ -2,67 +2,92 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Hrm\Leavetype;
+use App\Models\Hrm\LeaveType;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Yajra\DataTables\Facades\DataTables;
 
-class LeavetypeController extends Controller
+class LeaveTypeController extends Controller
 {
-	public function __construct()
+    public function __construct()
     {
-        
     }
 
-    //show Leavetype page only
-    public function index()
+    public function index(Request $request)
     {
-    	return view('hrm.leavetype.index');
+        if ($request->ajax()) {
+
+            $leaveTypes = LeaveType::orderBy('id', 'DESC')->get();
+
+            return DataTables::of($leaveTypes)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+
+                    $html = '<div class="dropdown table-dropdown">';
+                    $html .= '<a href="' . route('hrm.leave.type.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('hrm.leave.type.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->editColumn('leave_count_interval', function ($row) {
+
+                    if ($row->leave_count_interval == 1) :
+                        return '<span class="badge bg-primary">' . __('Current Month') . '</span>';
+                    elseif ($row->leave_count_interval == 2) :
+                        return '<span class="badge bg-warning">' . __('Current Financial Year') . '</span>';
+                    else :
+                        return '<span class="badge bg-info">' . __('none') . '</span>';
+                    endif;
+                })->rawColumns(['leave_count_interval', 'action'])->smart(true)->make(true);
+        }
+
+        return view('hrm.leave_types.index');
     }
 
-    //all data pass on table
-    public function allLeavType()
+    public function store(Request $request)
     {
-    	$leavetype = Leavetype::orderBy('id','DESC')->get();
-        return view('hrm.leavetype.ajax.type_list',compact('leavetype'));
-    }
-
-    //store leave type method
-    public function storeLeavetype(Request $request)
-    {
-    	$this->validate($request, [
+        $this->validate($request, [
             'leave_type' => 'required',
         ]);
-        Leavetype::insert([
-                'leave_type' => $request->leave_type,
-                'max_leave_count' => $request->max_leave_count,
-                'leave_count_interval' => $request->leave_count_interval,
+
+        LeaveType::insert([
+            'branch_id' => auth()->user()->branch_id,
+            'leave_type' => $request->leave_type,
+            'max_leave_count' => $request->max_leave_count,
+            'leave_count_interval' => $request->leave_count_interval,
         ]);
+
         return response()->json('Leave type created successfully');
     }
 
-    //Leavetype update method
-    public function updateLeaveType(Request $request)
+    public function edit($id)
     {
-    	$this->validate($request, [
+        $leaveType = LeaveType::where('id', $id)->first();
+        return view('hrm.leave_types.ajax_view.edit', compact('leaveType'));
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request, [
             'leave_type' => 'required',
         ]);
 
-        $Leavetype = Leavetype::where('id', $request->id)->first();
-            $Leavetype->update([
+        $updateLeaveType = LeaveType::where('id', $request->id)
+            ->update([
                 'leave_type' => $request->leave_type,
                 'max_leave_count' => $request->max_leave_count,
                 'leave_count_interval' => $request->leave_count_interval,
             ]);
+
         return response()->json('Leave type updated successfully');
     }
 
-    //destroy leave type
-    public function deleteLeaveType(Request $request,$id)
+    public function delete(Request $request, $id)
     {
-    	$deleteCategory = Leavetype::find($id);
-        $deleteCategory->delete();  
+        $deleteCategory = LeaveType::find($id);
+        $deleteCategory->delete();
+
         return response()->json('Leave type deleted successfully');
     }
-
 }

@@ -37,15 +37,20 @@ class AppServiceProvider extends ServiceProvider
             // $generalSettings = \Cache::get('generalSettings');
             // $generalSettings = GeneralSetting::first()->toArray();
             Cache::rememberForever('generalSettings', function() {
+
                 return GeneralSetting::first()->toArray();
             });
 
             $generalSettings = \Cache::get('generalSettings') ?? GeneralSetting::first()->toArray();
+
             $addons = DB::table('addons')->first();
+
             // $warehouseCount = DB::table('warehouses')->count();
             $dateFormat = $generalSettings['business']['date_format'];
             $__date_format = str_replace('-', '/', $dateFormat);
+
             if (isset($generalSettings) && isset($addons)) {
+
                 view()->share('generalSettings', $generalSettings);
                 view()->share('addons', $addons);
                 // view()->share('warehouseCount', $warehouseCount);
@@ -55,6 +60,7 @@ class AppServiceProvider extends ServiceProvider
             // $mailSettings = GeneralSetting::email();
             $mailSettings =  $generalSettings['email_setting'];
             if(isset($mailSettings)) {
+                
                 config([
                     'mail.mailers.smtp.transport' => $mailSettings['MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
                     'mail.mailers.smtp.host' => $mailSettings['MAIL_HOST'] ?? config('mail.mailers.smtp.host'),

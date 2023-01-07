@@ -1934,4 +1934,7 @@ return [
 'sale_payment_report' => 'تقرير الدفع للبيع',
 'select_role' => 'حدد الدور',
 'daily_profit_loss_report' => 'تقرير الربح / الخسارة اليومي',
+'edit_leave' => 'جعل إجازة التحرير',
+'confirmation' => 'تأكيد',
+'delete_permission_msg' => 'هل انت متأكد من الحذف؟',
 ];

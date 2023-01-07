@@ -253,6 +253,13 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
         });
     });
+    Route::group(['prefix' => 'units'], function () {
+        Route::get('/', [UnitController::class, 'index'])->name('settings.units.index');
+        Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('settings.units.get.all.unit');
+        Route::post('store', [UnitController::class, 'store'])->name('settings.units.store');
+        Route::post('update', [UnitController::class, 'update'])->name('settings.units.update');
+        Route::delete('delete/{unitId}', [UnitController::class, 'delete'])->name('settings.units.delete');
+    });
 });
 
 // Contact route group
@@ -906,16 +913,7 @@ Route::group(['prefix' => 'settings'], function () {
         Route::post('update/{id}', [WarehouseController::class, 'update'])->name('settings.warehouses.update');
         Route::delete('delete/{warehouseId}', [WarehouseController::class, 'delete'])->name('settings.warehouses.delete');
     });
-
-    Route::group(['prefix' => 'units'], function () {
-
-        Route::get('/', [UnitController::class, 'index'])->name('settings.units.index');
-        Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('settings.units.get.all.unit');
-        Route::post('store', [UnitController::class, 'store'])->name('settings.units.store');
-        Route::post('update', [UnitController::class, 'update'])->name('settings.units.update');
-        Route::delete('delete/{unitId}', [UnitController::class, 'delete'])->name('settings.units.delete');
-    });
-
+    
     Route::group(['prefix' => 'taxes'], function () {
 
         Route::get('/', [TaxController::class, 'index'])->name('settings.taxes.index');

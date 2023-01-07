@@ -460,7 +460,7 @@
 
                                 @if (auth()->user()->can('units'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.units.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('product.units.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-weight-hanging"></i></span>

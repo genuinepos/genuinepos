@@ -17,7 +17,7 @@
                 <td nowrap="nowrap" class="text-start">
                     <a href="javascript:;" id="edit" title="Edit details" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span>
                     </a>
-                    <a href="{{ route('settings.units.delete', $unit->id) }}" id="delete" class="action-btn c-delete"><span class="fas fa-trash "></span>
+                    <a href="{{ route('product.units.delete', $unit->id) }}" id="delete" class="action-btn c-delete"><span class="fas fa-trash "></span>
                     </a>
                 </td>
             </tr>

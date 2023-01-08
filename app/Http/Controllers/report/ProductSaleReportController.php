@@ -23,7 +23,7 @@ class ProductSaleReportController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $saleProducts = '';
             $query = DB::table('sale_products')
                 ->leftJoin('sales', 'sale_products.sale_id', '=', 'sales.id')

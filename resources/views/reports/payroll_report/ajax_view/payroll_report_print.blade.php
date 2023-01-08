@@ -21,12 +21,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -40,8 +40,8 @@
 
         @if ($s_date && $e_date)
             <p><b>@lang('menu.date') :</b>
-                {{ date($generalSettings['business']['date_format'], strtotime($s_date)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($e_date)) }}
+                {{ date($generalSettings['business__date_format'], strtotime($s_date)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($e_date)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;">@lang('menu.payroll_report')</h6>

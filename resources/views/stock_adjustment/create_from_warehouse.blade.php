@@ -91,7 +91,7 @@
                                         </label>
 
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
+                                            <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business__date_format']) }}" id="datepicker">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -969,7 +969,7 @@
             $(this).addClass('selectProduct');
         });
 
-        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

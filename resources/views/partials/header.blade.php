@@ -12,13 +12,13 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else
-                            @if ($generalSettings['business']['business_logo'] != null)
+                            @if ($generalSettings['business__business_logo'] != null)
                                 <img style="height: 40px; width:110px;"
-                                src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}"
+                                src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                 alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{
-                                $generalSettings['business']['shop_name'] }}</span>
+                                $generalSettings['business__shop_name'] }}</span>
                             @endif
                         @endif
                     </a>
@@ -75,7 +75,7 @@
                                 </ul>
                             </li>
 
-                            @if ($generalSettings['modules']['pos'] == '1')
+                            @if ($generalSettings['modules__pos'] == '1')
                                 @if(auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                                 @endif

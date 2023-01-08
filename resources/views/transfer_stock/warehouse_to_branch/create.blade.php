@@ -59,7 +59,7 @@
                                         <div class="col-8">
                                             <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                             <input readonly type="text" class="form-control" value="{{
-                                                auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)'
+                                                auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)'
                                             }}">
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@
                                         <label for="inputEmail3" class="col-4"><b>@lang('menu.date') :</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" id="datepicker"
-                                                value="{{ date($generalSettings['business']['date_format']) }}" autocomplete="off">
+                                                value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : {{ $generalSettings['business']['currency'] }}</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : {{ $generalSettings['business__currency'] }}</b> </label>
                                         <div class="col-8">
                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                         </div>
@@ -990,7 +990,7 @@
 
         document.getElementById('search_product').focus();
 
-        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

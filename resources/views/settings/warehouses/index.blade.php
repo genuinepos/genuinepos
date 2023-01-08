@@ -30,7 +30,7 @@
                                                     class="form-control submit_able select2"
                                                     id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option selected value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option selected value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -86,7 +86,7 @@
                                     <label><strong>@lang('menu.under_business_location') :</strong></label>
                                     <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
                                         <option value="NULL">
-                                            {{ $generalSettings['business']['shop_name'] }} (HO)
+                                            {{ $generalSettings['business__shop_name'] }} (HO)
                                         </option>
 
                                         @foreach ($branches as $branch)

@@ -22,7 +22,7 @@ class SalePaymentReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $payments = '';
             $query = DB::table('sale_payments')
                 ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')

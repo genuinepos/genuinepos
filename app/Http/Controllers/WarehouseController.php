@@ -23,7 +23,7 @@ class WarehouseController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $warehouses = '';
             $query = DB::table('warehouse_branches')
                 ->leftJoin('branches', 'warehouse_branches.branch_id', 'branches.id')
@@ -84,7 +84,7 @@ class WarehouseController extends Controller
                             return $row->b_name . '/' . $row->b_code . '(<b>B.L.</b>)';
                         } else {
 
-                            return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                            return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                         }
                     }
                 })

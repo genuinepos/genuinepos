@@ -34,7 +34,7 @@
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -220,7 +220,7 @@
         "serverSide": true,
         "searching" : false,
         aaSorting: [[1, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('hrm.attendance') }}",

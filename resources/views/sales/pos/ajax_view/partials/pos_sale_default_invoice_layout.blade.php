@@ -31,10 +31,10 @@
                                         <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                     @endif
                                 @else
-                                    @if ($generalSettings['business']['business_logo'] != null)
-                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                                    @if ($generalSettings['business__business_logo'] != null)
+                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business']['shop_name'] }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
                                     @endif
                                 @endif
                             @endif
@@ -81,19 +81,19 @@
                                     @endif
                                 @else
                                     <p class="company_name" style="text-transform: uppercase;">
-                                        <strong>{{ $generalSettings['business']['shop_name'] }}</strong>
+                                        <strong>{{ $generalSettings['business__shop_name'] }}</strong>
                                     </p>
 
                                     <p class="company_address">
-                                        {{ $generalSettings['business']['address'] }}
+                                        {{ $generalSettings['business__address'] }}
                                     </p>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <p><b>@lang('menu.phone')</b> : {{ $generalSettings['business']['phone'] }}</p>
+                                        <p><b>@lang('menu.phone')</b> : {{ $generalSettings['business__phone'] }}</p>
                                     @endif
 
-                                    @if ($defaultLayout->branch_email && $generalSettings['business']['email'])
-                                        <p><b>@lang('menu.email')</b> : {{ $generalSettings['business']['email'] }}</p>
+                                    @if ($defaultLayout->branch_email && $generalSettings['business__email'])
+                                        <p><b>@lang('menu.email')</b> : {{ $generalSettings['business__email'] }}</p>
                                     @endif
                                 @endif
                             </div>
@@ -154,7 +154,7 @@
                         <ul class="list-unstyled">
                             <li><strong> @lang('menu.invoice_no') : </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): </strong>
-                                {{ date($generalSettings['business']['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
+                                {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
                             </li>
                             <li><strong> @lang('menu.user') : </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
@@ -277,13 +277,13 @@
                             <tr>
                                 <td class="text-endx"><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="net_total text-end">
-                                    {{ $generalSettings['business']['currency'] }}
+                                    {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.order_discount') : {{ $generalSettings['business']['currency'] }}</strong></td>
+                                <td class="text-endx"><strong>@lang('menu.order_discount') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-endx">
                                     @if ($sale->order_discount_type == 1)
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} (Fixed)
@@ -294,7 +294,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong> @lang('menu.order_tax') : {{ $generalSettings['business']['currency'] }}</strong></td>
+                                <td class="text-endx"><strong> @lang('menu.order_tax') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}
                                     ({{ $sale->order_tax_percent }} %)
@@ -302,28 +302,28 @@
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.shipment_charge') : {{ $generalSettings['business']['currency'] }}</strong></td>
+                                <td class="text-endx"><strong>@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong> @lang('menu.total_payable') : {{ $generalSettings['business']['currency'] }}</strong></td>
+                                <td class="text-endx"><strong> @lang('menu.total_payable') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}</strong></td>
+                                <td class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}</strong></td>
+                                <td class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                 </td>
@@ -375,7 +375,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-center">
-                        <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
+                        <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
                     </div>
 
                     @if (config('company.print_on_sale'))
@@ -413,11 +413,11 @@
                                                 </span>
                                             @endif
                                         @else
-                                            @if ($generalSettings['business']['business_logo'] != null)
-                                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                                            @if ($generalSettings['business__business_logo'] != null)
+                                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600; text-transform: uppercase;">
-                                                    {{ $generalSettings['business']['shop_name'] }}
+                                                    {{ $generalSettings['business__shop_name'] }}
                                                 </span>
                                             @endif
                                         @endif
@@ -452,19 +452,19 @@
                             @else
                                 <tr>
                                     <th class="text-center">
-                                        <span>{{ $generalSettings['business']['address'] }} </span>
+                                        <span>{{ $generalSettings['business__address'] }} </span>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.phone') :</b> {{ $generalSettings['business']['phone'] }} </span>
+                                        <span><b>@lang('menu.phone') :</b> {{ $generalSettings['business__phone'] }} </span>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.email') :</b> {{ $generalSettings['business']['email'] }} </span>
+                                        <span><b>@lang('menu.email') :</b> {{ $generalSettings['business__email'] }} </span>
                                     </th>
                                 </tr>
                             @endif
@@ -477,7 +477,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.date'):</b> <span>{{ date($generalSettings['business']['date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <b>@lang('menu.date'):</b> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
                                 </th>
                             </tr>
 
@@ -527,7 +527,7 @@
                     <table class="w-100 float-end">
                         <thead>
                             <tr>
-                                <th class="text-endx">@lang('menu.net_total') : {{ $generalSettings['business']['currency'] }} </th>
+                                <th class="text-endx">@lang('menu.net_total') : {{ $generalSettings['business__currency'] }} </th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
@@ -536,7 +536,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx">@lang('menu.discount') : {{ $generalSettings['business']['currency'] }} </th>
+                                <th class="text-endx">@lang('menu.discount') : {{ $generalSettings['business__currency'] }} </th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
@@ -545,7 +545,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx">@lang('menu.order_tax') : {{ $generalSettings['business']['currency'] }} </th>
+                                <th class="text-endx">@lang('menu.order_tax') : {{ $generalSettings['business__currency'] }} </th>
                                 <th class="text-endx">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)
@@ -554,7 +554,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx">@lang('menu.total_payable') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th class="text-endx">@lang('menu.total_payable') : {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
@@ -563,7 +563,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}</strong></th>
+                                <th class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
@@ -572,7 +572,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong> @lang('menu.change_amount') : {{ $generalSettings['business']['currency'] }} </strong></th>
+                                <th class="text-endx"><strong> @lang('menu.change_amount') : {{ $generalSettings['business__currency'] }} </strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}
@@ -581,7 +581,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }} </strong></th>
+                                <th class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}

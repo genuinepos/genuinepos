@@ -77,7 +77,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr class="bg-secondary">
-                                                            <th class="text-end text-white">@lang('menu.total') : ({{$generalSettings['business']['currency'] }})</th>
+                                                            <th class="text-end text-white">@lang('menu.total') : ({{$generalSettings['business__currency'] }})</th>
                                                             <th id="total_op_blc_due" class="text-white">0.00</th>
                                                             <th id="total_purchase" class="text-white">0.00</th>
                                                             <th id="total_paid" class="text-white">0.00</th>
@@ -110,7 +110,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.supplier.index') }}",

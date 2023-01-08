@@ -28,9 +28,9 @@
                             </p>
                             <p class="company_phone">@lang('menu.phone') : {{ $saleReturn->branch->phone }}</p>
                         @else
-                            <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
-                            <p class="company_address">{{ $generalSettings['business']['address'] }}</p>
-                            <p class="company_address">@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</p>
+                            <h5 class="company_name">{{ $generalSettings['business__shop_name'] }}</h5>
+                            <p class="company_address">{{ $generalSettings['business__address'] }}</p>
+                            <p class="company_address">@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</p>
                         @endif
                         <h6 class="bill_name">{{ __('Sale Return Invoice') }}</h6>
                     </div>
@@ -46,7 +46,7 @@
                         <li><strong>@lang('menu.invoice_id') : </strong>{{ $saleReturn->invoice_id }}</li>
                         <li><strong>@lang('menu.return_date') : </strong>{{ $saleReturn->date }}</li>
                         <li><strong>@lang('menu.customer_name') : </strong>{{ $saleReturn->customer ? $saleReturn->customer->name : 'Walk-In-Customer' }}</li>
-                        <li><strong>@lang('menu.stock_location') : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : $generalSettings['business']['shop_name'] }}</li>
+                        <li><strong>@lang('menu.stock_location') : </strong> {{$saleReturn->branch ? $saleReturn->branch->name.'/'.$saleReturn->branch->branch_code : $generalSettings['business__shop_name'] }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">

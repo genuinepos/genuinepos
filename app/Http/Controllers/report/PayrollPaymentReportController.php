@@ -13,7 +13,7 @@ class PayrollPaymentReportController extends Controller
     public function payrollPaymentReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $payrollPayments = '';
             $payrollPaymentQ = DB::table('hrm_payroll_payments')
                 ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
@@ -75,7 +75,7 @@ class PayrollPaymentReportController extends Controller
                     return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
                 })
                 ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business']['currency'] . ' ' . $row->paid . '</span>';
+                    return '<span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span>';
                 })
                 ->editColumn('paid_by', function ($row) {
                     return $row->pb_prefix . ' ' . $row->pb_name . ' ' . $row->pb_last_name;

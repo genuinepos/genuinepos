@@ -9,7 +9,7 @@
                         {{ $contra->branch->name . '/' . $contra->branch->branch_code }}
                     @else
 
-                        {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h6>
@@ -19,7 +19,7 @@
                     {{ $contra->branch->city . ', ' . $contra->branch->state . ', ' . $contra->branch->zip_code . ', ' . $contra->branch->country }}
                 @else
 
-                    {{ $generalSettings['business']['address'] }}
+                    {{ $generalSettings['business__address'] }}
                 @endif
             </h6>
             <h6>@lang('menu.contra_details')</h6>
@@ -36,7 +36,7 @@
                 {{ $contra->branch->name . '/' . $contra->branch->branch_code }}
             @else
 
-                {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
             @endif
         </p>
         <p><b>@lang('menu.entered_by')</b> {{ $contra->user ? $contra->user->prefix.' '.$contra->user->name.' '.$contra->user->last_name : '' }}</p>
@@ -75,7 +75,7 @@
 
                         <tr>
                             <th class="text-start">@lang('menu.transaction_amount') :</th>
-                            <td class="text-start">{{ $generalSettings['business']['currency'] }} {{ App\Utils\Converter::format_in_bdt($contra->amount) }}</td>
+                            <td class="text-start">{{ $generalSettings['business__currency'] }} {{ App\Utils\Converter::format_in_bdt($contra->amount) }}</td>
                         </tr>
                     </tbody>
                 </table>

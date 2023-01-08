@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <div class="sale_payment_print_area">
     <div class="header_area">
@@ -9,7 +9,7 @@
                     @if ($payment->purchase->branch)
                         {{ $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code }}
                     @else
-                        {{ $generalSettings['business']['shop_name'] }} (<b>HO</b>)
+                        {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
                     @endif
                 </b>
             </h3>
@@ -23,9 +23,9 @@
                     {{ $payment->purchase->branch ? $payment->purchase->branch->zip_code : '' }},
                     {{ $payment->purchase->branch ? $payment->purchase->branch->country : '' }}.
                 @else
-                    {{ $generalSettings['business']['address'] }} <br>
-                    <b>@lang('menu.phone')</b> : {{ $generalSettings['business']['phone'] }} <br>
-                    <b>@lang('menu.email')</b> : {{ $generalSettings['business']['email'] }} <br>
+                    {{ $generalSettings['business__address'] }} <br>
+                    <b>@lang('menu.phone')</b> : {{ $generalSettings['business__phone'] }} <br>
+                    <b>@lang('menu.email')</b> : {{ $generalSettings['business__email'] }} <br>
                 @endif
             </h6>
             <h6>@lang('menu.payment_details')</h6>
@@ -52,7 +52,7 @@
                         <tr>
                             <th class="text-start" width="50%">@lang('menu.paid_amount') :</th>
                             <td width="50%">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
                         </tr>
@@ -83,7 +83,7 @@
                         <tr>
                             <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
                             <td width="50%" class="text-navy-blue">
-                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date))  . ' ' . date($timeFormat, strtotime($payment->time)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date))  . ' ' . date($timeFormat, strtotime($payment->time)) }}
                             </td>
                         </tr>
 

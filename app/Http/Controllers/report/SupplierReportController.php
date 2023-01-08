@@ -22,7 +22,7 @@ class SupplierReportController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $suppliers = '';
             $query = DB::table('suppliers')->where('status', 1);
 

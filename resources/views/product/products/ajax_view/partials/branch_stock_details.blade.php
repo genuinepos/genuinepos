@@ -5,7 +5,7 @@
             <th class="text-white text-start">@lang('menu.product')</th>
             <th class="text-white text-start">@lang('menu.business_location')</th>
             <th class="text-white text-start">@lang('menu.current_stock')</th>
-            <th class="text-white text-start">@lang('menu.stock_value')({{ $generalSettings['business']['currency'] }})</th>
+            <th class="text-white text-start">@lang('menu.stock_value')({{ $generalSettings['business__currency'] }})</th>
             <th class="text-white text-start">@lang('menu.total_purchase')(+)</th>
             <th class="text-white text-start">{{ __('Total Opening Stock') }}(+)</th>
             <th class="text-white text-start">@lang('menu.total_sale_return')(+)</th>
@@ -23,7 +23,7 @@
                     <tr>
                         <td class="text-start">{{ $row->variant_code }}</td>
                         <td class="text-start">{{ $product->name.'('.$row->variant_name.')' }}</td>
-                        <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : $generalSettings['business']['shop_name'].'<b>(HO)</b>'  !!}</td>
+                        <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : $generalSettings['business__shop_name'].'<b>(HO)</b>'  !!}</td>
                         <td class="text-start"><b>{{ $row->variant_quantity.'/'.$product->unit->code_name }}</b></td>
                         <td class="text-start">
                             @php
@@ -44,7 +44,7 @@
                     <tr>
                         <td class="text-start">{{ $product->product_code }}</td>
                         <td class="text-start">{{ $product->name }}</td>
-                        <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : $generalSettings['business']['shop_name'].'<b>(HO)</b>'  !!}</td>
+                        <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : $generalSettings['business__shop_name'].'<b>(HO)</b>'  !!}</td>
                         <td class="text-start"><b>{{ $row->product_quantity.'/'.$product->unit->code_name }}</b></td>
                         <td class="text-start">
                             @php

@@ -33,7 +33,7 @@
                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
                                         </div>
                                         <input type="text" name="default_sale_discount" class="form-control"
-                                            autocomplete="off" value="{{ $generalSettings['sale']['default_sale_discount'] }}">
+                                            autocomplete="off" value="{{ $generalSettings['sale__default_sale_discount'] }}">
                                     </div>
                                 </div>
 
@@ -43,7 +43,7 @@
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($taxes as $tax)
                                             <option
-                                                {{ $generalSettings['sale']['default_tax_id'] == $tax->tax_percent ? 'SELECTED' : '' }}
+                                                {{ $generalSettings['sale__default_tax_id'] == $tax->tax_percent ? 'SELECTED' : '' }}
                                                 value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}
                                             </option>
                                         @endforeach
@@ -53,19 +53,19 @@
                                 <div class="col-md-4">
                                     <label><strong>@lang('menu.sales_commission_agent')</strong></label>
                                     <select class="form-control" name="sales_cmsn_agnt">
-                                        <option {{ $generalSettings['sale']['sales_cmsn_agnt'] == 'disable' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'disable' ? 'SELECTED' : '' }}
                                             value="disable">{{ __('Disable') }}
                                         </option>
 
-                                        <option {{ $generalSettings['sale']['sales_cmsn_agnt'] == 'logged_in_user' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'logged_in_user' ? 'SELECTED' : '' }}
                                             value="logged_in_user">@lang('menu.logged_in_user')
                                         </option>
 
-                                        <option {{ $generalSettings['sale']['sales_cmsn_agnt'] == 'user' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'user' ? 'SELECTED' : '' }}
                                             value="user">@lang('menu.select_from_user')&#039; {{ __('list') }}
                                         </option>
 
-                                        <option {{ $generalSettings['sale']['sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
                                             value="select_form_cmsn_list">@lang('menu.select_from_commission_agent')&#039; {{ __('list') }}
                                         </option>
                                     </select>
@@ -78,7 +78,7 @@
                                     <select name="default_price_group_id" class="form-control">
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($price_groups as $pg)
-                                            <option {{ $generalSettings['sale']['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                            <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

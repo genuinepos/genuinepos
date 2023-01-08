@@ -25,7 +25,7 @@ class StockReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $branch_stock = '';
             $query = DB::table('product_branches')
                 ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
@@ -104,7 +104,7 @@ class StockReportController extends Controller
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? '<strong>' . $row->variant_quantity . '</strong>' : '<strong>' . $row->product_quantity . '</strong>') . '/' . $row->code_name . '</span>')
@@ -133,7 +133,7 @@ class StockReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $warehouse_stock = '';
             $query = DB::table('product_warehouses')
                 ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')
@@ -218,7 +218,7 @@ class StockReportController extends Controller
                             return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                         } else {
 
-                            return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                            return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                         }
                     }
                 })

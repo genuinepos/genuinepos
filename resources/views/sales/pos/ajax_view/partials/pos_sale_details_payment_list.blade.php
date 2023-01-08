@@ -20,7 +20,7 @@
                             <td class="text-start">{{ $payment->invoice_id }}</td>
                             
                             <td class="text-start">
-                                {{ $generalSettings['business']['currency'] . ' ' . $payment->paid_amount }}
+                                {{ $generalSettings['business__currency'] . ' ' . $payment->paid_amount }}
                             </td>
 
                             <td class="text-start">

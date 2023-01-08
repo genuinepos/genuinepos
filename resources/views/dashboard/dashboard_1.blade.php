@@ -48,7 +48,7 @@
                                             <select name="branch_id" id="branch_id">
                                                 <option value="">@lang('menu.all_business_locations')</option>
                                                 <option value="NULL">
-                                                    {{ $generalSettings['business']['shop_name'] }}
+                                                    {{ $generalSettings['business__shop_name'] }}
                                                     (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $br)
                                                     <option value="{{ $br->id }}">
@@ -238,7 +238,7 @@
                                         @if (auth()->user()->branch_id)
                                             {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
                                         @else
-                                            {{ $generalSettings['business']['shop_name'] }}
+                                            {{ $generalSettings['business__shop_name'] }}
                                         @endif
                                     </b>
                                 </h6>
@@ -468,7 +468,7 @@
                 columns: [{data: 'sup_name',name: 'sup_name'},{data: 'invoice_id',name: 'invoice_id'},{data: 'from',name: 'from'},{data: 'due',name: 'due'},],
             });
 
-            var __currency = "{{ $generalSettings['business']['currency'] }}";
+            var __currency = "{{ $generalSettings['business__currency'] }}";
 
             function getCardAmount() {
 

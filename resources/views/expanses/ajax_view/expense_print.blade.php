@@ -7,7 +7,7 @@
                     @if ($expense->branch)
                         {{ $expense->branch->name . '/' . $expense->branch->branch_code }}
                     @else
-                        {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -15,7 +15,7 @@
                 @if ($expense->branch)
                     {{ $expense->branch->city . ', ' . $expense->branch->state . ', ' . $expense->branch->zip_code . ', ' . $expense->branch->country }}
                 @else
-                    {{ $generalSettings['business']['address'] }}
+                    {{ $generalSettings['business__address'] }}
                 @endif
             </p>
             <h6><strong>Expense Details</strong></h6>
@@ -52,7 +52,7 @@
                         @foreach ($expense->expense_descriptions as $expense_description)
                             <tr>
                                 <td class="text-start">{{ $loop->index + 1 }}. {{ $expense_description->category->name }}</td>
-                                <td class="text-end">{{ $generalSettings['business']['currency'] }} {{ $expense_description->amount }}</td>
+                                <td class="text-end">{{ $generalSettings['business__currency'] }} {{ $expense_description->amount }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -60,20 +60,20 @@
                         <tr>
                             <th class="text-end">@lang('menu.tax') :</th>
                             <th class="text-end">
-                               <b>{{ $generalSettings['business']['currency'] }}
+                               <b>{{ $generalSettings['business__currency'] }}
                                 {{ $expense->tax_amount }}</b>
                             </th>
                         </tr>
 
                         <tr>
                             <th class="text-end">@lang('menu.total') :</th>
-                            <th class="text-end"><b>{{ $generalSettings['business']['currency'] }} {{ $expense->net_total_amount }}</b></th>
+                            <th class="text-end"><b>{{ $generalSettings['business__currency'] }} {{ $expense->net_total_amount }}</b></th>
                         </tr>
 
                         <tr>
                             <th class="text-end">@lang('menu.paid') :</th>
                             <th class="text-end">
-                               <b>{{ $generalSettings['business']['currency'] }}
+                               <b>{{ $generalSettings['business__currency'] }}
                                 {{ $expense->paid }}</b>
                             </th>
                         </tr>
@@ -81,7 +81,7 @@
                         <tr>
                             <th class="text-end">@lang('menu.due') :</th>
                             <th class="text-end">
-                               <b>{{ $generalSettings['business']['currency'] }}
+                               <b>{{ $generalSettings['business__currency'] }}
                                 {{ $expense->due }}</b>
                             </th>
                         </tr>

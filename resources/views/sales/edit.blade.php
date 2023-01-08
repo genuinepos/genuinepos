@@ -46,7 +46,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"> <b>@lang('menu.warehouse') :</b> </label>
                                         <div class="col-8">
-                                            {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}" tabindex="-1"> --}}
+                                            {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" tabindex="-1"> --}}
                                             <select name="warehouse_id" class="form-control" id="warehouse_id">
                                                 <option value="">@lang('menu.select_warehouse')</option>
                                                 @foreach ($warehouses as $warehouse)
@@ -114,7 +114,7 @@
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control" id="date" autocomplete="off"
-                                                value="{{ date($generalSettings['business']['date_format'], strtotime($sale->date)) }}">
+                                                value="{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -262,7 +262,7 @@
                                                                                     {{ $s_product->branch->name.'/'.$s_product->branch->branch_code }}
                                                                                 @else
 
-                                                                                    {{ $generalSettings['business']['shop_name'] }}<b>(HO)</b>
+                                                                                    {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
                                                                                 @endif
                                                                             @endif
 
@@ -537,7 +537,7 @@
                         @if(auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business']['currency'] }}</span>
+                                    <span>{{ $generalSettings['business__currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
 

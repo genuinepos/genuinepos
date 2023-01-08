@@ -74,7 +74,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                             <tr>
                                                 <th class="company_name">
                                                     @if (isset($req->is_business_name))
-                                                        {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business']['shop_name'] }}
+                                                        {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }}
                                                     @endif
                                                 </th>
                                             </tr>
@@ -116,7 +116,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                         <tr>
                                             <th class="product_price">
                                                 @if (isset($req->is_price))
-                                                    {{ $generalSettings['business']['currency'] }}
+                                                    {{ $generalSettings['business__currency'] }}
                                                     {{ App\Utils\Converter::format_in_bdt($req->product_price[$index]) }}
                                                     {{ isset($req->is_tax) ? '+ ' . $req->product_tax[$index] . '% VAT' : '' }}
                                                 @endif
@@ -143,7 +143,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                     <small class="p-0 m-0">
                                         <strong>
                                             @if (isset($req->is_business_name))
-                                                {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business']['shop_name'] }}
+                                                {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }}
                                             @endif
                                         </strong>
                                     </small>
@@ -172,7 +172,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                 @if (isset($req->is_price))
                                     <p class="price_details">
                                         <b>@lang('menu.price') :
-                                            {{ $generalSettings['business']['currency'] }}</b>
+                                            {{ $generalSettings['business__currency'] }}</b>
                                         {{ bcadd($req->product_price[$index], 0, 2) }}
                                         {{ isset($req->is_tax) ? '+ ' . bcadd($req->product_tax[$index], 0, 2) . '% Tax' : '' }}
                                     </p>

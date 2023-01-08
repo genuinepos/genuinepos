@@ -4,11 +4,11 @@
             <th class="text-white text-start">@lang('menu.variations')</th>
             <th class="text-white text-start">@lang('menu.variant_code') (SKU)</th>
             <th class="text-white text-start">@lang('menu.stock')</th>
-            <th class="text-white text-start">@lang('menu.default_purchase_price')({{ $generalSettings['business']['currency'] }}) (Exc. tax)</th>
-            <th class="text-white text-start">@lang('menu.default_purchase_price')({{ $generalSettings['business']['currency'] }}) (Inc. tax)</th>
+            <th class="text-white text-start">@lang('menu.default_purchase_price')({{ $generalSettings['business__currency'] }}) (Exc. tax)</th>
+            <th class="text-white text-start">@lang('menu.default_purchase_price')({{ $generalSettings['business__currency'] }}) (Inc. tax)</th>
             <th class="text-white text-start">@lang('menu.x_margin')(%)</th>
-            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business']['currency'] }}) (Exc. tax)</th>
-            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business']['currency'] }}) (Inc. tax)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business__currency'] }}) (Exc. tax)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business__currency'] }}) (Inc. tax)</th>
             @if (count($price_groups) > 0)
                 <th class="text-white text-start">@lang('menu.price_group')</th>
             @endif

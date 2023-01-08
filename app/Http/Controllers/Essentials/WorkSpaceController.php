@@ -20,7 +20,7 @@ class WorkSpaceController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $workspaces = '';
             $query = DB::table('workspaces')->leftJoin('branches', 'workspaces.branch_id', 'branches.id')

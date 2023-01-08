@@ -103,11 +103,13 @@
                                                     <label class="col-4"><b>@lang('menu.sales_account') : <span
                                                         class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <select name="sale_account_id" class="form-control add_input"
-                                                            id="sale_account_id" data-name="Sale A/C">
-                                                            @foreach ($saleAccounts as $saleAccount)
-                                                                <option value="{{ $saleAccount->id }}">
-                                                                    {{ $saleAccount->name }}
+                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
+                                                        <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
+                                                        <select name="warehouse_id" class="form-control" id="warehouse_id">
+                                                            <option value="">@lang('menu.select_warehouse')</option>
+                                                            @foreach ($warehouses as $warehouse)
+                                                                <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
+                                                                    {{ $warehouse->name.'/'.$warehouse->code }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -154,7 +156,7 @@
                                                             id="price_group_id">
                                                             <option value="">@lang('menu.default_selling_price')</option>
                                                             @foreach ($price_groups as $pg)
-                                                                <option {{ $generalSettings['sale']['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                                <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -586,7 +588,7 @@
                         @if(auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business']['currency'] }}</span>
+                                    <span>{{ $generalSettings['business__currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>

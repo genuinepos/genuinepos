@@ -25,7 +25,7 @@ class ExpenseUtil
 
     public function expenseListTable($request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $expenses = '';
 
         $query = DB::table('expanses')
@@ -132,7 +132,7 @@ class ExpenseUtil
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })->editColumn('from',  function ($row) use ($generalSettings) {
 
                 if ($row->branch_name) {
@@ -140,7 +140,7 @@ class ExpenseUtil
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('user_name',  function ($row) {
@@ -176,7 +176,7 @@ class ExpenseUtil
 
     public function categoryWiseExpenseListTable($request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $expenses = '';
         $query = DB::table('expense_descriptions')
             ->leftJoin('expanses', 'expense_descriptions.expense_id', 'expanses.id')
@@ -229,12 +229,12 @@ class ExpenseUtil
 
         return DataTables::of($expenses)
             ->editColumn('date', function ($row) use ($generalSettings) {
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })->editColumn('category_name', function ($row) {
                 return $row->name . ' (' . $row->code . ')';

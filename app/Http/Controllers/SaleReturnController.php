@@ -64,7 +64,7 @@ class SaleReturnController extends Controller
         if ($request->ajax()) {
 
             $returns = '';
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $query = DB::table('sale_returns')
                 ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
                 ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
@@ -121,7 +121,7 @@ class SaleReturnController extends Controller
                 })
                 ->editColumn('from',  function ($row) use ($generalSettings) {
 
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
+                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : $generalSettings['business__shop_name'] . '<b>(HO)</b>';
                 })
                 ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount text-danger" data-value="' . $row->total_return_amount . '">' . $this->converter->format_in_bdt($row->total_return_amount) . '</span>')
 

@@ -35,7 +35,7 @@
     </div>
 
     <div class="form-group row mt-1">
-        @if ($generalSettings['product']['is_enable_categories'] == '1')
+        @if ($generalSettings['product__is_enable_categories'] == '1')
             <div class="col-md-3">
                 <label><b>@lang('menu.category') :</b> </label>
                 <select class="form-control category" name="category_id" id="sale_category_id">
@@ -47,7 +47,7 @@
             </div>
         @endif
 
-        @if ($generalSettings['product']['is_enable_categories'] == '1' && $generalSettings['product']['is_enable_sub_categories'] == '1')
+        @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
             <div class="col-md-3 parent_category">
                 <label><b>@lang('menu.child_category') :</b></label>
                 <select class="form-control" name="child_category_id"
@@ -57,7 +57,7 @@
             </div>
         @endif
 
-        @if ($generalSettings['product']['is_enable_brands'] == '1')
+        @if ($generalSettings['product__is_enable_brands'] == '1')
             <div class="col-md-3">
                 <label><b>@lang('menu.brand'):</b></label>
                 <select class="form-control" data-live-search="true" name="brand_id"
@@ -70,7 +70,7 @@
             </div>
         @endif
 
-        @if ($generalSettings['product']['is_enable_warranty'] == '1')
+        @if ($generalSettings['product__is_enable_warranty'] == '1')
             <div class="col-md-3">
                 <label><b>@lang('menu.warranty') :</b></label>
                 <select class="form-control" name="warranty_id" id="sale_warranty_id">
@@ -97,7 +97,7 @@
     </div>
 
     <div class="form-group row mt-1">
-        @if ($generalSettings['product']['is_enable_price_tax'] == '1')
+        @if ($generalSettings['product__is_enable_price_tax'] == '1')
             <div class="col-md-3 ">
                 <label><b>@lang('menu.tax') :</b> </label>
                 <select class="form-control" name="tax_id" id="sale_tax_id">
@@ -146,7 +146,7 @@
                         </td>
                         <td>
                             <label></label>
-                            <input type="text" name="profit" class="form-control" autocomplete="off" id="sale_profit" value="{{ $generalSettings['business']['default_profit'] }}">
+                            <input type="text" name="profit" class="form-control" autocomplete="off" id="sale_profit" value="{{ $generalSettings['business__default_profit'] }}">
                         </td>
                         <td class="text-start">
                             <div class="row">
@@ -181,7 +181,7 @@
                             <td>
                                 <input type="hidden" name="branch_id" id="os_branch_id" value="{{ auth()->user()->branch_id }}">
                                 <p>
-                                    {!! auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code :  $generalSettings['business']['shop_name'] .'<b>(HO)</b>' !!}
+                                    {!! auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code :  $generalSettings['business__shop_name'] .'<b>(HO)</b>' !!}
                                 </p>
                             </td>
 

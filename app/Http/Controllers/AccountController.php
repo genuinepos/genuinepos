@@ -47,7 +47,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $accounts = '';
             $query = DB::table('account_branches')
                 ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -114,7 +114,7 @@ class AccountController extends Controller
 
                 ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
 
-                ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business']['shop_name']) . '</b>')
+                ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__shop_name']) . '</b>')
 
                 ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
 
@@ -144,7 +144,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $ledgers = '';
 
@@ -254,7 +254,7 @@ class AccountController extends Controller
             return DataTables::of($ledgers)
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $dateFormat = $generalSettings['business']['date_format'];
+                    $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })

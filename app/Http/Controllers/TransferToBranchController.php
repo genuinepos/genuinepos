@@ -42,7 +42,7 @@ class TransferToBranchController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $transfers = DB::table('transfer_stock_to_branches')
                 ->leftJoin('warehouses', 'transfer_stock_to_branches.warehouse_id', 'warehouses.id')
@@ -85,7 +85,7 @@ class TransferToBranchController extends Controller
                         return  $row->branch_name . '/' . $row->branch_code;
                     } else {
 
-                        return $generalSettings['business']['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business__shop_name'] . '<b>(HO)</b>';
                     }
                 })
 

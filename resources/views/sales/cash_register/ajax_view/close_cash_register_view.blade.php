@@ -20,7 +20,7 @@
                     <tr>
                         <td class="text-start">{{ __('Opeing Balance') }} :</td>
                         <td class="text-start">
-                            {{ $generalSettings['business']['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
                         </td>
                     </tr>
@@ -29,7 +29,7 @@
                         <tr>
                             <td width="50" class="text-start"> {{$payment->name.' Payment' }} :</td>
                             <td width="50" class="text-start">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->total_paid) }}
                             </td>
                         </tr>
@@ -41,7 +41,7 @@
                         </td>
 
                         <td width="50" class="text-start text-danger">
-                            {{ $generalSettings['business']['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($totalCredit->sum('total_due')) }}
                         </td>
                     </tr>
@@ -67,7 +67,7 @@
                                 {{ $accountType->account_type == 1 ? 'Cash-In-Hand' : 'Bank A/C' }} :
                             </td>
                             <td width="50" class="text-start">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($accountType->total_paid) }}
                             </td>
                         </tr>

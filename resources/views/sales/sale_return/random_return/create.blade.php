@@ -63,7 +63,7 @@
                                     <div class="input-group mt-1">
                                         <label class=" col-4"> <b>{{ __('B. Location') }} :</b> </label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}" tabindex="-1">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" tabindex="-1">
                                             <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@
                                         <label class="col-4"><b>@lang('menu.return_date') : <span class="text-danger">*</span></b></label>
 
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}" autocomplete="off" id="date">
+                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off" id="date">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@
                                                 id="price_group_id">
                                                 <option value="">@lang('menu.default_selling_price')</option>
                                                 @foreach ($price_groups as $pg)
-                                                    <option {{ $generalSettings['sale']['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                    <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -669,7 +669,7 @@
             addSingleProduct(productInfoObj);
         });
 
-        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

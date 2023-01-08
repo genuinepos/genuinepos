@@ -18,7 +18,7 @@
 </head>
 
 <body id="dashboard-8"
-class="{{ $generalSettings['system']['theme_color'] ?? 'dark-theme' }}
+class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
 @if($rtl) rtl @endif" @if($rtl) dir="rtl" @endif>
 
     <div class="all__content">

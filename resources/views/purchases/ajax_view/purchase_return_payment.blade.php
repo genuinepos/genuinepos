@@ -38,7 +38,7 @@
                                 <li><strong>{{ __('P.Invoice ID') }} : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
                                 </li>
                                 <li><strong>@lang('menu.b_location') : </strong>
-                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)'}}
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business__shop_name'].' (HO)'}}
                                 </li>
                             </ul>
                         </div>
@@ -47,7 +47,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.total_return_due') : {{ $generalSettings['business']['currency'] }} </strong>{{ $purchase->purchase_return_due }}
+                                <li><strong>@lang('menu.total_return_due') : {{ $generalSettings['business__currency'] }} </strong>{{ $purchase->purchase_return_due }}
                                 </li>
                             </ul>
                         </div>
@@ -215,7 +215,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

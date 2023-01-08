@@ -54,7 +54,7 @@
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
                                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     {{ $branch->name . '/' . $branch->branch_code }}
@@ -171,14 +171,14 @@
                                                     <th>@lang('menu.invoice_id')</th>
                                                     <th>@lang('menu.sold_by')</th>
                                                     <th>@lang('menu.quantity')</th>
-                                                    <th>@lang('menu.unit_price')({{ $generalSettings['business']['currency'] }})</th>
-                                                    <th>@lang('menu.subtotal')({{ $generalSettings['business']['currency'] }})</th>
+                                                    <th>@lang('menu.unit_price')({{ $generalSettings['business__currency'] }})</th>
+                                                    <th>@lang('menu.subtotal')({{ $generalSettings['business__currency'] }})</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-end text-white">@lang('menu.total') :{{ $generalSettings['business']['currency'] }}</th>
+                                                    <th colspan="6" class="text-end text-white">@lang('menu.total') :{{ $generalSettings['business__currency'] }}</th>
                                                     <th class="text-white">(<span id="total_qty"></span>)</th>
                                                     <th class="text-white">---</th>
                                                     <th class="text-white"> <span id="total_subtotal"></span></th>
@@ -209,7 +209,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         //aaSorting: [[0, 'desc']],
         "ajax": {

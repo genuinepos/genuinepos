@@ -35,7 +35,7 @@
                                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
                                                                     <option value="NULL">
-                                                                        {{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))
+                                                                        {{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))
                                                                     </option>
 
                                                                     @foreach ($branches as $branch)
@@ -152,7 +152,7 @@
                                                     <tfoot>
                                                         <tr class="bg-secondary">
                                                             <th colspan="6" class="text-end text-white">@lang('menu.total') :
-                                                                {{ $generalSettings['business']['currency'] }}
+                                                                {{ $generalSettings['business__currency'] }}
                                                             </th>
                                                             <th id="closed_amount" class="text-end text-white"></th>
                                                             <th></th>

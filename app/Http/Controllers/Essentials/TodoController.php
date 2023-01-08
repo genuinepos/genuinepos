@@ -19,7 +19,7 @@ class TodoController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $todos = '';
             $query = DB::table('todos')->leftJoin('branches', 'todos.branch_id', 'branches.id')

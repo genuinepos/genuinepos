@@ -137,14 +137,11 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total_output_qty') :</b></label>
+                                    <label><b>@lang('menu.total_output_qty') : <span class="text-danger">*</span></b></label>
                                     <div class="row">
-                                        <div class="col-7">
-                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="{{ $process->total_output_qty }}">
-                                        </div>
-
-                                        <div class="col-5">
-                                            <select name="unit_id" class="form-control" id="unit_id">
+                                        <div class="input-group">
+                                            <input required type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="{{ $process->total_output_qty }}">
+                                            <select required name="unit_id" class="form-control" id="unit_id">
                                                 @foreach ($units as $unit)
                                                     <option {{ $unit->id == $process->unit_id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                 @endforeach
@@ -159,7 +156,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total_cost') :</b></label>
+                                    <label><b>@lang('menu.total_cost') : <span class="text-danger">*</span></b></label>
                                     <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')" value="{{ $process->total_cost }}">
                                 </div>
                             </div>
@@ -172,7 +169,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
                             </div>
                         </div>
                     </div>
@@ -631,41 +628,58 @@
         //Add process request by ajax
         $('#edit_process_form').on('submit', function(e) {
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
+
+                    $('.loading_button').hide();
                     if(!$.isEmptyObject(data.errorMsg)) {
+
                         toastr.error(data.errorMsg);
-                        $('.loading_button').hide();
                     } else {
-                        $('.loading_button').hide();
+
                         toastr.success(data);
                         window.location = "{{ route('manufacturing.process.index') }}";
                     }
                 },error: function(err) {
+
+                    $('.error').html('');
+                    $('.loading_button').hide();
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.');
-                    }else{
-                        toastr.error('Server error please contact to the support.');
+                        return;
                     }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
         $('body').keyup(function(e){
+
             if (e.keyCode == 13){
+
                 $(".selectProduct").click();
                 $('#list').empty();
             }
         });
 
         $(document).keypress(".scanable",function(event) {
+
             if (event.which == '10' || event.which == '13') {
+
                 event.preventDefault();
             }
         });

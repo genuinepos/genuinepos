@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use Exception;
 use App\Models\GeneralSetting;
 use App\Services\CacheService;
-use App\Services\CacheServiceInterface;
-use Exception;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use App\Services\CacheServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,9 +36,9 @@ class AppServiceProvider extends ServiceProvider
         try {
             // Cache::forget('generalSettings');
             Cache::rememberForever('generalSettings', function () {
-                return GeneralSetting::where('branch_id', (auth()?->user()?->branch_id ?? null))->pluck('value', 'key')->toArray();
+                return GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
             });
-            $generalSettings = config('generalSettings') ?? GeneralSetting::where('branch_id', (auth()?->user()?->branch_id ?? null))->pluck('value', 'key')->toArray();
+            $generalSettings = Cache::get('generalSettings') ?? GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
             config([
                 'generalSettings' => $generalSettings,
                 'mail.mailers.smtp.transport' => $generalSettings['email_setting__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),

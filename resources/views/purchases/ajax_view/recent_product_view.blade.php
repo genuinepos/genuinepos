@@ -27,7 +27,7 @@
         <td>
             <input value="{{ $product->product_cost }}" required name="unit_costs[]" type="text"
                 class="form-control form-control-sm" id="unit_cost">
-            @if ($generalSettings['purchase']['is_enable_lot_no'] == '1')
+            @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
                 <input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1"
                     id="lot_number" value="">
             @endif
@@ -67,7 +67,7 @@
                 id="line_total" class="form-control">
         </td>
 
-        @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
+        @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
             <td>
                 <input value="{{ bcadd($product->profit, 0, 2) }}" type="text" name="profits[]"
                     class="form-control" id="profit">

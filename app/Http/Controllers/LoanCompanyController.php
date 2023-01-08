@@ -47,13 +47,13 @@ class LoanCompanyController extends Controller
                     $html .= '</div>';
                     return $html;
                 })->editColumn('pay_loan_amount', function ($row) use ($generalSettings) {
-                    return $generalSettings['business']['currency'] . ' ' . $row->pay_loan_amount . '<br/>Due : ' . $generalSettings['business']['currency'] . ' <span class="text-danger">' . $row->pay_loan_due . '</span>';
+                    return $generalSettings['business__currency'] . ' ' . $row->pay_loan_amount . '<br/>Due : ' . $generalSettings['business__currency'] . ' <span class="text-danger">' . $row->pay_loan_due . '</span>';
                 })->editColumn('get_loan_amount', function ($row) use ($generalSettings) {
-                    return $generalSettings['business']['currency'] . ' ' . $row->get_loan_amount . '<br/>Due : ' . $generalSettings['business']['currency'] . ' <span class="text-danger">' . $row->get_loan_due . '</span>';
+                    return $generalSettings['business__currency'] . ' ' . $row->get_loan_amount . '<br/>Due : ' . $generalSettings['business__currency'] . ' <span class="text-danger">' . $row->get_loan_due . '</span>';
                 })->editColumn('total_pay', function ($row) use ($generalSettings) {
-                    return $generalSettings['business']['currency'] . ' ' . $row->total_pay;
+                    return $generalSettings['business__currency'] . ' ' . $row->total_pay;
                 })->editColumn('total_receive', function ($row) use ($generalSettings) {
-                    return $generalSettings['business']['currency'] . ' ' . $row->total_receive;
+                    return $generalSettings['business__currency'] . ' ' . $row->total_receive;
                 })
                 ->rawColumns(['pay_loan_amount', 'get_loan_amount', 'action'])->smart(true)->make(true);
         }

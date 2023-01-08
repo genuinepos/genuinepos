@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <style>
     .payment_top_card {background: #d7dfe8;}
@@ -38,7 +38,7 @@
                             <ul class="list-unstyled">
                                 <li><strong> @lang('menu.reference_id') : </strong>{{ $purchase->invoice_id }}</li>
                                 <li><strong>@lang('menu.b_location') : </strong>
-                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}
                                 </li>
                             </ul>
                         </div>
@@ -47,13 +47,13 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }} </strong>
+                                <li><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong>
                                     <span class="total_due text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</strong></span>
                                 </li>
                                 <li>
                                     <strong>@lang('menu.date') : </strong>
                                     {{
-                                        date($generalSettings['business']['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time))
+                                        date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time))
                                     }}
                                 </li>
                                 <li><strong>@lang('menu.purchases_status') : </strong>
@@ -109,7 +109,7 @@
                                     <i class="fas fa-calendar-week text-dark input_i"></i>
                                 </span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -239,7 +239,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -38,7 +38,7 @@
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -191,12 +191,12 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><b>@lang('menu.start_date') : </b><span class="text-danger"> *</span></label>
-                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date($generalSettings['business']['date_format'])}}" autocomplete="off">
+                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date($generalSettings['business__date_format'])}}" autocomplete="off">
                             </div>
 
                             <div class="col-md-6">
                                 <label><b>@lang('menu.end_date') : </b><span class="text-danger"> *</span></label>
-                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ $generalSettings['business']['date_format'] }}" autocomplete="off">
+                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
                             </div>
                         </div>
 
@@ -282,7 +282,7 @@
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[0, 'desc']],
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('workspace.index') }}",
@@ -522,7 +522,7 @@
     $('.select2').select2();
     $('[data-magnify=gallery]').magnify();
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'dd');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');

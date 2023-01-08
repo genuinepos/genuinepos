@@ -37,7 +37,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.b_location') :</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
                                             <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@
 
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" autocomplete="off"
-                                                value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
+                                                value="{{ date($generalSettings['business__date_format']) }}" id="datepicker">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                             <select class="form-control changeable add_input"
                                                 name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
                                                 <option value="">@lang('menu.select_receiver_b_location')</option>
-                                                <option value="NULL">{{ $generalSettings['business']['shop_name'].'(HO)' }}</option>
+                                                <option value="NULL">{{ $generalSettings['business__shop_name'].'(HO)' }}</option>
 
                                                 @foreach ($branches as $b)
                                                     <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
@@ -1163,7 +1163,7 @@
             calculateTotalAmount();
         });
 
-        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -13,7 +13,7 @@
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
 @php
-    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="sale_payment_print_area">
@@ -30,10 +30,10 @@
                         @endif
                     @else
 
-                        @if ($generalSettings['business']['business_logo'] != null)
-                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business__business_logo'] != null)
+                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business']['shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
                         @endif
                     @endif
                 </h4>
@@ -44,7 +44,7 @@
                         <p style="width: 60%; margin:0 auto;">{{ $customerPayment->branch->city . ', ' . $customerPayment->branch->state . ', ' . $customerPayment->branch->zip_code . ', ' . $customerPayment->branch->country }}</p>
                     @else
 
-                        <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+                        <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
                     @endif
                 </p>
 
@@ -74,7 +74,7 @@
                     <tbody>
                         <tr>
                             <td width="50%" class="text-start">
-                                <strong>@lang('menu.paid_amount') :</strong> {{ $generalSettings['business']['currency'] }}
+                                <strong>@lang('menu.paid_amount') :</strong> {{ $generalSettings['business__currency'] }}
                             </td>
 
                             <td width="50%" class="text-start">
@@ -116,9 +116,9 @@
                             <td width="50%" class="text-start"><strong>@lang('menu.paid_on') :</strong></td>
                             <td width="50%" class="text-start">
                                 @php
-                                    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+                                    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
-                                {{ date($generalSettings['business']['date_format'], strtotime($customerPayment->date)) . ' ' . date($timeFormat, strtotime($customerPayment->time)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($customerPayment->date)) . ' ' . date($timeFormat, strtotime($customerPayment->time)) }}
                             </td>
                         </tr>
 
@@ -158,11 +158,11 @@
                             @if ($pi->sale)
                                 <tr>
                                     <td class="text-start">
-                                        {{ date($generalSettings['business']['date_format'], strtotime($pi->sale->date)) }}
+                                        {{ date($generalSettings['business__date_format'], strtotime($pi->sale->date)) }}
                                     </td>
                                     <td class="text-start">{{ $pi->sale->invoice_id }}</h6></td>
                                     <td class="text-start">
-                                        {{ $generalSettings['business']['currency'] }}
+                                        {{ $generalSettings['business__currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
                                         @php $total += $pi->paid_amount; @endphp
                                     </td>
@@ -170,11 +170,11 @@
                             @elseif($pi->sale_return)
                                 <tr>
                                     <td class="text-start">
-                                        {{ date($generalSettings['business']['date_format'], strtotime($pi->sale_return->date)) }}
+                                        {{ date($generalSettings['business__date_format'], strtotime($pi->sale_return->date)) }}
                                     </td>
                                     <td class="text-start">{{ $pi->sale_return->invoice_id }}</h6></td>
                                     <td class="text-start">
-                                        {{ $generalSettings['business']['currency'] }}
+                                        {{ $generalSettings['business__currency'] }}
                                         {{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}
                                         @php $total += $pi->paid_amount; @endphp
                                     </td>
@@ -220,7 +220,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
+                    <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

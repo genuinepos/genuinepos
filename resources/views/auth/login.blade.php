@@ -13,11 +13,11 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        @if ($generalSettings['business']['business_logo'] != null)
-                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                                        @if ($generalSettings['business__business_logo'] != null)
+                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">
-                                                {{ $generalSettings['business']['shop_name'] }}
+                                                {{ $generalSettings['business__shop_name'] }}
                                             </span>
                                         @endif
                                         <span class="head-text">

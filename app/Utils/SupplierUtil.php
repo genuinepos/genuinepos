@@ -233,7 +233,7 @@ class SupplierUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . ' (<b>HO</b>)';
                 }
             })
 
@@ -362,7 +362,7 @@ class SupplierUtil
         return DataTables::of($supplierLedgers)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $dateFormat = $generalSettings['business']['date_format'];
+                $dateFormat = $generalSettings['business__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);
                 return date($__date_format, strtotime($row->report_date));
             })
@@ -379,7 +379,7 @@ class SupplierUtil
                 if ($row->b_name) {
                     return $row->b_name;
                 } else {
-                    return $generalSettings['business']['shop_name'];
+                    return $generalSettings['business__shop_name'];
                 }
             })
 
@@ -507,7 +507,7 @@ class SupplierUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })->editColumn('from',  function ($row) use ($generalSettings) {
 
                 if ($row->warehouse_name) {
@@ -518,7 +518,7 @@ class SupplierUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . ' (<b>HO</b>)';
                 }
             })
 

@@ -35,7 +35,7 @@
 
                         <div class="col-md-4 col-sm-4 col-lg-4">
                             <div class="heading text-end">
-                                <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
+                                <h5 class="company_name">{{ $generalSettings['business__shop_name'] }}</h5>
                                 <h6 class="company_address">
                                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                     {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -141,18 +141,18 @@
                                 </td>
                                 <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
 
-                                <td class="text-start">{{ $generalSettings['business']['currency'] }}
+                                <td class="text-start">{{ $generalSettings['business__currency'] }}
                                     {{ $sale_product->unit_price_inc_tax }} </td>
 
                                 @if ($sale->branch->add_sale_invoice_layout->product_discount)
                                     <td class="text-start">
-                                        {{ $generalSettings['business']['currency'] }}
+                                        {{ $generalSettings['business__currency'] }}
                                         {{ $sale_product->unit_discount_amount }}
                                     </td>
                                 @endif
 
                                 <td class="text-start">
-                                    {{ $generalSettings['business']['currency'] }}
+                                    {{ $generalSettings['business__currency'] }}
                                     {{ $sale_product->subtotal }}
                                 </td>
                             </tr>
@@ -170,7 +170,7 @@
                             <tr>
                                 <td><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="net_total text-start">
-                                    <b></b>{{ $generalSettings['business']['currency'] }}
+                                    <b></b>{{ $generalSettings['business__currency'] }}
                                     {{ $sale->net_total_amount }}</b>
                                 </td>
                             </tr>
@@ -189,7 +189,7 @@
                             <tr>
                                 <td><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-start">
-                                    <b>{{ $generalSettings['business']['currency'] }}
+                                    <b>{{ $generalSettings['business__currency'] }}
                                     {{ $sale->order_tax_amount }}
                                     ({{ $sale->order_tax_percent }} %)</b>
                                 </td>
@@ -198,7 +198,7 @@
                             <tr>
                                 <td><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="shipment_charge text-start">
-                                <b>{{ $generalSettings['business']['currency'] }}
+                                <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->shipment_charge, 2) }}</b>
                                 </td>
                             </tr>
@@ -206,7 +206,7 @@
                             <tr>
                                 <td><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="total_payable text-start">
-                                <b>{{ $generalSettings['business']['currency'] }}
+                                <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->total_payable_amount, 2) }}</b>
                                 </td>
                             </tr>
@@ -280,10 +280,10 @@
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
                                     @endif
                                 @else
-                                    @if ($generalSettings['business']['business_logo'] != null)
-                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                                    @if ($generalSettings['business__business_logo'] != null)
+                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $generalSettings['business']['shop_name'] }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $generalSettings['business__shop_name'] }}</span>
                                     @endif
                                 @endif
                             @endif
@@ -297,7 +297,7 @@
                             <div class="heading text-end">
                                 @if ($sale->branch)
                                     <h5 class="company_name">
-                                        {{ $generalSettings['business']['shop_name'] }}</h5>
+                                        {{ $generalSettings['business__shop_name'] }}</h5>
                                     <h6 class="company_address">
                                         {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                         {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -315,19 +315,19 @@
                                     @endif
                                 @else
                                     <h4 class="company_name">
-                                        {{ $generalSettings['business']['shop_name'] }}
+                                        {{ $generalSettings['business__shop_name'] }}
                                     </h4>
 
                                     <h6 class="company_address">
-                                        {{ $generalSettings['business']['address'] }}
+                                        {{ $generalSettings['business__address'] }}
                                     </h6>
 
                                     @if ($defaultLayout->branch_phone)
-                                        <h6>@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</h6>
+                                        <h6>@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</h6>
                                     @endif
 
                                     @if ($defaultLayout->branch_email)
-                                        <h6>@lang('menu.email') : {{ $generalSettings['business']['email'] }}</h6>
+                                        <h6>@lang('menu.email') : {{ $generalSettings['business__email'] }}</h6>
                                     @endif
                                 @endif
                             </div>
@@ -416,17 +416,17 @@
                                     {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
                                 </td>
                                 <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
-                                <td class="text-start">{{ $generalSettings['business']['currency'] }}
+                                <td class="text-start">{{ $generalSettings['business__currency'] }}
                                     {{ $sale_product->unit_price_inc_tax }} </td>
                                 @if ($defaultLayout->product_discount)
                                     <td class="text-start">
-                                        {{ $generalSettings['business']['currency'] }}
+                                        {{ $generalSettings['business__currency'] }}
                                         {{ $sale_product->unit_discount_amount }}
                                     </td>
                                 @endif
 
                                 <td class="text-start">
-                                    {{ $generalSettings['business']['currency'] }}
+                                    {{ $generalSettings['business__currency'] }}
                                     {{ $sale_product->subtotal }}
                                 </td>
                             </tr>
@@ -444,7 +444,7 @@
                             <tr>
                                 <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
                                 <td class="text-end">
-                                <b>{{ $generalSettings['business']['currency'] }} {{ $sale->net_total_amount }}</b>
+                                <b>{{ $generalSettings['business__currency'] }} {{ $sale->net_total_amount }}</b>
                                 </td>
                             </tr>
 
@@ -462,7 +462,7 @@
                             <tr>
                                 <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-end">
-                                <b>{{ $generalSettings['business']['currency'] }}
+                                <b>{{ $generalSettings['business__currency'] }}
                                     {{ $sale->order_tax_amount }}
                                     ({{ $sale->order_tax_percent }} %)</b></td>
                             </tr>
@@ -470,7 +470,7 @@
                             <tr>
                                 <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="shipment_charge text-end">
-                                    <b>{{ $generalSettings['business']['currency'] }}
+                                    <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->shipment_charge, 2) }}</b>
                                 </td>
                             </tr>
@@ -478,7 +478,7 @@
                             <tr>
                                 <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="total_payable text-end">
-                                <b>{{ $generalSettings['business']['currency'] }}
+                                <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->total_payable_amount, 2) }}</b>
                                 </td>
                             </tr>

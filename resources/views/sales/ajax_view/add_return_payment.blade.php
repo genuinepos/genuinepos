@@ -35,7 +35,7 @@
                                             {{ $sale->branch->name.'/'.$sale->branch->branch_code }}
                                         @else
 
-                                            {{$generalSettings['business']['shop_name']}}  (<b>HO</b>)
+                                            {{$generalSettings['business__shop_name']}}  (<b>HO</b>)
                                         @endif
                                     </span>
                                 </li>
@@ -47,7 +47,7 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>@lang('menu.total_return_due') : {{ $generalSettings['business']['currency'] }} </strong>
+                                    <strong>@lang('menu.total_return_due') : {{ $generalSettings['business__currency'] }} </strong>
                                     <span class="text-end">{{ $sale->sale_return_due }}</span>
                                 </li>
                             </ul>
@@ -77,7 +77,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -212,7 +212,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

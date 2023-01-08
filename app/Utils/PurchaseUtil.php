@@ -105,7 +105,7 @@ class PurchaseUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -122,7 +122,7 @@ class PurchaseUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . ' (<b>HO</b>)';
                 }
             })
             ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
@@ -253,7 +253,7 @@ class PurchaseUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -270,7 +270,7 @@ class PurchaseUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . ' (<b>HO</b>)';
                 }
             })
             ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')

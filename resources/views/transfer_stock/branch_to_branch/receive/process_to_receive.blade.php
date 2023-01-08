@@ -42,7 +42,7 @@
                                             {{ $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code }}
                                         @else
 
-                                            {{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))
+                                            {{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))
                                         @endif
                                     </p>
                                     </div>
@@ -61,7 +61,7 @@
                                                 name="receiver_branch_id"
                                                 id="receiver_branch_id"
                                                 class="form-control"
-                                                value="{{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : $generalSettings['business']['shop_name'] }}"
+                                                value="{{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : $generalSettings['business__shop_name'] }}"
                                             >
                                         </div>
                                     </div>

@@ -17,15 +17,15 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
+            <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">
-                {{ $generalSettings['business']['address'] }}
+                {{ $generalSettings['business__address'] }}
             </p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
 
             @php
@@ -42,8 +42,8 @@
         @if ($fromDate && $toDate)
 
             <p><b>@lang('menu.date') :</b>
-                {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
         @endif
 
@@ -53,7 +53,7 @@
 <br>
 
 @php
-    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
+    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
 
     $totalItems = 0;
     $TotalNetTotal = 0;
@@ -97,7 +97,7 @@
                                  {!! $sale->branch_name . '/' . $sale->branch_code . '(<b>BL</b>)' !!}
                             @else
 
-                                {!! $generalSettings['business']['shop_name'] . '(<b>HO</b>)' !!}
+                                {!! $generalSettings['business__shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
@@ -193,56 +193,56 @@
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Net Total Amount') }} : {{$generalSettings['business']['currency']}}</th>
+                    <th class="text-end">{{ __('Total Net Total Amount') }} : {{$generalSettings['business__currency']}}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalNetTotal) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Order Discount') }} : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Order Discount') }} : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalOrderDiscount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Order Tax') }} : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Order Tax') }} : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalOrderTax) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total') @lang('menu.shipment_charge') : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total') @lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalShipmentCharge) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Sale Amount') }} : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Sale Amount') }} : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalSaleAmount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_payment_received') : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_payment_received') : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalPaymentReceived) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_return') : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_return') : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalReturnedAmount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($TotalSaleDue) }}
                     </td>

@@ -90,7 +90,7 @@ class CustomerController extends Controller
 
         $generalSettings = \Cache::get('generalSettings');
 
-        $cusIdPrefix = $generalSettings['prefix']['customer_id'];
+        $cusIdPrefix = $generalSettings['prefix__customer_id'];
 
         $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
 
@@ -453,7 +453,7 @@ class CustomerController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -575,7 +575,7 @@ class CustomerController extends Controller
             return DataTables::of($customerLedgers)
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $dateFormat = $generalSettings['business']['date_format'];
+                    $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->report_date));
                 })
@@ -595,7 +595,7 @@ class CustomerController extends Controller
                         return $row->b_name;
                     } else {
 
-                        return $generalSettings['business']['shop_name'];
+                        return $generalSettings['business__shop_name'];
                     }
                 })
 
@@ -1225,7 +1225,7 @@ class CustomerController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date($generalSettings['business']['date_format'], strtotime($row->date));
+                    return date($generalSettings['business__date_format'], strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 

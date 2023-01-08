@@ -72,7 +72,7 @@
                                                                 id="ledger_branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 <option value="NULL">
-                                                                    {{ $generalSettings['business']['shop_name'] }}
+                                                                    {{ $generalSettings['business__shop_name'] }}
                                                                 </option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
@@ -158,7 +158,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
+                                                    <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
                                                     <th id="debit" class="text-white text-end"></th>
                                                     <th id="credit" class="text-white text-end"></th>
                                                     <th class="text-white text-end">---</th>
@@ -201,37 +201,37 @@
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
                                     <li>
-                                        <strong> @lang('menu.opening_balance') : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> @lang('menu.opening_balance') : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_sale') : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> @lang('menu.total_sale') : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_return') : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> @lang('menu.total_return') : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_less') : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> @lang('menu.total_less') : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> @lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> {{ __('Total Returnable Due') }} : {{ $generalSettings['business']['currency'] }}</strong>
+                                        <strong> {{ __('Total Returnable Due') }} : {{ $generalSettings['business__currency'] }}</strong>
                                         <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
                                     </li>
                                 </ul>
@@ -261,7 +261,7 @@
                                                             <select name="branch_id" class="form-control submit_able select2" id="sale_branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 <option value="NULL">
-                                                                    {{ $generalSettings['business']['shop_name'] }}
+                                                                    {{ $generalSettings['business__shop_name'] }}
                                                                 </option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
@@ -380,7 +380,7 @@
                                                                             <select name="branch_id" class="form-control submit_able select2" id="payment_branch_id" autofocus>
                                                                                 <option value="">@lang('menu.all')</option>
                                                                                 <option value="NULL">
-                                                                                    {{ $generalSettings['business']['shop_name'] }}
+                                                                                    {{ $generalSettings['business__shop_name'] }}
                                                                                 </option>
                                                                                 @foreach ($branches as $branch)
                                                                                     <option value="{{ $branch->id }}">
@@ -575,7 +575,7 @@
                 {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
             ],
 
-            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -613,7 +613,7 @@
             "serverSide": true,
             // aaSorting: [[3, 'asc']],
 
-            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -676,7 +676,7 @@
                     {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
                 ],
 
-                "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+                "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
                 "ajax": {

@@ -27,7 +27,7 @@
                                     {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
                                 @else
 
-                                    {{ $generalSettings['business']['shop_name'] }}
+                                    {{ $generalSettings['business__shop_name'] }}
                                 @endif
                             </p>
                             <div class="form_element rounded">

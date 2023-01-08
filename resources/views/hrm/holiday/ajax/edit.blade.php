@@ -22,7 +22,7 @@
             <label><b>{{ __('Allowed Branch') }}</b> <span class="text-danger">*</span></label>
             <select class="form-control" name="branch_id">
                 <option {{ $holiday->is_all == 1 ? 'SELECTED' : '' }} value="All"> @lang('menu.all') </option>
-                <option {{ !$holiday->branch_id ? 'SELECTED' : '' }} value=""> {{$generalSettings['business']['shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
+                <option {{ !$holiday->branch_id ? 'SELECTED' : '' }} value=""> {{$generalSettings['business__shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
                 @foreach($branches as $row)
                     <option {{ $row->id == $holiday->branch_id ? 'SELECTED' : '' }} value="{{ $row->id }}"> {{ $row->name.'/'.$row->branch_code }}</option>
                 @endforeach

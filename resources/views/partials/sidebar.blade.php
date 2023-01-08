@@ -17,7 +17,7 @@
                     </li>
                 @endif
 
-                @if ($generalSettings['modules']['contacts'] == '1')
+                @if ($generalSettings['modules__contacts'] == '1')
                     @if (
                         auth()->user()->can('supplier_all') ||
                         auth()->user()->can('supplier_add') ||
@@ -75,7 +75,7 @@
                     </li>
                 @endif
 
-                @if ($generalSettings['modules']['purchases'] == '1')
+                @if ($generalSettings['modules__purchases'] == '1')
 
                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                         <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
@@ -154,7 +154,7 @@
                     </li>
                 @endif
 
-                @if ($generalSettings['modules']['transfer_stock'] == '1')
+                @if ($generalSettings['modules__transfer_stock'] == '1')
 
                     <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
                         <a href="#">
@@ -164,7 +164,7 @@
                     </li>
                 @endif
 
-                @if ($generalSettings['modules']['stock_adjustment'] == '1')
+                @if ($generalSettings['modules__stock_adjustment'] == '1')
 
                     @if (
                         auth()->user()->can('adjustment_all') ||
@@ -185,7 +185,7 @@
                     @endif
                 @endif
 
-                @if ($generalSettings['modules']['expenses'] == '1')
+                @if ($generalSettings['modules__expenses'] == '1')
 
                     @if (
                         auth()->user()->can('view_expense') ||
@@ -206,7 +206,7 @@
                     @endif
                 @endif
 
-                @if ($generalSettings['modules']['accounting'] == '1')
+                @if ($generalSettings['modules__accounting'] == '1')
 
                     @if (auth()->user()->can('ac_access'))
                         <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
@@ -287,7 +287,7 @@
 
                 @if ($addons->todo == 1)
 
-                    @if ($generalSettings['modules']['requisite'] == '1')
+                    @if ($generalSettings['modules__requisite'] == '1')
 
                         @if (
                             auth()->user()->can('assign_todo') ||
@@ -644,7 +644,7 @@
                 </div>
             @endif
 
-            @if ($generalSettings['modules']['contacts'] == '1')
+            @if ($generalSettings['modules__contacts'] == '1')
 
                 <div class="sub-menu_t" id="contact">
                     <div class="sub-menu-width">
@@ -792,7 +792,7 @@
                 </div>
             @endif
 
-            @if ($generalSettings['modules']['purchases'] == '1')
+            @if ($generalSettings['modules__purchases'] == '1')
                 @canany([
                     "pro_purchase_report",
                     "purchase_add",
@@ -1033,7 +1033,7 @@
                             <p class="sub-menu-group-title">{{ __('Sale Management') }}</p>
                             <div class="sub-menu-row">
 
-                                @if ($generalSettings['modules']['add_sale'] == '1')
+                                @if ($generalSettings['modules__add_sale'] == '1')
 
                                     @if (auth()->user()->can('create_add_sale'))
 
@@ -1082,7 +1082,7 @@
                             </div>
 
                             <div class="sub-menu-row">
-                                @if ($generalSettings['modules']['pos'] == '1')
+                                @if ($generalSettings['modules__pos'] == '1')
 
                                     @if (auth()->user()->can('pos_add'))
 
@@ -1372,7 +1372,7 @@
                 </div>
             </div>
 
-            @if ($generalSettings['modules']['transfer_stock'] == '1')
+            @if ($generalSettings['modules__transfer_stock'] == '1')
                 <div class="sub-menu_t" id="transfer">
                     <div class="sub-menu-width">
                         {{-- <div class="model__close bg-secondary-2 mb-3">
@@ -1525,7 +1525,7 @@
                 </div>
             @endif
 
-            @if ($generalSettings['modules']['stock_adjustment'] == '1')
+            @if ($generalSettings['modules__stock_adjustment'] == '1')
                 <div class="sub-menu_t" id="adjustment">
                     <div class="sub-menu-width">
                         {{-- <div class="model__close bg-secondary-2 mb-3">
@@ -1619,7 +1619,7 @@
                 </div>
             @endif
 
-            @if ($generalSettings['modules']['expenses'] == '1')
+            @if ($generalSettings['modules__expenses'] == '1')
                 <div class="sub-menu_t" id="expenses">
                     <div class="sub-menu-width">
                         {{-- <div class="model__close bg-secondary-2 mb-3">
@@ -1726,7 +1726,7 @@
                 </div>
             @endif
 
-            @if ($generalSettings['modules']['accounting'] == '1')
+            @if ($generalSettings['modules__accounting'] == '1')
 
                 @if (auth()->user()->can('ac_access'))
 

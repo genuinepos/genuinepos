@@ -36,7 +36,7 @@
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -113,7 +113,7 @@
                             <tfoot>
                                 <tr class="bg-secondary">
                                     <th colspan="3" class="text-end text-white">@lang('menu.total') :</th>
-                                    <th class="text-white">{{ $generalSettings['business']['currency'] }} <span id="paid"></span></th>
+                                    <th class="text-white">{{ $generalSettings['business__currency'] }} <span id="paid"></span></th>
                                     <th class="text-white">--</th>
                                     <th class="text-white">--</th>
                                 </tr>
@@ -152,7 +152,7 @@
         "serverSide": true,
         "searching" : true,
         aaSorting: [[0, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.payroll.payment') }}",

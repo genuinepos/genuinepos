@@ -34,7 +34,7 @@
                                         @if($purchase->branch)
                                             {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
                                         @else
-                                            {{ $generalSettings['business']['shop_name'] }} <b>(HO)</b>
+                                            {{ $generalSettings['business__shop_name'] }} <b>(HO)</b>
                                         @endif
                                     </p>
                                         <p class="m-0 warehouse"><strong>{{ __('Purchase Stored Location') }} : </strong>
@@ -43,7 +43,7 @@
                                         @elseif($purchase->branch)
                                             {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
                                         @else
-                                            {{ $generalSettings['business']['shop_name'] }}<b>(HO)</b>
+                                            {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
                                         @endif
                                     </p>
                                     </div>
@@ -65,7 +65,7 @@
                                         <label for="inputEmail3" class="col-5"><b>@lang('menu.date') :</b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-7">
-                                            <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date($generalSettings['business']['date_format']) }}">
+                                            <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date($generalSettings['business__date_format']) }}">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.total_return_amount') : {{ $generalSettings['business']['currency'] }}</b>  </label>
+                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</b>  </label>
                                         <div class="col-8">
                                             <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                         </div>
@@ -362,7 +362,7 @@
         $('#action').val(action);
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

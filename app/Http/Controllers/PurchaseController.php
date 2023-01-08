@@ -234,9 +234,9 @@ class PurchaseController extends Controller
 
             DB::beginTransaction();
             $generalSettings = \Cache::get('generalSettings');
-            $invoicePrefix = $generalSettings['prefix']['purchase_invoice'];
-            $paymentInvoicePrefix = $generalSettings['prefix']['purchase_payment'];
-            $isEditProductPrice = $generalSettings['purchase']['is_edit_pro_price'];
+            $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
+            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
+            $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $product_ids = $request->product_ids;
             $variant_ids = $request->variant_ids;
@@ -547,8 +547,8 @@ class PurchaseController extends Controller
             DB::beginTransaction();
 
             $generalSettings = \Cache::get('generalSettings');
-            $invoicePrefix = $generalSettings['prefix']['purchase_invoice'];
-            $isEditProductPrice = $generalSettings['purchase']['is_edit_pro_price'];
+            $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
+            $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $product_ids = $request->product_ids;
             $variant_ids = $request->variant_ids;
@@ -1066,7 +1066,7 @@ class PurchaseController extends Controller
 
         $generalSettings = \Cache::get('generalSettings');
 
-        $paymentInvoicePrefix = $generalSettings['prefix']['purchase_payment'];
+        $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
 
         $purchase = Purchase::where('id', $purchaseId)->first();
 

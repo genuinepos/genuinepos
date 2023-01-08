@@ -434,7 +434,7 @@ class UserActivityLogUtil
     {
         $generalSettings = \Cache::get('generalSettings');
 
-        $dateFormat = $generalSettings['business']['date_format'];
+        $dateFormat = $generalSettings['business__date_format'];
 
         $__dateFormat = str_replace('y', 'Y', $dateFormat);
 

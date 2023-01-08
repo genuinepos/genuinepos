@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
             <input type="text" name="date" class="form-control add_input" data-name="Date" id="date"
-                placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date($generalSettings['business']['date_format']) }}"/>
+                placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date($generalSettings['business__date_format']) }}"/>
             <span class="error error_date"></span>
         </div>
 

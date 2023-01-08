@@ -23,7 +23,7 @@
         <tbody>
             <tr>
                 <td width="50" class="text-start">@lang('menu.opening_balance') :</td>
-                <td width="50" class="text-start">{{ $generalSettings['business']['currency'] }}
+                <td width="50" class="text-start">{{ $generalSettings['business__currency'] }}
                     {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
                 </td>
             </tr>
@@ -32,7 +32,7 @@
                 <tr>
                     <td width="50" class="text-start"> {{$payment->name.' Payment' }} :</td>
                     <td width="50" class="text-start">
-                        {{ $generalSettings['business']['currency'] }}
+                        {{ $generalSettings['business__currency'] }}
                         {{ App\Utils\Converter::format_in_bdt($payment->total_paid) }}
                     </td>
                 </tr>
@@ -42,7 +42,7 @@
                     @lang('menu.total_credit_sale')
                 </td>
                 <td width="50" class="text-start text-danger">
-                    {{ $generalSettings['business']['currency'] }}
+                    {{ $generalSettings['business__currency'] }}
                     {{ App\Utils\Converter::format_in_bdt($totalCredit->sum('total_due')) }}
                 </td>
             </tr>
@@ -67,7 +67,7 @@
                         {{ $accountType->account_type == 1 ? 'Cash-In-Hand' : 'Bank A/C' }} :
                     </td>
                     <td width="50" class="text-start">
-                        {{ $generalSettings['business']['currency'] }}
+                        {{ $generalSettings['business__currency'] }}
                         {{ App\Utils\Converter::format_in_bdt($accountType->total_paid) }}
                     </td>
                 </tr>
@@ -79,7 +79,7 @@
     @php
         $__receivedInCashAccount = $receivedInCashAccount + $activeCashRegister->cash_in_hand
     @endphp
-    <p><strong>@lang('menu.current_cash_amount') : </strong> {{ $generalSettings['business']['currency'] }}
+    <p><strong>@lang('menu.current_cash_amount') : </strong> {{ $generalSettings['business__currency'] }}
         {{ App\Utils\Converter::format_in_bdt($__receivedInCashAccount) }}
     </p>
 
@@ -99,7 +99,7 @@
                 {!!
                     $activeCashRegister->b_name
                     ? $activeCashRegister->b_name.'/'.$activeCashRegister->b_code
-                    : $generalSettings['business']['shop_name'].' (<b>HO</b>)'
+                    : $generalSettings['business__shop_name'].' (<b>HO</b>)'
                 !!}
             </li>
 

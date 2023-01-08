@@ -35,7 +35,7 @@
                                             {{ $payment->sale_return->branch->name.'/'.$payment->sale_return->branch->branch_code }}
                                         @else
 
-                                            {{ $generalSettings['business']['shop_name'] }} (<b>HO</b>)
+                                            {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
                                         @endif
                                     </span>
                                 </li>
@@ -47,12 +47,12 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li class="sale_due">
-                                    <strong>@lang('menu.total_return_amount'): {{ $generalSettings['business']['currency'] }} </strong>
+                                    <strong>@lang('menu.total_return_amount'): {{ $generalSettings['business__currency'] }} </strong>
                                     <span>{{ $payment->sale_return->total_return_amount }}</span>
                                 </li>
 
                                 <li class="sale_due">
-                                    <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') {{ $generalSettings['business']['currency'] }} </strong>
+                                    <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') {{ $generalSettings['business__currency'] }} </strong>
                                     <span>{{ $payment->sale_return->total_return_due_pay }}</span>
                                 </li>
                             </ul>
@@ -86,7 +86,7 @@
                                     <i class="fas fa-calendar-week text-dark input_i"></i>
                                 </span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -222,7 +222,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

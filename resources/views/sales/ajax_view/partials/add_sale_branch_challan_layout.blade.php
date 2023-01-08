@@ -41,7 +41,7 @@
                     <div class="col-md-4 col-sm-4 col-lg-4">
                         <div class="heading text-end">
                             <h5 class="company_name">
-                                {{ $generalSettings['business']['shop_name'] }}</h5>
+                                {{ $generalSettings['business__shop_name'] }}</h5>
                             <p class="company_address">
                                 {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                 {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -102,7 +102,7 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong> @lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}</li>
-                        <li><strong>@lang('menu.date'): </strong> {{ date($generalSettings['business']['date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
+                        <li><strong>@lang('menu.date'): </strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                         <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
@@ -171,7 +171,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-center">
-                    <small>@lang('menu.print_date') : {{ date($generalSettings['business']['date_format']) }}</small>
+                    <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

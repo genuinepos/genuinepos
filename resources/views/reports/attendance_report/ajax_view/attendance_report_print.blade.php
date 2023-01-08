@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="company_name text-center">
-                    <h3><b>{{ $generalSettings['business']['shop_name'] }}</b> </h3>
+                    <h3><b>{{ $generalSettings['business__shop_name'] }}</b> </h3>
                     @if ($branch_id != 'NULL' && $branch_id != '')
                     
                         @php
@@ -31,8 +31,8 @@
                     <h6><b>@lang('menu.attendance_report')</b></h6>
                     @if ($fromDate && $toDate)
                         <p><b>@lang('menu.date') :</b>
-                            {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
-                            <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
+                            {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
+                            <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
                         </p>
                     @endif
                 </div>

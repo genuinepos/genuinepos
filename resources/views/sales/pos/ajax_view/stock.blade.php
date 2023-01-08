@@ -1,7 +1,7 @@
 <link href="{{asset('backend/css/data-table.min.css')}}" rel="stylesheet" type="text/css">
 <p>
     <b>@lang('menu.stock_location') :
-    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BL)' : $generalSettings['business']['shop_name'].'' !!}
+    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BL)' : $generalSettings['business__shop_name'].'' !!}
     </b>
 </p>
 <table class="table modal-table table-sm table-striped" id="data_table">

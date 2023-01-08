@@ -25,12 +25,12 @@
     <div class="row">
         <div class="col-md-12 text-center">
             @if ($branch_id == '')
-                <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
-                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+                <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
                 <p><b>@lang('menu.all_business_location')</b></p>
             @elseif ($branch_id == 'NULL')
-                <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
-                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+                <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             @else
                 @php
                     $branch = DB::table('branches')
@@ -44,8 +44,8 @@
 
             @if ($fromDate && $toDate)
                 <p><b>@lang('menu.date') :</b>
-                    {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
-                    <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
+                    {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
+                    <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
                 </p>
             @endif
             <h6 style="margin-top: 10px;"><b>{{ __('Product Sale Report') }} </b></h6>
@@ -63,14 +63,14 @@
                         <th class="text-start">@lang('menu.customer')</th>
                         <th class="text-start">@lang('menu.invoice_id')</th>
                         <th class="text-start">@lang('menu.qty')</th>
-                        <th class="text-end">@lang('menu.unit_price')({{$generalSettings['business']['currency']}})</th>
-                        <th class="text-end">@lang('menu.subtotal')({{$generalSettings['business']['currency']}})</th>
+                        <th class="text-end">@lang('menu.unit_price')({{$generalSettings['business__currency']}})</th>
+                        <th class="text-end">@lang('menu.subtotal')({{$generalSettings['business__currency']}})</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
                     @foreach ($saleProducts as $sProduct)
                         <tr>
-                            <td class="text-start">{{ date($generalSettings['business']['date_format'] ,strtotime($sProduct->report_date)) }}</td>
+                            <td class="text-start">{{ date($generalSettings['business__date_format'] ,strtotime($sProduct->report_date)) }}</td>
                             <td class="text-start">
                                 @php
                                     $variant = $sProduct->variant_name ? ' - ' . $sProduct->variant_name : '';
@@ -105,12 +105,12 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Price') }} : {{$generalSettings['business']['currency'] }}</th>
+                        <th class="text-end">{{ __('Total Price') }} : {{$generalSettings['business__currency'] }}</th>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalUnitPrice) }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">@lang('menu.net_total_amount') : {{$generalSettings['business']['currency'] }}</th>
+                        <th class="text-end">@lang('menu.net_total_amount') : {{$generalSettings['business__currency'] }}</th>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalSubTotal) }}</td>
                     </tr>
 

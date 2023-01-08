@@ -94,7 +94,7 @@
                                 <label><b>{{ __('Allowed Branch') }}</b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="branch_id" required>
                                     <option value="All"> All </option>
-                                    <option value=""> {{$generalSettings['business']['shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
+                                    <option value=""> {{$generalSettings['business__shop_name']}}  (<b>@lang('menu.head_office')</b>) </option>
                                     @foreach($branches as $row)
                                         <option value="{{ $row->id }}"> {{ $row->name.'/'.$row->branch_code }}</option>
                                     @endforeach

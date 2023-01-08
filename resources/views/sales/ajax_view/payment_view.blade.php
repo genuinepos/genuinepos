@@ -29,7 +29,7 @@
                         @if ($sale->branch)
                             {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
                         @else
-                            {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                            {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </li>
                 </ul>
@@ -39,9 +39,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }}
+                    <li><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}
                         </strong>{{ $sale->due }}</li>
-                    <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business']['date_format'], strtotime($sale->date)) }}</li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}</li>
                 </ul>
             </div>
         </div>
@@ -70,10 +70,10 @@
                     @foreach ($sale->sale_payments as $payment)
                         <tr data-info="{{ $payment }}">
                             <td>
-                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                             </td>
                             <td>{{ $payment->invoice_id }}</td>
-                            <td>{{ $generalSettings['business']['currency'] . ' ' . $payment->paid_amount }}
+                            <td>{{ $generalSettings['business__currency'] . ' ' . $payment->paid_amount }}
                             </td>
                             <td>{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                             <td>{{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}</td>

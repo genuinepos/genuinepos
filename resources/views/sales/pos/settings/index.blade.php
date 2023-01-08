@@ -30,7 +30,7 @@
                             <div class="row ">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_enabled_multiple_pay'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['pos__is_enabled_multiple_pay'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enabled_multiple_pay"> &nbsp; <b>@lang('menu.enable_multiple_pay')</b>
                                 </p>
                             </div>
@@ -40,7 +40,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_enabled_draft'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['pos__is_enabled_draft'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enabled_draft"> &nbsp; <b>@lang('menu.enable_draft')</b>
                                 </p>
                             </div>
@@ -49,7 +49,7 @@
                         <div class="col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
-                                    <input type="checkbox" {{ $generalSettings['pos']['is_enabled_quotation'] == '1' ? 'CHECKED' : '' }} name="is_enabled_quotation"> &nbsp; <b>@lang('menu.enable_quotation')</b>
+                                    <input type="checkbox" {{ $generalSettings['pos__is_enabled_quotation'] == '1' ? 'CHECKED' : '' }} name="is_enabled_quotation"> &nbsp; <b>@lang('menu.enable_quotation')</b>
                                 </p>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                             <div class="row ">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_enabled_suspend'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['pos__is_enabled_suspend'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enabled_suspend"> &nbsp; <b>@lang('menu.enable_suspend')</b>
                                 </p>
                             </div>
@@ -69,7 +69,7 @@
                         <div class="col-md-4">
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
-                                    <input type="checkbox" {{ $generalSettings['pos']['is_enabled_discount'] == '1' ? 'CHECKED' : '' }} name="is_enabled_discount"> &nbsp; <b>@lang('menu.enable_order_discount')</b>
+                                    <input type="checkbox" {{ $generalSettings['pos__is_enabled_discount'] == '1' ? 'CHECKED' : '' }} name="is_enabled_discount"> &nbsp; <b>@lang('menu.enable_order_discount')</b>
                                 </p>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_enabled_order_tax'] == '1' ? 'CHECKED' : '' }} name="is_enabled_order_tax"> &nbsp; <b>@lang('menu.enable_order_tax')</b>
+                                        {{ $generalSettings['pos__is_enabled_order_tax'] == '1' ? 'CHECKED' : '' }} name="is_enabled_order_tax"> &nbsp; <b>@lang('menu.enable_order_tax')</b>
                                 </p>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                             <div class="row ">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }} name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>@lang('menu.show_recent_transactions')</b>
+                                        {{ $generalSettings['pos__is_show_recent_transactions'] == '1' ? 'CHECKED' : '' }} name="is_show_recent_transactions" autocomplete="off"> &nbsp; <b>@lang('menu.show_recent_transactions')</b>
                                 </p>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_enabled_credit_full_sale'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['pos__is_enabled_credit_full_sale'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enabled_credit_full_sale"> &nbsp; <b>@lang('menu.enable_full_credit_sale') </b>
                                 </p>
                             </div>
@@ -108,7 +108,7 @@
                             <div class="row">
                                 <p class="checkbox_input_wrap mt-3">
                                     <input type="checkbox"
-                                        {{ $generalSettings['pos']['is_enabled_hold_invoice'] == '1' ? 'CHECKED' : '' }}
+                                        {{ $generalSettings['pos__is_enabled_hold_invoice'] == '1' ? 'CHECKED' : '' }}
                                         name="is_enabled_hold_invoice"> &nbsp; <b>@lang('menu.enable_hold_invoice')</b>
                                 </p>
                             </div>

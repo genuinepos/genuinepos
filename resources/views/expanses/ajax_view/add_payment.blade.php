@@ -13,7 +13,7 @@
                 <ul class="list-unstyled">
                     <li><strong> @lang('menu.voucher_no') : </strong>{{ $expense->invoice_id }} </li>
                     <li><strong>@lang('menu.business_location') : </strong>
-                        {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : $generalSettings['business']['shop_name'] }}
+                        {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : $generalSettings['business__shop_name'] }}
                     </li>
                 </ul>
             </div>
@@ -50,7 +50,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                 </div>
-                <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}">
+                <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
             </div>
             <span class="error error_p_date"></span>
         </div>
@@ -114,7 +114,7 @@
     </div>
 </form>
 <script>
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -84,13 +84,13 @@ class ProductionUtil
                 return $html;
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })
             ->editColumn('from',  function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })->editColumn('product',  fn ($row) => Str::limit($row->p_name, 25, '') . ' ' . $row->v_name)
             ->editColumn('unit_cost_inc_tax', fn ($row) => $this->converter->format_in_bdt($row->unit_cost_inc_tax))

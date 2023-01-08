@@ -25,7 +25,7 @@ class CustomerImport implements ToCollection
         $index = 0;
         $generalSettings = \Cache::get('generalSettings');
         
-        $cusIdPrefix = $generalSettings['prefix']['customer_id'];
+        $cusIdPrefix = $generalSettings['prefix__customer_id'];
 
         $this->customerUtil = new CustomerUtil();
 

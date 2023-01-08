@@ -33,7 +33,7 @@
                                                             <select name="branch_id"
                                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -135,18 +135,18 @@
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>@lang('menu.purchases_status')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>@lang('menu.grand_total')({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.paid')({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.payment_due')({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.return_amount')({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.return_due')({{ $generalSettings['business']['currency'] }})</th>
+                                                <th>@lang('menu.grand_total')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.paid')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.payment_due')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.return_amount')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.return_due')({{ $generalSettings['business__currency'] }})</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business']['currency'] }}</th>
+                                                <th colspan="7" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business__currency'] }}</th>
                                                 <th id="total_purchase_amount" class="text-white"></th>
                                                 <th id="paid" class="text-white"></th>
                                                 <th id="due" class="text-white"></th>
@@ -259,7 +259,7 @@
             "processing": true,
             "serverSide": true,
             //aaSorting: [[0, 'asc']],
-            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('purchases.index_v2') }}",

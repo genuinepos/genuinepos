@@ -24,7 +24,7 @@ class SupplierImport implements ToCollection
 
         $index = 0;
         $generalSettings = \Cache::get('generalSettings');
-        $supIdPrefix = $generalSettings['prefix']['supplier_id'];
+        $supIdPrefix = $generalSettings['prefix__supplier_id'];
         $this->supplierUtil = new SupplierUtil();
         foreach ($collection as $c) {
             if ($index != 0) {

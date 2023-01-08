@@ -95,7 +95,7 @@ class AttendanceController extends Controller
 				})
 				->editColumn('date', function ($row) use ($generalSettings) {
 
-					return date($generalSettings['business']['date_format'], strtotime($row->at_date));
+					return date($generalSettings['business__date_format'], strtotime($row->at_date));
 				})
 				->editColumn('clock_in_out', function ($row) {
 

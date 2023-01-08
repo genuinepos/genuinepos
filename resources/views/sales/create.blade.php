@@ -102,7 +102,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"> <b>@lang('menu.warehouse') :</b> </label>
                                                     <div class="col-8">
-                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}" id="branch_name">
+                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
                                                         <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
                                                         <select name="warehouse_id" class="form-control" id="warehouse_id">
                                                             <option value="">@lang('menu.select_warehouse')</option>
@@ -159,7 +159,7 @@
                                                             id="price_group_id">
                                                             <option value="">@lang('menu.default_selling_price')</option>
                                                             @foreach ($price_groups as $pg)
-                                                                <option {{ $generalSettings['sale']['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                                <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -208,7 +208,7 @@
                                                             <label class=" col-4"><b>@lang('menu.date') : <span
                                                                 class="text-danger">*</span></b></label>
                                                             <div class="col-8">
-                                                                <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}" autocomplete="off" id="date">
+                                                                <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off" id="date">
                                                                 <span class="error error_date"></span>
                                                             </div>
                                                         </div>
@@ -586,7 +586,7 @@
                         @if(auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business']['currency'] }}</span>
+                                    <span>{{ $generalSettings['business__currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>

@@ -714,7 +714,7 @@ class SaleUtil
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
                 return date($__date_format, strtotime($row->date));
             })
             ->editColumn('invoice_id', function ($row) {
@@ -731,7 +731,7 @@ class SaleUtil
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
@@ -855,7 +855,7 @@ class SaleUtil
                 $html .= '</div>';
                 return $html;
             })
-            ->editColumn('date', fn ($row) => date($generalSettings['business']['date_format'], strtotime($row->date)))
+            ->editColumn('date', fn ($row) => date($generalSettings['business__date_format'], strtotime($row->date)))
             ->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -870,7 +870,7 @@ class SaleUtil
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
@@ -987,7 +987,7 @@ class SaleUtil
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
                 return date($__date_format, strtotime($row->date));
             })
 
@@ -998,7 +998,7 @@ class SaleUtil
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
 
@@ -1142,7 +1142,7 @@ class SaleUtil
                 return $row->variant_code ? $row->variant_code : $row->product_code;
             })->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business']['date_format'], strtotime($row->date));
+                return date($generalSettings['business__date_format'], strtotime($row->date));
             })->editColumn('customer', function ($row) {
 
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
@@ -1229,7 +1229,7 @@ class SaleUtil
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer',  function ($row) {
@@ -1238,7 +1238,7 @@ class SaleUtil
             })
             ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
 
-                return '<b>' . $generalSettings['business']['currency'] . ' ' . $row->total_payable_amount . '</b>';
+                return '<b>' . $generalSettings['business__currency'] . ' ' . $row->total_payable_amount . '</b>';
             })
             ->editColumn('user', function ($row) {
 
@@ -1313,14 +1313,14 @@ class SaleUtil
                 if ($row->branch_name) {
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer',  function ($row) {
                 return $row->customer ? $row->customer : 'Walk-In-Customer';
             })
             ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
-                return '<b>' . $generalSettings['business']['currency'] . ' ' . $row->total_payable_amount . '</b>';
+                return '<b>' . $generalSettings['business__currency'] . ' ' . $row->total_payable_amount . '</b>';
             })
             ->editColumn('user', function ($row) {
                 return $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name;
@@ -1387,7 +1387,7 @@ class SaleUtil
                 if ($row->branch_name) {
                     return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer',  function ($row) {

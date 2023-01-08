@@ -20,7 +20,7 @@
                         <td>{{ $row->variant_code }}</td>
                         <td>{{ $row->name.'-'.$row->variant_name }}</td>
                         <td>{{ $row->product_price }}</td>
-                        <td>{!! $row->wb_name ? $row->wb_name.'/'.$row->wb_code : $generalSettings['business']['shop_name'] .'<b>(HO)</b>' !!}</td>
+                        <td>{!! $row->wb_name ? $row->wb_name.'/'.$row->wb_code : $generalSettings['business__shop_name'] .'<b>(HO)</b>' !!}</td>
                         <td>{{ $row->warehouse_name.'/'.$row->warehouse_code }} </td>
                         <td>{{ $row->w_variant_quantity }}</td>
                         <td>
@@ -37,7 +37,7 @@
                         <td>{{ $row->product_code }}</td>
                         <td>{{ $row->name }}</td>
                         <td>{{ $row->product_price }}</td>
-                        <td>{!! $row->wb_name ? $row->wb_name.'/'.$row->wb_code : $generalSettings['business']['shop_name'] .'<b>(HO)</b>' !!}</td>
+                        <td>{!! $row->wb_name ? $row->wb_name.'/'.$row->wb_code : $generalSettings['business__shop_name'] .'<b>(HO)</b>' !!}</td>
                         <td>{{ $row->warehouse_name.'/'.$row->warehouse_code }} </td>
                         <td>{{ $row->w_product_quantity }}</td>
                         <td>

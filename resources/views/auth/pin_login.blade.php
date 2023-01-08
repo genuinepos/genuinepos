@@ -17,7 +17,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head">
                                     <div class="head p-1">
-                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}"
+                                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                             alt="POS" class="logo">
                                         <span class="head-text">
                                             {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}

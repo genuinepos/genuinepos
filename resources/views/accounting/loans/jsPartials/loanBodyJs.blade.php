@@ -233,7 +233,7 @@
 </script>
 
 <script type="text/javascript">
-     var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -19,7 +19,7 @@
                         <div class="trial_balance_area">
                             <div class="print_header d-hide">
                                 <div class="text-center pb-3">
-                                    <h6>{{ $generalSettings['business']['shop_name'] }}</h6>
+                                    <h6>{{ $generalSettings['business__shop_name'] }}</h6>
                                     <h6><strong>@lang('menu.trial_balance')</h6>
                                 </div>
                             </div>
@@ -136,11 +136,11 @@
                                             <th class="text-white text-start">@lang('menu.total') :</th>
                                             <th class="text-white">
                                                 <span class="total_credit">0.00</span>
-                                                {{ $generalSettings['business']['currency'] }}
+                                                {{ $generalSettings['business__currency'] }}
                                             </th>
                                             <th class="text-white">
                                                 <span class="total_debit">0.00</span>
-                                                {{ $generalSettings['business']['currency'] }}
+                                                {{ $generalSettings['business__currency'] }}
                                             </th>
                                         </tr>
                                     </tfoot>

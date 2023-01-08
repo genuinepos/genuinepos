@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
+                        <h5 class="company_name">{{ $generalSettings['business__shop_name'] }}</h5>
                         <h6 class="bill_name">@lang('menu.transfer_stock_details') (To Branch)</h6>
                     </div>
                 </div>
@@ -17,8 +17,8 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.b_location') (From) : </strong></li>
-                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business']['phone'] }}</li>
+                        <li><strong>@lang('menu.name') :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
                         @if ($transfer->branch)
                             <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
@@ -28,7 +28,7 @@
                             </li>
                         @else
                             <li><strong>@lang('menu.address') : </strong>
-                                {{ $generalSettings['business']['address'] }}
+                                {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
                     </ul>

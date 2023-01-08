@@ -21,9 +21,9 @@ class HorizontalToVerticalConversionSeeder extends Seeder
         $general_settings['product'] = '{"product_code_prefix":null,"default_unit_id":"3","is_enable_brands":1,"is_enable_categories":1,"is_enable_sub_categories":1,"is_enable_price_tax":0,"is_enable_warranty":1}';
         $general_settings['sale'] = '{"default_sale_discount":"0.00","default_tax_id":"null","sales_cmsn_agnt":"select_form_cmsn_list","default_price_group_id":"7"}';
 
-        $general_settings['pos'] = '{"is_disable_draft":0,"is_disable_quotation":0,"is_disable_challan":0,"is_disable_hold_invoice":0,"is_disable_multiple_pay":1,"is_show_recent_transactions":0,"is_disable_discount":0,"is_disable_order_tax":0,"is_show_credit_sale_button":1,"is_show_partial_sale_button":1}';
+        $general_settings['pos'] = '{"is_enabled_multiple_pay":1,"is_enabled_draft":1,"is_enabled_quotation":1,"is_enabled_suspend":1,"is_enabled_discount":1,"is_enabled_order_tax":1,"is_show_recent_transactions":1,"is_enabled_credit_full_sale":1,"is_enabled_hold_invoice":1}';
 
-        $general_settings['purchase'] = '{"is_edit_pro_price":0,"is_enable_status":1,"is_enable_lot_no":1}';
+        $general_settings['purchase'] = '{"is_edit_pro_price":1,"is_enable_status":1,"is_enable_lot_no":1}';
         $general_settings['dashboard'] = '{"view_stock_expiry_alert_for":"31"}';
         $general_settings['system'] = '{"theme_color":"dark-theme","datatable_page_entry":"25"}';
 
@@ -36,7 +36,7 @@ class HorizontalToVerticalConversionSeeder extends Seeder
         $general_settings['sms_setting'] = '[]';
         $general_settings['modules'] = '{"purchases":1,"add_sale":1,"pos":1,"transfer_stock":1,"stock_adjustment":1,"expenses":1,"accounting":1,"contacts":1,"hrms":1,"requisite":1}';
 
-        $general_settings['reward_point_settings'] = '{"enable_cus_point":1,"point_display_name":"Reward Point","amount_for_unit_rp":"10","min_order_total_for_rp":"100","max_rp_per_order":"","redeem_amount_per_unit_rp":"0.10","min_order_total_for_redeem":"","min_redeem_point":"","max_redeem_point":""}';
+        $general_settings['reward_point_settings'] = '{"enable_cus_point":0,"point_display_name":"Reward Point","amount_for_unit_rp":"10","min_order_total_for_rp":"100","max_rp_per_order":"50","redeem_amount_per_unit_rp":"0.10","min_order_total_for_redeem":"500","min_redeem_point":"30","max_redeem_point":""}';
 
         $general_settings['mf_settings'] = '{"production_ref_prefix":"MF","enable_editing_ingredient_qty":1,"enable_updating_product_price":1}';
         $general_settings['multi_branches'] = '0';

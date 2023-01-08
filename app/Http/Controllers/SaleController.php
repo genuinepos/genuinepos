@@ -563,7 +563,7 @@ class SaleController extends Controller
 
             if (
                 env('MAIL_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
+                $generalSettings['send_es_settings__send_inv_via_email'] == '1'
             ) {
 
                 if ($sale->customer && $sale->customer->email) {
@@ -575,7 +575,7 @@ class SaleController extends Controller
 
             if (
                 env('SMS_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
+                $generalSettings['send_es_settings__send_notice_via_sms'] == '1'
             ) {
 
                 if ($sale->customer && $sale->customer->phone) {

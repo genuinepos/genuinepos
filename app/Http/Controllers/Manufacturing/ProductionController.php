@@ -201,7 +201,7 @@ class ProductionController extends Controller
                 $addProductionIngredient->subtotal = $request->subtotals[$index];
                 $addProductionIngredient->save();
 
-                if (json_decode($generalSetting->mf_settings, true)['enable_editing_ingredient_qty'] == '1') {
+                if ($generalSettings['mf_settings__enable_editing_ingredient_qty'] == '1') {
 
                     if (isset($request->is_final)) {
 
@@ -222,7 +222,7 @@ class ProductionController extends Controller
 
         if (isset($request->is_final)) {
 
-            if (json_decode($generalSetting->mf_settings, true)['enable_updating_product_price'] == '1') {
+            if ($generalSettings['mf_settings__enable_updating_product_price'] == '1') {
 
                 $this->productionUtil->updateProductAndVariantPriceByProduction($request->product_id, $request->variant_id, $request->per_unit_cost_exc_tax, $request->per_unit_cost_inc_tax, $request->xMargin, $request->selling_price, $tax_id, $request->tax_type);
             }
@@ -463,7 +463,7 @@ class ProductionController extends Controller
                     $updateProductionIngredient->save();
                 }
 
-                if (json_decode($generalSetting->mf_settings, true)['enable_editing_ingredient_qty'] == '1') {
+                if ($generalSettings['mf_settings__enable_editing_ingredient_qty'] == '1') {
 
                     $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
 
@@ -479,7 +479,7 @@ class ProductionController extends Controller
             }
         }
 
-        if (json_decode($generalSetting->mf_settings, true)['enable_updating_product_price'] == '1') {
+        if ($generalSettings['mf_settings__enable_updating_product_price'] == '1') {
 
             if ($updateProduction->is_last_entry == 1) {
 

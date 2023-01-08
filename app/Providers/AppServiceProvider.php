@@ -8,7 +8,9 @@ use App\Services\CacheService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use App\Services\CacheServiceInterface;
+use App\Services\GeneralSettingService;
 use Illuminate\Support\ServiceProvider;
+use App\Services\GeneralSettingServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
             return new GeneralSetting();
         });
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
+        $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);
         $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 

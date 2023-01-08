@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\CashRegisterTransaction;
-use App\Services\CacheServiceInterface;
+use App\Services\GeneralSettingServiceInterface;
 
 class POSController extends Controller
 {
@@ -283,7 +283,7 @@ class POSController extends Controller
 
                 if ($customer) {
 
-                    if (json_decode($settings->reward_point_settings, true)['enable_cus_point'] == '1') {
+                    if ($generalSettings['reward_point_settings__enable_cus_point'] == '1') {
 
                         $customer->point = $customer->point - $request->pre_redeemed;
                         $customer->point = $customer->point + $this->calculateCustomerPoint($settings, $request->total_invoice_payable);
@@ -388,7 +388,7 @@ class POSController extends Controller
 
             if (
                 env('MAIL_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
+                $generalSettings['send_es_settings__send_inv_via_email'] == '1'
             ) {
                 if ($customer && $customer->email) {
 
@@ -398,7 +398,7 @@ class POSController extends Controller
 
             if (
                 env('SMS_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
+                $generalSettings['send_es_settings__send_notice_via_sms'] == '1'
             ) {
 
                 if ($customer && $customer->phone) {
@@ -1233,23 +1233,21 @@ class POSController extends Controller
         return view('sales.pos.settings.index');
     }
 
-    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        $posSettings = [
-            'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
-            'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
-            'is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
-            'is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
-            'is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
-            'is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
-            'is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
-            'is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
-            'is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
+        $settings = [
+            'pos__is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
+            'pos__is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
+            'pos__is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
+            'pos__is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
+            'pos__is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
+            'pos__is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
+            'pos__is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
+            'pos__is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
+            'pos__is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
         ];
-        GeneralSetting::query()->update([
-            'pos' => $posSettings,
-        ]);
-        $cacheService->syncGeneralSettings();
+        
+        $generalSettingService->updateAndSync($settings);
         return response()->json('POS settings updated successfully');
     }
 }

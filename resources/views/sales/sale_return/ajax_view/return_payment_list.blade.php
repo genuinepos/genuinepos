@@ -26,7 +26,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong> @lang('menu.return_invoice_id') : </strong>{{ $return->invoice_id }}</li>
-                    <li><strong>@lang('menu.return_date') : </strong>{{ date($generalSettings['business']['date_format'], strtotime($return->date)) }}</li>
+                    <li><strong>@lang('menu.return_date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}</li>
                     <li><strong>@lang('menu.business_location'): </strong>
 
                         @if ($return->branch)
@@ -34,7 +34,7 @@
                             {{ $return->branch->name . '/' . $return->branch->branch_code }}
                         @else
 
-                            {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                            {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </li>
                 </ul>
@@ -45,11 +45,11 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li>
-                        <strong>@lang('menu.total_return') : {{ $generalSettings['business']['currency'] }}
+                        <strong>@lang('menu.total_return') : {{ $generalSettings['business__currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                     </li>
                     <li>
-                        <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') : {{ $generalSettings['business']['currency'] }}
+                        <strong>@lang('menu.total_paid')/@lang('menu.refunded_amount') : {{ $generalSettings['business__currency'] }}
                         </strong>{{ App\Utils\Converter::format_in_bdt($return->total_return_due_pay) }}
                     </li>
                 </ul>
@@ -79,7 +79,7 @@
                     @foreach ($return->payments as $payment)
                         <tr data-info="{{ $payment }}">
                             <td class="text-start">
-                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                             </td>
 
                             <td class="text-start">{{ $payment->invoice_id }}</td>

@@ -55,7 +55,7 @@ class StockAdjustmentReportController extends Controller
     public function allAdjustments(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')
@@ -111,7 +111,7 @@ class StockAdjustmentReportController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })->editColumn('from',  function ($row) use ($generalSettings) {
                     if (!$row->branch_name && !$row->warehouse_name) {
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     } else {
                         if ($row->branch_name) {
                             return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';

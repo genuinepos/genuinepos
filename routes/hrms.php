@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HRM\LeaveController;
+use App\Http\Controllers\HRM\LeaveTypeController;
 use App\Http\Controllers\Report\PayrollReportController;
 use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\Report\PayrollPaymentReportController;
@@ -27,13 +29,13 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], fun
     });
 
     //Leave type routes group
-    Route::group(['prefix' => 'leavetype'], function () {
+    Route::controller(LeaveTypeController::class)->prefix('leave-types')->group(function () {
 
-        Route::get('/', 'LeavetypeController@index')->name('hrm.leave.type');
-        Route::get('/ajax-all-leavetypes', 'LeavetypeController@allleavtype')->name('hrm.leavetype.all');
-        Route::post('/hrm/leavetype/store', 'LeavetypeController@storeleavetype')->name('hrm.leavetype.store');
-        Route::post('/hrm/leavetype/update', 'LeavetypeController@updateleavetype')->name('hrm.leavetype.update');
-        Route::delete('hrm/leavetype/{id}', 'LeavetypeController@deleteleavetype')->name('hrm.leavetype.delete');
+        Route::get('/', 'index')->name('hrm.leave.type.index');
+        Route::post('store', 'store')->name('hrm.leave.type.store');
+        Route::get('edit/{id}', 'edit')->name('hrm.leave.type.edit');
+        Route::post('update/{id}', 'update')->name('hrm.leave.type.update');
+        Route::delete('delete/{id}', 'delete')->name('hrm.leave.type.delete');
     });
 
     //Holidays routes group
@@ -60,15 +62,14 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], fun
     });
 
     //Leave  routes group
-    Route::group(['prefix' => 'leave'], function () {
+    Route::controller(LeaveController::class)->prefix('leaves')->group(function () {
 
-        Route::get('/', 'LeaveController@index')->name('hrm.leave');
-        Route::get('/ajax-all-leave', 'LeaveController@allleave')->name('hrm.leave.all');
-        Route::post('/hrm/leave/store', 'LeaveController@storeleave')->name('hrm.leave.store');
-        Route::get('/ajax-all-leavetype', 'LeaveController@getleavetype')->name('hrm.get.all.leavetype');
-        Route::post('/hrm/leave/update', 'LeaveController@updateleave')->name('hrm.leave.update');
-        Route::delete('hrm/leave/{id}', 'LeaveController@deleteleave')->name('hrm.leave.delete');
-        Route::get('department/employees/{depId}', 'LeaveController@departmentEmployees');
+        Route::get('/', 'LeaveController@index')->name('hrm.leaves.index');
+        Route::get('department/employees/{departmentId}', 'LeaveController@departmentEmployees');
+        Route::post('store', 'LeaveController@store')->name('hrm.leaves.store');
+        Route::get('edit/{id}', 'LeaveController@edit')->name('hrm.leaves.edit');
+        Route::post('update/{id}', 'LeaveController@update')->name('hrm.leaves.update');
+        Route::delete('delete/{id}', 'delete')->name('hrm.leaves.delete');
     });
 
     //Leave  routes group

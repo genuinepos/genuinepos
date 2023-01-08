@@ -5,7 +5,7 @@ namespace App\Models\Hrm;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Hrm\Leavetype;
+use App\Models\Hrm\LeaveType;
 class Leave extends Model
 {
     use HasFactory;
@@ -17,9 +17,9 @@ class Leave extends Model
         return $this->belongsTo(User::class,'employee_id');
     }
 
-    public function leave_type()
+    public function leaveType()
     {
-        return $this->belongsTo(Leavetype::class,'leave_id');
+        return $this->belongsTo(LeaveType::class, 'leave_type_id');
     }
 
 }

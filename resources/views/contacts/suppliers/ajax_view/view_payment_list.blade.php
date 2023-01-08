@@ -26,21 +26,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <h6>
-                            @lang('menu.total_paid') : {{ $generalSettings['business']['currency'] }}
+                            @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}
                             <b class="text-success">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            @lang('menu.total_purchase_due') : {{ $generalSettings['business']['currency'] }}
+                            @lang('menu.total_purchase_due') : {{ $generalSettings['business__currency'] }}
                             <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            @lang('menu.total_purchase_due') : {{ $generalSettings['business']['currency'] }}
+                            @lang('menu.total_purchase_due') : {{ $generalSettings['business__currency'] }}
                             <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}</b>
                         </h6>
                     </li>
@@ -63,7 +63,7 @@
                     <th class="text-white text-start">@lang('menu.type')</th>
                     <th class="text-white text-start">@lang('menu.method')</th>
                     <th class="text-white text-start">@lang('menu.account')</th>
-                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business']['currency'] }})</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business__currency'] }})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -76,7 +76,7 @@
                     @foreach ($supplier_payments as $payment)
                         <tr>
                             <td class="text-start">
-                                {{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                             </td>
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Purchase Due' : 'Return due' }}</td>
@@ -102,7 +102,7 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{$generalSettings['business']['currency'] }}</b> </th>
+                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{$generalSettings['business__currency'] }}</b> </th>
                     <th class="text-white text-end">
                         <b>{{ App\Utils\Converter::format_in_bdt($total) }}</b>
                     </th>

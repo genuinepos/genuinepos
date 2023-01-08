@@ -67,7 +67,7 @@
                                         <div class="row g-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>@lang('menu.customer') :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.customer') :</b> </label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
                                                             <select name="customer_id" class="form-control select2" id="customer_id">
@@ -100,9 +100,10 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>@lang('menu.warehouse') :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.sales_account') : <span
+                                                        class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}" id="branch_name">
+                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
                                                         <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
                                                         <select name="warehouse_id" class="form-control" id="warehouse_id">
                                                             <option value="">@lang('menu.select_warehouse')</option>
@@ -112,6 +113,28 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="error error_sale_account_id"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>@lang('menu.previous_due') :</b></label>
+                                                    <div class="col-8">
+                                                        <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- Inv Schema --}}
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <label class=" col-4"><b>@lang('menu.date') : <span
+                                                        class="text-danger">*</span></b></label>
+                                                    <div class="col-8">
+                                                        <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off" id="date">
+                                                        <span class="error error_date"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,39 +150,13 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Inv. Schema') }} :</b></label>
-                                                    <div class="col-8">
-                                                        <select name="invoice_schema" class="form-control"
-                                                            id="invoice_schema">
-                                                            <option value="">@lang('menu.none')</option>
-                                                            @foreach ($invoice_schemas as $inv_schema)
-                                                                <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
-                                                                    {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.previous_due') :</b></label>
-                                                    <div class="col-8">
-                                                        <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
                                                     <label class="col-4"><b>@lang('menu.price_group') :</b></label>
                                                     <div class="col-8">
                                                         <select name="price_group_id" class="form-control"
                                                             id="price_group_id">
                                                             <option value="">@lang('menu.default_selling_price')</option>
                                                             @foreach ($price_groups as $pg)
-                                                                <option {{ $generalSettings['sale']['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                                <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -168,18 +165,18 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.sales_account') : <span
-                                                        class="text-danger">*</span></b></label>
+                                                    <label class="col-4"> <b>@lang('menu.warehouse') :</b> </label>
                                                     <div class="col-8">
-                                                        <select name="sale_account_id" class="form-control add_input"
-                                                            id="sale_account_id" data-name="Sale A/C">
-                                                            @foreach ($saleAccounts as $saleAccount)
-                                                                <option value="{{ $saleAccount->id }}">
-                                                                    {{ $saleAccount->name }}
+                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
+                                                        <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
+                                                        <select name="warehouse_id" class="form-control" id="warehouse_id">
+                                                            <option value="">@lang('menu.select_warehouse')</option>
+                                                            @foreach ($warehouses as $warehouse)
+                                                                <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
+                                                                    {{ $warehouse->name.'/'.$warehouse->code }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                        <span class="error error_sale_account_id"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,8 +185,7 @@
                                                 <div class="row g-1">
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <label class="col-4"> <b>@lang('menu.status')<span
-                                                                class="text-danger">*</span></b></label>
+                                                            <label class="col-4"> <b>@lang('menu.status'):<span class="text-danger">*</span></b></label>
                                                             <div class="col-8">
                                                                 <select name="status" class="form-control add_input" data-name="Status"
                                                                     id="status">
@@ -205,11 +201,17 @@
 
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <label class=" col-4"><b>@lang('menu.date') : <span
-                                                                class="text-danger">*</span></b></label>
+                                                            <label class="col-4"><b>{{ __('I.Sch') }} :</b></label>
                                                             <div class="col-8">
-                                                                <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business']['date_format']) }}" autocomplete="off" id="date">
-                                                                <span class="error error_date"></span>
+                                                                <select name="invoice_schema" class="form-control"
+                                                                    id="invoice_schema">
+                                                                    <option value="">@lang('menu.none')</option>
+                                                                    @foreach ($invoice_schemas as $inv_schema)
+                                                                        <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
+                                                                            {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -586,7 +588,7 @@
                         @if(auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business']['currency'] }}</span>
+                                    <span>{{ $generalSettings['business__currency'] }}</span>
                                     <span id="unit_cost">1,200.00</span>
                                 </span>
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>

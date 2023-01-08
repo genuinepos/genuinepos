@@ -23,7 +23,7 @@ class SaleStatementController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $sales = '';
 
@@ -76,7 +76,7 @@ class SaleStatementController extends Controller
 
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
                     return date($__date_format, strtotime($row->date));
                 })
 
@@ -87,7 +87,7 @@ class SaleStatementController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
 

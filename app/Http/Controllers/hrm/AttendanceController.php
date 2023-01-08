@@ -28,7 +28,7 @@ class AttendanceController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
 				->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
@@ -95,7 +95,7 @@ class AttendanceController extends Controller
 				})
 				->editColumn('date', function ($row) use ($generalSettings) {
 
-					return date($generalSettings['business']['date_format'], strtotime($row->at_date));
+					return date($generalSettings['business__date_format'], strtotime($row->at_date));
 				})
 				->editColumn('clock_in_out', function ($row) {
 

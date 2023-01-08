@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -31,7 +31,7 @@
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>@lang('menu.branch_concern')</b>)
                                 @else
-                                    {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                                    {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                                 @endif
                             </li>
 
@@ -44,7 +44,7 @@
                                     {{ $purchase->warehouse->phone }}
                                 @else
 
-                                    {{ $generalSettings['business']['phone'] }}
+                                    {{ $generalSettings['business__phone'] }}
                                 @endif
                              </li>
                          </ul>
@@ -53,8 +53,8 @@
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                             <li><strong>@lang('menu.po_invoice_id') : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>{{ __('PO Date') }} : </strong> {{ date($generalSettings['business']['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>{{ __('Delivery') }} : </strong> {{$purchase->delivery_date ? date($generalSettings['business']['date_format'], strtotime($purchase->date)) : '' }}</li>
+                            <li><strong>{{ __('PO Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>{{ __('Delivery') }} : </strong> {{$purchase->delivery_date ? date($generalSettings['business__date_format'], strtotime($purchase->date)) : '' }}</li>
                             <li><strong>@lang('menu.purchases_status') : </strong> <span class="badge bg-primary">@lang('menu.ordered')</span></li>
                             <li><strong>@lang('menu.receiving_status') : </strong>
                                 @if ($purchase->po_receiving_status == 'Pending')
@@ -96,13 +96,13 @@
                                      <tr class="bg-secondary">
                                          <th class="text-white text-start">@lang('menu.product')</th>
                                          <th class="text-white text-start">@lang('menu.ordered_quantity')</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business']['currency']}}) (@lang('menu.before_discount'))</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business']['currency']}})</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business']['currency']}}) (@lang('menu.before_tax'))</th>
-                                         <th class="text-white text-start">@lang('menu.subtotal')({{ $generalSettings['business']['currency']}}) (@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business__currency']}}) (@lang('menu.before_discount'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business__currency']}})</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business__currency']}}) (@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.subtotal')({{ $generalSettings['business__currency']}}) (@lang('menu.before_tax'))</th>
                                          <th class="text-white text-start">@lang('menu.tax')(%)</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business']['currency']}}) (@lang('menu.after_tax'))</th>
-                                         <th class="text-white text-start">@lang('menu.subtotal')({{ $generalSettings['business']['currency']}})</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')({{ $generalSettings['business__currency']}}) (@lang('menu.after_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.subtotal')({{ $generalSettings['business__currency']}})</th>
                                          <th class="text-white text-start">@lang('menu.pending_qty')</th>
                                          <th class="text-white text-start">@lang('menu.received_qty')</th>
                                      </tr>
@@ -149,7 +149,7 @@
 
                                                                         <td>{{ $receive->lot_number }}</td>
 
-                                                                        <td>{{ date($generalSettings['business']['date_format'], strtotime($receive->received_date)) }}</td>
+                                                                        <td>{{ date($generalSettings['business__date_format'], strtotime($receive->received_date)) }}</td>
 
                                                                         <td>{{ $receive->qty_received }}</td>
                                                                     </tr>
@@ -180,7 +180,7 @@
                                             <th class="text-start">@lang('menu.type')</th>
                                             <th class="text-start">@lang('menu.account')</th>
                                             <th class="text-end">
-                                                Amount({{ $generalSettings['business']['currency'] }})
+                                                Amount({{ $generalSettings['business__currency'] }})
                                             </th>
                                             <th>@lang('menu.action')</th>
                                         </tr>
@@ -191,7 +191,7 @@
                                            @foreach ($purchase->purchase_payments as $payment)
 
                                                <tr data-info="{{ $payment }}">
-                                                   <td class="text-start">{{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}</td>
+                                                   <td class="text-start">{{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}</td>
                                                    <td class="text-start">{{ $payment->invoice_id }}</td>
                                                    <td class="text-start">{{ $payment->pay_mode }}</td>
                                                    <td class="text-start">
@@ -241,49 +241,49 @@
                          <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.order_discount') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_discount') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
                                         {{ $purchase->order_discount }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
                                         {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end"><b></b>
                                            {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.paid') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.due') : {{ $generalSettings['business']['currency'] }}</th>
+                                    <th class="text-end">@lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                    </td>
@@ -357,12 +357,12 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                             @endif
                         @else
-                            @if ($generalSettings['business']['business_logo'] != null)
+                            @if ($generalSettings['business__business_logo'] != null)
 
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                             @else
 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business']['shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -398,7 +398,7 @@
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
 
-                                    {{ $generalSettings['business']['shop_name'] }} (<b>HO</b>)
+                                    {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
                             <li><strong>{{ __('Ordered Location') }} : </strong>
@@ -412,7 +412,7 @@
                                     (<b>B.L</b>)
                                 @else
 
-                                    {{ $generalSettings['business']['shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                                    {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                                 @endif
                             </li>
                             <li><strong>@lang('menu.phone') : </strong>
@@ -424,7 +424,7 @@
                                     {{ $purchase->warehouse->phone }}.
                                 @else
 
-                                    {{ $generalSettings['business']['phone'] }}
+                                    {{ $generalSettings['business__phone'] }}
                                 @endif
                             </li>
                         </ul>
@@ -432,8 +432,8 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.po_invoice_id') : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>@lang('menu.purchase_date') : </strong>{{ date($generalSettings['business']['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>@lang('menu.delivery_date') : </strong>{{ $purchase->delivery_date ? date($generalSettings['business']['date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
+                            <li><strong>@lang('menu.purchase_date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>@lang('menu.delivery_date') : </strong>{{ $purchase->delivery_date ? date($generalSettings['business__date_format'], strtotime($purchase->delivery_date)) : '' }}</li>
 
                             <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>
                             <li><strong>@lang('menu.receiving_status') : </strong>{{ $purchase->po_receiving_status }}</li>
@@ -466,10 +466,10 @@
                         <tr>
                             <th scope="col">@lang('menu.product')</th>
                             <th scope="col">@lang('menu.ordered_quantity')</th>
-                            <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business']['currency'] }})</th>
-                            <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business']['currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
+                            <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
                             <th scope="col">@lang('menu.tax')(%)</th>
-                            <th scope="col">@lang('menu.subtotal')({{ $generalSettings['business']['currency'] }})</th>
+                            <th scope="col">@lang('menu.subtotal')({{ $generalSettings['business__currency'] }})</th>
                             <th scope="col">@lang('menu.pending_qty')</th>
                             <th scope="col">@lang('menu.received_qty')</th>
                         </tr>
@@ -518,7 +518,7 @@
 
                                                             <td>{{ $receive->lot_number }}</td>
 
-                                                            <td>{{ date($generalSettings['business']['date_format'], strtotime($receive->received_date)) }}</td>
+                                                            <td>{{ date($generalSettings['business__date_format'], strtotime($receive->received_date)) }}</td>
 
                                                             <td>{{ $receive->qty_received }}</td>
                                                         </tr>
@@ -546,49 +546,49 @@
                     <table class="table modal-table table-sm table-bordered">
                         <thead>
                             <tr>
-                                <th colspan="11" class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                                 </td>
                             </tr>
                             <tr>
                                 <th colspan="11" class="text-end">@lang('menu.order_discount') :
-                                    {{ $generalSettings['business']['currency'] }}
+                                    {{ $generalSettings['business__currency'] }}
                                 </th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="11" class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business__currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount).' ('.$purchase->purchase_tax_percent.'%)' }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th colspan="11" class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th colspan="11" class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business__currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th colspan="11" class="text-end">@lang('menu.paid') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th colspan="11" class="text-end">@lang('menu.due') : {{ $generalSettings['business']['currency'] }}</th>
+                                <th colspan="11" class="text-end">@lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
                                 <td colspan="2" class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                                 </td>

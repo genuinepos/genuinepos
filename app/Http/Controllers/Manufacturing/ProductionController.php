@@ -38,7 +38,6 @@ class ProductionController extends Controller
         $this->accountUtil = $accountUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
-        
     }
 
     public function index(Request $request)
@@ -60,6 +59,7 @@ class ProductionController extends Controller
     public function create()
     {
         if (!auth()->user()->can('production_add')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -102,6 +102,7 @@ class ProductionController extends Controller
     public function store(Request $request)
     {
         if (!auth()->user()->can('production_add')) {
+
             return response()->json('Access Denied');
         }
 
@@ -139,7 +140,9 @@ class ProductionController extends Controller
         $referenceNoPrefix = json_decode($generalSetting->mf_settings, true)['production_ref_prefix'];
 
         $updateLastEntry = Production::where('is_last_entry', 1)->select('id', 'is_last_entry')->first();
+
         if ($updateLastEntry) {
+
             $updateLastEntry->is_last_entry = 0;
             $updateLastEntry->save();
         }
@@ -508,7 +511,7 @@ class ProductionController extends Controller
 
             return response()->json('Access Denied');
         }
-        
+
         $this->productionUtil->deleteProduction($productionId);
 
         DB::statement('ALTER TABLE productions AUTO_INCREMENT = 1');
@@ -529,6 +532,7 @@ class ProductionController extends Controller
                 'taxes.tax_percent',
             )
             ->where('processes.id', $processId)->first();
+
         return response()->json($process);
     }
 
@@ -548,7 +552,6 @@ class ProductionController extends Controller
                 'product_variants.id as v_id',
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_code as v_code',
-                'products.product_cost_with_tax as unit_cost_inc_tax',
                 'units.id as u_id',
                 'units.name as u_name',
             )->get();

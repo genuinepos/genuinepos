@@ -33,7 +33,7 @@
                                                             <select name="branch_id"
                                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -129,12 +129,12 @@
                                                 <th>@lang('menu.invoice_id')</th>
                                                 <th>@lang('menu.stock_location')</th>
                                                 <th>@lang('menu.customer')</th>
-                                                <th>Return Amount({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.return_due')({{ $generalSettings['business']['currency'] }})</th>
+                                                <th>Return Amount({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.return_due')({{ $generalSettings['business__currency'] }})</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>Sell Due({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.total_amount')({{ $generalSettings['business']['currency'] }})</th>
-                                                <th>@lang('menu.total_paid')({{ $generalSettings['business']['currency'] }})</th>
+                                                <th>Sell Due({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.total_amount')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.total_paid')({{ $generalSettings['business__currency'] }})</th>
                                             </tr> --}}
                                             <tr>
                                                 <th>@lang('menu.action')</th>
@@ -153,7 +153,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
+                                                <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
                                                 <th id="total_payable_amount" class="text-white text-end"></th>
                                                 <th id="paid" class="text-white text-end"></th>
                                                 <th id="due" class="text-white text-end"></th>
@@ -257,7 +257,7 @@
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
-            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.index2') }}",

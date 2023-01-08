@@ -1933,4 +1933,10 @@ return [
   'sale_payment_report' => 'Sale Payment Report',
   'select_role' => 'Select Role',
   'daily_profit_loss_report' => 'Daily Profit/Loss Report',
+  'edit_leave' => 'Edit Leave',
+  'leave_no' => 'Leave No.',
+  'confirmation' => 'Confirmation',
+  'delete_permission_msg' => 'Are you sure to delete?',
+  'edit_expense_category' => 'Edit Expense Category',
+  'code' => 'Code',
 ];

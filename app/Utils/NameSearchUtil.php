@@ -52,7 +52,9 @@ class NameSearchUtil
             ->where('products.status', 1)
             ->where('product_branches.status', 1)
             ->where('product_branches.branch_id', auth()->user()->branch_id)
-            ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
+            // ->where('products.name', 'LIKE',  $keyword . '%')
+            ->where('products.name', 'LIKE', '%'. $keyword . '%')
+            ->orderBy('id', 'desc')->limit(25)
             ->get();
 
         if ($namedProducts && count($namedProducts) > 0) {

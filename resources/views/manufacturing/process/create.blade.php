@@ -105,14 +105,13 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total_output_qty') :</b></label>
+                                    <label><b>@lang('menu.total_output_qty') : <span class="text-danger">*</span></b></label>
                                     <div class="row">
-                                        <div class="col-7">
-                                            <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="1.00">
-                                        </div>
-
-                                        <div class="col-5">
-                                            <select name="unit_id" class="form-control" id="unit_id"></select>
+                                        <div class="input-group">
+                                            <input required type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="1.00">
+                                            <select required name="unit_id" class="form-control" id="unit_id"></select>
+                                            <span class="error error_total_output_qty"></span>
+                                            <span class="error error_unit_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +122,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total_cost') :</b></label>
+                                    <label><b>@lang('menu.total_cost') : <span class="text-danger">*</span></b></label>
                                     <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')">
                                 </div>
                             </div>
@@ -521,7 +520,7 @@
             var variantId = e.getAttribute('data-v_id');
             var variantName = e.getAttribute('data-v_name');
             var variantCode = e.getAttribute('data-v_code');
-            var variantCost = e.getAttribute('data-v_cost');
+            var variantCostIncTax = e.getAttribute('data-v_cost_with_tax');
             variant_id = document.querySelectorAll('#variant_id');
 
             __calculateTotalAmount();
@@ -559,7 +558,6 @@
                 tr += '<span class="product_variant">('+variantName+')</span>';
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
-                tr += '<input type="hidden" value="'+variantCost+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
@@ -584,11 +582,11 @@
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
@@ -644,6 +642,7 @@
         // Remove product form ingredient list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
+
             $(this).closest('tr').remove();
             __calculateTotalAmount();
         });
@@ -651,49 +650,62 @@
         //Add process request by ajax
         $('#add_process_form').on('submit', function(e) {
             e.preventDefault();
+
             $('.loading_button').show();
-            var url = $(this).attr('action');
             $('.submit_button').prop('type', 'button');
+            var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
+
+                    $('.error').html('');
+                    $('.loading_button').hide();
                     $('.submit_button').prop('type', 'sumbit');
                     if(!$.isEmptyObject(data.errorMsg)) {
+
                         toastr.error(data.errorMsg);
-                        $('.loading_button').hide();
                     } else {
-                        $('.loading_button').hide();
+
                         toastr.success(data);
                         window.location = "{{ route('manufacturing.process.index') }}";
                     }
                 },error: function(err) {
 
-                    $('.submit_button').prop('type', 'sumbit');
-                    $('.loading_button').hide();
                     $('.error').html('');
+                    $('.loading_button').hide();
+                    $('.submit_button').prop('type', 'submit');
+
                     if (err.status == 0) {
 
                         toastr.error('Net Connetion Error. Reload This Page.');
-                    }else{
-
-                        toastr.error('Server error please contact to the support.');
+                        return;
                     }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
         $('body').keyup(function(e){
+
             if (e.keyCode == 13){
+
                 $(".selectProduct").click();
                 $('#list').empty();
             }
         });
 
         $(document).keypress(".scanable",function(event) {
+
             if (event.which == '10' || event.which == '13') {
+
                 event.preventDefault();
             }
         });

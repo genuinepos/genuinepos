@@ -754,11 +754,11 @@ Route::group(['prefix' => 'expenses'], function () {
     // Expanse category route group
     Route::group(['prefix' => 'categories'], function () {
 
-        Route::get('/', [ExpanseCategoryController::class, 'index'])->name('expanses.categories.index');
-        Route::get('all/categories', [ExpanseCategoryController::class, 'allCategory'])->name('expanses.categories.all.category');
-        Route::post('store', [ExpanseCategoryController::class, 'store'])->name('expanses.categories.store');
-        Route::post('update', [ExpanseCategoryController::class, 'update'])->name('expanses.categories.update');
-        Route::delete('delete/{categoryId}', [ExpanseCategoryController::class, 'delete'])->name('expanses.categories.delete');
+        Route::get('/', [ExpanseCategoryController::class, 'index'])->name('expenses.categories.index');
+        Route::post('store', [ExpanseCategoryController::class, 'store'])->name('expenses.categories.store');
+        Route::get('edit/{id}', [ExpanseCategoryController::class, 'edit'])->name('expenses.categories.edit');
+        Route::post('update/{id}', [ExpanseCategoryController::class, 'update'])->name('expenses.categories.update');
+        Route::delete('delete/{id}', [ExpanseCategoryController::class, 'delete'])->name('expenses.categories.delete');
     });
 
     Route::group(['prefix' => 'report/expenses'], function () {

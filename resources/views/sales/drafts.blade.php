@@ -32,7 +32,7 @@
                                                             <label><strong>@lang('menu.business_location') :</strong></label>
                                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id">
                                                                 <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $b)
                                                                     <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
                                                                 @endforeach
@@ -164,7 +164,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
-            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.drafts') }}",
@@ -248,8 +248,10 @@
         // Make print
         $(document).on('click', '.print_btn',function (e) {
            e.preventDefault();
+
             var body = $('.draft_print_template').html();
             var header = $('.heading_area').html();
+            console.log({body});
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -339,9 +341,11 @@
 
         //Show payment view modal with data
         $(document).on('click', '#view_payment', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
+            e.preventDefault();
+            var url = $(this).attr('href');
+
             $.get(url, function(data) {
+
                 $('#payment_view_modal_body').html(data);
                 $('#paymentViewModal').modal('show');
             });

@@ -5,7 +5,7 @@
                 <img src="{{asset(config('speeddigit.app_logo'))}}"
                     style="max-width: 100%; height: 20px; width: auto;margin-top: 12px;">
             </div>
-            @if ($generalSettings['pos']['is_show_recent_transactions'] == '1')
+            @if ($generalSettings['pos__is_show_recent_transactions'] == '1')
                 <div class="pos-foot-con d-inline-block position-absolute" style="right: -10px; top: 50%; transform: translateY(-41%)">
                     <a href="#" class="btn btn-sm btn-primary resent-tn h-auto py-1" tabindex="-1">@lang('menu.recent_transaction')</a>
                 </div>
@@ -35,7 +35,7 @@
 
             <div class="col-2 text-center">
                 <div class="footer_trasc_btn">
-                    @if ($generalSettings['pos']['is_show_recent_transactions'] == '1')
+                    @if ($generalSettings['pos__is_show_recent_transactions'] == '1')
                         <a href="#" class="resent-tn" tabindex="-1"><span class="fas fa-clock"></span></a>
                     @endif
                 </div>

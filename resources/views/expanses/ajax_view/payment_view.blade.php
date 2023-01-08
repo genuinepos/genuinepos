@@ -64,10 +64,10 @@
                 @if (count($expense->expense_payments) > 0)
                     @foreach ($expense->expense_payments as $payment)
                         <tr data-info="{{ $payment }}">
-                            <td class="text-start">{{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}</td>
+                            <td class="text-start">{{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}</td>
                             <td class="text-start">{{ $payment->invoice_id }}</td>
                             <td class="text-start">{{ $payment->note }}</td>
-                            <td class="text-start">{{ $generalSettings['business']['currency'].' '.$payment->paid_amount }}</td>
+                            <td class="text-start">{{ $generalSettings['business__currency'].' '.$payment->paid_amount }}</td>
                             <td class="text-start">
                                 @if ($payment->payment_method)
                                       {{ $payment->payment_method->name }}

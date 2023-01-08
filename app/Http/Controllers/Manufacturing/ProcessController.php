@@ -96,6 +96,8 @@ class ProcessController extends Controller
         }
 
         $this->validate($request, [
+            'total_output_qty' => 'required',
+            'unit_id' => 'required',
             'total_cost' => 'required',
         ]);
 
@@ -110,24 +112,19 @@ class ProcessController extends Controller
         $addProcess->total_cost = $request->total_cost;
         $addProcess->save();
 
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $final_quantities = $request->final_quantities;
-        $unit_ids = $request->unit_ids;
-        $subtotals = $request->subtotals;
-
         if (isset($request->product_ids)) {
+
             $index = 0;
-            foreach ($product_ids as $product_id) {
+            foreach ($request->product_ids as $product_id) {
+
                 $addProcessIngredient = new ProcessIngredient();
                 $addProcessIngredient->process_id = $addProcess->id;
                 $addProcessIngredient->product_id = $product_id;
-                $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $addProcessIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $addProcessIngredient->final_qty = $final_quantities[$index];
-                $addProcessIngredient->unit_id = $unit_ids[$index];
-                $addProcessIngredient->subtotal = $subtotals[$index];
+                $addProcessIngredient->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $addProcessIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $addProcessIngredient->final_qty = $request->final_quantities[$index];
+                $addProcessIngredient->unit_id = $request->unit_ids[$index];
+                $addProcessIngredient->subtotal = $request->subtotals[$index];
                 $addProcessIngredient->save();
                 $index++;
             }
@@ -157,6 +154,7 @@ class ProcessController extends Controller
             )->first();
 
         $units = DB::table('units')->select('id', 'name')->get();
+
         $processIngredients = DB::table('process_ingredients')
             ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
             ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')
@@ -180,6 +178,8 @@ class ProcessController extends Controller
         }
 
         $this->validate($request, [
+            'total_output_qty' => 'required',
+            'unit_id' => 'required',
             'total_cost' => 'required',
         ]);
 
@@ -189,12 +189,13 @@ class ProcessController extends Controller
         $updateProcess->total_ingredient_cost = $request->total_ingredient_cost;
         $updateProcess->total_output_qty = $request->total_output_qty;
         $updateProcess->unit_id = $request->unit_id;
-        $updateProcess->production_cost = $request->production_cost;
+        $updateProcess->production_cost = $request->production_cost ? $request->production_cost : 0;
         $updateProcess->total_cost = $request->total_cost;
         $updateProcess->save();
 
         $existIngredients = ProcessIngredient::where('process_id', $processId)->get();
         foreach ($existIngredients as $existIngredient) {
+
             $existIngredient->is_delete_in_update = 1;
             $existIngredient->save();
         }
@@ -207,13 +208,17 @@ class ProcessController extends Controller
         $subtotals = $request->subtotals;
 
         if (count($request->product_ids) > 0) {
+
             $index = 0;
             foreach ($product_ids as $product_id) {
+
                 $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
                 $updateIngredient = ProcessIngredient::where('process_id', $updateProcess->id)
                     ->where('product_id', $product_id)
                     ->where('variant_id', $variant_id)->first();
+
                 if ($updateIngredient) {
+
                     $updateIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
                     $updateIngredient->final_qty = $final_quantities[$index];
                     $updateIngredient->unit_id = $unit_ids[$index];
@@ -221,6 +226,7 @@ class ProcessController extends Controller
                     $updateIngredient->is_delete_in_update = 0;
                     $updateIngredient->save();
                 } else {
+
                     $addProcessIngredient = new ProcessIngredient();
                     $addProcessIngredient->process_id = $updateProcess->id;
                     $addProcessIngredient->product_id = $product_id;
@@ -231,13 +237,16 @@ class ProcessController extends Controller
                     $addProcessIngredient->subtotal = $subtotals[$index];
                     $addProcessIngredient->save();
                 }
+
                 $index++;
             }
         }
 
         $unusedIngredients = ProcessIngredient::where('process_id', $processId)
             ->where('is_delete_in_update', 1)->get();
+
         foreach ($unusedIngredients as $unusedIngredient) {
+
             $unusedIngredient->delete();
         }
 

@@ -4,7 +4,7 @@
 <script>
     var branch_id = "{{ auth()->user()->branch_id }}";
 
-    var branch_name = "{{  auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}";
+    var branch_name = "{{  auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}";
 
     $('.select2').select2();
     // Get all price group
@@ -979,7 +979,7 @@
                     $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
                 });
 
-                $('#order_tax').val("{{$generalSettings['sale']['default_tax_id'] != 'null' ? $generalSettings['sale']['default_tax_id'] : '' }}");
+                $('#order_tax').val("{{$generalSettings['sale__default_tax_id'] != 'null' ? $generalSettings['sale__default_tax_id'] : '' }}");
             }
         });
     }
@@ -1586,7 +1586,7 @@
     });
 
     // Set Default Setting
-    $('#order_discount').val(parseFloat("{{$generalSettings['sale']['default_sale_discount']}}").toFixed(2));
+    $('#order_discount').val(parseFloat("{{$generalSettings['sale__default_sale_discount']}}").toFixed(2));
 
     $('body').keyup(function(e){
 
@@ -1715,7 +1715,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

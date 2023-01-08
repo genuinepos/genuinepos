@@ -23,12 +23,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -42,8 +42,8 @@
 
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') :</b>
-                {{ date($generalSettings['business']['date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>{{ __('Sale/Receive Payment Report') }} </b></h6>
@@ -60,7 +60,7 @@
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">{{ __('Pay Method') }}</th>
                     <th class="text-start">{{ __('Sale Invoice ID') }}</th>
-                    <th class="text-end">@lang('menu.paid_amount')({{$generalSettings['business']['currency'] }})</th>
+                    <th class="text-end">@lang('menu.paid_amount')({{$generalSettings['business__currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -70,7 +70,7 @@
                 @endphp
                     <tr>
                         <td class="text-start">{{ $payment->payment_invoice }}</td>
-                        <td class="text-start">{{ date($generalSettings['business']['date_format'] ,strtotime($payment->date)) }}</td>
+                        <td class="text-start">{{ date($generalSettings['business__date_format'] ,strtotime($payment->date)) }}</td>
                         <td class="text-start">{{ $payment->customer_name ? $payment->customer_name : 'Walk-In-Customer' }}</td>
                         <td class="text-start">{{ $payment->pay_mode }}</td>
                         <td class="text-start">{{ $payment->sale_invoice }}</td>
@@ -88,7 +88,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">{{ __('Total Received Amount') }} : {{$generalSettings['business']['currency'] }}</th>
+                    <th class="text-end">{{ __('Total Received Amount') }} : {{$generalSettings['business__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
             </thead>

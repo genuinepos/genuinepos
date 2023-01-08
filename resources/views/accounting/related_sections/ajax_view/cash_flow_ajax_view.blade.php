@@ -117,7 +117,7 @@
                             <td class="text-end">
                                 <b>
                                     <em>@lang('menu.total_operations') :
-                                        ({{ $generalSettings['business']['currency'] }})
+                                        ({{ $generalSettings['business__currency'] }})
                                     </em>
                                 </b>
                             </td>
@@ -179,7 +179,7 @@
                             <td class="text-end">
                                 <b>
                                     <em>@lang('menu.total_investing') :
-                                        ({{ $generalSettings['business']['currency'] }})
+                                        ({{ $generalSettings['business__currency'] }})
                                     </em>
                                 </b>
                             </td>
@@ -214,7 +214,7 @@
                             <td class="text-end">
                                 <b>
                                     <em>@lang('menu.total_financing') :
-                                        ({{ $generalSettings['business']['currency'] }})
+                                        ({{ $generalSettings['business__currency'] }})
                                     </em>
                                 </b>
                             </td>
@@ -247,7 +247,7 @@
                         <tr class="bg-secondary">
                             <td class="text-end text-white">
                                 <b>
-                                    <em>@lang('menu.total_cash_flow') : ({{ $generalSettings['business']['currency'] }})</em>
+                                    <em>@lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency'] }})</em>
                                 </b>
                             </td>
                             <td class="text-start text-white">

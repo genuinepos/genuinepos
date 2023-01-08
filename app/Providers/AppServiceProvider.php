@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GeneralSetting::class, function() {
+        $this->app->singleton(GeneralSetting::class, function () {
             return new GeneralSetting();
         });
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
@@ -34,38 +34,40 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         try {
-            // $generalSettings = \Cache::get('generalSettings');
-            // $generalSettings = GeneralSetting::first()->toArray();
-            Cache::rememberForever('generalSettings', function() {
-                return GeneralSetting::first()->toArray();
-            });
 
-            $generalSettings = \Cache::get('generalSettings') ?? GeneralSetting::first()->toArray();
+            // Cache::forget('generalSettings');
+            Cache::rememberForever('generalSettings', function () {
+                return GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
+
+            });
+            $generalSettings = Cache::get('generalSettings') ?? GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
+            config([
+                'generalSettings' => $generalSettings,
+                'mail.mailers.smtp.transport' => $generalSettings['email_setting__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
+                'mail.mailers.smtp.host' => $generalSettings['email_setting__MAIL_HOST'] ?? config('mail.mailers.smtp.host'),
+                'mail.mailers.smtp.port' => $generalSettings['email_setting__MAIL_PORT'] ?? config('mail.mailers.smtp.port'),
+                'mail.mailers.smtp.encryption' => $generalSettings['email_setting__MAIL_ENCRYPTION'] ?? config('mail.mailers.smtp.encryption'),
+                'mail.mailers.smtp.username' => $generalSettings['email_setting__MAIL_USERNAME'] ?? config('mail.mailers.smtp.username'),
+                'mail.mailers.smtp.password' => $generalSettings['email_setting__MAIL_PASSWORD'] ?? config('mail.mailers.smtp.password'),
+                // 'mail.mailers.smtp.timeout' => $generalSettings->['email_setting__MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
+                // 'mail.mailers.smtp.auth_mode' => $generalSettings->['email_setting__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
+            ]);
+
+
             $addons = DB::table('addons')->first();
-            // $warehouseCount = DB::table('warehouses')->count();
-            $dateFormat = $generalSettings['business']['date_format'];
+            $dateFormat = $generalSettings['business__date_format'];
+
             $__date_format = str_replace('-', '/', $dateFormat);
+
             if (isset($generalSettings) && isset($addons)) {
+
                 view()->share('generalSettings', $generalSettings);
                 view()->share('addons', $addons);
                 // view()->share('warehouseCount', $warehouseCount);
                 view()->share('__date_format', $__date_format);
             }
 
-            // $mailSettings = GeneralSetting::email();
-            $mailSettings =  $generalSettings['email_setting'];
-            if(isset($mailSettings)) {
-                config([
-                    'mail.mailers.smtp.transport' => $mailSettings['MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
-                    'mail.mailers.smtp.host' => $mailSettings['MAIL_HOST'] ?? config('mail.mailers.smtp.host'),
-                    'mail.mailers.smtp.port' => $mailSettings['MAIL_PORT'] ?? config('mail.mailers.smtp.port'),
-                    'mail.mailers.smtp.encryption' => $mailSettings['MAIL_ENCRYPTION'] ?? config('mail.mailers.smtp.encryption'),
-                    'mail.mailers.smtp.username' => $mailSettings['MAIL_USERNAME'] ?? config('mail.mailers.smtp.username'),
-                    'mail.mailers.smtp.password' => $mailSettings['MAIL_PASSWORD'] ?? config('mail.mailers.smtp.password'),
-                    // 'mail.mailers.smtp.timeout' => $mailSettings->MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
-                    // 'mail.mailers.smtp.auth_mode' => $mailSettings->MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
-                ]);
-            }
-        } catch(Exception $e) {}
+        } catch (Exception $e) {}
+
     }
 }

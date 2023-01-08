@@ -19,7 +19,7 @@
                             <td class="text-start">{{ date('d/m/Y', strtotime($payment->date)) }}</td>
                             <td class="text-start">{{ $payment->invoice_id }}</td>
                             <td class="text-start">
-                                {{ $generalSettings['business']['currency'] . ' ' . App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
+                                {{ $generalSettings['business__currency'] . ' ' . App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
                             <td class="text-start">{{ $payment->account ? $payment->account->name : 'Cash-In-Hand' }}</td>
                             <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>

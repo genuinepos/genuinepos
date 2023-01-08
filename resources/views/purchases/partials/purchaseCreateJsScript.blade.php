@@ -242,7 +242,7 @@
                                 tr += '<td>';
                                 tr += '<input value="'+product.product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
 
-                                @if ($generalSettings['purchase']['is_enable_lot_no'] == '1')
+                                @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
 
                                     tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
                                 @endif
@@ -276,7 +276,7 @@
                                 tr += '<input readonly value="'+product.product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
                                 tr += '</td>';
 
-                                @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
+                                @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
 
                                     tr += '<td>';
                                     tr += '<input value="'+product.profit+'" type="number" step="any" name="profits[]" class="form-control" id="profit" autocomplete="off">';
@@ -429,7 +429,7 @@
                             tr += '<td>';
                             tr += '<input value="'+variant_product.variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
 
-                            @if ($generalSettings['purchase']['is_enable_lot_no'] == '1')
+                            @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
 
                                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
                             @endif
@@ -463,7 +463,7 @@
                             tr += '<input readonly value="'+variant_product.variant_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
                             tr += '</td>';
 
-                            @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
+                            @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
 
                                 tr += '<td>';
                                 tr += '<input type="number" step="any" value="'+variant_product.variant_profit+'" name="profits[]" class="form-control" id="profit" autocomplete="off">';
@@ -592,7 +592,7 @@
             tr += '<td>';
             tr += '<input value="'+product_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost" autocomplete="off">';
 
-            @if ($generalSettings['purchase']['is_enable_lot_no'] == '1')
+            @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
 
                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
             @endif
@@ -627,7 +627,7 @@
             tr += '<input readonly value="'+product_cost_with_tax+'" type="text" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
             tr += '</td>';
 
-            @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
+            @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="'+product_profit+'" name="profits[]" class="form-control" id="profit" autocomplete="off">';
                 tr += '</td>';
@@ -757,7 +757,7 @@
             tr += '<td>';
             tr += '<input value="'+variant_cost+'" required name="unit_costs[]" type="text" class="form-control" id="unit_cost">';
 
-            @if ($generalSettings['purchase']['is_enable_lot_no'] == '1')
+            @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
 
                 tr += '<input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1" id="lot_number" value="" autocomplete="off">';
             @endif
@@ -790,7 +790,7 @@
             tr += '<input readonly value="'+variant_cost_with_tax+'" type="number" name="linetotals[]" id="line_total" class="form-control" tabindex="-1">';
             tr += '</td>';
 
-            @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
+            @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
 
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="'+variant_profit+'" name="profits[]" class="form-control" type="number" id="profit" autocomplete="off">';
@@ -1185,7 +1185,7 @@
 
     document.getElementById('search_product').focus();
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

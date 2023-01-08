@@ -197,6 +197,17 @@ class SaleController extends Controller
         return view('sales.ajax_view.quotation_details', compact('quotation', 'customerCopySaleProducts'));
     }
 
+    public function draftDetails($draftId)
+    {
+        $draft = Sale::with([
+            'branch', 'branch.add_sale_invoice_layout', 'customer', 'admin:id,prefix,name,last_name', 'sale_products', 'sale_products.branch', 'sale_products.warehouse', 'sale_products.product:id,name,product_code', 'sale_products.variant:id,variant_name,variant_code', 'sale_payments',
+        ])->where('id', $draftId)->first();
+
+        $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($draft->id);
+
+        return view('sales.ajax_view.draft_details', compact('draft', 'customerCopySaleProducts'));
+    }
+
     // Create sale view
     public function create()
     {

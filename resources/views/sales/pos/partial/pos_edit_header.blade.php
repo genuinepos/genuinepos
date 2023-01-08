@@ -23,10 +23,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
                         @endif
                     @else
-                        @if ($generalSettings['business']['business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business__business_logo'] != null)
+                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business']['shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -34,7 +34,7 @@
 
             <div class="col-lg-8 col-sm-12 col-12 address">
                 <p class="store-name">
-                    {{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))
+                    {{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))
                 </p>
                 <p class="address-name">
                     @if ($sale->branch)
@@ -43,7 +43,7 @@
                         {{ $sale->branch->state ? ','.$sale->branch->state : ''}}
                         {{ $sale->branch->country ? ','.$sale->branch->country : ''}}
                     @else
-                        {{ $generalSettings['business']['address'] }}
+                        {{ $generalSettings['business__address'] }}
                     @endif
                 </p>
                 <small class="login-user-name">
@@ -93,14 +93,14 @@
                             </div>
 
                             <div class="col-lg-5 input-value-sec">
-                                @if ($generalSettings['reward_point_settings']['enable_cus_point'] == '1')
+                                @if ($generalSettings['reward_point_settings__enable_cus_point'] == '1')
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text valus">Point</span>
                                         </div>
                                         <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
                                         <div class="input-group-prepend ms-1">
-                                            <span class="input-group-text valus"> = {{ $generalSettings['business']['currency'] }}</span>
+                                            <span class="input-group-text valus"> = {{ $generalSettings['business__currency'] }}</span>
                                         </div>
                                         <input readonly type="text" class="form-control" id="trial_point_amount">
                                     </div>

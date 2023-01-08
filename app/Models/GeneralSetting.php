@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GeneralSetting extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     public static function boot()
     {

@@ -44,7 +44,7 @@ class CashRegisterController extends Controller
     // Store cash register
     public function store(Request $request)
     {
-        $settings = DB::table('general_settings')->select(['business'])->first();
+        $settings = \Cache::get('generalSettings');
 
         $this->validate($request, [
             'counter_id' => 'required',
@@ -54,8 +54,8 @@ class CashRegisterController extends Controller
             'sale_account_id.required' => 'Sale A/C is required',
         ]);
 
-        $dateFormat = json_decode($settings->business, true)['date_format'];
-        $timeFormat = json_decode($settings->business, true)['time_format'];
+        $dateFormat = $settings['business']['date_format'];
+        $timeFormat = $settings['business']['time_format'];
         
         $__timeFormat = '';
         if ($timeFormat == '12') {

@@ -91,7 +91,7 @@
                                         </label>
 
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
+                                            <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business__date_format']) }}" id="datepicker">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -425,16 +425,9 @@
                                     tr += '</td>';
 
                                     tr += '<td>';
-                                    tr += '<div class="input-group">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                    tr += '</div>';
                                     tr += '<input value="1" required name="quantities[]" type="text" class="form-control text-center" id="quantity">';
-                                    tr += '<div class="input-group-prepend">';
-                                    tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                    tr += '</div>';
-                                    tr += '</div>';
                                     tr += '</td>';
+                                    
                                     tr += '<td class="text">';
                                     tr += '<span class="span_unit">'+product.unit.name+'</span>';
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
@@ -533,15 +526,7 @@
                                 tr += '</td>';
 
                                 tr += '<td>';
-                                tr += '<div class="input-group">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                                tr += '</div>';
                                 tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                                tr += '<div class="input-group-prepend">';
-                                tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                                tr += '</div>';
-                                tr += '</div>';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
                                 tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>';
@@ -670,15 +655,7 @@
                              tr += '</td>';
 
                              tr += '<td>';
-                             tr += '<div class="input-group">';
-                             tr += '<div class="input-group-prepend">';
-                             tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                             tr += '</div>';
                              tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                             tr += '<div class="input-group-prepend">';
-                             tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                             tr += '</div>';
-                             tr += '</div>';
                              tr += '</td>';
                              tr += '<td class="text text-center">';
                              tr += '<span class="span_unit">'+product_unit+'</span>';
@@ -780,15 +757,7 @@
                              tr += '</td>';
 
                              tr += '<td>';
-                             tr += '<div class="input-group">';
-                             tr += '<div class="input-group-prepend">';
-                             tr += '<a href="#" class="input-group-text input-group-text-sale decrease_qty_btn"><i class="fas fa-minus text-danger"></i></a>';
-                             tr += '</div>';
                              tr += '<input value="1.00" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">';
-                             tr += '<div class="input-group-prepend">';
-                             tr += '<a href="#" class="input-group-text input-group-text-sale increase_qty_btn "><i class="fas fa-plus text-success "></i></a>';
-                             tr += '</div>';
-                             tr += '</div>';
                              tr += '</td>';
                              tr += '<td class="text text-center">';
                              tr += '<span class="span_unit">'+product_unit+'</span>';
@@ -1000,7 +969,7 @@
             $(this).addClass('selectProduct');
         });
 
-        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

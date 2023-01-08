@@ -35,8 +35,9 @@
                                                             class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
 
+
                                                             @if (auth()->user()->role_type == 3)
-                                                                <option SELECTED value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                             @endif
 
                                                             @foreach ($branches as $branch)
@@ -62,12 +63,9 @@
                                                     <label><strong>@lang('menu.from_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
+                                                        <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -75,8 +73,7 @@
                                                     <label><strong>@lang('menu.to_date') :</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
                                                         <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                     </div>
@@ -118,13 +115,13 @@
                                                 <th>@lang('menu.send_qty')</th>
                                                 <th>@lang('menu.received_qty')</th>
                                                 <th>@lang('menu.pending_qty')</th>
-                                                <th>@lang('menu.total_stock_value')({{ $generalSettings['business']['currency'] }})</th>
+                                                <th>@lang('menu.total_stock_value')({{ $generalSettings['business__currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business']['currency'] }})</th>
+                                                <th colspan="5" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
                                                 <th id="total_item" class="text-white text-end"></th>
                                                 <th id="total_send_qty" class="text-white text-end"></th>
                                                 <th id="total_received_qty" class="text-white text-end"></th>
@@ -180,7 +177,7 @@
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
 
-            "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
 
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 

@@ -18,7 +18,7 @@ class SaleRepresentativeReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $sales = '';
             $sale_query = DB::table('sales')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -84,7 +84,7 @@ class SaleRepresentativeReportController extends Controller
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -103,16 +103,16 @@ class SaleRepresentativeReportController extends Controller
                     return $html;
                 })
                 ->editColumn('total_amount',  function ($row) use ($generalSettings) {
-                    return '<b><span class="total_amount" data-value="' . $row->total_payable_amount . '">' . $generalSettings['business']['currency'] . ' ' . $row->total_payable_amount . '</span></b>';
+                    return '<b><span class="total_amount" data-value="' . $row->total_payable_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->total_payable_amount . '</span></b>';
                 })
                 ->editColumn('paid',  function ($row) use ($generalSettings) {
-                    return '<b><span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business']['currency'] . ' ' . $row->paid . '</span></b>';
+                    return '<b><span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span></b>';
                 })
                 ->editColumn('total_return', function ($row) use ($generalSettings) {
-                    return '<b><span class="total_return" data-value="' . $row->sale_return_amount . '">' . $generalSettings['business']['currency'] . ' ' . $row->sale_return_amount . '</span></b>';
+                    return '<b><span class="total_return" data-value="' . $row->sale_return_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->sale_return_amount . '</span></b>';
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
-                    return '<b><span class="due" data-value="' . $row->due . '">' . $generalSettings['business']['currency'] . ' ' . $row->due . '</span></b>';
+                    return '<b><span class="due" data-value="' . $row->due . '">' . $generalSettings['business__currency'] . ' ' . $row->due . '</span></b>';
                 })
                 ->rawColumns(['date', 'branch', 'customer', 'payment_status', 'total_amount', 'paid', 'total_return', 'due'])
                 ->make(true);
@@ -124,7 +124,7 @@ class SaleRepresentativeReportController extends Controller
     public function SaleRepresentativeExpenseReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $expenses = '';
             $expense_query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
@@ -192,7 +192,7 @@ class SaleRepresentativeReportController extends Controller
                     if ($row->branch_name) {
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('payment_status', function ($row) {
@@ -208,13 +208,13 @@ class SaleRepresentativeReportController extends Controller
                     return $html;
                 })
                 ->editColumn('total_amount',  function ($row) use ($generalSettings) {
-                    return '<b><span class="ex_total" data-value="' . $row->net_total_amount . '">' . $generalSettings['business']['currency'] . ' ' . $row->net_total_amount . '</span></b>';
+                    return '<b><span class="ex_total" data-value="' . $row->net_total_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->net_total_amount . '</span></b>';
                 })
                 ->editColumn('paid',  function ($row) use ($generalSettings) {
-                    return '<b><span class="ex_paid" data-value="' . $row->paid . '">' . $generalSettings['business']['currency'] . ' ' . $row->paid . '</span></b>';
+                    return '<b><span class="ex_paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span></b>';
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
-                    return '<b><span class="ex_due" data-value="' . $row->due . '">' . $generalSettings['business']['currency'] . ' ' . $row->due . '</span></b>';
+                    return '<b><span class="ex_due" data-value="' . $row->due . '">' . $generalSettings['business__currency'] . ' ' . $row->due . '</span></b>';
                 })
                 ->rawColumns(['date', 'branch', 'user' ,'payment_status', 'total_amount', 'paid', 'due'])
                 ->make(true);

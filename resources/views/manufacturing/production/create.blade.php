@@ -57,7 +57,7 @@
                                         <span class="error error_store_warehouse_id"></span>
                                     @else
                                         <label><b>@lang('menu.store_location') :</b> </label>
-                                        <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}"/>
+                                        <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}"/>
                                     @endif
                                 </div>
 
@@ -68,7 +68,7 @@
 
                                 <div class="col-md-2">
                                     <label><b>@lang('menu.date') :</b></label>
-                                    <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business']['date_format']) }}" id="datepicker">
+                                    <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business__date_format']) }}" id="datepicker">
                                     <span class="error error_date"></span>
                                 </div>
 
@@ -87,7 +87,7 @@
                                         <span class="error error_warehouse_id"></span>
                                     @else
                                         <label><b>{{ __('Ingredient Stock Location') }} :</b> </label>
-                                        <input readonly type="text" name="stock_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}"/>
+                                        <input readonly type="text" name="stock_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}"/>
                                     @endif
                                 </div>
 
@@ -338,15 +338,20 @@
             e.preventDefault();
             var processId = $(this).val();
             var stockWarehouseId = $('#stock_warehouse_id').val() ? $('#stock_warehouse_id').val() : null;
+
             @if (count($warehouses) > 0)
+
                 if (stockWarehouseId == null) {
+
                     toastr.error('Ingredials Stock Location must not be empty.');
                     var processId = $(this).val('');
                     return;
                 }
             @endif
+
             var url = "{{ url('manufacturing/productions/get/process/') }}"+"/"+processId;
             $.get(url, function(data) {
+
                 $('#product_id').val(data.product_id);
                 $('#variant_id').val(data.variant_id);
                 $('#output_quantity').val(data.total_output_qty);
@@ -362,26 +367,33 @@
                 $('#tax_id').val(tax);
                 var product_id = data.product_id;
                 var variantId = data.variant_id ? data.variant_id : null;
+
                 var url = "{{ url('manufacturing/productions/get/ingredients') }}"+"/"+processId+"/"+stockWarehouseId;
 
                 $.get(url, function(data) {
+
                     $('#ingredient_list').html(data);
+
                     __calculateTotalAmount();
                 });
             });
         });
 
         $(document).on('input', '#output_quantity', function () {
+
             var presentQty = $(this).val() ? $(this).val() : 0;
             var parameterQty = $('#parameter_quantity').val() ? $('#parameter_quantity').val() : 0;
             var meltipilerQty = parseFloat(presentQty) / parseFloat(parameterQty);
             var allTr = $('#ingredient_list').find('tr');
+
             allTr.each(function () {
+
                 var parameterInputQty = $(this).find('#parameter_input_quantity').val();
                 var updateInputQty = parseFloat(meltipilerQty) * parseFloat(parameterInputQty);
                 $(this).find('#input_quantity').val(parseFloat(updateInputQty).toFixed(2));
                 __calculateIngredientsTableAmount($(this));
             });
+
             __calculateTotalAmount();
         });
 
@@ -402,6 +414,7 @@
 
         var errorCount = 0;
         function __calculateIngredientsTableAmount(tr) {
+
             var inputQty = tr.find('#input_quantity').val() ? tr.find('#input_quantity').val() : 0;
             var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
             var limitQty = tr.find('#qty_limit').val();
@@ -409,13 +422,19 @@
             var regexp = /^\d+\.\d{0,2}$/;
             tr.find('#input_qty_error').html('');
 
-            if (regexp.test(parseFloat(inputQty)) == true) {
+            // if (regexp.test(parseFloat(inputQty)) == true) {
 
-                tr.find('#input_qty_error').html('Deciaml value is not allowed.');
-                errorCount++;
-            } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
+            //     tr.find('#input_qty_error').html('Deciaml value is not allowed.');
+            //     errorCount++;
+            // } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
 
-                tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
+            //     tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
+            //     errorCount++;
+            // }
+
+            if(parseFloat(inputQty) > parseFloat(limitQty)) {
+
+                tr.find('#input_qty_error').html('Only '+ limitQty + ' ' + unitName + ' is available.');
                 errorCount++;
             }
 
@@ -426,9 +445,11 @@
         }
 
         function __calculateTotalAmount(){
+
             var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
             subtotals.forEach(function(subtotal){
+
                 totalIngredientCost += parseFloat(subtotal.value);
             });
 
@@ -450,8 +471,9 @@
             var par_unit_cost = parseFloat(total_cost) / parseFloat(final_output_qty);
             var tax_type = $('#tax_type').val();
             var calc_product_cost_tax = parseFloat(par_unit_cost) / 100 * parseFloat(tax_percent);
-            console.log(tax_percent);
+
             if (tax_type == 2) {
+
                 var inclusive_tax_percent = 100 + parseFloat(tax_percent);
                 var calc_tax = parseFloat(par_unit_cost) / parseFloat(inclusive_tax_percent) * 100;
                 calc_product_cost_tax = parseFloat(par_unit_cost) - parseFloat(calc_tax);
@@ -462,7 +484,9 @@
             $('#per_unit_cost_inc_tax').val(parseFloat(per_unit_cost_inc_tax).toFixed(2));
 
             var xMargin = $('#xMargin').val() ? $('#xMargin').val() : 0;
+
             if (xMargin > 0) {
+
                 var calculate_margin = parseFloat(par_unit_cost) / 100 * parseFloat(xMargin);
                 var selling_price = parseFloat(par_unit_cost) + parseFloat(calculate_margin);
                 $('#selling_price').val(parseFloat(selling_price).toFixed(2));
@@ -470,10 +494,12 @@
         }
 
         $('#xMargin').on('input', function() {
+
             __productPricingCalculate();
         });
 
         $(document).on('input', '#selling_price',function() {
+
             var selling_price = $(this).val() ? $(this).val() : 0;
             var par_unit_cost = $('#per_unit_cost_exc_tax').val() ? $('#per_unit_cost_exc_tax').val() : 0;
             var profitAmount = parseFloat(selling_price) - parseFloat(par_unit_cost);
@@ -511,19 +537,24 @@
 
             $('.submit_button').prop('type', 'button');
             $.ajax({
+
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
+                    $('.error').html('');
                     if(!$.isEmptyObject(data.errorMsg)) {
+
                         toastr.error(data.errorMsg);
                     } else if(!$.isEmptyObject(data.successMsg)) {
+
                         $('#add_production_form')[0].reset();
                         $('#ingredient_list').empty();
                         toastr.success(data.successMsg);
                     }else {
+
                         $('#add_production_form')[0].reset();
                         $('#ingredient_list').empty();
                         toastr.success('Successfully production is created.');
@@ -558,7 +589,7 @@
             });
         });
 
-        var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

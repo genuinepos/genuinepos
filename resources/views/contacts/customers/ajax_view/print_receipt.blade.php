@@ -13,10 +13,10 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $receipt->branch_name }}</span>
                             @endif
                         @else
-                            @if ($generalSettings['business']['business_logo'] != null)
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                            @if ($generalSettings['business__business_logo'] != null)
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business']['shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -34,10 +34,10 @@
                                 <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
                                 <p><strong>@lang('menu.email') :</strong> {{ $receipt->email }}</p>
                             @else
-                                <h6 class="company_name"><b>{{ $generalSettings['business']['shop_name'] }}</b></h6>
-                                <p class="company_address">{{ $generalSettings['business']['address'] }}</p>
-                                <p>@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</p>
-                                <p>@lang('menu.email') : {{ $generalSettings['business']['email'] }}</p>
+                                <h6 class="company_name"><b>{{ $generalSettings['business__shop_name'] }}</b></h6>
+                                <p class="company_address">{{ $generalSettings['business__address'] }}</p>
+                                <p>@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</p>
+                                <p>@lang('menu.email') : {{ $generalSettings['business__email'] }}</p>
                             @endif
                         </div>
                     </div>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="col-4 text-end">
-                <p> <b>@lang('menu.date')</b> : {{ $receipt->is_date ? date($generalSettings['business']['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
+                <p> <b>@lang('menu.date')</b> : {{ $receipt->is_date ? date($generalSettings['business__date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
             </div>
         </div><br>
 
@@ -82,7 +82,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>{{ __('Amount Of Money') }}</b> : {{ $receipt->amount > 0 ? $generalSettings['business']['currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
+                        <p><b>{{ __('Amount Of Money') }}</b> : {{ $receipt->amount > 0 ? $generalSettings['business__currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -176,10 +176,10 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $receipt->branch_name }}</span>
                             @endif
                         @else
-                            @if ($generalSettings['business']['business_logo'] != null)
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business']['business_logo']) }}" alt="logo" class="logo__img">
+                            @if ($generalSettings['business__business_logo'] != null)
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business']['shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -197,10 +197,10 @@
                                 <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
                                 <p><strong>@lang('menu.email') :</strong> {{ $receipt->email }}</p>
                             @else
-                                <h6 class="company_name"><b>{{ $generalSettings['business']['shop_name'] }}</b></h6>
-                                <p class="company_address">{{ $generalSettings['business']['address'] }}</p>
-                                <p>@lang('menu.phone') : {{ $generalSettings['business']['phone'] }}</p>
-                                <p>@lang('menu.email') : {{ $generalSettings['business']['email'] }}</p>
+                                <h6 class="company_name"><b>{{ $generalSettings['business__shop_name'] }}</b></h6>
+                                <p class="company_address">{{ $generalSettings['business__address'] }}</p>
+                                <p>@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</p>
+                                <p>@lang('menu.email') : {{ $generalSettings['business__email'] }}</p>
                             @endif
                         </div>
                     </div>
@@ -226,7 +226,7 @@
             </div>
 
             <div class="col-4 text-end">
-                <p><b>@lang('menu.date')</b> : {{ $receipt->is_date ? date($generalSettings['business']['date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
+                <p><b>@lang('menu.date')</b> : {{ $receipt->is_date ? date($generalSettings['business__date_format'] ,strtotime($receipt->date)) : '.......................................' }}</p>
             </div>
         </div><br>
 
@@ -247,7 +247,7 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p><b>{{ __('Amount Of Money') }}</b> : {{ $receipt->amount > 0 ? $generalSettings['business']['currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
+                        <p><b>{{ __('Amount Of Money') }}</b> : {{ $receipt->amount > 0 ? $generalSettings['business__currency'].' '.App\Utils\Converter::format_in_bdt($receipt->amount) : ''}}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>

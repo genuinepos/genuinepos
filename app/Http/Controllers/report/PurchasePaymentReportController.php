@@ -22,7 +22,7 @@ class PurchasePaymentReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $payments = '';
             $query = DB::table('purchase_payments')
                 ->leftJoin('purchases', 'purchase_payments.purchase_id', 'purchases.id')

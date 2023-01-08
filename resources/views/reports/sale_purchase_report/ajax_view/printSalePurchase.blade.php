@@ -48,12 +48,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business']['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business']['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -66,7 +66,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b> {{date($generalSettings['business']['date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business']['date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') :</b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.sale') / {{ __('Purchase Report') }} </b></h6>
     </div>
@@ -85,7 +85,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.total_purchase') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
                             </td>
                         </tr>
@@ -93,7 +93,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.purchase_including_tax') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
                             </td>
                         </tr>
@@ -101,7 +101,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.purchase_return_including_tax') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
                             </td>
                         </tr>
@@ -109,7 +109,7 @@
                         <tr>
                             <th class="text-start"> @lang('menu.purchase_due') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
                             </td>
                         </tr>
@@ -131,7 +131,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.total_sale') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale) }}
                             </td>
                         </tr>
@@ -139,7 +139,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sale_including_tax') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
                             </td>
                         </tr>
@@ -147,7 +147,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sale_return_including_tax') :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
                             </td>
                         </tr>
@@ -155,7 +155,7 @@
                         <tr>
                             <th class="text-start">{{ __('Sale Due') }} :</th>
                             <td class="text-end">
-                                {{ $generalSettings['business']['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}
                             </td>
                         </tr>
@@ -177,13 +177,13 @@
                 <div class="compare_area mt-3">
                     <h5 class="text-muted">@lang('menu.sale') - @lang('menu.purchase') :
                         <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
-                            {{ $generalSettings['business']['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
                         </span>
                     </h5>
                     <h5 class="text-muted">@lang('menu.due_amount') ({{ __('Sale Due') }} - @lang('menu.purchase_due')) :
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
-                            {{ $generalSettings['business']['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
                         </span>
                     </h5>

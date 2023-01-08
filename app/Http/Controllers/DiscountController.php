@@ -24,7 +24,7 @@ class DiscountController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $discounts = DB::table('discounts')->where('branch_id', auth()->user()->branch_id)
                 ->leftJoin('brands', 'discounts.brand_id', 'brands.id')
@@ -53,12 +53,12 @@ class DiscountController extends Controller
 
                 ->editColumn('start_at', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
                     return date($__date_format, strtotime($row->start_at));
                 })
                 ->editColumn('end_at', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business']['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
                     return date($__date_format, strtotime($row->end_at));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -68,7 +68,7 @@ class DiscountController extends Controller
                         return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('discount_type', function ($row) {

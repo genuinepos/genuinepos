@@ -5,7 +5,7 @@
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             {extend: 'print',className: 'btn btn-primary',autoPrint: true,exportOptions: {columns: ':visible'}}
         ],
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         processing: true,
         serverSide: true,
@@ -85,10 +85,14 @@
                     $('.data_preloader').hide();
                     document.getElementById('e_name').focus();
                 },error:function(err){
+
                     $('.data_preloader').hide();
+
                     if (err.status == 0) {
+
                         toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
+                        
                         toastr.error('Server Error, Please contact to the support team.');
                     }
                 }

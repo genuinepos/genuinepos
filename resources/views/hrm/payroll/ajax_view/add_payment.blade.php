@@ -18,7 +18,7 @@
                             @if ($payroll->employee->branch)
                                 {{ $payroll->employee->branch->name.'/'.$payroll->employee->branch->branch_code }}
                             @else
-                                {{$generalSettings['business']['shop_name']}}  (<b>@lang('menu.head_office')</b>)
+                                {{$generalSettings['business__shop_name']}}  (<b>@lang('menu.head_office')</b>)
                             @endif
                         </span>
                     </li>
@@ -38,7 +38,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li class="sale_due">
-                        <strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }} </strong>
+                        <strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong>
                         <span class="card_text total_due">{{ $payroll->due }}</span> </li>
                 </ul>
             </div>
@@ -188,7 +188,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -46,7 +46,7 @@
     </style>
 </head>
 
-<body class="{{ $generalSettings['system']['theme_color'] ?? 'dark-theme' }}">
+<body class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.update') }}" method="POST">
         @csrf
         <div class="pos-body">

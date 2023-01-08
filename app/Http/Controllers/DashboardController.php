@@ -216,7 +216,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $sales = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
@@ -279,7 +279,7 @@ class DashboardController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('shipment_status',  function ($row) {
@@ -306,7 +306,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $sales = '';
             $query = DB::table('sales')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -365,7 +365,7 @@ class DashboardController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer',  function ($row) {
@@ -374,7 +374,7 @@ class DashboardController extends Controller
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
 
-                    return $generalSettings['business']['currency'] . ' ' . $row->due;
+                    return $generalSettings['business__currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'due'])
                 ->make(true);
@@ -384,7 +384,7 @@ class DashboardController extends Controller
     public function purchaseDue(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $purchases = '';
             $query = DB::table('purchases')
                 ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -439,12 +439,12 @@ class DashboardController extends Controller
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
 
-                        return $generalSettings['business']['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name']  . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('due',  function ($row) use ($generalSettings) {
 
-                    return $generalSettings['business']['currency'] . ' ' . $row->due;
+                    return $generalSettings['business__currency'] . ' ' . $row->due;
                 })
                 ->rawColumns(['date', 'from', 'due'])
                 ->make(true);

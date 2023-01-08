@@ -1,7 +1,7 @@
 <div class="row">
     <div class="pos-footer">
         <span class="float-start text-white mt-3 badge bg-primary">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd') .</b> </span>
-        @if ($generalSettings['pos']['is_show_recent_transactions'] == '0')
+        @if ($generalSettings['pos__is_show_recent_transactions'] == '0')
             <div class="pos-foot-con">
                 <a href="#" class="resent-tn"><span class="fas fa-clock" tabindex="-1"></span>@lang('menu.recent_transaction')</a>
             </div>

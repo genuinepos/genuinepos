@@ -6,7 +6,7 @@
                     <div class="input-group">
                         <label class=" col-4">
                             <b>{{ __('Paying') }} :
-                                ({{ $generalSettings['business']['currency'] }})
+                                ({{ $generalSettings['business__currency'] }})
                             </b>
                         </label>
 

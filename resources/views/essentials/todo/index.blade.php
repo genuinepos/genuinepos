@@ -36,7 +36,7 @@
                                             <select name="branch_id"
                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         {{ $branch->name . '/' .$branch->branch_code }}
@@ -285,7 +285,7 @@
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[0, 'desc']],
-        "pageLength": parseInt("{{ $generalSettings['system']['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "",
@@ -501,7 +501,7 @@
 
 <script type="text/javascript">
     $('.select2').select2();
-    var dateFormat = "{{ $generalSettings['business']['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

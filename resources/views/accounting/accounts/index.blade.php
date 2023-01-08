@@ -28,7 +28,7 @@
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="f_branch_id" autofocus>
-                                                    <option SELECTED value="NULL">{{ $generalSettings['business']['shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -157,7 +157,7 @@
                                     <label><strong>@lang('menu.access_business_location') :</strong> <span class="text-danger">*</span></label>
                                     <select name="business_location[]" id="business_location" class="form-control select2" multiple="multiple">
                                         <option {{ $addons->branches == 0 ? 'SELECTED' : '' }} value="NULL">
-                                            {{ $generalSettings['business']['shop_name'] }}(HO)
+                                            {{ $generalSettings['business__shop_name'] }}(HO)
                                         </option>
 
                                         @foreach ($branches as $branch)

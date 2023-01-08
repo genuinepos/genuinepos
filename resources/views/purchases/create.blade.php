@@ -74,7 +74,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>@lang('menu.store_location') :</b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business']['shop_name'].' (HO)' }}"/>
+                                                <input readonly type="text" name="branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}"/>
                                             </div>
                                         </div>
                                     @endif
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
 
-                                    @if ($generalSettings['purchase']['is_enable_status'] == '1')
+                                    @if ($generalSettings['purchase__is_enable_status'] == '1')
                                         <div class="input-group mt-1">
                                             <label class=" col-4"><b>@lang('menu.status') :</b></label>
                                             <div class="col-8">
@@ -117,7 +117,7 @@
                                         <label class="col-4"><b>{{ __('PUR./PO. Date') }}:</b></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control changeable"
-                                                value="{{ date($generalSettings['business']['date_format']) }}" id="date" placeholder="dd-mm-yyyy" autocomplete="off">
+                                                value="{{ date($generalSettings['business__date_format']) }}" id="date" placeholder="dd-mm-yyyy" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -213,7 +213,7 @@
                                                     <th>@lang('menu.unit_tax')</th>
                                                     <th>{{ __('Net Unit Cost') }}</th>
                                                     <th>@lang('menu.line_total')</th>
-                                                    @if ($generalSettings['purchase']['is_edit_pro_price'] == '1')
+                                                    @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
                                                         <th>@lang('menu.x_margin')(%)</th>
                                                         <th>@lang('menu.selling_price_exc_tax')</th>
                                                     @endif
@@ -326,14 +326,14 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.net_total_amount') : </b>  {{ $generalSettings['business']['currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.net_total_amount') : </b>  {{ $generalSettings['business__currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.total_payable') :</b>  {{ $generalSettings['business']['currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.total_payable') :</b>  {{ $generalSettings['business__currency'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
@@ -342,7 +342,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.amount') :</b> {{ $generalSettings['business']['currency'] }} <strong>>></strong></label>
+                                                        <label class=" col-4"><b>@lang('menu.amount') :</b> {{ $generalSettings['business__currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                         </div>

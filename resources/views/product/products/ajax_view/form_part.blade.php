@@ -37,13 +37,13 @@
             <div class="input-group">
                 <label for="inputEmail3" class="col-4"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
                 <div class="col-8">
-                    <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business']['default_profit'] > 0 ? $generalSettings['business']['default_profit'] : 0 }}">
+                    <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
                 </div>
             </div>
         </div>
     </div>
 
-    @if ($generalSettings['product']['is_enable_price_tax'] == '1')
+    @if ($generalSettings['product__is_enable_price_tax'] == '1')
         <div class="row mt-1">
             <div class="col-md-6">
                 <div class="input-group">
@@ -220,7 +220,7 @@
                                         <tr>
                                             <th colspan="3" class="text-center">@lang('menu.net_total_amount') :</th>
                                             <th>
-                                                {{ $generalSettings['business']['currency']}} <span class="span_total_combo_price">0.00</span>
+                                                {{ $generalSettings['business__currency']}} <span class="span_total_combo_price">0.00</span>
 
                                                 <input type="hidden" name="total_combo_price"
                                                     id="total_combo_price"/>
@@ -240,7 +240,7 @@
         <div class="col-md-3 offset-3">
             <label><b>@lang('menu.x_margin'):</b></label>
             <input type="text" name="profit" class="form-control form-control-sm" id="profit"
-                value="{{ $generalSettings['business']['default_profit'] > 0 ? $generalSettings['business']['default_profit'] : 0 }}">
+                value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
         </div>
 
         <div class="col-md-3">

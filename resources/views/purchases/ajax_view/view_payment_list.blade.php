@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business']['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <style>
     .payment_top_card {background: #d7dfe8;}
@@ -44,7 +44,7 @@
                             {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
                             {{ $purchase->branch ? $purchase->branch->country : '' }}.
                         @else
-                            {{ $generalSettings['business']['shop_name'] }} (<b>HO</b>)
+                            {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
                         @endif
                     </li>
                 </ul>
@@ -55,10 +55,10 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li>
-                        <strong>@lang('menu.total_due') : {{ $generalSettings['business']['currency'] }} </strong>
+                        <strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong>
                         {{ $purchase->due }}
                     </li>
-                    <li><strong>@lang('menu.date') : </strong>{{date($generalSettings['business']['date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
+                    <li><strong>@lang('menu.date') : </strong>{{date($generalSettings['business__date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
                     <li><strong>@lang('menu.purchases_status') : </strong>
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>@lang('menu.receive')</b></span>
@@ -99,7 +99,7 @@
                     <th class="text-start text-white">@lang('menu.method')</th>
                     <th class="text-start text-white">@lang('menu.type')</th>
                     <th class="text-start text-white">@lang('menu.account')</th>
-                    <th class="text-end text-white">@lang('menu.amount')({{ $generalSettings['business']['currency'] }})</th>
+                    <th class="text-end text-white">@lang('menu.amount')({{ $generalSettings['business__currency'] }})</th>
                     <th class="text-start text-white">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -107,7 +107,7 @@
                 @if (count($purchase->purchase_payments) > 0)
                     @foreach ($purchase->purchase_payments as $payment)
                         <tr data-info="{{ $payment }}">
-                            <td>{{ date($generalSettings['business']['date_format'], strtotime($payment->date)) }}</td>
+                            <td>{{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}</td>
 
                             <td>{{ $payment->invoice_id }}</td>
 

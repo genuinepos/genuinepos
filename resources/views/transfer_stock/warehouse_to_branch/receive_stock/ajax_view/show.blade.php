@@ -12,8 +12,8 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business']['phone'] }}</li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business__phone'] }}</li>
                             @if ($sendStock->branch)
                                 <li><strong>@lang('menu.address') : </strong>
                                     {{ $sendStock->branch->city }},
@@ -22,7 +22,7 @@
                                     {{ $sendStock->branch->country }}.
                                 </li>
                             @else
-                                {{ $generalSettings['business']['address'] }}
+                                {{ $generalSettings['business__address'] }}
                             @endif
                         </ul>
                     </div>
@@ -118,9 +118,9 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <div class="heading text-center">
-                            <h5 class="company_name">{{ $generalSettings['business']['shop_name'] }}</h5>
-                            <p class="company_address">{{ $generalSettings['business']['address'] }}</p>
-                            <p class="company_address">Phone : {{ $generalSettings['business']['phone'] }}</p>
+                            <h5 class="company_name">{{ $generalSettings['business__shop_name'] }}</h5>
+                            <p class="company_address">{{ $generalSettings['business__address'] }}</p>
+                            <p class="company_address">Phone : {{ $generalSettings['business__phone'] }}</p>
                             <h6 class="bill_name">@lang('menu.send_stock_details')</h6>
                         </div>
                     </div>
@@ -132,9 +132,9 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.b_location') (From) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business']['shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
                             <li><strong>@lang('menu.phone') : </strong>
-                                {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business']['phone'] }}
+                                {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business__phone'] }}
                             </li>
                             @if ($sendStock->branch)
                                 <li><strong>@lang('menu.address') : </strong>
@@ -145,7 +145,7 @@
                                 </li>
                             @else
                                 <li><strong>@lang('menu.address') : </strong>
-                                    {{ $generalSettings['business']['address'] }}
+                                    {{ $generalSettings['business__address'] }}
                                 </li>
                             @endif
                         </ul>

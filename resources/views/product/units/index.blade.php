@@ -162,20 +162,6 @@
                 }
             });
         });
-        // $(document).on('click', '#edit', function(e){
-        //     e.preventDefault();
-        //     $('#edit_unit_form')[0].reset();
-        //     $('.form-control').removeClass('is-invalid');
-        //     $('.error').html('');
-        //     var unitInfo = $(this).closest('tr').data('info');
-        //     $('#id').val(unitInfo.id);
-        //     $('#e_name').val(unitInfo.name);
-        //     $('#e_code').val(unitInfo.code_name);
-        //     $('#add_form').hide();
-        //     $('#edit_form').show();
-        //     $('#edit_form').removeClass('d-hide');
-        //     document.getElementById('e_name').focus();
-        // });
 
         // edit Unit by ajax
         $(document).on('submit', '#edit_unit_form', function(e) {

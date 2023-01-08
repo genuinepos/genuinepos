@@ -65,15 +65,7 @@ class ProductController extends Controller
         ];
         return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches', 'total'));
     }
-    // public function changeStatus($id)
-    // {
-    //     $changeStatus = [
-    //         'product' => DB::table('products')->count(),
-    //         'active' => DB::table('products')->where('status', 1)->count(),
-    //         'inActive' => DB::table('products')->where('status', 0)->count(),
-    //     ];
-    //     return response()->json($changeStatus);
-    // }
+
     // Add product view
     public function create(Request $request)
     {

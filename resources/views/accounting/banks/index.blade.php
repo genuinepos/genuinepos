@@ -30,7 +30,7 @@
 
                 <div class="widget_content">
                     <div class="table-responsive" id="data-list">
-                        <table class="display data_tbl data__table">
+                        <table class="display data_tbl data__table bank_table">
                             <thead>
                                 <tr>
                                     <th class="text-start">@lang('menu.sl')</th>
@@ -68,13 +68,13 @@
                     <form id="add_bank_form" action="{{ route('accounting.banks.store') }}">
                         <div class="form-group">
                             <label><b>@lang('menu.bank_name')</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm add_input" data-name="Bank name" id="name" placeholder="@lang('menu.bank_name')"/>
+                            <input required type="text" name="name" class="form-control form-control-sm add_input" data-name="Bank name" id="name" placeholder="@lang('menu.bank_name')" autofocus/>
                             <span class="error error_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label><b>@lang('menu.branch_name')</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="branch_name" class="form-control form-control-sm add_input" data-name="Branch name" id="branch_name" placeholder="@lang('menu.branch_name')"/>
+                            <input required type="text" name="branch_name" class="form-control form-control-sm add_input" data-name="Branch name" id="branch_name" placeholder="@lang('menu.branch_name')"/>
                             <span class="error error_branch_name"></span>
                         </div>
 
@@ -109,39 +109,9 @@
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="editModalBody">
                     <!--begin::Form-->
-                    <form id="edit_bank_form" action="{{ route('accounting.banks.update') }}">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label><b>@lang('menu.bank_name')</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control form-control-sm edit_input" data-name="Bank name" id="e_name" placeholder="Bank name"/>
-                            <span class="error error_e_name"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><b>@lang('menu.branch_name')</b> : <span class="text-danger">*</span></label>
-                            <input type="text" name="branch_name" class="form-control form-control-sm edit_input" data-name="Branch name" id="e_branch_name" placeholder="@lang('menu.branch_name')"/>
-                            <span class="error error_e_branch_name"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><b>@lang('menu.bank_address')</b> : </label>
-                            <textarea name="address" class="form-control form-control-sm" id="e_address" cols="10" rows="3" placeholder="@lang('menu.bank_address')"></textarea>
-                        </div>
-
-                        <div class="form-group text-right mt-3">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i
-                                        class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
-                                    </button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -150,19 +120,27 @@
 @push('scripts')
     <script>
         // Get all category by ajax
-        function getAllBank() {
-            $('.data_preloader').show();
-            $.ajax({
-                url: "{{ route('accounting.banks.all.bank') }}",
-                type: 'get',
-                success: function(data) {
-                    $('.table-responsive').html(data);
-                    $('.data_preloader').hide();
-                }
-            });
-        }
-        getAllBank();
 
+        var bank_table = $('.bank_table').DataTable({
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: 'Excel', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print', messageTop: '<b>Asset types</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            ],
+            processing: true,
+            serverSide: true,
+            searchable: true,
+            "lengthMenu" : [25, 100, 500, 1000, 2000],
+            ajax: "{{ route('accounting.banks.index') }}",
+            columns: [
+                {data: 'DT_RowIndex',name: 'DT_RowIndex'},
+                {data: 'name',name: 'name'},
+                {data: 'branch_name',name: 'branch_name'},
+                {data: 'address',name: 'address'},
+                {data: 'action',name: 'action'},
+            ],
+        });
         // Setup ajax for csrf token.
         $.ajaxSetup({
             headers: {
@@ -176,40 +154,34 @@
             $('#add_bank_form').on('submit', function(e) {
                 e.preventDefault();
                 $('.loading_button').show();
+                $('.submit_button').prop('type', 'button');
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
-                var inputs = $('.add_input');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-                    if (inputId !== 'parent_category' && inputId !== 'photo') {
-                        if (idValue == '') {
-                            countErrorField += 1;
-                            var fieldName = $('#' + inputId).data('name');
-                            $('.error_' + inputId).html(fieldName + ' is required.');
-                        }
-                    }
-                });
-
-                if (countErrorField > 0) {
-                    $('.loading_button').hide();
-                    return;
-                }
-
-                $('.submit_button').prop('type', 'button');
+              
                 $.ajax({
                     url: url,
                     type: 'post',
                     data: request,
                     success: function(data) {
+                        $('.error').html('');
                         toastr.success(data);
+                        bank_table.ajax.reload();
                         $('#add_bank_form')[0].reset();
                         $('.loading_button').hide();
-                        getAllBank();
                         $('#addModal').modal('hide');
                         $('.submit_button').prop('type', 'sumbit');
+                    },error: function(err) {
+                        $('.error').html('');
+                        $('.loading_button').hide();
+                        $('.submit_button').prop('type', 'sumbit');
+
+                        if (err.status == 0) {
+                            toastr.error('Net Connetion Error.');
+                            return;
+                        }
+                        $.each(err.responseJSON.errors, function(key, error) {
+                            $('.error_' + key + '').html(error[0]);
+                        });
                     }
                 });
             });
@@ -217,54 +189,20 @@
             // pass editable data to edit modal fields
             $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
-                $('.form-control').removeClass('is-invalid');
-                $('.error').html('');
-                var bank = $(this).closest('tr').data('info');
-                console.log(bank);
-                $('#id').val(bank.id);
-                $('#e_name').val(bank.name);
-                $('#e_branch_name').val(bank.branch_name);
-                $('#e_address').val(bank.address);
-                $('#editModal').modal('show');
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+                        $('#editModalBody').html(data);
+                        $('#editModal').modal('show');
+                        $('.data_preloader').hide();
+                    }
+                });
             });
 
             // edit bank by ajax
-            $('#edit_bank_form').on('submit', function(e) {
-                e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.edit_input');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-                    if (idValue == '') {
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-                    $('.loading_button').hide();
-                    return;
-                }
-
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: request,
-                    success: function(data) {
-                        console.log(data);
-                        toastr.success(data);
-                        $('.loading_button').hide();
-                        getAllBank();
-                        $('#editModal').modal('hide');
-                    }
-                });
-            });
+            
 
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();
@@ -291,7 +229,7 @@
                     async: false,
                     data: request,
                     success: function(data) {
-                        getAllBank();
+                        bank_table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
                     }

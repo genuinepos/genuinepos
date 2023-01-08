@@ -771,12 +771,11 @@ Route::group(['prefix' => 'expenses'], function () {
 Route::group(['prefix' => 'accounting'], function () {
 
     Route::group(['prefix' => 'banks'], function () {
-
         Route::get('/', [BankController::class, 'index'])->name('accounting.banks.index');
-        Route::get('all/banks', [BankController::class, 'allBanks'])->name('accounting.banks.all.bank');
         Route::post('store', [BankController::class, 'store'])->name('accounting.banks.store');
-        Route::post('update', [BankController::class, 'update'])->name('accounting.banks.update');
-        Route::delete('delete/{bankId}', [BankController::class, 'delete'])->name('accounting.banks.delete');
+        Route::get('edit/{id}', [BankController::class, 'edit'])->name('accounting.banks.edit');
+        Route::post('update/{id}', [BankController::class, 'update'])->name('accounting.banks.update');
+        Route::delete('delete/{id}', [BankController::class, 'delete'])->name('accounting.banks.delete');
     });
 
     Route::group(['prefix' => 'accounts'], function () {

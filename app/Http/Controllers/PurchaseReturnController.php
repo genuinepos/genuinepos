@@ -263,8 +263,8 @@ class PurchaseReturnController extends Controller
             ]
         );
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__purchase_return'];
 
         // generate invoice ID
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_returns'), 4, "0", STR_PAD_LEFT);
@@ -494,8 +494,8 @@ class PurchaseReturnController extends Controller
             'purchase_return_account_id.required' => 'Purchase Return A/C field is required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__purchase_return'];
 
         if ($request->product_ids == null) {
 
@@ -650,8 +650,8 @@ class PurchaseReturnController extends Controller
         ]);
 
         //return $request->purchase_return_account_id;
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_return'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__purchase_return'];
 
         $updatePurchaseReturn = PurchaseReturn::with('purchase_return_products')
             ->where('id', $purchaseReturnId)->first();

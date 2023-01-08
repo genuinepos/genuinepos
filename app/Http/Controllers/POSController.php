@@ -131,14 +131,13 @@ class POSController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $settings = DB::table('general_settings')
-                ->select(['id', 'business', 'prefix', 'reward_point_settings', 'send_es_settings'])->first();
+            $generalSettings = config('generalSettings');
 
-            $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+            $invoicePrefix = $generalSettings['prefix__sale_invoice'];
 
-            $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
 
-            $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
             $branchInvoiceSchema = DB::table('branches')
                 ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
@@ -510,11 +509,11 @@ class POSController extends Controller
     // update pos sale
     public function update(Request $request)
     {
-        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
+        $generalSettings = config('generalSettings');
 
-        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+        $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
 
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         $updateSale = Sale::with([
             'sale_payments',
@@ -1119,9 +1118,9 @@ class POSController extends Controller
             $index++;
         }
 
-        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $generalSettings = config('generalSettings');
+        $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         // Add new payment
         if ($request->paying_amount > 0) {
@@ -1191,13 +1190,13 @@ class POSController extends Controller
 
     private function calculateCustomerPoint($point_settings, $total_amount)
     {
-        $enable_cus_point = json_decode($point_settings->reward_point_settings, true)['enable_cus_point'];
+        $enable_cus_point = $generalSettings['reward_point_settings__enable_cus_point'];
 
-        (int)$amount_for_unit_rp = json_decode($point_settings->reward_point_settings, true)['amount_for_unit_rp'];
+        (int)$amount_for_unit_rp = $generalSettings['reward_point_settings__amount_for_unit_rp'];
 
-        (int)$min_order_total_for_rp = json_decode($point_settings->reward_point_settings, true)['min_order_total_for_rp'];
+        (int)$min_order_total_for_rp = $generalSettings['reward_point_settings__min_order_total_for_rp'];
 
-        (int)$max_rp_per_order = json_decode($point_settings->reward_point_settings, true)['max_rp_per_order'];
+        (int)$max_rp_per_order = $generalSettings['reward_point_settings__max_rp_per_order'];
 
         if ($enable_cus_point == '1') {
 

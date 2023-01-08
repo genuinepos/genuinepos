@@ -136,8 +136,8 @@ class ProductionController extends Controller
             return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
         }
 
-        $generalSetting = DB::table('general_settings')->select('mf_settings')->first();
-        $referenceNoPrefix = json_decode($generalSetting->mf_settings, true)['production_ref_prefix'];
+        $generalSettings = config('generalSettings');
+        $referenceNoPrefix = $generalSettings['mf_settings__production_ref_prefix'];
 
         $updateLastEntry = Production::where('is_last_entry', 1)->select('id', 'is_last_entry')->first();
 
@@ -387,8 +387,8 @@ class ProductionController extends Controller
             return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
         }
 
-        $generalSetting = DB::table('general_settings')->select('mf_settings')->first();
-        $referenceNoPrefix = json_decode($generalSetting->mf_settings, true)['production_ref_prefix'];
+        $generalSettings = config('generalSettings');
+        $referenceNoPrefix = $generalSettings['mf_settings__production_ref_prefix'];
 
         $updateProduction = Production::where('id', $productionId)->first();
         $storedWarehouseId = $updateProduction->warehouse_id;

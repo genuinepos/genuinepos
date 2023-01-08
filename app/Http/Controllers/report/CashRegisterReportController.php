@@ -26,7 +26,7 @@ class CashRegisterReportController extends Controller
     {
         if ($request->ajax()) {
 
-            $settings = DB::table('general_settings')->select(['id', 'business'])->first();
+            $generalSettings = config('generalSettings');
 
             $cashRegisters = '';
 

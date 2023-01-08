@@ -38,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
             // Cache::forget('generalSettings');
             Cache::rememberForever('generalSettings', function () {
                 return GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
-
             });
             $generalSettings = Cache::get('generalSettings') ?? GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
             config([

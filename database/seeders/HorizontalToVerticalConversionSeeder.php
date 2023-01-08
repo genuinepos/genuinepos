@@ -34,7 +34,7 @@ class HorizontalToVerticalConversionSeeder extends Seeder
         $general_settings['email_setting'] = '{"MAIL_MAILER":"smtp","MAIL_HOST":"smtp.gmail.com","MAIL_PORT":"587","MAIL_USERNAME":"s1@gmail.com","MAIL_PASSWORD":"speeddigit@54321","MAIL_ENCRYPTION":"tls","MAIL_FROM_ADDRESS":"s1@gmail.com","MAIL_FROM_NAME":"SpeedDigit","MAIL_ACTIVE":true}';
         
         $general_settings['sms_setting'] = '[]';
-        $general_settings['modules'] = '{"purchases":1,"add_sale":1,"pos":1,"transfer_stock":1,"stock_adjustment":1,"expenses":1,"accounting":1,"contacts":1,"hrms":1,"requisite":1}';
+        $general_settings['modules'] = '{"purchases":1,"add_sale":1,"pos":1,"transfer_stock":1,"stock_adjustment":1,"expenses":1,"accounting":1,"contacts":1,"hrms":1,"requisite":1,"manufacturing":1,"service":1}';
 
         $general_settings['reward_point_settings'] = '{"enable_cus_point":0,"point_display_name":"Reward Point","amount_for_unit_rp":"10","min_order_total_for_rp":"100","max_rp_per_order":"50","redeem_amount_per_unit_rp":"0.10","min_order_total_for_redeem":"500","min_redeem_point":"30","max_redeem_point":""}';
 

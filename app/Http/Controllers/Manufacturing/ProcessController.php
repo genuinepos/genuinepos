@@ -112,26 +112,19 @@ class ProcessController extends Controller
         $addProcess->total_cost = $request->total_cost;
         $addProcess->save();
 
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $final_quantities = $request->final_quantities;
-        $unit_ids = $request->unit_ids;
-        $subtotals = $request->subtotals;
-
         if (isset($request->product_ids)) {
 
             $index = 0;
-            foreach ($product_ids as $product_id) {
+            foreach ($request->product_ids as $product_id) {
 
                 $addProcessIngredient = new ProcessIngredient();
                 $addProcessIngredient->process_id = $addProcess->id;
                 $addProcessIngredient->product_id = $product_id;
-                $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $addProcessIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $addProcessIngredient->final_qty = $final_quantities[$index];
-                $addProcessIngredient->unit_id = $unit_ids[$index];
-                $addProcessIngredient->subtotal = $subtotals[$index];
+                $addProcessIngredient->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $addProcessIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $addProcessIngredient->final_qty = $request->final_quantities[$index];
+                $addProcessIngredient->unit_id = $request->unit_ids[$index];
+                $addProcessIngredient->subtotal = $request->subtotals[$index];
                 $addProcessIngredient->save();
                 $index++;
             }
@@ -161,6 +154,7 @@ class ProcessController extends Controller
             )->first();
 
         $units = DB::table('units')->select('id', 'name')->get();
+
         $processIngredients = DB::table('process_ingredients')
             ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
             ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')

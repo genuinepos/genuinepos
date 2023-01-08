@@ -166,11 +166,14 @@ class ProductionUtil
         $tax_id,
         $tax_type
     ) {
+
         $updateProduct = Product::where('id', $productId)->first();
         $updateProduct->is_purchased = 1;
         $updateProduct->tax_id = $tax_id;
         $updateProduct->tax_type = $tax_type;
+
         if ($updateProduct->is_variant == 0) {
+
             $updateProduct->product_cost =  $unit_cost_exc_tax;
             $updateProduct->product_cost_with_tax = $unit_cost_inc_tax;
             $updateProduct->profit = $x_margin;
@@ -179,9 +182,11 @@ class ProductionUtil
         $updateProduct->save();
 
         if ($variant_id != NULL) {
+
             $updateVariant = ProductVariant::where('id', $variant_id)
                 ->where('product_id', $productId)
                 ->first();
+                
             $updateVariant->variant_cost = $unit_cost_exc_tax;
             $updateVariant->variant_cost_with_tax = $unit_cost_inc_tax;
             $updateVariant->variant_profit = $x_margin;

@@ -520,7 +520,7 @@
             var variantId = e.getAttribute('data-v_id');
             var variantName = e.getAttribute('data-v_name');
             var variantCode = e.getAttribute('data-v_code');
-            var variantCost = e.getAttribute('data-v_cost');
+            var variantCostIncTax = e.getAttribute('data-v_cost_with_tax');
             variant_id = document.querySelectorAll('#variant_id');
 
             __calculateTotalAmount();
@@ -558,7 +558,6 @@
                 tr += '<span class="product_variant">('+variantName+')</span>';
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
-                tr += '<input type="hidden" value="'+variantCost+'" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
@@ -583,11 +582,11 @@
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';

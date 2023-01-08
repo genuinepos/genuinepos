@@ -337,8 +337,11 @@
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
+
                                 if(input.value != 'noid'){
+
                                     if(input.value == variant_product.id){
+
                                         sameVariant += 1;
                                         var className = input.getAttribute('class');
                                         var closestTr = $('.'+className).closest('tr');
@@ -425,7 +428,9 @@
             product_ids = document.querySelectorAll('#product_id');
             var sameProduct = 0;
             product_ids.forEach(function(input){
+
                 if(input.value == productId){
+
                     sameProduct += 1;
                     var className = input.getAttribute('class');
                     var closestTr = $('.'+className).closest('tr');
@@ -438,7 +443,9 @@
                     var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty);
                     closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                     __calculateTotalAmount();
+
                     if (keyName == 9) {
+
                         closestTr.find('#final_quantity').focus();
                         closestTr.find('#final_quantity').select();
                         keyName = 1;
@@ -513,13 +520,17 @@
             var variantId = e.getAttribute('data-v_id');
             var variantName = e.getAttribute('data-v_name');
             var variantCode = e.getAttribute('data-v_code');
-            var variantCost = e.getAttribute('data-v_cost');
+            var variantCostIncTax = e.getAttribute('data-v_cost_with_tax');
             variant_id = document.querySelectorAll('#variant_id');
             __calculateTotalAmount();
             var sameVariant = 0;
+
             variant_id.forEach(function(input){
+
                 if(input.value != 'noid'){
+
                     if(input.value == variantId){
+
                         sameVariant += 1;
                         var className = input.getAttribute('class');
                         var closestTr = $('.'+className).closest('tr');
@@ -564,11 +575,11 @@
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
@@ -606,9 +617,12 @@
         }
 
         function __calculateTotalAmount(){
+            
             var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
+
             subtotals.forEach(function(subtotal){
+
                 totalIngredientCost += parseFloat(subtotal.value);
             });
 

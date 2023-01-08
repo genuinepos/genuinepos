@@ -1937,4 +1937,6 @@ return [
     'leave_no' => 'ছুটির সংখ্যা',
     'confirmation' => 'নিশ্চিতকরণ',
     'delete_permission_msg' => 'আপনি মুছে ফেলার বিষয়ে নিশ্চিত?',
+    'edit_expense_category' => 'ব্যয় বিভাগ সম্পাদনা করুন',
+    'code' => 'কোড',
 ];

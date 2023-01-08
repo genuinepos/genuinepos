@@ -52,7 +52,7 @@
     <div class="form-group mt-1">
         <div class="col-md-12">
             <label><b>@lang('menu.due_date') : </b></label>
-            <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date($generalSettings['business']['date_format'], strtotime($todo->due_date)) }}">
+            <input required type="text" name="due_date" class="form-control datepicker" id="e_due_date" value="{{ date($generalSettings['business']['date_format'], strtotime($todo->due_date)) }}">
         </div>
     </div>
 

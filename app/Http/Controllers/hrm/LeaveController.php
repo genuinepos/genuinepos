@@ -133,6 +133,7 @@ class LeaveController extends Controller
     {
         $Leave = Leave::find($id);
         $Leave->delete();
+        DB::statement('ALTER TABLE hrm_leaves AUTO_INCREMENT = 1');
         return response()->json('Leave Deleted successfully');
     }
 

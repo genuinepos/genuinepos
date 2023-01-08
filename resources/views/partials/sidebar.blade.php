@@ -1652,7 +1652,7 @@
 
                                     @if (auth()->user()->can('expense_category') )
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('expanses.categories.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('expenses.categories.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-cubes"></i></span>
@@ -1665,7 +1665,7 @@
                                 </div>
 
                                 <div class="sub-menu-row">
-                                    @if (auth()->user()->can('view_expense') )
+                                    @if (auth()->user()->can('view_expense'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('expanses.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">

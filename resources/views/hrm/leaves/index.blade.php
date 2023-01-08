@@ -168,7 +168,7 @@
         ajax: "{{ route('hrm.leaves.index') }}",
         columns: [
             {data: 'leave_no',name: 'hrm_leaves.leave_no'},
-            {data: 'leave_type',name: 'hrm_leavetypess.leave_type'},
+            {data: 'leave_type',name: 'hrm_leavetypes.leave_type'},
             {data: 'employee',name: 'users.name'},
             {data: 'start_date',name: 'hrm_leaves.start_date'},
             {data: 'end_date',name: 'hrm_leaves.end_date'},

@@ -21,7 +21,7 @@ class CustomerReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $customers = '';
             $query = DB::table('customers')->where('status', 1);
             if ($request->customer_id) {

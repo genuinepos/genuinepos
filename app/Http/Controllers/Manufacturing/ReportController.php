@@ -26,7 +26,7 @@ class ReportController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $productions = '';
             $query = DB::table('productions')
                 ->leftJoin('branches', 'productions.branch_id', 'branches.id')

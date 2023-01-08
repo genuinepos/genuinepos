@@ -25,7 +25,7 @@ class ExpenseUtil
 
     public function expenseListTable($request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $expenses = '';
 
         $query = DB::table('expanses')
@@ -176,7 +176,7 @@ class ExpenseUtil
 
     public function categoryWiseExpenseListTable($request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $expenses = '';
         $query = DB::table('expense_descriptions')
             ->leftJoin('expanses', 'expense_descriptions.expense_id', 'expanses.id')

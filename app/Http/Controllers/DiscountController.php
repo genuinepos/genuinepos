@@ -24,7 +24,7 @@ class DiscountController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $discounts = DB::table('discounts')->where('branch_id', auth()->user()->branch_id)
                 ->leftJoin('brands', 'discounts.brand_id', 'brands.id')

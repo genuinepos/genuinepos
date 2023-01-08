@@ -52,7 +52,7 @@ class UserActivityLogReportController extends Controller
                     ->where('user_activity_logs.branch_id', auth()->user()->branch_id)
                     ->orderBy('user_activity_logs.report_date', 'desc');
             }
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             return DataTables::of($logs)
                 ->editColumn('date', function ($row) use ($generalSettings) {

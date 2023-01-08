@@ -18,7 +18,7 @@ class SaleRepresentativeReportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $sales = '';
             $sale_query = DB::table('sales')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -124,7 +124,7 @@ class SaleRepresentativeReportController extends Controller
     public function SaleRepresentativeExpenseReport(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $expenses = '';
             $expense_query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')

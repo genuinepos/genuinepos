@@ -55,7 +55,7 @@ class StockAdjustmentReportController extends Controller
     public function allAdjustments(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')

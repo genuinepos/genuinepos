@@ -30,7 +30,7 @@ class ProductionUtil
 
     public function productionList($request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $productions = '';
         $query = DB::table('productions')
             ->leftJoin('branches', 'productions.branch_id', 'branches.id')

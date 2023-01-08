@@ -20,7 +20,7 @@ class EmailController extends Controller
 
     public function emailSettings(Request $request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $data = $generalSettings['email_setting'];
         $emailSetting = [];
         $emailSetting['MAIL_MAILER'] =  $data['MAIL_MAILER'] ?? '';

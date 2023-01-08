@@ -23,7 +23,7 @@ class SaleStatementController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $sales = '';
 

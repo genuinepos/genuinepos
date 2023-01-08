@@ -41,7 +41,7 @@ class TransferToWarehouseController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $transfers = DB::table('transfer_stock_to_warehouses')
                 ->leftJoin('warehouses', 'transfer_stock_to_warehouses.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_warehouses.branch_id', 'branches.id')->select(

@@ -23,7 +23,7 @@ class PurchaseStatementController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $purchases = '';
 
             $query = DB::table('purchases')

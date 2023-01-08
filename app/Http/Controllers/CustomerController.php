@@ -88,7 +88,7 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
 
         $cusIdPrefix = $generalSettings['prefix__customer_id'];
 
@@ -324,7 +324,7 @@ class CustomerController extends Controller
         $customerId = $customerId;
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $sales = '';
             $query = DB::table('sales')
@@ -498,7 +498,7 @@ class CustomerController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $customerUtil = $this->customerUtil;
 
@@ -1136,7 +1136,7 @@ class CustomerController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $payments = '';
             $paymentsQuery = DB::table('customer_ledgers')
                 ->where('customer_ledgers.customer_id', $customerId)

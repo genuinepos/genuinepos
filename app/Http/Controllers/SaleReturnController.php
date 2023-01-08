@@ -64,7 +64,7 @@ class SaleReturnController extends Controller
         if ($request->ajax()) {
 
             $returns = '';
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $query = DB::table('sale_returns')
                 ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
                 ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')

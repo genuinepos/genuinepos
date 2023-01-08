@@ -108,7 +108,7 @@ class AssetController extends Controller
     public function allAsset(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $assets = '';
             $assetsQ = DB::table('assets')
             ->leftJoin('asset_types', 'assets.type_id', 'asset_types.id')

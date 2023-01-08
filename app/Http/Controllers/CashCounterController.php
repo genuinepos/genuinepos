@@ -18,7 +18,7 @@ class CashCounterController extends Controller
         }
 
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $cashCounters = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')

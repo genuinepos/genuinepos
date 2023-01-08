@@ -22,7 +22,7 @@ class GeneralSettingController extends Controller
         if (!auth()->user()->can('g_settings')) {
             abort(403, 'Access Forbidden.');
         }
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $currencies = Currency::all();
         $units = Unit::all();
         $timezones = TimeZone::all();
@@ -36,7 +36,7 @@ class GeneralSettingController extends Controller
     // Add business settings
     public function businessSettings(Request $request)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $business_logo = null;
         if ($request->hasFile('business_logo')) {
             if ($generalSettings['business__business_logo'] != null) {

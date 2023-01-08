@@ -24,7 +24,7 @@ class ProductPurchaseReportController extends Controller
     {
         if ($request->ajax()) {
             $converter = $this->converter;
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $purchaseProducts = '';
             $query = DB::table('purchase_products')
                 ->leftJoin('purchases', 'purchase_products.purchase_id', '=', 'purchases.id')

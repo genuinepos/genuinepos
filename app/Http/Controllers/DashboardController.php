@@ -216,7 +216,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $sales = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
@@ -306,7 +306,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $sales = '';
             $query = DB::table('sales')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -384,7 +384,7 @@ class DashboardController extends Controller
     public function purchaseDue(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $purchases = '';
             $query = DB::table('purchases')
                 ->leftJoin('branches', 'purchases.branch_id', 'branches.id')

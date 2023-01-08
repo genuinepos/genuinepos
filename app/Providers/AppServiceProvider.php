@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             Cache::rememberForever('generalSettings', function () {
                 return GeneralSetting::where('branch_id', (auth()?->user()?->branch_id ?? null))->pluck('value', 'key')->toArray();
             });
-            $generalSettings = \Cache::get('generalSettings') ?? GeneralSetting::where('branch_id', (auth()?->user()?->branch_id ?? null))->pluck('value', 'key')->toArray();
+            $generalSettings = config('generalSettings') ?? GeneralSetting::where('branch_id', (auth()?->user()?->branch_id ?? null))->pluck('value', 'key')->toArray();
             config([
                 'generalSettings' => $generalSettings,
                 'mail.mailers.smtp.transport' => $generalSettings['email_setting__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),

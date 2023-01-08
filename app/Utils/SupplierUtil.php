@@ -114,7 +114,7 @@ class SupplierUtil
 
     public function supplierPurchaseList($request, $supplierId)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->where('purchases.supplier_id', $supplierId)
@@ -288,7 +288,7 @@ class SupplierUtil
 
     public function supplierLedgers($request, $supplierId)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
 
         $supplierLedgers = '';
 
@@ -401,7 +401,7 @@ class SupplierUtil
 
     public function uncompletedPurchaseOrderList($request, $supplierId)
     {
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
         $purchases = '';
         $query = DB::table('purchases')
             ->where('purchases.supplier_id', $supplierId)

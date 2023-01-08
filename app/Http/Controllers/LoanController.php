@@ -53,7 +53,7 @@ class LoanController extends Controller
                 $query->whereBetween('loans.report_date', $date_range); // Final
             }
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $converter = $this->converter;
 
             $loans = $query->select(
@@ -404,7 +404,7 @@ class LoanController extends Controller
             $query->whereBetween('loans.report_date', $date_range); // Final
         }
 
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
 
         $loans = $query->select(
             'loans.*',

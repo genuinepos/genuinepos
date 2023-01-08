@@ -25,7 +25,7 @@ class ExpanseReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $expenses = '';
             $query = DB::table('expanses')
                 ->leftJoin('branches', 'expanses.branch_id', 'branches.id')

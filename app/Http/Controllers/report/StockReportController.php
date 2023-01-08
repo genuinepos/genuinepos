@@ -25,7 +25,7 @@ class StockReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $branch_stock = '';
             $query = DB::table('product_branches')
                 ->leftJoin('product_branch_variants', 'product_branches.id', 'product_branch_variants.product_branch_id')
@@ -133,7 +133,7 @@ class StockReportController extends Controller
         if ($request->ajax()) {
 
             $converter = $this->converter;
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $warehouse_stock = '';
             $query = DB::table('product_warehouses')
                 ->leftJoin('product_warehouse_variants', 'product_warehouses.id', 'product_warehouse_variants.product_warehouse_id')

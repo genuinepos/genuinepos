@@ -47,7 +47,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $accounts = '';
             $query = DB::table('account_branches')
                 ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -144,7 +144,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 
             $ledgers = '';
 

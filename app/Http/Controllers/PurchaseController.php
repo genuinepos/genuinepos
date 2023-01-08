@@ -233,7 +233,7 @@ class PurchaseController extends Controller
         try {
 
             DB::beginTransaction();
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
             $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
@@ -546,7 +546,7 @@ class PurchaseController extends Controller
 
             DB::beginTransaction();
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
@@ -1064,7 +1064,7 @@ class PurchaseController extends Controller
             'account_id' => 'required',
         ]);
 
-        $generalSettings = \Cache::get('generalSettings');
+        $generalSettings = config('generalSettings');
 
         $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
 

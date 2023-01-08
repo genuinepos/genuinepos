@@ -23,7 +23,7 @@ class WarehouseController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             $warehouses = '';
             $query = DB::table('warehouse_branches')
                 ->leftJoin('branches', 'warehouse_branches.branch_id', 'branches.id')

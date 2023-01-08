@@ -28,7 +28,7 @@ class AttendanceController extends Controller
 
         if ($request->ajax()) {
 
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
 			$attendances = '';
 			$query = DB::table('hrm_attendances')
 				->leftJoin('users', 'hrm_attendances.user_id', 'users.id')

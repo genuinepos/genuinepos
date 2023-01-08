@@ -23,7 +23,7 @@ class LoanCompanyController extends Controller
         if ($request->ajax()) {
             $companies = DB::table('loan_companies')->orderBy('id', 'DESC')
                 ->where('branch_id', auth()->user()->branch_id)->get();
-            $generalSettings = \Cache::get('generalSettings');
+            $generalSettings = config('generalSettings');
             return DataTables::of($companies)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {

@@ -120,7 +120,7 @@
                         <div class="heading text-center">
                             <h5 class="company_name">{{ $generalSettings['business__shop_name'] }}</h5>
                             <p class="company_address">{{ $generalSettings['business__address'] }}</p>
-                            <p class="company_address">Phone : {{ $generalSettings['business__phone'] }}</p>
+                            <p class="company_address">@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</p>
                             <h6 class="bill_name">@lang('menu.send_stock_details')</h6>
                         </div>
                     </div>

@@ -12,7 +12,7 @@ class MessageController extends Controller
 {
     public function index()
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -26,7 +26,7 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -48,7 +48,7 @@ class MessageController extends Controller
 
     public function delete($id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -62,7 +62,7 @@ class MessageController extends Controller
 
     public function allMessage()
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }

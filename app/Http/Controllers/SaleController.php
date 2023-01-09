@@ -287,7 +287,7 @@ class SaleController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $generalSettings = config('generalSettings');
+            $generalSettings = config('generalSettings')
                 ->first();
 
             if ($request->status == 3 && !$request->customer_id) {

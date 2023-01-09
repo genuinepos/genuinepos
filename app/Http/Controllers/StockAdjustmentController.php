@@ -286,7 +286,7 @@ class StockAdjustmentController extends Controller
             return response()->json(['errorMsg' => 'product table is empty.']);
         }
 
-        $generalSettings = config('generalSettings');
+        $generalSettings = config('generalSettings')
             ->first();
 
         $voucherPrefix = $generalSettings['prefix__stock_adjustment'];

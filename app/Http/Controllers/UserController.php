@@ -298,7 +298,7 @@ class UserController extends Controller
             }
         }
 
-        $addons = DB::table('addons')->first();
+        $generalSettings = config('generalSettings');
 
         // \Log::info('validation passed');
         $updateUser->prefix = $request->prefix;

@@ -12,7 +12,7 @@ class WorkSpaceTaskController extends Controller
 {
     public function index($workspaceId)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -23,7 +23,7 @@ class WorkSpaceTaskController extends Controller
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -39,7 +39,7 @@ class WorkSpaceTaskController extends Controller
 
     public function taskList($workspaceId)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -73,7 +73,7 @@ class WorkSpaceTaskController extends Controller
 
     public function update(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -87,7 +87,7 @@ class WorkSpaceTaskController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -101,7 +101,7 @@ class WorkSpaceTaskController extends Controller
 
     public function assignUser(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -116,7 +116,7 @@ class WorkSpaceTaskController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -130,11 +130,11 @@ class WorkSpaceTaskController extends Controller
 
     public function changePriority(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
             'priority' => $request->priority

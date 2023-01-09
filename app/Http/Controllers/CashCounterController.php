@@ -67,8 +67,7 @@ class CashCounterController extends Controller
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('cash_counter_limit')->first();
-
+        $generalSettings = config('generalSettings');
         $cash_counter_limit = $generalSettings['addons__cash_counter_limit'];
 
         $cash_counters = DB::table('cash_counters')

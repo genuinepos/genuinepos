@@ -14,7 +14,7 @@ class WorkSpaceController extends Controller
 {
     public function index(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -120,7 +120,7 @@ class WorkSpaceController extends Controller
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -182,7 +182,7 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -259,7 +259,7 @@ class WorkSpaceController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -273,7 +273,7 @@ class WorkSpaceController extends Controller
 
     public function viewDocs($id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
@@ -284,7 +284,7 @@ class WorkSpaceController extends Controller
 
     public function deleteDoc($docId)
     {
-        $addons = DB::table('addons')->select('todo')->first();
+        $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }

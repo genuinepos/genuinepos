@@ -173,7 +173,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($addons->hrm == 1)
+                            @if ($generalSettings['addons__hrm'] == 1)
                                 <div class="col-12">
                                     <div class="form_element rounded mt-0 mb-3">
                                         <div class="heading_area">

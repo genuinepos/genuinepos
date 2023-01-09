@@ -24,7 +24,7 @@ class BranchController extends Controller
     {
         $addons = DB::table('addons')->select('branches')->first();
 
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -41,7 +41,7 @@ class BranchController extends Controller
     {
         $addons = DB::table('addons')->select('branches')->first();
 
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -72,9 +72,9 @@ class BranchController extends Controller
     {
         $addons = DB::table('addons')->select('branches', 'branch_limit')->first();
 
-        $branch_limit = $addons->branch_limit;
+        $branch_limit = $generalSettings['addons__branch_limit'];
 
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -158,7 +158,7 @@ class BranchController extends Controller
     public function update(Request $request, $branchId)
     {
         $addons = DB::table('addons')->select('branches')->first();
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -212,7 +212,7 @@ class BranchController extends Controller
     {
         $addons = DB::table('addons')->select('branches')->first();
 
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }

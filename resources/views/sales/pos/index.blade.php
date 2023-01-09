@@ -24,7 +24,7 @@
                                         <div class="element-body">
                                             <form id="filter_button">
                                                 <div class="form-group row">
-                                                    @if ($addons->branches == 1)
+                                                    @if ($generalSettings['addons__branches'] == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-2">
                                                                 <label><strong>@lang('menu.business_location') :</strong></label>
@@ -227,7 +227,7 @@
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> @lang('menu.excel')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
                 // {extend: 'print',text: '<i class="fas fa-print"></i> @lang('menu.print')',className: 'pdf btn text-white px-1',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.pos.list') }}",

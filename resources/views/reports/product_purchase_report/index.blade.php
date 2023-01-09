@@ -50,7 +50,7 @@
                                                         </div>
                                                     </div>
 
-                                                    @if ($addons->branches == 1)
+                                                    @if ($generalSettings['addons__branches'] == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-2">
                                                                 <label><strong>@lang('menu.business_location') :</strong></label>
@@ -174,7 +174,7 @@
         ],
         "processing": true,
         "serverSide": true,
-        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.product.purchases.index') }}",

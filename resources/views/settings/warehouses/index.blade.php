@@ -16,7 +16,7 @@
         </div>
 
         <div class="p-3">
-            @if ($addons->branches == 1)
+            @if ($generalSettings['addons__branches'] == 1)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-3">

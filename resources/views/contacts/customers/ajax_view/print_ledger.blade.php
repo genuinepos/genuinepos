@@ -23,7 +23,7 @@
             <h5>{{ $generalSettings['business__shop_name'] }} </h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
 
-            @if ($addons->branches == 1)
+            @if ($generalSettings['addons__branches'] == 1)
 
                 <p><strong>@lang('menu.all_business_location')</strong></p>
             @endif

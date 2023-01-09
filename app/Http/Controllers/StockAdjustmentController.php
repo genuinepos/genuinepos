@@ -289,7 +289,7 @@ class StockAdjustmentController extends Controller
         $generalSettings = config('generalSettings');
             ->first();
 
-        $voucherPrefix = $generalSettings['prefix__stock_djustment'];
+        $voucherPrefix = $generalSettings['prefix__stock_adjustment'];
         $__voucherPrefix = $voucherPrefix != null ? $voucherPrefix : '';
 
         // generate invoice ID

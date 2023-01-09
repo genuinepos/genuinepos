@@ -22,7 +22,7 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                                    @if ($addons->branches == 1)
+                                    @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
                                                 <label><strong>@lang('menu.business_location') :</strong></label>
@@ -156,7 +156,7 @@
                                 <div class="col-md-12">
                                     <label><strong>@lang('menu.access_business_location') :</strong> <span class="text-danger">*</span></label>
                                     <select name="business_location[]" id="business_location" class="form-control select2" multiple="multiple">
-                                        <option {{ $addons->branches == 0 ? 'SELECTED' : '' }} value="NULL">
+                                        <option {{ $generalSettings['addons__branches'] == 0 ? 'SELECTED' : '' }} value="NULL">
                                             {{ $generalSettings['business__shop_name'] }}(HO)
                                         </option>
 

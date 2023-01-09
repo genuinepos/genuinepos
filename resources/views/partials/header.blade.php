@@ -5,9 +5,9 @@
                 <div class="logo__sec">
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
-                            @if (auth()->user()->branch->logo != 'default.png')
+                            @if (auth()->user()?->branch?->logo != 'default.png')
                                 <img style="height: 40px; width:110px;"
-                                src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                                src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
@@ -28,7 +28,7 @@
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
-                            {{-- @if ($addons->e_commerce == 1)
+                            {{-- @if ($generalSettings['addons__e_commerce'] == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
 

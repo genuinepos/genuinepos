@@ -388,7 +388,7 @@
                                             <label><strong>@lang('menu.stock_adjustment') :</strong></label>
                                             <input type="text" name="stock_djustment" class="form-control"
                                                 autocomplete="off"
-                                                value="{{ $generalSettings['prefix__stock_djustment'] }}">
+                                                value="{{ $generalSettings['prefix__stock_adjustment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
@@ -472,12 +472,12 @@
                                         <div class="col-md-4">
                                             <label><strong>Default datatable page entries :</strong></label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
-                                                <option {{ ($generalSettings['system__datatable_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">10</option>
-                                                <option {{ ($generalSettings['system__datatable_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">25</option>
-                                                <option {{ ($generalSettings['system__datatable_page_entry'] ?? 0) == 50 ? 'SELECTED' : '' }} value="50">50</option>
-                                                <option {{ ($generalSettings['system__datatable_page_entry'] ?? 0) == 100 ? 'SELECTED' : '' }} value="100">100</option>
-                                                <option {{ ($generalSettings['system__datatable_page_entry'] ?? 0) == 500 ? 'SELECTED' : '' }} value="500">500</option>
-                                                <option {{ ($generalSettings['system__datatable_page_entry'] ?? 0) == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">10</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">25</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 50 ? 'SELECTED' : '' }} value="50">50</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 100 ? 'SELECTED' : '' }} value="100">100</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 500 ? 'SELECTED' : '' }} value="500">500</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
                                             </select>
                                         </div>
                                     </div>
@@ -669,7 +669,7 @@
                                             </div>
                                         </div>
 
-                                        @if ($addons->hrm == 1)
+                                        @if ($generalSettings['addons__hrm'] == 1)
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
@@ -691,7 +691,7 @@
                                             </div>
                                         </div>
 
-                                        @if ($addons->manufacturing == 1)
+                                        @if ($generalSettings['addons__manufacturing'] == 1)
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
@@ -706,7 +706,7 @@
                                             </div>
                                         @endif
 
-                                        @if ($addons->service == 1)
+                                        @if ($generalSettings['addons__service'] == 1)
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
@@ -745,7 +745,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['send_es_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
+                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -753,7 +753,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['send_es_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
+                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -761,7 +761,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['send_es_settings__cmr_due_rmdr_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>@lang('menu.customer_remainder_via_email')</b>
+                                                    <input type="checkbox" {{ $generalSettings['email_settings__customer_due_reminder_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>@lang('menu.customer_remainder_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -771,7 +771,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['send_es_settings__cmr_due_rmdr_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
                                                 </p>
                                             </div>
                                         </div>

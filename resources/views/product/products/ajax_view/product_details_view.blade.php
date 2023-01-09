@@ -159,7 +159,7 @@
 
                 <hr class="m-0">
 
-                @if ($addons->branches == 1)
+                @if ($generalSettings['addons__branches'] == 1)
                     <div class="row">
                         <div class="heading">
                             <label class="p-0 m-0">@lang('menu.another') <strong>@lang('menu.business_location')</strong> @lang('menu.stock_details') :</label>

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 class CacheService implements CacheServiceInterface
 {
-    public function syncGeneralSettings()
+    public function syncGeneralSettings() : void
     {
         $generalSettings = Cache::get('generalSettings');
         if(isset($generalSettings) && !empty($generalSettings)) {
@@ -20,12 +20,12 @@ class CacheService implements CacheServiceInterface
         }
     }
     
-    public function rememberGeneralSettings()
+    public function rememberGeneralSettings() : void
     {
 
     }
-    public function removeGeneralSettings()
+    public function removeGeneralSettings() : void
     {
-
+        Cache::forget('generalSettings');
     }
 }

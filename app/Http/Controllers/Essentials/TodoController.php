@@ -14,7 +14,7 @@ class TodoController extends Controller
     public function index(Request $request)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -131,7 +131,7 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -182,7 +182,7 @@ class TodoController extends Controller
     public function edit($id)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -196,7 +196,7 @@ class TodoController extends Controller
     public function update(Request $request, $id)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -249,7 +249,7 @@ class TodoController extends Controller
     public function changeStatusModal($id)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -260,7 +260,7 @@ class TodoController extends Controller
     public function changeStatus(Request $request, $id)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -275,7 +275,7 @@ class TodoController extends Controller
     public function show($id)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -286,7 +286,7 @@ class TodoController extends Controller
     public function delete(Request $request, $id)
     {
         $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 

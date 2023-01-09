@@ -42,7 +42,7 @@
                         <div class="row mt-3">
                             <div class="d-flex justify-content-end align-items-center gap-3">
                                 <input type="hidden" id="date_range" value="{{ $thisMonth }}">
-                                @if ($addons->branches == 1)
+                                @if ($generalSettings['addons__branches'] == 1)
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                         <div class="select-dropdown">
                                             <select name="branch_id" id="branch_id">

@@ -19,7 +19,7 @@ class HorizontalToVerticalConversionSeeder extends Seeder
 
         $general_settings['tax'] = '{"tax_1_name":"Tax","tax_1_no":"1","tax_2_name":"GST","tax_2_no":"2","is_tax_en_purchase_sale":1}';
         $general_settings['product'] = '{"product_code_prefix":null,"default_unit_id":"3","is_enable_brands":1,"is_enable_categories":1,"is_enable_sub_categories":1,"is_enable_price_tax":0,"is_enable_warranty":1}';
-        $general_settings['sale'] = '{"default_sale_discount":"0.00","default_tax_id":"null","sales_cmsn_agnt":"select_form_cmsn_list","default_price_group_id":"7"}';
+        $general_settings['sale'] = '{"default_sale_discount":"0.00","default_tax_id":"null","sales_cmsn_agnt":"select_form_commission_list","default_price_group_id":"7"}';
 
         $general_settings['pos'] = '{"is_enabled_multiple_pay":1,"is_enabled_draft":1,"is_enabled_quotation":1,"is_enabled_suspend":1,"is_enabled_discount":1,"is_enabled_order_tax":1,"is_show_recent_transactions":1,"is_enabled_credit_full_sale":1,"is_enabled_hold_invoice":1}';
 

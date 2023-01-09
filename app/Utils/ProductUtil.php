@@ -35,7 +35,7 @@ class ProductUtil
     public function productListTable($request)
     {
         $productStock = $this->productStockUtil;
-        // $generalSettings = DB::table('general_settings')->select('business')->first();
+        // $generalSettings = config('generalSettings');
         $generalSettings = config('generalSettings');
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
         $img_url = asset('uploads/product/thumbnail');

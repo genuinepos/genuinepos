@@ -50,8 +50,8 @@ class ProductVariant extends Model
 
     public function updateVariantCost()
     {
-        $settings = DB::table('general_settings')->select('business')->first();
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $generalSettings = config('generalSettings');
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
 

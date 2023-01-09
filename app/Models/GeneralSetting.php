@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GeneralSetting extends Model
 {
@@ -11,41 +11,16 @@ class GeneralSetting extends Model
     public $timestamps = false;
 
     public static function boot()
+
     {
         parent::boot();
         \Log::info("GeneralSetting Called");
     }
 
-    protected $casts = [
-        'business' => 'array',
-        'tax' => 'array',
-        'product' => 'array',
-        'sale' => 'array',
-        'pos' => 'array',
-        'purchase' => 'array',
-        'system' => 'array',
-        'prefix' => 'array',
-        'send_es_settings' => 'array',
-        'email_setting' => 'array',
-        'sms_setting' => 'array',
-        'modules' => 'array',
-        'reward_point_settings' => 'array',
-        'mf_settings' => 'array',
-        'multi_branches' => 'array',
-        'hrm' => 'array',
-        'services' => 'array',
-        'manufacturing' => 'array',
-        'projects' => 'array',
-        'essentials' => 'array',
-        'e_commerce' => 'array',
-        'dashboard' => 'array',
-    ];
-
     public function scopeSms($query)
     {
         return $this->sms_setting ?? [];
     }
-
     public function scopeEmail($query)
     {
         return $this->email_setting ?? [];

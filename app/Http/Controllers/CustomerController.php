@@ -739,8 +739,8 @@ class CustomerController extends Controller
 
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['sale_payment'];
+            $generalSettings = config('generalSettings');
+            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
 
             // Add Customer Payment Record
             $customerPayment = new CustomerPayment();

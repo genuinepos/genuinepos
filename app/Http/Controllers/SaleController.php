@@ -20,7 +20,7 @@ use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
 use App\Models\GeneralSetting;
-use App\Services\CacheServiceInterface;
+use App\Services\GeneralSettingServiceInterface;
 use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
@@ -1772,21 +1772,18 @@ class SaleController extends Controller
     }
 
     // Add tax settings
-    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
         if (!auth()->user()->can('add_sale_settings')) {
             return response()->json('Asses Forbidden.');
         }
         $settings = [
-            'default_sale_discount' => $request->default_sale_discount,
-            'default_tax_id' => $request->default_tax_id,
-            'sales_cmsn_agnt' => $request->sales_cmsn_agnt,
-            'default_price_group_id' => $request->default_price_group_id,
+            'sale__default_sale_discount' => $request->default_sale_discount,
+            'sale__default_tax_id' => $request->default_tax_id,
+            'sale__sales_cmsn_agnt' => $request->sales_cmsn_agnt,
+            'sale__default_price_group_id' => $request->default_price_group_id,
         ];
-        GeneralSetting::query()->update([
-            'sale' => $settings,
-        ]);
-        $cacheService->syncGeneralSettings();
+        $generalSettingService->updateAndSync($settings);
         return response()->json('Sale settings updated successfully');
     }
 }

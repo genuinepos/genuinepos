@@ -287,7 +287,7 @@ class StockAdjustmentController extends Controller
         }
 
         $generalSettings = config('generalSettings');
-            ->first();
+
 
         $voucherPrefix = $generalSettings['prefix__stock_djustment'];
         $__voucherPrefix = $voucherPrefix != null ? $voucherPrefix : '';

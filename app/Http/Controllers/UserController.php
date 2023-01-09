@@ -222,7 +222,7 @@ class UserController extends Controller
         if($request->hasFile('photo')) {
             $addUser->photo = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
         } else {
-            $addUser->photo = null;
+            $addUser->photo = 'default.png';
         }
 
         $addUser->save();

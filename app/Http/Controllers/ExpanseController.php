@@ -122,9 +122,9 @@ class ExpanseController extends Controller
             return response()->json('Access Denied');
         }
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['expenses'];
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['expanse_payment'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__expenses'];
+        $paymentInvoicePrefix = $generalSettings['prefix__expanse_payment'];
 
         $this->validate($request, [
             'date' => 'required',
@@ -436,8 +436,8 @@ class ExpanseController extends Controller
     // Expanse payment method
     public function payment(Request $request, $expenseId)
     {
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['expanse_payment'];
+        $generalSettings = config('generalSettings');
+        $paymentInvoicePrefix = $generalSettings['prefix__expanse_payment'];
         $expense = Expanse::where('id', $expenseId)->first();
 
         $addPaymentGetId = $this->expenseUtil->addPaymentGetId(

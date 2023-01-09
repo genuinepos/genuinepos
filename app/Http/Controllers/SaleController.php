@@ -20,7 +20,7 @@ use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
 use App\Utils\NameSearchUtil;
 use App\Models\GeneralSetting;
-use App\Services\CacheServiceInterface;
+use App\Services\GeneralSettingServiceInterface;
 use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
@@ -287,8 +287,7 @@ class SaleController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $settings = DB::table('general_settings')
-                ->select(['id', 'business', 'prefix', 'send_es_settings'])
+            $generalSettings = config('generalSettings');
                 ->first();
 
             if ($request->status == 3 && !$request->customer_id) {
@@ -328,9 +327,9 @@ class SaleController extends Controller
                 return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
             }
 
-            $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
-            $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
 
             $branchInvoiceSchema = DB::table('branches')
                 ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
@@ -564,7 +563,7 @@ class SaleController extends Controller
 
             if (
                 env('MAIL_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
+                $generalSettings['send_es_settings__send_inv_via_email'] == '1'
             ) {
 
                 if ($sale->customer && $sale->customer->email) {
@@ -576,7 +575,7 @@ class SaleController extends Controller
 
             if (
                 env('SMS_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
+                $generalSettings['send_es_settings__send_notice_via_sms'] == '1'
             ) {
 
                 if ($sale->customer && $sale->customer->phone) {
@@ -707,11 +706,11 @@ class SaleController extends Controller
             'sale_account_id.required' => 'Sale A/C is required',
         ]);
 
-        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
+        $generalSettings = config('generalSettings');
 
-        $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+        $invoicePrefix = $generalSettings['prefix__sale_invoice'];
 
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         if ($request->product_ids == null) {
 
@@ -947,8 +946,8 @@ class SaleController extends Controller
 
             if ($request->paying_amount > 0) {
 
-                $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-                $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+                $generalSettings = config('generalSettings');
+                $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
                 $sale = Sale::where('id', $saleId)->first();
 
                 // Add sale payment
@@ -1227,8 +1226,8 @@ class SaleController extends Controller
 
         if ($request->paying_amount > 0) {
 
-            $settings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-            $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+            $generalSettings = config('generalSettings');
+            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
             $sale = Sale::where('id', $saleId)->first();
 
             // Add sale payment
@@ -1773,21 +1772,18 @@ class SaleController extends Controller
     }
 
     // Add tax settings
-    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
         if (!auth()->user()->can('add_sale_settings')) {
             return response()->json('Asses Forbidden.');
         }
         $settings = [
-            'default_sale_discount' => $request->default_sale_discount,
-            'default_tax_id' => $request->default_tax_id,
-            'sales_cmsn_agnt' => $request->sales_cmsn_agnt,
-            'default_price_group_id' => $request->default_price_group_id,
+            'sale__default_sale_discount' => $request->default_sale_discount,
+            'sale__default_tax_id' => $request->default_tax_id,
+            'sale__sales_cmsn_agnt' => $request->sales_cmsn_agnt,
+            'sale__default_price_group_id' => $request->default_price_group_id,
         ];
-        GeneralSetting::query()->update([
-            'sale' => $settings,
-        ]);
-        $cacheService->syncGeneralSettings();
+        $generalSettingService->updateAndSync($settings);
         return response()->json('Sale settings updated successfully');
     }
 }

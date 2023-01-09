@@ -405,8 +405,8 @@ class SupplierController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
+            $generalSettings = config('generalSettings');
+            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
 
             // Add Supplier Payment Record
             $supplierPayment = new SupplierPayment();

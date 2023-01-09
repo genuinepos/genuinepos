@@ -35,7 +35,7 @@ class ContraController extends Controller
     {
         if ($request->ajax()) {
 
-            $settings = DB::table('general_settings')->select('business')->first();
+            $generalSettings = config('generalSettings');
 
             $contras = '';
 
@@ -101,9 +101,9 @@ class ContraController extends Controller
                     $html .= '</div>';
                     return $html;
                 })
-                ->editColumn('date', function ($row) use ($settings) {
+                ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
                     return date($__date_format, strtotime($row->date));
                 })
@@ -117,14 +117,14 @@ class ContraController extends Controller
                     $__ac = $row->sender_account_type == 2 ? '(A/C:' . $row->sender_account_no . ')' : '(Cash-In-Hand)';
                     return $row->sender_account_name . $__ac;
                 })
-                ->editColumn('branch', function ($row) use ($settings) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
                         return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return json_decode($settings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')

@@ -144,8 +144,8 @@ class TransferToBranchController extends Controller
     // Store transfer products form warehouse to branch
     public function store(Request $request)
     {
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['stock_transfer'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__stock_transfer'];
 
         $this->validate($request, [
             'warehouse_id' => 'required',
@@ -266,8 +266,8 @@ class TransferToBranchController extends Controller
     // Update Transfer to branch
     public function update(Request $request, $transferId)
     {
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['stock_transfer'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__stock_transfer'];
         $this->validate($request, [
             'warehouse_id' => 'required',
             'date' => 'required',

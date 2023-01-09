@@ -129,8 +129,8 @@ class RandomSaleReturnController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-            $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_return'];
+            $generalSettings = config('generalSettings');
+            $invoicePrefix = $generalSettings['prefix__sale_return'];
 
             $sale = Sale::where('id', $request->sale_id)->first();
 
@@ -348,8 +348,8 @@ class RandomSaleReturnController extends Controller
             'sale_return_account_id.required' => 'Sale Return A/C is required',
         ]);
 
-        $prefixSettings = DB::table('general_settings')->select(['id', 'prefix'])->first();
-        $invoicePrefix = json_decode($prefixSettings->prefix, true)['sale_return'];
+        $generalSettings = config('generalSettings');
+        $invoicePrefix = $generalSettings['prefix__sale_return'];
 
         $sale = Sale::where('id', $request->sale_id)->first();
 

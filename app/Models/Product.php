@@ -112,9 +112,9 @@ class Product extends Model
     public function updateProductCost()
     {
         
-        $settings = DB::table('general_settings')->select('business')->first();
+        $generalSettings = config('generalSettings');
 
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
             $ordering = 'asc';

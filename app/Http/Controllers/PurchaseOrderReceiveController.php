@@ -76,10 +76,10 @@ class PurchaseOrderReceiveController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $prefixSettings = DB::table('general_settings')->select(['id', 'prefix', 'purchase'])->first();
-            $invoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_invoice'];
-            $paymentInvoicePrefix = json_decode($prefixSettings->prefix, true)['purchase_payment'];
-            $isEditProductPrice = json_decode($prefixSettings->purchase, true)['is_edit_pro_price'];
+            $generalSettings = config('generalSettings');
+            $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
+            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
+            $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $purchase = Purchase::where('id', $purchaseId)->first();
             $purchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchases');

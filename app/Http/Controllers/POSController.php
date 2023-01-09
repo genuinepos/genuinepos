@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Models\CashRegisterTransaction;
-use App\Services\CacheServiceInterface;
+use App\Services\GeneralSettingServiceInterface;
 
 class POSController extends Controller
 {
@@ -131,14 +131,13 @@ class POSController extends Controller
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
 
-            $settings = DB::table('general_settings')
-                ->select(['id', 'business', 'prefix', 'reward_point_settings', 'send_es_settings'])->first();
+            $generalSettings = config('generalSettings');
 
-            $invoicePrefix = json_decode($settings->prefix, true)['sale_invoice'];
+            $invoicePrefix = $generalSettings['prefix__sale_invoice'];
 
-            $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
 
-            $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
             $branchInvoiceSchema = DB::table('branches')
                 ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
@@ -284,7 +283,7 @@ class POSController extends Controller
 
                 if ($customer) {
 
-                    if (json_decode($settings->reward_point_settings, true)['enable_cus_point'] == '1') {
+                    if ($generalSettings['reward_point_settings__enable_cus_point'] == '1') {
 
                         $customer->point = $customer->point - $request->pre_redeemed;
                         $customer->point = $customer->point + $this->calculateCustomerPoint($settings, $request->total_invoice_payable);
@@ -389,7 +388,7 @@ class POSController extends Controller
 
             if (
                 env('MAIL_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_inv_via_email'] == '1'
+                $generalSettings['send_es_settings__send_inv_via_email'] == '1'
             ) {
                 if ($customer && $customer->email) {
 
@@ -399,7 +398,7 @@ class POSController extends Controller
 
             if (
                 env('SMS_ACTIVE') == 'true' &&
-                json_decode($settings->send_es_settings, true)['send_notice_via_sms'] == '1'
+                $generalSettings['send_es_settings__send_notice_via_sms'] == '1'
             ) {
 
                 if ($customer && $customer->phone) {
@@ -510,11 +509,11 @@ class POSController extends Controller
     // update pos sale
     public function update(Request $request)
     {
-        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
+        $generalSettings = config('generalSettings');
 
-        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
+        $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
 
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         $updateSale = Sale::with([
             'sale_payments',
@@ -1119,9 +1118,9 @@ class POSController extends Controller
             $index++;
         }
 
-        $settings = DB::table('general_settings')->select(['id', 'business', 'prefix'])->first();
-        $paymentInvoicePrefix = json_decode($settings->prefix, true)['sale_payment'];
-        $stockAccountingMethod = json_decode($settings->business, true)['stock_accounting_method'];
+        $generalSettings = config('generalSettings');
+        $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         // Add new payment
         if ($request->paying_amount > 0) {
@@ -1191,13 +1190,13 @@ class POSController extends Controller
 
     private function calculateCustomerPoint($point_settings, $total_amount)
     {
-        $enable_cus_point = json_decode($point_settings->reward_point_settings, true)['enable_cus_point'];
+        $enable_cus_point = $generalSettings['reward_point_settings__enable_cus_point'];
 
-        (int)$amount_for_unit_rp = json_decode($point_settings->reward_point_settings, true)['amount_for_unit_rp'];
+        (int)$amount_for_unit_rp = $generalSettings['reward_point_settings__amount_for_unit_rp'];
 
-        (int)$min_order_total_for_rp = json_decode($point_settings->reward_point_settings, true)['min_order_total_for_rp'];
+        (int)$min_order_total_for_rp = $generalSettings['reward_point_settings__min_order_total_for_rp'];
 
-        (int)$max_rp_per_order = json_decode($point_settings->reward_point_settings, true)['max_rp_per_order'];
+        (int)$max_rp_per_order = $generalSettings['reward_point_settings__max_rp_per_order'];
 
         if ($enable_cus_point == '1') {
 
@@ -1234,23 +1233,21 @@ class POSController extends Controller
         return view('sales.pos.settings.index');
     }
 
-    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        $posSettings = [
-            'is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
-            'is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
-            'is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
-            'is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
-            'is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
-            'is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
-            'is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
-            'is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
-            'is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
+        $settings = [
+            'pos__is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
+            'pos__is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
+            'pos__is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
+            'pos__is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
+            'pos__is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
+            'pos__is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
+            'pos__is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
+            'pos__is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
+            'pos__is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
         ];
-        GeneralSetting::query()->update([
-            'pos' => $posSettings,
-        ]);
-        $cacheService->syncGeneralSettings();
+        
+        $generalSettingService->updateAndSync($settings);
         return response()->json('POS settings updated successfully');
     }
 }

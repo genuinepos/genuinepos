@@ -15,7 +15,7 @@ class HorizontalToVerticalConversionSeeder extends Seeder
     public function run()
     {
         GeneralSetting::truncate();
-        $general_settings['business'] = '{"shop_name":"GenuinePos","address":"Uttara, Sector - 4, Road No - 7, House No - 17, Dhaka, Bangladesh.","phone":"01719244933, 1722789897","email":"speeddigitinfo@gmail.com","start_date":null,"default_profit":0,"currency":"TK.","currency_placement":null,"date_format":"d-m-Y","stock_accounting_method":"2","time_format":"12","business_logo":"6352b2cbad890-.png","timezone":"Asia\/Dhaka"}';
+        $general_settings['business'] = '{"shop_name":"GenuinePos","address":"Uttara, Sector - 4, Road No - 7, House No - 17, Dhaka, Bangladesh.","phone":"01719244933, 1722789897","email":"speeddigitinfo@gmail.com","start_date":null,"default_profit":0,"currency":"TK.","currency_placement":null,"date_format":"d-m-Y","stock_accounting_method":"2","time_format":"12","business_logo":null,"timezone":"Asia\/Dhaka"}';
 
         $general_settings['tax'] = '{"tax_1_name":"Tax","tax_1_no":"1","tax_2_name":"GST","tax_2_no":"2","is_tax_en_purchase_sale":1}';
         $general_settings['product'] = '{"product_code_prefix":null,"default_unit_id":"3","is_enable_brands":1,"is_enable_categories":1,"is_enable_sub_categories":1,"is_enable_price_tax":0,"is_enable_warranty":1}';

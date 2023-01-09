@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             echo "Seeding Default Data" . PHP_EOL;
             $this->call(GeneralSettingsSeeder::class);
             $this->call(CurrencySeeder::class);
-            $this->call(AddonsSeeder::class);
             $this->call(ShortMenusSeeder::class);
             $this->call(PosShortMenusSeeder::class);
             $this->call(UserRoleSeeder::class);
@@ -31,7 +30,6 @@ class DatabaseSeeder extends Seeder
             $this->call(AccountSeeder::class);
             $this->call(PermissionSeeder::class);
             $this->call(ProductSeeder::class);
-           
         } catch (Exception $e) {
             dd($e->getMessage());
         } finally {

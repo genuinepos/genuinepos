@@ -103,13 +103,10 @@
                                                     <label class="col-4"><b>@lang('menu.sales_account') : <span
                                                         class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
-                                                        <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
-                                                        <select name="warehouse_id" class="form-control" id="warehouse_id">
-                                                            <option value="">@lang('menu.select_warehouse')</option>
-                                                            @foreach ($warehouses as $warehouse)
-                                                                <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
-                                                                    {{ $warehouse->name.'/'.$warehouse->code }}
+                                                        <select name="sale_account_id" class="form-control" id="sale_account_id">
+                                                            @foreach ($saleAccounts as $saleAccount)
+                                                                <option value="{{ $saleAccount->id }}">
+                                                                    {{ $saleAccount->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>

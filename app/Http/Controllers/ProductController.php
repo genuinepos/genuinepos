@@ -10,8 +10,8 @@ use App\Models\ComboProduct;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\ProductBranch;
-use App\Models\ProductVariant;
 use App\Models\GeneralSetting;
+use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
 use App\Utils\ProductStockUtil;
@@ -19,10 +19,11 @@ use App\Models\PriceGroupProduct;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
+use App\Http\Controllers\Controller;
 use App\Models\ProductBranchVariant;
-use App\Services\CacheServiceInterface;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
+use App\Services\GeneralSettingServiceInterface;
 
 class ProductController extends Controller
 {
@@ -43,12 +44,10 @@ class ProductController extends Controller
     public function allProduct(Request $request)
     {
         if (!auth()->user()->can('product_all')) {
-
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
-
             return $this->productUtil->productListTable($request);
         }
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
@@ -63,12 +62,10 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         if (!auth()->user()->can('product_add')) {
-
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
-
             $products = DB::table('product_branches')
                 ->leftJoin('products', 'product_branches.product_id', 'products.id')
                 ->select('products.id', 'products.name', 'products.product_cost', 'products.product_price')
@@ -1067,21 +1064,18 @@ class ProductController extends Controller
         return view('product.settings.index', compact('units'));
     }
 
-    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        $productSettings = [
-            'product_code_prefix' => $request->product_code_prefix,
-            'default_unit_id' => $request->default_unit_id,
-            'is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
-            'is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
-            'is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
-            'is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
-            'is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
+        $settings = [
+            'product__product_code_prefix' => $request->product_code_prefix,
+            'product__default_unit_id' => $request->default_unit_id,
+            'product__is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
+            'product__is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
+            'product__is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
+            'product__is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
+            'product__is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
         ];
-        $updateProductSettings = GeneralSetting::query()->update([
-            'product' => $productSettings,
-        ]);
-        $cacheService->syncGeneralSettings();
+        $generalSettingService->updateAndSync($settings);
         return response()->json('Product settings updated successfully');
     }
 }

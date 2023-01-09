@@ -9,7 +9,7 @@
                     </a>
                 </li>
 
-                @if ($addons->branches == 1)
+                @if ($generalSettings['addons__branches'] == 1)
                     <li data-menu="superadmin" class="">
                         <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/superadmin.svg') }}">
                             <p class="title">@lang('menu.superadmin')</p>
@@ -232,7 +232,7 @@
                     </li>
                 @endif
 
-                @if ($addons->hrm)
+                @if ($generalSettings['addons__hrm'])
 
                     @if (
                         auth()->user()->can('hrm_dashboard') ||
@@ -268,7 +268,7 @@
                     @endif
                 @endif
 
-                @if ($addons->manufacturing == 1)
+                @if ($generalSettings['addons__manufacturing'] == 1)
 
                     @if (
                         auth()->user()->can('process_view') ||
@@ -285,7 +285,7 @@
                     @endif
                 @endif
 
-                @if ($addons->todo == 1)
+                @if ($generalSettings['addons__todo'] == 1)
 
                     @if ($generalSettings['modules__requisite'] == '1')
 
@@ -305,7 +305,7 @@
                     @endif
                 @endif
 
-                {{-- @if ($addons->service == 1)
+                {{-- @if ($generalSettings['addons__service'] == 1)
                     <li class="">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
@@ -314,7 +314,7 @@
                     </li>
                 @endif
 
-                @if ($addons->e_commerce == 1)
+                @if ($generalSettings['addons__e_commerce'] == 1)
                     <li class="">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/ecommerce2.svg') }}">
@@ -606,7 +606,7 @@
                 </div>
             </div>
 
-            @if ($addons->branches == 1)
+            @if ($generalSettings['addons__branches'] == 1)
 
                 <div class="sub-menu_t" id="superadmin">
                     <div class="sub-menu-width">
@@ -1475,7 +1475,7 @@
                                 </div>
                             </div>
 
-                            @if ($addons->branches == 1)
+                            @if ($generalSettings['addons__branches'] == 1)
                                 {{-- <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
                                         <p>{!! __('menu.transfer_stock_heading_3') !!}</p>
@@ -1966,7 +1966,7 @@
                 </div>
             </div>
 
-            @if ($addons->hrm == 1)
+            @if ($generalSettings['addons__hrm'] == 1)
                 <div class="sub-menu_t" id="hrm">
                     <div class="sub-menu-width">
                         {{-- <div class="model__close bg-secondary-2 mb-3">
@@ -2231,7 +2231,7 @@
                                     </div>
                                 @endif
 
-                                @if ($addons->branches == 1)
+                                @if ($generalSettings['addons__branches'] == 1)
                                     @if (auth()->user()->can('branch'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('settings.branches.index') }}" class="switch-bar-wrap">
@@ -2375,7 +2375,7 @@
                 </div>
             </div>
 
-            @if ($addons->manufacturing == 1)
+            @if ($generalSettings['addons__manufacturing'] == 1)
                 <div class="sub-menu_t" id="manufacture">
                     <div class="sub-menu-width">
                         {{-- <div class="model__close bg-secondary-2 mb-3">

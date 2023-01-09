@@ -1072,7 +1072,7 @@
                         </div>
                     </div>
 
-                    @if ($addons->hrm == 1)
+                    @if ($generalSettings['addons__hrm'] == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
                                 <p class="p-1 text-primary"><strong>{{ __('HRM Permissions') }}</strong> </p>
@@ -1195,7 +1195,7 @@
                         </div>
                     @endif
 
-                    @if ($addons->todo == 1)
+                    @if ($generalSettings['addons__todo'] == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
                                 <p class="p-1 text-primary"><strong>{{ __('Manage Task Permissions') }}</strong> </p>
@@ -1248,7 +1248,7 @@
                         </div>
                     @endif
 
-                    @if ($addons->manufacturing == 1)
+                    @if ($generalSettings['addons__manufacturing'] == 1)
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
                                 <p class="p-1 text-primary"><strong>@lang('menu.manufacturing_permissions')</strong> </p>

@@ -87,7 +87,7 @@
                         </h1>
                     </div>
 
-                    @if ($addons->branches == 1)
+                    @if ($generalSettings['addons__branches'] == 1)
                         <div class="card-title mt-2 ps-4">
                             <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
                                 <option value="">{{ __('All Business Location') }}</option>

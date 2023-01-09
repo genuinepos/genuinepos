@@ -17,7 +17,7 @@
                         </div>
 
                         <div class="p-3">
-                            @if ($addons->branches == 1)
+                            @if ($generalSettings['addons__branches'] == 1)
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="row">
                                         <div class="col-md-12">

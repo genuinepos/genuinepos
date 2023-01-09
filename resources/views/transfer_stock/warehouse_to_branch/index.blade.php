@@ -74,7 +74,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.branch.index') }}",
             columnDefs: [{"targets": [4, 7],"orderable": false,"searchable": false}],

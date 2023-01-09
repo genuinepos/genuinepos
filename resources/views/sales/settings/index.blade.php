@@ -53,20 +53,20 @@
                                 <div class="col-md-4">
                                     <label><strong>@lang('menu.sales_commission_agent')</strong></label>
                                     <select class="form-control" name="sales_cmsn_agnt">
-                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'disable' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_commission_agent'] == 'disable' ? 'SELECTED' : '' }}
                                             value="disable">{{ __('Disable') }}
                                         </option>
 
-                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'logged_in_user' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_commission_agent'] == 'logged_in_user' ? 'SELECTED' : '' }}
                                             value="logged_in_user">@lang('menu.logged_in_user')
                                         </option>
 
-                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'user' ? 'SELECTED' : '' }}
+                                        <option {{ $generalSettings['sale__sales_commission_agent'] == 'user' ? 'SELECTED' : '' }}
                                             value="user">@lang('menu.select_from_user')&#039; {{ __('list') }}
                                         </option>
 
-                                        <option {{ $generalSettings['sale__sales_cmsn_agnt'] == 'select_form_cmsn_list' ? 'SELECTED' : '' }}
-                                            value="select_form_cmsn_list">@lang('menu.select_from_commission_agent')&#039; {{ __('list') }}
+                                        <option {{ $generalSettings['sale__sales_commission_agent'] == 'select_form_commission_list' ? 'SELECTED' : '' }}
+                                            value="select_form_commission_list">@lang('menu.select_from_commission_agent')&#039; {{ __('list') }}
                                         </option>
                                     </select>
                                 </div>

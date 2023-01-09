@@ -65,7 +65,7 @@
                                 <div class="account_summary_table">
                                     <form id="filter_supplier_ledgers" method="get" class="px-2">
                                         <div class="form-group row mt-4">
-                                            @if ($addons->branches == 1)
+                                            @if ($generalSettings['addons__branches'] == 1)
 
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
@@ -252,7 +252,7 @@
                                 <div class="account_summary_table">
                                     <form id="filter_supplier_purchases" method="get" class="px-2">
                                         <div class="form-group row mt-4">
-                                            @if ($addons->branches == 1)
+                                            @if ($generalSettings['addons__branches'] == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-3 col-md-6">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
@@ -374,7 +374,7 @@
                                 <div class="account_summary_table">
                                     <form id="filter_supplier_orders" method="get" class="px-2">
                                         <div class="form-group row mt-4">
-                                            @if ($addons->branches == 1)
+                                            @if ($generalSettings['addons__branches'] == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-3 col-md-6">
                                                         <label><strong>@lang('menu.business_location') :</strong></label>
@@ -502,7 +502,7 @@
                                             <div class="card mt-3 pb-5">
                                                 <form id="filter_supplier_payments" class="py-2 px-2 mt-2" method="get">
                                                     <div class="form-group row">
-                                                        @if ($addons->branches == 1)
+                                                        @if ($generalSettings['addons__branches'] == 1)
 
                                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
@@ -717,7 +717,7 @@
                 {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
             ],
 
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -751,7 +751,7 @@
         var table = $('.purchase_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -807,7 +807,7 @@
         var table = $('.uncompleted_orders_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
             "ajax": {
@@ -877,7 +877,7 @@
                     {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
                 ],
 
-                "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+                "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
                 "ajax": {

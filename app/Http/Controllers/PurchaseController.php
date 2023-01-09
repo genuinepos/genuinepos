@@ -24,7 +24,7 @@ use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseReturnUtil;
 use App\Utils\UserActivityLogUtil;
 use App\Models\PurchaseOrderProduct;
-use App\Services\CacheServiceInterface;
+use App\Services\GeneralSettingServiceInterface;
 use App\Utils\InvoiceVoucherRefIdUtil;
 
 class PurchaseController extends Controller
@@ -1489,17 +1489,14 @@ class PurchaseController extends Controller
     }
 
     //Show Change status modal
-    public function settingsStore(Request $request, CacheServiceInterface $cacheService)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        $purchaseSettings = [
-            'is_edit_pro_price' => isset($request->is_edit_pro_price) ? 1 : 0,
-            'is_enable_status' => isset($request->is_enable_status) ? 1 : 0,
-            'is_enable_lot_no' => isset($request->is_enable_lot_no) ? 1 : 0,
+        $settings = [
+            'purchase__is_edit_pro_price' => isset($request->is_edit_pro_price) ? 1 : 0,
+            'purchase__is_enable_status' => isset($request->is_enable_status) ? 1 : 0,
+            'purchase__is_enable_lot_no' => isset($request->is_enable_lot_no) ? 1 : 0,
         ];
-        $updatePurchaseSettings = GeneralSetting::query()->update([
-            'purchase' => $purchaseSettings
-        ]);
-        $cacheService->syncGeneralSettings();
+        $generalSettingService->updateAndSync($settings);
         return response()->json('Purchase settings updated successfully.');
     }
 }

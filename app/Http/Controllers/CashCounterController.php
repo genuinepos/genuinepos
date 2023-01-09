@@ -69,7 +69,7 @@ class CashCounterController extends Controller
     {
         $addons = DB::table('addons')->select('cash_counter_limit')->first();
 
-        $cash_counter_limit = $addons->cash_counter_limit;
+        $cash_counter_limit = $generalSettings['addons__cash_counter_limit'];
 
         $cash_counters = DB::table('cash_counters')
             ->where('branch_id', auth()->user()->branch_id)

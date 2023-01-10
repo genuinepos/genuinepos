@@ -335,10 +335,10 @@ Route::group(['prefix' => 'contacts'], function () {
 
         Route::group(['prefix' => 'groups'], function () {
             Route::get('/', [CustomerGroupController::class, 'index'])->name('contacts.customers.groups.index');
-            Route::get('all/groups', [CustomerGroupController::class, 'allBanks'])->name('contacts.customers.groups.all.group');
             Route::post('store', [CustomerGroupController::class, 'store'])->name('contacts.customers.groups.store');
-            Route::post('update', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
-            Route::delete('delete/{groupId}', [CustomerGroupController::class, 'delete'])->name('customers.groups.delete');
+            Route::get('edit/{id}', [CustomerGroupController::class, 'edit'])->name('contacts.customers.groups.edit');
+            Route::post('update/{id}', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
+            Route::delete('delete/{id}', [CustomerGroupController::class, 'delete'])->name('customers.groups.delete');
         });
 
         Route::group(['prefix' => 'import'], function () {

@@ -121,6 +121,10 @@ class GeneralSettingsSeeder extends Seeder
             array('key' => 'projects', 'value' => '0', 'branch_id' => null),
             array('key' => 'essentials', 'value' => '0', 'branch_id' => null),
             array('key' => 'e_commerce', 'value' => '0', 'branch_id' => null),
+            array('key' => 'sms__SMS_URL', 'value' => null, 'branch_id' => null),
+            array('key' => 'sms__API_KEY', 'value' => null, 'branch_id' => null),
+            array('key' => 'sms__SENDER_ID', 'value' => null, 'branch_id' => null),
+            array('key' => 'sms__SMS_ACTIVE', 'value' => null, 'branch_id' => null),
         );
 
         return $general_settings;

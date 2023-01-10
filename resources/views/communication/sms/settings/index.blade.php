@@ -37,28 +37,28 @@
                         <label><strong>{{ __('SMS URL') }} : </strong></label>
                         <input type="text" name="SMS_URL" class="form-control"
                             placeholder="{{ __('SMS URL') }}" autocomplete="off"
-                            value="{{ env('SMS_URL') }}">
+                            value="{{ $generalSettings['sms__SMS_URL'] }}">
                     </div>
 
                     <div class="col-md-3">
                         <label><strong>{{ __('API KEY') }} : </strong></label>
                         <input type="text" name="API_KEY" class="form-control"
                             placeholder="{{ __('API KEY') }}" autocomplete="off"
-                            value="{{ env('API_KEY') }}">
+                            value="{{ $generalSettings['sms__API_KEY'] }}">
                     </div>
 
                     <div class="col-md-3">
                         <label><strong>{{ __('SENDER ID') }} : </strong></label>
                         <input type="text" name="SENDER_ID" class="form-control"
                             placeholder="{{ __('SENDER ID') }}" autocomplete="off"
-                            value="{{ env('SENDER_ID') }}">
+                            value="{{ $generalSettings['sms__SENDER_ID'] }}">
                     </div>
 
                     <div class="col-md-3 mt-1">
                         <div class="row mt-4">
                             <p class="checkbox_input_wrap">
                                 <input type="checkbox"
-                                    {{  env('SMS_ACTIVE') == 'true' ? 'CHECKED' : '' }}
+                                    {{  $generalSettings['sms__SMS_ACTIVE'] == 'true' ? 'CHECKED' : '' }}
                                     name="SMS_ACTIVE" autocomplete="off"> &nbsp; <b>@lang('menu.is_active')</b>
                             </p>
                         </div>

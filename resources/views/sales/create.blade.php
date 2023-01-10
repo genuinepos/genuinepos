@@ -482,7 +482,7 @@
 
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end pt-3">
-                                                <div class="btn-loading d-flex flex-wrap gap-2">
+                                                <div class="btn-loading d-flex flex-wrap gap-2 w-100">
                                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                                                     <button type="submit" id="quotation" class="btn btn-sale btn-info text-white submit_button" data-status="4" value="save_and_print">@lang('menu.quotation')</button>
                                                     <button type="submit" id="order" class="btn btn-sale btn-secondary text-white submit_button" data-status="3" value="save_and_print">{{ __('Order') }}</button>

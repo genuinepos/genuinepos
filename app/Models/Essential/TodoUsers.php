@@ -2,9 +2,9 @@
 
 namespace App\Models\Essential;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class TodoUsers extends Model
+class TodoUsers extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

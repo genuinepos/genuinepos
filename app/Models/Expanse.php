@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Branch;
 use App\Models\User;
 use App\Models\ExpenseDescription;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Expanse extends Model
+class Expanse extends BaseModel
 {
     //protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

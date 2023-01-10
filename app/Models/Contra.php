@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Branch;
 use App\Models\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Contra extends Model
+class Contra extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Sale;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class CashRegisterTransaction extends Model
+class CashRegisterTransaction extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

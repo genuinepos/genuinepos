@@ -3,9 +3,9 @@
 namespace App\Models\Hrm;
 
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PayrollAllowance extends Model
+class PayrollAllowance extends BaseModel
 {
     protected $table = 'hrm_payroll_allowances';
     protected $guarded = [];

@@ -7,10 +7,10 @@ use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Warehouse;
 use App\Models\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\PurchaseSaleProductChain;
 
-class SaleProduct extends Model
+class SaleProduct extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

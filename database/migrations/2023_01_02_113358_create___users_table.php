@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('emp_id', 50)->nullable();
             $table->string('username')->nullable();
             $table->string('email')->nullable()->unique('users_email_unique');
+            $table->timestamp('email_verified_at')->nullable()->after('email');
             $table->unsignedBigInteger('shift_id')->nullable()->index('users_shift_id_foreign');
             $table->integer('role_type')->nullable()->comment('1=super_admin,2=admin,3=others');
             $table->boolean('allow_login')->default(false);

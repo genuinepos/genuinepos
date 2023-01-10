@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Sale;
 use App\Models\SaleReturn;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class CustomerPaymentInvoice extends Model
+class CustomerPaymentInvoice extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

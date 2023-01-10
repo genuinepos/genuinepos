@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class SupplierOpeningBalance extends Model
+class SupplierOpeningBalance extends BaseModel
 {
     use HasFactory;
 }

@@ -2,9 +2,9 @@
 
 namespace App\Models\Hrm;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Designation extends Model
+class Designation extends BaseModel
 {
     protected $table = 'hrm_designations';
     protected $fillable = ['designation_name','description'];

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Spatie\Permission\Models\Permission as BasePermission;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
 class Permission extends BasePermission
 {

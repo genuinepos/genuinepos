@@ -6,9 +6,9 @@ use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\LoanCompany;
 use App\Models\LoanPayment;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Loan extends Model
+class Loan extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

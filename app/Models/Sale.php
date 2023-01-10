@@ -9,9 +9,9 @@ use App\Models\SaleReturn;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Models\CustomerLedger;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Sale extends Model
+class Sale extends BaseModel
 {
     public function branch()
     {

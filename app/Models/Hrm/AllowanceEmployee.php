@@ -4,9 +4,9 @@ namespace App\Models\Hrm;
 
 use App\Models\User;
 use App\Models\Hrm\Allowance;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class AllowanceEmployee extends Model
+class AllowanceEmployee extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

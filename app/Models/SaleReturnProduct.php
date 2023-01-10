@@ -6,9 +6,9 @@ use App\Models\Product;
 use App\Models\SaleReturn;
 use App\Models\SaleProduct;
 use App\Models\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class SaleReturnProduct extends Model
+class SaleReturnProduct extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

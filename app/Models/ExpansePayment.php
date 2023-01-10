@@ -6,9 +6,9 @@ use App\Models\Account;
 use App\Models\Expanse;
 use App\Models\CashFlow;
 use App\Models\PaymentMethod;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ExpansePayment extends Model
+class ExpansePayment extends BaseModel
 {
     //protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

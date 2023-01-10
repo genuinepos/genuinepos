@@ -6,9 +6,9 @@ use App\Models\Loan;
 use App\Models\Branch;
 use App\Models\PaymentMethod;
 use App\Models\LoanPaymentDistribution;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class LoanPayment extends Model
+class LoanPayment extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

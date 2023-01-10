@@ -4,9 +4,9 @@ namespace App\Models\Hrm;
 
 use App\Models\Account;
 use App\Models\PaymentMethod;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PayrollPayment extends Model
+class PayrollPayment extends BaseModel
 {
     protected $table = 'hrm_payroll_payments';
     protected $guarded = [];

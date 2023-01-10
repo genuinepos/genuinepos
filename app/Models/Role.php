@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Spatie\Permission\Models\Role as BaseRole;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
 class Role extends BaseRole
 {

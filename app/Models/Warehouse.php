@@ -2,9 +2,9 @@
 
 namespace App\Models;
 use App\Models\Branch;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Warehouse extends Model
+class Warehouse extends BaseModel
 {
     public function branch()
     {

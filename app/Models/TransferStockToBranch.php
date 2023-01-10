@@ -3,10 +3,10 @@
 namespace App\Models;
 use App\Models\Branch;
 use App\Models\Warehouse;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\TransferStockToBranchProduct;
 
-class TransferStockToBranch extends Model
+class TransferStockToBranch extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

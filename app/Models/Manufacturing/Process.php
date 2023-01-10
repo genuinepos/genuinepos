@@ -3,12 +3,12 @@
 namespace App\Models\Manufacturing;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\Manufacturing\ProcessIngredient;
 use App\Models\ProductVariant;
 use App\Models\Unit;
 
-class Process extends Model
+class Process extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

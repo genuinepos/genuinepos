@@ -15,11 +15,11 @@ use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use App\Models\ProductWarehouse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\TransferStockToBranchProduct;
 use App\Models\TransferStockToWarehouseProduct;
 
-class Product extends Model
+class Product extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

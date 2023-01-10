@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Models\Warehouse;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
 
-class ProductWarehouse extends Model
+class ProductWarehouse extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

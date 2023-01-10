@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class RolePermission extends Model
+class RolePermission extends BaseModel
 {
     protected $casts = [
         'user' => 'array',

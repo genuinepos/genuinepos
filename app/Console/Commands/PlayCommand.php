@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use SpeedDigit\Localization\Facades\Calculator;
 
 class PlayCommand extends Command
@@ -28,8 +30,9 @@ class PlayCommand extends Command
      */
     public function handle()
     {
-        $x = Calculator::add(100)->multiply(3)->getResult();
-        dd($x);
+        Schema::table('users', function (Blueprint $table) {
+            $table->timestamp('email_verified_at')->nullable()->after('email');
+        });
         return Command::SUCCESS;
     }
 }

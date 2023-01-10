@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use RecursiveDirectoryIterator;
 use SpeedDigit\Localization\Facades\Calculator;
 
 class PlayCommand extends Command
@@ -30,9 +31,10 @@ class PlayCommand extends Command
      */
     public function handle()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('email_verified_at')->nullable()->after('email');
-        });
+        $ri = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(app_path('Models')), \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($ri as $item) {
+           echo $item->getRealPath() . '====' . $item->getFilename() . \PHP_EOL;
+        }
         return Command::SUCCESS;
     }
 }

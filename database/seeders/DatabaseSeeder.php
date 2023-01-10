@@ -17,9 +17,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         try {
-            echo "Seeding Default Data" . PHP_EOL;
-            Schema::disableForeignKeyConstraints();
-            $files = scandir(app_path('Models'));
+            
+            $ri = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(app_path('Models')), \RecursiveIteratorIterator::CHILD_FIRST);
+            foreach ($ri as $item) {
+                if(! $item->isDir()) {
+                    echo $item->getPath() . '**'.$item->getFilename() . \PHP_EOL;
+                }
+            }
             // $files = [
             //     '1',
             //     '2',

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
@@ -25,9 +26,30 @@ class DatabaseSeeder extends Seeder
             //     'User.php',
             // ];
             for ($i = 2; $i < count($files); $i++) {
-                $val = substr($files[$i], 0, -4);
+                // App\Models\User.php
+                // App\Models\Hrm\Payroll.php
+
+                $s1 = substr($files[$i], 0, -4);
+                $s2 = \explode('\\', $s1);
+                if(count($s2) == 4) {
+                    $subDir = $s2[count($s2) - 2];
+                    $val = $s2[count($s2) - 1];
+                    $model = \app_path("Models") . \DIRECTORY_SEPARATOR . $subDir . \DIRECTORY_SEPARATOR . "{$val}.php";
+                } else {
+                    $val = $s2[count($s2) - 1];
+                    $model = \app_path('Models') . \DIRECTORY_SEPARATOR . "{$val}.php";
+                }
+                echo "$model === ";
+                $modelExists = File::exists($model);
+                $factoryFile = \database_path('factories') . \DIRECTORY_SEPARATOR . "{$val}Factory.php";
+                echo "$factoryFile\n";
+                $factoryExists = File::exists($factoryFile);
+                // dd($modelExists);
+                // dd($factoryExists);
                 // echo "App\Models\\$val" . PHP_EOL;
-                "App\Models\\$val"::factory()?->count(20)->create() ?? "$val Failed\n";
+                // if($modelExists && $factoryExists) {
+                //     "App\Models\\$val"::factory()?->count(20)->create() ?? "$val Failed\n";
+                // }
             }
             Schema::enableForeignKeyConstraints();
             // $this->call(GeneralSettingsSeeder::class);

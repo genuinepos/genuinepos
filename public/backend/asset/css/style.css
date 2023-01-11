@@ -2226,3 +2226,14 @@ table.display tbody tr:hover {
 .select2-container--default .select2-selection--single {
     border-radius: 0px !important;
 }
+label.col-2,
+label.col-3,
+label.col-4,
+label.col-5,
+label.col-6 {
+    text-align: right;
+    padding-right: 10px;
+}
+.checkbox_input_wrap {
+    text-align: right;
+}

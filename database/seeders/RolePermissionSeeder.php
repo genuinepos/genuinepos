@@ -20,14 +20,9 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        if (config('app.debug') && User::count() == 0) {
-            \Artisan::call('db:seed');
-            return 1;
-        }
-        echo PHP_EOL;
         echo '-: Role and Permission Reset :- ';
         echo PHP_EOL;
-
+        
         $this->truncateRolePermissionData();
         \Artisan::call('optimize:clear');
         $this->createRolePermission();
@@ -91,10 +86,7 @@ class RolePermissionSeeder extends Seeder
             array('id' => '1','name' => 'superadmin','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
             array('id' => '2','name' => 'admin','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
             array('id' => '3','name' => 'Accountant','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
-            array('id' => '4','name' => 'SR','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
-            array('id' => '5','name' => 'Store','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
-            array('id' => '6','name' => 'Scale and delivery','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
-            array('id' => '7','name' => 'Order Creator','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37')
+            array('id' => '4','name' => 'POS Seller','guard_name' => 'web','created_at' => '2022-11-22 10:42:37','updated_at' => '2022-11-22 10:42:37'),
         );
 
         return $roles;

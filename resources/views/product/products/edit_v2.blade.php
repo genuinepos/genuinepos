@@ -9,6 +9,17 @@
         .cleditorMain{
             height: 196px !important;
         }
+        label.col-2,
+        label.col-3,
+        label.col-4,
+        label.col-5,
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">

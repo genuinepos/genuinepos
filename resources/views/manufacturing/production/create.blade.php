@@ -3,6 +3,17 @@
     <style>
         table.display td input {height: 26px!important; padding: 3px;}
         span.input-group-text-custom {font-size: 11px;padding: 4px;}
+        label.col-2,
+        label.col-3,
+        label.col-4,
+        label.col-5,
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush

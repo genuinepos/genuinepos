@@ -6,6 +6,9 @@
       padding: 0px 3px 0px 0px!important;
       font-weight: 700!important;
     }
+    #net_total_amount[value] {
+        font-weight: 700;
+    }
 </style>
 
 <div class="col-lg-3">
@@ -139,7 +142,9 @@
                     <div class="row g-1">
                         <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>@lang('menu.total'):</b></label>
                         <div class="col-sm-9 col-8">
-                            <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
+                            <strong>
+                                <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
+                            </strong>
                         </div>
                     </div>
 

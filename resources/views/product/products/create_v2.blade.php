@@ -119,10 +119,15 @@
                                                 <div class="input-group">
                                                     <label class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
                                                     <div class="col-7">
-                                                        <select class="form-control" name="child_category_id"
-                                                            id="child_category_id">
-                                                            <option value="">@lang('menu.select_category_first')</option>
-                                                        </select>
+                                                        <div class="input-group">
+                                                            <select class="form-control" name="child_category_id"
+                                                                id="child_category_id">
+                                                                <option value="">@lang('menu.select_category_first')</option>
+                                                            </select>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text add_button" data-bs-toggle="modal" data-bs-target="#addCategoryModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

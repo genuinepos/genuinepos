@@ -286,7 +286,7 @@ class POSController extends Controller
                     if ($generalSettings['reward_point_settings__enable_cus_point'] == '1') {
 
                         $customer->point = $customer->point - $request->pre_redeemed;
-                        $customer->point = $customer->point + $this->calculateCustomerPoint($settings, $request->total_invoice_payable);
+                        $customer->point = $customer->point + $this->calculateCustomerPoint($generalSettings, $request->total_invoice_payable);
                         $customer->save();
                     }
 
@@ -1188,7 +1188,7 @@ class POSController extends Controller
         ));
     }
 
-    private function calculateCustomerPoint($point_settings, $total_amount)
+    private function calculateCustomerPoint($generalSettings, $total_amount)
     {
         $enable_cus_point = $generalSettings['reward_point_settings__enable_cus_point'];
 

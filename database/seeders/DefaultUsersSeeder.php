@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
 
 class DefaultUsersSeeder extends Seeder
 {
@@ -14,6 +13,17 @@ class DefaultUsersSeeder extends Seeder
      * @return void
      */
     public function run()
+    {
+        list('superAdmin' => $superAdmin, 'admin' => $admin, 'testUser' => $testUser) = $this->getDefaultUsers();
+        if(User::count() == 0) {
+            \DB::statement('ALTER TABLE `users` AUTO_INCREMENT=1');
+            User::create($superAdmin);
+            User::create($admin);
+            User::create($testUser);
+        }
+    }
+
+    private function getDefaultUsers() : array
     {
         $superAdmin = [
             "id" => 1,
@@ -56,8 +66,8 @@ class DefaultUsersSeeder extends Seeder
             "bank_branch" => "Uttara, Dhaka",
             "tax_payer_id" => "5222222215310",
             "language" => "en",
-            "department_id" => 4,
-            "designation_id" => 1,
+            "department_id" => null,
+            "designation_id" => null,
             "salary" => "200000000.00",
             "salary_type" => "Yearly",
             "created_at" => "2021-04-07T07:04:03.000000Z",
@@ -76,7 +86,7 @@ class DefaultUsersSeeder extends Seeder
             "shift_id" => null,
             "role_type" => 1,
             "allow_login" => 1,
-            "branch_id" => 1,
+            "branch_id" => null,
             "status" => 0,
             "sales_commission_percent" => "0.00",
             "max_sales_discount_percent" => "0.00",
@@ -106,7 +116,7 @@ class DefaultUsersSeeder extends Seeder
             "tax_payer_id" => null,
             "language" => null,
             "department_id" => null,
-            "designation_id" => 1,
+            "designation_id" => null,
             "salary" => "510121.00",
             "salary_type" => "Monthly",
             "created_at" => "2022-11-23T07:00:57.000000Z",
@@ -122,10 +132,10 @@ class DefaultUsersSeeder extends Seeder
             "username" => "test",
             "email" => "test@test.com",
             "email_verified_at" => null,
-            "shift_id" => 6,
+            "shift_id" => null,
             "role_type" => 2,
             "allow_login" => 1,
-            "branch_id" => 1,
+            "branch_id" => null,
             "status" => 0,
             "sales_commission_percent" => "0.00",
             "max_sales_discount_percent" => "0.00",
@@ -155,15 +165,17 @@ class DefaultUsersSeeder extends Seeder
             "tax_payer_id" => null,
             "language" => null,
             "department_id" => null,
-            "designation_id" => 1,
+            "designation_id" => null,
             "salary" => "20000.00",
             "salary_type" => "Monthly",
             "created_at" => "2022-12-30T06:17:17.000000Z",
             "updated_at" => "2022-12-30T06:38:02.000000Z",
         ];
 
-        User::create($superAdmin);
-        User::create($admin);
-        User::create($testUser);
+        return [
+            'superAdmin' => $superAdmin,
+            'admin' => $admin,
+            'testUser' => $testUser,
+        ];
     }
 }

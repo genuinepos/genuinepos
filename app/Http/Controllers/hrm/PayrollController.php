@@ -35,10 +35,9 @@ class PayrollController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->accountUtil = $accountUtil;
         $this->payrollUtil = $payrollUtil;
-        
     }
 
-    //Index view of payroll
+    // Index view of payroll
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -62,7 +61,7 @@ class PayrollController extends Controller
             }
 
             if ($request->from_date) {
-                
+
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
                 $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
@@ -91,7 +90,6 @@ class PayrollController extends Controller
             return DataTables::of($payrolls)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    // return $action_btn;
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -107,7 +105,6 @@ class PayrollController extends Controller
                         if ($row->due > 0) {
                             $html .= '<a href="' . route('hrm.payrolls.payment', [$row->id]) . '" class="dropdown-item" id="add_payment"><i class="far fa-money-bill-alt text-primary"></i> Pay Salary</a>';
                         }
-
                         $html .= '<a href="' . route('hrm.payrolls.edit', [$row->id]) . '" class="dropdown-item" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                         $html .= '<a href="' . route('hrm.payrolls.delete', [$row->id]) . '" class="dropdown-item" id="delete"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
@@ -438,7 +435,7 @@ class PayrollController extends Controller
         return view('hrm.payroll.ajax_view.add_payment', compact('payroll', 'accounts', 'methods'));
     }
 
-    // Add payment method 
+    // Add payment method
     public function addPayment(Request $request, $payrollId)
     {
         $this->validate($request, [
@@ -524,7 +521,7 @@ class PayrollController extends Controller
             }
 
             if ($storedPayroll) {
-                
+
                 $this->payrollUtil->adjustPayrollAmounts($storedPayroll);
             }
         }
@@ -532,7 +529,7 @@ class PayrollController extends Controller
         return response()->json('Payment deleted successfully.');
     }
 
-    // Edit payroll payment modal view 
+    // Edit payroll payment modal view
     public function paymentEdit($paymentId)
     {
         $methods = DB::table('payment_methods')->select('id', 'name')->get();
@@ -565,7 +562,7 @@ class PayrollController extends Controller
             'payment_method_id' => 'required',
             'account_id' => 'required',
         ]);
-        
+
         $updatePayrollPayment = PayrollPayment::with('payroll')->where('id', $paymentId)->first();
 
         // update purchase payment

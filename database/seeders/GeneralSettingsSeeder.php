@@ -11,15 +11,15 @@ class GeneralSettingsSeeder extends Seeder
     private function getSettings(): array
     {
         $general_settings = array(
-            array('id' => '1','key' => 'addons__branches','1' => NULL,'branch_id' => NULL),
-            array('id' => '2','key' => 'addons__hrm','1' => NULL,'branch_id' => NULL),
-            array('id' => '3','key' => 'addons__todo','1' => NULL,'branch_id' => NULL),
-            array('id' => '4','key' => 'addons__service','1' => NULL,'branch_id' => NULL),
-            array('id' => '5','key' => 'addons__manufacturing','1' => NULL,'branch_id' => NULL),
-            array('id' => '6','key' => 'addons__e_commerce','1' => NULL,'branch_id' => NULL),
-            array('id' => '7','key' => 'addons__branch_limit','3' => NULL,'branch_id' => NULL),
-            array('id' => '8','key' => 'addons__cash_counter_limit','3' => NULL,'branch_id' => NULL),
-            array('id' => '9','key' => 'business__shop_name','value' => 'Companey Name','branch_id' => NULL),
+            array('id' => '1','key' => 'addons__branches','value' => '1','branch_id' => NULL),
+            array('id' => '2','key' => 'addons__hrm','value' => '1','branch_id' => NULL),
+            array('id' => '3','key' => 'addons__todo','value' => '1','branch_id' => NULL),
+            array('id' => '4','key' => 'addons__service','value' => '1','branch_id' => NULL),
+            array('id' => '5','key' => 'addons__manufacturing','value' => '1','branch_id' => NULL),
+            array('id' => '6','key' => 'addons__e_commerce','value' => '1','branch_id' => NULL),
+            array('id' => '7','key' => 'addons__branch_limit','value' => 3,'branch_id' => NULL),
+            array('id' => '8','key' => 'addons__cash_counter_limit','value' => 3,'branch_id' => NULL),
+            array('id' => '9','key' => 'business__shop_name','value' => 'Company Name','branch_id' => NULL),
             array('id' => '10','key' => 'business__address','value' => 'Dhaka, Bangladesh','branch_id' => NULL),
             array('id' => '11','key' => 'business__phone','value' => '01700000000/ 01800000000','branch_id' => NULL),
             array('id' => '12','key' => 'business__email','value' => 'company.email@provider.com','branch_id' => NULL),
@@ -165,6 +165,7 @@ class GeneralSettingsSeeder extends Seeder
         GeneralSetting::truncate();
         $settings = $this->getSettings();
         foreach($settings as $setting) {
+            echo $setting['key'] . ': ' . $setting['value'] . PHP_EOL;
             GeneralSetting::create([
                 'key' => $setting['key'],
                 'value' => $setting['value'],

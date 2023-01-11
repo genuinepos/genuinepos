@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
-use App\Models\User;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -20,11 +19,10 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        echo '-: Role and Permission Reset :- ';
-        echo PHP_EOL;
-        
-        $this->truncateRolePermissionData();
+        echo '-: Role and Permission Sync :- ' . PHP_EOL;
+        $this->truncateRolePermissionDataButKeepOldData();
         \Artisan::call('optimize:clear');
+
         $this->createRolePermission();
         \Artisan::call('optimize:clear');
 
@@ -35,24 +33,32 @@ class RolePermissionSeeder extends Seeder
         echo ' DONE!' . PHP_EOL;
     }
 
-    public function truncateRolePermissionData(): void
+    public function truncateRolePermissionDataButKeepOldData(): void
     {
-        echo 'Erasing old data...';
         Schema::disableForeignKeyConstraints();
-        Role::truncate();
+        if(Role::count() == 0) {
+            echo 'No role in DB. Making `roles` PK count from 1' . PHP_EOL;
+            \DB::statement("ALTER TABLE `roles` AUTO_INCREMENT = 1");
+        }
+
+        echo 'Erasing `permissions` table...';
         Permission::truncate();
-        \DB::statement("ALTER TABLE `roles` AUTO_INCREMENT = 1");
-        \DB::statement('ALTER TABLE `permissions` AUTO_INCREMENT = 1');
-        echo ' DONE!' . PHP_EOL;
+        if(Permission::count() == 0) {
+            echo 'No permissions in DB. PK count from 1' . PHP_EOL;
+            \DB::statement('ALTER TABLE `permissions` AUTO_INCREMENT = 1');
+        }
+
+        echo 'Finished `roles` and `permissions` truncate operation!' . PHP_EOL;
         Schema::enableForeignKeyConstraints();
     }
+
     public function createRolePermission(): void
     {
         echo 'Creating role and permissions...';
         $roles = $this->getRolesArray();
         foreach ($roles as $k => $role) {
             $roleAlreadyExists = Role::where('name', $role['name'])->exists();
-            if (!$roleAlreadyExists) {
+            if (! $roleAlreadyExists) {
                 Role::create(['name' => $role['name']]);
             }
         }
@@ -256,21 +262,21 @@ class RolePermissionSeeder extends Seeder
             array('id' => '157','name' => 'email_setting_view','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '158','name' => 'email_setting_update','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '159','name' => 'email_setting_delete','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
-            
+
             array('id' => '160','name' => 'sms_setting_index','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '161','name' => 'sms_setting_create','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '162','name' => 'sms_setting_view','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '163','name' => 'sms_setting_update','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '164','name' => 'sms_setting_delete','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
-            
+
             array('id' => '165','name' => 'warehouse_to_business_location__add_transfer', 'guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '166','name' => 'warehouse_to_business_location__transfer_list','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '167','name' => 'warehouse_to_business_location__receive_stock','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
-            
+
             array('id' => '168','name' => 'business_location_to_warehouse__add_transfer', 'guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '169','name' => 'business_location_to_warehouse__transfer_list','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '170','name' => 'business_location_to_warehouse__receive_stock','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
-            
+
             array('id' => '171','name' => 'own_to_other_business_location__add_transfer', 'guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '172','name' => 'own_to_other_business_location__transfer_list','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),
             array('id' => '173','name' => 'own_to_other_business_location__receive_stock','guard_name' => 'web','created_at' => '2022-11-22 10:42:42','updated_at' => '2022-11-22 10:42:42'),

@@ -585,12 +585,21 @@ class POSController extends Controller
             if ($updateSale->customer_id) {
 
                 // Update Customer Ledger
+                // $this->customerUtil->updateCustomerLedger(
+                //     voucher_type_id: 1,
+                //     customer_id: $updateSale->customer_id,
+                //     date: date('Y-m-d', strtotime($updateSale->date)),
+                //     trans_id: $updateSale->id,
+                //     amount: $request->total_payable_amount
+                // );
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 1,
                     customer_id: $updateSale->customer_id,
-                    date: date('Y-m-d', strtotime($updateSale->date)),
+                    previous_branch_id: $updateSale->branch_id,
+                    new_branch_id: $updateSale->branch_id,
+                    date: $updateSale->date,
                     trans_id: $updateSale->id,
-                    amount: $request->total_payable_amount
+                    amount: $updateSale->total_payable_amount
                 );
             }
         }
@@ -703,14 +712,14 @@ class POSController extends Controller
             if ($updateSale->customer_id) {
 
                 // add customer ledger
-                $this->customerUtil->addCustomerLedger(
-                    voucher_type_id: 3,
+                $this->customerUtil->updateCustomerLedger(
+                    voucher_type_id: 1,
                     customer_id: $updateSale->customer_id,
                     previous_branch_id: $updateSale->branch_id,
                     new_branch_id: $updateSale->branch_id,
-                    date: date('Y-m-d', strtotime($updateSale->date)),
-                    trans_id: $addPaymentGetId,
-                    amount: $request->paying_amount
+                    date: $updateSale->date,
+                    trans_id: $updateSale->id,
+                    amount: $updateSale->total_payable_amount
                 );
             }
         }
@@ -1139,12 +1148,21 @@ class POSController extends Controller
             if ($updateSale->customer_id) {
 
                 // add customer ledger
+                // $this->customerUtil->updateCustomerLedger(
+                //     voucher_type_id: 3,
+                //     customer_id: $updateSale->customer_id,
+                //     date: date('Y-m-d'),
+                //     trans_id: $addPaymentGetId,
+                //     amount: $request->paying_amount
+                // );
                 $this->customerUtil->updateCustomerLedger(
-                    voucher_type_id: 3,
+                    voucher_type_id: 1,
                     customer_id: $updateSale->customer_id,
-                    date: date('Y-m-d'),
-                    trans_id: $addPaymentGetId,
-                    amount: $request->paying_amount
+                    previous_branch_id: $updateSale->branch_id,
+                    new_branch_id: $updateSale->branch_id,
+                    date: $updateSale->date,
+                    trans_id: $updateSale->id,
+                    amount: $updateSale->total_payable_amount
                 );
             }
         } else {

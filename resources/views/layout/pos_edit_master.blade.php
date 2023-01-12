@@ -11,38 +11,122 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
-    <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.css') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}">
-    {{-- <link href="{{asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css"> --}}
+ 
+    {{-- creat pate link start --}}
+
+    <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link href="{{asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
     <link href="{{asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
-
-    {{-- <link href="{{asset('backend/css/form.css') }}" rel="stylesheet" type="text/css"> --}}
+    <link href="{{asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
     <link href="{{asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    <!-- Calculator -->
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
     <link rel="stylesheet" href="{{asset('backend/asset/css/comon.css') }}">
-    {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/layout.css') }}"> --}}
     <link rel="stylesheet" href="{{asset('backend/asset/css/pos.css') }}">
-    <link href="{{asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet"
+    type="text/css"/>
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{asset('backend/asset/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
+    <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
-    {{-- <script src="{{asset('backend/js/jquery-1.7.1.min.js') }} "></script> --}}
+
     <script src="{{asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
     <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
     <script src="{{asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
+    <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
+    <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
+    {{-- creat pate link end --}}
+
     <style>
         .d-hide {
             display: none;
         }
+        @media (min-width: 576px) {
+            .modal-full-display {
+                max-width: 93% !important;
+            }
 
+            .four-col-modal {
+                max-width: 70% !important;
+                margin: 3.8rem auto;
+            }
+
+            .five-col-modal {
+                max-width: 90% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-80-modal {
+                max-width: 80% !important;
+                margin: 3.8rem auto;
+            }
+
+            .double-col-modal {
+                max-width: 35% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-40-modal {
+                max-width: 40% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-45-modal {
+                max-width: 45% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-50-modal {
+                max-width: 50% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-55-modal {
+                max-width: 55% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-60-modal {
+                max-width: 60% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-65-modal {
+                max-width: 65% !important;
+                margin: 3.8rem auto;
+            }
+        }
+
+        .modal-middle {
+            margin-top: 33%;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #cbe4ee
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            /* background-color: #EBEDF3;*/
+            background-color: #cbe4ee;
+        }
+
+        /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
+
+
+        .widget_content .table-responsive {
+            min-height: 80vh !important;
+        }
     </style>
 </head>
 

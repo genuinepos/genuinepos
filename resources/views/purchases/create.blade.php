@@ -11,6 +11,8 @@
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         h6.collapse_table:hover {background: lightgray; padding: 3px; cursor: pointer;}
         .c-delete:focus {border: 1px solid gray;padding: 2px;}
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
     </style>
 @endpush
 @section('content')

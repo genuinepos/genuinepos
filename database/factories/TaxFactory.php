@@ -27,7 +27,7 @@ final class TaxFactory extends Factory
     public function definition(): array
     {
         return [
-            'tax_percent' => $this->faker->randomFloat(),
+            'tax_percent' => $this->faker->randomNumber(2),
             'tax_name' => $this->faker->word,
         ];
     }

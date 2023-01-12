@@ -1,13 +1,7 @@
 <?php
 
 use App\Models\Purchase;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use App\Models\CustomerCreditLimit;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Models\CustomerOpeningBalance;
-use App\Models\SupplierOpeningBalance;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TaxController;

@@ -27,10 +27,10 @@ final class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'description' => $this->faker->text,
-            'parent_category_id' => \App\Models\Category::factory(),
-            'photo' => $this->faker->word,
+            'name' => 'Category - ' . \Str::random(10),
+            'description' => $this->faker->sentence(4),
+            'parent_category_id' => null,
+            'photo' => $this->faker->imageUrl(),
             'status' => $this->faker->boolean,
         ];
     }

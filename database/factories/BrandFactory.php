@@ -28,7 +28,7 @@ final class BrandFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'photo' => $this->faker->word,
+            'photo' => $this->faker->imageUrl(),
             'status' => $this->faker->boolean,
         ];
     }

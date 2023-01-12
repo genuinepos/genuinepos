@@ -27,9 +27,9 @@ final class BankFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'branch_name' => $this->faker->word,
-            'address' => $this->faker->address,
+            'name' => $this->faker->name(),
+            'branch_name' => $this->faker->city(),
+            'address' => $this->faker->address(),
         ];
     }
 }

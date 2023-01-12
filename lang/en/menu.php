@@ -1511,7 +1511,7 @@ return [
   'permanent_address' => 'Permanent Address',
   'id_proof_number' => 'ID Proof Number',
   'select_gender' => 'Select Gender',
-  'more_information' => 'More Information',
+  'more_information' => 'Additional Information',
   'max_discount' => 'Max Discount',
   'show_total_word' => 'Show Total In Word',
   'show_seller_info' => 'Show Seller Info',

@@ -11,7 +11,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-6">
                 <div class="row align-items-center">
                     <div class="col-sm-4">

@@ -18,7 +18,8 @@
         /*.select2-selection:focus {
              box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
         } */
-
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
         .select2-selection:focus {
             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
             color: #212529;

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\PaymentMethodSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,6 +26,8 @@ class DatabaseSeeder extends Seeder
         $this->call(InvoiceLayoutSeeder::class); // 10
         $this->call(InvoiceSchemaSeeder::class); // 11
         $this->call(AccountSeeder::class); // 12
-        $this->call(ProductSeeder::class); // 13
+        $this->call(CashCounterSeeder::class); // 13
+        $this->call(PaymentMethodSeeder::class); // 14
+        // $this->call(ProductSeeder::class); // 15
     }
 }

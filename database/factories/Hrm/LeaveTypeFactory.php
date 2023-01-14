@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Database\Factories;
+namespace Database\Factories\Hrm;
 
 use App\Models\Hrm\LeaveType;
 use Illuminate\Database\Eloquent\Factories\Factory;

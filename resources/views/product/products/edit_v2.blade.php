@@ -136,7 +136,7 @@
                                                         id="sub_category_id">
                                                         @php
                                                             $subCategories = DB::table('categories')
-                                                            ->where('sub_category_id', $product->category_id)->get();
+                                                            ->where('parent_category_id', $product->category_id)->get();
                                                         @endphp
                                                         <option value="">@lang('menu.select_child_category')</option>
                                                         @foreach ($subCategories as $subCategory)

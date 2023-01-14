@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use RecursiveDirectoryIterator;
-use SpeedDigit\Localization\Facades\Calculator;
+use Illuminate\Support\Facades\Schema;
 
 class PlayCommand extends Command
 {
@@ -31,10 +29,10 @@ class PlayCommand extends Command
      */
     public function handle()
     {
-        $ri = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(app_path('Models')), \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($ri as $item) {
-           echo $item->getRealPath() . '====' . $item->getFilename() . \PHP_EOL;
-        }
-        return Command::SUCCESS;
+        Schema::table('products', function (Blueprint $table) {
+            // $table->renameColumn('sub_category_id', 'parent_category_id');
+            $table->renameIndex('products_sub_category_id_foreign', 'products_parent11_category_id_foreign');
+            // $table->foreign('sub_category_id')->references('id')->on('categories')->onDelete('set null');
+        });
     }
 }

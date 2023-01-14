@@ -21,6 +21,7 @@ class CashCounterController extends Controller
             $generalSettings = config('generalSettings');
             $cashCounters = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
                     ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
                     ->select(
@@ -31,6 +32,7 @@ class CashCounterController extends Controller
                         'cash_counters.short_name'
                     )->get();
             } else {
+                
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
                     ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
                     ->select(

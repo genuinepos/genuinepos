@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('hrm_leavetypes', function (Blueprint $table) {
-            $table->unsignedBigInteger('branch_id')->after('id')->nullable();
-            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('cascade');
+            if(! Schema::hasColumn('hrm_leavetypes', 'branch_id')) {
+                $table->unsignedBigInteger('branch_id')->after('id')->nullable();
+                $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('cascade');
+            }
         });
     }
 

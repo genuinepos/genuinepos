@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('general_settings');
-        Schema::create('general_settings', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('key');
-            $table->text('value')->nullable();
-            $table->foreignId('branch_id')->nullable()->references('id')->on('branches')->onDelete('CASCADE');
-        });
+        // Schema::dropIfExists('general_settings');
+        if(! Schema::hasTable('general_settings')) {
+            Schema::create('general_settings', function (Blueprint $table) {
+                $table->id('id');
+                $table->string('key');
+                $table->text('value')->nullable();
+                $table->foreignId('branch_id')->nullable()->references('id')->on('branches')->onDelete('CASCADE');
+            });
+        }
     }
 
     /**

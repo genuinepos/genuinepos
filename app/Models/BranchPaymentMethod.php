@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class BranchPaymentMethod extends Model
+class BranchPaymentMethod extends BaseModel
 {
     use HasFactory;
 }

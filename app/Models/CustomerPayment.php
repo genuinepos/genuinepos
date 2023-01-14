@@ -7,9 +7,9 @@ use App\Models\Account;
 use App\Models\Customer;
 use App\Models\PaymentMethod;
 use App\Models\CustomerPaymentInvoice;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class CustomerPayment extends Model
+class CustomerPayment extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

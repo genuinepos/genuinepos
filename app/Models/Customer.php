@@ -6,9 +6,9 @@ use App\Models\MoneyReceipt;
 use App\Models\CustomerGroup;
 use App\Models\CustomerLedger;
 use App\Models\CustomerPayment;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Customer extends Model
+class Customer extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

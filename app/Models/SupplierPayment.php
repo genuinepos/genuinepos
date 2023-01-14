@@ -6,9 +6,9 @@ use App\Models\Branch;
 use App\Models\Account;
 use App\Models\Supplier;
 use App\Models\SupplierPaymentInvoice;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class SupplierPayment extends Model
+class SupplierPayment extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

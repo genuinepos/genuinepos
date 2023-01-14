@@ -2,9 +2,9 @@
 
 namespace App\Models;
 use App\Models\ExpenseDescription;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ExpanseCategory extends Model
+class ExpanseCategory extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

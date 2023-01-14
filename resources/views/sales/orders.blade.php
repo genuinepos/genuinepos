@@ -25,7 +25,7 @@
                                     <div class="element-body">
                                         <form id="filter_form" class="px-2">
                                             <div class="form-group row">
-                                                @if ($addons->branches == 1)
+                                                @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
                                                             <label><strong>@lang('menu.business_location') :</strong></label>
@@ -252,7 +252,7 @@
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.order.list') }}",

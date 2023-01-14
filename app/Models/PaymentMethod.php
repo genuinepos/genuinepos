@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Models\PaymentMethodSetting;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PaymentMethod extends Model
+class PaymentMethod extends BaseModel
 {
     protected $hidden = ['created_at', 'updated_at'];
     protected $guarded = [];

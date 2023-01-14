@@ -10,9 +10,9 @@ use App\Models\MoneyReceipt;
 use App\Models\ExpansePayment;
 use App\Models\PurchasePayment;
 use App\Models\Hrm\PayrollPayment;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class CashFlow extends Model
+class CashFlow extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

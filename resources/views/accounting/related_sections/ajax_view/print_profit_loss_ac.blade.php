@@ -107,7 +107,7 @@
                     </td>
                 </tr>
 
-                @if ($addons->manufacturing == 1)
+                @if ($generalSettings['addons__manufacturing'] == 1)
                     <tr>
                         <td class="text-start">
                         <em>@lang('menu.total_production_cost') :</em>  

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Models\Product;
 use App\Models\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\PurchaseSaleProductChain;
 
-class PurchaseProduct extends Model
+class PurchaseProduct extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

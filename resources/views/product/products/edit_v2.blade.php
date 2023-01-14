@@ -193,7 +193,7 @@
                                         </div>
                                     @endif
 
-                                    @if ($addons->branches == 1)
+                                    @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-6">
                                                 <div class="input-group">

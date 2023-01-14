@@ -5,9 +5,9 @@ use App\Models\Branch;
 use App\Models\User;
 use App\Models\StockAdjustmentProduct;
 use App\Models\StockAdjustmentRecover;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class StockAdjustment extends Model
+class StockAdjustment extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

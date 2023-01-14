@@ -4,9 +4,9 @@ namespace App\Models\Essential;
 
 use App\Models\User;
 use App\Models\Essential\Workspace;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class WorkspaceUsers extends Model
+class WorkspaceUsers extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

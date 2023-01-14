@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\PaymentMethod;
 use App\Models\StockAdjustment;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class StockAdjustmentRecover extends Model
+class StockAdjustmentRecover extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

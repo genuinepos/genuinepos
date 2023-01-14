@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Models\Essential;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class WorkspaceAttachment extends Model
+class WorkspaceAttachment extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

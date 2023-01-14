@@ -6,9 +6,9 @@ namespace App\Models;
 use App\Models\Branch;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ProductOpeningStock extends Model
+class ProductOpeningStock extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

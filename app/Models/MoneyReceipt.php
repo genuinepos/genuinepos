@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Branch;
 use App\Models\Customer;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class MoneyReceipt extends Model
+class MoneyReceipt extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

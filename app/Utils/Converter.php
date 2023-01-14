@@ -1,10 +1,9 @@
-<?php 
+<?php
 
 namespace App\Utils;
 
-use NumberFormatter;
 
-class Converter 
+class Converter
 {
     public static $bn = ["১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০"];
     public static $en = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -22,38 +21,47 @@ class Converter
     /**
      * Format in BDT from floating numbers
      */
-    
-    public static function format_in_bdt($number) 
+
+    public static function format_in_bdt($number)
     {
         // return \number_format($number, 2, '.', ',');
-        $fmt = new NumberFormatter( 'bn_BDT', NumberFormatter::DECIMAL );
-        $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, 2);
-        $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, 2);
-        $fmt->setAttribute(NumberFormatter::DECIMAL_ALWAYS_SHOWN, 2);
-        return self::bn2en($fmt->format($number));
+        if(\extension_loaded('intl')) {
+            $fmt = new \NumberFormatter( 'bn_BDT', \NumberFormatter::DECIMAL );
+            $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
+            $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
+            $fmt->setAttribute(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, 2);
+            return self::bn2en($fmt->format($number));
+        }
+        return self::bn2en($number);
     }
 
     /**
      * Format Text format from floating numbers
      */
-    
-    public static function format_in_text($number) 
+
+    public static function format_in_text($number)
     {
-        $fmt = new NumberFormatter( 'bn_BDT', NumberFormatter::SPELLOUT );
-        // return \ucwords($fmt->format($number)); // Ten Million Two Thousand Three Hundred Forty-five Point Eight Nine
-        return \ucfirst($fmt->format($number)); // Ten million two thousand three hundred forty-five point eight nine
+        if(\extension_loaded('intl')) {
+            $fmt = new \NumberFormatter( 'bn_BDT', \NumberFormatter::SPELLOUT );
+            // return \ucwords($fmt->format($number)); // Ten Million Two Thousand Three Hundred Forty-five Point Eight Nine
+            return \ucfirst($fmt->format($number)); // Ten million two thousand three hundred forty-five point eight nine
+        }
+        return \ucfirst($number); // Ten million two thousand three hundred forty-five point eight nine
     }
 
     /**
      * Format in BDT (Bengali Language) from floating numbers
      */
-    public static function format_in_bdt_bn($number) 
+    public static function format_in_bdt_bn($number)
     {
-        $fmt = new NumberFormatter( 'bn_BDT', NumberFormatter::DECIMAL );
-        $fmt->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, 2);
-        $fmt->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, 2);
-        $fmt->setAttribute(NumberFormatter::DECIMAL_ALWAYS_SHOWN, 2);
-        return self::en2bn($fmt->format($number));
+        if(extension_loaded('intl')) {
+            $fmt = new \NumberFormatter( 'bn_BDT', \NumberFormatter::DECIMAL );
+            $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
+            $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
+            $fmt->setAttribute(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, 2);
+            return self::en2bn($fmt->format($number));
+        }
+        return self::en2bn($number);
     }
 }
 
@@ -67,16 +75,16 @@ class Converter
 
 // echo PHP_EOL;
 
-// $fmt = new NumberFormatter( 'bn_BDT', NumberFormatter::SPELLOUT );
+// $fmt = new \NumberFormatter( 'bn_BDT', \NumberFormatter::SPELLOUT );
 // echo $fmt->format($num);
 
 // echo PHP_EOL;
-// $fmt = new NumberFormatter( 'en_BDT', NumberFormatter::DECIMAL );
+// $fmt = new \NumberFormatter( 'en_BDT', \NumberFormatter::DECIMAL );
 // echo $fmt->format($num);
 
 
 // echo PHP_EOL;
-// $fmt = new NumberFormatter( 'BDT', NumberFormatter::DECIMAL );
+// $fmt = new \NumberFormatter( 'BDT', \NumberFormatter::DECIMAL );
 // echo $fmt->format($num);
 
 // $a = '১২'; //(12)

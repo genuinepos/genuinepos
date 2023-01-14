@@ -36,7 +36,7 @@
                                     <div class="col-md-10">
                                         <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                             <div class="form-group row">
-                                                @if ($addons->branches == 1)
+                                                @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
                                                             <label><strong>@lang('menu.business_location') :</strong></label>

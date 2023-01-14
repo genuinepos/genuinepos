@@ -3,10 +3,10 @@
 namespace App\Models\Hrm;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\User;
 use App\Models\Hrm\LeaveType;
-class Leave extends Model
+class Leave extends BaseModel
 {
     use HasFactory;
     protected $table = 'hrm_leaves';

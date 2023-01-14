@@ -3,10 +3,10 @@
 namespace App\Models\Hrm;
 
 use App\Models\Hrm\AllowanceEmployee;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Allowance extends Model
+class Allowance extends BaseModel
 {
     use HasFactory;
     protected $table = 'hrm_allowance';

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Loan;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class LoanPaymentDistribution extends Model
+class LoanPaymentDistribution extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

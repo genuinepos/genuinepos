@@ -103,7 +103,7 @@ class GeneralSettingController extends Controller
             'prefix__sale_invoice' => $request->sale_invoice,
             'prefix__purchase_return' => $request->purchase_return,
             'prefix__stock_transfer' => $request->stock_transfer,
-            'prefix__stock_djustment' => $request->stock_djustment,
+            'prefix__stock_adjustment' => $request->stock_djustment,
             'prefix__sale_return' => $request->sale_return,
             'prefix__expenses' => $request->expenses,
             'prefix__supplier_id' => $request->supplier_id,
@@ -120,7 +120,7 @@ class GeneralSettingController extends Controller
     {
         $settings = [
             'system__theme_color' => $request->theme_color,
-            'system__datatable_page_entry' => $request->datatable_page_entry,
+            'system__datatables_page_entry' => $request->datatable_page_entry,
         ];
         $this->generalSettingService->updateAndSync($settings);
         return response()->json('System settings updated Successfully.');
@@ -149,10 +149,10 @@ class GeneralSettingController extends Controller
     public function SendEmailSmsSettings(Request $request)
     {
         $settings = [
-            'send_es_settings__send_inv_via_email' => isset($request->send_inv_via_email) ? 1 : 0,
-            'send_es_settings__send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
-            'send_es_settings__cmr_due_rmdr_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
-            'send_es_settings__cmr_due_rmdr_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
+            'email_settings__send_inv_via_email' => isset($request->send_inv_via_email) ? 1 : 0,
+            'email_settings__send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
+            'email_settings__customer_due_reminder_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
+            'email_settings__customer_due_reminder_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
         ];
         $this->generalSettingService->updateAndSync($settings);
         return response()->json('Send Email & SMS settings updated successfully');

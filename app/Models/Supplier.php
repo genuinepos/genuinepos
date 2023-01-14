@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\PurchaseReturn;
 use App\Models\SupplierPayment;
 use App\Models\SupplierProduct;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Supplier extends Model
+class Supplier extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

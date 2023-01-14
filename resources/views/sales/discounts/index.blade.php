@@ -251,7 +251,7 @@
             "serverSide": true,
             aaSorting: [[0, 'asc']],
             ajax: "{{ route('sales.discounts.index') }}",
-            "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             columnDefs: [{"targets": [2, 10, 11],"orderable": false,"searchable": false}],
             columns: [
@@ -383,7 +383,7 @@
             // Show sweet alert for delete
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
-                var url = $(this).attr('href');
+                var url = $(this).data('url');
                  $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',

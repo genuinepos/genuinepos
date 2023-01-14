@@ -562,7 +562,7 @@ class SaleController extends Controller
 
             if (
                 env('MAIL_ACTIVE') == 'true' &&
-                $generalSettings['send_es_settings__send_inv_via_email'] == '1'
+                $generalSettings['email_settings__send_inv_via_email'] == '1'
             ) {
 
                 if ($sale->customer && $sale->customer->email) {
@@ -574,7 +574,7 @@ class SaleController extends Controller
 
             if (
                 env('SMS_ACTIVE') == 'true' &&
-                $generalSettings['send_es_settings__send_notice_via_sms'] == '1'
+                $generalSettings['email_settings__send_notice_via_sms'] == '1'
             ) {
 
                 if ($sale->customer && $sale->customer->phone) {
@@ -1780,7 +1780,7 @@ class SaleController extends Controller
         $settings = [
             'sale__default_sale_discount' => $request->default_sale_discount,
             'sale__default_tax_id' => $request->default_tax_id,
-            'sale__sales_cmsn_agnt' => $request->sales_cmsn_agnt,
+            'sale__sales_commission_agent' => $request->sales_cmsn_agnt,
             'sale__default_price_group_id' => $request->default_price_group_id,
         ];
         $generalSettingService->updateAndSync($settings);

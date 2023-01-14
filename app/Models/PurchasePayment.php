@@ -8,9 +8,9 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\PaymentMethod;
 use App\Models\SupplierLedger;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PurchasePayment extends Model
+class PurchasePayment extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

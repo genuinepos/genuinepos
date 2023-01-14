@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Models\Hrm;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PayrollDeduction extends Model
+class PayrollDeduction extends BaseModel
 {
     protected $table = 'hrm_payroll_deductions';
     protected $guarded = [];

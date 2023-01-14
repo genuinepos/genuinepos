@@ -3,9 +3,9 @@
 namespace App\Models\Hrm;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Attendance extends Model
+class Attendance extends BaseModel
 {
     use HasFactory;
     protected $table = 'hrm_attendances';

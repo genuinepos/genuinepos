@@ -149,7 +149,7 @@ class PurchaseReturnController extends Controller
                                 $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->purchase_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
                             } else {
 
-                                $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Return Amt.</a>';
+                                // $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Return Amt.</a>';
                             }
                         }
                     }

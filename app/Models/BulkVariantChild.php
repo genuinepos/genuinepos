@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\BulkVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class BulkVariantChild extends Model
+class BulkVariantChild extends BaseModel
 {
     public function bulk_variant()
     {

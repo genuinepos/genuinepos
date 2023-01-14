@@ -45,10 +45,10 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-print"></span>
-                    <h5>Print Barcode</h5>
+                    <h5>{{ __('Print Barcode') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
         <div class="p-3">
@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="row g-2">
-                                        <label for="" class="col-sm-6 col-4">Total Print Qty</label>
+                                        <label for="" class="col-sm-6 col-4">{{ __('Total Print Qty') }}</label>
                                         <div class="col-sm-6 col-8">
                                             <input class="form-control" type="number" name="" id="">
                                         </div>
@@ -187,8 +187,8 @@
                             <div class="row g-3">
                                 <div class="col-sm-9">
                                     <div class="btn-box">
-                                        <button class="btn btn-sm btn-danger">Reset Form</button>
-                                        <button class="btn btn-sm btn-success">Generate Settings</button>
+                                        <button class="btn btn-sm btn-danger">{{ __('Reset Form') }}</button>
+                                        <button class="btn btn-sm btn-success">{{ __('Generate Settings') }}</button>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end">
@@ -199,17 +199,17 @@
                             </div>
                         </div>
                         <div class="card-header">
-                            <span>Purchased Product List</span>
+                            <span>@lang('menu.purchase_product_list') </span>
                         </div>
                         <div class="card-body p-2">
                             <div class="table-responsive-y">
                                 <table class="table display table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Check</th>
-                                            <th> SL</th>
+                                            <th>{{ __('Check') }}</th>
+                                            <th>@lang('menu.sl')</th>
                                             <th>@lang('menu.product_name')</th>
-                                            <th>Code</th>
+                                            <th>@lang('menu.code')</th>
                                             <th>@lang('menu.price')</th>
                                             <th>@lang('menu.supplier_name')</th>
                                             <th>@lang('menu.qty')</th>
@@ -357,7 +357,7 @@
                                 <div class="col-sm-6">
                                     <div class="card mb-2">
                                         <div class="card-header">
-                                            <span>Barcode Row & Column Qty</span>
+                                            <span>{{ __('Barcode Row & Column Qty') }}</span>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-2">
@@ -370,7 +370,7 @@
                                                     <input type="number" class="form-control">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="">Max Barcode Qty</label>
+                                                    <label for="">{{ __('Max Barcode Qty') }}</label>
                                                     <input type="number" class="form-control">
                                                 </div>
                                             </div>
@@ -378,7 +378,7 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-header">
-                                            <span>Column & Row Space (Pixel)</span>
+                                            <span>{{ __('Column & Row Space') }} (Pixel)</span>
                                         </div>
                                         <div class="card-body">
                                             <div class="row g-2">
@@ -403,12 +403,12 @@
                         <div class="card-body">
                             <div class="card mb-3">
                                 <div class="card-header">
-                                    <span>Barcode Properties</span>
+                                    <span>{{ __('Barcode Properties') }}</span>
                                 </div>
                                 <div class="card-body">
                                     <div class="row g-3">
                                         <div class="col-sm-8">
-                                            <label for="">Barcode Value</label>
+                                            <label for="">{{ __('Barcode Value') }}</label>
                                             <input type="number" class="form-control mb-1" value="123456789">
                                             <label for="">@lang('menu.barcode_type')</label>
                                             <select name="" class="form-control mb-2" id="">
@@ -419,7 +419,7 @@
                                             </select>
                                             <div class="row g-2 mb-2">
                                                 <div class="col-10">
-                                                    <label for="barcodeBgColor" class="color-label">Background Color</label>
+                                                    <label for="barcodeBgColor" class="color-label">{{ __('Background Color') }}</label>
                                                 </div>
                                                 <div class="col-2">
                                                     <input type="color" name="" id="barcodeBgColor" value="#ffffff" class="form-control">
@@ -427,7 +427,7 @@
                                             </div>
                                             <div class="row g-2">
                                                 <div class="col-10">
-                                                    <label for="barcodeForeColor" class="color-label">Foreground Color</label>
+                                                    <label for="barcodeForeColor" class="color-label">{{ __('Foreground Color') }}</label>
                                                 </div>
                                                 <div class="col-2">
                                                     <input type="color" name="" id="barcodeForeColor" value="#000000" class="form-control">
@@ -435,7 +435,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
-                                            <label for="">Barcode Image Size</label>
+                                            <label for="">{{ __('Barcode Image Size') }}</label>
                                             <div class="row g-0 align-items-end mb-2">
                                                 <div class="col-4">
                                                     <label for="">Width: </label>
@@ -478,7 +478,7 @@
                             </div>
                             <div class="card mb-3">
                                 <div class="card-header">
-                                    <span>Human Readable Text</span>
+                                    <span>{{ __('Human Readable Text') }}</span>
                                 </div>
                                 <div class="card-body">
                                     <div class="row g-2">
@@ -486,7 +486,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="showProductCodeCheck">
                                                 <label class="form-check-label" for="showProductCodeCheck">
-                                                    Show Product Code
+                                                    {{ __('Show Product Code') }}
                                                 </label>
                                             </div>
                                         </div>
@@ -494,7 +494,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="showBorderCheck">
                                                 <label class="form-check-label" for="showBorderCheck">
-                                                    Show Border
+                                                    {{ __('Show Border') }}
                                                 </label>
                                             </div>
                                         </div>
@@ -502,7 +502,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="CompanyNameCheck">
                                                 <label class="form-check-label" for="CompanyNameCheck">
-                                                    Company Name
+                                                    {{ __('Company Name') }}
                                                 </label>
                                             </div>
                                             <div class="row g-1">
@@ -536,7 +536,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="textAlign" id="textAlign1">
                                                 <label class="form-check-label" for="textAlign1">
-                                                    
+
                                                 </label>
                                             </div>
                                             <div class="form-check">

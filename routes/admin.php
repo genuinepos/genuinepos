@@ -1,13 +1,7 @@
 <?php
 
 use App\Models\Purchase;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use App\Models\CustomerCreditLimit;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Models\CustomerOpeningBalance;
-use App\Models\SupplierOpeningBalance;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\TaxController;
@@ -253,6 +247,14 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
         });
     });
+    Route::group(['prefix' => 'units'], function () {
+        Route::get('/', [UnitController::class, 'index'])->name('product.units.index');
+        Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('product.units.get.all.unit');
+        Route::post('store', [UnitController::class, 'store'])->name('product.units.store');
+        Route::get('edit/{id}', [UnitController::class, 'edit'])->name('product.units.edit');
+        Route::post('update/{id}', [UnitController::class, 'update'])->name('product.units.update');
+        Route::delete('delete/{unitId}', [UnitController::class, 'delete'])->name('product.units.delete');
+    });
 });
 
 // Contact route group
@@ -327,10 +329,10 @@ Route::group(['prefix' => 'contacts'], function () {
 
         Route::group(['prefix' => 'groups'], function () {
             Route::get('/', [CustomerGroupController::class, 'index'])->name('contacts.customers.groups.index');
-            Route::get('all/groups', [CustomerGroupController::class, 'allBanks'])->name('contacts.customers.groups.all.group');
             Route::post('store', [CustomerGroupController::class, 'store'])->name('contacts.customers.groups.store');
-            Route::post('update', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
-            Route::delete('delete/{groupId}', [CustomerGroupController::class, 'delete'])->name('customers.groups.delete');
+            Route::get('edit/{id}', [CustomerGroupController::class, 'edit'])->name('contacts.customers.groups.edit');
+            Route::post('update/{id}', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
+            Route::delete('delete/{id}', [CustomerGroupController::class, 'delete'])->name('customers.groups.delete');
         });
 
         Route::group(['prefix' => 'import'], function () {
@@ -763,12 +765,11 @@ Route::group(['prefix' => 'expenses'], function () {
 Route::group(['prefix' => 'accounting'], function () {
 
     Route::group(['prefix' => 'banks'], function () {
-
         Route::get('/', [BankController::class, 'index'])->name('accounting.banks.index');
-        Route::get('all/banks', [BankController::class, 'allBanks'])->name('accounting.banks.all.bank');
         Route::post('store', [BankController::class, 'store'])->name('accounting.banks.store');
-        Route::post('update', [BankController::class, 'update'])->name('accounting.banks.update');
-        Route::delete('delete/{bankId}', [BankController::class, 'delete'])->name('accounting.banks.delete');
+        Route::get('edit/{id}', [BankController::class, 'edit'])->name('accounting.banks.edit');
+        Route::post('update/{id}', [BankController::class, 'update'])->name('accounting.banks.update');
+        Route::delete('delete/{id}', [BankController::class, 'delete'])->name('accounting.banks.delete');
     });
 
     Route::group(['prefix' => 'accounts'], function () {
@@ -905,15 +906,6 @@ Route::group(['prefix' => 'settings'], function () {
         Route::get('edit/{id}', [WarehouseController::class, 'edit'])->name('settings.warehouses.edit');
         Route::post('update/{id}', [WarehouseController::class, 'update'])->name('settings.warehouses.update');
         Route::delete('delete/{warehouseId}', [WarehouseController::class, 'delete'])->name('settings.warehouses.delete');
-    });
-
-    Route::group(['prefix' => 'units'], function () {
-
-        Route::get('/', [UnitController::class, 'index'])->name('settings.units.index');
-        Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('settings.units.get.all.unit');
-        Route::post('store', [UnitController::class, 'store'])->name('settings.units.store');
-        Route::post('update', [UnitController::class, 'update'])->name('settings.units.update');
-        Route::delete('delete/{unitId}', [UnitController::class, 'delete'])->name('settings.units.delete');
     });
 
     Route::group(['prefix' => 'taxes'], function () {

@@ -834,7 +834,7 @@
                                         <input type="checkbox" name="transfer_bl_wh" class="transfer_stock inventory_permission super_select_all"> Transfer stock s. location to WH
                                     </p>
 
-                                    @if ($addons->branches == 1)
+                                    @if ($generalSettings['addons__branches'] == 1)
                                         <p class="checkbox_input_wrap mt-1">
                                             <input type="checkbox" name="transfer_bl_bl" class="transfer_stock inventory_permission super_select_all"> Transfer stock b. l. to b. l
                                         </p>
@@ -999,7 +999,7 @@
                     </div>
                 </div>
 
-                @if ($addons->manufacturing == 1)
+                @if ($generalSettings['addons__manufacturing'] == 1)
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="accordion-header">
                             <input type="checkbox" class="manufacturing_check select_all super_select_all manufacturing_permission " data-target="manufacturing_permission" autocomplete="off">
@@ -1739,7 +1739,7 @@
                     </div>
                 </div>
                 {{-- LC Permission end --}}
-                @if ($addons->todo == 1)
+                @if ($generalSettings['addons__todo'] == 1)
                 <div class="form_element rounded mt-0 mb-1">
                     <div class="accordion-header">
                         <input type="checkbox" class="project_check select_all super_select_all project_permission" data-target="project_permission" autocomplete="off">
@@ -1955,7 +1955,7 @@
                         </div>
                     </div>
                 </div>
-                @if ($addons->hrm == 1)
+                @if ($generalSettings['addons__hrm'] == 1)
                 <div class="form_element rounded mt-0 mb-1">
                     <div class="accordion-header">
                         <input type="checkbox" class="hr_chek select_all super_select_all human_permission" data-target="human_permission" autocomplete="off">

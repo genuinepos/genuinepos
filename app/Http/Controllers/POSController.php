@@ -388,7 +388,7 @@ class POSController extends Controller
 
             if (
                 env('MAIL_ACTIVE') == 'true' &&
-                $generalSettings['send_es_settings__send_inv_via_email'] == '1'
+                $generalSettings['email_settings__send_inv_via_email'] == '1'
             ) {
                 if ($customer && $customer->email) {
 
@@ -398,7 +398,7 @@ class POSController extends Controller
 
             if (
                 env('SMS_ACTIVE') == 'true' &&
-                $generalSettings['send_es_settings__send_notice_via_sms'] == '1'
+                $generalSettings['email_settings__send_notice_via_sms'] == '1'
             ) {
 
                 if ($customer && $customer->phone) {
@@ -1246,7 +1246,7 @@ class POSController extends Controller
             'pos__is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
             'pos__is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
         ];
-        
+
         $generalSettingService->updateAndSync($settings);
         return response()->json('POS settings updated successfully');
     }

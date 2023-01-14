@@ -164,7 +164,7 @@
                         <h5>{{ $generalSettings['business__shop_name'] }}</h5>
                         <p>{{ $generalSettings['business__address'] }}</p>
                         <p>@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</p>
-                        <h6>Transfer Stock (To Warehouse)</h6>
+                        <h6>@lang('menu.transfer_stocks') (To Warehouse)</h6>
                     </div>
                 </div>
             </div>

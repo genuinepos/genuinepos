@@ -2,10 +2,12 @@
 
 namespace App\Models;
 use App\Models\Account;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModel;
 
-class Bank extends Model
+class Bank extends BaseModel
 {
+    use HasFactory;
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
 

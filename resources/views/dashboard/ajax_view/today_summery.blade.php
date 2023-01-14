@@ -3,7 +3,7 @@
     $currency = $generalSettings['business__currency'];
 @endphp
 <div class="form-group row">
-    @if ($addons->branches == 1)
+    @if ($generalSettings['addons__branches'] == 1)
         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
             <div class="col-md-6">
                 <select name="branch_id" id="today_branch_id" class="form-control">
@@ -45,7 +45,7 @@
     <div class="today_summery_area mt-2">
         <div class="print_today_summery_header d-hide">
             <div class="row text-center">
-                @if ($addons->branches == 1)
+                @if ($generalSettings['addons__branches'] == 1)
                     <h4>
                         @if ($branch_id == 'HF')
                             {{ $generalSettings['business__shop_name'] }} <strong>(@lang('menu.head_office'))</strong>
@@ -118,7 +118,7 @@
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
-                        @if ($addons->hrm == 1)
+                        @if ($generalSettings['addons__hrm'] == 1)
                             <tr>
                                 <th class="text-start">@lang('menu.total_payroll') :</th>
                                 <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>

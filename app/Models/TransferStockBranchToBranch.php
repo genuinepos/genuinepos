@@ -5,10 +5,10 @@ namespace App\Models;
 use App\Models\Branch;
 use App\Models\Expanse;
 use App\Models\Warehouse;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use App\Models\TransferStockBranchToBranchProducts;
 
-class TransferStockBranchToBranch extends Model
+class TransferStockBranchToBranch extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

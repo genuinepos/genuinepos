@@ -6,9 +6,9 @@ use App\Models\Branch;
 use App\Models\CashCounter;
 use App\Models\User;
 use App\Models\CashRegisterTransaction;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class CashRegister extends Model
+class CashRegister extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

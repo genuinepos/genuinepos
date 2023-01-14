@@ -5,9 +5,9 @@ use App\Models\Sale;
 use App\Models\Warehouse;
 use App\Models\InvoiceLayout;
 use App\Models\InvoiceSchema;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Branch extends Model
+class Branch extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class PurchaseOrderProductReceive extends Model
+class PurchaseOrderProductReceive extends BaseModel
 {
     use HasFactory;
 }

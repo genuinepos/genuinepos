@@ -31,6 +31,7 @@ class BarcodeController extends Controller
     {
         $req = $request;
         if (!isset($req->product_ids)) {
+
             session()->flash('errorMsg', 'Product list is empty.');
             return redirect()->back();
         }

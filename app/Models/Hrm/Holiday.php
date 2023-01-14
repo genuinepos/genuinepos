@@ -3,9 +3,9 @@
 namespace App\Models\Hrm;
 
 use App\Models\Branch;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Holiday extends Model
+class Holiday extends BaseModel
 {
     protected $table = 'hrm_holidays';
 

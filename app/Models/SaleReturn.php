@@ -8,9 +8,9 @@ use App\Models\Customer;
 use App\Models\Warehouse;
 use App\Models\SalePayment;
 use App\Models\SaleReturnProduct;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class SaleReturn extends Model
+class SaleReturn extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

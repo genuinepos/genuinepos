@@ -10,9 +10,9 @@ use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchaseProduct;
 use App\Models\PurchaseOrderProduct;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Purchase extends Model
+class Purchase extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];

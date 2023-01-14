@@ -5,10 +5,12 @@ use App\Models\Bank;
 use App\Models\User;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModel;
 
-class Account extends Model
+class Account extends BaseModel
 {
+    use HasFactory;
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
     

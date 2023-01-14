@@ -46,8 +46,6 @@ class DiscountController extends Controller
 
                     $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.discounts.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
 
-                    $html .= '<a href="' . route('sales.discounts.change.status', [$row->id]) . '" class="dropdown-item" id="change_status" title="change_status"><i class="fas fa-toggle-off text-primary"></i> Change Status</a>';
-
                     $html .= '</div>';
                     $html .= '</div>';
                     return $html;
@@ -79,7 +77,17 @@ class DiscountController extends Controller
                 })
                 ->editColumn('status', function ($row) {
 
-                    return $row->is_active == 1 ? '<span class="badge badge-sm bg-success">Active</span>' : '<span class="badge badge-sm bg-danger">Deactivated</span>';
+                    if ($row->is_active == 1) :
+                        $html = '<div class="form-check form-switch">';
+                        $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('sales.discounts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                        $html .= '</div>';
+                        return $html;
+                    else :
+                        $html = '<div class="form-check form-switch">';
+                        $html .= '<input class="form-check-input" id="change_status" data-url="' . route('sales.discounts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                        $html .= '</div>';
+                        return $html;
+                    endif;
                 })
                 ->editColumn('products', function ($row) {
 

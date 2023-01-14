@@ -5,7 +5,6 @@ namespace App\Http\Controllers\HRM;
 use Illuminate\Http\Request;
 use App\Models\Hrm\LeaveType;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class LeaveTypeController extends Controller

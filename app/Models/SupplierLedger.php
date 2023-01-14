@@ -5,9 +5,9 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\PurchasePayment;
 use App\Models\SupplierPayment;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class SupplierLedger extends Model
+class SupplierLedger extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['updated_at'];

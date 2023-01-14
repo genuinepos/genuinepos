@@ -4,9 +4,9 @@ namespace App\Models;
 
 
 use App\Models\ProductWarehouse;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ProductWarehouseVariant extends Model
+class ProductWarehouseVariant extends BaseModel
 {
     public function product_warehouse()
     {

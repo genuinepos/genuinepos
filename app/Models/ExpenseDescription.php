@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\ExpanseCategory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class ExpenseDescription extends Model
+class ExpenseDescription extends BaseModel
 {
     public function category()
     {

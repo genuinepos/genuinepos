@@ -14,7 +14,7 @@
         </div>
 
         <div class="p-3">
-            @if ($addons->branches == 1)
+            @if ($generalSettings['addons__branches'] == 1)
             <div class="row">
                 <div class="col-md-12">
                     <div class="form_element rounded mt-0 mb-3">
@@ -52,7 +52,7 @@
                                     <th>@lang('menu.allow_login')</th>
                                     <th>@lang('menu.name')</th>
                                     <th>@lang('menu.phone')</th>
-                                    @if($addons->branches == 1)
+                                    @if($generalSettings['addons__branches'] == 1)
                                         <th>@lang('menu.business_location')</th>
                                     @endif
                                     <th>@lang('menu.role')</th>
@@ -92,7 +92,7 @@
         "processing": true
         , "serverSide": true,
         // aaSorting: [[8, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}")
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}")
         , "lengthMenu": [
             [10, 25, 50, 100, 500, 1000, -1]
             , [10, 25, 50, 100, 500, 1000, "All"]
@@ -108,7 +108,7 @@
             ,{data: 'allow_login', name: 'username'}
             , { data: 'name', name: 'name'}
             , { data: 'phone', name: 'phone'}
-            @if($addons->branches == 1)
+            @if($generalSettings['addons__branches'] == 1)
                 , {data: 'branch', name: 'branches.name'}
             @endif
             , { data: 'role_name', name: 'role_name'}

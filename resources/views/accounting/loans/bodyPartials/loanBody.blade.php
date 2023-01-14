@@ -18,7 +18,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>@lang('menu.loan_ac') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.loan_ac') </b> <span class="text-danger">*</span></label>
                             <select required name="loan_account_id" class="form-control" id="loan_account_id">
                                 <option value="">@lang('menu.select_loan_account')</option>
                                 @foreach ($loanAccounts as $loanAc)
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.type') </b> <span class="text-danger">*</span></label>
                             <select name="type" class="form-control" id="type">
                                 <option value="">@lang('menu.select_type')</option>
                                 <option value="1">@lang('menu.loan_and_advance')</option>
@@ -52,13 +52,13 @@
 
                     <div class="form-group row gx-3 mt-1">
                         <div class="col-md-6">
-                            <label><b>@lang('menu.loan_amount') :</b> <span class="text-danger">*</span> </label>
+                            <label><b>@lang('menu.loan_amount') </b> <span class="text-danger">*</span> </label>
                             <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="@lang('menu.loan_amount')"/>
                             <span class="error error_loan_amount"></span>
                         </div>
 
                         <div class="col-md-6">
-                            <label><b>@lang('menu.debit')/@lang('menu.credit_account') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.debit')/@lang('menu.credit_account') </b> <span class="text-danger">*</span></label>
                             <select name="account_id" class="form-control" id="account_id">
                                 <option value="">@lang('menu.select_account')</option>
                                 @foreach ($accounts as $account)
@@ -79,7 +79,7 @@
 
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
-                            <label><b>@lang('menu.loan_reason') :</b> </label>
+                            <label><b>@lang('menu.loan_reason') </b> </label>
                             <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="@lang('menu.loan_reason')"></textarea>
                         </div>
                     </div>
@@ -127,14 +127,14 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-3">
-                            <label><strong>@lang('menu.company')/@lang('menu.people') :</strong></label>
+                            <label><strong>@lang('menu.company')/@lang('menu.people') </strong></label>
                             <select name="company_id" class="form-control submit_able select2" id="f_company_id" autofocus>
                                 <option value="">@lang('menu.all')</option>
                             </select>
                         </div>
 
                         <div class="col-md-3">
-                            <label><strong>@lang('menu.loan_type') :</strong></label>
+                            <label><strong>@lang('menu.loan_type') </strong></label>
                             <select name="type_id" class="form-control submit_able select2" id="type_id">
                                 <option value="">@lang('menu.all')</option>
                                 <option value="1">@lang('menu.loan_and_advance')</option>
@@ -143,7 +143,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label><strong>@lang('menu.from_date') :</strong></label>
+                            <label><strong>@lang('menu.from_date') </strong></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">
@@ -157,7 +157,7 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label><strong>@lang('menu.to_date') :</strong></label>
+                            <label><strong>@lang('menu.to_date') </strong></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">

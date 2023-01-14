@@ -43,7 +43,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b>
+            <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
@@ -99,7 +99,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">@lang('menu.total_quantity') :</th>
+                    <th class="text-end">@lang('menu.total_quantity') </th>
                     <td class="text-end">{{ bcadd($totalQty, 0, 2) }}</td>
                 </tr>
 

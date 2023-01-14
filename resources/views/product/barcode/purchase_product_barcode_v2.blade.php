@@ -121,7 +121,7 @@
 
                                         <div class="row mt-3">
                                             <div class="col-md-4">
-                                                <label><b>@lang('menu.barcode_settings') :</b></label>
+                                                <label><b>@lang('menu.barcode_settings') </b></label>
                                                 <select name="br_setting_id" class="form-control">
                                                     @foreach ($bc_settings as $bc_setting)
                                                         <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">

@@ -24,7 +24,7 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} </span>
                 <b style="color:green;font-weight:normal;margin:0">
                   @if ($transfer->status == 1)
                     @lang('menu.pending')
@@ -36,7 +36,7 @@
                 </b>
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.reference_id') :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.reference_id') </span>
                 {{ $transfer->invoice_id }}
             </p>
         </td>
@@ -47,30 +47,30 @@
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px"><strong>@lang('menu.warehouse') (From):</strong></span>
+              <span style="display:block;font-weight:bold;font-size:13px"><strong>@lang('menu.warehouse') (From)</strong></span>
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.name') :</span>
+                <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.name') </span>
                 {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') </span>
                  {{ $transfer->warehouse->address }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->warehouse->phone }}
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $transfer->warehouse->phone }}
             </p>
         </td>
 
         <td style="width:50%;padding:20px;vertical-align:top">
             <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.business_location')(To)</span> </h6>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px;"> @lang('menu.name') :</span>
+              <span style="display:block;font-weight:bold;font-size:13px;"> @lang('menu.name') </span>
               {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}
             </p>
-            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</p>
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</p>
 
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-              <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
+              <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') </span>
               @if ($transfer->branch)
                   {{ $transfer->branch->city }},
                   {{ $transfer->branch->state }},
@@ -109,7 +109,7 @@
       <tfoot>
         <tr>
           <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
-            <strong style="display:block;margin:0 0 10px 0;">@lang('menu.mail_note'): </strong> <br>
+            <strong style="display:block;margin:0 0 10px 0;">@lang('menu.mail_note')</strong> <br>
                 {{ $mail_note }}
               <br>
           </td>

@@ -37,7 +37,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b>
+            <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
@@ -84,7 +84,7 @@
                                     ->get();
                             @endphp
                             @foreach ($expenseDescriptions as $exDescription)
-                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b>'. $exDescription->amount !!} <br>
+                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . ')</b>'. $exDescription->amount !!} <br>
                             @endforeach
                         </td>
 

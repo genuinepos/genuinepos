@@ -72,23 +72,23 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->add_sale_invoice_layout->customer_address)
                                 <li>
-                                    <strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                    <strong>@lang('menu.address') </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
                                 <li>
-                                    <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_phone)
                                 <li>
-                                    <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -102,8 +102,8 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Quotation No :</strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>@lang('menu.date'):</strong> {{ $sale->date }}</li>
+                            <li><strong> Quotation No </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong>@lang('menu.date')</strong> {{ $sale->date }}</li>
                         </ul>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td><strong>@lang('menu.net_total_amount') :</strong></td>
+                                <td><strong>@lang('menu.net_total_amount') </strong></td>
                                 <td class="net_total text-start">
                                     <b></b>{{ $generalSettings['business__currency'] }}
                                     {{ $sale->net_total_amount }}</b>
@@ -176,7 +176,7 @@
                             </tr>
 
                             <tr>
-                                <td><strong> @lang('menu.order_discount') : </strong></td>
+                                <td><strong> @lang('menu.order_discount') </strong></td>
                                 <td class="order_discount text-start">
                                 <b> @if ($sale->order_discount_type == 1)
                                         {{ $sale->order_discount_amount }} (Fixed)
@@ -187,7 +187,7 @@
                             </tr>
 
                             <tr>
-                                <td><strong> @lang('menu.order_tax') : </strong></td>
+                                <td><strong> @lang('menu.order_tax') </strong></td>
                                 <td class="order_tax text-start">
                                     <b>{{ $generalSettings['business__currency'] }}
                                     {{ $sale->order_tax_amount }}
@@ -196,7 +196,7 @@
                             </tr>
 
                             <tr>
-                                <td><strong> @lang('menu.shipment_charge') : </strong></td>
+                                <td><strong> @lang('menu.shipment_charge') </strong></td>
                                 <td class="shipment_charge text-start">
                                 <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->shipment_charge, 2) }}</b>
@@ -204,7 +204,7 @@
                             </tr>
 
                             <tr>
-                                <td><strong> @lang('menu.total_payable') : </strong></td>
+                                <td><strong> @lang('menu.total_payable') </strong></td>
                                 <td class="total_payable text-start">
                                 <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->total_payable_amount, 2) }}</b>
@@ -347,23 +347,23 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
-                                    <strong>@lang('menu.address') : </strong>{{ $sale->customer ? $sale->customer->address : '' }}
+                                    <strong>@lang('menu.address') </strong>{{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_tax_no)
                                 <li>
-                                    <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_phone)
                                 <li>
-                                    <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -377,9 +377,9 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> Quotation No :</strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>@lang('menu.date'): </strong> {{ $sale->date }}</li>
-                            <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</li>
+                            <li><strong> Quotation No </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong>@lang('menu.date')</strong> {{ $sale->date }}</li>
+                            <li><strong> @lang('menu.entered_by') </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}</li>
                         </ul>
                     </div>
                 </div>
@@ -442,14 +442,14 @@
                     <table class="table modal-table table-sm table-bordered">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') </strong></td>
                                 <td class="text-end">
                                 <b>{{ $generalSettings['business__currency'] }} {{ $sale->net_total_amount }}</b>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') </strong></td>
                                 <td class="order_discount text-end">
                                 <b>@if ($sale->order_discount_type == 1)
                                         {{ $sale->order_discount_amount }} (Fixed)
@@ -460,7 +460,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') </strong></td>
                                 <td class="order_tax text-end">
                                 <b>{{ $generalSettings['business__currency'] }}
                                     {{ $sale->order_tax_amount }}
@@ -468,7 +468,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') </strong></td>
                                 <td class="shipment_charge text-end">
                                     <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->shipment_charge, 2) }}</b>
@@ -476,7 +476,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') </strong></td>
                                 <td class="total_payable text-end">
                                 <b>{{ $generalSettings['business__currency'] }}
                                     {{ number_format($sale->total_payable_amount, 2) }}</b>

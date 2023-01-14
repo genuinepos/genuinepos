@@ -39,7 +39,7 @@
         @endif
 
         @if ($s_date && $e_date)
-            <p><b>@lang('menu.date') :</b>
+            <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($s_date)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($e_date)) }}
             </p>
@@ -102,7 +102,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="4"></th>
-                        <th>@lang('menu.total') : </th>
+                        <th>@lang('menu.total') </th>
                         <th>${{ bcadd($total_gross, 0, 2) }}</th>
                         <th>${{ bcadd($total_paid, 0, 2) }}</th>
                         <th>${{ bcadd($total_due, 0, 2) }}</th>

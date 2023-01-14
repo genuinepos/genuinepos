@@ -12,18 +12,18 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.customer') : </strong>
+                    <li><strong>@lang('menu.customer') </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li><strong>@lang('menu.phone') : </strong>
+                    <li><strong>@lang('menu.phone') </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
                     </li>
                     <li>
-                        <strong>@lang('menu.business') : </strong>
+                        <strong>@lang('menu.business') </strong>
                         <span class="card_text customer_business">{{ $customer->business_name }}</span>
                     </li>
                 </ul>
@@ -33,19 +33,19 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.total_sale') : </strong>
+                    <li><strong>@lang('menu.total_sale') </strong>
                         <span class="card_text">
                             {{ $generalSettings['business__currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li><strong>@lang('menu.total_paid') : </strong>
+                    <li><strong>@lang('menu.total_paid') </strong>
                         <span class="card_text">
                             {{ $generalSettings['business__currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li><strong>@lang('menu.total_due') : </strong>
+                    <li><strong>@lang('menu.total_due') </strong>
                         <span class="card_text">
                             {{ $generalSettings['business__currency'] }}
                             {{ $customer->total_sale_due }}
@@ -61,13 +61,13 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>@lang('menu.receiving_amount') :</b> </label>
+            <label><b>@lang('menu.receiving_amount') </b> </label>
             <input type="text" name="amount" class="form-control mr_input" id="mr_amount" placeholder="@lang('menu.receiving_amount')" data-name="@lang('menu.receiving_amount')"/>
             <span class="error error_mr_amount"></span>
         </div>
 
         <div class="col-md-3">
-            <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
+            <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
@@ -79,19 +79,19 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>{{ __('Account Details ') }} :</b> </label>
+            <label><b>{{ __('Account Details ') }} </b> </label>
             <input type="text" name="account_details" class="form-control mr_input" id="mr_amount" placeholder="Account Details"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.receiver') :</b> </label>
+            <label><b>@lang('menu.receiver') </b> </label>
             <input type="text" name="receiver" class="form-control mr_input" id="mr_amount" placeholder="Receiver Name"/>
         </div>
     </div>
 
     <div class="form-group row mt-2">
         <div class="col-md-12">
-            <label><strong>@lang('menu.paper_note') :</strong></label>
+            <label><strong>@lang('menu.paper_note') </strong></label>
             <textarea name="note" class="form-control" id="note" cols="30" rows="3"
                 placeholder="@lang('menu.paper_note')"></textarea>
         </div>
@@ -112,7 +112,7 @@
             </div>
 
             <div class="col-md-4 gap-from-top-add d-hide">
-                <label><b>@lang('menu.gap_from_top') :</b> </label>
+                <label><b>@lang('menu.gap_from_top') </b> </label>
                 <input type="text" name="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')"/>
             </div>
         </div>

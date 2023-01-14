@@ -14,18 +14,18 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+        <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
         <input type="text" name="name" class="form-control " value="{{ $data->name }}" id="e_sub_name" placeholder="Sub category name"/>
         <span class="error error_sub_e_name"></span>
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('menu.description') :</b> </label>
+        <label><b>@lang('menu.description') </b> </label>
         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description">{{ $data->description }}</textarea>
     </div>
 
     <div class="form-group editable_cate_img_field mt-1">
-        <label><b>{{ __('Sub Category photo') }} :</b></label>
+        <label><b>{{ __('Sub Category photo') }} </b></label>
         <input type="file" name="photo" class="form-control" id="e_photo" accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_sub_e_photo"></span>
     </div>

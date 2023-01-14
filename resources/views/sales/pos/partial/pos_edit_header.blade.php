@@ -1,11 +1,15 @@
 <style>
-    .search_item_area{position: relative;}
+    .search_item_area {position: relative;}
     .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid var(--main-color);margin-top: 1px;border-radius: 0px;}
     .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-    .select_area ul li a {color:#464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 500;}
-    .select_area ul li a:hover {background-color: #ab1c59;color: #fff;}
-    .selectProduct {background-color: #ab1c59;color: #fff !important;}
-    .text-info {color: #0795a5!important;}
+    .select_area ul li a {color: #464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 400;}
+    .select_area ul li a:hover {background-color: #999396;color: #fff;}
+    .selectProduct {background-color: #746e70!important;color: #fff !important;}
+    .text-info {color: #0795a5 !important;}
+    .pos-logo img {
+        height: auto;
+        width: 70%;
+    }
 </style>
 
 <div class="head-pos">
@@ -13,66 +17,73 @@
     <input type="hidden" name="sale_account_id" value="{{ $sale->sale_account_id }}">
     <input type="hidden" name="action" id="action" value="">
     <nav class="pos-navigation">
-        <div class="col-lg-4 col-sm-12 col-12 nav-left-sec">
-            <div class="col-lg-4 col-sm-12 col-12 logo-sec">
-                <div class="pos-logo">
-                    @if (auth()->user()->branch)
-                        @if (auth()->user()->branch->logo != 'default.png')
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
-                        @endif
-                    @else
-                        @if ($generalSettings['business__business_logo'] != null)
-                            <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
-                        @endif
-                    @endif
+        <div class="col-lg-9 nav-left-sec">
+            <div class="row g-1 align-items-center">
+                <div class="col-xl-5 col-lg-3">
+                    <div class="row g-1">
+                        <div class="col-xl-4 logo-sec">
+                            <div class="pos-logo d-flex justify-content-center">
+                                @if (auth()->user()->branch)
+                                    @if (auth()->user()->branch->logo != 'default.png')
+                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                                    @else
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
+                                    @endif
+                                @else
+                                    @if ($generalSettings['business__business_logo'] != null)
+                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                    @else
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 col-sm-12 col-12 address">
+                            <p class="store-name">
+                                {{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))
+                            </p>
+                            <p class="address-name">
+                                @if ($sale->branch)
+                                    {{ $sale->branch->name.'-'.$sale->branch->branch_code }}
+                                    {{ $sale->branch->city ? ','.$sale->branch->city : ''}}
+                                    {{ $sale->branch->state ? ','.$sale->branch->state : ''}}
+                                    {{ $sale->branch->country ? ','.$sale->branch->country : ''}}
+                                @else
+                                    {{ $generalSettings['business__address'] }}
+                                @endif
+                            </p>
+                            <small class="login-user-name">
+                                <span class="text-highlight">{{ __('Loggedin') }} </span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
+                                <span>
+                                    <span class="text-highlight">{{ __('C.Register') }} </span>
+                                    @if ($sale->admin)
+                                        @if ($sale->admin->role_type == 1)
+                                            Super-Admin
+                                        @elseif($sale->admin->role_type == 2)
+                                            Admin
+                                        @else
+                                            {{ $sale->admin->role->name }}
+                                        @endif
+                                    @endif
+                                </span>
+                            </small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="col-lg-8 col-sm-12 col-12 address">
-                <p class="store-name">
-                    {{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))
-                </p>
-                <p class="address-name">
-                    @if ($sale->branch)
-                        {{ $sale->branch->name.'-'.$sale->branch->branch_code }}
-                        {{ $sale->branch->city ? ','.$sale->branch->city : ''}}
-                        {{ $sale->branch->state ? ','.$sale->branch->state : ''}}
-                        {{ $sale->branch->country ? ','.$sale->branch->country : ''}}
-                    @else
-                        {{ $generalSettings['business__address'] }}
-                    @endif
-                </p>
-                <small class="login-user-name">
-                    <span class="text-highlight">{{ __('Loggedin') }} :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
-                    <span>
-                        <span class="text-highlight">{{ __('C.Register') }} :</span>
-                        @if ($sale->admin)
-                            @if ($sale->admin->role_type == 1)
-                                Super-Admin
-                            @elseif($sale->admin->role_type == 2)
-                                Admin
-                            @else
-                                {{ $sale->admin->role->name }}
-                            @endif
-                        @endif
-                    </span>
-                </small>
-            </div>
-        </div>
-        <div class="col-lg-8 col-sm-12 col-12 input-buttob-sec">
-            <div class="input-section">
-                <div class="row">
-                    <div class="input-sec col-sm-8 col-12">
-                        <div class="row">
-                            <div class="col-lg-7 col-12 sm-input-sec-w">
+                <div class="col-xl-7 col-lg-9">
+                    <div class="input-sec">
+                        <div class="row g-1">
+                            <div class="col-lg-6 col-12 sm-input-sec-w">
                                 <div class="input-group mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
                                     <input readonly type="text" class="form-control form-select" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
+                                    <div class="input-group-append add_button" id="addCustomer">
+                                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                    </div>
                                 </div>
-
                                 <div class="search_item_area">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -91,8 +102,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-5 input-value-sec">
+                            <div class="col-lg-6 input-value-sec">
                                 @if ($generalSettings['reward_point_settings__enable_cus_point'] == '1')
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
@@ -105,7 +115,7 @@
                                         <input readonly type="text" class="form-control" id="trial_point_amount">
                                     </div>
                                 @endif
-                                <div class="input-group col-6">
+                                <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text valus">SQ</span>
                                     </div>
@@ -123,22 +133,25 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-9 col-12 input-buttob-sec">
+            <div class="input-section">
+                <div class="btn-section">
+                    <div class="date">
+                        <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
+                    </div>
 
-                    <div class="col-lg-4 btn-section">
-                        <div class="date">
-                            <p>{{ date('d-m-Y') }} <span id="time">6:58 AM</span></p>
-                        </div>
-
-                        <div class="btn-sec">
-                            <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
-                            <a href="#" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
-                                <span class="fas fa-calculator"></span>
-                            </a>
-                            {{-- <a href="#" class="pos-btn"><span class="fas fa-briefcase"></span></a>
-                            <a href="#" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
-                            <a href="#" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
-                            <a href="#" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>
-                        </div>
+                    <div class="btn-sec">
+                        <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
+                        <a href="#" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
+                            <span class="fas fa-calculator"></span>
+                        </a>
+                        {{-- <a href="#" class="pos-btn"><span class="fas fa-briefcase"></span></a>
+                        <a href="#" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
+                        <a href="#" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
+                        <a href="#" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>
                     </div>
                 </div>
             </div>

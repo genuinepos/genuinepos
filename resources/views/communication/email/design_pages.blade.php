@@ -178,20 +178,20 @@
                 <div class="col-md-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <p class="text-secondary"><strong>Example:</strong></p>
+                            <p class="text-secondary"><strong>Example</strong></p>
                             <strong>Dear Customer,</strong>
                             <p>THis is a notice that invoice @invoice which was originally generated on @date.</p>
                             <br>
                             <p><strong>@lang('menu.date') #</strong> @date</p>
                             <p><strong>Invoice #</strong> @invoice</p>
                             <hr class="my-1">
-                            <p><strong>Sub Total :</strong> @subtotal</p>
-                            <p><strong>vat :</strong> @vat</p>
-                            <p><strong>@lang('menu.total_due') :</strong> @due</p>
-                            <p><strong>Total Discount :</strong> @discount</p>
-                            <p><strong>@lang('menu.total') :</strong> @total_amount</p>
+                            <p><strong>Sub Total </strong> @subtotal</p>
+                            <p><strong>vat </strong> @vat</p>
+                            <p><strong>@lang('menu.total_due') </strong> @due</p>
+                            <p><strong>Total Discount </strong> @discount</p>
+                            <p><strong>@lang('menu.total') </strong> @total_amount</p>
                             <br>
-                            <p><strong>Reward Points :</strong> @point</p>
+                            <p><strong>Reward Points </strong> @point</p>
                             <br>
                             <p><strong>Thank you for staying with us.</strong></p>
                             <br>

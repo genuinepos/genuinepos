@@ -12,19 +12,19 @@
                 enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" id="name"
                                 placeholder="Category name"/>
                         <span class="error error_name"></span>
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>@lang('menu.description') :</b> </label>
+                        <label><b>@lang('menu.description') </b> </label>
                         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>@lang('menu.photo') :</b> <small class="text-danger"><b>@lang('menu.photo') size 400px * 400px.</b></small></label>
+                        <label><b>@lang('menu.photo') </b> <small class="text-danger"><b>@lang('menu.photo') size 400px * 400px.</b></small></label>
                         <input type="file" name="photo" class="form-control" id="photo">
                         <span class="error error_photo"></span>
                     </div>

@@ -5,6 +5,17 @@
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         .dataTables_filter {width: 50%!important;}
         .dataTables_filter input {width: 50%;}
+        label.col-2,
+        label.col-3,
+        label.col-4,
+        label.col-5,
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
@@ -32,7 +43,7 @@
                                     <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
+                                                <label class="col-5"><b>@lang('menu.product_name') </b> <span class="text-danger">*</span></label>
                                                 <div class="col-7">
                                                     <input type="text" name="name" class="form-control" id="name" placeholder="@lang('menu.product_name')" autofocus>
                                                     <span class="error error_name"></span>
@@ -43,7 +54,7 @@
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-5"><b>@lang('menu.product_code')
-                                                    <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                    <i data-bs-toggle="tooltip" data-bs-placement="top" title="Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically." class="fas fa-info-circle tp"></i> </b> </label>
                                                 <div class="col-7">
                                                     <input type="text" name="code" class="form-control scanable" autocomplete="off" id="code" value="" placeholder="Product Code">
                                                     <input type="hidden" name="auto_generated_code" id="auto_generated_code">
@@ -54,7 +65,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.unit') :</b> <span class="text-danger">*</span></label>
+                                                <label class="col-5"><b>@lang('menu.unit') </b> <span class="text-danger">*</span></label>
                                                 <div class="col-7">
                                                     <div class="input-group">
                                                         <select class="form-control product_unit" name="unit_id" id="unit_id">
@@ -78,7 +89,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"> <b>@lang('menu.barcode_type')  :</b> </label>
+                                                <label class="col-5"> <b>@lang('menu.barcode_type')  </b> </label>
                                                 <div class="col-7">
                                                     <select class="form-control" name="barcode_type" id="barcode_type">
                                                         <option value="CODE128">Code 128 (C128)</option>
@@ -93,7 +104,7 @@
                                         @if ($generalSettings['product__is_enable_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.category') :</b> </label>
+                                                    <label class="col-5"><b>@lang('menu.category') </b> </label>
                                                     <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control category" name="category_id"
@@ -117,7 +128,7 @@
                                         @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
+                                                    <label class="col-5"> <b>@lang('menu.sub_category') </b> </label>
                                                     <div class="col-7">
                                                         <select class="form-control" name="sub_category_id"
                                                             id="sub_category_id">
@@ -131,7 +142,7 @@
                                         @if ($generalSettings['product__is_enable_brands'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.brand'):</b> </label>
+                                                    <label class="col-5"><b>@lang('menu.brand')</b> </label>
                                                     <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control" name="brand_id" id="brand_id">
@@ -151,7 +162,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"> <b>@lang('menu.alert_quantity')  :</b> </label>
+                                                <label class="col-5"> <b>@lang('menu.alert_quantity')  </b> </label>
                                                 <div class="col-7">
                                                     <input type="number" step="any" name="alert_quantity" class="form-control " autocomplete="off" id="alert_quantity" value="0">
                                                     <span class="error error_alert_quantity"></span>
@@ -162,7 +173,7 @@
                                         @if ($generalSettings['product__is_enable_warranty'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.warranty') :</b> </label>
+                                                    <label class="col-5"><b>@lang('menu.warranty') </b> </label>
                                                     <div class="col-7">
                                                         <div class="input-group">
                                                             <select class="form-control" name="warranty_id" id="warranty_id">
@@ -185,7 +196,7 @@
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-5"><b>@lang('menu.business_location') :</b> </label>
+                                                        <label class="col-5"><b>@lang('menu.business_location') </b> </label>
                                                         <div class="col-7">
                                                             <input type="hidden" name="branch_count" value="branch_count">
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_ids" multiple>
@@ -207,7 +218,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"> <b>@lang('menu.condition')  :</b> </label>
+                                                <label class="col-5"> <b>@lang('menu.condition')  </b> </label>
                                                 <div class="col-7">
                                                     <select class="form-control" name="product_condition"
                                                         id="product_condition">
@@ -255,7 +266,7 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost') </b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" name="product_cost" class="form-control"
                                                         autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
@@ -266,7 +277,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-5"><b>@lang('menu.price_exc_tax') </b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')">
                                                         <span class="error error_product_price"></span>
@@ -276,7 +287,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) </b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="0.00">
                                                         <span class="error error_product_cost_with_tax"></span>
@@ -286,7 +297,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-5"><b>@lang('menu.profit_margin')(%) </b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
                                                         <span class="error error_profit"></span>
@@ -297,7 +308,7 @@
                                             @if ($generalSettings['product__is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-5"><b>@lang('menu.tax') :</b> </label>
+                                                        <label class="col-5"><b>@lang('menu.tax') </b> </label>
                                                         <div class="col-7">
                                                             <select class="form-control" name="tax_id" id="tax_id">
                                                                 <option value="">@lang('menu.no_tax')</option>
@@ -311,7 +322,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-5"><b>@lang('menu.tax_type') :</b> </label>
+                                                        <label class="col-5"><b>@lang('menu.tax_type') </b> </label>
                                                         <div class="col-7">
                                                             <select name="tax_type" class="form-control" id="tax_type">
                                                                 <option value="1">@lang('menu.exclusive')</option>
@@ -324,7 +335,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.thumbnail_photo') :</b> </label>
+                                                    <label class="col-5"><b>@lang('menu.thumbnail_photo') </b> </label>
                                                     <div class="col-7">
                                                         <input type="file" name="photo" class="form-control" id="photo">
                                                         <span class="error error_photo"></span>
@@ -426,7 +437,7 @@
                                     <div class="row gx-2 gy-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.type') :</b> </label>
+                                                <label class="col-5"><b>@lang('menu.type') </b> </label>
                                                 <div class="col-7">
                                                     <select name="type" class="form-control" id="type">
                                                         <option value="1">@lang('menu.general')</option>
@@ -438,7 +449,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"> <b>@lang('menu.weight') :</b> </label>
+                                                <label class="col-5"> <b>@lang('menu.weight') </b> </label>
                                                 <div class="col-7">
                                                     <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight">
                                                 </div>
@@ -447,7 +458,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>Custom Field1 :</b> </label>
+                                                <label class="col-5"><b>Custom Field1 </b> </label>
                                                 <div class="col-7">
                                                     <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
                                                 </div>
@@ -456,7 +467,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>Custom Field2 :</b> </label>
+                                                <label class="col-5"><b>Custom Field2 </b> </label>
                                                 <div class="col-7">
                                                     <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
                                                 </div>
@@ -465,7 +476,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>Custom Field3 :</b> </label>
+                                                <label class="col-5"><b>Custom Field3 </b> </label>
                                                 <div class="col-7">
                                                     <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
                                                 </div>
@@ -515,7 +526,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>@lang('menu.description') :</b> </label>
+                                                <label class="col-2"> <b>@lang('menu.description') </b> </label>
                                                 <div class="col-10">
                                                     <textarea name="product_details" id="myEditor" class="myEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;"></textarea>
                                                 </div>
@@ -526,7 +537,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> :</b> </label>
+                                                <label class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> </b> </label>
                                                 <div class="col-10">
                                                     <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
                                                     <span class="error error_image"></span>

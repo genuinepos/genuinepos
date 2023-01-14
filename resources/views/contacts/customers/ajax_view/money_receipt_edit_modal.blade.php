@@ -12,18 +12,18 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.customer') : </strong>
+                    <li><strong>@lang('menu.customer') </strong>
                         <span class="card_text customer_name">
                             {{ $receipt->cus_name }}
                         </span>
                     </li>
-                    <li><strong>@lang('menu.phone') : </strong>
+                    <li><strong>@lang('menu.phone') </strong>
                         <span class="card_text customer_name">
                             {{ $receipt->cus_phone }}
                         </span>
                     </li>
                     <li>
-                        <strong>@lang('menu.business') : </strong>
+                        <strong>@lang('menu.business') </strong>
                         <span class="card_text customer_business">{{ $receipt->cus_business }}</span>
                     </li>
                 </ul>
@@ -36,12 +36,12 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>@lang('menu.receiving_amount') :</b> </label>
+            <label><b>@lang('menu.receiving_amount') </b> </label>
             <input type="text" name="amount" class="form-control" placeholder="@lang('menu.receiving_amount')" value="{{ $receipt->amount }}"/>
         </div>
 
         <div class="col-md-3">
-            <label for="p_date"><strong>@lang('menu.date') :</strong></label>
+            <label for="p_date"><strong>@lang('menu.date') </strong></label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i
@@ -53,19 +53,19 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>{{ __('Account Details ') }} :</b> </label>
+            <label><b>{{ __('Account Details ') }} </b> </label>
             <input type="text" name="ac_details" class="form-control" placeholder="Account Details" value="{{ $receipt->ac_details }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.receiver') :</b> </label>
+            <label><b>@lang('menu.receiver') </b> </label>
             <input type="text" name="receiver" class="form-control" placeholder="@lang('menu.receiver')" value="{{ $receipt->receiver }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-2">
         <div class="col-md-12">
-            <label><strong>@lang('menu.paper_note') :</strong></label>
+            <label><strong>@lang('menu.paper_note') </strong></label>
             <textarea name="note" class="form-control" id="note" cols="30" rows="3"
                 placeholder="@lang('menu.paper_note')">{{ $receipt->note }}</textarea>
         </div>
@@ -86,7 +86,7 @@
             </div>
 
             <div class="col-md-4 gap-from-top-add {{ $receipt->is_header_less == 1 ? '' : 'd-hide' }}">
-                <label><b>@lang('menu.gap_from_top') :</b> </label>
+                <label><b>@lang('menu.gap_from_top') </b> </label>
                 <input type="text" name="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')" value="{{ $receipt->gap_from_top}}"/>
             </div>
         </div>

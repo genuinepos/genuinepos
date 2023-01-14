@@ -9,6 +9,8 @@
         .selectProduct {background-color: #746e70;color: #fff !important;}
         .input-group-text-sale {font-size: 7px !important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -34,7 +36,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __('B. Location') }} :</b> </label>
+                                        <label class="col-4"><b>{{ __('B. Location') }} </b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control"
                                                 value="{{
@@ -66,7 +68,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>@lang('menu.voucher_no') :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class=" col-4"><b>@lang('menu.voucher_no') </b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Voucher No will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id"
                                                 class="form-control" placeholder="@lang('menu.voucher_no')" autocomplete="off">
@@ -76,7 +78,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __('Adjust. Date') }} :</b> <span
+                                        <label class=" col-4"><b>{{ __('Adjust. Date') }} </b> <span
                                             class="text-danger">*</span> </label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control datepicker changeable"
@@ -88,7 +90,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.type') :</b> <span
+                                        <label class="col-4"><b>@lang('menu.type') </b> <span
                                             class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <select name="type" class="form-control add_input">
@@ -171,7 +173,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.total_item') :</b></label>
+                                                            <label for="inputEmail3" class="col-4"><b>@lang('menu.total_item') </b></label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" step="any" name="total_item" class="form-control"
                                                                     id="total_item" value="0.00">
@@ -181,7 +183,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <div class="input-group">
-                                                            <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total_amount') :</b> </label>
+                                                            <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total_amount') </b> </label>
                                                             <div class="col-8">
                                                                 <input readonly type="number" class="form-control" step="any" step="any"
                                                                     name="net_total_amount" id="net_total_amount" value="0.00">
@@ -190,7 +192,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.reason') :</b></label>
+                                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.reason') </b></label>
                                                         <div class="col-8">
                                                             <input type="text" name="reason" class="form-control"
                                                                 autocomplete="off" placeholder="Reason">
@@ -212,7 +214,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>@lang('menu.recovered_amount') : </b> <strong>>></strong></label>
+                                                        <label class="col-4"><b>@lang('menu.recovered_amount') </b> <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="total_recovered_amount"
                                                                 id="total_recovered_amount" class="form-control" value="0.00">
@@ -220,7 +222,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.payment_method') : <span
+                                                        <label class="col-4"><b>@lang('menu.payment_method')<span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
@@ -235,7 +237,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.debit') A/C : <span
+                                                        <label class="col-4"><b>@lang('menu.debit') A/C<span
                                                             class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">

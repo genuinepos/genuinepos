@@ -2,14 +2,14 @@
     @csrf
     <div class="form-group">
         <div class="col-md-12">
-            <label><b>@lang('menu.task') :</b></label>
+            <label><b>@lang('menu.task') </b></label>
             <input required type="text" name="task" class="form-control" placeholder="@lang('menu.task')" value="{{ $todo->task }}">
         </div>
     </div>
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>@lang('menu.assigned_to') :</b></label>
+            <label><b>@lang('menu.assigned_to') </b></label>
             <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                 <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
@@ -26,7 +26,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>@lang('menu.priority') : </b></label>
+            <label><b>@lang('menu.priority') </b></label>
             <select required name="priority" class="form-control">
                 <option value="">@lang('menu.select_priority')</option>
                 <option {{ $todo->priority == 'Low' ? 'SELECTED' : ''  }} value="Low">@lang('menu.low')</option>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>@lang('menu.status') : </strong></label>
+            <label><strong>@lang('menu.status') </strong></label>
             <select required name="status" class="form-control">
                 <option value="">@lang('menu.select_status')</option>
                 <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">@lang('menu.new')</option>
@@ -51,7 +51,7 @@
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>@lang('menu.due_date') : </b></label>
+            <label><b>@lang('menu.due_date') </b></label>
 
             <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date($generalSettings['business__date_format'], strtotime($todo->due_date)) }}">
         </div>
@@ -59,7 +59,7 @@
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>@lang('menu.description') : </b></label>
+            <label><b>@lang('menu.description') </b></label>
             <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description.">{{ $todo->description }}</textarea>
         </div>
     </div>

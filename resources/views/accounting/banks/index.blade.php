@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>@lang('menu.bank_address')</b> :</label>
+                            <label><b>@lang('menu.bank_address')</b> </label>
                             <textarea name="address" class="form-control form-control-sm"  id="address" cols="10" rows="3" placeholder="@lang('menu.bank_address')"></textarea>
                         </div>
 
@@ -111,7 +111,7 @@
                 </div>
                 <div class="modal-body" id="editModalBody">
                     <!--begin::Form-->
-                    
+
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
                 $('.submit_button').prop('type', 'button');
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
-              
+
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -202,7 +202,7 @@
             });
 
             // edit bank by ajax
-            
+
 
             $(document).on('click', '#delete',function(e){
                 e.preventDefault();

@@ -11,10 +11,10 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.supplier') : </strong>
+                    <li><strong>@lang('menu.supplier') </strong>
                         {{ $supplier->name  }}
                     </li>
-                    <li><strong>@lang('menu.business') : </strong>
+                    <li><strong>@lang('menu.business') </strong>
                         {{ $supplier->business_name }}
                     </li>
                 </ul>
@@ -81,7 +81,7 @@
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Purchase Due' : 'Return due' }}</td>
                             <td class="text-start">{{ $payment->payment_method ? $payment->payment_method : $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C: '.$payment->ac_no.')' : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C '.$payment->ac_no.')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php

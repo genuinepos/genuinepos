@@ -38,7 +38,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <th>@lang('menu.total_purchase') :</th>
+                                <th>@lang('menu.total_purchase') </th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
@@ -46,7 +46,7 @@
                             </tr>
 
                             <tr>
-                                <th>@lang('menu.purchase_including_tax') : </th>
+                                <th>@lang('menu.purchase_including_tax') </th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
@@ -54,7 +54,7 @@
                             </tr>
 
                             <tr>
-                                <th>@lang('menu.purchase_return_including_tax') : </th>
+                                <th>@lang('menu.purchase_return_including_tax') </th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
@@ -62,7 +62,7 @@
                             </tr>
 
                             <tr>
-                                <th> @lang('menu.purchase_due'): </th>
+                                <th> @lang('menu.purchase_due')</th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
@@ -84,7 +84,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <th>@lang('menu.total_sale') :</th>
+                                <th>@lang('menu.total_sale') </th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale) }}
@@ -92,7 +92,7 @@
                             </tr>
 
                             <tr>
-                                <th>@lang('menu.sale_including_tax') :</th>
+                                <th>@lang('menu.sale_including_tax') </th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
@@ -100,7 +100,7 @@
                             </tr>
 
                             <tr>
-                                <th>@lang('menu.sale_return_including_tax') :</th>
+                                <th>@lang('menu.sale_return_including_tax') </th>
                                 <td>
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
@@ -108,7 +108,7 @@
                             </tr>
 
                             <tr>
-                                <th> {{ __('Sale Due') }} :</th>
+                                <th> {{ __('Sale Due') }} </th>
                                 <td>{{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}</td>
                             </tr>

@@ -9,19 +9,19 @@
             <form id="edit_leave_type_form" action="{{ route('hrm.leave.type.update', $leaveType->id) }}">
                 <input type="hidden" name="id" id="id">
                 <div class="form-group">
-                    <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
+                    <label><b>@lang('menu.leave_type') </b> <span class="text-danger">*</span></label>
                     <input required type="text" name="leave_type" class="form-control edit_input" data-name="leave type" id="e_leave_type" value="{{ $leaveType->leave_type }}" placeholder="@lang('menu.leave_type')" required="" />
                     <span class="error error_e_leave_type"></span>
                 </div>
 
                  <div class="form-group">
-                    <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
+                    <label><b>{{ __('Max leave count') }} </b> <span class="text-danger">*</span></label>
                     <input required type="text" name="max_leave_count" class="form-control edit_input" data-name="max leave count" id="e_max_leave_count" value="{{ $leaveType->max_leave_count }}" placeholder="{{ __('Max leave count') }}"  />
                     <span class="error error_e_max_leave_count"></span>
                 </div>
 
                 <div class="form-group">
-                    <label><b>{{ __('Leave Count Interval') }} :</b></label>
+                    <label><b>{{ __('Leave Count Interval') }} </b></label>
                     <select name="leave_count_interval" class="form-control" id="e_leave_count_interval">
                         <option {{ $leaveType->leave_count_interval == 0 ? 'SELECTED' : '' }} value="0">None</option>
                         <option {{ $leaveType->leave_count_interval == 1 ? 'SELECTED' : '' }} value="1">Current Month</option>

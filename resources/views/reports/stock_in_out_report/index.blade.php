@@ -40,7 +40,7 @@
                                 <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
                                     <div class="form-group row">
                                         <div class="col-lg-2 col-md-4 search_area">
-                                            <label><strong>{{ __('Search Product') }} :</strong></label>
+                                            <label><strong>{{ __('Search Product') }} </strong></label>
                                             <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
                                             <input type="hidden" name="product_id" id="product_id" value="">
                                             <input type="hidden" name="variant_id" id="variant_id" value="">
@@ -54,7 +54,7 @@
                                         @if ($generalSettings['addons__branches'] == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-lg-2 col-md-4">
-                                                    <label><strong>@lang('menu.business_location') :</strong></label>
+                                                    <label><strong>@lang('menu.business_location') </strong></label>
                                                     <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -71,7 +71,7 @@
                                         @endif
 
                                         <div class="col-lg-2 col-md-4">
-                                            <label><strong>@lang('menu.customer') :</strong></label>
+                                            <label><strong>@lang('menu.customer') </strong></label>
                                             <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="NULL">{{ __('Walk-In-Customer') }}</option>
@@ -82,7 +82,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-4">
-                                            <label><strong>@lang('menu.from_date') :</strong></label>
+                                            <label><strong>@lang('menu.from_date') </strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -95,7 +95,7 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-4">
-                                            <label><strong>@lang('menu.to_date') :</strong></label>
+                                            <label><strong>@lang('menu.to_date') </strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -151,7 +151,7 @@
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr class="bg-secondary">
-                                            <th colspan="4" class="text-white text-end">Total Sold Qty: </th>
+                                            <th colspan="4" class="text-white text-end">Total Sold Qty</th>
                                             <th id="sold_qty" class="text-white text-end"></th>
                                             <th class="text-white text-end">---</th>
                                             <th class="text-white text-start">---</th>

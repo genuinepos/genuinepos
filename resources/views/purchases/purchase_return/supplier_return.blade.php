@@ -49,7 +49,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.b_location') :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.b_location') </b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'] }}">
                                         </div>
@@ -58,14 +58,14 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>@lang('menu.r_invoice_id') :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.r_invoice_id') </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.invoice_id')">
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.warehouse') :</b></label>
+                                        <label class="col-4"><b>@lang('menu.warehouse') </b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
@@ -80,7 +80,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.date') :</b> <span
+                                        <label class="col-4"><b>@lang('menu.date') </b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control changeable" autocomplete="off"
@@ -107,7 +107,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.attachment') :</b></label>
+                                        <label class="col-4"><b>@lang('menu.attachment') </b></label>
                                         <div class="col-8">
                                             <input type="file" class="form-control" name="attachment">
                                         </div>
@@ -172,7 +172,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group mt-1">
-                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.tax') :</b>  <span class="text-danger">*</span></label>
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.tax') </b>  <span class="text-danger">*</span></label>
                                         <div class="col-6">
                                             <select name="purchase_tax" class="form-control" id="purchase_tax">
                                             </select>
@@ -183,7 +183,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label><strong> Tax Amount (+) : </strong> <span class="label_purchase_tax_amount">  0.00</span></label>
+                                        <label><strong> Tax Amount (+) </strong> <span class="label_purchase_tax_amount">  0.00</span></label>
                                     </div>
                                 </div>
 

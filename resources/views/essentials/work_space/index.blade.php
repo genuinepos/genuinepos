@@ -34,7 +34,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
@@ -50,7 +50,7 @@
                                     @endif
 
                                     <div class="col-md-3">
-                                        <label><strong>@lang('menu.priority') : </strong></label>
+                                        <label><strong>@lang('menu.priority') </strong></label>
                                         <select name="priority"
                                             class="form-control submit_able select2" id="priority" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label><strong>@lang('menu.status') : </strong></label>
+                                        <label><strong>@lang('menu.status') </strong></label>
                                         <select name="status"
                                             class="form-control submit_able select2" id="status" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label><strong>@lang('menu.date_range') :</strong></label>
+                                        <label><strong>@lang('menu.date_range') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -150,12 +150,12 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.name') :</b><span class="text-danger"> *</span></label>
+                                <label><b>@lang('menu.name') </b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="name" class="form-control" placeholder="Workspace Name">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>@lang('menu.assigned_to') :</b><span class="text-danger"> *</span></label>
+                                <label><b>@lang('menu.assigned_to') </b><span class="text-danger"> *</span></label>
                                 <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
@@ -166,7 +166,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.priority') : </b><span class="text-danger"> *</span></label>
+                                <label><b>@lang('menu.priority') </b><span class="text-danger"> *</span></label>
                                 <select required name="priority" class="form-control">
                                     <option value="">@lang('menu.select_priority')</option>
                                     <option value="Low">@lang('menu.low')</option>
@@ -177,7 +177,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.status') : </strong><span class="text-danger"> *</span></label>
+                                <label><strong>@lang('menu.status') </strong><span class="text-danger"> *</span></label>
                                 <select required name="status" class="form-control">
                                     <option value="">@lang('menu.select_status')</option>
                                     <option value="New">@lang('menu.new')</option>
@@ -190,31 +190,31 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.start_date') : </b><span class="text-danger"> *</span></label>
+                                <label><b>@lang('menu.start_date') </b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="start_date" class="form-control datepicker" value="{{date($generalSettings['business__date_format'])}}" autocomplete="off">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>@lang('menu.end_date') : </b><span class="text-danger"> *</span></label>
+                                <label><b>@lang('menu.end_date') </b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.description') : </b></label>
+                                <label><b>@lang('menu.description') </b></label>
                                 <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description."></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Documents : </b></label>
+                                <label><b>Documents </b></label>
                                 <input type="file" name="documents[]" class="form-control" multiple id="documents" placeholder="Workspace Description.">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>{{ __('Estimated Hour') }} : </b></label>
+                                <label><b>{{ __('Estimated Hour') }} </b></label>
                                 <input type="text" name="estimated_hours" class="form-control" placeholder="{{ __('Estimated Hour') }}">
                             </div>
                         </div>

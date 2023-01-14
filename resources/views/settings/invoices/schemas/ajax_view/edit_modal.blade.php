@@ -2,7 +2,7 @@
  <form id="edit_schema_form" action="{{ route('invoices.schemas.update', $schema->id) }}" method="POST">
     @csrf
     <div class="form-group">
-        <label><b>@lang('menu.preview') :</b> <span id="e_schema_preview">#{{$schema->prefix.''.$schema->start_from}}</span></label>
+        <label><b>@lang('menu.preview') </b> <span id="e_schema_preview">#{{$schema->prefix.''.$schema->start_from}}</span></label>
     </div>
 
     <div class="form-group row">
@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-md-6">
-            <label>@lang('menu.start_from') :</label>
+            <label>@lang('menu.start_from') </label>
             <input type="number" name="start_from" class="form-control form-control-sm" id="e_start_from" placeholder="@lang('menu.start_from')" value="{{ $schema->start_from }}"/>
         </div>
     </div>

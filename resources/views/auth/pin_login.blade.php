@@ -72,7 +72,7 @@
                                                     src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS"
                                                     class="logo">
                                             </p>
-                                            <p class="details"><span>@lang('menu.address'):</span> Motijheel Arambagh, Dhaka</p>
+                                            <p class="details"><span>@lang('menu.address')</span> Motijheel Arambagh, Dhaka</p>
                                             <p class="details"><span>@lang('menu.support')</span> support@speeddigit.com</p>
                                             <p class="details"><span>@lang('menu.website')</span> www.speeddigit.com</p>
 

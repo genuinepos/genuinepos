@@ -11,10 +11,10 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>{{ __('Employee') }} : </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name }}
+                    <li><strong>{{ __('Employee') }} </strong>{{ $payroll->employee->prefix.' '.$payroll->employee->name.' '.$payroll->employee->last_name }}
                     </li>
 
-                    <li><strong>@lang('menu.branch') : </strong>
+                    <li><strong>@lang('menu.branch') </strong>
                         @if ($payroll->employee->branch)
                             {{ $payroll->employee->branch->name . '/' . $payroll->employee->branch->branch_code }}
                         @else
@@ -29,7 +29,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> @lang('menu.reference_no') : </strong>{{ $payroll->reference_no }} </li>
+                    <li><strong> @lang('menu.reference_no') </strong>{{ $payroll->reference_no }} </li>
 
                 </ul>
             </div>
@@ -40,7 +40,7 @@
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}
                         </strong>{{ $payroll->due }} </li>
-                    <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($payroll->date))}} </li>
+                    <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($payroll->date))}} </li>
                 </ul>
             </div>
         </div>

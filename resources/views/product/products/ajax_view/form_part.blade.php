@@ -2,7 +2,7 @@
     <div class="row mt-1">
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.unit_cost') :</b> <span class="text-danger">*</span></label>
+                <label for="inputEmail3" class="col-4"><b>@lang('menu.unit_cost') </b> <span class="text-danger">*</span></label>
                 <div class="col-8">
                     <input type="number" step="any" name="product_cost" class="form-control"
                     autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
@@ -13,7 +13,7 @@
 
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
+                <label for="inputEmail3" class="col-4"><b>@lang('menu.price_exc_tax') </b> <span class="text-danger">*</span></label>
                 <div class="col-8">
                     <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="">
                 <span class="error error_product_price"></span>
@@ -25,7 +25,7 @@
     <div class="row mt-1">
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.unit_cost')(Inc.Tax) :</b> <span class="text-danger">*</span></label>
+                <label for="inputEmail3" class="col-4"><b>@lang('menu.unit_cost')(Inc.Tax) </b> <span class="text-danger">*</span></label>
                 <div class="col-8">
                     <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="0.00">
                     <span class="error error_product_cost_with_tax"></span>
@@ -35,7 +35,7 @@
 
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.profit_margin')(%) :</b> <span class="text-danger">*</span></label>
+                <label for="inputEmail3" class="col-4"><b>@lang('menu.profit_margin')(%) </b> <span class="text-danger">*</span></label>
                 <div class="col-8">
                     <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
                 </div>
@@ -47,7 +47,7 @@
         <div class="row mt-1">
             <div class="col-md-6">
                 <div class="input-group">
-                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') :</b> </label>
+                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') </b> </label>
                     <div class="col-8">
                         <select class="form-control" name="tax_id" id="tax_id">
                             <option value="">@lang('menu.no_tax')</option>
@@ -61,7 +61,7 @@
 
             <div class="col-md-6">
                 <div class="input-group">
-                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax_type') :</b> </label>
+                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax_type') </b> </label>
                     <div class="col-8">
                         <select name="tax_type" class="form-control" id="tax_type">
                             <option value="1">@lang('menu.exclusive')</option>
@@ -76,7 +76,7 @@
     <div class="row mt-1">
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.thumbnail_photo') :</b> </label>
+                <label for="inputEmail3" class="col-4"><b>@lang('menu.thumbnail_photo') </b> </label>
                 <div class="col-8">
                     <input type="file" name="photo" class="form-control" id="photo">
                     <span class="error error_photo"></span>
@@ -218,7 +218,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="3" class="text-center">@lang('menu.net_total_amount') :</th>
+                                            <th colspan="3" class="text-center">@lang('menu.net_total_amount') </th>
                                             <th>
                                                 {{ $generalSettings['business__currency']}} <span class="span_total_combo_price">0.00</span>
 
@@ -238,13 +238,13 @@
 
     <div class="row">
         <div class="col-md-3 offset-3">
-            <label><b>@lang('menu.x_margin'):</b></label>
+            <label><b>@lang('menu.x_margin')</b></label>
             <input type="text" name="profit" class="form-control form-control-sm" id="profit"
                 value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.default_price') Exc.Tax :</b></label>
+            <label><b>@lang('menu.default_price') Exc.Tax </b></label>
             <input type="text" name="combo_price" class="form-control form-control-sm" id="combo_price">
         </div>
     </div>

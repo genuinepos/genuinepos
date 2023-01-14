@@ -31,8 +31,8 @@
                                 <p class="company_address">
                                     {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                                 </p>
-                                <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
-                                <p><strong>@lang('menu.email') :</strong> {{ $receipt->email }}</p>
+                                <p><strong>@lang('menu.phone') </strong> {{ $receipt->phone }}</p>
+                                <p><strong>@lang('menu.email') </strong> {{ $receipt->email }}</p>
                             @else
                                 <h6 class="company_name"><b>{{ $generalSettings['business__shop_name'] }}</b></h6>
                                 <p class="company_address">{{ $generalSettings['business__address'] }}</p>
@@ -194,8 +194,8 @@
                                 <p class="company_address">
                                     {{ $receipt->city ? $receipt->city : '' }},{{ $receipt->state ? $receipt->state : '' }},{{ $receipt->zip_code ? $receipt->zip_code : '' }},{{ $receipt->country ? $receipt->country : '' }}.
                                 </p>
-                                <p><strong>@lang('menu.phone') :</strong> {{ $receipt->phone }}</p>
-                                <p><strong>@lang('menu.email') :</strong> {{ $receipt->email }}</p>
+                                <p><strong>@lang('menu.phone') </strong> {{ $receipt->phone }}</p>
+                                <p><strong>@lang('menu.email') </strong> {{ $receipt->email }}</p>
                             @else
                                 <h6 class="company_name"><b>{{ $generalSettings['business__shop_name'] }}</b></h6>
                                 <p class="company_address">{{ $generalSettings['business__address'] }}</p>

@@ -43,7 +43,7 @@
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><b>@lang('menu.location') :</b> </label>
+                                                <label class="col-4"><b>@lang('menu.location') </b> </label>
                                                 <div class="col-8">
                                                     <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                     <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'] }}">
@@ -54,14 +54,14 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __('PR. Invoice ID') }} :</b> </label>
+                                                <label class="col-4"><b>{{ __('PR. Invoice ID') }} </b> </label>
                                                 <div class="col-8">
                                                     <input type="text" name="invoice_id" id="invoice_id" class="form-control" value="{{ $return->invoice_id }}">
                                                 </div>
                                             </div>
 
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><b>@lang('menu.warehouse') :</b>
+                                                <label class="col-4"><b>@lang('menu.warehouse') </b>
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -80,7 +80,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label class="col-4"><b>@lang('menu.return_date') :</b>
+                                                <label class="col-4"><b>@lang('menu.return_date') </b>
                                                     <span class="text-danger">*</span>
                                                 </label>
 
@@ -113,7 +113,7 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>@lang('menu.attachment') :</b> </label>
+                                                <label for="inputEmail3" class="col-4"><b>@lang('menu.attachment') </b> </label>
                                                 <div class="col-8">
                                                     <input type="file" class="form-control" name="attachment">
                                                 </div>
@@ -233,7 +233,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="input-group mt-1">
-                                                <label class="col-4"><strong>@lang('menu.tax') : </strong></label>
+                                                <label class="col-4"><strong>@lang('menu.tax') </strong></label>
                                                 <div class="col-8">
 
                                                     <select name="purchase_tax" class="form-control" id="purchase_tax">
@@ -252,13 +252,13 @@
 
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <label><strong> @lang('menu.tax_amount') (+) : </strong></label> <span class="label_purchase_tax_amount"> 0.00</span>
+                                                <label><strong> @lang('menu.tax_amount') (+) </strong></label> <span class="label_purchase_tax_amount"> 0.00</span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4 text-center"><strong>@lang('menu.net_total_amount') : </strong> {{ $generalSettings['business__currency'] }}</label>
+                                                <label class="col-4 text-center"><strong>@lang('menu.net_total_amount') </strong> {{ $generalSettings['business__currency'] }}</label>
                                                 <div class="col-8">
                                                     <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                                 </div>

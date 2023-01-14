@@ -15,51 +15,51 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.customer_id')</b> : </label>
+            <label><b>@lang('menu.customer_id')</b> </label>
             <input readonly type="text" name="contact_id" class="form-control" placeholder="@lang('menu.customer_id')" value="{{ $customer->contact_id }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.business_name')</b> : </label>
+            <label><b>@lang('menu.business_name')</b> </label>
             <input type="text" name="business_name" class="form-control" placeholder="@lang('menu.business_name')" id="e_business_name" value="{{ $customer->business_name }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>@lang('menu.alternative_number')</b> : </label>
+            <label><b>@lang('menu.alternative_number')</b> </label>
             <input type="text" name="alternative_phone" class="form-control" placeholder="Alternative phone number" value="{{ $customer->alternative_phone }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.landline')</b> : </label>
+            <label><b>@lang('menu.landline')</b> </label>
             <input type="text" name="landline" class="form-control" placeholder="landline number" value="{{ $customer->landline }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.email')</b> : </label>
+            <label><b>@lang('menu.email')</b> </label>
             <input type="text" name="email" class="form-control" placeholder="Email address" value="{{ $customer->email }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>@lang('menu.tax_number')</b> : </label>
+            <label><b>@lang('menu.tax_number')</b> </label>
             <input type="text" name="tax_number" class="form-control" placeholder="Tax number" value="{{ $customer->tax_number }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><strong>@lang('menu.opening_balance') :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
+            <label><strong>@lang('menu.opening_balance') </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
             <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance" placeholder="@lang('menu.opening_balance')" value="{{ $branchOpeningBalance ? $branchOpeningBalance->amount : 0.00 }}" />
         </div>
 
         <div class="col-md-3">
-            <label><strong>@lang('menu.credit_limit') :</strong> </label>
+            <label><strong>@lang('menu.credit_limit') </strong> </label>
             <input type="number" step="any" name="credit_limit" class="form-control" id="e_credit_limit" placeholder="@lang('menu.credit_limit')" value="{{ $customerCreditLimit ? $customerCreditLimit->credit_limit : '' }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.pay_term')</b> : </label>
+            <label><b>@lang('menu.pay_term')</b> </label>
             <div class="row">
                 <div class="col-md-5">
                     <input type="text" name="pay_term_number" class="form-control" id="e_pay_term_number" value="{{ $customerCreditLimit ? $customerCreditLimit->pay_term_number : '' }}" placeholder="Number"/>
@@ -78,7 +78,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>@lang('menu.customer_group')</b> : </label>
+            <label><b>@lang('menu.customer_group')</b> </label>
             <select name="customer_group_id" class="form-control">
                 <option value="">@lang('menu.none')</option>
                 @foreach ($groups as $group)
@@ -88,7 +88,7 @@
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.date_of_birth')</b> : </label>
+            <label><b>@lang('menu.date_of_birth')</b> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -98,36 +98,36 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>@lang('menu.address')</b> : </label>
+            <label><b>@lang('menu.address')</b> </label>
             <input type="text" name="address" class="form-control" placeholder="Address" value="{{ $customer->address }}">
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-3">
-            <label><b>@lang('menu.city')</b> : </label>
+            <label><b>@lang('menu.city')</b> </label>
             <input type="text" name="city" class="form-control" placeholder="City" value="{{ $customer->city }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.state')</b> : </label>
+            <label><b>@lang('menu.state')</b> </label>
             <input type="text" name="state" class="form-control" placeholder="@lang('menu.state')" value="{{ $customer->state }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.country')</b> : </label>
+            <label><b>@lang('menu.country')</b> </label>
             <input type="text" name="country" class="form-control" placeholder="@lang('menu.country')" value="{{ $customer->country }}"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.zip_code')</b> : </label>
+            <label><b>@lang('menu.zip_code')</b> </label>
             <input type="text" name="zip_code" class="form-control" placeholder="zip_code" value="{{ $customer->zip_code }}"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-5">
-            <label><b>@lang('menu.shipping_address')</b> : </label>
+            <label><b>@lang('menu.shipping_address')</b> </label>
             <input type="text" name="shipping_address" class="form-control" placeholder="@lang('menu.shipping_address')" value="{{ $customer->shipping_address }}"/>
         </div>
     </div>

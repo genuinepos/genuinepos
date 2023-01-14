@@ -27,7 +27,7 @@
                             @csrf
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.default_sale_discount') :</strong></label>
+                                    <label><strong>@lang('menu.default_sale_discount') </strong></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.default_sale_tax') :</strong></label>
+                                    <label><strong>@lang('menu.default_sale_tax') </strong></label>
                                     <select name="default_tax_id" class="form-control">
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($taxes as $tax)
@@ -74,7 +74,7 @@
 
                             <div class="form-group row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>{{ __('Default Selling Price Group') }} :</strong></label>
+                                    <label><strong>{{ __('Default Selling Price Group') }} </strong></label>
                                     <select name="default_price_group_id" class="form-control">
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($price_groups as $pg)

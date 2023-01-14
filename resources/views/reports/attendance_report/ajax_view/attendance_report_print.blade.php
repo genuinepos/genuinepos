@@ -18,7 +18,7 @@
                 <div class="company_name text-center">
                     <h3><b>{{ $generalSettings['business__shop_name'] }}</b> </h3>
                     @if ($branch_id != 'NULL' && $branch_id != '')
-                    
+
                         @php
                             $branch = DB::table('branches')->where('id', $branch_id)->first(['id', 'name', 'branch_code']);
                         @endphp
@@ -30,7 +30,7 @@
 
                     <h6><b>@lang('menu.attendance_report')</b></h6>
                     @if ($fromDate && $toDate)
-                        <p><b>@lang('menu.date') :</b>
+                        <p><b>@lang('menu.date') </b>
                             {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                             <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
                         </p>

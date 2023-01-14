@@ -12,18 +12,18 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>@lang('menu.customer') : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.customer') </strong>
                         <span class="card_text customer_name">
                             {{ $customer->name }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>@lang('menu.phone') : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.phone') </strong>
                         <span class="card_text customer_name">
                             {{ $customer->phone }}
                         </span>
                     </li>
                     <li class="text-navy-blue">
-                        <strong>@lang('menu.business') : </strong>
+                        <strong>@lang('menu.business') </strong>
                         <span class="card_text customer_business">{{ $customer->business_name }}</span>
                     </li>
                 </ul>
@@ -33,19 +33,19 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li class="text-navy-blue"><strong>@lang('menu.total_sale') : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_sale') </strong>
                         <span class="card_text">
                             {{ $generalSettings['business__currency'] }}
                             {{ $customer->total_sale }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>@lang('menu.total_paid') : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_paid') </strong>
                         <span class="card_text">
                             {{ $generalSettings['business__currency'] }}
                             {{ $customer->total_paid }}
                         </span>
                     </li>
-                    <li class="text-navy-blue"><strong>@lang('menu.total_due') : </strong>
+                    <li class="text-navy-blue"><strong>@lang('menu.total_due') </strong>
                         <span class="card_text">
                             {{ $generalSettings['business__currency'] }}
                             {{ $customer->total_sale_due }}

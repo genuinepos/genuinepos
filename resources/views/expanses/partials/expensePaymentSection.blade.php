@@ -19,7 +19,7 @@
 
                 <div class="col-md-6">
                     <div class="input-group mt-1">
-                        <label class="col-4"><b>{{ __('Pay Method') }} :</b></label>
+                        <label class="col-4"><b>{{ __('Pay Method') }} </b></label>
                         <div class="col-8">
                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                 @foreach ($methods as $method)
@@ -38,7 +38,7 @@
             <div class="row gx-2 mt-1">
                 <div class="col-md-6">
                     <div class="input-group">
-                        <label class="col-4"><b>@lang('menu.credit_account') :</b></label>
+                        <label class="col-4"><b>@lang('menu.credit_account') </b></label>
                         <div class="col-8">
                             <select required name="account_id" class="form-control" id="account_id">
                                 @foreach ($accounts as $account)
@@ -60,7 +60,7 @@
 
                 <div class="col-md-6">
                     <div class="input-group">
-                        <label class="col-4"><b>@lang('menu.total_due') :</b> </label>
+                        <label class="col-4"><b>@lang('menu.total_due') </b> </label>
                         <div class="col-8">
                             <input readonly name="total_due" type="number" step="any" id="total_due" class="form-control text-danger" value="0.00">
                         </div>
@@ -71,7 +71,7 @@
             <div class="row mt-1">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <label class="col-lg-2 col-4"><b>@lang('menu.payment_note') :</b></label>
+                        <label class="col-lg-2 col-4"><b>@lang('menu.payment_note') </b></label>
 
                         <div class="col-lg-10 col-8">
                             <input type="text" name="payment_note" class="form-control form-control-sm" id="payment_note" placeholder="@lang('menu.payment_note')">

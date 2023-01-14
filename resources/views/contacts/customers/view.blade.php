@@ -67,7 +67,7 @@
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-lg-3 col-md-6">
-                                                            <label><strong>@lang('menu.business_location') :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') </strong></label>
                                                             <select name="branch_id" class="form-control submit_able select2"
                                                                 id="ledger_branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
@@ -87,7 +87,7 @@
                                                 @endif
 
                                                 <div class="col-lg-3 col-md-6">
-                                                    <label><strong>@lang('menu.voucher_type') :</strong></label>
+                                                    <label><strong>@lang('menu.voucher_type') </strong></label>
                                                     <select name="voucher_type" class="form-control submit_able select2" id="ledger_voucher_type" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
@@ -97,7 +97,7 @@
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-6">
-                                                    <label><strong>@lang('menu.from_date') :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -107,7 +107,7 @@
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-6">
-                                                    <label><strong>@lang('menu.to_date') :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -175,11 +175,11 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong>@lang('menu.customer_name') :</strong></li>
+                                    <li><strong>@lang('menu.customer_name') </strong></li>
                                     <li><span class="name">{{ $customer->name }}</span></li><br>
-                                    <li><strong><i class="fas fa-map-marker-alt"></i> @lang('menu.address') :</strong></li>
+                                    <li><strong><i class="fas fa-map-marker-alt"></i> @lang('menu.address') </strong></li>
                                     <li><span class="address">{{ $customer->address }}</span></li><br>
-                                    <li><strong><i class="fas fa-briefcase"></i> @lang('menu.business_name') :</strong></li>
+                                    <li><strong><i class="fas fa-briefcase"></i> @lang('menu.business_name') </strong></li>
                                     <li><span class="business">{{ $customer->business_name }}</span></li>
                                 </ul>
                             </div>
@@ -257,7 +257,7 @@
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-lg-3 col-md-6">
-                                                            <label><strong>@lang('menu.business_location') :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') </strong></label>
                                                             <select name="branch_id" class="form-control submit_able select2" id="sale_branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 <option value="NULL">
@@ -274,7 +274,7 @@
                                                 @endif
 
                                                 <div class="col-lg-3 col-md-6">
-                                                    <label><strong>@lang('menu.from_date') :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -284,7 +284,7 @@
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-6">
-                                                    <label><strong>@lang('menu.to_date') :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -337,7 +337,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="5" class="text-end text-white">@lang('menu.total') :</th>
+                                                    <th colspan="5" class="text-end text-white">@lang('menu.total') </th>
                                                     <th class="text-end text-white" id="total_payable_amount"></th>
                                                     <th class="text-end text-white" id="paid"></th>
                                                     <th class="text-end text-white" id="due"></th>
@@ -376,7 +376,7 @@
                                                                 @if ($generalSettings['addons__branches'] == 1)
                                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                                         <div class="col-lg-3 col-md-6">
-                                                                            <label><strong>@lang('menu.business_location') :</strong></label>
+                                                                            <label><strong>@lang('menu.business_location') </strong></label>
                                                                             <select name="branch_id" class="form-control submit_able select2" id="payment_branch_id" autofocus>
                                                                                 <option value="">@lang('menu.all')</option>
                                                                                 <option value="NULL">
@@ -393,7 +393,7 @@
                                                                 @endif
 
                                                                 <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>@lang('menu.from_date') :</strong></label>
+                                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -403,7 +403,7 @@
                                                                 </div>
 
                                                                 <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>@lang('menu.to_date') :</strong></label>
+                                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -477,7 +477,7 @@
                                                 <tbody></tbody>
                                                 <tfoot>
                                                     <tr class="bg-secondary">
-                                                        <th class="text-end text-white" colspan="7">@lang('menu.total') : </th>
+                                                        <th class="text-end text-white" colspan="7">@lang('menu.total') </th>
                                                         <th class="text-end text-white" id="less_amount"></th>
                                                         <th class="text-end text-white" id="amount"></th>
                                                         <th class="text-start text-white">---</th>

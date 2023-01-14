@@ -27,7 +27,7 @@
                                     <form id="filter_form" class="p-2">
                                         <div class="form-group row">
                                             <div class="col-xl-2 col-lg-3 col-md-4">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
@@ -135,27 +135,27 @@
                         @csrf
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
                                     data-name="Customer name" id="name" placeholder="@lang('menu.customer_name')" />
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.phone') :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.phone') </strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="phone" class="form-control add_input"
                                     data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')" />
                                 <span class="error error_phone"></span>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.customer') ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.customer') ID </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
                                 <input type="text" name="contact_id" class="form-control"
                                     placeholder="@lang('menu.customer') ID" readonly/>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.business_name') :</strong></label>
+                                <label><strong>@lang('menu.business_name') </strong></label>
                                 <input type="text" name="business_name" class="form-control"
                                     placeholder="@lang('menu.business_name')" />
                             </div>
@@ -163,19 +163,19 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.alternative_number') :</strong> </label>
+                                <label><strong>@lang('menu.alternative_number') </strong> </label>
                                 <input type="text" name="alternative_phone" class="form-control"
                                     placeholder="Alternative phone number" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.landline') :</strong></label>
+                                <label><strong>@lang('menu.landline') </strong></label>
                                 <input type="text" name="landline" class="form-control"
                                     placeholder="landline number" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.email') :</strong></label>
+                                <label><strong>@lang('menu.email') </strong></label>
                                 <input type="text" name="email" class="form-control"
                                     placeholder="Email address" />
                             </div>
@@ -183,25 +183,25 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.tax_number') :</strong></label>
+                                <label><strong>@lang('menu.tax_number') </strong></label>
                                 <input type="text" name="tax_number" class="form-control"
                                     placeholder="@lang('menu.tax_number')" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.opening_balance') :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.opening_balance') </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
                                 <input type="number" step="any" name="opening_balance" class="form-control"
                                     placeholder="@lang('menu.opening_balance')" value="0.00" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.credit_limit') :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
+                                <label><strong>@lang('menu.credit_limit') </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
                                 <input type="number" step="any" name="credit_limit" class="form-control"
                                     placeholder="@lang('menu.credit_limit')" value=""/>
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.pay_term') :</strong> </label>
+                                <label><strong>@lang('menu.pay_term') </strong> </label>
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -223,7 +223,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.customer_group') :</strong> </label>
+                                <label><strong>@lang('menu.customer_group') </strong> </label>
                                 <select name="customer_group_id" class="form-control"
                                     id="customer_group_id">
                                     <option value="">@lang('menu.none')</option>
@@ -234,7 +234,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.date_of_birth'):</strong></label>
+                                <label><strong>@lang('menu.date_of_birth')</strong></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">
@@ -247,30 +247,30 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.address') :</strong> </label>
+                                <label><strong>@lang('menu.address') </strong> </label>
                                 <input type="text" name="address" class="form-control" placeholder="Address">
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.city') :</strong> </label>
+                                <label><strong>@lang('menu.city') </strong> </label>
                                 <input type="text" name="city" class="form-control" placeholder="@lang('menu.city')" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.state') :</strong> </label>
+                                <label><strong>@lang('menu.state') </strong> </label>
                                 <input type="text" name="state" class="form-control" placeholder="@lang('menu.state')" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.country') :</strong> </label>
+                                <label><strong>@lang('menu.country') </strong> </label>
                                 <input type="text" name="country" class="form-control"
                                     placeholder="@lang('menu.country')" />
                             </div>
 
                             <div class="col-md-3">
-                                <label><strong>@lang('menu.zip_code') :</strong> </label>
+                                <label><strong>@lang('menu.zip_code') </strong> </label>
                                 <input type="text" name="zip_code" class="form-control"
                                     placeholder="zip_code" />
                             </div>
@@ -278,7 +278,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-5">
-                                <label><strong>@lang('menu.shipping_address') :</strong> </label>
+                                <label><strong>@lang('menu.shipping_address') </strong> </label>
                                 <input type="text" name="shipping_address" class="form-control"
                                     placeholder="@lang('menu.shipping_address')" />
                             </div>

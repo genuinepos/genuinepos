@@ -12,11 +12,11 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li>
-                        <strong>@lang('menu.supplier') : </strong>
+                        <strong>@lang('menu.supplier') </strong>
                         {{ $customer->name  }}
                     </li>
                     <li>
-                        <strong>@lang('menu.business') : </strong>
+                        <strong>@lang('menu.business') </strong>
                         {{ $customer->business_name }}
                     </li>
                 </ul>

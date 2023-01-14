@@ -70,13 +70,13 @@
                     <!--begin::Form-->
                     <form id="add_tax_form" action="{{ route('settings.taxes.store') }}">
                         <div class="form-group">
-                            <label><b>@lang('menu.tax_name') :</b>  <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.tax_name') </b>  <span class="text-danger">*</span></label>
                             <input type="text" name="tax_name" class="form-control form-control-sm add_input" data-name="Tax name" id="tax_name" placeholder="@lang('menu.tax_name')"/>
                             <span class="error error_tax_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>@lang('menu.tax_percent') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.tax_percent') </b> <span class="text-danger">*</span></label>
                             <input type="number" name="tax_percent" class="form-control form-control-sm add_input" data-name="Tax percent" id="tax_percent" placeholder="@lang('menu.tax_percent')"/>
                             <span class="error error_tax_percent"></span>
                         </div>
@@ -109,13 +109,13 @@
                     <form id="edit_tax_form" action="{{ route('settings.taxes.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>@lang('menu.unit_name') :</b>  <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.unit_name') </b>  <span class="text-danger">*</span></label>
                             <input type="text" name="tax_name" class="form-control edit_input" data-name="Name" id="e_tax_name" placeholder="@lang('menu.tax_name')"/>
                             <span class="error error_e_tax_name"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>@lang('menu.tax_percent') :</b><span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.tax_percent') </b><span class="text-danger">*</span></label>
                             <input type="text" name="tax_percent" class="form-control edit_input" data-name="Tax percent" id="e_tax_percent" placeholder="@lang('menu.branch_name')"/>
                             <span class="error error_e_tax_percent"></span>
                         </div>

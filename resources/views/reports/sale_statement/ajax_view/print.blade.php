@@ -41,7 +41,7 @@
 
         @if ($fromDate && $toDate)
 
-            <p><b>@lang('menu.date') :</b>
+            <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
@@ -186,7 +186,7 @@
             <thead>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Sold Item') }} : </th>
+                    <th class="text-end">{{ __('Total Sold Item') }} </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalItems) }}
                     </td>

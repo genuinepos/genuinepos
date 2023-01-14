@@ -27,11 +27,11 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.supplier') : </strong>
+                                <li><strong>@lang('menu.supplier') </strong>
                                     <span class="card_text customer_name">{{ $supplier->name }}</span>
                                 </li>
 
-                                <li><strong>@lang('menu.business') : </strong>
+                                <li><strong>@lang('menu.business') </strong>
                                     <span class="card_text customer_business">{{ $supplier->business_name }}</span>
                                 </li>
                             </ul>
@@ -41,21 +41,21 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.total_purchase') : </strong>
+                                <li><strong>@lang('menu.total_purchase') </strong>
                                     {{ $generalSettings['business__currency'] }}
                                     <span class="card_text">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase']) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>@lang('menu.total_paid') : </strong>
+                                <li><strong>@lang('menu.total_paid') </strong>
                                     {{ $generalSettings['business__currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>@lang('menu.total_due') : </strong>
+                                <li><strong>@lang('menu.total_due') </strong>
                                     {{ $generalSettings['business__currency'] }}
                                     <span class="card_text text-danger">
                                         <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b>
@@ -74,7 +74,7 @@
                     <div class="col-md-5">
                         <div class="row">
                             <div class="col-lg-12 mt-2">
-                                <label><strong>@lang('menu.business_location') : </strong> </label>
+                                <label><strong>@lang('menu.business_location') </strong> </label>
                                 <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
@@ -335,7 +335,7 @@
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p><strong>@lang('menu.total_amount') : </strong> <span id="total_amount">0.00</span></p>
+                                                    <p><strong>@lang('menu.total_amount') </strong> <span id="total_amount">0.00</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -348,7 +348,7 @@
                     <div class="col-md-7">
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span>
+                                <strong>@lang('menu.amount') </strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_f"></i></span>
@@ -361,7 +361,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <strong for="p_date">@lang('menu.date') :</strong> <span class="text-danger">*</span>
+                                <strong for="p_date">@lang('menu.date') </strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
@@ -373,19 +373,19 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.reference') :</strong> </label>
+                                <label><strong>@lang('menu.reference') </strong> </label>
                                 <input type="text" name="reference" class="form-control" step="any" placeholder="Payment Reference" autocomplete="off"/>
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.less_amount') :</strong> </label>
+                                <label><strong>@lang('menu.less_amount') </strong> </label>
                                 <input type="number" step="any" name="less_amount" id="p_less_amount" class="form-control" placeholder="@lang('menu.less_amount')" autocomplete="off"/>
                             </div>
 
                             <div class="col-md-4">
-                                <strong>@lang('menu.credit_account') :</strong>
+                                <strong>@lang('menu.credit_account') </strong>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_f"></i></span>
@@ -408,7 +408,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span>
+                                <strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
@@ -429,19 +429,19 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <strong>@lang('menu.attach_document') :</strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small>
+                                <strong>@lang('menu.attach_document') </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small>
                                 <input type="file" name="attachment" class="form-control">
                             </div>
 
                             <div class="col-md-8">
-                                <strong> @lang('menu.payment_note') :</strong>
+                                <strong> @lang('menu.payment_note') </strong>
                                 <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label><strong>@lang('menu.in_word'): </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
+                                <label><strong>@lang('menu.in_word')</strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
                             </div>
                         </div>
                     </div>

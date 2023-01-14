@@ -34,21 +34,21 @@
 
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <label><strong>{{ __('SMS URL') }} : </strong></label>
+                        <label><strong>{{ __('SMS URL') }} </strong></label>
                         <input type="text" name="SMS_URL" class="form-control"
                             placeholder="{{ __('SMS URL') }}" autocomplete="off"
                             value="{{ $generalSettings['sms__SMS_URL'] }}">
                     </div>
 
                     <div class="col-md-3">
-                        <label><strong>{{ __('API KEY') }} : </strong></label>
+                        <label><strong>{{ __('API KEY') }} </strong></label>
                         <input type="text" name="API_KEY" class="form-control"
                             placeholder="{{ __('API KEY') }}" autocomplete="off"
                             value="{{ $generalSettings['sms__API_KEY'] }}">
                     </div>
 
                     <div class="col-md-3">
-                        <label><strong>{{ __('SENDER ID') }} : </strong></label>
+                        <label><strong>{{ __('SENDER ID') }} </strong></label>
                         <input type="text" name="SENDER_ID" class="form-control"
                             placeholder="{{ __('SENDER ID') }}" autocomplete="off"
                             value="{{ $generalSettings['sms__SENDER_ID'] }}">

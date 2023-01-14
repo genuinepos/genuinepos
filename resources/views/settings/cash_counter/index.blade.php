@@ -69,7 +69,7 @@
                         enctype="multipart/form-data">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.counter_name') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.counter_name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="counter_name" class="form-control" id="counter_name"
                                     placeholder="@lang('menu.counter_name')"/>
                                 <span class="error error_counter_name"></span>
@@ -78,7 +78,7 @@
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label for=""><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <label for=""><b>@lang('menu.short_name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="short_name" class="form-control" id="short_name" placeholder="@lang('menu.short_name')">
                                 <span class="error error_short_name"></span>
                             </div>

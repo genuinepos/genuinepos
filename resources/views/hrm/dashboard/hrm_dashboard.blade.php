@@ -218,7 +218,7 @@
                                     <div class="widget_content">
                                         <div class="px-3 pt-2 pb-2">
                                             <div class="px-1">
-                                                <span><strong>{{ __('Upcoming Holidays') }}:</strong></span>
+                                                <span><strong>{{ __('Upcoming Holidays') }}</strong></span>
                                             </div>
                                             <ul class="list-group list-group-flush upcoming_holiday_list">
                                                 <li class="list-group-item list-group-item-warning">A simple warning list group item</li>

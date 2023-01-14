@@ -1,9 +1,21 @@
-<div class="col-lg-3 p-1">
+<style>
+    .cash_receive_input{
+      background-color: var(--white-color);
+      border: 1px solid #ced4da;
+      letter-spacing: -3px!important;
+      padding: 0px 3px 0px 0px!important;
+      font-weight: 700!important;
+    }
+    #net_total_amount[value] {
+        font-weight: 700;
+    }
+</style>
+<div class="col-lg-3">
     <div class="pos-right-inner">
         <div class="check-out-wraper">
             <div class="function-sec">
-                <div class="row">
-                    <div class="col-4 px-2 py-1">
+                <div class="row g-xxl-3 g-xl-2 g-lg-1">
+                    <div class="col-4">
                         <div class="btn-bg">
                             <a href="#"
                                 @if ($generalSettings['pos__is_enabled_draft'] == '1')
@@ -16,12 +28,12 @@
                                         toastr.error('Creating draft is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-orange function-card" tabindex="-1">@lang('menu.draft')<p>F2</p>
+                                class="function-card" tabindex="-1">@lang('menu.draft')<p>F2</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
                             <a href="#"
                                 @if ($generalSettings['pos__is_enabled_quotation'] == '1')
@@ -34,33 +46,33 @@
                                         toastr.error('Creating quotaion is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-orange function-card" tabindex="-1">@lang('menu.quotation')<p>F4</p>
+                                class="function-card" tabindex="-1">@lang('menu.quotation')<p>F4</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
                             <a href="#"
                             onclick="
                                 event.preventDefault();
                                 toastr.error('Exchange System is not available in pos sale edit section.');
                             "
-                            class="bg-orange function-card" tabindex="-1">
+                            class="function-card" tabindex="-1">
                             @lang('menu.exchange')<p>F6</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
-                            <a href="#" class="bg-gren function-card" id="show_stock" tabindex="-1">
+                            <a href="#" class="function-card" id="show_stock" tabindex="-1">
                                 Stock<p>Alt+C</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
                             <a href="#"
                                 @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
@@ -73,12 +85,12 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-gren function-card" tabindex="-1">@lang('menu.hold_invoices')<p>F8</p>
+                                class="function-card" tabindex="-1">@lang('menu.hold_invoices')<p>F8</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
                             <a href="#"
                                 @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
@@ -89,20 +101,20 @@
                                         toastr.error('Hold invoice is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-gren function-card" tabindex="-1">Pick Hold <p>F9</p>
+                                class="function-card" tabindex="-1">Pick Hold <p>F9</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
-                            <a href="{{ route('settings.general.index') }}" class="bg-swit function-card" tabindex="-1">
+                            <a href="{{ route('settings.general.index') }}" class="function-card" tabindex="-1">
                                 Setup <p>Ctrl+Q</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
                             <a href="#"
                                 @if ($generalSettings['pos__is_enabled_suspend'] == '1')
@@ -115,14 +127,14 @@
                                         toastr.error('Suspend is disabled in POS.');
                                     "
                                 @endif
-                                class="bg-swit function-card" tabindex="-1">{{ __('Suspend') }}<p>Alt+A</p>
+                                class="function-card function-card-danger" tabindex="-1">{{ __('Suspend') }}<p>Alt+A</p>
                             </a>
                         </div>
                     </div>
 
-                    <div class="col-4 px-2 py-1">
+                    <div class="col-4">
                         <div class="btn-bg">
-                            <a href="#" class="bg-swit function-card" onclick="cancel(); return false;" tabindex="-1">
+                            <a href="#" class="function-card function-card-danger" onclick="cancel(); return false;" tabindex="-1">
                                 @lang('menu.cancel')
                                 <p>Ctrl+M</p>
                             </a>
@@ -133,7 +145,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>@lang('menu.total'):</b></label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>@lang('menu.total')</b></label>
                         <div class="col-sm-9">
                             <input readonly type="number" class="form-control sp-input" name="net_total_amount" id="net_total_amount" value="0.00">
                         </div>
@@ -141,7 +153,7 @@
 
                     @if ($generalSettings['pos__is_enabled_order_tax'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Vat/Tax') }}:</label>
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Vat/Tax') }}</label>
                             <div class="col-sm-9 ">
                                 <select name="order_tax" class="form-control" id="order_tax">
 
@@ -157,7 +169,7 @@
 
                     @if ($generalSettings['pos__is_enabled_discount'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">@lang('menu.discount'):</label>
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">@lang('menu.discount')</label>
                             <div class="col-sm-9 ">
                                 <input name="order_discount" type="number" step="any" class="form-control"
                                     id="order_discount" value="0.00">
@@ -174,12 +186,12 @@
                     @endif
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Pre. Due') }}:</label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Pre. Due') }}</label>
                         <div class="col-sm-9 ">
                             <input readonly class="form-control" type="number" step="any" name="previous_due"
                                 id="previous_due" value="0.00" autocomplete="off">
                         </div>
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable:</label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable</label>
                         <div class="col-sm-9 ">
                             <input readonly class="form-control sp-input" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00">
@@ -189,7 +201,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.cash_receive'):</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.cash_receive')</label>
                         <div class="col-sm-6 ">
                             <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
                                 class="form-control" autocomplete="off">
@@ -197,7 +209,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.change_amount'):</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.change_amount')</label>
                         <div class="col-sm-6 ">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control">
@@ -205,7 +217,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>@lang('menu.due') :</b></label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>@lang('menu.due') </b></label>
                         <div class="col-sm-6 ">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
                                 class="form-control sp-input text-danger">
@@ -214,9 +226,9 @@
                 </div>
 
                 <div class="sub-btn-sec">
-                    <div class="row">
-                        <div class="col-lg-4 col-12 p-1 pb-1">
-                            <div class="btn-bg mb-1">
+                    <div class="row g-xxl-3 g-1">
+                        <div class="col-lg-4 col-6 m-order-2">
+                            <div class="btn-bg mb-xxl-1 mb-xl-1">
                                 <a href="#" class="bg-orange btn-pos"
                                     @if ($generalSettings['pos__is_enabled_credit_full_sale'] == '1')
                                         data-button_type="0"
@@ -227,28 +239,28 @@
                                             toastr.error('Full credit sale is disabled.');
                                         "
                                     @endif
-                                tabindex="-1"><i class="fas fa-check"></i> @lang('menu.credit_sale')</a>
+                                tabindex="-1">@lang('menu.credit_sale')</a>
                             </div>
 
                             <div class="btn-bg">
-                                <a href="#" class="bg-parpal btn-pos" id="reedem_point_button" tabindex="-1">@lang('menu.reedem_oint')</a>
+                                <a href="#" class="btn-pos" id="reedem_point_button" tabindex="-1">@lang('menu.reedem_oint')</a>
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
+                        <div class="col-lg-4 btn-bottom m-order-3">
                             <div class="btn-bg">
-                                <a href="#" class="bg-parpal function-card other_payment_method" tabindex="-1">
-                                    <small><i class="fas fa-credit-card"></i> @lang('menu.other_method')</small>
+                                <a href="#" class=" function-card other_payment_method" tabindex="-1">
+                                    <span>@lang('menu.other_method')</span>
                                     <p>Ctrl+B</p>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="col-lg-4 col-6 p-1 pb-0 btn-bottom">
+                        <div class="col-lg-4 btn-bottom">
                             <div class="btn-bg">
-                                <a href="#" class="bg-parpal function-card cash-btn" id="submit_btn" data-button_type="1"
+                                <a href="#" class="function-card cash-btn" id="submit_btn" data-button_type="1"
                                     data-action_id="1" tabindex="-1">
-                                        <small><i class="far fa-money-bill-alt"></i> @lang('menu.cash') </small>
+                                        <span>@lang('menu.cash') </span>
                                     <p>F10</p>
                                 </a>
                             </div>
@@ -478,4 +490,18 @@
         });
     }
     getEditSaleProducts();
+
+    $(".cat-button").on("click", function(){
+        $(this).addClass("active");
+        $(this).siblings().removeClass("active");
+    });
+
+    var width = $(".function-sec .btn-bg").width();
+    $(".function-sec .btn-bg").height(width / 1.2);
+    if($(window).width() >= 992) {
+        $(".function-sec .btn-bg").height(width / 1.4);
+    }
+    if($(window).width() >= 1200) {
+        $(".function-sec .btn-bg").height(width / 1.6);
+    }
 </script>

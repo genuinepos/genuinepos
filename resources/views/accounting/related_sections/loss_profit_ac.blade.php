@@ -27,7 +27,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control" id="branch_id" autofocus>
                                                     <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -42,7 +42,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -54,7 +54,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -103,7 +103,7 @@
                                                     {{-- Cash Flow from operations --}}
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.total_sale') :</em>
+                                                        <em>@lang('menu.total_sale') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -113,7 +113,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.purchase_return') :</em>
+                                                        <em>@lang('menu.purchase_return') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -123,7 +123,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.total_purchase') : </em>
+                                                        <em>@lang('menu.total_purchase') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -133,7 +133,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.sale_return') : </em>
+                                                        <em>@lang('menu.sale_return') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -143,7 +143,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.direct_expense') :</em>
+                                                        <em>@lang('menu.direct_expense') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -153,7 +153,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.total_production_cost') :</em>
+                                                        <em>@lang('menu.total_production_cost') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -163,7 +163,7 @@
 
                                                     {{-- <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.opening_stock') :</em>
+                                                        <em>@lang('menu.opening_stock') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -173,7 +173,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.closing_stock') :</em>
+                                                        <em>@lang('menu.closing_stock') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -183,7 +183,7 @@
 
                                                     <tr>
                                                         <th class="text-end">
-                                                            <em>@lang('menu.gross_profit') :</em>
+                                                            <em>@lang('menu.gross_profit') </em>
                                                         </th>
 
                                                         <td class="text-start">
@@ -194,20 +194,20 @@
                                                     {{-- Cash Flow from investing --}}
                                                     <tr>
                                                         <th class="text-start" colspan="2">
-                                                            <strong>@lang('menu.net_profit_loss_information') :</strong>
+                                                            <strong>@lang('menu.net_profit_loss_information') </strong>
                                                         </th>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.gross_profit') :</em>
+                                                            <em>@lang('menu.gross_profit') </em>
                                                         </td>
                                                         <td class="text-start"><em>0.00</em> </td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_stock_adjustment') :</em>
+                                                            <em>@lang('menu.total_stock_adjustment') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -217,7 +217,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_adjustment_recovered') :</em>
+                                                            <em>@lang('menu.total_adjustment_recovered') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -227,7 +227,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_sale_order_tax') :</em>
+                                                            <em>@lang('menu.total_sale_order_tax') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -237,7 +237,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                        <em>@lang('menu.item_sold_individual_tax') :</em>
+                                                        <em>@lang('menu.item_sold_individual_tax') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -247,7 +247,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.indirect_expense') :</em>
+                                                            <em>@lang('menu.indirect_expense') </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -257,7 +257,7 @@
 
                                                     <tr>
                                                         <th class="text-end">
-                                                            <em>@lang('menu.net_profit') :</em>
+                                                            <em>@lang('menu.net_profit') </em>
                                                         </th>
 
                                                         <td class="text-start">
@@ -312,7 +312,7 @@
      //Print purchase Payment report
      $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
-        
+
         var url = "{{ route('accounting.profit.loss.account.print') }}";
         var branch_id = $('#branch_id').val();
         var from_date = $('#from_date').val();

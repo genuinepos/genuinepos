@@ -18,13 +18,13 @@
                         @endphp
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>@lang('menu.cash_flow_from_operations') :</strong>
+                                <strong>@lang('menu.cash_flow_from_operations') </strong>
                             </th>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.net_profit_before_tax') :</em>
+                               <em>@lang('menu.net_profit_before_tax') </em>
                             </td>
 
                             <td class="text-start">
@@ -37,7 +37,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.customer_balance') : </em>
+                               <em>@lang('menu.customer_balance') </em>
                             </td>
 
                             <td class="text-start">
@@ -50,7 +50,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.supplier_balance') : </em>
+                               <em>@lang('menu.supplier_balance') </em>
                             </td>
 
                             <td class="text-start">
@@ -63,7 +63,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.current_stock_value') : </em>
+                               <em>@lang('menu.current_stock_value') </em>
                             </td>
 
                             <td class="text-start">
@@ -76,7 +76,7 @@
 
                         <tr>
                             <td class="text-start">
-                                <em>@lang('menu.current_asset') :</em>
+                                <em>@lang('menu.current_asset') </em>
                             </td>
 
                             <td class="text-start">
@@ -89,7 +89,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.current_liability') :</em>
+                               <em>@lang('menu.current_liability') </em>
                             </td>
 
                             <td class="text-start">
@@ -102,7 +102,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.tax_payable') :</em>
+                               <em>@lang('menu.tax_payable') </em>
                             </td>
 
                             <td class="text-start">
@@ -132,7 +132,7 @@
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b>@lang('menu.total_operations') : </b>
+                                <b>@lang('menu.total_operations') </b>
                             </td>
 
                             <td class="text-start text-white">
@@ -147,13 +147,13 @@
 
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>@lang('menu.cash_flow_from_investing') :</strong>
+                                <strong>@lang('menu.cash_flow_from_investing') </strong>
                             </th>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>@lang('menu.fixed_asset') :</em>
+                                <em>@lang('menu.fixed_asset') </em>
                             </td>
                             <td class="text-start">
                                 <em>
@@ -167,7 +167,7 @@
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b><em>@lang('menu.total_investing') :</em>  </b>
+                                <b><em>@lang('menu.total_investing') </em>  </b>
                             </td>
 
                             <td class="text-start text-white">
@@ -192,20 +192,20 @@
                         {{-- Cash Flow from financing --}}
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>@lang('menu.cash_flow_form_financing') :</strong>
+                                <strong>@lang('menu.cash_flow_form_financing') </strong>
                             </th>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>@lang('menu.capital_ac') :</em>
+                                <em>@lang('menu.capital_ac') </em>
                             </td>
                             <td class="text-start">0.00</td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>@lang('menu.loan_and_advance') :</em>
+                                <em>@lang('menu.loan_and_advance') </em>
                             </td>
                             <td class="text-start">({{ App\Utils\Converter::format_in_bdt($loanAndAdvance->sum('current_loan_receivable')) }})</td>
                         </tr>
@@ -231,7 +231,7 @@
 
                         {{-- <tr class="bg-info">
                             <td class="text-start text-white">
-                                <b><em>@lang('menu.total_financing') :</em>  </b>
+                                <b><em>@lang('menu.total_financing') </em>  </b>
                             </td>
 
                             <td class="text-start text-white">

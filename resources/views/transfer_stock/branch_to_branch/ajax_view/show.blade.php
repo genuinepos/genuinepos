@@ -15,15 +15,15 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.from') : </strong></li>
-                            <li><strong>{{ __('B.Location Name') }} :</strong>
+                            <li><strong>@lang('menu.from') </strong></li>
+                            <li><strong>{{ __('B.Location Name') }} </strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->name . '/' . $transfer->sender_branch->branch_code: $generalSettings['business__shop_name'] . '(HO)' }}
                             </li>
-                            <li><strong>@lang('menu.phone') : </strong>
+                            <li><strong>@lang('menu.phone') </strong>
                                 {{ $transfer->sender_branch? $transfer->sender_branch->phone: $generalSettings['business__phone'] }}
                             </li>
 
-                            <li><strong>@lang('menu.stock_location') : </strong>
+                            <li><strong>@lang('menu.stock_location') </strong>
                                 @if ($transfer->sender_warehouse)
                                     {{ $transfer->sender_warehouse->warehouse_name . '/' . $transfer->sender_warehouse->warehouse_code . '(WH)' }}
                                 @else
@@ -34,23 +34,23 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.to') : </strong></li>
-                            <li><strong>{{ __('B.Location Name') }} :</strong>
+                            <li><strong>@lang('menu.to') </strong></li>
+                            <li><strong>{{ __('B.Location Name') }} </strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->name . '/' . $transfer->receiver_branch->branch_code: $generalSettings['business__shop_name'] . '(HO)' }}
                             </li>
-                            <li><strong>@lang('menu.phone') : </strong>
+                            <li><strong>@lang('menu.phone') </strong>
                                 {{ $transfer->receiver_branch? $transfer->receiver_branch->phone: $generalSettings['business__phone'] }}
                             </li>
 
                             @if ($transfer->receiver_branch)
-                                <li><strong>@lang('menu.address') : </strong>
+                                <li><strong>@lang('menu.address') </strong>
                                     {{ $transfer->receiver_branch->city }},
                                     {{ $transfer->receiver_branch->state }},
                                     {{ $transfer->receiver_branch->zip_code }},
                                     {{ $transfer->receiver_branch->country }}.
                                 </li>
                             @else
-                                <li><strong>@lang('menu.address') : </strong>
+                                <li><strong>@lang('menu.address') </strong>
                                     {{ $generalSettings['business__address'] }}
                                 </li>
                             @endif
@@ -59,9 +59,9 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-end">
-                            <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                            <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
-                            <li><strong>@lang('menu.status') : </strong>
+                            <li><strong>@lang('menu.date') </strong> {{ $transfer->date }}</li>
+                            <li><strong>@lang('menu.reference_id') </strong> {{ $transfer->ref_id }}</li>
+                            <li><strong>@lang('menu.status') </strong>
                                 @if ($transfer->receive_status == 1)
 
                                     <span class="text-danger">@lang('menu.pending')</span>
@@ -112,12 +112,12 @@
                         <div class="table-responsive">
                             <table class="table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">@lang('menu.total_stock_value') :</th>
+                                    <th class="text-end">@lang('menu.total_stock_value') </th>
                                     <td class="text-start">{{ $transfer->total_stock_value }}</td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.transfer_cost') :</th>
+                                    <th class="text-end">@lang('menu.transfer_cost') </th>
                                     <td class="text-start">{{ $transfer->transfer_cost }}</td>
                                 </tr>
                             </table>
@@ -128,14 +128,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>@lang('menu.transfer_note') : </h6>
+                            <h6>@lang('menu.transfer_note') </h6>
                             <p>{{ $transfer->transfer_note }}</p>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="details_area">
-                            <h6>{{ __('Receiver Note') }} : </h6>
+                            <h6>{{ __('Receiver Note') }} </h6>
                             <p>{{ $transfer->receiver_note }}</p>
                         </div>
                     </div>
@@ -168,11 +168,11 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.from') : </strong></li>
-                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.from') </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : $generalSettings['business__phone'] }}</li>
 
-                        <li><strong>@lang('menu.stock_location') : </strong>
+                        <li><strong>@lang('menu.stock_location') </strong>
                             @if ($transfer->sender_warehouse)
 
                                 {{ $transfer->sender_warehouse->warehouse_name.'/'.$transfer->sender_warehouse->warehouse_code.'(WH)' }}
@@ -185,19 +185,19 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.to') : </strong></li>
-                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.to') </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : $generalSettings['business__phone'] }}</li>
 
                         @if ($transfer->receiver_branch)
-                            <li><strong>@lang('menu.address') : </strong>
+                            <li><strong>@lang('menu.address') </strong>
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
                         @else
-                            <li><strong>@lang('menu.address') : </strong>
+                            <li><strong>@lang('menu.address') </strong>
                                 {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
@@ -206,9 +206,9 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
-                        <li><strong>@lang('menu.status') : </strong>
+                        <li><strong>@lang('menu.date') </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') </strong> {{ $transfer->ref_id }}</li>
+                        <li><strong>@lang('menu.status') </strong>
                             @if ($transfer->receive_status == 1)
 
                                 <span class="text-danger">@lang('menu.pending')</span>
@@ -257,7 +257,7 @@
 
                 <tfoot>
                     <tr>
-                        <td class="text-end" colspan="5"><strong>@lang('menu.total_stock_value') :</strong></td>
+                        <td class="text-end" colspan="5"><strong>@lang('menu.total_stock_value') </strong></td>
                         <td class="text-start">{{ $transfer->total_stock_value }}</td>
                     </tr>
 
@@ -311,19 +311,19 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.from') : </strong></li>
-                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.from') </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->name.'/'.$transfer->sender_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->sender_branch ? $transfer->sender_branch->phone : $generalSettings['business__phone'] }}</li>
 
                         @if ($transfer->sender_branch)
-                            <li><strong>@lang('menu.address') : </strong>
+                            <li><strong>@lang('menu.address') </strong>
                                 {{ $transfer->sender_branch->city }},
                                 {{ $transfer->sender_branch->state }},
                                 {{ $transfer->sender_branch->zip_code }},
                                 {{ $transfer->sender_branch->country }}.
                             </li>
                         @else
-                            <li><strong>@lang('menu.address') : </strong>
+                            <li><strong>@lang('menu.address') </strong>
                                 {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
@@ -331,19 +331,19 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.to') : </strong></li>
-                        <li><strong>{{ __('B.Location Name') }} :</strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.to') </strong></li>
+                        <li><strong>{{ __('B.Location Name') }} </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->name.'/'.$transfer->receiver_branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->receiver_branch ? $transfer->receiver_branch->phone : $generalSettings['business__phone'] }}</li>
 
                         @if ($transfer->receiver_branch)
-                            <li><strong>@lang('menu.address') : </strong>
+                            <li><strong>@lang('menu.address') </strong>
                                 {{ $transfer->receiver_branch->city }},
                                 {{ $transfer->receiver_branch->state }},
                                 {{ $transfer->receiver_branch->zip_code }},
                                 {{ $transfer->receiver_branch->country }}.
                             </li>
                         @else
-                            <li><strong>@lang('menu.address') : </strong>
+                            <li><strong>@lang('menu.address') </strong>
                                 {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
@@ -352,8 +352,8 @@
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
-                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->ref_id }}</li>
+                        <li><strong>@lang('menu.date') </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') </strong> {{ $transfer->ref_id }}</li>
                     </ul>
                 </div>
             </div>

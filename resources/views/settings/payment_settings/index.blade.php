@@ -21,7 +21,7 @@
                     <form id="payment_method_settings_form" action="{{ route('settings.payment.method.settings.update') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <p class="m-0 p-0"><b> @lang('menu.business_location') :</b>
+                            <p class="m-0 p-0"><b> @lang('menu.business_location') </b>
                                 @if (auth()->user()->branch_id)
 
                                     {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
@@ -91,7 +91,7 @@
                                                     </table>
                                                     {{-- @foreach ($methods as $method)
                                                         <div class="input-group mt-1">
-                                                            <label class="col-4"><b>{{ $loop->index + 1 }}. {{ $method->name }} :</b> </label>
+                                                            <label class="col-4"><b>{{ $loop->index + 1 }}. {{ $method->name }} </b> </label>
                                                             <input type="hidden" name="method_ids[]" value="{{ $method->id }}">
                                                             <div class="col-8">
                                                                 <select name="account_ids[]" class="form-control">

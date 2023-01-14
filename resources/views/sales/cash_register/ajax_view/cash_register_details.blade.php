@@ -22,7 +22,7 @@
     <table class="cash_register_table table modal-table table-sm">
         <tbody>
             <tr>
-                <td width="50" class="text-start">@lang('menu.opening_balance') :</td>
+                <td width="50" class="text-start">@lang('menu.opening_balance') </td>
                 <td width="50" class="text-start">{{ $generalSettings['business__currency'] }}
                     {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
                 </td>
@@ -30,7 +30,7 @@
 
             @foreach ($paymentMethodPayments as $payment)
                 <tr>
-                    <td width="50" class="text-start"> {{$payment->name.' Payment' }} :</td>
+                    <td width="50" class="text-start"> {{$payment->name.' Payment' }} </td>
                     <td width="50" class="text-start">
                         {{ $generalSettings['business__currency'] }}
                         {{ App\Utils\Converter::format_in_bdt($payment->total_paid) }}
@@ -79,7 +79,7 @@
     @php
         $__receivedInCashAccount = $receivedInCashAccount + $activeCashRegister->cash_in_hand
     @endphp
-    <p><strong>@lang('menu.current_cash_amount') : </strong> {{ $generalSettings['business__currency'] }}
+    <p><strong>@lang('menu.current_cash_amount') </strong> {{ $generalSettings['business__currency'] }}
         {{ App\Utils\Converter::format_in_bdt($__receivedInCashAccount) }}
     </p>
 
@@ -87,15 +87,15 @@
     <div class="cash_register_info">
         <ul class="list-unstyled">
             <li>
-                <b>User : </b> {{ $activeCashRegister->u_prefix.' '.$activeCashRegister->u_first_name.' '.$activeCashRegister->u_last_name }}
+                <b>User </b> {{ $activeCashRegister->u_prefix.' '.$activeCashRegister->u_first_name.' '.$activeCashRegister->u_last_name }}
             </li>
 
             <li>
-                <b>@lang('menu.email') : </b> {{ $activeCashRegister->u_email }}
+                <b>@lang('menu.email') </b> {{ $activeCashRegister->u_email }}
             </li>
 
             <li>
-                <b>@lang('menu.business_location') : </b>
+                <b>@lang('menu.business_location') </b>
                 {!!
                     $activeCashRegister->b_name
                     ? $activeCashRegister->b_name.'/'.$activeCashRegister->b_code
@@ -104,7 +104,7 @@
             </li>
 
             <li>
-                <b>@lang('menu.cash_counter') : </b> {!! $activeCashRegister->counter_name .' (<b>'.$activeCashRegister->cc_s_name.'</b>)' !!}
+                <b>@lang('menu.cash_counter') </b> {!! $activeCashRegister->counter_name .' (<b>'.$activeCashRegister->cc_s_name.'</b>)' !!}
             </li>
         </ul>
     </div>

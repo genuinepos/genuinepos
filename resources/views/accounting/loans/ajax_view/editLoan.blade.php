@@ -8,7 +8,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>@lang('menu.loan_ac') :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.loan_ac') </b> <span class="text-danger">*</span></label>
             <select required name="loan_account_id" class="form-control" id="loan_account_id">
                 <option value="">@lang('menu.select_loan_account')</option>
                 @foreach ($loanAccounts as $loanAc)
@@ -33,7 +33,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.type') </b> <span class="text-danger">*</span></label>
             <select name="type" class="form-control" id="e_type">
                 <option value="">@lang('menu.select_type')</option>
                 <option {{ $loan->type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.loan_and_advance')</option>
@@ -45,13 +45,13 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>@lang('menu.loan_amount') :</b> <span class="text-danger">*</span> </label>
+            <label><b>@lang('menu.loan_amount') </b> <span class="text-danger">*</span> </label>
             <input type="number" step="any" name="loan_amount" class="form-control" id="e_loan_amount" placeholder="@lang('menu.loan_amount')" value="{{ $loan->loan_amount }}"/>
             <span class="error error_e_loan_amount"></span>
         </div>
 
         <div class="col-md-6">
-            <label><b>@lang('menu.debit')/@lang('menu.credit_account') :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.debit')/@lang('menu.credit_account') </b> <span class="text-danger">*</span></label>
             <select name="account_id" class="form-control" id="e_account_id">
                 <option value="">@lang('menu.select_account')</option>
                 @foreach ($accounts as $account)
@@ -72,7 +72,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><b>@lang('menu.loan_reason') :</b> </label>
+            <label><b>@lang('menu.loan_reason') </b> </label>
             <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="@lang('menu.loan_reason')">{{ $loan->loan_reason }}</textarea>
         </div>
     </div>

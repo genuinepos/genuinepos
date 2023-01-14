@@ -33,7 +33,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>{{ __('Opeing Balance') }} :</b> <span class="text-danger">*</span> </label>
+                                                    <label class="col-4"> <b>{{ __('Opeing Balance') }} </b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <input required type="number" step="any" name="cash_in_hand" class="form-control" placeholder="Enter Amount" value="0.00">
                                                         <span class="error">{{ $errors->first('cash_in_hand') }}</span>
@@ -43,7 +43,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.cash_counter') :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.cash_counter') </b> </label>
                                                     <div class="col-8">
                                                         <select required name="counter_id" class="form-control">
                                                             <option value="">{{ __("Select Cash Counter") }}</option>
@@ -62,7 +62,7 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.business_location') :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.business_location') </b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
                                                     </div>
@@ -71,7 +71,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.sale_account') :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.sale_account') </b> </label>
                                                     <div class="col-8">
                                                         <select required name="sale_account_id" class="form-control add_input"
                                                         id="sale_account_id" data-name="Sale A/C">

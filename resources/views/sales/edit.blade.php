@@ -10,6 +10,8 @@
         .input-group-text-sale {font-size: 7px !important;}
         .border_red {border: 1px solid red!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
     </style>
     <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap-datepicker.min.css') }}">
 @endpush
@@ -35,7 +37,7 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>@lang('menu.customer') :</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.customer') </b> </label>
                                         <div class="col-8">
                                             <div class="input-group width-60">
                                                 <input readonly type="text" value="{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}" id="customer_name" class="form-control">
@@ -44,7 +46,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"> <b>@lang('menu.warehouse') :</b> </label>
+                                        <label class="col-4"> <b>@lang('menu.warehouse') </b> </label>
                                         <div class="col-8">
                                             {{-- <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" tabindex="-1"> --}}
                                             <select name="warehouse_id" class="form-control" id="warehouse_id">
@@ -61,14 +63,14 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.invoice_id') :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.invoice_id') </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" value="{{ $sale->invoice_id }}">
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.attachment') :</b>
+                                        <label class="col-4"><b>@lang('menu.attachment') </b>
                                             <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc." class="fas fa-info-circle tp"></i></label>
                                         <div class="col-8">
                                             <input type="file" name="attachment" class="form-control">
@@ -95,7 +97,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.price_group') :</b></label>
+                                        <label class="col-4"><b>@lang('menu.price_group') </b></label>
                                         <div class="col-8">
                                             <select name="price_group_id" class="form-control"
                                                 id="price_group_id">
@@ -110,7 +112,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>@lang('menu.sale_date') :</b> <span
+                                        <label class="col-4"> <b>@lang('menu.sale_date') </b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input type="text" name="date" class="form-control" id="date" autocomplete="off"
@@ -120,7 +122,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"> <b>@lang('menu.sale_ac') :</b> <span
+                                        <label class=" col-4"> <b>@lang('menu.sale_ac') </b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select name="sale_account_id" class="form-control add_input"
@@ -310,7 +312,7 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Details') }} :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Details') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="@lang('menu.shipment_details')" value="{{ $sale->shipment_details }}">
                                                     </div>
@@ -319,7 +321,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Address') }} :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Address') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $sale->shipment_address }}" placeholder="{{ __('Shipment Address') }}">
                                                     </div>
@@ -328,7 +330,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Ship Status') }} :</b></label>
+                                                    <label class="col-4"><b>{{ __('Ship Status') }} </b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status">
                                                             <option value="">@lang('menu.shipment_status')</option>
@@ -343,7 +345,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Delivered To') }} :</b></label>
+                                                    <label class="col-4"><b>{{ __('Delivered To') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="delivered_to" type="text" class="form-control" id="delivered_to" value="{{ $sale->delivered_to }}" placeholder="{{ __('Delivered To') }}">
                                                     </div>
@@ -352,7 +354,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.sale_note') :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.sale_note') </b></label>
                                                     <div class="col-8">
                                                         <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="@lang('menu.sale_note')" value="{{ $sale->sale_note }}">
                                                     </div>
@@ -361,7 +363,7 @@
 
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.payment_note'):</b></label>
+                                                    <label class="col-4"><b>@lang('menu.payment_note')</b></label>
                                                     <div class="col-8">
                                                         <input name="payment_note" type="text" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')" value="">
                                                     </div>
@@ -376,21 +378,21 @@
                                 <div class="form_element rounded m-0 number-fields">
                                     <div class="element-body">
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_item') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.total_item') </label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="{{ $sale->total_item }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.net_total') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.net_total') </label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.discount') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.discount') </label>
                                             <div class="col-sm-3">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
                                                     <option {{ $sale->order_discount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')</option>
@@ -404,7 +406,7 @@
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.order_tax') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.order_tax') </label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax">
                                                     <option value="0.00">@lang('menu.no_tax')</option>
@@ -417,14 +419,14 @@
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost') </label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="{{ $sale->shipment_charge }}">
                                             </div>
                                         </div>
 
                                         <div class="row g-2 mb-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_payable') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.total_payable') </label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
                                             </div>
@@ -433,14 +435,14 @@
                                         <div class="payment_body {{ $sale->status == 1 || $sale->status == 3 ? '' : 'd-hide' }}">
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.paid') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.paid') </label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="previous_paid" class="form-control text-success" id="previous_paid" value="{{ $sale->paid }}" tabindex="-1">
                                                 </div>
                                             </div>
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.cr_receivable') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.cr_receivable') </label>
                                                 <div class="col-sm-7">
                                                     <input readonly class="form-control" name="current_receivable" type="number" step="any" id="current_receivable" value="" tabindex="-1">
                                                 </div>
@@ -454,14 +456,14 @@
                                             </div>
 
                                             {{-- <div class="row">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.change') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.change') </label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00">
                                                 </div>
                                             </div> --}}
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.paid_by') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.paid_by') </label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)
@@ -476,7 +478,7 @@
                                             </div>
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C : <span
+                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id" data-name="@lang('menu.debit') A/C">
@@ -497,7 +499,7 @@
                                             </div>
 
                                             <div class="row g-2 mb-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.due') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.due') </label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
                                                 </div>
@@ -560,7 +562,7 @@
                         @if(auth()->user()->can('edit_discount_sale_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong>  :</label>
+                                    <label><strong>@lang('menu.discount_type')</strong>  </label>
                                     <select class="form-control " id="e_unit_discount_type">
                                         <option value="2">@lang('menu.percentage')</option>
                                         <option value="1">@lang('menu.fixed')</option>
@@ -568,7 +570,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong>  :</label>
+                                    <label><strong>@lang('menu.discount')</strong>  </label>
                                     <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
@@ -577,7 +579,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax')</strong> :</label>
+                                <label><strong>@lang('menu.tax')</strong> </label>
                                 <select class="form-control" id="e_unit_tax">
                                     <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
@@ -587,7 +589,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong>  :</label>
+                                <label><strong>@lang('menu.tax_type')</strong>  </label>
                                 <select class="form-control" id="e_tax_type">
                                     <option value="1">@lang('menu.exclusive')</option>
                                     <option value="2">@lang('menu.exclusive')</option>
@@ -596,7 +598,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>@lang('menu.sale_unit')</strong> :</label>
+                            <label><strong>@lang('menu.sale_unit')</strong> </label>
                             <select class="form-control" id="e_unit"></select>
                         </div>
 

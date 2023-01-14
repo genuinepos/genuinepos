@@ -5,19 +5,19 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>@lang('menu.product_name') :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.product_name') </b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" id="add_name" placeholder="@lang('menu.product_name')"/>
             <span class="error error_add_name"></span>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.product_code') (SKU) :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.product_code') (SKU) </b> <span class="text-danger">*</span></label>
             <input type="text" name="product_code" class="form-control" placeholder="@lang('menu.product_code')"/>
             <span class="error error_add_product_code"></span>
         </div>
 
         <div class="col-md-3">
-            <label><b>@lang('menu.barcode_type') :</b></label>
+            <label><b>@lang('menu.barcode_type') </b></label>
             <select class="form-control" name="barcode_type" id="barcode_type">
                 <option value="CODE128">Code 128 (C128)</option>
                 <option value="CODE39">Code 39 (C39)</option>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="col-md-3 ">
-            <label><b> @lang('menu.unit') :</b> <span class="text-danger">*</span></label>
+            <label><b> @lang('menu.unit') </b> <span class="text-danger">*</span></label>
             <select class="form-control product_unit" name="unit_id" id="add_unit_id">
                 <option value="">@lang('menu.select_unit')</option>
                 @foreach ($units as $unit)
@@ -41,7 +41,7 @@
     <div class="form-group row mt-1">
         @if ($generalSettings['product__is_enable_categories'] == '1')
             <div class="col-md-3">
-                <label><b>@lang('menu.category') :</b> </label>
+                <label><b>@lang('menu.category') </b> </label>
                 <select class="form-control category" name="category_id" id="add_category_id">
                     <option value="">@lang('menu.select_category')</option>
                     @foreach ($categories as $category)
@@ -55,8 +55,7 @@
         @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
             <div class="col-md-3 parent_category">
                 <label><b>@lang('menu.child_category') :</b></label>
-                <select class="form-control" name="sub_category_id"
-                    id="add_sub_category_id">
+                <select class="form-control" name="sub_category_id" id="add_sub_category_id">
                     <option value="">@lang('menu.select_child_category_first')</option>
                 </select>
             </div>
@@ -64,7 +63,7 @@
 
         @if ($generalSettings['product__is_enable_brands'] == '1')
             <div class="col-md-3">
-                <label><b>@lang('menu.brand') :</b></label>
+                <label><b>@lang('menu.brand') </b></label>
                 <select class="form-control" data-live-search="true" name="brand_id"
                     id="add_brand_id">
                     <option value="">@lang('menu.select_brand')</option>
@@ -77,7 +76,7 @@
 
         @if ($generalSettings['product__is_enable_warranty'] == '1')
             <div class="col-md-3">
-                <label><b>@lang('menu.warranty') :</b></label>
+                <label><b>@lang('menu.warranty') </b></label>
                 <select class="form-control" name="warranty_id" id="add_warranty_id">
                     <option value="">@lang('menu.select_warranty')</option>
                     @foreach ($warranties as $warranty)
@@ -90,7 +89,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-8">
-            <label><b>@lang('menu.description') :</b> </label>
+            <label><b>@lang('menu.description') </b> </label>
             <textarea  name="product_details" class="form-control" cols="10" rows="3">
             </textarea>
         </div>
@@ -106,7 +105,7 @@
     <div class="form-group row mt-1">
         @if ($generalSettings['product__is_enable_price_tax'] == '1')
             <div class="col-md-3 ">
-                <label><b>@lang('menu.tax') :</b> </label>
+                <label><b>@lang('menu.tax') </b> </label>
                 <select class="form-control" name="tax_id" id="add_tax_id">
                     <option value="">@lang('menu.no_tax')</option>
                     @foreach ($taxes as $tax)
@@ -117,7 +116,7 @@
         @endif
 
         <div class="col-md-3">
-            <label><b>@lang('menu.alert_quantity') :</b></label>
+            <label><b>@lang('menu.alert_quantity') </b></label>
             <input type="number" name="alert_quantity" class="form-control"
                 autocomplete="off" id="add_alert_quantity" value="0">
         </div>
@@ -138,12 +137,12 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6 text-start">
-                                    <label><b>@lang('menu.unit_cost_exc_tax') :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_exc_tax') </b> <span class="text-danger">*</span></label>
                                     <input type="number" step="any" name="product_cost" id="add_product_cost" class="form-control" autocomplete="off" placeholder="@lang('menu.unit_cost_exc_tax')">
                                     <span class="error error_add_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
-                                    <label><b>@lang('menu.unit_cost_inc_tax') :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_inc_tax') </b> <span class="text-danger">*</span></label>
                                     <input type="number" step="any" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
                                     id="add_product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')">
@@ -159,7 +158,7 @@
                         </td>
 
                         <td class="text-start">
-                            <label><b>@lang('menu.price_exc_tax') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.price_exc_tax') </b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="product_price" class="form-control"
                                     autocomplete="off" id="add_product_price" placeholder="@lang('menu.price_exc_tax')">
                             <span class="error error_add_product_price"></span>

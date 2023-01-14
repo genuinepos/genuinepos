@@ -10,7 +10,7 @@
                 <form id="add_sub_category_form" action="{{ route('product.subcategories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group mt-1">
-                        <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control " id="name"
                             placeholder="Sub category name" />
                         <span class="error error_sub_name"></span>
@@ -29,12 +29,12 @@
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>@lang('menu.description') :</b> </label>
+                        <label><b>@lang('menu.description') </b> </label>
                         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description"></textarea>
                     </div>
 
                     <div class="form-group mt-2">
-                        <label><b>Sub-Category photo :</b></label>
+                        <label><b>Sub-Category photo </b></label>
                         <input type="file" name="photo" class="form-control " id="photo"
                             accept=".jpg, .jpeg, .png, .gif">
                         <span class="error error_sub_photo"></span>

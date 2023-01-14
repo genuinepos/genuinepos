@@ -41,7 +41,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b>
+            <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
@@ -88,7 +88,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">@lang('menu.total_paid') @lang('menu.amount') :</th>
+                    <th class="text-end">@lang('menu.total_paid') @lang('menu.amount') </th>
                     <td class="text-end">{{$generalSettings['business__currency'].' '.App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
             </thead>

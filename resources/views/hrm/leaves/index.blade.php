@@ -76,7 +76,7 @@
                     <form id="add_leave_form" action="{{ route('hrm.leaves.store') }}">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.department') :</b></label>
+                                <label><b>@lang('menu.department') </b></label>
                                 <select class="form-control" name="department_id" id="department_id">
                                     <option value="all"> @lang('menu.all') </option>
                                     @foreach ($departments as $dep)
@@ -86,7 +86,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>{{ __('Employee') }} :</b> <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Employee') }} </b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="employee_id" id="employee_id" required>
                                     <option value="">{{ __('Select Employee') }}</option>
                                     @foreach ($employees as $emp)
@@ -99,7 +99,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
-                                <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.leave_type') </b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="leave_type_id" required id="leave_id">
                                     <option value="">{{ __('Select Leave Type') }}</option>
                                     @foreach ($leaveTypes as $lt)
@@ -112,19 +112,19 @@
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-6">
-                                <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.start_date') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="start_date" required class="form-control" id="start_date" autocomplete="off" placeholder="@lang('menu.start_date')">
                             </div>
 
                             <div class="form-group col-6">
-                              <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
+                              <label><b>@lang('menu.end_date') </b> <span class="text-danger">*</span></label>
                               <input type="text" name="end_date" required class="form-control" id="end_date" autocomplete="off" placeholder="@lang('menu.end_date')">
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="form-group col-12">
-                                <label><b>@lang('menu.reason') :</b> </label>
+                                <label><b>@lang('menu.reason') </b> </label>
                                 <textarea type="text" name="reason" class="form-control" placeholder="@lang('menu.reason')"></textarea>
                             </div>
                         </div>

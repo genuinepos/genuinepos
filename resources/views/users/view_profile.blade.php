@@ -30,7 +30,7 @@
                                     <li>@lang('menu.role')<span>{{ $user?->roles()?->first()?->name }}</span></li>
                                     <li>@lang('menu.departments') : <span>{{ $user?->department?->department_name ?? 'N/A' }}</span></li>
                                     <li>@lang('menu.designation') : <span>{{ $user?->designation?->designation_name ?? 'N/A' }}</span></li>
-                                    
+
                                     <li>@lang('menu.basic_salary') : <span>{{ App\Utils\Converter::format_in_bdt($user->salary) }}</span></li>
                                     <li>@lang('menu.pay_type') : <span>{{ $user->salary_type }}</span></li>
                                     <li>@lang('menu.work_shift') : <span>{{ $user?->shift?->shift_name ?? 'N/A' }}</span></li>
@@ -156,15 +156,15 @@
                                                 <table class="display table-striped">
                                                     <tbody>
                                                         <tr>
-                                                            <td>@lang('menu.facebook_link') :</td>
+                                                            <td>@lang('menu.facebook_link') </td>
                                                             <td>{{ $user->facebook_link }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>@lang('menu.twitter_link') :</td>
+                                                            <td>@lang('menu.twitter_link') </td>
                                                             <td>{{ $user->twitter_link }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>@lang('menu.instagram_link') :</td>
+                                                            <td>@lang('menu.instagram_link') </td>
                                                             <td>{{ $user->instagram_link }}</td>
                                                         </tr>
                                                     </tbody>

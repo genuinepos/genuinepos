@@ -2,12 +2,12 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
-            <label><b>@lang('menu.name') :</b></label>
+            <label><b>@lang('menu.name') </b></label>
             <input required type="text" name="name" class="form-control" placeholder="Workspace Name" value="{{ $ws->name }}">
         </div>
 
         <div class="col-md-6">
-            <label><b>@lang('menu.assigned_to') :</b></label>
+            <label><b>@lang('menu.assigned_to') </b></label>
             <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
                 <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
@@ -24,7 +24,7 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>@lang('menu.priority') : </b></label>
+            <label><b>@lang('menu.priority') </b></label>
             <select required name="priority" class="form-control" id="priority">
                 <option value="">@lang('menu.select_priority')</option>
                 <option {{ $ws->priority == 'Low' ? 'SELECTED' : '' }} value="Low">@lang('menu.low')</option>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>@lang('menu.status') : </strong></label>
+            <label><strong>@lang('menu.status') </strong></label>
             <select required name="status" class="form-control" id="status">
                 <option value="">@lang('menu.select_status')</option>
                 <option {{ $ws->status == 'New' ? 'SELECTED' : '' }} value="New">@lang('menu.new')</option>
@@ -48,31 +48,31 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>@lang('menu.start_date') : </b></label>
+            <label><b>@lang('menu.start_date') </b></label>
             <input required type="text" name="start_date" class="form-control datepicker" id="start_date" value="{{ date($generalSettings['business__date_format'], strtotime($ws->start_date)) }}">
         </div>
 
         <div class="col-md-6">
-            <label><b>@lang('menu.end_date') : </b></label>
+            <label><b>@lang('menu.end_date') </b></label>
             <input required type="text" name="end_date" class="form-control datepicker" id="end_date" value="{{ date($generalSettings['business__date_format'], strtotime($ws->end_date)) }}">
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><b>@lang('menu.description') : </b></label>
+            <label><b>@lang('menu.description') </b></label>
             <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description.">{{ $ws->description }}</textarea>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Documents : </b></label>
+            <label><b>Documents </b></label>
             <input type="file" name="documents[]" class="form-control" multiple id="documents" placeholder="Workspace Description.">
         </div>
 
         <div class="col-md-6">
-            <label><b>{{ __('Estimated Hour') }} : </b></label>
+            <label><b>{{ __('Estimated Hour') }} </b></label>
             <input type="text" name="estimated_hours" class="form-control" id="estimated_hours" placeholder="{{ __('Estimated Hour') }}" value="{{ $ws->estimated_hours }}">
         </div>
     </div>

@@ -68,7 +68,7 @@
                     <form id="add_schema_form" action="{{ route('invoices.schemas.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label><b>@lang('menu.preview') :</b> <span id="schema_preview"></span></label>
+                            <label><b>@lang('menu.preview') </b> <span id="schema_preview"></span></label>
                         </div>
 
                         <div class="form-group row mt-1">
@@ -104,7 +104,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label>@lang('menu.start_from') :</label>
+                                <label>@lang('menu.start_from') </label>
                                 <input type="number" name="start_from" class="form-control form-control-sm" id="start_from" placeholder="@lang('menu.start_from')" value="0"/>
                             </div>
                         </div>

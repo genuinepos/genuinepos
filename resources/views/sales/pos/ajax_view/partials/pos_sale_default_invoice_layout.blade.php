@@ -112,20 +112,20 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.customer'): </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li><strong>@lang('menu.customer')</strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
-                                <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                <li><strong>@lang('menu.address') </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_tax_no)
-                                <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                <li><strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_phone)
-                                <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                <li><strong>@lang('menu.phone') </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -152,11 +152,11 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> @lang('menu.invoice_no') : </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>@lang('menu.date'): </strong>
+                            <li><strong> @lang('menu.invoice_no') </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong>@lang('menu.date')</strong>
                                 {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
                             </li>
-                            <li><strong> @lang('menu.user') : </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
+                            <li><strong> @lang('menu.user') </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
                     </div>
                 </div>
@@ -242,7 +242,7 @@
                 <div class="col-md-6">
                     @if ($defaultLayout->show_total_in_word)
                         <p style="text-transform: uppercase;">
-                            <b>@lang('menu.in_word'): </b> <span id="inword"> @lang('menu.only').</span>
+                            <b>@lang('menu.in_word')</b> <span id="inword"> @lang('menu.only').</span>
                         </p>
                     @endif
 
@@ -275,7 +275,7 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.net_total_amount') :</strong></td>
+                                <td class="text-endx"><strong>@lang('menu.net_total_amount') </strong></td>
                                 <td class="net_total text-end">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
@@ -359,7 +359,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="invoice_notice">
-                        <p>{!! $defaultLayout->invoice_notice ? '<strong>Attention : </strong>' . $defaultLayout->invoice_notice : '' !!}</p>
+                        <p>{!! $defaultLayout->invoice_notice ? '<strong>Attention </strong>' . $defaultLayout->invoice_notice : '' !!}</p>
                     </div>
                 </div>
             </div>
@@ -440,13 +440,13 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.phone') :</b>  {{ $sale->branch->phone }}</span>
+                                        <span><b>@lang('menu.phone') </b>  {{ $sale->branch->phone }}</span>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</span>
+                                        <span><b>@lang('menu.email') </b> {{ $sale->branch->email }}</span>
                                     </th>
                                 </tr>
                             @else
@@ -458,13 +458,13 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.phone') :</b> {{ $generalSettings['business__phone'] }} </span>
+                                        <span><b>@lang('menu.phone') </b> {{ $generalSettings['business__phone'] }} </span>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.email') :</b> {{ $generalSettings['business__email'] }} </span>
+                                        <span><b>@lang('menu.email') </b> {{ $generalSettings['business__email'] }} </span>
                                     </th>
                                 </tr>
                             @endif
@@ -477,7 +477,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.date'):</b> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <b>@lang('menu.date')</b> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
                                 </th>
                             </tr>
 
@@ -489,7 +489,7 @@
 
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.customer'):</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                                    <b>@lang('menu.customer')</b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                 </th>
                             </tr>
                         </thead>

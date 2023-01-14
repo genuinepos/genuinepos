@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>@lang('menu.name') :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span> <b>@lang('menu.name') </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="name" class="form-control" placeholder="@lang('menu.layout_name')" autofocus>
                                             <span class="error error_name"></span>
@@ -37,7 +37,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.design') :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.design') </b></label>
 
                                         <div class="col-8">
                                             <select name="design" id="design" class="form-control">
@@ -103,7 +103,7 @@
 
                                 <div class="col-md-9 hideable_field d-hide">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span>  <b>@lang('menu.gap_from_top') (inc) : </b> </label>
+                                        <label for="inputEmail3" class="col-4"><span class="text-danger">*</span>  <b>@lang('menu.gap_from_top') (inc) </b> </label>
                                         <div class="col-8">
                                             <input type="number" name="gap_from_top" id="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')">
                                             <span class="error error_gap_from_top"></span>
@@ -115,7 +115,7 @@
                             <div class="row gx-2 mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Sub Heading 1 : </b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>Sub Heading 1 </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="sub_heading_1" id="sub_heading_1" class="form-control" placeholder="Sub Heading Line 1">
                                         </div>
@@ -124,7 +124,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Sub Heading 2 : </b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>Sub Heading 2 </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="sub_heading_2" id="sub_heading_2" class="form-control" placeholder="Sub Heading Line 2">
                                         </div>
@@ -135,7 +135,7 @@
                             <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-2 col-4"><b>@lang('menu.header_text') : </b> </label>
+                                        <label for="inputEmail3" class="col-lg-2 col-4"><b>@lang('menu.header_text') </b> </label>
                                         <div class="col-lg-10 col-8">
                                             <input type="text" name="header_text" class="form-control form-control-sm"  placeholder="@lang('menu.header_text')">
                                         </div>
@@ -154,7 +154,7 @@
                             <div class="row gx-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.invoice_heading') :</b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.invoice_heading') </b> </label>
                                         <div class="col-lg-8 col-7">
                                             <input type="text" name="invoice_heading" class="form-control" id="invoice_heading" placeholder="@lang('menu.invoice_heading')">
                                             <span class="error error_invoice_heading"></span>
@@ -164,7 +164,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.quotation_heading') :</b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.quotation_heading') </b> </label>
                                         <div class="col-lg-8 col-7">
                                             <input type="text" name="quotation_heading" id="quotation_heading" class="form-control" placeholder="@lang('menu.quotation_heading')">
                                             <span class="error error_quotation_heading"></span>
@@ -176,7 +176,7 @@
                             <div class="row gx-2 mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.draft_heading') : </b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.draft_heading') </b> </label>
                                         <div class="col-lg-8 col-7">
                                             <input type="text" name="draft_heading" id="draft_heading" class="form-control" placeholder="@lang('menu.draft_heading')">
                                             <span class="error error_draft_heading"></span>
@@ -186,7 +186,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.challan_heading') : </b> </label>
+                                        <label for="inputEmail3" class="col-lg-4 col-5"><span class="text-danger">*</span> <b>@lang('menu.challan_heading') </b> </label>
                                         <div class="col-lg-8 col-7">
                                             <input type="text" name="challan_heading" id="challan_heading" class="form-control" placeholder="@lang('menu.challan_heading')">
                                             <span class="error error_challan_heading"></span>
@@ -360,7 +360,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.account_no') :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.account_no') </b></label>
                                         <div class="col-8">
                                             <input type="text" name="account_no" class="form-control" placeholder="Account Number">
                                         </div>
@@ -369,7 +369,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.account_name'):</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.account_name')</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="account_name" class="form-control" placeholder="@lang('menu.account_name')">
                                         </div>
@@ -380,7 +380,7 @@
                             <div class="row mt-1">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_name') :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_name') </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="bank_name" class="form-control" placeholder="@lang('menu.bank_name')">
                                         </div>
@@ -389,7 +389,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_branch') :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.bank_branch') </b></label>
 
                                         <div class="col-8">
                                             <input type="text" name="bank_branch" class="form-control" placeholder="@lang('menu.bank_branch')">
@@ -409,7 +409,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>Invoice Notice :</b></label>
+                                        <label for="inputEmail3" class="col-4"><b>Invoice Notice </b></label>
                                         <div class="col-8">
                                             <textarea name="invoice_notice" class="form-control" cols="10" rows="3" placeholder="Invoice Notice"></textarea>
                                         </div>
@@ -418,7 +418,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.footer_text') :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.footer_text') </b> </label>
                                         <div class="col-8">
                                             <textarea name="footer_text" class="form-control" cols="10" rows="3" placeholder="@lang('menu.footer_text')"></textarea>
                                         </div>

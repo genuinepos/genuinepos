@@ -9,23 +9,23 @@
             <div class="form-area px-3 pb-2">
                 <form id="add_sub_category_form" action="{{ route('product.subcategories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="form-group mt-1">
+                    <div class="form-group">
                         <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control " id="name"
                             placeholder="Sub category name" />
                         <span class="error error_sub_name"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label><b>@lang('menu.parent_category') : <span class="text-danger">*</span></b></label>
-                        <select name="sub_category_id" class="form-control " id="parent_category"
+                    <div class="form-group mt-1">
+                        <label><b>@lang('menu.parent_category') <span class="text-danger">*</span></b></label>
+                        <select name="parent_category_id" class="form-control " id="parent_category_id"
                             required>
-                            <option selected="" disabled="">Select Parent Category</option>
+                            <option value="">Select Parent Category</option>
                             @foreach ($categories as $row)
                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
                             @endforeach
                         </select>
-                        <span class="error error_sub_sub_category_id"></span>
+                        <span class="error error_sub_parent_category_id"></span>
                     </div>
 
                     <div class="form-group mt-1">

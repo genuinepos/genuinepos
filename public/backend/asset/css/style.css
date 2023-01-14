@@ -472,6 +472,7 @@ textarea {
     font-size: 11px;
     border-radius: 0;
     padding: 4px;
+    appearance: auto;
 }
 textarea.form-control {
     height: auto;

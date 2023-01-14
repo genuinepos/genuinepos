@@ -4,19 +4,19 @@
     <input type="hidden" name="id" id="id" value="{{ $data->id }}">
 
     <div class="form-group">
-        <label><b>@lang('menu.parent_category') :</b> <span class="text-danger">*</span></label>
-        <select name="sub_category_id" class="form-control" id="edit_parent_category">
-        	@foreach($category as $row)
-             <option value="{{ $row->id }}" @if($data->sub_category_id==$row->id) selected @endif>{{ $row->name }}</option>
-            @endforeach
-        </select>
-        <span class="error error_sub_e_sub_category_id"></span>
-    </div>
-
-    <div class="form-group mt-1">
         <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
         <input type="text" name="name" class="form-control " value="{{ $data->name }}" id="e_sub_name" placeholder="Sub category name"/>
         <span class="error error_sub_e_name"></span>
+    </div>
+
+    <div class="form-group mt-1">
+        <label><b>@lang('menu.parent_category') </b> <span class="text-danger">*</span></label>
+        <select name="parent_category_id" class="form-control" id="edit_parent_category">
+        	@foreach($category as $row)
+             <option value="{{ $row->id }}" @if($data->parent_category_id==$row->id) selected @endif>{{ $row->name }}</option>
+            @endforeach
+        </select>
+        <span class="error error_sub_e_parent_category_id"></span>
     </div>
 
     <div class="form-group mt-1">

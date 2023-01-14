@@ -146,7 +146,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.purchase_ac') : <span
+                                        <label class="col-4"><b>@lang('menu.purchase_ac') <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_account_id" class="form-control add_input"

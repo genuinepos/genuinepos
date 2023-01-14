@@ -38,8 +38,7 @@
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"> <b>@lang('menu.supplier')</b><span
-                                            class="text-danger">*</span></label>
+                                        <label class=" col-4"> <b>@lang('menu.supplier')</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <select name="supplier_id" class="form-control add_input"
@@ -155,7 +154,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.purchase_ac') : <span
+                                        <label class="col-4"><b>@lang('menu.purchase_ac') <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
                                             <select name="purchase_account_id" class="form-control add_input"

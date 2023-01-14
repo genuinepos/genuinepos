@@ -8,3 +8,4 @@ Schema::table('products', function (Blueprint $table) {
         ->on('categories')
         ->onDelete('set null');
 });
+

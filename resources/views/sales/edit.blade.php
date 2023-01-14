@@ -80,7 +80,7 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4">@lang('menu.status') : <span
+                                        <label class="col-4">@lang('menu.status') <span
                                                 class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select name="status" class="form-control add_input" data-name="Status"
@@ -548,7 +548,7 @@
                         @endif
 
                         <div class="form-group">
-                            <label> <strong>@lang('menu.quantity')</strong>  : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>

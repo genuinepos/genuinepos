@@ -101,7 +101,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.sales_account') : <span
+                                                    <label class="col-4"><b>@lang('menu.sales_account')  <span
                                                         class="text-danger">*</span></b></label>
                                                     <div class="col-8">
                                                         <select name="sale_account_id" class="form-control" id="sale_account_id">
@@ -128,7 +128,7 @@
                                             {{-- Inv Schema --}}
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>@lang('menu.date') : <span
+                                                    <label class=" col-4"><b>@lang('menu.date') <span
                                                         class="text-danger">*</span></b></label>
                                                     <div class="col-8">
                                                         <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off" id="date">
@@ -139,7 +139,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.attachment') : <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
+                                                    <label class="col-4"><b>@lang('menu.attachment') <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
                                                     <div class="col-8">
                                                         <input type="file" name="attachment" class="form-control">
                                                     </div>
@@ -183,7 +183,7 @@
                                                 <div class="row g-1">
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <label class="col-4"> <b>@lang('menu.status'):<span class="text-danger">*</span></b></label>
+                                                            <label class="col-4"> <b>@lang('menu.status')<span class="text-danger">*</span></b></label>
                                                             <div class="col-8">
                                                                 <select name="status" class="form-control add_input" data-name="Status"
                                                                     id="status">
@@ -424,7 +424,7 @@
 
                                         <div class="payment_body">
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.cash_receive'): >></label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.cash_receive') >></label>
                                                 <div class="col-sm-7">
                                                     <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
                                                 </div>

@@ -26,7 +26,7 @@
                                 <form id="add_category_form" action="{{ route('expenses.categories.store') }}">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                                            <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                                             <input required type="text" name="name" class="form-control add_input" data-name="Category name" id="name" placeholder="@lang('menu.expense_category')"/>
                                             <span class="error error_name"></span>
                                         </div>
@@ -34,7 +34,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-12">
-                                            <label><b>@lang('menu.code') :</b></label>
+                                            <label><b>@lang('menu.code') </b></label>
                                             <input type="text" name="code" class="form-control" data-name="Expanse category Code" placeholder="Code"/>
                                             <span class="error error_code"></span>
                                         </div>
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="card d-hide" id="edit_form">
-                            
+
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -136,7 +136,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    
+
                     table.ajax.reload();
                     toastr.success('Expense category added successfully');
                     $('#add_category_form')[0].reset();

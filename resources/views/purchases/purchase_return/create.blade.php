@@ -25,19 +25,19 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>@lang('menu.invoice_id'): </strong> {{ $purchase->invoice_id }} </p>
-                                    <p class="m-0"><strong>@lang('menu.date'): </strong> {{ $purchase->date }}</p>
+                                    <p class="m-0"><strong>@lang('menu.invoice_id')</strong> {{ $purchase->invoice_id }} </p>
+                                    <p class="m-0"><strong>@lang('menu.date')</strong> {{ $purchase->date }}</p>
                                     </div>
                                     <div class="col-md-6">
-                                    <p class="m-0 "><strong> @lang('menu.supplier') : </strong> {{ $purchase->supplier->name }}</p>
-                                    <p class="m-0 branch"><strong>@lang('menu.business_location') : </strong>
+                                    <p class="m-0 "><strong> @lang('menu.supplier') </strong> {{ $purchase->supplier->name }}</p>
+                                    <p class="m-0 branch"><strong>@lang('menu.business_location') </strong>
                                         @if($purchase->branch)
                                             {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
                                         @else
                                             {{ $generalSettings['business__shop_name'] }} <b>(HO)</b>
                                         @endif
                                     </p>
-                                        <p class="m-0 warehouse"><strong>{{ __('Purchase Stored Location') }} : </strong>
+                                        <p class="m-0 warehouse"><strong>{{ __('Purchase Stored Location') }} </strong>
                                         @if ($purchase->warehouse)
                                             {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
                                         @elseif($purchase->branch)
@@ -52,7 +52,7 @@
                             <div class="row g-1">
                                 <div class="col-lg-4 col-md-10">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>{{ __('PR.Invoice ID') }} : </b><span
+                                        <label for="inputEmail3" class="col-5"><b>{{ __('PR.Invoice ID') }} </b><span
                                                 class="text-danger">*</span></label>
                                         <div class="col-7">
                                             <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="{{ __('Purchase Return Invoice ID') }}" autocomplete="off">
@@ -62,7 +62,7 @@
 
                                 <div class="col-lg-4 col-md-10">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.date') :</b> <span
+                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.date') </b> <span
                                             class="text-danger">*</span></label>
                                         <div class="col-7">
                                             <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date($generalSettings['business__date_format']) }}">

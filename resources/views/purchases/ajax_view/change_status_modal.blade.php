@@ -1,7 +1,7 @@
 <form id="change_purchase_status_form" action="{{ route('purchases.change.status', $purchase->id) }}" method="post">
     @csrf
     <div class="form-group">
-        <label>{{ __('Purchase Status') }} :</label>
+        <label>{{ __('Purchase Status') }} </label>
         <select name="purchase_status" class="form-control form-control-sm" id="purchase_status">
             <option {{ $purchase->purchase_status == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.receive')</option>
             <option {{ $purchase->purchase_status == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.pending')</option>

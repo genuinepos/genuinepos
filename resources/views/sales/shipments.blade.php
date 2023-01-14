@@ -29,7 +29,7 @@
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>@lang('menu.business_location') :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') </strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control" id="branch_id"
                                                                 data-live-search="true">
@@ -46,7 +46,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.customer') :</strong></label>
+                                                    <label><strong>@lang('menu.customer') </strong></label>
                                                     <select name="customer_id"
                                                         class="form-control selectpicker"
                                                         id="customer_id">
@@ -54,7 +54,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.payment_status') :</strong></label>
+                                                    <label><strong>@lang('menu.payment_status') </strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control submit_able select2">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">@lang('menu.paid')</option>
@@ -63,7 +63,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.from_date') :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -76,7 +76,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.to_date') :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i

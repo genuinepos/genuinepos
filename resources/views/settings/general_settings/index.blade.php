@@ -111,21 +111,21 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.business_name') :</strong></label>
+                                            <label><strong>@lang('menu.business_name') </strong></label>
                                             <input type="text" name="shop_name" class="form-control bs_input"
                                                 autocomplete="off"
                                                 value="{{ $generalSettings['business__shop_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.address') :</strong></label>
+                                            <label><strong>@lang('menu.address') </strong></label>
                                             <input type="text" name="address" class="form-control bs_input"
                                                 autocomplete="off" placeholder="Business address"
                                                 value="{{ $generalSettings['business__address'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.phone') :</strong></label>
+                                            <label><strong>@lang('menu.phone') </strong></label>
                                             <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
                                                 value="{{ $generalSettings['business__phone'] }}">
                                         </div>
@@ -133,13 +133,13 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.email') :</strong></label>
+                                            <label><strong>@lang('menu.email') </strong></label>
                                             <input type="text" name="email" class="form-control bs_input" placeholder="Business email address"
                                                 value="{{ $generalSettings['business__email'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.start_date') :</strong></label>
+                                            <label><strong>@lang('menu.start_date') </strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -150,7 +150,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Default Profit') }}(%) :</strong><span
+                                            <label><strong>{{ __('Default Profit') }}(%) </strong><span
                                                     class="text-danger">*</span></label>
                                             <input type="number" name="default_profit" class="form-control bs_input"
                                                 autocomplete="off" data-name="Default profit" id="default_profit"
@@ -161,7 +161,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Business Logo') }} :</strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
+                                            <label><strong>{{ __('Business Logo') }} </strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
                                             <small>{{ __('Previous logo (if exists) will be replaced') }}</small><br>
 
@@ -169,7 +169,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Currency') }}:</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Currency') }}</strong><span class="text-danger">*</span></label>
                                             <select name="currency" class="form-control bs_input" data-name="Currency"
                                                 id="currency">
                                                 @foreach ($currencies as $currency)
@@ -184,7 +184,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Accounting Method') }} : </strong> <span
+                                            <label><strong>{{ __('Stock Accounting Method') }} </strong> <span
                                                     class="text-danger">*</span></label>
                                             <select name="stock_accounting_method" class="form-control bs_input"
                                                 data-name="Stock Accounting Method" id="stock_accounting_method">
@@ -201,7 +201,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Date Format') }}:</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Date Format') }}</strong><span class="text-danger">*</span></label>
                                             <select name="date_format" class="form-control bs_input" data-name="Date format"
                                                 id="date_format">
                                                 <option value="d-m-Y"
@@ -217,7 +217,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Time Format') }}:</strong><span class="text-danger">*</span></label>
+                                            <label><strong>{{ __('Time Format') }}</strong><span class="text-danger">*</span></label>
                                             <select name="time_format" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
                                                 <option value="12"
@@ -231,7 +231,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Time Zone') }} :</strong><span class="text-danger">*</span> {{  now()->format('Y-m-d') }}</label>
+                                            <label><strong>{{ __('Time Zone') }} </strong><span class="text-danger">*</span> {{  now()->format('Y-m-d') }}</label>
                                             <select name="timezone" class="form-control bs_input" data-name="Time format"
                                                 id="time_format">
                                                 <option value="">{{ __('Time Zone') }}</option>
@@ -265,27 +265,27 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label>Tax 1 Name : <span class="text-danger">*</span></label>
+                                            <label>Tax 1 Name <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_1_name" class="form-control" autocomplete="off"
                                                 placeholder="GST / VAT / Other"
                                                 value="{{ $generalSettings['tax__tax_1_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label>Tax 1 No : <span class="text-danger">*</span></label>
+                                            <label>Tax 1 No <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_1_no" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['tax__tax_1_no'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label>Tax 2 Name : <span class="text-danger">*</span></label>
+                                            <label>Tax 2 Name <span class="text-danger">*</span></label>
                                             <input type="text" name="tax_2_name" class="form-control" autocomplete="off"
                                                 placeholder="GST / VAT / Other"
                                                 value="{{ $generalSettings['tax__tax_2_name'] }}">
                                         </div>
 
                                         <div class="col-md-4 mt-2">
-                                            <label>Tax 2 No : <span class="text-danger">*</span></label>
+                                            <label>Tax 2 No<span class="text-danger">*</span></label>
                                             <input type="text" name="tax_2_no" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['tax__tax_2_no'] }}">
                                         </div>
@@ -321,7 +321,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label><strong>View Stock Expiry Alert For :</strong> <span
+                                            <label><strong>View Stock Expiry Alert For </strong> <span
                                                     class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <input type="number" name="view_stock_expiry_alert_for"
@@ -357,27 +357,27 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('PURCHASE Invoice') }} :</strong></label>
+                                            <label><strong>{{ __('PURCHASE Invoice') }} </strong></label>
                                             <input type="text" name="purchase_invoice" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ $generalSettings['prefix__purchase_invoice'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Sale Invoice :</strong></label>
+                                            <label><strong>Sale Invoice </strong></label>
                                             <input type="text" name="sale_invoice" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__sale_invoice'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.purchase_return') :</strong></label>
+                                            <label><strong>@lang('menu.purchase_return') </strong></label>
                                             <input type="text" name="purchase_return" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ $generalSettings['prefix__purchase_return'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Transfer') }} :</strong></label>
+                                            <label><strong>{{ __('Stock Transfer') }} </strong></label>
                                             <input type="text" name="stock_transfer" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__stock_transfer'] }}">
                                         </div>
@@ -385,20 +385,20 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.stock_adjustment') :</strong></label>
+                                            <label><strong>@lang('menu.stock_adjustment') </strong></label>
                                             <input type="text" name="stock_djustment" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ $generalSettings['prefix__stock_adjustment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.sale_return') :</strong></label>
+                                            <label><strong>@lang('menu.sale_return') </strong></label>
                                             <input type="text" name="sale_return" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__sale_return'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.expenses') :</strong></label>
+                                            <label><strong>@lang('menu.expenses') </strong></label>
                                             <input type="text" name="expenses" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__expenses'] }}">
                                         </div>
@@ -406,21 +406,21 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Expense Payment') }} :</strong></label>
+                                            <label><strong>{{ __('Expense Payment') }} </strong></label>
                                             <input type="text" name="expanse_payment" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ $generalSettings['prefix__expanse_payment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Purchase Payment') }} :</strong></label>
+                                            <label><strong>{{ __('Purchase Payment') }} </strong></label>
                                             <input type="text" name="purchase_payment" class="form-control"
                                                 autocomplete="off"
                                                 value="{{ $generalSettings['prefix__purchase_payment'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Sale Payment') }} :</strong></label>
+                                            <label><strong>{{ __('Sale Payment') }} </strong></label>
                                             <input type="text" name="sale_payment" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__sale_payment'] }}">
                                         </div>
@@ -428,13 +428,13 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.supplier_id'):</strong></label>
+                                            <label><strong>@lang('menu.supplier_id')</strong></label>
                                             <input type="text" name="supplier_id" class="form-control"
                                                 autocomplete="off" value="{{ $generalSettings['prefix__supplier_id'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.customer') ID :</strong></label>
+                                            <label><strong>@lang('menu.customer') ID </strong></label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__customer_id'] }}">
                                         </div>
@@ -459,7 +459,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Theme Color :</strong></label>
+                                            <label><strong>Theme Color </strong></label>
                                             <select name="theme_color" class="form-control" id="theme_color">
                                                 <option {{ ($generalSettings['system__theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
                                                 <option  {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
@@ -470,7 +470,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Default datatable page entries :</strong></label>
+                                            <label><strong>Default datatable page entries </strong></label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
                                                 <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">10</option>
                                                 <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">25</option>
@@ -509,7 +509,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Reward Point Display Name') }} :</strong></label>
+                                            <label><strong>{{ __('Reward Point Display Name') }} </strong></label>
                                             <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__point_display_name'] }}">
                                         </div>
                                     </div>
@@ -517,18 +517,18 @@
                                     <div class="form-group row mt-2">
                                         <h6 class="text-primary mb-1"><b>{{ __('Earning Settings') }}</b></h6>
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Amount spend for unit point') }} : </strong>
+                                            <label><strong>{{ __('Amount spend for unit point') }} </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="left" title="Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__amount_for_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Minimum order total to earn reward') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
+                                            <label><strong>{{ __('Minimum order total to earn reward') }} </strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__min_order_total_for_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Maximum points per order') }} :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
+                                            <label><strong>{{ __('Maximum points per order') }} </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__max_rp_per_order'] }}">
                                         </div>
                                     </div>
@@ -538,19 +538,19 @@
                                         <h6 class="text-primary mb-1"><b>{{ __('Redeem Points Settings') }}</b></h6>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Redeem amount per unit point') }} : </strong>
+                                            <label><strong>{{ __('Redeem amount per unit point') }} </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__redeem_amount_per_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Minimum order total to redeem points') }} : </strong>
+                                            <label><strong>{{ __('Minimum order total to redeem points') }} </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__min_order_total_for_redeem'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Minimum redeem point') }} : </strong>
+                                            <label><strong>{{ __('Minimum redeem point') }} </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="top" title="Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__min_redeem_point'] }}">
                                         </div>
@@ -558,7 +558,7 @@
 
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Maximum redeem point per order') }} : </strong>
+                                            <label><strong>{{ __('Maximum redeem point per order') }} </strong>
                                                 <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum points that can be used in one order. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__max_redeem_point'] }}">
                                         </div>

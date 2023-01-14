@@ -8,12 +8,12 @@
         @csrf
         <div class="form-group row">
             <div class="col-md-6">
-                <label><strong>@lang('menu.shipment_details') : </strong></label>
+                <label><strong>@lang('menu.shipment_details') </strong></label>
                 <textarea name="shipment_details" class="form-control form-control-sm" id="shipment_details" cols="30" rows="3" placeholder="@lang('menu.shipment_details')">{{ $sale->shipment_details }}</textarea>
             </div>
 
             <div class="col-md-6">
-                <label><strong>{{ __('Shipment Address') }} : </strong></label>
+                <label><strong>{{ __('Shipment Address') }} </strong></label>
                 <textarea name="shipment_address" class="form-control form-control-sm add_input" id="shipment_address" data-name="Shipment address" cols="30" rows="3" placeholder="{{ __('Shipment Address') }}">{{ $sale->shipment_address }}</textarea>
                 <span class="error error_shipment_address"></span>
             </div>
@@ -21,7 +21,7 @@
 
         <div class="form-group row">
             <div class="col-md-6">
-                <label><strong>@lang('menu.shipment_status') :</strong> </label>
+                <label><strong>@lang('menu.shipment_status') </strong> </label>
                 <select name="shipment_status" class="form-control form-control-sm add_input" id="shipment_status" data-name="Shipment status">
                     <option value="">{{ __('Select Shipment Status') }}</option>
                     <option {{ $sale->shipment_status == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.ordered')</option>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="col-md-6">
-                <label><strong>{{ __('Delivered To') }} :</strong></label>
+                <label><strong>{{ __('Delivered To') }} </strong></label>
                 <input type="text" name="delivered_to" id="delivered_to" class="form-control form-control-sm add_input" placeholder="{{ __('Delivered To') }}" value="{{ $sale->delivered_to }}" data-name="Delivered to">
                 <span class="error error_delivered_to"></span>
             </div>

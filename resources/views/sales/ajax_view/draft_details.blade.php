@@ -15,35 +15,35 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.customer') :- </strong></li>
                         <li>
-                            <strong>Namne : </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
+                            <strong>Namne </strong>{{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.address') : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
+                            <strong>@lang('menu.address') </strong>{{ $draft->customer ? $draft->customer->address : '' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.tax_number') : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
+                            <strong>@lang('menu.tax_number') </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.phone') : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
+                            <strong>@lang('menu.phone') </strong> {{ $draft->customer ? $draft->customer->phone : '' }}
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Entered From : </strong></li>
+                        <li><strong>Entered From </strong></li>
                         @if ($draft->branch)
-                            <li><strong>@lang('menu.business_name') : </strong> <span>{{ $generalSettings['business__shop_name'] }}</span>
+                            <li><strong>@lang('menu.business_name') </strong> <span>{{ $generalSettings['business__shop_name'] }}</span>
                             </li>
-                            <li><strong>@lang('menu.address') : </strong> <span>{{ $draft->branch->name }}/{{ $draft->branch->branch_code }},
+                            <li><strong>@lang('menu.address') </strong> <span>{{ $draft->branch->name }}/{{ $draft->branch->branch_code }},
                                     {{ $draft->branch->city }}, {{ $draft->branch->state }},
                                     {{ $draft->branch->zip_code }}, {{ $draft->branch->country }}</span></li>
-                            <li><strong>@lang('menu.phone') : </strong> <span>{{ $draft->branch->phone }}</span></li>
+                            <li><strong>@lang('menu.phone') </strong> <span>{{ $draft->branch->phone }}</span></li>
                         @else
-                            <li><strong>@lang('menu.business_name') : </strong> <span>{{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b></span>
+                            <li><strong>@lang('menu.business_name') </strong> <span>{{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b></span>
                             </li>
-                            <li><strong>@lang('menu.address') : </strong> <span>{{ $generalSettings['business__address'] }}</span></li>
-                            <li><strong>@lang('menu.phone') : </strong> <span>{{ $generalSettings['business__phone'] }}</span></li>
-                            <li><strong>@lang('menu.stock_location') : </strong>
+                            <li><strong>@lang('menu.address') </strong> <span>{{ $generalSettings['business__address'] }}</span></li>
+                            <li><strong>@lang('menu.phone') </strong> <span>{{ $generalSettings['business__phone'] }}</span></li>
+                            <li><strong>@lang('menu.stock_location') </strong>
                                 <span>
                                     {{ $draft?->warehouse?->warehouse_name.'/'.$draft?->warehouse?->warehouse_code }},
                                     {{ $draft?->warehouse?->address }}
@@ -55,17 +55,17 @@
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>@lang('menu.date') : </strong> {{ $draft->date . ' ' . $draft->time }}
+                            <strong>@lang('menu.date') </strong> {{ $draft->date . ' ' . $draft->time }}
                         </li>
                         <li>
-                            <strong>{{ __('Draft ID') }} : </strong> {{ $draft->invoice_id }}
+                            <strong>{{ __('Draft ID') }} </strong> {{ $draft->invoice_id }}
                         </li>
-                        <li><strong>@lang('menu.status') : </strong>
+                        <li><strong>@lang('menu.status') </strong>
                             <span class="sale_status">
                                 <span class="badge bg-info">@lang('menu.draft')</span>
                             </span>
                         </li>
-                        <li><strong>@lang('menu.shipment_status') : </strong>
+                        <li><strong>@lang('menu.shipment_status') </strong>
                             <span class="shipment_status">
                                 @if ($draft->shipment_status == null)
                                     <span class="badge bg-danger">{{ __('Not-Available') }}</span>
@@ -83,7 +83,7 @@
                             </span>
                         </li>
                         <li>
-                            <strong>@lang('menu.created_by') : </strong>
+                            <strong>@lang('menu.created_by') </strong>
                             @php
                                 $admin_role = '';
                                 $prefix = '';
@@ -205,14 +205,14 @@
           <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>@lang('menu.shipping_details') : </h6>
+                    <h6>@lang('menu.shipping_details') </h6>
                     <p class="shipping_details">
                         {{ $draft->shipment_details ? $draft->shipment_details : 'N/A' }}</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="details_area">
-                    <h6>@lang('menu.note') : </h6>
+                    <h6>@lang('menu.note') </h6>
                     <p class="sale_note">{{ $draft->sale_note ? $draft->sale_note : 'N/A' }}</p>
                 </div>
             </div>
@@ -312,17 +312,17 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>@lang('menu.customer') </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($draft->branch->add_sale_invoice_layout->customer_address)
-                                <li><strong>@lang('menu.address') : </strong> {{ $draft->customer ? $draft->customer->address : '' }}</li>
+                                <li><strong>@lang('menu.address') </strong> {{ $draft->customer ? $draft->customer->address : '' }}</li>
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->customer_tax_no)
-                                <li><strong>@lang('menu.tax_number') : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}</li>
+                                <li><strong>@lang('menu.tax_number') </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}</li>
                             @endif
 
                             @if ($draft->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>@lang('menu.phone') : </strong> {{ $draft->customer ? $draft->customer->phone : '' }}</li>
+                                <li><strong>@lang('menu.phone') </strong> {{ $draft->customer ? $draft->customer->phone : '' }}</li>
                             @endif
                         </ul>
                     </div>
@@ -331,9 +331,9 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> @lang('menu.invoice_no') : </strong> {{ $draft->invoice_id }}</li>
-                            <li><strong>@lang('menu.date'): </strong> <{{ $draft->date . ' ' . $draft->time }}</li>
-                            <li><strong> @lang('menu.entered_by') : </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
+                            <li><strong> @lang('menu.invoice_no') </strong> {{ $draft->invoice_id }}</li>
+                            <li><strong>@lang('menu.date')</strong> <{{ $draft->date . ' ' . $draft->time }}</li>
+                            <li><strong> @lang('menu.entered_by') </strong> {{ $draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}
                             </li>
                         </ul>
                     </div>
@@ -425,7 +425,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -434,7 +434,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($draft->order_discount_type == 1)
@@ -447,7 +447,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -458,7 +458,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -468,7 +468,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -665,23 +665,23 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.customer') : </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') </strong> {{ $draft->customer ? $draft->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
-                                    <strong>@lang('menu.address') : </strong>{{ $draft->customer ? $draft->customer->address : '' }}
+                                    <strong>@lang('menu.address') </strong>{{ $draft->customer ? $draft->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_tax_no)
                                 <li>
-                                    <strong>@lang('menu.tax_number') : </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') </strong> {{ $draft->customer ? $draft->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_phone)
                                 <li>
-                                    <strong>@lang('menu.phone') : </strong>{{ $draft->customer ? $draft->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') </strong>{{ $draft->customer ? $draft->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -693,9 +693,9 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> {{ __('Draft ID') }} : </strong> {{ $draft->invoice_id }}</li>
-                            <li><strong>@lang('menu.date'): </strong> {{ $draft->date . ' ' . $draft->time }}</li>
-                            <li><strong> @lang('menu.entered_by') : </strong> {{$draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}</li>
+                            <li><strong> {{ __('Draft ID') }} </strong> {{ $draft->invoice_id }}</li>
+                            <li><strong>@lang('menu.date')</strong> {{ $draft->date . ' ' . $draft->time }}</li>
+                            <li><strong> @lang('menu.entered_by') </strong> {{$draft->admin ? $draft->admin->prefix . ' ' . $draft->admin->name . ' ' . $draft->admin->last_name : 'N/A' }}</li>
                         </ul>
                     </div>
                 </div>
@@ -782,7 +782,7 @@
                     <table class="table modal-table table-sm table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>@lang('menu.net_total_amount') :</strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') </strong></td>
                                 <td class="net_total text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -792,7 +792,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($draft->order_discount_type == 1)
@@ -805,7 +805,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') </strong></td>
                                 <td class="order_tax text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -816,7 +816,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -826,7 +826,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}

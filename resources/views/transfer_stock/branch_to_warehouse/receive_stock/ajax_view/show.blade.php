@@ -13,36 +13,36 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.warehouse') (From) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
-                            <li><strong>@lang('menu.address') : </strong> {{ $sendStock->warehouse->address }}</li>
+                            <li><strong>@lang('menu.warehouse') (From) </strong></li>
+                            <li><strong>@lang('menu.name') </strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
+                            <li><strong>@lang('menu.phone') </strong> {{ $sendStock->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.address') </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business__phone'] }}</li>
+                            <li><strong>@lang('menu.b_location') (To) </strong></li>
+                            <li><strong>@lang('menu.name') </strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business__phone'] }}</li>
                             @if ($sendStock->branch)
-                                <li><strong>@lang('menu.address') : </strong>
+                                <li><strong>@lang('menu.address') </strong>
                                     {{ $sendStock->branch->city }},
                                     {{ $sendStock->branch->state }},
                                     {{ $sendStock->branch->zip_code }},
                                     {{ $sendStock->branch->country }}.
                                 </li>
                             @else
-                                <li><strong>@lang('menu.address') : </strong> {{ $generalSettings['business__address'] }}</li>
+                                <li><strong>@lang('menu.address') </strong> {{ $generalSettings['business__address'] }}</li>
                             @endif
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled float-right">
-                            <li><strong>@lang('menu.date') : </strong> {{ $sendStock->date }}</li>
-                            <li><strong>@lang('menu.reference_id') : </strong>{{ $sendStock->invoice_id }}</li>
-                            <li><strong>@lang('menu.status') : </strong>
+                            <li><strong>@lang('menu.date') </strong> {{ $sendStock->date }}</li>
+                            <li><strong>@lang('menu.reference_id') </strong>{{ $sendStock->invoice_id }}</li>
+                            <li><strong>@lang('menu.status') </strong>
                                 @if ($sendStock->status == 1)
                                 <span class="badge bg-danger">@lang('menu.pending')</span>
                                 @elseif($sendStock->status == 2)
@@ -98,7 +98,7 @@
               <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>{{ __('Receiver Note') }} : </h6>
+                        <h6>{{ __('Receiver Note') }} </h6>
                         <p class="receiver_note">{{ $sendStock->receiver_note }}</p>
                     </div>
                 </div>
@@ -133,19 +133,19 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.warehouse') (Form) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->warehouse->phone }}</li>
-                            <li><strong>@lang('menu.address') : </strong> {{ $sendStock->warehouse->address }}</li>
+                            <li><strong>@lang('menu.warehouse') (Form) </strong></li>
+                            <li><strong>@lang('menu.name') </strong> {{ $sendStock->warehouse->warehouse_name.'/'.$sendStock->warehouse->warehouse_code }}</li>
+                            <li><strong>@lang('menu.phone') </strong> {{ $sendStock->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.address') </strong> {{ $sendStock->warehouse->address }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.b_location') (To) : </strong></li>
-                            <li><strong>@lang('menu.name') :</strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business__phone'] }}</li>
+                            <li><strong>@lang('menu.b_location') (To) </strong></li>
+                            <li><strong>@lang('menu.name') </strong> {{ $sendStock->branch ? $sendStock->branch->name.'/'.$sendStock->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                            <li><strong>@lang('menu.phone') </strong> {{ $sendStock->branch ? $sendStock->branch->phone : $generalSettings['business__phone'] }}</li>
                             @if ($sendStock->branch)
-                                <li><strong>@lang('menu.address') : </strong>
+                                <li><strong>@lang('menu.address') </strong>
                                     {{ $sendStock->branch->city }},
                                     {{ $sendStock->branch->state }},
                                     {{ $sendStock->branch->zip_code }},
@@ -153,16 +153,16 @@
                                 </li>
                             @else
                             <li>
-                                <strong>@lang('menu.address') : </strong> {{ $generalSettings['business__address'] }}
+                                <strong>@lang('menu.address') </strong> {{ $generalSettings['business__address'] }}
                             </li>
                             @endif
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled float-right">
-                            <<li><strong>@lang('menu.date') : </strong> {{ $sendStock->date }}</li>
-                            <li><strong>@lang('menu.reference_id') : </strong>{{ $sendStock->invoice_id }}</li>
-                            <li><strong>@lang('menu.status') : </strong>
+                            <<li><strong>@lang('menu.date') </strong> {{ $sendStock->date }}</li>
+                            <li><strong>@lang('menu.reference_id') </strong>{{ $sendStock->invoice_id }}</li>
+                            <li><strong>@lang('menu.status') </strong>
                                 @if ($sendStock->status == 1)
                                 @lang('menu.pending')
                                 @elseif($sendStock->status == 2)

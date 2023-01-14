@@ -26,27 +26,27 @@
                             <table class="display table modal-table table-sm mb-0">
                                 <tbody>
                                     <tr>
-                                        <td class="text-start"> <strong>@lang('menu.bank') :</strong> </td>
+                                        <td class="text-start"> <strong>@lang('menu.bank') </strong> </td>
                                         <td class="bank_name text-start">{{ $account->bank ? $account->bank->name .'('.$account->bank->branch_name.')' : '' }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"> <strong>A/C @lang('menu.name') :</strong> </td>
+                                        <td class="text-start"> <strong>A/C @lang('menu.name') </strong> </td>
                                         <td class="account_name text-start">{{ $account->name }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong>A/C No. :</strong></td>
+                                        <td class="text-start"><strong>A/C No. </strong></td>
                                         <td class="account_number text-start">{{ $account->account_number }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong>A/C Type :</strong></td>
+                                        <td class="text-start"><strong>A/C Type </strong></td>
                                         <td class="account_type text-start">{{ App\Utils\Util::accountType($account->account_type) }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="text-start"><strong>@lang('menu.balance') :</strong> </td>
+                                        <td class="text-start"><strong>@lang('menu.balance') </strong> </td>
                                         <td class="account_balance text-start">{{ App\Utils\Converter::format_in_bdt($account->balance) }}</td>
                                     </tr>
                                 </tbody>
@@ -60,7 +60,7 @@
                             <form id="filter_account_ledgers" method="get">
                                 <div class="form-group row justify-content-end">
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.transaction_type') :</strong></label>
+                                        <label><strong>@lang('menu.transaction_type') </strong></label>
                                         <select name="transaction_type" class="form-control submit_able select2" id="transaction_type" autofocus>
                                             <option value=""><strong>@lang('menu.all')</strong></option>
                                             <option value="debit"><strong>@lang('menu.debit')</strong></option>
@@ -69,7 +69,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.voucher_type') :</strong></label>
+                                        <label><strong>@lang('menu.voucher_type') </strong></label>
                                         <select name="voucher_type" class="form-control submit_able  select2" id="voucher_type" autofocus>
                                             <option value="">@lang('menu.all')</option>
                                             @foreach (App\Utils\AccountUtil::voucherTypes() as $key => $type)
@@ -79,7 +79,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -92,7 +92,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i

@@ -45,7 +45,7 @@
 
         @if ($fromDate && $toDate)
 
-            <p style="margin-top: 10px;"><b>@lang('menu.from') :</b>
+            <p style="margin-top: 10px;"><b>@lang('menu.from') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
@@ -144,14 +144,14 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">{{ __('Total Stock In Qty') }} : </th>
+                    <th class="text-end">{{ __('Total Stock In Qty') }} </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalStockInQty) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Stock Out Qty') }} : </th>
+                    <th class="text-end">{{ __('Total Stock Out Qty') }} </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalStockOutQty) }}
                     </td>

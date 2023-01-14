@@ -31,7 +31,7 @@
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <label><b>{{ __('Total work duration') }} :</b> <span class="text-danger">*
+                                                <label><b>{{ __('Total work duration') }} </b> <span class="text-danger">*
                                                     </span> </label>
                                                 <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
                                                     placeholder="{{ __('Total work duration') }}" autofocus value="{{ $totalHours }}">
@@ -39,7 +39,7 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><span class="text-danger">* </span><b>@lang('menu.unit') ({{ __('Pay Type') }}) :</b> </label>
+                                                <label><span class="text-danger">* </span><b>@lang('menu.unit') ({{ __('Pay Type') }}) </b> </label>
                                                 <select name="duration_unit" id="duration_unit" class="form-control">
                                                     <option value="Hourly">{{ __('Hourly') }}</option>
                                                     <option value="Monthly">{{ __('Monthly') }}</option>
@@ -50,7 +50,7 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><b>{{ __('Amount per unit duration') }} :</b> <span
+                                                <label><b>{{ __('Amount per unit duration') }} </b> <span
                                                         class="text-danger">*</span></label>
                                                 <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
                                                     class="form-control" placeholder="{{ __('Amount per unit duration') }}" value="">
@@ -58,7 +58,7 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <label><b>@lang('menu.total') :</b> <span class="text-danger">*</span></label>
+                                                <label><b>@lang('menu.total') </b> <span class="text-danger">*</span></label>
                                                 <input readonly type="total" step="any" name="total_amount"
                                                     id="total_amount" class="form-control" placeholder="total" value="0.00">
                                             </div>
@@ -206,7 +206,7 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="2" class="text-end">@lang('menu.total'):</th>
+                                                                <th colspan="2" class="text-end">@lang('menu.total')</th>
                                                                 <th colspan="2" class="text-start">
                                                                     <span class="span_total_allowance_amount">0.00</span>
                                                                     <input name="total_allowance_amount" type="hidden"
@@ -323,7 +323,7 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <th colspan="2" class="text-end">@lang('menu.total'):</th>
+                                                                <th colspan="2" class="text-end">@lang('menu.total')</th>
                                                                 <th colspan="2" class="text-start">
                                                                     <span class="span_total_deduction_amount">0.00</span>
                                                                     <input name="total_deduction_amount" type="hidden" id="total_deduction_amount" value="0.00">

@@ -8,7 +8,7 @@
             <form id="edit_leave_form" action="{{ route('hrm.leaves.update', $leave->id) }}">
                 <div class="form-group row">
                     <div class="col-md-6">
-                        <label><b>@lang('menu.department') :</b></label>
+                        <label><b>@lang('menu.department') </b></label>
                         <select class="form-control" name="department_id" id="e_department_id">
                             <option value="all"> @lang('menu.all') </option>
                             @foreach ($departments as $dep)
@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label><b>{{ __('Employee') }} :</b> <span class="text-danger">*</span></label>
+                        <label><b>{{ __('Employee') }} </b> <span class="text-danger">*</span></label>
                         <select class="form-control" name="employee_id" id="e_employee_id" required>
                             <option value="">{{ __('Select Employee') }}</option>
                             @foreach ($employees as $emp)
@@ -33,7 +33,7 @@
 
                 <div class="form-group row mt-1">
                     <div class="form-group col-6">
-                        <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.leave_type') </b> <span class="text-danger">*</span></label>
                         <select required class="form-control" name="leave_type_id" id="e_leave_type_id">
                             <option value="">{{ __('Select Leave Type') }}</option>
                             @foreach ($leaveTypes as $lt)
@@ -46,13 +46,13 @@
 
                 <div class="form-group row mt-1">
                     <div class="form-group col-6">
-                        <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.start_date') </b> <span class="text-danger">*</span></label>
                         <input required type="text" name="start_date" class="form-control" id="e_start_date" value="{{ $leave->start_date }}" autocomplete="off" placeholder="@lang('menu.start_date')">
                         <span class="error error_e_start_date"></span>
                     </div>
 
                     <div class="form-group col-6">
-                      <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
+                      <label><b>@lang('menu.end_date') </b> <span class="text-danger">*</span></label>
                       <input required type="text" name="end_date" class="form-control" id="e_end_date" value="{{ $leave->end_date }}" autocomplete="off" placeholder="@lang('menu.end_date')">
                       <span class="error error_e_end_date"></span>
                     </div>
@@ -60,7 +60,7 @@
 
                 <div class="form-group row mt-1">
                     <div class="form-group col-12">
-                        <label><b>@lang('menu.reason') :</b> </label>
+                        <label><b>@lang('menu.reason') </b> </label>
                         <textarea type="text" name="reason" class="form-control" placeholder="@lang('menu.reason')">{{ $leave->reason }}</textarea>
                     </div>
                 </div>

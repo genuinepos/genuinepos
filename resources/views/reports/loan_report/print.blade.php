@@ -35,7 +35,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b>
+            <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
@@ -52,9 +52,9 @@
         <div class="row">
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.company')/@lang('menu.people') : </strong> {{ $company->name }}</li>
-                    <li><strong>@lang('menu.phone') : </strong> </li>
-                    <li><strong>@lang('menu.address') : </strong> </li>
+                    <li><strong>@lang('menu.company')/@lang('menu.people') </strong> {{ $company->name }}</li>
+                    <li><strong>@lang('menu.phone') </strong> </li>
+                    <li><strong>@lang('menu.address') </strong> </li>
                 </ul>
             </div>
         </div>

@@ -12,8 +12,8 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> @lang('menu.reference_id') : </strong>{{ $expense->invoice_id }} </li>
-                    <li><strong>@lang('menu.business_location') : </strong>
+                    <li><strong> @lang('menu.reference_id') </strong>{{ $expense->invoice_id }} </li>
+                    <li><strong>@lang('menu.business_location') </strong>
                         {{ $expense->branch ? $expense->branch->name.''.$expense->branch->branch_code : 'Head Office' }}
                     </li>
                 </ul>
@@ -23,9 +23,9 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.total_due') : </strong>{{ $expense->due }}</li>
-                    <li><strong>@lang('menu.date') : </strong>{{ $expense->date }}</li>
-                    <li><strong>@lang('menu.payment_status') : </strong>
+                    <li><strong>@lang('menu.total_due') </strong>{{ $expense->due }}</li>
+                    <li><strong>@lang('menu.date') </strong>{{ $expense->date }}</li>
+                    <li><strong>@lang('menu.payment_status') </strong>
                         @php
                            $payable = $expense->net_total_amount;
                         @endphp

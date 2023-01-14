@@ -44,7 +44,7 @@
                             <div class="row gx-2">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __('Sale INV. ID') }} :</b> </label>
+                                        <label class=" col-4"><b>{{ __('Sale INV. ID') }} </b> </label>
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
@@ -60,7 +60,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('B. Location') }} :</b></label>
+                                        <label class="col-4"><b>{{ __('B. Location') }} </b></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" tabindex="-1">
                                             <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
@@ -70,7 +70,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.customer') :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.customer') </b> </label>
                                         <div class="col-8">
                                             <select name="customer_id" class="form-control" id="customer_id">
                                                 <option value="">{{ __('Walk-In-Customer') }}</option>
@@ -112,7 +112,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b> @lang('menu.price_group') : </b></label>
+                                        <label class="col-4"><b> @lang('menu.price_group') </b></label>
 
                                         <div class="col-8">
                                             <select name="price_group_id" class="form-control"
@@ -128,7 +128,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>@lang('menu.register_invoice_id'):</b> </label>
+                                        <label class=" col-4"><b>@lang('menu.register_invoice_id')</b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Sale Return Invoice ID" autocomplete="off" value="{{ $return->invoice_id }}">
                                         </div>
@@ -260,14 +260,14 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>@lang('menu.total_item') :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') </b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $return->total_item }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_return_qty') :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_return_qty') </b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_qty" type="number" step="any" class="form-control" id="total_qty" value="{{ $return->total_qty }}" tabindex="-1">
                                                         </div>
@@ -276,14 +276,14 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.net_total_amount') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.net_total_amount') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="net_total_amount" id="net_total_amount" class="form-control" value="{{ $return->net_total_amount }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.return_discount') :</b></label>
+                                                        <label class=" col-4"><b>@lang('menu.return_discount') </b></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-6">
@@ -302,7 +302,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.return_tax') :</b>
+                                                        <label class="col-4"><b>@lang('menu.return_tax') </b>
                                                             <span class="text-danger">*</span>
                                                         </label>
 
@@ -320,7 +320,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_return_amount') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_return_amount') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control" value="{{ $return->total_return_amount }}" placeholder="@lang('menu.total_return_amount')" tabindex="-1">
                                                         </div>
@@ -329,7 +329,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.return_note') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.return_note') </b></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="return_note" id="return_note" class="form-control" value="{{ $return->return_note }}" placeholder="@lang('menu.return_note')">
                                                         </div>
@@ -350,14 +350,14 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group customer_pre_due_field {{ $return->sale_id ? 'd-hide' : '' }}">
-                                                        <label class="col-4"><b>{{ __('Customer Previous Due') }} :</b></label>
+                                                        <label class="col-4"><b>{{ __('Customer Previous Due') }} </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="customer_previous_due" id="customer_previous_due" class="form-control text-danger" value="{{ $customerBalance > 0 ? $customerBalance : 0.00 }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group invoice_due_field {{ $return->sale_id ? '' : 'd-hide' }}">
-                                                        <label class="col-4"><b>@lang('menu.invoice_due') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.invoice_due') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="invoice_due" id="invoice_due" class="form-control text-danger" value="{{ $return->sale ? $return->sale->due : 0.00 }}" tabindex="-1">
                                                         </div>
@@ -366,28 +366,28 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Previous Refunded Amount') }} :</b></label>
+                                                        <label class="col-4"><b>{{ __('Previous Refunded Amount') }} </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_return_due_pay" id="total_return_due_pay" class="form-control" value="{{ $return->total_return_due_pay }}">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_refundable_amount') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_refundable_amount') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_refundable_amount" id="total_refundable_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Refunding Amount') }} : </b> <strong>>></strong> </label>
+                                                        <label class="col-4"><b>{{ __('Refunding Amount') }} </b> <strong>>></strong> </label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" id="paying_amount" class="form-control" value="0.00">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Payment By') }} : </b> </label>
+                                                        <label class="col-4"><b>{{ __('Payment By') }} </b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
@@ -400,7 +400,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.credit') A/C: </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C</b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                                 @foreach ($accounts as $account)
@@ -418,7 +418,7 @@
 
                                                     <div class="col-md-12">
                                                         <div class="input-group mt-1">
-                                                            <label class="col-4"><b>@lang('menu.payment_note') :</b></label>
+                                                            <label class="col-4"><b>@lang('menu.payment_note') </b></label>
                                                             <div class="col-8">
                                                                 <input type="text" name="payment_note" id="payment_note" class="form-control" value="" placeholder="@lang('menu.payment_note').">
                                                             </div>
@@ -475,7 +475,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.discount_type')</strong> :</label>
+                                <label><strong>@lang('menu.discount_type')</strong> </label>
                                 <select class="form-control " id="e_unit_discount_type">
                                     <option value="2">@lang('menu.percentage')</option>
                                     <option value="1">@lang('menu.fixed')</option>
@@ -483,7 +483,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.discount')</strong> :</label>
+                                <label><strong>@lang('menu.discount')</strong> </label>
                                 <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                 <input type="hidden" id="e_discount_amount"/>
                             </div>
@@ -491,7 +491,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax')</strong> :</label>
+                                <label><strong>@lang('menu.tax')</strong> </label>
                                 <select class="form-control" id="e_unit_tax">
                                     <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
@@ -501,7 +501,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong> :</label>
+                                <label><strong>@lang('menu.tax_type')</strong> </label>
                                 <select class="form-control" id="e_tax_type">
                                     <option value="1">@lang('menu.exclusive')</option>
                                     <option value="2">@lang('menu.exclusive')</option>

@@ -36,7 +36,7 @@
             @endif
 
             @if ($fromDate && $toDate)
-                <p><b>@lang('menu.date') :</b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+                <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
             @endif
             <h6 style="margin-top: 10px;"><b>@lang('menu.daily_profit_loss_report')</b></h6>
         </div>
@@ -62,7 +62,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">{{ __('Total Order Tax') }} : </th>
+                                <th class="text-start">{{ __('Total Order Tax') }} </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalOrderTax) }}
@@ -70,7 +70,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
+                                <th class="text-start"> @lang('menu.total_stock_adjustment') </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentAmount) }}
@@ -78,7 +78,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start"> @lang('menu.total_expense') : </th>
+                                <th class="text-start"> @lang('menu.total_expense') </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
@@ -86,7 +86,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_transfer_shipping_charge') : </th>
+                                <th class="text-start">@lang('menu.total_transfer_shipping_charge') </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalTransferShipmentCost) }}
@@ -94,7 +94,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_sell_return') : </th>
+                                <th class="text-start">@lang('menu.total_sell_return') </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalReturn) }}
@@ -102,12 +102,12 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_payroll') :</th>
+                                <th class="text-start">@lang('menu.total_payroll') </th>
                                 <td class="text-start">{{ $generalSettings['business__currency'] }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-start">@lang('menu.total_production_cost') :</th>
+                                <th class="text-start">@lang('menu.total_production_cost') </th>
                                 <td class="text-start">{{ $generalSettings['business__currency'] }} 0.00 (P)</td>
                             </tr>
                         </tbody>
@@ -134,7 +134,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-start">{{ __('Total Stock Adjustment Recovered') }} : </th>
+                                <th class="text-start">{{ __('Total Stock Adjustment Recovered') }} </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentRecovered) }}
@@ -158,7 +158,7 @@
                         <h6 class="text-muted m-0">{{ __('Total Daily Profit') }} :
                             {{ $generalSettings['business__currency'] }}
                             <span class="{{ $grossProfit < 0 ? 'text-danger' : '' }}">{{ App\Utils\Converter::format_in_bdt($grossProfit) }}</span></h6>
-                        <p class="text-muted m-0"><b>Calculate Gross Profit :</b> (Total Sale + Total Stock Adjustment Recovered)
+                        <p class="text-muted m-0"><b>Calculate Gross Profit </b> (Total Sale + Total Stock Adjustment Recovered)
                             <b>-</b> ( Sold Product Total Unit Cost + Total Sale Return + Total Sale Order Tax + Total Stock Adjustment + Total Expense + Total transfer shipping charge + Total Payroll + Total Production Cost )</p>
                     </div>
                 </div>

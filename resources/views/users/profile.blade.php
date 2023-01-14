@@ -2,6 +2,8 @@
 @push('stylesheets')
 <style>
     b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+    label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+    .checkbox_input_wrap {text-align: right;}
 </style>
 @endpush
 @section('content')
@@ -25,7 +27,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-sm-4"> <b>@lang('menu.current_password') :</b> <span
+                                    <label for="inputEmail3" class="col-sm-4"> <b>@lang('menu.current_password')</b> <span
                                         class="text-danger">*</span></label>
                                     <div class="col-sm-8 col-8">
                                         <div class="input-group">
@@ -43,7 +45,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-sm-4"><b>@lang('menu.new_password') :</b> <span
+                                    <label for="inputEmail3" class="col-sm-4"><b>@lang('menu.new_password')</b> <span
                                             class="text-danger">*</span></label>
                                     <div class="col-sm-8 col-8">
                                         <div class="input-group">
@@ -60,7 +62,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <label for="inputEmail3" class="col-sm-4"><b>@lang('menu.confirm_password') :</b> <span
+                                    <label for="inputEmail3" class="col-sm-4"><b>@lang('menu.confirm_password')</b> <span
                                         class="text-danger">*</span></label>
                                     <div class="col-sm-8 col-8">
                                         <div class="input-group">
@@ -98,7 +100,7 @@
                                 <div class="row gx-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.prefix') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.prefix')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="prefix" class="form-control"
                                                     placeholder="Mr / Mrs / Miss"
@@ -109,7 +111,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.first_name') :</b> <span
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.first_name')</b> <span
                                                 class="text-danger">*</span></label>
 
                                             <div class="col-lg-8 col-7">
@@ -125,7 +127,7 @@
                                 <div class="row gx-2 mt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.last_name') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.last_name')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="last_name" class="form-control"
                                                     placeholder="@lang('menu.last_name')"
@@ -141,7 +143,7 @@
                                 <div class="row gx-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.email') :</b> <span
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.email')</b> <span
                                                     class="text-danger">*</span></label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="email" id="email" class="form-control"
@@ -154,9 +156,9 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.default_language') :</b>
+                                            <label for="inputEmail3" class="col-lg-6 col-5"><b>@lang('menu.default_language')</b>
                                             </label>
-                                            <div class="col-lg-8 col-7">
+                                            <div class="col-lg-6 col-7">
                                                 <select name="language" class="form-control">
                                                     <option
                                                         {{ auth()->user()->language == 'en' ? 'SELECTED' : '' }}
@@ -175,14 +177,14 @@
                         </div>
                         <div class="form_element rounded mt-0 mb-3">
                             <div class="heading_area">
-                                <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.bank_details')</b> </p>
+                                <p class="px-1 pt-1 pb-0 text-primary"><b>@lang('menu.bank_details')</b></p>
                             </div>
 
                             <div class="element-body">
                                 <div class="row gx-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.account_name') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.account_name')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="bank_ac_holder_name" class="form-control "
                                                     placeholder="@lang('menu.account_holders_name')" autocomplete="off"
@@ -193,7 +195,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.account_no') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.account_no')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="bank_ac_no" class="form-control"
                                                     placeholder="@lang('menu.account_number')" autocomplete="off"
@@ -206,7 +208,7 @@
                                 <div class="row gx-2 mt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.bank_name') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.bank_name')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="bank_name" class="form-control"
                                                     placeholder="@lang('menu.bank_name')" autocomplete="off"
@@ -217,7 +219,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.identifier_code') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.identifier_code')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="bank_identifier_code" class="form-control"
                                                     placeholder="{{ __('Bank Identifier Code') }}" autocomplete="off"
@@ -230,7 +232,7 @@
                                 <div class="row gx-2 mt-1">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.branch') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.branch')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="bank_branch" class="form-control"
                                                     placeholder="@lang('menu.branch')" autocomplete="off"
@@ -241,7 +243,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.tax_payer_id'):</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.tax_payer_id')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="tax_payer_id" class="form-control"
                                                     placeholder="@lang('menu.tax_payer_id')" autocomplete="off"
@@ -263,7 +265,7 @@
                                 <div class="row gx-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"> <b>{{ __('Profile image') }} :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"> <b>{{ __('Profile image') }}</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="file" name="photo" class="form-control"
                                                     autocomplete="off" placeholder="{{ __('Profile image') }}">
@@ -272,7 +274,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"> <b>@lang('menu.date_of_birth') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"> <b>@lang('menu.date_of_birth')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="date_of_birth" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.date_of_birth')"
@@ -281,9 +283,12 @@
                                         </div>
                                     </div>
 
+                                </div>
+
+                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.gender') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.gender')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <select name="gender" class="form-control">
                                                     <option value="">@lang('menu.select_gender')</option>
@@ -303,12 +308,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.marital_status') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.marital_status')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <select name="marital_status" class="form-control">
                                                     <option value="">@lang('menu.marital_status')</option>
@@ -326,9 +328,12 @@
                                         </div>
                                     </div>
 
+                                </div>
+
+                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.blood_group') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.blood_group')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="blood_group" class="form-control"
                                                     placeholder="@lang('menu.blood_group')" autocomplete="off"
@@ -336,12 +341,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.phone') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.phone')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="phone" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.phone_number')"
@@ -350,9 +352,12 @@
                                         </div>
                                     </div>
 
+                                </div>
+
+                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.facebook_link') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.facebook_link')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="facebook_link" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.facebook_link')"
@@ -360,12 +365,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.twitter_link') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.twitter_link')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="twitter_link" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.twitter_link')"
@@ -374,9 +376,12 @@
                                         </div>
                                     </div>
 
+                                </div>
+
+                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.instagram_link') :</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.instagram_link')</b> </label>
                                             <div class="col-lg-8 col-7">
                                                 <input type="text" name="instagram_link" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.instagram_link')"
@@ -384,37 +389,34 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row gx-2 mt-2">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.guardian_name'):</b> </label>
+                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.id_proof_name')</b> </label>
                                             <div class="col-lg-8 col-7">
+                                                <input type="text" name="id_proof_name" class="form-control"
+                                                autocomplete="off" placeholder="@lang('menu.id_proof_name')"
+                                                value="{{ auth()->user()->id_proof_name }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <label for="inputEmail3" class="col-lg-6 col-5"><b>@lang('menu.guardian_name')</b> </label>
+                                            <div class="col-lg-6 col-7">
                                                 <input type="text" name="guardian_name" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.guardian_name')"
                                                     value="{{ auth()->user()->guardian_name }}">
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.id_proof_name') :</b> </label>
-                                            <div class="col-lg-8 col-7">
-                                                <input type="text" name="id_proof_name" class="form-control"
-                                                    autocomplete="off" placeholder="@lang('menu.id_proof_name')"
-                                                    value="{{ auth()->user()->id_proof_name }}">
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="row gx-2 mt-2">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-4 col-5"><b>@lang('menu.id_proof_number') :</b> </label>
-                                            <div class="col-lg-8 col-7">
+                                            <label for="inputEmail3" class="col-lg-3 col-5"><b>@lang('menu.id_proof_number')</b> </label>
+                                            <div class="col-lg-9 col-7">
                                                 <input type="text" name="id_proof_number" class="form-control"
                                                     autocomplete="off" placeholder="@lang('menu.id_proof_number')"
                                                     value="{{ auth()->user()->id_proof_number }}">
@@ -422,37 +424,27 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row mt-2">
+                                <div class="row gx-2 mt-2">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-2"><b>@lang('menu.permanent_address') :</b>
-                                            </label>
-                                            <div class="col-lg-10 col-12">
-                                                <input type="text" name="permanent_address"
-                                                    class="form-control form-control-sm" autocomplete="off"
-                                                    placeholder="@lang('menu.permanent_address')"
-                                                    {{ auth()->user()->permanent_address }}>
+                                            <label for="inputEmail3" class="col-lg-3 col-5"><b>@lang('menu.permanent_address')</b> </label>
+                                            <div class="col-lg-9 col-7">
+                                                <input type="text" name="permanent_address" class="form-control form-control-sm" autocomplete="off" placeholder="@lang('menu.permanent_address')" {{ auth()->user()->permanent_address }}>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row mt-2">
+                                <div class="row gx-2 mt-2">
                                     <div class="col-md-12">
                                         <div class="input-group">
-                                            <label for="inputEmail3" class="col-lg-2"><b>@lang('menu.current_address') :</b> </label>
-                                            <div class="col-lg-10 col-12">
-                                                <input type="text" name="current_address"
-                                                    class="form-control form-control-sm"
-                                                    placeholder="@lang('menu.current_address')"
-                                                    {{ auth()->user()->current_address }}>
+                                            <label for="inputEmail3" class="col-lg-3 col-5"><b>@lang('menu.current_address')</b> </label>
+                                            <div class="col-lg-9 col-7">
+                                                <input type="text" name="current_address" class="form-control form-control-sm" placeholder="@lang('menu.current_address')" {{ auth()->user()->current_address }}>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

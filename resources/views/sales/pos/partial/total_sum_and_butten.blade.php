@@ -140,7 +140,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row g-1">
-                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>@lang('menu.total'):</b></label>
+                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>@lang('menu.total')</b></label>
                         <div class="col-sm-9 col-8">
                             <strong>
                                 <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
@@ -150,7 +150,7 @@
 
                     @if ($generalSettings['pos__is_enabled_discount'] == '1')
                         <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">@lang('menu.discount'):</label>
+                            <label class="col-sm-3 col-4 col-form-label text-white">@lang('menu.discount')</label>
                             <div class="col-sm-9 col-8">
 
                                 <div class="row g-2">
@@ -180,7 +180,7 @@
 
                     @if ($generalSettings['pos__is_enabled_order_tax'] == '1')
                         <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Vat/Tax') }}:</label>
+                            <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Vat/Tax') }}</label>
                             <div class="col-sm-9 col-8">
                                 <div class="row g-2">
                                     <div class="col-6">
@@ -200,14 +200,14 @@
                     @endif
 
                     <div class="row g-1">
-                        <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Pre. Due') }}:</label>
+                        <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Pre. Due') }}</label>
 
                         <div class="col-sm-9 col-8">
                             <input readonly class="form-control pos-amounts" type="number" step="any" name="previous_due"
                                 id="previous_due" value="0.00" tabindex="-1">
                         </div>
 
-                        <label class="col-sm-3 col-4 col-form-label text-white">Payable:</label>
+                        <label class="col-sm-3 col-4 col-form-label text-white">Payable</label>
                         <div class="col-sm-9 col-8">
                             <input readonly class="form-control pos-amounts" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
@@ -218,7 +218,7 @@
                     </div>
 
                     <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.cash_receive'):</label>
+                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.cash_receive')</label>
                         <div class="col-sm-6 col-7">
                             {{-- <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
                                 class="form-control pos-amounts" autocomplete="off"> --}}
@@ -232,7 +232,7 @@
                     </div>
 
                     <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.change_amount'):</label>
+                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.change_amount')</label>
                         <div class="col-sm-6 col-7">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control pos-amounts" tabindex="-1">
@@ -240,7 +240,7 @@
                     </div>
 
                     <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-danger"><b>@lang('menu.due') :</b></label>
+                        <label class="col-sm-6 col-5 col-form-label text-danger"><b>@lang('menu.due') </b></label>
                         <div class="col-sm-6 col-7">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
                                 class="form-control pos-amounts text-danger" tabindex="-1">

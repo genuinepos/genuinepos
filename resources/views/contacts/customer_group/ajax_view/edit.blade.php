@@ -9,14 +9,14 @@
         @csrf
         <input type="hidden" name="id" id="id">
         <div class="form-group mt-2">
-            <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control edit_input"
                 data-name="Group name" id="e_name" placeholder="Group name" value="{{ $groups->group_name }}"/>
             <span class="error error_e_name"></span>
         </div>
 
         <div class="form-group mt-2">
-            <label><strong>@lang('menu.calculation_percent') (%) :</strong></label>
+            <label><strong>@lang('menu.calculation_percent') (%) </strong></label>
             <input type="number" step="any" name="calculation_percent" class="form-control"
                 id="e_calculation_percent" placeholder="@lang('menu.calculation_percent')"  value="{{ $groups->calc_percentage }}"/>
                 <span class="error error_e_calculation_percent"></span>

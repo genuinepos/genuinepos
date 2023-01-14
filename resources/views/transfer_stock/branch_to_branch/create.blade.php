@@ -37,7 +37,7 @@
                             <div class="row gx-1 gy-1">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.b_location') :</b></label>
+                                        <label class="col-4"><b>@lang('menu.b_location') </b></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
                                             <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
@@ -47,7 +47,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.warehouse') :</b></label>
+                                        <label class="col-4"><b>@lang('menu.warehouse') </b></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
                                                 name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
@@ -62,7 +62,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.transfer_date ') :</b>
+                                        <label class="col-4"><b>@lang('menu.transfer_date ') </b>
                                             <span class="text-danger">*</span>
                                         </label>
 
@@ -76,7 +76,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.reference') :</b>
+                                        <label class="col-4"><b>@lang('menu.reference') </b>
                                             <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
                                         </label>
 
@@ -174,7 +174,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_item') :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') </b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
                                                         </div>
@@ -183,7 +183,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_quantity') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_quantity') </b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_send_qty" type="number" step="any" class="form-control" id="total_send_qty" value="0.00">
                                                         </div>
@@ -192,7 +192,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_stock_value') :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_stock_value') </b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_stock_value" type="number" step="any" class="form-control" id="total_stock_value" value="0.00">
                                                         </div>
@@ -201,7 +201,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.transfer_note') :</b>
+                                                        <label class="col-4"><b>@lang('menu.transfer_note') </b>
                                                         </label>
                                                         <div class="col-8">
                                                             <input type="text" name="transfer_note" id="transfer_note" class="form-control" placeholder="@lang('menu.transfer_note')">
@@ -223,7 +223,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.transfer_cost') : </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.transfer_cost') </b> </label>
                                                         <div class="col-8">
                                                             <input name="transfer_cost" type="number" step="any" id="transfer_cost" class="form-control" value="0.00">
                                                         </div>
@@ -234,7 +234,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>{{ __('Expense Ledger A/C') }} :</b>
+                                                            <b>{{ __('Expense Ledger A/C') }} </b>
                                                             <span class="text-danger">*</span>
                                                         </label>
 
@@ -255,7 +255,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>@lang('menu.payment_method') :
+                                                            <b>@lang('menu.payment_method')
                                                                 <span class="text-danger">*</span>
                                                             </b>
                                                         </label>
@@ -276,7 +276,7 @@
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>@lang('menu.credit') A/C :
+                                                            <b>@lang('menu.credit') A/C
                                                                 <span class="text-danger">*</span>
                                                             </b>
                                                         </label>
@@ -301,7 +301,7 @@
                                                 <div class="col-md-12">
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.payment_note') :</b> </label>
+                                                        <label class=" col-4"><b>@lang('menu.payment_note') </b> </label>
                                                         <div class="col-8">
                                                             <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')" autocomplete="off">
                                                         </div>

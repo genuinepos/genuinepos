@@ -24,7 +24,7 @@
         <p>{{ $generalSettings['business__address'] }}</p>
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') :</b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
         <p class="mt-2"><b>@lang('menu.supplier_payments') </b></p>
@@ -35,9 +35,9 @@
     <div class="row">
         <div class="col-8">
             <ul class="list-unstyled">
-                <li><strong>@lang('menu.supplier') : </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
-                <li><strong>@lang('menu.phone') : </strong> {{ $supplier->phone }}</li>
-                <li><strong>@lang('menu.address') : </strong> {{ $supplier->address  }}</li>
+                <li><strong>@lang('menu.supplier') </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
+                <li><strong>@lang('menu.phone') </strong> {{ $supplier->phone }}</li>
+                <li><strong>@lang('menu.address') </strong> {{ $supplier->address  }}</li>
             </ul>
         </div>
     </div>
@@ -109,10 +109,10 @@
                         <td class="text-start">
                             @if ($row->sp_account)
 
-                                {{ $row->sp_account . '(A/C:' . $row->sp_account_number . ')' }}
+                                {{ $row->sp_account . '(A/C' . $row->sp_account_number . ')' }}
                             @else
 
-                                {{ $row->pp_account . '(A/C:' . $row->pp_account_number . ')' }}
+                                {{ $row->pp_account . '(A/C' . $row->pp_account_number . ')' }}
                             @endif
                         </td>
 

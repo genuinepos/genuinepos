@@ -26,13 +26,13 @@
 
                         <form id="add_unit_form" class="p-2" action="{{ route('product.units.store') }}">
                             <div class="form-group">
-                                <label><b>@lang('menu.unit_name') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.unit_name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" data-name="Name" id="name" placeholder="@lang('menu.unit_name')"/>
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="form-group mt-1">
-                                <label><b>@lang('menu.short_name') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.short_name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="code" class="form-control" data-name="Code name" id="code" placeholder="@lang('menu.short_name')"/>
                                 <span class="error error_code"></span>
                             </div>

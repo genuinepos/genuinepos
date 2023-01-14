@@ -27,7 +27,7 @@
                                                         <div class="form-group row">
 
                                                             <div class="col-md-2">
-                                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                                 <select name="branch_id"
                                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -91,7 +91,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.supplier_due') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.supplier_due') </strong></td>
                                                                                     <td class=" text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="supplier_due"></span>
@@ -99,7 +99,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.customer_return_due') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.customer_return_due') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="customer_return_due"></span>
@@ -108,7 +108,7 @@
 
                                                                                 <tr>
                                                                                     <td class="text-start">
-                                                                                        <strong>@lang('menu.payable_loan_liabilities') :</strong>
+                                                                                        <strong>@lang('menu.payable_loan_liabilities') </strong>
                                                                                     </td>
 
                                                                                     <td class="text-end">
@@ -119,7 +119,7 @@
 
                                                                                 <tr>
                                                                                     <td class="text-start">
-                                                                                        <strong>@lang('menu.capital_ac') :</strong>
+                                                                                        <strong>@lang('menu.capital_ac') </strong>
                                                                                     </td>
 
                                                                                     <td class="text-end">
@@ -129,7 +129,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.opening_stock') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.opening_stock') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="payable_ll"></span>
@@ -143,7 +143,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.cash_in_hand') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.cash_in_hand') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="cash_in_hand"></span>
@@ -151,7 +151,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.bank_ac_balance') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.bank_ac_balance') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="bank_balance"></span>
@@ -159,7 +159,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.customer_due') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.customer_due') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="customer_due"></span>
@@ -167,7 +167,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.supplier_return_due') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.supplier_return_due') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="supplier_return_due"></span>
@@ -175,7 +175,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.current_stock_value') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.current_stock_value') </strong></td>
                                                                                     <td class=" text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="stock_value"></span>
@@ -183,7 +183,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.investments') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.investments') </strong></td>
                                                                                     <td class=" text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="investment"></span>
@@ -191,7 +191,7 @@
                                                                                 </tr>
 
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.receivable_loan_advance') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.receivable_loan_advance') </strong></td>
                                                                                     <td class=" text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="receiveable_la"></span>
@@ -199,7 +199,7 @@
                                                                                 </tr>
 
                                                                                 <tr class="bg-info">
-                                                                                    <td class="text-end text-white"><strong>@lang('menu.total_current_asset') :</strong></td>
+                                                                                    <td class="text-end text-white"><strong>@lang('menu.total_current_asset') </strong></td>
                                                                                     <td class=" text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="total_physical_asset"></span>
@@ -212,7 +212,7 @@
                                                                                 </tr>
 
                                                                                 <tr class="bg-secondary">
-                                                                                    <th colspan="2" class="text-start"><strong>@lang('menu.fixed_asset') :</strong></th>
+                                                                                    <th colspan="2" class="text-start"><strong>@lang('menu.fixed_asset') </strong></th>
                                                                                 </tr>
 
                                                                                 <tr class="account_balance_list_area">
@@ -245,7 +245,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.total_liability') :</strong> </td>
+                                                                                    <td class="text-start"><strong>@lang('menu.total_liability') </strong> </td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="total_liability"></span>
@@ -258,7 +258,7 @@
                                                                         <table class="table table-sm">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td class="text-start"><strong>@lang('menu.total_asset') :</strong></td>
+                                                                                    <td class="text-start"><strong>@lang('menu.total_asset') </strong></td>
                                                                                     <td class="text-end">
                                                                                         {{ $generalSettings['business__currency'] }}
                                                                                         <span class="total_asset"></span>

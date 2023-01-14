@@ -15,12 +15,12 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span>
+                    <li><strong>@lang('menu.supplier') </strong><span>{{ $purchase->supplier->name }}</span>
                     </li>
-                    <li><strong>@lang('menu.business') : </strong>
+                    <li><strong>@lang('menu.business') </strong>
                         <span>{{ $purchase->supplier->business_name }}</span>
                     </li>
-                    <li><strong>@lang('menu.phone') : </strong>
+                    <li><strong>@lang('menu.phone') </strong>
                         <span>{{ $purchase->supplier->phone }}</span>
                     </li>
                 </ul>
@@ -30,12 +30,12 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> {{ __('P.Invoice ID') }} : </strong>{{ $purchase->invoice_id }}
+                    <li><strong> {{ __('P.Invoice ID') }} </strong>{{ $purchase->invoice_id }}
                     </li>
-                    <li><strong>{{ __('Purchase Form') }} : </strong>
+                    <li><strong>{{ __('Purchase Form') }} </strong>
                         {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : 'Head Office' }}
                     </li>
-                    <li><strong>{{ __('Stored Location') }} : </strong>
+                    <li><strong>{{ __('Stored Location') }} </strong>
                         @if ($purchase->branch)
                             {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
                             (<b>@lang('menu.branch')/@lang('menu.company')</b>) ,<br>
@@ -58,8 +58,8 @@
                         <strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong>
                         {{ $purchase->due }}
                     </li>
-                    <li><strong>@lang('menu.date') : </strong>{{date($generalSettings['business__date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
-                    <li><strong>@lang('menu.purchases_status') : </strong>
+                    <li><strong>@lang('menu.date') </strong>{{date($generalSettings['business__date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
+                    <li><strong>@lang('menu.purchases_status') </strong>
                         @if ($purchase->purchase_status == 1)
                             <span class="text-success"><b>@lang('menu.receive')</b></span>
                         @elseif($purchase->purchase_status == 2){
@@ -68,7 +68,7 @@
                             <span class="text-primary"><b>@lang('menu.ordered')</b></span>
                         @endif
                     </li>
-                    <li><strong>@lang('menu.payment_status') : </strong>
+                    <li><strong>@lang('menu.payment_status') </strong>
                         @php
                             $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                         @endphp

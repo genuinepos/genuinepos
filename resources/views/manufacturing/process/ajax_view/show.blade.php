@@ -39,15 +39,15 @@
            <table class="">
                <tbody>
                     <tr>
-                        <th class="text-start">@lang('menu.wastage') : </th>
+                        <th class="text-start">@lang('menu.wastage') </th>
                         <td class="text-start"> {{ $process->wastage_percent.'%' }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">@lang('menu.total_output_quantity') : </th>
+                        <th class="text-start">@lang('menu.total_output_quantity') </th>
                         <td class="text-start"> {{ $process->total_output_qty.' '.$process->unit->name }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">@lang('menu.instructions') : </th>
+                        <th class="text-start">@lang('menu.instructions') </th>
                         <td ></td>
                     </tr>
                </tbody>
@@ -58,11 +58,11 @@
             <table class="display data_tbl data__table">
                 <tbody>
                     <tr>
-                        <th class="text-start">@lang('menu.additional_cost') : </th>
+                        <th class="text-start">@lang('menu.additional_cost') </th>
                         <td class="text-start"> {{ $generalSettings['business__currency'].' '.$process->production_cost }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">@lang('menu.total_cost') :</th>
+                        <th class="text-start">@lang('menu.total_cost') </th>
                         <td class="text-start"> {{ $generalSettings['business__currency'].' '.$process->total_cost }}</td>
                     </tr>
                 </tbody>

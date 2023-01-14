@@ -44,11 +44,11 @@
     </div>
 
     <div class="reference_area pt-3">
-        <p><b>@lang('menu.title') :</b>
+        <p><b>@lang('menu.title') </b>
         {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
-        <p><b>@lang('menu.company')/@lang('menu.people') :</b> {{ $loan->company->name }}</p>
-        <p><b>@lang('menu.address') :</b></p>
-        <p><b>@lang('menu.phone') :</b></p>
+        <p><b>@lang('menu.company')/@lang('menu.people') </b> {{ $loan->company->name }}</p>
+        <p><b>@lang('menu.address') </b></p>
+        <p><b>@lang('menu.phone') </b></p>
     </div>
 
     <div class="total_amount_table_area pt-5">
@@ -57,7 +57,7 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.voucher_no') :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') </th>
                             <td width="50%" class="text-start">
                                 {{ $loan->reference_no }}
                             </td>
@@ -73,7 +73,7 @@
 
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Debit Account :' : 'Credit Account :' }}</th>
-                            <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name.' (A/C: '.$loan->account->account_number.')' : 'N/A' }}</td>
+                            <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name.' (A/C '.$loan->account->account_number.')' : 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,14 +89,14 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.due') :</th>
+                            <th width="50%" class="text-start">@lang('menu.due') </th>
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($loan->due) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.loan_reason') :</th>
+                            <th width="50%" class="text-start">@lang('menu.loan_reason') </th>
                             <td width="50%" class="text-start">
                                 {{ $loan->loan_reason }}
                             </td>

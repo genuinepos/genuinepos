@@ -30,7 +30,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
@@ -46,7 +46,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.users') :</strong></label>
+                                        <label><strong>@lang('menu.users') </strong></label>
                                         <select name="user_id"
                                             class="form-control submit_able select2" id="user_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
@@ -57,7 +57,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -145,7 +145,7 @@
                     <form id="add_attendance_form" action="{{ route('hrm.attendance.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>@lang('menu.department') :</b></label>
+                                <label class="text-navy-blue"><b>@lang('menu.department') </b></label>
                                 <select  class="form-control employee" required="" id="department_id">
                                     <option value="all"> {{ __('All') }} </option>
                                     @foreach($departments as $dep)
@@ -155,7 +155,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="text-navy-blue"><b>{{ __('Employee') }} :</b></label>
+                                <label class="text-navy-blue"><b>{{ __('Employee') }} </b></label>
                                 <select  class="form-control" id="employee">
                                     <option disabled selected> {{ __('Select Employee') }} </option>
                                     @foreach($employee as $row)

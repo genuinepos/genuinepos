@@ -27,7 +27,7 @@
                                         @if ($generalSettings['addons__branches'] == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3">
-                                                    <label><strong>@lang('menu.business_location') :</strong></label>
+                                                    <label><strong>@lang('menu.business_location') </strong></label>
                                                     <select name="branch_id" class="form-control submit_able  select2" id="filter_branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -42,7 +42,7 @@
                                         @endif
 
                                         <div class="col-md-3">
-                                            <label><strong>@lang('menu.asset_type') :</strong></label>
+                                            <label><strong>@lang('menu.asset_type') </strong></label>
                                             <select name="type_id" class="form-control submit_able select2" id="filter_type_id" autofocus>
 
                                             </select>
@@ -153,7 +153,7 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.type_name') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.type_name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="asset_type_name" class="form-control" id="asset_type_name"
                                     placeholder="@lang('menu.type_name')" />
                                 <span class="error error_asset_type_name"></span>
@@ -162,7 +162,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.type_code') :</b> </label>
+                                <label><b>@lang('menu.type_code') </b> </label>
                                 <input type="text" name="asset_type_code" class="form-control" placeholder="@lang('menu.type_code')"/>
                             </div>
                         </div>
@@ -218,7 +218,7 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.asset_name') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.asset_name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="asset_name" class="form-control" id="asset_name"
                                     placeholder="@lang('menu.asset_type')" autofocus/>
                                 <span class="error error_asset_name"></span>
@@ -227,7 +227,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.asset_type') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.asset_type') </b> <span class="text-danger">*</span></label>
                                 <select name="type_id" class="form-control" id="type_id" >
                                 <option value="">@lang('menu.select_asset_type')</option>
                                 </select>
@@ -238,7 +238,7 @@
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="form-group row mt-1">
                                 <div class="col-md-12">
-                                    <label><b>@lang('menu.branch') :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.branch') </b> <span class="text-danger">*</span></label>
                                     <select name="branch_id" class="form-control" id="branch_id">
                                         <option value="">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                         @foreach ($branches as $br)
@@ -254,7 +254,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.quantity') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.quantity') </b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="quantity" class="form-control" id="quantity"
                                     placeholder="Asset Quantity"/>
                                 <span class="error error_quantity"></span>
@@ -263,7 +263,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.per_unit_value') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.per_unit_value') </b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="per_unit_value" class="form-control" id="per_unit_value"
                                     placeholder="@lang('menu.per_unit_value')"/>
                                 <span class="error error_per_unit_value"></span>
@@ -272,7 +272,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.total_value') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.total_value') </b> <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="total_value" class="form-control" id="total_value"
                                     placeholder="Total Asset Value" />
                                 <span class="error error_total_value"></span>

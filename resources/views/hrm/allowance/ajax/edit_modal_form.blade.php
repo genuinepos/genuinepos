@@ -2,14 +2,14 @@
     @csrf
     <input type="hidden" name="id" value="{{ $allowance->id }}">
     <div class="form-group">
-        <label><b>Description or Title :</b> <span class="text-danger">*</span></label>
+        <label><b>Description or Title </b> <span class="text-danger">*</span></label>
         <input type="text" name="description" class="form-control form-control-sm" data-name="description"
             placeholder="Description or Title" value="{{ $allowance->description }}"/>
         <span class="error error_e_description"></span>
     </div>
 
     <div class="form-group">
-        <label><b>@lang('menu.type') :</b></label>
+        <label><b>@lang('menu.type') </b></label>
         <select class="form-control form-control-sm" name="type">
             <option {{ $allowance->type == 'Allowance' ? 'SELECTED' : '' }} value="Allowance">{{ __('Allowance') }}</option>
             <option {{ $allowance->type == 'Deduction' ? 'SELECTED' : '' }} value="Deduction">{{ __('Deduction') }}</option>
@@ -18,14 +18,14 @@
 
     <div class="row">
         <div class="form-group col-6">
-            <label><b>{{ __('Amount Type') }} :</b> </label>
+            <label><b>{{ __('Amount Type') }} </b> </label>
             <select class="form-control form-control-sm" name="amount_type">
                 <option {{ $allowance->type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed') (0.0)</option>
                 <option {{ $allowance->type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage') (%)</option>
             </select>
         </div>
         <div class="form-group col-6">
-            <label><b>@lang('menu.amount') : </b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.amount') </b> <span class="text-danger">*</span></label>
             <input type="text" name="amount" class="form-control form-control-sm" placeholder="@lang('menu.amount')"
                 value="{{ $allowance->amount }}" />
             <span class="error error_e_amount"></span>

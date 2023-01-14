@@ -21,12 +21,12 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.supplier') : </strong><span>{{ $payment->purchase->supplier->name }}</span></li>
-                                <li><strong>@lang('menu.business') : </strong>
-                                    <span>{{ $payment->purchase->supplier->business_name }}</span> 
+                                <li><strong>@lang('menu.supplier') </strong><span>{{ $payment->purchase->supplier->name }}</span></li>
+                                <li><strong>@lang('menu.business') </strong>
+                                    <span>{{ $payment->purchase->supplier->business_name }}</span>
                                 </li>
-                                <li><strong>@lang('menu.phone') : </strong>
-                                    <span>{{ $payment->purchase->supplier->phone }}</span> 
+                                <li><strong>@lang('menu.phone') </strong>
+                                    <span>{{ $payment->purchase->supplier->phone }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -34,9 +34,9 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> @lang('menu.reference_id') : </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
+                                <li><strong> @lang('menu.reference_id') </strong><span class="invoice_no">{{ $payment->purchase->invoice_id }}</span>
                                 </li>
-                                <li><strong>@lang('menu.b_location') : </strong>
+                                <li><strong>@lang('menu.b_location') </strong>
                                     <span class="warehouse">
                                         {{ $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}
                                     </span>
@@ -61,7 +61,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -97,9 +97,9 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
+                                    <option
                                         {{ $method->id == $payment->payment_method_id ? 'SELECTED' : '' }}
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -112,7 +112,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
-                        <label><strong>@lang('menu.debit_account') :</strong> </label>
+                        <label><strong>@lang('menu.debit_account') </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -137,13 +137,13 @@
                     </div>
 
                     <div class="col-md-5">
-                        <label><strong>@lang('menu.attach_document') :</strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
+                        <label><strong>@lang('menu.attach_document') </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> @lang('menu.payment_note') :</strong></label>
+                    <label><strong> @lang('menu.payment_note') </strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
                 </div>
 
@@ -169,14 +169,14 @@
         var paying_amount = $('#p_paying_amount').val();
 
         if (parseFloat(paying_amount) > parseFloat(available)) {
-            
+
             $('.error_p_paying_amount').html('Paying amount must not be greater then due amount.');
             $('.loading_button').hide();
             return;
         }
 
         var url = $(this).attr('action');
-    
+
         $.ajax({
             url: url,
             type: 'post',
@@ -204,11 +204,11 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 

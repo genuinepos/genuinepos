@@ -36,7 +36,7 @@
                                     @php
                                         $p_code = $product['v_code'] ? $product['v_code'] : $product['p_code'];
                                     @endphp
-                                    <p> <strong>@lang('menu.product') :</strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
+                                    <p> <strong>@lang('menu.product') </strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant Cost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant Cost') }} </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>{{ __('Additional Production Cost') }} :</b></label>
+                                    <label><b>{{ __('Additional Production Cost') }} </b></label>
                                     <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
                                 </div>
 

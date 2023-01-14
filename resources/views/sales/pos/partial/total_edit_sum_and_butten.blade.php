@@ -145,7 +145,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>@lang('menu.total'):</b></label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white"><b>@lang('menu.total')</b></label>
                         <div class="col-sm-9">
                             <input readonly type="number" class="form-control sp-input" name="net_total_amount" id="net_total_amount" value="0.00">
                         </div>
@@ -153,7 +153,7 @@
 
                     @if ($generalSettings['pos__is_enabled_order_tax'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Vat/Tax') }}:</label>
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Vat/Tax') }}</label>
                             <div class="col-sm-9 ">
                                 <select name="order_tax" class="form-control" id="order_tax">
 
@@ -169,7 +169,7 @@
 
                     @if ($generalSettings['pos__is_enabled_discount'] == '1')
                         <div class="row">
-                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">@lang('menu.discount'):</label>
+                            <label for="inputEmail3" class="col-sm-3 col-form-label text-white">@lang('menu.discount')</label>
                             <div class="col-sm-9 ">
                                 <input name="order_discount" type="number" step="any" class="form-control"
                                     id="order_discount" value="0.00">
@@ -186,12 +186,12 @@
                     @endif
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Pre. Due') }}:</label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">{{ __('Pre. Due') }}</label>
                         <div class="col-sm-9 ">
                             <input readonly class="form-control" type="number" step="any" name="previous_due"
                                 id="previous_due" value="0.00" autocomplete="off">
                         </div>
-                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable:</label>
+                        <label for="inputEmail3" class="col-sm-3 col-form-label text-white">Payable</label>
                         <div class="col-sm-9 ">
                             <input readonly class="form-control sp-input" type="number" step="any"
                                 name="total_payable_amount" id="total_payable_amount" value="0.00">
@@ -201,7 +201,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.cash_receive'):</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.cash_receive')</label>
                         <div class="col-sm-6 ">
                             <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
                                 class="form-control" autocomplete="off">
@@ -209,7 +209,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.change_amount'):</label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-white">@lang('menu.change_amount')</label>
                         <div class="col-sm-6 ">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
                                 class="form-control">
@@ -217,7 +217,7 @@
                     </div>
 
                     <div class="row">
-                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>@lang('menu.due') :</b></label>
+                        <label for="inputEmail3" class="col-sm-6 col-form-label text-danger"><b>@lang('menu.due') </b></label>
                         <div class="col-sm-6 ">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
                                 class="form-control sp-input text-danger">
@@ -490,4 +490,18 @@
         });
     }
     getEditSaleProducts();
+
+    $(".cat-button").on("click", function(){
+        $(this).addClass("active");
+        $(this).siblings().removeClass("active");
+    });
+
+    var width = $(".function-sec .btn-bg").width();
+    $(".function-sec .btn-bg").height(width / 1.2);
+    if($(window).width() >= 992) {
+        $(".function-sec .btn-bg").height(width / 1.4);
+    }
+    if($(window).width() >= 1200) {
+        $(".function-sec .btn-bg").height(width / 1.6);
+    }
 </script>

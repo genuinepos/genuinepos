@@ -29,7 +29,7 @@
                             <form id="add_variant_form" action="{{ route('product.variants.store') }}">
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                                        <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                                         <input type="text" name="variant_name" class="form-control add_input"
                                             data-name="Variant name" id="variant_name" placeholder="Variant Name" />
                                         <span class="error error_variant_name"></span>
@@ -78,14 +78,14 @@
                             <form id="edit_variant_form" action="{{ route('product.variants.update') }}">
                                 <input type="hidden" name="id" id="id">
                                 <div class="form-group">
-                                    <b>@lang('menu.name') :</b> <span class="text-danger">*</span>
+                                    <b>@lang('menu.name') </b> <span class="text-danger">*</span>
                                     <input type="text" name="variant_name" class="form-control edit_input"
                                         data-name="Brand name" id="e_variant_name" placeholder="Brand Name" />
                                     <span class="error error_e_variant_name"></span>
                                 </div>
 
                                 <div class="form-group row mt-2">
-                                    <div class="col-md-12"><b>@lang('menu.variant_child') (Values) :</b> <span class="text-danger">*</span></div>
+                                    <div class="col-md-12"><b>@lang('menu.variant_child') (Values) </b> <span class="text-danger">*</span></div>
                                     <div class="col-md-10">
                                         <input type="hidden" name="variant_child_ids[]" id="e_variant_child_id" value="">
                                         <input required type="text" name="variant_child[]" class="form-control"

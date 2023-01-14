@@ -36,7 +36,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') :</b><span class="text-danger">*</span></label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') </b><span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
                                             <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
@@ -46,7 +46,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.warehouse') :</b><span
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.warehouse') </b><span
                                             class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select class="form-control changeable add_input"
@@ -63,7 +63,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.date'):</b></label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.date')</b></label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control  changeable"
                                                 value="{{ date($generalSettings['business__date_format'], strtotime($transfer->date)) }}" id="datepicker">
@@ -73,7 +73,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.ref_id') :</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.ref_id') </b> </label>
                                         <div class="col-8">
                                             <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Reference ID">
                                         </div>
@@ -142,7 +142,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total_item') :</b></label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total_item') </b></label>
                                         <div class="col-8">
                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
                                             <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
@@ -161,7 +161,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>{{ __('Ship Cost') }} :</b> </label>
+                                        <label for="inputEmail3" class=" col-4"><b>{{ __('Ship Cost') }} </b> </label>
                                         <div class="col-8">
                                             <input name="shipping_charge" type="number" class="form-control" id="shipping_charge" value="0.00">
                                         </div>
@@ -170,7 +170,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-2"><b>@lang('menu.note') :</b></label>
+                                        <label for="inputEmail3" class="col-2"><b>@lang('menu.note') </b></label>
                                         <div class="col-10">
                                             <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="{{ __('Additional Note') }}">
                                         </div>

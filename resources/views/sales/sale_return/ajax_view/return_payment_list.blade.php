@@ -11,11 +11,11 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.customer') : </strong>
+                    <li><strong>@lang('menu.customer') </strong>
                         {{ $return->customer ? $return->customer->name : 'Walk-In-Customer' }}
                     </li>
 
-                    <li><strong>@lang('menu.business') : </strong>
+                    <li><strong>@lang('menu.business') </strong>
                         {{ $return->customer ? $return->customer->business_name : '' }}
                     </li>
                 </ul>
@@ -25,9 +25,9 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> @lang('menu.return_invoice_id') : </strong>{{ $return->invoice_id }}</li>
-                    <li><strong>@lang('menu.return_date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}</li>
-                    <li><strong>@lang('menu.business_location'): </strong>
+                    <li><strong> @lang('menu.return_invoice_id') </strong>{{ $return->invoice_id }}</li>
+                    <li><strong>@lang('menu.return_date') </strong>{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}</li>
+                    <li><strong>@lang('menu.business_location')</strong>
 
                         @if ($return->branch)
 
@@ -86,7 +86,7 @@
 
                             <td class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode  }}</td>
 
-                            <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C :'.$payment->account->account_number.')' : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->account ? $payment->account->name.' (A/C'.$payment->account->account_number.')' : 'N/A' }}</td>
 
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}

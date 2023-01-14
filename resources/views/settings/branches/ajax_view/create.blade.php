@@ -2,50 +2,50 @@
     @csrf
     <div class="form-group row">
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control add_input" data-name="Name" id="name" placeholder="Business Location Name"/>
             <span class="error error_name"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.location_code') :</strong> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
+            <label><strong>@lang('menu.location_code') </strong> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Branch code must be unique." class="fas fa-info-circle tp"></i></label>
             <input type="text" name="code" class="form-control  add_input" data-name="Branch code" id="code" placeholder="@lang('menu.location_code')"/>
             <span class="error error_code"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.phone') :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.phone') </strong>  <span class="text-danger">*</span></label>
             <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
             <span class="error error_phone"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.alternate_phone_number') :</strong> </label>
+            <label><strong>@lang('menu.alternate_phone_number') </strong> </label>
             <input type="text" name="alternate_phone_number" class="form-control " id="alternate_phone_number" placeholder="@lang('menu.alternate_phone_number')"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label> <strong>@lang('menu.city') :</strong> <span class="text-danger">*</span></label>
+            <label> <strong>@lang('menu.city') </strong> <span class="text-danger">*</span></label>
             <input type="text" name="city" class="form-control  add_input" data-name="City" id="city" placeholder="@lang('menu.city')"/>
             <span class="error error_city"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.state') :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.state') </strong>  <span class="text-danger">*</span></label>
             <input type="text" name="state" class="form-control  add_input" data-name="State" id="state" placeholder="@lang('menu.state')"/>
             <span class="error error_state"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.country') :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.country') </strong>  <span class="text-danger">*</span></label>
             <input type="text" name="country" class="form-control  add_input" data-name="country" id="country" placeholder="@lang('menu.country')"/>
             <span class="error error_country"></span>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>@lang('menu.zip_code') :</strong> <span class="text-danger">*</span></label>
+            <label> <strong>@lang('menu.zip_code') </strong> <span class="text-danger">*</span></label>
             <input type="text" name="zip_code" class="form-control  add_input" data-name="Zip code" id="zip_code" placeholder="Zip code"/>
             <span class="error error_zip_code"></span>
         </div>
@@ -53,24 +53,24 @@
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label> <strong>@lang('menu.email') :</strong> </label>
+            <label> <strong>@lang('menu.email') </strong> </label>
             <input type="text" name="email" class="form-control "  id="email" placeholder="Email address"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>@lang('menu.website') :</strong> </label>
+            <label> <strong>@lang('menu.website') </strong> </label>
             <input type="text" name="website" class="form-control " id="website" placeholder="Website URL"/>
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label> <strong>@lang('menu.logo') :</strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
+            <label> <strong>@lang('menu.logo') </strong> <small class="text-danger">Logo size 200px * 70px</small> </label>
             <input type="file" name="logo" class="form-control " id="logo"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.add_sale_invoice_scheme') :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.add_sale_invoice_scheme') </strong>  <span class="text-danger">*</span></label>
             <div class="input-group">
                 <select name="invoice_schema_id" id="invoice_schema_id" data-name="invoice schema" class="form-control add_input">
                     <option value="">@lang('menu.select_please')</option>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.add_sale_invoice_layout') :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.add_sale_invoice_layout') </strong>  <span class="text-danger">*</span></label>
             <select name="add_sale_invoice_layout_id" id="add_sale_invoice_layout_id" data-name="Add sale invoice layout" class="form-control  add_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
@@ -98,7 +98,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <label><strong>@lang('menu.pos_sale_invoice_layout') :</strong>  <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.pos_sale_invoice_layout') </strong>  <span class="text-danger">*</span></label>
             <select name="pos_sale_invoice_layout_id" id="pos_sale_invoice_layout_id" data-name="POS sale invoice layout" class="form-control  add_input">
                 <option value="">@lang('menu.select_please')</option>
                 @foreach ($invLayouts as $layout)
@@ -129,24 +129,24 @@
     <div class="add_opening_user_section" style="display: none;">
         <div class="row mt-1">
             <div class="col-lg-3 col-md-6">
-                <label> <strong>@lang('menu.first_name') :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>@lang('menu.first_name') </strong> <span class="text-danger">*</span> </label>
                 <input type="text" name="first_name" class="form-control" id="first_name" placeholder="@lang('menu.first_name')" data-name="First Name" autocomplete="off"/>
                 <span class="error error_first_name"></span>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>@lang('menu.last_name') :</strong></label>
+                <label> <strong>@lang('menu.last_name') </strong></label>
                 <input type="text" name="Last_name" class="form-control" id="Last_name" placeholder="@lang('menu.last_name')" autocomplete="off"/>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>@lang('menu.phone') :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>@lang('menu.phone') </strong> <span class="text-danger">*</span> </label>
                 <input type="text" name="user_phone" class="form-control" id="user_phone" placeholder="@lang('menu.phone_number')" data-name="Phone Number" autocomplete="off"/>
                 <span class="error error_user_phone"></span>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>{{ __('Role Permission') }} :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>{{ __('Role Permission') }} </strong> <span class="text-danger">*</span> </label>
                 <select name="role_id" id="role_id" class="form-control">
                     <option value="">{{ __('Select Role Permission') }}</option>
                     @foreach ($roles as $role)
@@ -159,19 +159,19 @@
 
         <div class="row mt-1">
             <div class="col-lg-3 col-md-6">
-                <label> <strong>@lang('menu.username') :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>@lang('menu.username') </strong> <span class="text-danger">*</span> </label>
                 <input type="text" name="username" class="form-control" id="username" placeholder="@lang('menu.username')" autocomplete="off"/>
                 <span class="error error_username"></span>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>Password :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>Password </strong> <span class="text-danger">*</span> </label>
                 <input type="text" name="password" class="form-control" id="password" placeholder="Password" autocomplete="off"/>
                 <span class="error error_password"></span>
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <label> <strong>@lang('menu.confirm_password') :</strong> <span class="text-danger">*</span> </label>
+                <label> <strong>@lang('menu.confirm_password') </strong> <span class="text-danger">*</span> </label>
                 <input type="text" name="password_confirmation" class="form-control" id="phone" placeholder="@lang('menu.confirm_password')" autocomplete="off"/>
             </div>
         </div>

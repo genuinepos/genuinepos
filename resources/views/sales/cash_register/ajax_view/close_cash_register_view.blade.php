@@ -18,7 +18,7 @@
             <table class="cash_register_table modal-table table table-sm">
                 <tbody>
                     <tr>
-                        <td class="text-start">{{ __('Opeing Balance') }} :</td>
+                        <td class="text-start">{{ __('Opeing Balance') }} </td>
                         <td class="text-start">
                             {{ $generalSettings['business__currency'] }}
                             {{ App\Utils\Converter::format_in_bdt($activeCashRegister->cash_in_hand) }}
@@ -27,7 +27,7 @@
 
                     @foreach ($paymentMethodPayments as $payment)
                         <tr>
-                            <td width="50" class="text-start"> {{$payment->name.' Payment' }} :</td>
+                            <td width="50" class="text-start"> {{$payment->name.' Payment' }} </td>
                             <td width="50" class="text-start">
                                 {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->total_paid) }}
@@ -82,14 +82,14 @@
                 @php
                     $__receivedInCashAccount = $receivedInCashAccount + $activeCashRegister->cash_in_hand
                 @endphp
-                <label><b>{{ __('Closing Amount') }} :</b></label>
+                <label><b>{{ __('Closing Amount') }} </b></label>
                 <input required type="number" name="closed_amount" step="any" class="form-control" value="{{ $__receivedInCashAccount }}">
             </div>
         </div>
 
         <div class="form-group row mt-1">
             <div class="col-md-12">
-                <label><b>@lang('menu.closing_note') :</b></label>
+                <label><b>@lang('menu.closing_note') </b></label>
                 <textarea name="closing_note" class="form-control" cols="10" rows="3" placeholder="@lang('menu.closing_note')"></textarea>
             </div>
         </div>

@@ -31,11 +31,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="m-0"><strong>@lang('menu.transfer_reference_id') </strong> {{ $transfer->ref_id }}</p>
-                                    <p class="m-0"><strong>@lang('menu.date'): </strong> {{ $transfer->date }}</p>
+                                    <p class="m-0"><strong>@lang('menu.date')</strong> {{ $transfer->date }}</p>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <p class="m-0"><strong>{{ __('Transferred From') }}: </strong>
+                                        <p class="m-0"><strong>{{ __('Transferred From') }}</strong>
 
                                         @if ($transfer->sender_branch)
 
@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4">@lang('menu.store_in_location') :</label>
+                                        <label class="col-4">@lang('menu.store_in_location') </label>
                                         <div class="col-8">
                                             <input
                                                 readonly
@@ -159,7 +159,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4">{{ __('Receiver Note') }} :</label>
+                                        <label class="col-4">{{ __('Receiver Note') }} </label>
                                         <div class="col-8">
                                             <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="{{ __('Receiver Note') }}">
                                         </div>
@@ -168,7 +168,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4">@lang('menu.total') @lang('menu.received_qty') :</label>
+                                        <label class=" col-4">@lang('menu.total') @lang('menu.received_qty') </label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control" value="0.00">
                                         </div>
@@ -177,7 +177,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4">{{ __('Total Pending Qty') }} :</label>
+                                        <label class=" col-4">{{ __('Total Pending Qty') }} </label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_pending_quantity" id="total_pending_quantity" class="form-control" value="0.00">
                                         </div>

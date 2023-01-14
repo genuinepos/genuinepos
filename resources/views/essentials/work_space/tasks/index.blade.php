@@ -39,17 +39,17 @@
                                     <div class="row g-2">
                                         <div class="col-md-4">
                                             <ul class="list-unstyled ws_description">
-                                                <li><b>@lang('menu.start_date') :</b> {{ date('d-m-Y', strtotime($ws->start_date)) }}</li>
-                                                <li><b>@lang('menu.end_date') :</b> {{ date('d-m-Y', strtotime($ws->end_date)) }}</li>
-                                                <li><b>{{ __('Estimated Hour') }} :</b> {{ $ws->estimated_hours }}</li>
+                                                <li><b>@lang('menu.start_date') </b> {{ date('d-m-Y', strtotime($ws->start_date)) }}</li>
+                                                <li><b>@lang('menu.end_date') </b> {{ date('d-m-Y', strtotime($ws->end_date)) }}</li>
+                                                <li><b>{{ __('Estimated Hour') }} </b> {{ $ws->estimated_hours }}</li>
                                             </ul>
                                         </div>
 
                                         <div class="col-md-4">
                                             <ul class="list-unstyled ws_description">
-                                                <li><b>@lang('menu.assigned_by') :</b> {{ $ws->admin->prefix.' '.$ws->admin->name.' '.$ws->admin->last_name}}</li>
+                                                <li><b>@lang('menu.assigned_by') </b> {{ $ws->admin->prefix.' '.$ws->admin->name.' '.$ws->admin->last_name}}</li>
                                                 <li>
-                                                    <b>@lang('menu.assigned_to') :</b>
+                                                    <b>@lang('menu.assigned_to') </b>
                                                     @foreach ($ws->ws_users as $ws_user)
                                                         {{ $ws_user?->user?->prefix.' '.$ws_user?->user?->name.' '.$ws_user?->user?->last_name }},
                                                     @endforeach
@@ -59,8 +59,8 @@
 
                                         <div class="col-md-4">
                                             <ul class="list-unstyled ws_description">
-                                                <li><b>@lang('menu.priority')  :</b> {{ $ws->priority }}</li>
-                                                <li><b>@lang('menu.status') :</b> {{ $ws->status }}</li>
+                                                <li><b>@lang('menu.priority')  </b> {{ $ws->priority }}</li>
+                                                <li><b>@lang('menu.status') </b> {{ $ws->status }}</li>
                                             </ul>
                                         </div>
                                     </div>

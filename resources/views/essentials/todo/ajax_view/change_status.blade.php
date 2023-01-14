@@ -2,7 +2,7 @@
  <form id="changes_status_form" action="{{ route('todo.status', $todo->id) }}" method="POST">
     @csrf
     <div class="form-group">
-        <label><strong>@lang('menu.status') : </strong></label>
+        <label><strong>@lang('menu.status') </strong></label>
         <select required name="status" class="form-control">
             <option value="">@lang('menu.select_status')</option>
             <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">@lang('menu.new')</option>

@@ -27,7 +27,7 @@
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
                                                     <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -42,14 +42,14 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.expense_for') :</strong></label>
+                                        <label><strong>@lang('menu.expense_for') </strong></label>
                                         <select name="admin_id" class="form-control submit_able select2" id="admin_id" >
                                             <option value="">@lang('menu.all')</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.category') :</strong></label>
+                                        <label><strong>@lang('menu.category') </strong></label>
                                         <select name="cate_id" class="form-control submit_able select2" id="cate_id" >
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($ex_cates as $cate)
@@ -59,7 +59,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -69,7 +69,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>

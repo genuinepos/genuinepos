@@ -31,14 +31,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>Voucher :</b> </label>
+                                        <label class=" col-4"><b>Voucher </b> </label>
                                         <div class="col-8">
                                             <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Ex Reference No" value="{{ $expense->invoice_id }}" autofocus>
                                         </div>
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>{{ __('Expense A/C') }} :</b> <span class="text-danger">*</span></label>
+                                        <label class=" col-4"><b>{{ __('Expense A/C') }} </b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select required name="ex_account_id" class="form-control" id="ex_account_id">
                                                 @foreach ($expenseAccounts as $exAc)
@@ -53,7 +53,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('Expense Date') }} :</b> </label>
+                                        <label class="col-4"><b>{{ __('Expense Date') }} </b> </label>
                                         <div class="col-8">
                                             <input required type="text" name="date" class="form-control datepicker changeable"
                                                 value="{{ date($generalSettings['business__date_format'], strtotime( $expense->date)) }}" id="datepicker">
@@ -61,7 +61,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>{{ __('Expanse For') }} :</b></label>
+                                        <label class=" col-4"><b>{{ __('Expanse For') }} </b></label>
                                         <div class="col-8">
                                             <select name="admin_id" class="form-control" id="admin_id">
                                                 <option value="">@lang('menu.none')</option>
@@ -155,7 +155,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') :</b> </label>
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') </b> </label>
                                         <div class="col-8">
                                             <select name="tax" class="form-control" id="tax">
                                                 <option value="0.00">@lang('menu.no_tax')</option>
@@ -169,7 +169,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : </b>  </label>
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') </b>  </label>
                                         <div class="col-8">
                                             <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00">
                                         </div>
@@ -213,7 +213,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>{{ __('Category ID') }}</b> : </label>
+                            <label><b>{{ __('Category ID') }}</b> </label>
                             <input type="text" name="code" class="form-control" data-name="Expanse category ID" placeholder="Expanse category ID"/>
                         </div>
 

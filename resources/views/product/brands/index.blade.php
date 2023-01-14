@@ -27,14 +27,14 @@
                             <div class="form-area px-3 pb-2">
                                 <form id="add_brand_form" action="{{ route('product.brands.store') }}">
                                     <div class="form-group">
-                                        <label><b>@lang('brand.name') :</b> <span class="text-danger">*</span></label>
+                                        <label><b>@lang('brand.name') </b> <span class="text-danger">*</span></label>
                                         <input type="text" name="name" class="form-control  add_input" data-name="Brand name" id="name"
                                             placeholder="Brand Name" />
                                         <span class="error error_name"></span>
                                     </div>
 
                                     <div class="form-group mt-1">
-                                        <label><b>@lang('brand.brand_photo') :</b></label>
+                                        <label><b>@lang('brand.brand_photo') </b></label>
                                         <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="photo"
                                             accept=".jpg, .jpeg, .png, .gif">
                                         <span class="error error_photo"></span>

@@ -1,21 +1,21 @@
 <form id="add_contra_form" action="{{ route('accounting.contras.store') }}">
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
             <input type="text" name="date" class="form-control add_input" data-name="Date" id="date"
                 placeholder="DD-MM-YYYY" autocomplete="off" value="{{ date($generalSettings['business__date_format']) }}"/>
             <span class="error error_date"></span>
         </div>
 
         <div class="col-md-6">
-            <label><strong>@lang('menu.voucher_no') :</strong></label>
+            <label><strong>@lang('menu.voucher_no') </strong></label>
             <input type="text" name="voucher_no" class="form-control add_input" data-name="Date" id="voucher_no" placeholder="Voucher Number" autocomplete="off"/>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><strong>@lang('menu.sender_ac') : </strong><span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.sender_ac') </strong><span class="text-danger">*</span></label>
             <select name="sender_account_id" class="form-control add_input" data-name="Sender Account"
                 id="sender_account_id">
                 <option value="">@lang('menu.select_receiver_ac')</option>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-md-6">
-            <label><strong>@lang('menu.receiver_ac') : </strong><span class="text-danger">*</span></label>
+            <label><strong>@lang('menu.receiver_ac') </strong><span class="text-danger">*</span></label>
             <select name="receiver_account_id" class="form-control add_input" data-name="Receiver Account"
                 id="receiver_account_id">
                 <option value="">@lang('menu.select_receiver_ac')</option>
@@ -56,14 +56,14 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
+        <label><strong>@lang('menu.amount') </strong> <span class="text-danger">*</span></label>
         <input type="number" step="any" name="amount" class="form-control add_input" data-name="Amount" id="date"
             placeholder="@lang('menu.amount')" autocomplete="off"/>
         <span class="error error_amount"></span>
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>@lang('menu.remarks') :</strong></label>
+        <label><strong>@lang('menu.remarks') </strong></label>
         <input type="text" name="remarks" class="form-control" id="remarks" placeholder="@lang('menu.remarks')"/>
     </div>
 

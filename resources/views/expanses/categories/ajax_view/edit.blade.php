@@ -8,7 +8,7 @@
     <form id="edit_category_form" action="{{ route('expenses.categories.update', $expenseCategory->id) }}">
         <div class="form-group row">
             <div class="col-md-12">
-                <label><strong>@lang('menu.name') :</strong>  <span class="text-danger">*</span></label>
+                <label><strong>@lang('menu.name') </strong>  <span class="text-danger">*</span></label>
                 <input type="text" name="name" class="form-control edit_input" data-name="Category name" id="e_name" value="{{ $expenseCategory->name }}" placeholder="@lang('menu.expense_category')"/>
                 <span class="error error_e_name"></span>
             </div>
@@ -37,7 +37,7 @@
             type:'post',
             data: request,
             success:function(data){
-                
+
                 table.ajax.reload();
                 toastr.success(data);
                 $('.loading_button').hide();

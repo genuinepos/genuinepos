@@ -58,7 +58,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-3">
-                                            <label><strong>@lang('menu.production_reference_prefix') :</strong></label>
+                                            <label><strong>@lang('menu.production_reference_prefix') </strong></label>
                                             @php
                                                 $voucherPrefix = '';
                                                 if(isset($generalSettings['mf_settings__production_ref_prefix'])){

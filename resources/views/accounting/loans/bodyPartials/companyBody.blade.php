@@ -12,21 +12,21 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" id="name" autocomplete="off"
                                 placeholder="@lang('menu.company')/@lang('menu.people')"/>
                             <span class="error error_name"></span>
                         </div>
 
                         <div class="col-md-12">
-                            <label><b>@lang('menu.phone') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.phone') </b> <span class="text-danger">*</span></label>
                             <input type="text" name="phone" class="form-control" id="phone" autocomplete="off"
                                 placeholder="@lang('menu.phone_number') Name"/>
                             <span class="error error_phone"></span>
                         </div>
 
                         <div class="col-md-12">
-                            <label><b>@lang('menu.address') :</b> </label>
+                            <label><b>@lang('menu.address') </b> </label>
                             <textarea name="address" class="form-control" id="address" cols="10" rows="3" placeholder="Address"></textarea>
                         </div>
                     </div>

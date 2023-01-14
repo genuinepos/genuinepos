@@ -28,7 +28,7 @@
                                     <div class="row">
                                         <div class="col-sm-5">
                                             <div class="input-group align-items-center gap-2">
-                                                <label for="inputEmail3"> <b>@lang('menu.role_name') :</b> <span class="text-danger">*</span></label>
+                                                <label for="inputEmail3"> <b>@lang('menu.role_name') </b> <span class="text-danger">*</span></label>
                                                 <div class="w-input">
                                                     <input required type="text" name="role_name" required class="form-control add_input" id="role_name" placeholder="@lang('menu.role_name')">
                                                     <span class="error error_role_name">{{ $errors->first('role_name') }}</span>
@@ -37,7 +37,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="input-group align-items-center gap-2">
-                                                <label for="inputEmail3"> <b> @lang('menu.select_all') :</b> </label>
+                                                <label for="inputEmail3"> <b> @lang('menu.select_all') </b> </label>
                                                 <div class="d-flex align-items-center">
                                                     <input type="checkbox" class="select_all super_select_all" data-target="super_select_all" autocomplete="off">
                                                 </div>

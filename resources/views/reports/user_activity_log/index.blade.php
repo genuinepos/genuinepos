@@ -31,7 +31,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control" id="branch_id" autofocus>
                                                     <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -50,7 +50,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.action_by') :</strong></label>
+                                        <label><strong>@lang('menu.action_by') </strong></label>
                                         <select name="user_id" class="form-control" id="user_id" autofocus>
                                             <option value="">@lang('menu.all')</option>
 
@@ -58,7 +58,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.action_name') :</strong></label>
+                                        <label><strong>@lang('menu.action_name') </strong></label>
                                         <select name="action" class="form-control" id="action" autofocus>
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($userActivityLogUtil->actions() as $key => $action)
@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.subject_type') :</strong></label>
+                                        <label><strong>@lang('menu.subject_type') </strong></label>
                                         <select name="subject_type" class="form-control select2" id="subject_type" autofocus>
                                             <option value="">@lang('menu.all')</option>
                                             @foreach ($userActivityLogUtil->subjectTypes() as $key => $subjectTypes)
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -91,7 +91,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">

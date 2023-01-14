@@ -69,19 +69,19 @@
                     <!--begin::Form-->
                     <form id="add_department_form" action="{{ route('hrm.departments.store') }}">
                         <div class="form-group">
-                            <label><b>@lang('menu.department_name') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.department_name') </b> <span class="text-danger">*</span></label>
                             <input type="text" name="department_name" class="form-control" data-name="Department name" placeholder="@lang('menu.department_name')" required/>
                         </div>
 
                         <div class="form-group">
-                            <label><b>{{ __('Department ID') }} :</b> <span class="text-danger">*</span></label>
+                            <label><b>{{ __('Department ID') }} </b> <span class="text-danger">*</span></label>
                             <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="@lang('menu.department_name')" required/>
                             <small class="text-danger">{{ __('Department id must be Unique') }}</small>
                         </div>
 
                         <div class="form-group mt-1">
                             <div class="form-group">
-                                <label><b>{{ __('Department Details') }} :</b> </label>
+                                <label><b>{{ __('Department Details') }} </b> </label>
                                 <textarea name="description" class="form-control" placeholder="{{ __('Department Details') }}"></textarea>
                             </div>
                         </div>
@@ -113,19 +113,19 @@
                     <form id="edit_department_form" action="{{ route('hrm.departments.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>@lang('menu.department_name') :</b>  <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.department_name') </b>  <span class="text-danger">*</span></label>
                             <input type="text" name="department_name" class="form-control" data-name="Department name" placeholder="@lang('menu.department_name')" id="e_department_name" required/>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>{{ __('Department ID') }} :</b> <span class="text-danger">*</span></label>
+                            <label><b>{{ __('Department ID') }} </b> <span class="text-danger">*</span></label>
                             <input type="text" name="department_id" class="form-control" data-name="Department ID" placeholder="@lang('menu.department_name')" id="e_department_id" required/>
                             <small class="text-danger">{{ __('Department id must be Unique') }}</small>
                         </div>
 
                         <div class="form-group mt-1">
                             <div class="form-group">
-                                <label><b>{{ __('Department Details') }} :</b> </label>
+                                <label><b>{{ __('Department Details') }} </b> </label>
                                 <textarea name="description" class="form-control" placeholder="{{ __('Department Details') }}" id="e_description"></textarea>
                             </div>
                         </div>

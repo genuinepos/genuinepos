@@ -55,13 +55,13 @@
     <br>
     <div class="row">
         <div class="col-6">
-            <p><strong>@lang('menu.customer') :</strong> {{ $customerPayment->customer->name }}</p>
-            <p><strong>@lang('menu.phone') :</strong> {{ $customerPayment->customer->phone }}</p>
-            <p><strong>@lang('menu.address') :</strong> {{ $customerPayment->customer->address }}</p>
+            <p><strong>@lang('menu.customer') </strong> {{ $customerPayment->customer->name }}</p>
+            <p><strong>@lang('menu.phone') </strong> {{ $customerPayment->customer->phone }}</p>
+            <p><strong>@lang('menu.address') </strong> {{ $customerPayment->customer->address }}</p>
         </div>
 
         <div class="col-6">
-            <p><strong>@lang('menu.type') :</strong>
+            <p><strong>@lang('menu.type') </strong>
                 {{ $customerPayment->type == 1 ? 'Receive Payment' : 'Refund' }}
             </p>
         </div>
@@ -74,7 +74,7 @@
                     <tbody>
                         <tr>
                             <td width="50%" class="text-start">
-                                <strong>@lang('menu.paid_amount') :</strong> {{ $generalSettings['business__currency'] }}
+                                <strong>@lang('menu.paid_amount') </strong> {{ $generalSettings['business__currency'] }}
                             </td>
 
                             <td width="50%" class="text-start">
@@ -83,12 +83,12 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>@lang('menu.debit_account') :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.debit_account') </strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->account ? $customerPayment->account->name : '' }}</td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong> @lang('menu.payment_method') :</strong></td>
+                            <td width="50%" class="text-start"><strong> @lang('menu.payment_method') </strong></td>
                             <td width="50%" class="text-start">{{ $customerPayment->paymentMethod ? $customerPayment->paymentMethod->name : $customerPayment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -99,21 +99,21 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <td width="50%" class="text-start"><strong>@lang('menu.voucher_no') :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.voucher_no') </strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->voucher_no }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>@lang('menu.reference') :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.reference') </strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->reference }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>@lang('menu.paid_on') :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.paid_on') </strong></td>
                             <td width="50%" class="text-start">
                                 @php
                                     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
@@ -123,7 +123,7 @@
                         </tr>
 
                         <tr>
-                            <td width="50%" class="text-start"><strong>@lang('menu.payment_note') :</strong></td>
+                            <td width="50%" class="text-start"><strong>@lang('menu.payment_note') </strong></td>
                             <td width="50%" class="text-start">
                                 {{ $customerPayment->note }}
                             </td>
@@ -185,7 +185,7 @@
 
                     <tfoot>
                         <tr>
-                            <th colspan="2" class="text-end">@lang('menu.total') : </th>
+                            <th colspan="2" class="text-end">@lang('menu.total') </th>
                             <th class="text-start">{{ App\Utils\Converter::format_in_bdt($total) }}</th>
                         </tr>
                     </tfoot>

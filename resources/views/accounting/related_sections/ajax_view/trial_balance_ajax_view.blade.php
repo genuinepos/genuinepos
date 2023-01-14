@@ -17,7 +17,7 @@
         </thead>
         <tbody>
             <tr>
-                <td class="text-start"><em>@lang('menu.supplier_balance') :</em> </td>
+                <td class="text-start"><em>@lang('menu.supplier_balance') </em> </td>
 
                 <td class="text-end">
                     <em class="debit">0.00</em>
@@ -32,7 +32,7 @@
             </tr>
 
             <tr>
-                <td class="text-start"><em>@lang('menu.supplier_return_balance') :</em> </td>
+                <td class="text-start"><em>@lang('menu.supplier_return_balance') </em> </td>
 
                 <td class="text-end">
                     <em class="debit">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('return_balance')) }}</em>
@@ -47,7 +47,7 @@
             </tr>
 
             <tr>
-                <td class="text-start"><em>@lang('menu.customer_balance') :</em></td>
+                <td class="text-start"><em>@lang('menu.customer_balance') </em></td>
 
                 <td class="text-end">
                     <em class="debit">{{ App\Utils\Converter::format_in_bdt($customers->sum('balance')) }}</em>
@@ -62,7 +62,7 @@
             </tr>
 
             <tr>
-                <td class="text-start"><em>@lang('menu.customer_return_balance') :</em> </td>
+                <td class="text-start"><em>@lang('menu.customer_return_balance') </em> </td>
 
                 <td class="text-end">
                     <em class="debit">0.00</em>
@@ -78,7 +78,7 @@
 
             @foreach ($accounts as $account)
                 <tr>
-                    <td class="text-start"><em>@lang('menu.customer_balance') :</em></td>
+                    <td class="text-start"><em>@lang('menu.customer_balance') </em></td>
 
                     <td class="text-end">
                         <em class="debit">{{ App\Utils\Converter::format_in_bdt($customers->sum('balance')) }}</em>
@@ -94,7 +94,7 @@
             @endforeach
 
             <tr>
-                <td class="text-start"><em>@lang('menu.opening_stock') :</em> </td>
+                <td class="text-start"><em>@lang('menu.opening_stock') </em> </td>
 
                 <td class="text-end">
                     <em class="debit">{{ App\Utils\Converter::format_in_bdt($openingStock->sum('total_value')) }}</em>
@@ -109,7 +109,7 @@
             </tr>
 
             <tr>
-                <td class="text-start"><em>@lang('menu.difference_in_opening_balance') :</em> </td>
+                <td class="text-start"><em>@lang('menu.difference_in_opening_balance') </em> </td>
 
                 <td class="text-end">
                     <em class="debit">0.00</em>

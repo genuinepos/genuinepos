@@ -72,13 +72,13 @@
                     <form id="add_allowance_form" action="{{ route('hrm.allowance.store') }}">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>Description or Title :</b> <span class="text-danger">*</span></label>
+                                <label><b>Description or Title </b> <span class="text-danger">*</span></label>
                                 <input required type="text" name="description" class="form-control" placeholder="Description or Title"/>
                                 <span class="error error_description"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>@lang('menu.type') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.type') </b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="type" required="">
                                     <option value="Allowance">{{ __('Allowance') }}</option>
                                     <option value="Deduction">{{ __('Deduction') }}</option>
@@ -88,7 +88,7 @@
 
                         <div class="form-group row">
                             <div class="col-6">
-                                <label><b>{{ __('Amount Type') }} :</b>  <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Amount Type') }} </b>  <span class="text-danger">*</span></label>
                                 <select class="form-control" name="amount_type" id="amount_type">
                                     <option value="1">@lang('menu.fixed') (0.0)</option>
                                     <option value="2">@lang('menu.percentage') (%)</option>
@@ -96,7 +96,7 @@
                             </div>
 
                             <div class="col-6">
-                                <label><b>@lang('menu.amount') :</b>  <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.amount') </b>  <span class="text-danger">*</span></label>
                                 <input type="number" step="any" name="amount" class="form-control" placeholder="@lang('menu.amount')"/>
                                 <span class="error error_amount"></span>
                             </div>

@@ -4,9 +4,9 @@
     <div class="invoice_info">
         <div class="row">
             <ul class="list-unstyled">
-                <li><b>@lang('menu.date') :</b> {{ $sale->date.' '.$sale->time }}</li>
-                <li><b>@lang('menu.invoice_no') :</b> {{ $sale->invoice_id }}</li>
-                <li><b>@lang('menu.customer') :</b> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</li>
+                <li><b>@lang('menu.date') </b> {{ $sale->date.' '.$sale->time }}</li>
+                <li><b>@lang('menu.invoice_no') </b> {{ $sale->invoice_id }}</li>
+                <li><b>@lang('menu.customer') </b> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</li>
             </ul>
         </div>
     </div>

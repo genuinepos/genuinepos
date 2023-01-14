@@ -37,7 +37,7 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>{{ __('Total work duration') }} :</b> <span class="text-danger">*
+                                    <label><b>{{ __('Total work duration') }} </b> <span class="text-danger">*
                                         </span> </label>
                                     <input type="number" step="any" name="duration_time" id="duration_time" class="form-control"
                                         placeholder="{{ __('Total work duration') }}" autofocus value="{{ $payroll->duration_time }}">
@@ -45,7 +45,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><span class="text-danger">* </span><b>Unit ({{ __('Pay Type') }}) :</b> </label>
+                                    <label><span class="text-danger">* </span><b>Unit ({{ __('Pay Type') }}) </b> </label>
                                     <select name="duration_unit" id="duration_unit" class="form-control">
                                         <option {{ $payroll->duration_unit == 'Hourly' ? 'SELECTED' : '' }} value="Hourly">{{ __('Hourly') }}</option>
                                         <option {{ $payroll->duration_unit == 'Monthly' ? 'SELECTED' : '' }} value="Monthly">{{ __('Monthly') }}</option>
@@ -56,7 +56,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>{{ __('Amount per unit duration') }} :</b> <span
+                                    <label><b>{{ __('Amount per unit duration') }} </b> <span
                                             class="text-danger">*</span></label>
                                     <input type="number" step="any" name="amount_per_unit" id="amount_per_unit"
                                         class="form-control" placeholder="{{ __('Amount per unit duration') }}" value="{{ $payroll->amount_per_unit }}">
@@ -64,7 +64,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total') :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.total') </b> <span class="text-danger">*</span></label>
                                     <input readonly type="total" step="any" name="total_amount"
                                         id="total_amount" class="form-control" placeholder="total" value="{{ $payroll->total_amount }}">
                                 </div>

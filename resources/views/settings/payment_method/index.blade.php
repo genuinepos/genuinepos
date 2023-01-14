@@ -29,7 +29,7 @@
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label><b>{{ __('Method Name') }} :</b> <span class="text-danger">*</span></label>
+                                        <label><b>{{ __('Method Name') }} </b> <span class="text-danger">*</span></label>
                                         <input type="text" name="name" class="form-control" id="name" placeholder="{{ __('Method Name') }}" />
                                         <span class="error error_name"></span>
                                     </div>

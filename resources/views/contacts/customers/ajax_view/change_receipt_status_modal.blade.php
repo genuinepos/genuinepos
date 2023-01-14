@@ -12,13 +12,13 @@
                 @csrf
                 <div class="row mt-2">
                     <div class="col-md-4">
-                        <label><b>@lang('menu.received_amount') :</b> <span class="text-danger">*</span> </label>
+                        <label><b>@lang('menu.received_amount') </b> <span class="text-danger">*</span> </label>
                         <input type="number" step="any" name="amount" class="form-control form-control-sm vcs_input" id="received_amount" data-name="Received amount" placeholder="@lang('menu.received_amount')"/>
                         <span class="error error_vcs_received_amount"></span>
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.status') :</strong> </strong> <span class="text-danger">*</span> </label>
+                        <label><strong>@lang('menu.status') </strong> </strong> <span class="text-danger">*</span> </label>
                         <select disabled name="status" class="form-control form-control-sm mr_input" data-name="Money receipt status" id="vcs_status">
                             <option value="Pending">@lang('menu.pending')</option>
                             <option selected value="Completed"> @lang('menu.completed')</option>
@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i
@@ -42,7 +42,7 @@
 
                 <div class="row mt-2">
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.payment_method') :</strong> </strong></label>
+                        <label><strong>@lang('menu.payment_method') </strong> </strong></label>
                         <select name="payment_method" class="form-control form-control-sm" id="vcs_status">
                             <option value="Cash">@lang('menu.cash')</option>
                             <option value="Advanced">@lang('menu.advanced')</option>
@@ -55,11 +55,11 @@
                     </div>
 
                     <div class="col-md-8">
-                        <label><strong>@lang('menu.account') :</strong> </strong> </label>
+                        <label><strong>@lang('menu.account') </strong> </strong> </label>
                         <select name="account_id" class="form-control form-control-sm">
                             <option value="">@lang('menu.none')</option>
                             @foreach ($accounts as $account)
-                                <option value="{{ $account->id }}">{{ $account->name }} (A/C:
+                                <option value="{{ $account->id }}">{{ $account->name }} (A/C
                                     {{ $account->account_number }}) (@lang('menu.balance') {{ $account->balance }})</option>
                             @endforeach
                         </select>

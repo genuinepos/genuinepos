@@ -23,7 +23,7 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} </span>
                 @php
                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                 @endphp
@@ -36,19 +36,19 @@
                 @endif
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.invoice_id') :</span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.invoice_id') </span>
                 {{ $sale->invoice_id }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_payable') : </span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_payable') </span>
                 {{ $generalSettings['business__currency'] }} {{ number_format($sale->total_payable_amount, 2) }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_paid') : </span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_paid') </span>
                 {{ $generalSettings['business__currency'] }} {{ $sale->paid }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
-                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.due') : </span>
+                <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.due') </span>
                 {{ $generalSettings['business__currency'] }} {{ $sale->due }}
             </p>
         </td>
@@ -59,14 +59,14 @@
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.customer_name'): </span>
+                <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.customer_name')</span>
                 {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') :</span>
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') </span>
                 {{ $sale->customer ? $sale->customer->address : '' }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $sale->customer ? $sale->customer->phone : '' }}
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $sale->customer ? $sale->customer->phone : '' }}
             </p>
         </td>
 
@@ -80,13 +80,13 @@
                     {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
                     {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.</span>
                 </p>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $sale->branch->phone }}</p>
+                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $sale->branch->phone }}</p>
             </td>
         @else
             <td style="width:50%;padding:20px;vertical-align:top">
                 <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__shop_name'] }}</span> </h6>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__address'] }}</span> </p>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') :</span> {{ $generalSettings['business__phone'] }}</p>
+                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $generalSettings['business__phone'] }}</p>
             </td>
         @endif
       </tr>
@@ -115,8 +115,8 @@
           <strong style="display:block;margin:0 0 10px 0;">Regards</strong> <br>
             If you need any support, Feel free to contact us.
             <br><br>
-            <b>@lang('menu.phone'):</b> {{ $generalSettings['business__phone'] }}<br>
-            <b>@lang('menu.email'):</b> {{ $generalSettings['business__email'] }}
+            <b>@lang('menu.phone')</b> {{ $generalSettings['business__phone'] }}<br>
+            <b>@lang('menu.email')</b> {{ $generalSettings['business__email'] }}
         </td>
       </tr>
     </tfoot>

@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-5">
                 <div class="row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label text-white">@lang('menu.total_qty') :</label>
+                    <label for="inputEmail3" class="col-sm-4 col-form-label text-white">@lang('menu.total_qty') </label>
                     <div class="col-sm-8 ">
                         <input type="text" value="0.00" class="form-control mb_total_qty" disabled>
                     </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="col-5">
                 <div class="row">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label text-white">@lang('menu.total_item'):</label>
+                    <label for="inputEmail3" class="col-sm-4 col-form-label text-white">@lang('menu.total_item')</label>
                     <div class="col-sm-8 ">
                         <input type="text" value="0.00" class="form-control mb_total_item" disabled>
                     </div>

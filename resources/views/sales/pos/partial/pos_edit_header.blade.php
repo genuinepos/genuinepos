@@ -54,9 +54,9 @@
                                 @endif
                             </p>
                             <small class="login-user-name">
-                                <span class="text-highlight">{{ __('Loggedin') }} :</span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
+                                <span class="text-highlight">{{ __('Loggedin') }} </span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
                                 <span>
-                                    <span class="text-highlight">{{ __('C.Register') }} :</span>
+                                    <span class="text-highlight">{{ __('C.Register') }} </span>
                                     @if ($sale->admin)
                                         @if ($sale->admin->role_type == 1)
                                             Super-Admin
@@ -79,9 +79,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <div class="input-group-prepend col-9">
-                                        <input readonly type="text" class="form-control form-select" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
-                                    </div>
+                                    <input readonly type="text" class="form-control form-select" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
                                     <div class="input-group-append add_button" id="addCustomer">
                                         <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                     </div>

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
- 
+
     {{-- creat pate link start --}}
 
     <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.min.css') }}">
@@ -153,7 +153,7 @@
                         <!--begin::Form-->
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -167,7 +167,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>@lang('menu.debit_account') :</strong> </label>
+                                <label><strong>@lang('menu.debit_account') </strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -187,7 +187,7 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> @lang('menu.payment_note') :</strong></label>
+                            <label><strong> @lang('menu.payment_note') </strong></label>
                             <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                         </div>
 
@@ -392,7 +392,7 @@
                         @if(auth()->user()->can('edit_discount_pos_screen'))
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.discount_type')</strong> :</label>
+                                <label><strong>@lang('menu.discount_type')</strong> </label>
                                 <select class="form-control form-control-sm" id="e_unit_discount_type">
                                     <option value="2">@lang('menu.percentage')</option>
                                     <option value="1">@lang('menu.fixed')</option>
@@ -400,7 +400,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.discount')</strong> :</label>
+                                <label><strong>@lang('menu.discount')</strong> </label>
                                 <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00" />
                                 <input type="hidden" id="e_discount_amount" />
                             </div>
@@ -408,14 +408,14 @@
                         @endif
 
                         <div class="form-group">
-                            <label><strong>@lang('menu.tax')</strong> :</label>
+                            <label><strong>@lang('menu.tax')</strong> </label>
                             <select class="form-control form-control-sm" id="e_unit_tax">
 
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label><strong>@lang('menu.sale_unit')</strong> :</label>
+                            <label><strong>@lang('menu.sale_unit')</strong> </label>
                             <select class="form-control form-control-sm" id="e_unit"></select>
                         </div>
 

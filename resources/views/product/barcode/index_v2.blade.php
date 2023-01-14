@@ -30,7 +30,7 @@
                             <div class="col-md-7">
                                 <div class="card ">
                                     <div class="card-header">
-                                        <p><b>@lang('menu.barcode_settings') :</b></p>
+                                        <p><b>@lang('menu.barcode_settings') </b></p>
                                     </div>
                                     <form id="multiple_completed_form" class="d-hide"
                                         action="{{ route('barcode.multiple.generate.completed') }}" method="post">
@@ -174,7 +174,7 @@
                                                     <tbody id="purchased_product_list"></tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} :</th>
+                                                            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} </th>
                                                             <th colspan="3" class="text-end">0</th>
                                                         </tr>
                                                     </tfoot>

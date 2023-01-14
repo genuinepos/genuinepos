@@ -30,7 +30,7 @@
                                             <div class="form-group row">
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     <div class="col-md-2">
-                                                        <label><strong>@lang('menu.sender_business_location') :</strong></label>
+                                                        <label><strong>@lang('menu.sender_business_location') </strong></label>
                                                         <select name="branch_id"
                                                             class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
@@ -50,7 +50,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.payment_status') :</strong></label>
+                                                    <label><strong>@lang('menu.payment_status') </strong></label>
                                                     <select name="receive_status" id="receive_status" class="form-control">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">@lang('menu.pending')</option>
@@ -60,7 +60,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.from_date') :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -70,7 +70,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.to_date') :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>

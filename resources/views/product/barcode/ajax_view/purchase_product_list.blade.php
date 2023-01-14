@@ -12,7 +12,7 @@
             $totalPendingQty = 0;
         @endphp
         @if (count($supplier_products) > 0)
-            @foreach ($supplier_products as $s_product) 
+            @foreach ($supplier_products as $s_product)
                 @php
                     $tax = $s_product->product->tax ? $s_product->product->tax->tax_percent : 0.00;
                     $price = $s_product->variant ? $s_product->variant->variant_price : $s_product->product->product_price;
@@ -25,13 +25,13 @@
                     }
                 @endphp
 
-                <tr 
-                    data-p_id="{{ $s_product->product->id }}" 
-                    data-p_code="{{ $s_product->product->product_code }}" 
-                    data-p_name="{{ $s_product->product->name }}" 
-                    data-v_id="{{ $s_product->product_variant_id }}" 
-                    data-v_code="{{ $s_product->variant ? $s_product->variant->variant_code : '' }}" 
-                    data-v_name="{{ $s_product->variant ? $s_product->variant->variant_name : '' }}" 
+                <tr
+                    data-p_id="{{ $s_product->product->id }}"
+                    data-p_code="{{ $s_product->product->product_code }}"
+                    data-p_name="{{ $s_product->product->name }}"
+                    data-v_id="{{ $s_product->product_variant_id }}"
+                    data-v_code="{{ $s_product->variant ? $s_product->variant->variant_code : '' }}"
+                    data-v_name="{{ $s_product->variant ? $s_product->variant->variant_name : '' }}"
                     data-price="{{ $priceIncTax }}"
                     data-tax="{{ $tax }}"
                     data-supplier_id="{{ $s_product->supplier->id }}"
@@ -42,8 +42,8 @@
                 >
                     <td class="text-start"><input type="checkbox" class="check"></td>
                     <td class="text-start">
-                        <span class="span_product_name">{{ Str::limit($s_product->product->name, 15, '') }}</span>  
-                        @if ($s_product->product_variant_id != null) 
+                        <span class="span_product_name">{{ Str::limit($s_product->product->name, 15, '') }}</span>
+                        @if ($s_product->product_variant_id != null)
                             <span class="span_variant_name">{{' - '.$s_product->variant->variant_name }}</span>
                         @endif
                     </td>
@@ -62,7 +62,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} :</th>
+            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} </th>
             <th colspan="3" class="text-end">({{ $totalPendingQty }})</th>
         </tr>
     </tfoot>

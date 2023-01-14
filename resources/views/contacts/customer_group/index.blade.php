@@ -31,14 +31,14 @@
                                     <div class="form-area px-3 pb-2">
                                         <form id="add_group_form" action="{{ route('contacts.customers.groups.store') }}" method="POST">
                                             <div class="form-group mt-2">
-                                                <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
+                                                <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" class="form-control add_input"
                                                     data-name="Group name" id="name" placeholder="Group name" required/>
                                                 <span class="error error_name"></span>
                                             </div>
 
                                             <div class="form-group mt-2">
-                                                <label><strong>@lang('menu.calculation_percent') (%) :</strong></label>
+                                                <label><strong>@lang('menu.calculation_percent') (%) </strong></label>
                                                 <input type="number" step="any" name="calculation_percent" class="form-control" step="any"
                                                     id="calculation_percent" placeholder="@lang('menu.calculation_percent')" autocomplete="off" />
                                                     <span class="error error_calculation_percent"></span>

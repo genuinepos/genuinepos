@@ -35,7 +35,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.supplier_balance') :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.supplier_balance') </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -47,7 +47,7 @@
                                         </tr>
 
                                         <tr>
-                                            @lang('menu.supplier_return_balance')     <td class="text-start"><strong> :</strong> </td>
+                                            @lang('menu.supplier_return_balance')     <td class="text-start"><strong> </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -59,7 +59,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.customer_balance') :</strong></td>
+                                            <td class="text-start"><strong>@lang('menu.customer_balance') </strong></td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -71,7 +71,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.customer_return_balance') :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.customer_return_balance') </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -83,7 +83,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.purchase_ac') :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.purchase_ac') </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -95,7 +95,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.sale_ac') :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.sale_ac') </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -107,7 +107,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.opening_stock') :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.opening_stock') </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -119,7 +119,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-start"><strong>@lang('menu.difference_in_opening_balance') :</strong> </td>
+                                            <td class="text-start"><strong>@lang('menu.difference_in_opening_balance') </strong> </td>
 
                                             <td>
                                                 <em class="debit">0.00</em>
@@ -133,7 +133,7 @@
 
                                     <tfoot>
                                         <tr class="bg-secondary">
-                                            <th class="text-white text-start">@lang('menu.total') :</th>
+                                            <th class="text-white text-start">@lang('menu.total') </th>
                                             <th class="text-white">
                                                 <span class="total_credit">0.00</span>
                                                 {{ $generalSettings['business__currency'] }}

@@ -18,7 +18,8 @@
         /*.select2-selection:focus {
              box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
         } */
-
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
         .select2-selection:focus {
             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
             color: #212529;
@@ -67,7 +68,7 @@
                                         <div class="row g-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.customer') :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.customer') </b> </label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
                                                             <select name="customer_id" class="form-control select2" id="customer_id">
@@ -91,7 +92,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.invoice_id') :</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                    <label class="col-4"><b>@lang('menu.invoice_id') </b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
                                                     <div class="col-8">
                                                         <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
                                                     </div>
@@ -117,7 +118,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.previous_due') :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.previous_due') </b></label>
                                                     <div class="col-8">
                                                         <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
                                                     </div>
@@ -147,7 +148,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.price_group') :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.price_group') </b></label>
                                                     <div class="col-8">
                                                         <select name="price_group_id" class="form-control"
                                                             id="price_group_id">
@@ -162,7 +163,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>@lang('menu.warehouse') :</b> </label>
+                                                    <label class="col-4"> <b>@lang('menu.warehouse') </b> </label>
                                                     <div class="col-8">
                                                         <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
                                                         <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
@@ -198,7 +199,7 @@
 
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <label class="col-4"><b>{{ __('I.Sch') }} :</b></label>
+                                                            <label class="col-4"><b>{{ __('I.Sch') }} </b></label>
                                                             <div class="col-8">
                                                                 <select name="invoice_schema" class="form-control"
                                                                     id="invoice_schema">
@@ -297,7 +298,7 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Details') }} :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Details') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="@lang('menu.shipment_details')">
                                                     </div>
@@ -306,7 +307,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Address') }} :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Address') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address">
                                                     </div>
@@ -315,7 +316,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Status') }} :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Ship Status') }} </b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status">
                                                             <option value="">@lang('menu.shipment_status')</option>
@@ -331,7 +332,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Delivered To') }} :</b></label>
+                                                    <label class=" col-4"><b>{{ __('Delivered To') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="{{ __('Delivered To') }}">
                                                     </div>
@@ -349,7 +350,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>@lang('menu.payment_note') :</b></label>
+                                                    <label class=" col-4"><b>@lang('menu.payment_note') </b></label>
                                                     <div class="col-8">
                                                         <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')">
                                                     </div>
@@ -364,21 +365,21 @@
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
                                         <div class="row gx-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_item') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.total_item') </label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.net_total') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.net_total') </label>
                                             <div class="col-sm-7">
                                                 <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.discount'):</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.discount')</label>
                                             <div class="col-sm-3 col-6">
                                                 <select name="order_discount_type" class="form-control" id="order_discount_type">
                                                     <option value="1">@lang('menu.fixed')</option>
@@ -392,7 +393,7 @@
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.order_tax') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.order_tax') </label>
                                             <div class="col-sm-7">
                                                 <select name="order_tax" class="form-control" id="order_tax"></select>
                                                 <input type="number" step="any" class="d-hide" name="order_tax_amount" id="order_tax_amount" value="0.00">
@@ -400,21 +401,21 @@
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost'):</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost')</label>
                                             <div class="col-sm-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.previous_due') :</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.previous_due') </label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_payable'):</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.total_payable')</label>
                                             <div class="col-sm-7">
                                                 <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
                                                 <input class="d-hide" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
@@ -430,14 +431,14 @@
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.change') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.change') </label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.paid_by') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.paid_by') </label>
                                                 <div class="col-sm-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                         @foreach ($methods as $method)
@@ -452,7 +453,7 @@
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C : <span
+                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C <span
                                                     class="text-danger">*</span></label>
                                                 <div class="col-sm-7">
                                                     <select name="account_id" class="form-control" id="account_id" data-name="@lang('menu.debit') A/C">
@@ -473,7 +474,7 @@
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.due') :</label>
+                                                <label class="col-sm-5 col-form-label">@lang('menu.due') </label>
                                                 <div class="col-sm-7">
                                                     <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
                                                 </div>
@@ -532,16 +533,16 @@
                         <input type="hidden" id="op_customer_id" name="customer_id">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <p><strong>@lang('menu.customer') : </strong> <span class="op_customer_name"></span></p>
-                                <p><strong>@lang('menu.phone_no') : </strong> <span class="op_customer_phone"></span></p>
+                                <p><strong>@lang('menu.customer') </strong> <span class="op_customer_name"></span></p>
+                                <p><strong>@lang('menu.phone_no') </strong> <span class="op_customer_phone"></span></p>
                             </div>
 
                             <div class="col-md-6">
-                                <p><strong>@lang('menu.business_location') : </strong> <span class="op_branch_name"></span></p>
+                                <p><strong>@lang('menu.business_location') </strong> <span class="op_branch_name"></span></p>
                             </div>
 
                             <div class="col-md-12 mt-2">
-                                <label><b>@lang('menu.opening_balance') :</b> </label>
+                                <label><b>@lang('menu.opening_balance') </b> </label>
                                 <input type="number" step="any" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')">
                             </div>
 
@@ -607,7 +608,7 @@
                         @if(auth()->user()->can('edit_discount_sale_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong> :</label>
+                                    <label><strong>@lang('menu.discount_type')</strong> </label>
                                     <select class="form-control " id="e_unit_discount_type">
                                         <option value="2">@lang('menu.percentage')</option>
                                         <option value="1">@lang('menu.fixed')</option>
@@ -615,7 +616,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong> :</label>
+                                    <label><strong>@lang('menu.discount')</strong> </label>
                                     <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
@@ -624,12 +625,12 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax')</strong> :</label>
+                                <label><strong>@lang('menu.tax')</strong> </label>
                                 <select class="form-control" id="e_unit_tax"></select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong> :</label>
+                                <label><strong>@lang('menu.tax_type')</strong> </label>
                                 <select class="form-control" id="e_tax_type">
                                     <option value="1">@lang('menu.exclusive')</option>
                                     <option value="2">@lang('menu.exclusive')</option>
@@ -638,7 +639,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong >@lang('menu.sale_unit')</strong> :</label>
+                            <label><strong >@lang('menu.sale_unit')</strong> </label>
                             <select class="form-control" id="e_unit"></select>
                         </div>
 

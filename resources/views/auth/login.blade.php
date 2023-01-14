@@ -79,8 +79,8 @@
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  config('speeddigit.app_logo_alt') }}">
                                             </p>
                                             <p class="version"><span>@lang('menu.version')</span> {{ config('speeddigit.version')  }}</p>
-                                            <p class="details"><span>@lang('menu.address'):</span> {{ config('speeddigit.address')  }}</p>
-                                            <p class="details"><span>@lang('menu.support'):</span> {{ config('speeddigit.support_email')  }}</p>
+                                            <p class="details"><span>@lang('menu.address')</span> {{ config('speeddigit.address')  }}</p>
+                                            <p class="details"><span>@lang('menu.support')</span> {{ config('speeddigit.support_email')  }}</p>
                                             <p class="details"><span>@lang('menu.website')</span> {{ config('speeddigit.website')  }}</p>
 
                                             <div class="function-btn">

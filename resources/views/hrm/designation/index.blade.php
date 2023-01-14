@@ -71,12 +71,12 @@
                     <!--begin::Form-->
                     <form id="add_designation_form" action="{{ route('hrm.designations.store') }}">
                         <div class="form-group">
-                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" data-name="Designation name" placeholder="Designation name" />
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>{{ __('Designation Details') }} :</b> </label>
+                            <label><b>{{ __('Designation Details') }} </b> </label>
                             <textarea name="description" class="form-control" id="description" placeholder="{{ __('Designation Details') }}"></textarea>
                         </div>
 
@@ -109,12 +109,12 @@
                     <form id="edit_designation_form" action="{{ route('hrm.designations.update') }}">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                             <input type="text" name="designation_name" class="form-control" id="e_designation_name" placeholder="Designation name"/>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>{{ __('Designation Details') }} :</b> </label>
+                            <label><b>{{ __('Designation Details') }} </b> </label>
                             <textarea name="description" class="form-control" id="e_description" placeholder="{{ __('Designation Details') }}"></textarea>
                         </div>
 

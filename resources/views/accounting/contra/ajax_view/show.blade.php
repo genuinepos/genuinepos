@@ -27,10 +27,10 @@
     </div>
 
     <div class="reference_area">
-        <p><b>@lang('menu.title') :</b> @lang('menu.contra_entry')</p>
-        <p><b>@lang('menu.voucher_no') :</b> {{ $contra->voucher_no }}</p>
-        <p><b>@lang('menu.date') :</b> {{ $contra->date}}</p>
-        <p><b>@lang('menu.business_location') :</b>
+        <p><b>@lang('menu.title') </b> @lang('menu.contra_entry')</p>
+        <p><b>@lang('menu.voucher_no') </b> {{ $contra->voucher_no }}</p>
+        <p><b>@lang('menu.date') </b> {{ $contra->date}}</p>
+        <p><b>@lang('menu.business_location') </b>
             @if ($contra->branch)
 
                 {{ $contra->branch->name . '/' . $contra->branch->branch_code }}
@@ -62,7 +62,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.receiver_account') : </th>
+                            <th class="text-start">@lang('menu.receiver_account') </th>
                             <td class="text-start">
                                 @php
                                     $receiverAccountType = $contra->receiverAccount->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
@@ -74,7 +74,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.transaction_amount') :</th>
+                            <th class="text-start">@lang('menu.transaction_amount') </th>
                             <td class="text-start">{{ $generalSettings['business__currency'] }} {{ App\Utils\Converter::format_in_bdt($contra->amount) }}</td>
                         </tr>
                     </tbody>
@@ -85,7 +85,7 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.remarks') :</th>
+                            <th width="50%" class="text-start">@lang('menu.remarks') </th>
                             <td width="50%" class="text-start">
                                 {{ $contra->remarks }}
                             </td>

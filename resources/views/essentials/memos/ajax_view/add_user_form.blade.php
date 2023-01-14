@@ -2,7 +2,7 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-12">
-            <label><b>@lang('menu.users') :</b></label>
+            <label><b>@lang('menu.users') </b></label>
             <select required name="user_ids[]" class="form-control select2" id="user_ids" multiple="multiple">
                 <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)

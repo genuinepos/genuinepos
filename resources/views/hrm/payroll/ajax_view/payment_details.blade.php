@@ -10,7 +10,7 @@
             @else
                 <h6>{{$generalSettings['business__shop_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
                 <p>{{$generalSettings['business__address']}} </p>
-                <p><b>@lang('menu.phone') :</b>  {{$generalSettings['business__phone']}} </p>
+                <p><b>@lang('menu.phone') </b>  {{$generalSettings['business__phone']}} </p>
             @endif
             <h6 class="modal-title" id="exampleModalLabel">Payroll Of
                 <b>{{ $payment->payroll->employee->prefix . ' ' . $payment->payroll->employee->name . ' ' . $payment->payroll->employee->last_name }}</b>
@@ -20,8 +20,8 @@
     </div>
 
     <div class="reference_area pt-3">
-        <h6><b>@lang('menu.title') :</b> @lang('menu.payroll_payment')</h6>
-        <h6><b>@lang('menu.reference_no') :</b> {{ $payment->payroll->reference_no }}</h6>
+        <h6><b>@lang('menu.title') </b> @lang('menu.payroll_payment')</h6>
+        <h6><b>@lang('menu.reference_no') </b> {{ $payment->payroll->reference_no }}</h6>
     </div>
 
     <div class="total_amount_table_area pt-3">
@@ -30,7 +30,7 @@
                 <table class="table table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.paid_amount') :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_amount') </th>
                             <td width="50%" class="text-start">
                                 {{ $generalSettings['business__currency'] }}
                                 {{ $payment->paid }}
@@ -38,14 +38,14 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.due') :</th>
+                            <th width="50%" class="text-start">@lang('menu.due') </th>
                             <td width="50%" class="text-start">
                                 {{ $generalSettings['business__currency'] }} {{ $payment->due }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.payment_method') :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_method') </th>
                             <td width="50%" class="text-start">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -55,21 +55,21 @@
                 <table class="table table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.voucher_no') :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') </th>
                             <td width="50%" class="text-start">
                                 {{ $payment->reference_no }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_on') </th>
                             <td width="50%" class="text-start">
                                 {{date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.payment_note') :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_note') </th>
                             <td width="50%" class="text-start">
                                 {{ $payment->note }}
                             </td>

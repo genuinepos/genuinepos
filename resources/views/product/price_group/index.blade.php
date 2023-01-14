@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
-                                <label for="inputEmail3" class="col-4"><b>Import File :</b> </label>
+                                <label for="inputEmail3" class="col-4"><b>Import File </b> </label>
                                 <div class="col-8">
                                     <input type="file" name="import_file" class="form-control">
                                     <span class="error" style="color: red;">
@@ -129,7 +129,7 @@
                     <form id="add_price_group_form" action="{{ route('product.selling.price.groups.store') }}" method="POST">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.name') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" id="name"
                                     placeholder="Name" />
                                 <span class="error error_name"></span>
@@ -138,7 +138,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>@lang('menu.description') :</b></label>
+                                <label><b>@lang('menu.description') </b></label>
                                 <textarea name="description" class="form-control" cols="10" rows="3" placeholder="Price Group Description"></textarea>
                                 <span class="error error_photo"></span>
                             </div>

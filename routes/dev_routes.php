@@ -66,3 +66,28 @@ Route::get('/test', function () {
 // Route::get('dbal', function() {
 //     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
 // });
+
+
+// enum VoucherType : int
+// {
+//     case Disabled = 'disabled';
+//     case Enabled = 1;
+//     case Pending = 2;
+//     case Rejected = 3;
+// }
+
+// enum Gender : string
+// {
+//     case MALE = 0;
+//     case FEMALE = 1;
+//     case OTHER = 2;
+// }
+
+// class App
+// {
+//     public function logicalMethod()
+//     {
+//         $voucherType = VoucherType::Disabled;
+//         $gender = Gender::MALE;
+//     }
+// }

@@ -4,20 +4,19 @@
 @include('sales.pos.partial.pos_edit_header')
 <!-- Pos Header End-->
 <div class="body-wraper">
-    <div class="container-fluid">
-        <div class="pos-content">
-            <div class="row">
+    <div class="container-fluid p-0 h-100">
+        <div class="pos-content p-1">
+            <div class="row g-1">
                 <div class="col-lg-9">
-                    <div class="row">
-
+                    <div class="row g-1">
                         <!-- Select Category, Brand and Product Area -->
                         @include('sales.pos.partial.select_edit_product_section')
                         <!-- Select Category, Brand and Product Area -->
-                        <div class="col-lg-7 p-1 pb-0">
+                        <div class="col-lg-7">
                             <div class="cart-table">
                                 <div class="cart-table-inner-pos">
                                     <div class="tbl-head">
-                                        <ul id="pos-shortcut-menus">
+                                        <ul class="tbl-head-shortcut-menus" id="pos-shortcut-menus">
 
                                         </ul>
                                     </div>
@@ -28,6 +27,17 @@
                                     <!-- Total Item & Qty section -->
                                     @include('sales.pos.partial.total_edit_item_and_qty')
                                     <!-- Total Item & Qty section End-->
+                                    <div class="row g-0 d-lg-flex d-hide" style="height: 117px">
+                                        <div class="col-lg-4">
+                                            <div class="bg-white h-100 border-end p-5"></div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="bg-white h-100 border-end p-5"></div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="bg-white h-100 p-5"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

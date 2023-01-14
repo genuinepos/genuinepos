@@ -23,7 +23,7 @@
                                 <div class="form-group row">
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="col-md-4">
-                                        <label><strong>@lang('menu.business_location') :</strong></label>
+                                        <label><strong>@lang('menu.business_location') </strong></label>
                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id">
                                             <option value="">@lang('menu.all')</option>
                                             <option value="NULL"> {{ $generalSettings['business__shop_name'] }} </option>

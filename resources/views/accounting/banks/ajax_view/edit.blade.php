@@ -14,7 +14,7 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('menu.bank_address')</b> : </label>
+        <label><b>@lang('menu.bank_address')</b> </label>
         <textarea name="address" class="form-control form-control-sm" id="e_address" cols="10" rows="3" placeholder="@lang('menu.bank_address')"> {{ $banks->address }}</textarea>
     </div>
 

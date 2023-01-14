@@ -17,7 +17,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.supplier_balance') :</em>  </td>
+                                <td class="text-start"><em>@lang('menu.supplier_balance') </em>  </td>
                                 <td class=" text-end">
                                     <span class="supplier_due"><em>{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_due')) }}</em> </span>
                                     @php $totalLiability += $suppliers->sum('total_due')  @endphp
@@ -25,7 +25,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.customer_return_balance') : </em> </td>
+                                <td class="text-start"><em>@lang('menu.customer_return_balance') </em> </td>
                                 <td class="text-end">
                                     <em class="customer_return_due">{{ App\Utils\Converter::format_in_bdt($customers->sum('total_return_due')) }}</em>
                                     @php $totalLiability += $customers->sum('total_return_due')  @endphp
@@ -34,7 +34,7 @@
 
                             <tr>
                                 <td class="text-start">
-                                    <em>@lang('menu.payable_loan_liabilities') : </em>
+                                    <em>@lang('menu.payable_loan_liabilities') </em>
                                 </td>
 
                                 <td class="text-end">
@@ -45,7 +45,7 @@
 
                             <tr>
                                 <td class="text-start">
-                                    <em>@lang('menu.capital_ac') : </em>
+                                    <em>@lang('menu.capital_ac') </em>
                                 </td>
 
                                 <td class="text-end">
@@ -56,7 +56,7 @@
 
                             <tr>
                                 <td class="text-start">
-                                    <em>@lang('menu.profit_loss_ac') : </em>
+                                    <em>@lang('menu.profit_loss_ac') </em>
                                 </td>
 
                                 <td class="text-end">
@@ -67,7 +67,7 @@
 
                             <tr class="bg-danger">
                                 <td class="text-end text-white">
-                                    <em>@lang('menu.current_total') : </em>
+                                    <em>@lang('menu.current_total') </em>
                                 </td>
                                 <td class="text-end text-white">
                                     <em>{{ App\Utils\Converter::format_in_bdt($totalLiability) }}</em>
@@ -94,7 +94,7 @@
                         @endphp
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.cash_in_hand') : </em></td>
+                                <td class="text-start"><em>@lang('menu.cash_in_hand') </em></td>
                                 <td class="text-end">
                                     <em class="cash_in_hand">{{ App\Utils\Converter::format_in_bdt($totalCashInHand->sum('total_cash')) }}</em>
                                     @php
@@ -105,7 +105,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.bank_ac_balance') : </em></td>
+                                <td class="text-start"><em>@lang('menu.bank_ac_balance') </em></td>
                                 <td class="text-end">
                                     <em class="bank_balance">{{ App\Utils\Converter::format_in_bdt($TotalBankBalance->sum('total_bank_balance')) }}</em>
                                     @php
@@ -116,7 +116,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.customer_balance') : </em></td>
+                                <td class="text-start"><em>@lang('menu.customer_balance') </em></td>
                                 <td class="text-end">
                                     <em class="customer_due">{{ App\Utils\Converter::format_in_bdt($customers->sum('total_due')) }}</em>
                                     @php
@@ -127,7 +127,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.supplier_return_balance') : </em></td>
+                                <td class="text-start"><em>@lang('menu.supplier_return_balance') </em></td>
                                 <td class="text-end">
                                     <em class="supplier_return_due">{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_return_due')) }}</em>
                                     @php
@@ -138,7 +138,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.current_stock_value') : </em></td>
+                                <td class="text-start"><em>@lang('menu.current_stock_value') </em></td>
                                 <td class=" text-end">
                                     <em class="stock_value">{{ App\Utils\Converter::format_in_bdt($currentStockValue) }}</em>
                                     @php
@@ -149,7 +149,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.investments') : </em></td>
+                                <td class="text-start"><em>@lang('menu.investments') </em></td>
                                 <td class=" text-end">
                                     <em class="investment">{{ App\Utils\Converter::format_in_bdt($TotalInvestment->sum('total_investment')) }}</em>
                                     @php
@@ -160,7 +160,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><em>@lang('menu.receivable_loan_advance') : </em></td>
+                                <td class="text-start"><em>@lang('menu.receivable_loan_advance') </em></td>
                                 <td class=" text-end">
                                     <em class="receiveable_la">{{ App\Utils\Converter::format_in_bdt($loanCompanies->sum('total_la_receivable')) }}</em>
                                     @php
@@ -171,7 +171,7 @@
                             </tr>
 
                             <tr class="bg-info">
-                                <td class="text-end text-white"><em>@lang('menu.total_current_asset') : </em></td>
+                                <td class="text-end text-white"><em>@lang('menu.total_current_asset') </em></td>
                                 <td class=" text-end text-white">
                                     <em class="total_current_asset">{{ App\Utils\Converter::format_in_bdt($totalCurrnetAsset) }}</em>
                                 </td>
@@ -183,7 +183,7 @@
                             </tr>
 
                             <tr class="bg-secondary">
-                                <th colspan="2" class="text-start text-white"><em>@lang('menu.fixed_assets_list') :</em></th>
+                                <th colspan="2" class="text-start text-white"><em>@lang('menu.fixed_assets_list') </em></th>
                             </tr>
 
                             <tr class="account_balance_list_area">
@@ -193,7 +193,7 @@
                                             @foreach ($fixedAssets as $fixedAsset)
                                                 <tr>
                                                     <td class="text-start" colspan="2">
-                                                        <em>{{ $fixedAsset->name }} : </em>
+                                                        <em>{{ $fixedAsset->name }} </em>
                                                         @php
                                                             $totalAsset += $fixedAsset->balance;
                                                         @endphp

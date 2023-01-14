@@ -25,7 +25,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="f_branch_id" autofocus>
                                                     <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -40,7 +40,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.account_types') :</strong></label>
+                                        <label><strong>@lang('menu.account_types') </strong></label>
                                         <select name="account_type" id="f_account_type" class="form-control">
                                             <option value="">@lang('menu.all')</option>
                                             @foreach (App\Utils\Util::allAccountTypes(1) as $key => $accountType)
@@ -116,7 +116,7 @@
                     <!--begin::Form-->
                     <form id="add_account_form" action="{{ route('accounting.accounts.store') }}">
                         <div class="form-group">
-                            <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
+                            <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control add_input" data-name="Name" id="name"
                                 placeholder="@lang('menu.account_name')" autocomplete="off" autofocus/>
                             <span class="error error_name"></span>
@@ -137,7 +137,7 @@
                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                             <div class="form-group row mt-1 bank_account_field d-hide">
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.bank_name') :</strong> <span class="text-danger">*</span> </label>
+                                    <label><strong>@lang('menu.bank_name') </strong> <span class="text-danger">*</span> </label>
                                     <select name="bank_id" class="form-control add_input" data-name="Bank name" id="bank_id">
                                         <option value="">@lang('menu.select_bank')</option>
                                         @foreach ($banks as $bank)
@@ -148,13 +148,13 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.account_number') : </strong><span class="text-danger">*</span></label>
+                                    <label><strong>@lang('menu.account_number') </strong><span class="text-danger">*</span></label>
                                     <input type="text" name="account_number" class="form-control add_input" data-name="Type name" id="account_number" placeholder="@lang('menu.account_number')" />
                                     <span class="error error_account_number"></span>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.access_business_location') :</strong> <span class="text-danger">*</span></label>
+                                    <label><strong>@lang('menu.access_business_location') </strong> <span class="text-danger">*</span></label>
                                     <select name="business_location[]" id="business_location" class="form-control select2" multiple="multiple">
                                         <option {{ $generalSettings['addons__branches'] == 0 ? 'SELECTED' : '' }} value="NULL">
                                             {{ $generalSettings['business__shop_name'] }}(HO)
@@ -170,12 +170,12 @@
                         @endif
 
                         <div class="form-group mt-1">
-                            <label><strong>@lang('menu.opening_balance') :</strong></label>
+                            <label><strong>@lang('menu.opening_balance') </strong></label>
                             <input type="number" name="opening_balance" class="form-control" id="opening_balance" value="0.00" step="any"/>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>@lang('menu.remarks') :</strong></label>
+                            <label><strong>@lang('menu.remarks') </strong></label>
                             <input type="text" name="remark" class="form-control" id="remarks" placeholder="@lang('menu.remarks')"/>
                         </div>
 

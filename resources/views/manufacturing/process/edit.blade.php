@@ -37,7 +37,7 @@
                                     @php
                                         $p_code = $process->v_code ? $process->v_code : $process->p_code;
                                     @endphp
-                                    <p> <strong>@lang('menu.product') :</strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
+                                    <p> <strong>@lang('menu.product') </strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.production_cost') :</b></label>
+                                    <label><b>@lang('menu.production_cost') </b></label>
                                     <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="@lang('menu.production_cost')" value="{{ $process->production_cost }}">
                                 </div>
 
@@ -617,7 +617,7 @@
         }
 
         function __calculateTotalAmount(){
-            
+
             var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
 

@@ -79,7 +79,7 @@
                     <form id="send_mail_form" action="" method="POST">
                         @csrf
                         <div class="form-group mt-1">
-                            <label><strong>@lang('menu.to') :</strong> </label>
+                            <label><strong>@lang('menu.to') </strong> </label>
                             <select required name="user_email" class="form-control" id="user_email">
                                 <option value="">@lang('menu.select_user')</option>
                                 @foreach ($users as $user)

@@ -44,12 +44,12 @@
 
     <div class="reference_area pt-3">
         <p>
-            <b>@lang('menu.title') :</b>
+            <b>@lang('menu.title') </b>
             {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}
         </p>
-        <p><b>@lang('menu.invoice_no') :</b> {{ $payment->sale->invoice_id }}</p>
+        <p><b>@lang('menu.invoice_no') </b> {{ $payment->sale->invoice_id }}</p>
         <p>
-            <b>@lang('menu.customer') :</b>
+            <b>@lang('menu.customer') </b>
             {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}
         </p>
     </div>
@@ -60,7 +60,7 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.paid_amount') :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_amount') </th>
                             <td width="50%">
                                 {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
@@ -68,7 +68,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.payment_method') :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_method') </th>
                             <td width="50%">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -78,14 +78,14 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.voucher_no') :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') </th>
                             <td width="50%">
                                 {{ $payment->invoice_id }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.paid_on') :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_on') </th>
                             <td width="50%">
                                 @php
                                     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
@@ -95,7 +95,7 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.payment_note') :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_note') </th>
                             <td width="50%">
                                 {{ $payment->note }}
                             </td>

@@ -27,7 +27,7 @@
                             <form id="add_warranty_form" action="{{ route('product.warranties.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <strong>@lang('menu.name') :</strong> <span class="text-danger">*</span>
+                                    <strong>@lang('menu.name') </strong> <span class="text-danger">*</span>
                                     <input type="text" name="name" class="form-control add_input" data-name="Warranty name"
                                         id="name" placeholder="Warranty name" />
                                     <span class="error error_name"></span>
@@ -35,7 +35,7 @@
 
                                 <div class="form-group row mt-1">
                                     <div class="col-lg-4">
-                                        <strong>@lang('menu.type') :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.type') </strong> <span class="text-danger">*</span>
                                         <select name="type" class="form-control" id="type">
                                             <option value="1">@lang('menu.warranty')</option>
                                             <option value="2">@lang('menu.guaranty')</option>
@@ -43,7 +43,7 @@
                                     </div>
 
                                     <div class="col-lg-8">
-                                        <strong>@lang('menu.duration') :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.duration') </strong> <span class="text-danger">*</span>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <input type="number" name="duration" class="form-control add_input"
@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="form-group mt-2">
-                                    <strong>@lang('menu.description') :</strong>
+                                    <strong>@lang('menu.description') </strong>
                                     <textarea name="description" id="description" class="form-control" cols="10" rows="3"
                                         placeholder="Warranty description"></textarea>
                                 </div>
@@ -90,7 +90,7 @@
                             <form id="edit_warranty_form" action="{{ route('product.warranties.update') }}">
                                 <input type="hidden" name="id" id="id">
                                 <div class="form-group">
-                                    <strong>@lang('menu.name') :</strong> <span class="text-danger">*</span>
+                                    <strong>@lang('menu.name') </strong> <span class="text-danger">*</span>
                                     <input type="text" name="name" class="form-control edit_input" data-name="Bank name" id="e_name"
                                         placeholder="@lang('menu.bank_name')" />
                                     <span class="error error_e_name"></span>
@@ -98,7 +98,7 @@
 
                                 <div class="row mt-1">
                                     <div class="col-md-4">
-                                        <strong>@lang('menu.type') :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.type') </strong> <span class="text-danger">*</span>
                                         <select name="type" class="form-control" id="e_type">
                                             <option value="1">@lang('menu.warranty')</option>
                                             <option value="2">@lang('menu.guaranty')</option>
@@ -106,7 +106,7 @@
                                     </div>
 
                                     <div class="col-md-8">
-                                        <strong>@lang('menu.duration') :</strong> <span class="text-danger">*</span>
+                                        <strong>@lang('menu.duration') </strong> <span class="text-danger">*</span>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <input type="number" name="duration" class="form-control edit_input"
@@ -126,7 +126,7 @@
                                 </div>
 
                                 <div class="form-group mt-2">
-                                    <strong>@lang('menu.description') :</strong>
+                                    <strong>@lang('menu.description') </strong>
                                     <textarea name="description" id="e_description" class="form-control form-control-sm" cols="10"
                                         rows="3" placeholder="Warranty description"></textarea>
                                 </div>

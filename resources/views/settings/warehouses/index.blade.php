@@ -25,7 +25,7 @@
                                     <div class="form-group row">
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-3">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2"
                                                     id="branch_id" autofocus>
@@ -60,30 +60,30 @@
                             <form id="add_warehouse_form" action="{{ route('settings.warehouses.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label><b>@lang('menu.warehouse_name') :</b>  <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.warehouse_name') </b>  <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control add_input" data-name="Warehouse name" id="name" placeholder="@lang('menu.warehouse_name')"/>
                                     <span class="error error_name"></span>
                                 </div>
 
                                 <div class="form-group mt-1">
-                                    <label><b>@lang('menu.warehouse_code') :</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
+                                    <label><b>@lang('menu.warehouse_code') </b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
                                     <input type="text" name="code" class="form-control add_input" data-name="Warehouse code" id="code" placeholder="@lang('menu.warehouse_code')"/>
                                     <span class="error error_code"></span>
                                 </div>
 
                                 <div class="form-group mt-1">
-                                    <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.phone') </b>  <span class="text-danger">*</span></label>
                                     <input type="text" name="phone" class="form-control add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
                                     <span class="error error_phone"></span>
                                 </div>
 
                                 <div class="form-group mt-1">
-                                    <label><b>@lang('menu.address') :</b>  </label>
+                                    <label><b>@lang('menu.address') </b>  </label>
                                     <textarea name="address" class="form-control" placeholder="Warehouse address" rows="3"></textarea>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.under_business_location') :</strong></label>
+                                    <label><strong>@lang('menu.under_business_location') </strong></label>
                                     <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
                                         <option value="NULL">
                                             {{ $generalSettings['business__shop_name'] }} (HO)

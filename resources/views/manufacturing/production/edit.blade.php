@@ -42,7 +42,7 @@
                                 <div class="col-md-2">
                                     @if ($production->warehouse_id)
                                         <input type="hidden" value="YES" name="store_warehouse_count">
-                                        <label> <b>@lang('menu.store_location') : </b> <span
+                                        <label> <b>@lang('menu.store_location') </b> <span
                                             class="text-danger">*</span></label>
                                         <select class="form-control changeable add_input"
                                             name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id">
@@ -53,33 +53,33 @@
                                         </select>
                                         <span class="error error_warehouse_id"></span>
                                     @else
-                                        <label><b>@lang('menu.store_location') :</b> </label>
+                                        <label><b>@lang('menu.store_location') </b> </label>
                                         <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}" tabindex="-1"/>
                                     @endif
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label > <b>@lang('menu.voucher_no') :</b></label>
+                                    <label > <b>@lang('menu.voucher_no') </b></label>
                                     <input type="text" name="reference_no" class="form-control changeable" placeholder="@lang('menu.voucher_no')" value="{{ $production->reference_no }}"/>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label><b>@lang('menu.date'):</b></label>
+                                    <label><b>@lang('menu.date')</b></label>
                                     <input required type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business__date_format'], strtotime($production->date)) }}" id="datepicker">
                                 </div>
 
                                 <div class="col-md-2">
                                     @if ($production->stock_warehouse_id)
-                                        <label > <b>{{ __('Ingredient Stock Location') }} : </b> <span class="text-danger">*</span></label>
+                                        <label > <b>{{ __('Ingredient Stock Location') }} </b> <span class="text-danger">*</span></label>
                                         <input readonly type="text" class="form-control" value="{{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}" tabindex="-1">
                                     @else
-                                        <label><b>{{ __('Ingredient Stock Location') }} :</b> </label>
+                                        <label><b>{{ __('Ingredient Stock Location') }} </b> </label>
                                         <input readonly type="text" name="stock_branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}" tabindex="-1"/>
                                     @endif
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label><b>@lang('menu.product') :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.product') </b> <span class="text-danger">*</span></label>
                                     <input readonly type="text" value="{{ $production->product->name }} {{ $production->variant ? $production->variant->variant_name : '' }}" class="form-control" tabindex="-1">
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="text" class="d-hide" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $production->total_ingredient_cost }}">
-                        <p class="mb-2 float-end clearfix"><strong>{{ __('Total Ingredient Cost') }} : </strong> <span id="span_total_ingredient_cost">{{ $production->total_ingredient_cost }}</span></p>
+                        <p class="mb-2 float-end clearfix"><strong>{{ __('Total Ingredient Cost') }} </strong> <span id="span_total_ingredient_cost">{{ $production->total_ingredient_cost }}</span></p>
                     </div>
                 </div>
 
@@ -199,7 +199,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.output_qty') :</b></label>
+                                                <label class="col-5"><b>@lang('menu.output_qty') </b></label>
                                                 <div class="col-7">
                                                     <input required type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="{{ $production->quantity }}">
                                                     <input type="text" name="parameter_quantity" class="d-hide" id="parameter_quantity" value="{{ $production->parameter_quantity }}">
@@ -212,7 +212,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>{{ __('Wasted Qty') }}:</b></label>
+                                                <label class="col-5"><b>{{ __('Wasted Qty') }}</b></label>
                                                 <div class="col-7">
                                                     <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="{{ $production->wasted_quantity }}">
                                                 </div>
@@ -223,7 +223,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>{{ __('Final Output Qty') }} :</b></label>
+                                                <label class="col-5"><b>{{ __('Final Output Qty') }} </b></label>
                                                 <div class="col-7">
                                                     <input readonly type="text" step="any" class="form-control" name="final_output_quantity" id="final_output_quantity" value="{{ $production->total_final_quantity }}" tabindex="-1">
                                                 </div>
@@ -234,7 +234,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.additional_cost') :</b></label>
+                                                <label class="col-5"><b>@lang('menu.additional_cost') </b></label>
                                                 <div class="col-7">
                                                     <input name="production_cost" type="number" class="form-control" id="production_cost" value="{{ $production->production_cost }}">
                                                 </div>
@@ -245,7 +245,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.total_production_cost') :</b></label>
+                                                <label class="col-5"><b>@lang('menu.total_production_cost') </b></label>
                                                 <div class="col-7">
                                                     <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="{{ $production->total_cost }}" tabindex="-1">
                                                 </div>
@@ -264,7 +264,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax') :</b> </label>
+                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax') </b> </label>
                                                 <div class="col-7">
                                                     <select class="form-control" name="tax_id" id="tax_id">
                                                         <option value="">@lang('menu.no_tax')</option>
@@ -278,7 +278,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax_type') :</b> </label>
+                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax_type') </b> </label>
                                                 <div class="col-7">
                                                     <select name="tax_type" class="form-control" id="tax_type">
                                                         <option {{ $production->tax_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.exclusive')</option>
@@ -292,7 +292,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.par_unit_cost') :</b></label>
+                                                <label class="col-5"><b>@lang('menu.par_unit_cost') </b></label>
                                                 <div class="col-7">
                                                     <input required type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="{{ $production->unit_cost_exc_tax }}">
                                                 </div>
@@ -301,7 +301,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.cost')(Inc.Tax) :</b></label>
+                                                <label class="col-5"><b>@lang('menu.cost')(Inc.Tax) </b></label>
                                                 <div class="col-7">
                                                     <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="{{ $production->unit_cost_inc_tax }}" tabindex="-1" tabindex="-1">
                                                 </div>
@@ -312,7 +312,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.x_margin')(%) :</b></label>
+                                                <label class="col-5"><b>@lang('menu.x_margin')(%) </b></label>
                                                 <div class="col-7">
                                                     <input type="text" name="xMargin" id="xMargin" class="form-control" placeholder="@lang('menu.x_margin')" autocomplete="off" value="{{ $production->x_margin }}">
                                                 </div>
@@ -321,7 +321,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.selling_price') :</b></label>
+                                                <label class="col-5"><b>@lang('menu.selling_price') </b></label>
                                                 <div class="col-7">
                                                     <input type="text" name="selling_price" id="selling_price" class="form-control" placeholder="@lang('menu.selling_price')" autocomplete="off" value="{{ $production->price_exc_tax }}">
                                                 </div>

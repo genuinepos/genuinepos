@@ -46,14 +46,14 @@
                 <!--begin::Form-->
                 <form id="add_unit_form" action="{{ route('products.add.unit') }}">
                     <div class="form-group">
-                        <label><b>@lang('menu.name') :</b></label> <span class="text-danger">*</span>
+                        <label><b>@lang('menu.name') </b></label> <span class="text-danger">*</span>
                         <input type="text" name="name" class="form-control add_unit_input"
                             data-name="Unit name" id="add_unit_name" placeholder="@lang('menu.unit_name')" />
                         <span class="error error_add_unit_name"></span>
                     </div>
 
                     <div class="form-group mt-1">
-                       <label><b>{{ __('Unit Code') }} :</b></label>  <span class="text-danger">*</span>
+                       <label><b>{{ __('Unit Code') }} </b></label>  <span class="text-danger">*</span>
                         <input type="text" name="code" class="form-control add_unit_input"
                             data-name="Unit code" id="add_unit_code" placeholder="{{ __('Unit Code') }}" />
                         <span class="error error_add_unit_code"></span>
@@ -88,7 +88,7 @@
                 <!--begin::Form-->
                 <form id="add_category_form" action="{{ route('products.add.category') }}">
                     <div class="form-group">
-                        <b>@lang('menu.name') :</b> <span class="text-danger">*</span>
+                        <b>@lang('menu.name') </b> <span class="text-danger">*</span>
                         <input type="text" name="name" class="form-control add_cate_input"
                             data-name="Category name" id="add_cate_name" placeholder="Category name" />
                         <span class="error error_add_cate_name"></span>
@@ -123,7 +123,7 @@
                 <!--begin::Form-->
                 <form id="add_brand_form" action="{{ route('products.add.brand') }}">
                     <div class="form-group">
-                        <b>@lang('menu.name') :</b> <span class="text-danger">*</span>
+                        <b>@lang('menu.name') </b> <span class="text-danger">*</span>
                         <input type="text" name="name" class="form-control add_brand_input"
                             data-name="Brand name" id="add_brand_name" placeholder="Brand name" />
                         <span class="error error_add_brand_name"></span>
@@ -159,14 +159,14 @@ aria-hidden="true">
                 <!--begin::Form-->
                 <form id="add_warranty_form" action="{{ route('products.add.warranty') }}">
                     <div class="form-group">
-                        <label><b>@lang('menu.name') :</b> </label> <span class="text-danger">*</span>
+                        <label><b>@lang('menu.name') </b> </label> <span class="text-danger">*</span>
                         <input type="text" name="name" class="form-control add_warranty_input" id="add_warranty_name" data-name="Warranty name" placeholder="Warranty name"/>
                         <span class="error error_add_warranty_name"></span>
                     </div>
 
                     <div class="row mt-1">
                         <div class="col-lg-4">
-                            <label><b>@lang('menu.type') : </b> </label> <span class="text-danger">*</span>
+                            <label><b>@lang('menu.type') </b> </label> <span class="text-danger">*</span>
                             <select name="type" class="form-control" id="type">
                                 <option value="1">@lang('menu.warranty')</option>
                                 <option value="2">@lang('menu.guaranty')</option>
@@ -174,7 +174,7 @@ aria-hidden="true">
                         </div>
 
                         <div class="col-lg-8">
-                            <label><b>@lang('menu.duration') :</b> </label> <span class="text-danger">*</span>
+                            <label><b>@lang('menu.duration') </b> </label> <span class="text-danger">*</span>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row g-0">
@@ -192,7 +192,7 @@ aria-hidden="true">
                     </div>
 
                     <div class="form-group mt-1">
-                        <label><b>@lang('menu.description') :</b></label>
+                        <label><b>@lang('menu.description') </b></label>
                         <textarea name="description" id="description" class="form-control" cols="10" rows="3" placeholder="Warranty description"></textarea>
                     </div>
 

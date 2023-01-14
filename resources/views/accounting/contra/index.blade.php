@@ -28,7 +28,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="f_branch_id" autofocus>
                                                     <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -43,7 +43,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -56,7 +56,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i

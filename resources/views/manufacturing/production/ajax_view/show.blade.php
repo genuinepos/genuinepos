@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.stored_location') : </strong>
+                            <li><strong>@lang('menu.stored_location') </strong>
                                 @if ($production->warehouse_id)
                                     {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
                                 @else
@@ -27,7 +27,7 @@
                                     @endif
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.ingredients_stock_location') : </strong>
+                            <li><strong>@lang('menu.ingredients_stock_location') </strong>
                                 @if ($production->stock_warehouse_id)
                                     {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
                                 @else
@@ -44,7 +44,7 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.production_item') : </strong>
+                                <strong>@lang('menu.production_item') </strong>
                                 {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                             </li>
                             <li>
@@ -60,8 +60,8 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
-                            <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
+                            <li><strong>@lang('menu.voucher_no') </strong> {{ $production->reference_no }}</li>
+                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                         </ul>
                     </div>
                 </div>
@@ -106,21 +106,21 @@
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end">@lang('menu.output_quantity') : </th>
+                                    <th class="text-end">@lang('menu.output_quantity') </th>
                                     <td class="text-end">
                                         {{ $production->quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.wasted_quantity') : </th>
+                                    <th class="text-end">@lang('menu.wasted_quantity') </th>
                                     <td class="text-end">
                                         {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.final_quantity') : </th>
+                                    <th class="text-end">@lang('menu.final_quantity') </th>
                                     <td class="text-end">
                                         {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
                                     </td>
@@ -148,7 +148,7 @@
                         <table class="table modal-table table-sm table-bordered">
                             <tbody>
                                 <tr>
-                                    <th class="text-end">@lang('menu.tax') : </th>
+                                    <th class="text-end">@lang('menu.tax') </th>
                                     <td class="text-end">
                                         {{ $production->tax ? $production->tax->tax_percent : 0 }}%
                                     </td>
@@ -169,7 +169,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.x_margin')(%) : </th>
+                                    <th class="text-end">@lang('menu.x_margin')(%) </th>
                                     <td class="text-end">
                                         {{ $production->x_margin }}%
                                     </td>
@@ -275,7 +275,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.stored_location') : </strong>
+                        <li><strong>@lang('menu.stored_location') </strong>
                             @if ($production->warehouse_id)
                                 {{ $production->warehouse->warehouse_name.'/'.$production->warehouse->warehouse_code }}<b>(WH)</b>
                             @else
@@ -286,7 +286,7 @@
                                 @endif
                             @endif
                         </li>
-                        <li><strong>@lang('menu.ingredients_stock_location') : </strong>
+                        <li><strong>@lang('menu.ingredients_stock_location') </strong>
                             @if ($production->stock_warehouse_id)
                                 {{ $production->stock_warehouse->warehouse_name.'/'.$production->stock_warehouse->warehouse_code }}<b>(WH)</b>
                             @else
@@ -302,11 +302,11 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>@lang('menu.production_item') : </strong>
+                            <strong>@lang('menu.production_item') </strong>
                             {{ $production->product->name }} {{ $production->variant_id ? $production->variant->variant_name : '' }} {{ $production->variant_id ? $production->variant->variant_code : $production->product->product_code }}
                         </li>
                         <li>
-                            <strong>@lang('menu.production_status'): </strong>
+                            <strong>@lang('menu.production_status')</strong>
                             @if ($production->is_final == 1)
                                 <span class="text-success">@lang('menu.final')</span>
                             @else
@@ -317,8 +317,8 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.voucher_no') : </strong> {{ $production->reference_no }}</li>
-                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
+                        <li><strong>@lang('menu.voucher_no') </strong> {{ $production->reference_no }}</li>
+                        <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                     </ul>
                 </div>
             </div>
@@ -361,21 +361,21 @@
                 <table class="table modal-table table-sm table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-end">@lang('menu.output_quantity') : </th>
+                            <th class="text-end">@lang('menu.output_quantity') </th>
                             <td class="text-end">
                                 {{ $production->quantity.'/'.$production->unit->code_name }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">@lang('menu.wasted_quantity') : </th>
+                            <th class="text-end">@lang('menu.wasted_quantity') </th>
                             <td class="text-end">
                                 {{ $production->wasted_quantity.'/'.$production->unit->code_name }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">@lang('menu.final_quantity') : </th>
+                            <th class="text-end">@lang('menu.final_quantity') </th>
                             <td class="text-end">
                                 {{ $production->total_final_quantity.'/'.$production->unit->code_name }}
                             </td>
@@ -403,7 +403,7 @@
                 <table class="table modal-table table-sm table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-end">@lang('menu.tax') : </th>
+                            <th class="text-end">@lang('menu.tax') </th>
                             <td class="text-end">
                                 {{ $production->tax ? $production->tax->tax_percent : '' }}%
                             </td>
@@ -424,7 +424,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">@lang('menu.x_margin')(%) : </th>
+                            <th class="text-end">@lang('menu.x_margin')(%) </th>
                             <td class="text-end">
                                 {{ $production->x_margin }}%
                             </td>
@@ -444,11 +444,11 @@
         <br>
         <div class="row">
             <div class="col-md-6">
-                <h6>@lang('menu.checked_by') : </h6>
+                <h6>@lang('menu.checked_by') </h6>
             </div>
 
             <div class="col-md-6 text-end">
-                <h6>@lang('menu.approved_by') : </h6>
+                <h6>@lang('menu.approved_by') </h6>
             </div>
         </div>
 

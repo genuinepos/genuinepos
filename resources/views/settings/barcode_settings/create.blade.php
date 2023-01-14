@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-5"><b>@lang('menu.setting_name') :</b> <span class="text-danger">*
+                                        <label class="col-5"><b>@lang('menu.setting_name') </b> <span class="text-danger">*
                                         </span></label>
                                         <div class="col-7">
                                             <input type="text" name="name" class="form-control" id="name"
@@ -39,7 +39,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-5"><b>@lang('menu.setting_description') :</b> </label>
+                                        <label class="col-5"><b>@lang('menu.setting_description') </b> </label>
 
                                         <div class="col-7">
                                             <textarea class="form-control" name="description" id="" cols="10" rows="3" placeholder="Sticker Sheet setting Description"></textarea>

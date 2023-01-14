@@ -69,58 +69,58 @@
                 <table class="display table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">@lang('menu.total_purchase') :</th>
+                            <th class="text-start">@lang('menu.total_purchase') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchase) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">{{ __('Total Payment') }} :</th>
+                            <th class="text-start">{{ __('Total Payment') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayment) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_purchase_due') :</th>
+                            <th class="text-start">@lang('menu.total_purchase_due') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseDue) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_adjustment') :</th>
+                            <th class="text-start">@lang('menu.total_adjustment') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_adjustment) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_expense') :</th>
+                            <th class="text-start">@lang('menu.total_expense') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalExpense) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">{{ __('Total Sale Discount') }} :</th>
+                            <th class="text-start">{{ __('Total Sale Discount') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDiscount) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">{{ __('Transfer Shipping Charge') }} :</th>
+                            <th class="text-start">{{ __('Transfer Shipping Charge') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalTransferShippingCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">{{ __('purchase Shipping Charge') }} :</th>
+                            <th class="text-start">{{ __('purchase Shipping Charge') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($purchaseTotalShipmentCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_customer_reward') :</th>
+                            <th class="text-start">@lang('menu.total_customer_reward') </th>
                             <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_sale_return') :</th>
+                            <th class="text-start">@lang('menu.total_sale_return') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
                         @if ($generalSettings['addons__hrm'] == 1)
                             <tr>
-                                <th class="text-start">@lang('menu.total_payroll') :</th>
+                                <th class="text-start">@lang('menu.total_payroll') </th>
                                 <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
                             </tr>
                         @endif
@@ -134,42 +134,42 @@
                 <table class="display table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">@lang('menu.current_stock') :</th>
+                            <th class="text-start">@lang('menu.current_stock') </th>
                             <td class="text-start">{{ $currency }} 0.00</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_sale') :</th>
+                            <th class="text-start">@lang('menu.total_sale') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSales) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_received') :</th>
+                            <th class="text-start">@lang('menu.total_received') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_sale_due') :</th>
+                            <th class="text-start">@lang('menu.total_sale_due') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDue) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_stock_recovered') :</th>
+                            <th class="text-start">@lang('menu.total_stock_recovered') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_recovered) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">@lang('menu.total_purchase_return') :</th>
+                            <th class="text-start">@lang('menu.total_purchase_return') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseReturn) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">{{ __('Total Sale Shipping Charge') }} :</th>
+                            <th class="text-start">{{ __('Total Sale Shipping Charge') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesShipmentCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">{{ __('Total Round Off') }} :</th>
+                            <th class="text-start">{{ __('Total Round Off') }} </th>
                             <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
                     </tbody>
@@ -178,7 +178,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">{{ __('Today Daily Profit') }} :</th>
+                            <th class="text-start">{{ __('Today Daily Profit') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($todayProfit) }}</td>
                         </tr>
                     </tbody>
@@ -190,10 +190,10 @@
             <br><br>
             <div class="row">
                 <div class="col-6">
-                    <p><strong>@lang('menu.checked_by') :</strong></p>
+                    <p><strong>@lang('menu.checked_by') </strong></p>
                 </div>
                 <div class="col-6 text-end">
-                    <p><strong>@lang('menu.approved_by') :</strong></p>
+                    <p><strong>@lang('menu.approved_by') </strong></p>
                 </div>
             </div>
         </div>

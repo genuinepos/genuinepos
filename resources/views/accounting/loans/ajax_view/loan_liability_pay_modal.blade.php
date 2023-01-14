@@ -19,10 +19,10 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.company')/@lang('menu.people') : </strong><span class="card_text">{{ $company->name }}</span>
+                                <li><strong>@lang('menu.company')/@lang('menu.people') </strong><span class="card_text">{{ $company->name }}</span>
                                 </li>
-                                <li><strong>@lang('menu.phone') : </strong><span class="card_text"></span></li>
-                                <li><strong>@lang('menu.address') : </strong><span class="card_text"></span></li>
+                                <li><strong>@lang('menu.phone') </strong><span class="card_text"></span></li>
+                                <li><strong>@lang('menu.address') </strong><span class="card_text"></span></li>
                             </ul>
                         </div>
                     </div>
@@ -30,20 +30,20 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.total_loan_get') : </strong>
+                                <li><strong>@lang('menu.total_loan_get') </strong>
                                     <span class="card_text invoice_no">
                                         {{ $generalSettings['business__currency'] }}
                                        <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b>
                                     </span>
                                 </li>
 
-                                <li><strong>@lang('menu.total_due_paid') : </strong>
+                                <li><strong>@lang('menu.total_due_paid') </strong>
                                     {{ $generalSettings['business__currency'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b>
                                     </span>
                                 </li>
-                                <li><strong>@lang('menu.total_payment_due') : </strong>
+                                <li><strong>@lang('menu.total_payment_due') </strong>
                                     {{ $generalSettings['business__currency'] }}
                                     <span class="card_text text-danger">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}</b>
@@ -60,7 +60,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.amount') :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>@lang('menu.date') :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -111,7 +111,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
-                        <label><strong>@lang('menu.credit_account') :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -135,7 +135,7 @@
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> @lang('menu.payment_note') :</strong></label>
+                    <label><strong> @lang('menu.payment_note') </strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3"
                         placeholder="Note"></textarea>
                 </div>

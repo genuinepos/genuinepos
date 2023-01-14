@@ -1,7 +1,7 @@
 <form id="edit_account_form" action="{{ route('accounting.accounts.update', $account->id) }}" method="POST">
     @csrf
     <div class="form-group">
-        <label><strong>@lang('menu.name') :</strong> <span class="text-danger">*</span></label>
+        <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
         <input type="text" name="name" class="form-control edit_input" data-name="Type name" id="e_name"
             placeholder="@lang('menu.account_name')" value="{{ $account->name }}"/>
         <span class="error error_e_name"></span>
@@ -25,7 +25,7 @@
     @if (auth()->user()->role_type == 1 || auth()->user()->role_type)
         <div class="form-group row mt-1 {{ $account->account_type == 2 ? '' : 'd-hide' }} e_bank_account_field">
             <div class="col-md-12">
-                <label><strong>@lang('menu.bank_name') :</strong> <span class="text-danger">*</span> </label>
+                <label><strong>@lang('menu.bank_name') </strong> <span class="text-danger">*</span> </label>
                 <select name="bank_id" class="form-control edit_input" data-name="Bank name" id="bank_id">
                     <option value="">@lang('menu.select_bank')</option>
                     @foreach ($banks as $bank)
@@ -38,14 +38,14 @@
             </div>
 
             <div class="col-md-12">
-                <label><strong>@lang('menu.account_number') : </strong><span class="text-danger">*</span></label>
+                <label><strong>@lang('menu.account_number') </strong><span class="text-danger">*</span></label>
                 <input type="text" name="account_number" class="form-control edit_input"
                     data-name="Account Number" id="e_account_number" placeholder="@lang('menu.account_number')" value="{{ $account->account_number }}"/>
                 <span class="error error_e_account_number"></span>
             </div>
 
             <div class="col-md-12">
-                <label><strong>@lang('menu.access_business_location') :</strong> <span class="text-danger">*</span></label>
+                <label><strong>@lang('menu.access_business_location') </strong> <span class="text-danger">*</span></label>
                 <select name="business_location[]" id="e_business_location" class="form-control select2" multiple="multiple">
                     <option {{ $isExistsHeadOffice ? 'SELECTED' : '' }} value="NULL">
                         {{ $generalSettings['business__shop_name'] }} (HO)
@@ -68,13 +68,13 @@
     @endif
 
     <div class="form-group mt-1">
-        <label><strong>@lang('menu.opening_balance') :</strong></label>
+        <label><strong>@lang('menu.opening_balance') </strong></label>
         <input type="number" step="any" name="opening_balance" class="form-control"
             id="e_opening_balance" value="{{ $account->opening_balance }}"/>
     </div>
 
     <div class="form-group mt-1">
-        <label><strong>@lang('menu.remarks') :</strong></label>
+        <label><strong>@lang('menu.remarks') </strong></label>
         <input type="text" name="remark" class="form-control" data-name="Remark" id="e_remarks" value="{{ $account->remark }}"/>
     </div>
 

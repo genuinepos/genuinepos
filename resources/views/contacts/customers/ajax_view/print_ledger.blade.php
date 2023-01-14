@@ -46,7 +46,7 @@
 
         @if ($fromDate && $toDate)
 
-            <p><strong>@lang('menu.date') :</strong> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <strong>@lang('menu.to')</strong> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><strong>@lang('menu.date') </strong> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <strong>@lang('menu.to')</strong> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
         <p><strong>@lang('menu.customer_ledger') </strong></p>
@@ -57,9 +57,9 @@
     <div class="row">
         <div class="col-6">
             <ul class="list-unstyled">
-                <li><strong>@lang('menu.customer') : </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
-                <li><strong>@lang('menu.phone') : </strong> {{ $customer->phone }}</li>
-                <li><strong>@lang('menu.address') : </strong> {{ $customer->address  }}</li>
+                <li><strong>@lang('menu.customer') </strong> {{ $customer->name }} (ID: {{ $customer->contact_id }})</li>
+                <li><strong>@lang('menu.phone') </strong> {{ $customer->phone }}</li>
+                <li><strong>@lang('menu.address') </strong> {{ $customer->address  }}</li>
             </ul>
         </div>
     </div>
@@ -161,7 +161,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_debit') :</strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_debit') </strong> {{ $generalSettings['business__currency'] }}
                     </td>
 
                     <td class="text-end">
@@ -171,7 +171,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_credit') :</strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_credit') </strong> {{ $generalSettings['business__currency'] }}
                     </td>
 
                     <td class="text-end">
@@ -181,7 +181,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_less') :</strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_less') </strong> {{ $generalSettings['business__currency'] }}
                     </td>
 
                     <td class="text-end">
@@ -190,7 +190,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.closing_balance') :</strong> {{ $generalSettings['business__currency'] }}</td>
+                    <td class="text-end"><strong>@lang('menu.closing_balance') </strong> {{ $generalSettings['business__currency'] }}</td>
                     <td class="text-end">
                         @php
                             $closingBalance =  $totalDebit - ($totalCredit + $totalLess);

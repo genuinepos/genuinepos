@@ -72,19 +72,19 @@
                     <!--begin::Form-->
                     <form id="add_leave_type_form" action="{{ route('hrm.leave.type.store') }}">
                         <div class="form-group">
-                            <label><b>@lang('menu.leave_type') :</b> <span class="text-danger">*</span></label>
+                            <label><b>@lang('menu.leave_type') </b> <span class="text-danger">*</span></label>
                             <input required type="text" name="leave_type" class="form-control add_input" data-name="leave type" id="leave_type" placeholder="Leave Type" required="" />
                             <span class="error error_leave_type"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>{{ __('Max leave count') }} :</b> <span class="text-danger">*</span></label>
+                            <label><b>{{ __('Max leave count') }} </b> <span class="text-danger">*</span></label>
                             <input required type="text" name="max_leave_count" class="form-control add_input" data-name="max leave count" id="max_leave_count" placeholder="{{ __('Max leave count') }}t"  />
                             <span class="error error_max_leave_count"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><b>{{ __('Leave Count Interval') }} :</b> </label>
+                            <label><b>{{ __('Leave Count Interval') }} </b> </label>
                             <select name="leave_count_interval" class="form-control">
                             	<option value="0">@lang('menu.none')</option>
                             	<option value="1">{{ __('Current Month') }}</option>
@@ -156,7 +156,7 @@
                 type:'post',
                 data: request,
                 success:function(data){
-                    
+
                     table.ajax.reload();
                     toastr.success(data);
                     $('#add_leave_type_form')[0].reset();

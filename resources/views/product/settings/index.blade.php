@@ -24,13 +24,13 @@
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3 col-sm-6">
-                            <label><strong>{{ __('Product Code Prefix') }} (SKU) :</strong></label>
+                            <label><strong>{{ __('Product Code Prefix') }} (SKU) </strong></label>
                             <input type="text" name="product_code_prefix" class="form-control"
                                 autocomplete="off" value="{{ $generalSettings['product__product_code_prefix'] }}">
                         </div>
 
                         <div class="col-lg-3 col-sm-6">
-                            <label><strong>@lang('menu.default_unit') :</strong></label>
+                            <label><strong>@lang('menu.default_unit') </strong></label>
                             <select name="default_unit_id" class="form-control" id="default_unit_id">
                                 <option value="null">@lang('menu.none')</option>
                                 @foreach ($units as $unit)

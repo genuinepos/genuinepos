@@ -8,7 +8,7 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('brand.brand_photo') :</b> </label>
+        <label><b>@lang('brand.brand_photo') </b> </label>
         <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="e_photo" accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_e_photo"></span>
     </div>

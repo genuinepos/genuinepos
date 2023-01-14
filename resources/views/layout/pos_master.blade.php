@@ -149,7 +149,7 @@
                         <!--begin::Form-->
                         <div class="form-group row single_payment">
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.payment_method') :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -167,7 +167,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>@lang('menu.debit_account') :</strong> </label>
+                                <label><strong>@lang('menu.debit_account') </strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -187,7 +187,7 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> @lang('menu.payment_note') :</strong></label>
+                            <label><strong> @lang('menu.payment_note') </strong></label>
                             <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="@lang('menu.note')"></textarea>
                         </div>
 
@@ -217,20 +217,20 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label><b>@lang('menu.available_point') :</b> </label>
+                                <label><b>@lang('menu.available_point') </b> </label>
                                 <input type="number" step="any" name="available_point" id="available_point" class="form-control" value="0" readonly>
                             </div>
 
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><b>@lang('menu.redeemed') :</b> </label>
+                                    <label><b>@lang('menu.redeemed') </b> </label>
                                     <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control">
                                     <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-hide" value="0">
                                     <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-hide" value="0">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><b>@lang('menu.redeem_amount') :</b> </label>
+                                    <label><b>@lang('menu.redeem_amount') </b> </label>
                                     <input type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control">
                                 </div>
                             </div>
@@ -426,7 +426,7 @@
                         @if (auth()->user()->can('edit_discount_pos_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong>  :</label>
+                                    <label><strong>@lang('menu.discount_type')</strong>  </label>
                                     <select class="form-control" id="e_unit_discount_type">
                                         <option value="2">@lang('menu.percentage')</option>
                                         <option value="1">@lang('menu.fixed')</option>
@@ -434,7 +434,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong>  :</label>
+                                    <label><strong>@lang('menu.discount')</strong>  </label>
                                     <input type="number" class="form-control" id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
@@ -443,12 +443,12 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong> @lang('menu.tax')</strong> :</label>
+                                <label><strong> @lang('menu.tax')</strong> </label>
                                 <select class="form-control" id="e_unit_tax"></select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong> :</label>
+                                <label><strong>@lang('menu.tax_type')</strong> </label>
                                 <select class="form-control" id="e_tax_type">
                                     <option value="1">@lang('menu.exclusive')</option>
                                     <option value="2">@lang('menu.inclusive')</option>
@@ -457,7 +457,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>@lang('menu.sale_unit')</strong> :</label>
+                            <label><strong>@lang('menu.sale_unit')</strong> </label>
                             <select class="form-control" id="e_unit"></select>
                         </div>
 
@@ -521,14 +521,14 @@
                     <div class="form-group row ">
                         <div class="col-md-6">
                             <div class="input-box-4 bg-dark">
-                                <label class="text-white big_label"><strong>@lang('menu.total_payable') :</strong> </label>
+                                <label class="text-white big_label"><strong>@lang('menu.total_payable') </strong> </label>
                                 <input readonly type="text" class="form-control big_field" id="modal_total_payable" value="0">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-2 bg-info">
-                                <label class="text-white big_label"><strong>@lang('menu.change') :</strong></label>
+                                <label class="text-white big_label"><strong>@lang('menu.change') </strong></label>
                                 <input type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
                             </div>
                         </div>
@@ -537,14 +537,14 @@
                     <div class="form-group row mt-1">
                         <div class="col-md-6">
                             <div class="input-box bg-success">
-                                <label class="text-white big_label"><strong>@lang('menu.cash_receive') :</strong> <span class="text-danger">*</span></label>
+                                <label class="text-white big_label"><strong>@lang('menu.cash_receive') </strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="modal_paying_amount" class="form-control text-success big_field m-paying" id="modal_paying_amount" value="0" autofocus>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
-                                <label class="text-white big_label"><strong>@lang('menu.due') :</strong> </label>
+                                <label class="text-white big_label"><strong>@lang('menu.due') </strong> </label>
                                 <input type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
                             </div>
                         </div>

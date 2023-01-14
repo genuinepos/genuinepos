@@ -25,11 +25,11 @@
     <div class="reference_area pt-3">
         <div class="row">
             <div class="col-md-6">
-                <p><b>@lang('menu.reference_no') :</b> {{ $expense->invoice_id }}</p>
+                <p><b>@lang('menu.reference_no') </b> {{ $expense->invoice_id }}</p>
             </div>
 
             <div class="col-md-6 text-end">
-                <p><b>@lang('menu.date') :</b> {{ date('d/m/Y', strtotime($expense->date))  }}</p>
+                <p><b>@lang('menu.date') </b> {{ date('d/m/Y', strtotime($expense->date))  }}</p>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">@lang('menu.expense_for'):</th>
+                            <th class="text-start">@lang('menu.expense_for')</th>
                             <td class="text-end">{{ $expense->admin ? $expense->admin->prefix.' '.$expense->admin->name.' '.$expense->admin->last_name : 'N/A' }}</td>
                         </tr>
 
@@ -58,7 +58,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end">@lang('menu.tax') :</th>
+                            <th class="text-end">@lang('menu.tax') </th>
                             <th class="text-end">
                                <b>{{ $generalSettings['business__currency'] }}
                                 {{ $expense->tax_amount }}</b>
@@ -66,12 +66,12 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">@lang('menu.total') :</th>
+                            <th class="text-end">@lang('menu.total') </th>
                             <th class="text-end"><b>{{ $generalSettings['business__currency'] }} {{ $expense->net_total_amount }}</b></th>
                         </tr>
 
                         <tr>
-                            <th class="text-end">@lang('menu.paid') :</th>
+                            <th class="text-end">@lang('menu.paid') </th>
                             <th class="text-end">
                                <b>{{ $generalSettings['business__currency'] }}
                                 {{ $expense->paid }}</b>
@@ -79,7 +79,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end">@lang('menu.due') :</th>
+                            <th class="text-end">@lang('menu.due') </th>
                             <th class="text-end">
                                <b>{{ $generalSettings['business__currency'] }}
                                 {{ $expense->due }}</b>

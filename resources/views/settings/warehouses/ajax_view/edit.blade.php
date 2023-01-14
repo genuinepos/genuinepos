@@ -2,30 +2,30 @@
  <form id="edit_warehouse_form" action="{{ route('settings.warehouses.update', $w->id) }}">
     @csrf
     <div class="form-group">
-        <label><b>@lang('menu.warehouse_name') :</b><span class="text-danger">*</span></label>
+        <label><b>@lang('menu.warehouse_name') </b><span class="text-danger">*</span></label>
         <input type="text" name="name" class="form-control edit_input" data-name="Warehouse name" id="e_name" placeholder="@lang('menu.warehouse_name')" value="{{ $w->warehouse_name }}"/>
         <span class="error error_e_name"></span>
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('menu.warehouse_code') :</b>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
+        <label><b>@lang('menu.warehouse_code') </b>  <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
         <input type="text" name="code" class="form-control edit_input" data-name="Warehouse code" id="e_code" placeholder="@lang('menu.warehouse_code')" value="{{ $w->warehouse_code }}"/>
         <span class="error error_e_code"></span>
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('menu.phone') :</b>  <span class="text-danger">*</span></label>
+        <label><b>@lang('menu.phone') </b>  <span class="text-danger">*</span></label>
         <input type="text" name="phone" class="form-control edit_input" data-name="Phone number" id="e_phone" placeholder="@lang('menu.phone_number')" value="{{ $w->phone }}"/>
         <span class="error error_e_phone"></span>
     </div>
 
     <div class="form-group mt-1">
-        <label><b>@lang('menu.address') :</b>  </label>
+        <label><b>@lang('menu.address') </b>  </label>
         <textarea name="address" class="form-control" placeholder="Warehouse address" id="e_address" rows="3">{{ $w->address }}</textarea>
     </div>
 
     <div class="col-md-12">
-        <label><strong>@lang('menu.under_business_location') :</strong></label>
+        <label><strong>@lang('menu.under_business_location') </strong></label>
         <select name="branch_ids[]" id="branch_id" class="form-control select2 edit-select2" multiple="multiple">
             <option {{ $isExistsHeadOffice ? 'SELECTED' : '' }} value="NULL">
                 {{ $generalSettings['business__shop_name'] }} (HO)

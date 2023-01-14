@@ -35,12 +35,12 @@
                             <form id="add_memo_form" action="{{ route('memos.store') }}">
                                 @csrf
                                 <div class="from-group">
-                                    <label><b>@lang('menu.heading') :</b></label>
+                                    <label><b>@lang('menu.heading') </b></label>
                                     <input required type="text" class="form-control" name="heading" placeholder="Memo Heading">
                                 </div>
 
                                 <div class="from-group mt-1">
-                                    <label><b>@lang('menu.description') :</b></label>
+                                    <label><b>@lang('menu.description') </b></label>
                                     <textarea required name="description" class="form-control" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                 </div>
 
@@ -68,12 +68,12 @@
                                 @csrf
                                 <input type="hidden" id="id" name="id">
                                 <div class="from-group">
-                                    <label><b>@lang('menu.heading') :</b></label>
+                                    <label><b>@lang('menu.heading') </b></label>
                                     <input required type="text" class="form-control" name="heading" id="heading" placeholder="Memo Heading">
                                 </div>
 
                                 <div class="from-group mt-1">
-                                    <label><b>@lang('menu.description') :</b></label>
+                                    <label><b>@lang('menu.description') </b></label>
                                     <textarea required name="description" class="form-control" id="description" cols="10" rows="4" placeholder="Memo Description"></textarea>
                                 </div>
 

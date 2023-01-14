@@ -40,11 +40,11 @@
                                 </p>
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                    <p><strong>@lang('menu.phone') :</strong> {{ $sale->branch->phone }}</p>
+                                    <p><strong>@lang('menu.phone') </strong> {{ $sale->branch->phone }}</p>
                                 @endif
 
                                 @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                    <p><strong>@lang('menu.email') :</strong> {{ $sale->branch->email }}</p>
+                                    <p><strong>@lang('menu.email') </strong> {{ $sale->branch->email }}</p>
                                 @endif
                             </div>
                         </div>
@@ -86,20 +86,20 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <li><strong>@lang('menu.customer') </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($sale->branch->add_sale_invoice_layout->customer_address)
-                                <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                <li><strong>@lang('menu.address') </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_tax_no)
-                                <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                <li><strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($sale->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>@lang('menu.phone') : </strong> >{{ $sale->customer ? $sale->customer->phone : '' }}
+                                <li><strong>@lang('menu.phone') </strong> >{{ $sale->customer ? $sale->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -129,9 +129,9 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> {{ $sale->status == 1 ? 'Invoice' : 'Order' }} No : </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong> {{ $sale->status == 1 ? 'Invoice' : 'Order' }} No </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>@lang('menu.date'): {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' .date($timeFormat ,strtotime($sale->time)) }}</strong></li>
-                            <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
+                            <li><strong> @lang('menu.entered_by') </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if ($sale->branch->add_sale_invoice_layout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;"><strong>@lang('menu.in_word'): </strong> <span id="inword"></span> @lang('menu.only').</p>
+                        <p style="text-transform: uppercase;"><strong>@lang('menu.in_word')</strong> <span id="inword"></span> @lang('menu.only').</p>
                     @endif
 
                     @if (
@@ -366,7 +366,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="invoice_notice">
-                        <p>{!! $sale->branch->add_sale_invoice_layout->invoice_notice ? '<strong>Attention : </strong>' . $sale->branch->add_sale_invoice_layout->invoice_notice : '' !!}</p>
+                        <p>{!! $sale->branch->add_sale_invoice_layout->invoice_notice ? '<strong>Attention </strong>' . $sale->branch->add_sale_invoice_layout->invoice_notice : '' !!}</p>
                     </div>
                 </div>
             </div>
@@ -431,13 +431,13 @@
 
                             <tr>
                                 <th class="text-center">
-                                    <span><b>@lang('menu.phone') :</b>  {{ $sale->branch->phone }}</span>
+                                    <span><b>@lang('menu.phone') </b>  {{ $sale->branch->phone }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <span><b>@lang('menu.email') :</b> {{ $sale->branch->email }}</span>
+                                    <span><b>@lang('menu.email') </b> {{ $sale->branch->email }}</span>
                                 </th>
                             </tr>
                         </thead>
@@ -449,19 +449,19 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <strong>@lang('menu.date'):</strong> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <strong>@lang('menu.date')</strong> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <strong>@lang('menu.inv_no'): </strong> <span>{{ $sale->invoice_id }}</span>
+                                    <strong>@lang('menu.inv_no')</strong> <span>{{ $sale->invoice_id }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <strong>@lang('menu.customer'):</strong> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                                    <strong>@lang('menu.customer')</strong> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                 </th>
                             </tr>
                         </thead>

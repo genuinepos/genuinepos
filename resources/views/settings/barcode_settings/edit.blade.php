@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.setting_name') :</b> <span class="text-danger">*
+                                        <label class="col-4"><b>@lang('menu.setting_name') </b> <span class="text-danger">*
                                         </span></label>
                                         <div class="col-8">
                                             <input type="text" name="name" class="form-control" id="name"
@@ -39,7 +39,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.setting_description') :</b> </label>
+                                        <label class="col-4"><b>@lang('menu.setting_description') </b> </label>
 
                                         <div class="col-8">
                                             <textarea class="form-control" name="description" id="" cols="10" rows="3" placeholder="Sticker Sheet setting Description">{{ $bs->description }}</textarea>
@@ -65,7 +65,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>@lang('menu.top_margin') (Inc) : <span class="text-danger">*
+                                        <label class="col-4"> <b>@lang('menu.top_margin') (Inc)<span class="text-danger">*
                                         </span> </b> </label>
                                         <div class="col-8">
                                             <div class="input-group">
@@ -81,7 +81,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>{{ __('Sticker Width') }} (Inc) : <span class="text-danger">*
+                                        <label class="col-4"> <b>{{ __('Sticker Width') }} (Inc)<span class="text-danger">*
                                         </span> </b> </label>
                                         <div class="col-8">
                                             <div class="input-group">
@@ -99,7 +99,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>@lang('menu.sticker_width') (Inc) : <span class="text-danger">*
+                                        <label class="col-4"> <b>@lang('menu.sticker_width') (Inc)<span class="text-danger">*
                                         </span> </b> </label>
                                         <div class="col-8">
                                             <div class="input-group">

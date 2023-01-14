@@ -87,7 +87,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business__currency'] }}:</strong></td>
+                                <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-end">
                                     {{ App\Utils\Converter::format_in_bdt($totalStockAdjustmentRecovered) }}
                                 </td>

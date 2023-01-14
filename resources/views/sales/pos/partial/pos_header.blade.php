@@ -69,10 +69,10 @@
                                 </p>
                             @endif
                             <small class="login-user-name">
-                                <span class="text-highlight">{{ __('Loggedin') }} : </span> {{ auth()->user()->prefix.' '.auth()->user()->name.'
+                                <span class="text-highlight">{{ __('Loggedin') }} </span> {{ auth()->user()->prefix.' '.auth()->user()->name.'
                                 '.auth()->user()->last_name }}.
                                 <span>
-                                    <span class="text-highlight">{{ __('C.Register') }} : </span>
+                                    <span class="text-highlight">{{ __('C.Register') }} </span>
                                     @if ($openedCashRegister->admin)
                                         @if ($openedCashRegister->admin->role_type == 1)
                                             Super-Admin.
@@ -83,7 +83,7 @@
                                         @endif
                                     @endif
                                 </span>
-                                <span> <span class="text-highlight">@lang('menu.cash_counter') : </span> {{ $openedCashRegister->cash_counter ?
+                                <span> <span class="text-highlight">@lang('menu.cash_counter') </span> {{ $openedCashRegister->cash_counter ?
                                     $openedCashRegister->cash_counter->counter_name : 'N/A' }}.</span>
                             </small>
                         </div>

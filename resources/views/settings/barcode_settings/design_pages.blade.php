@@ -438,7 +438,7 @@
                                             <label for="">{{ __('Barcode Image Size') }}</label>
                                             <div class="row g-0 align-items-end mb-2">
                                                 <div class="col-4">
-                                                    <label for="">Width: </label>
+                                                    <label for="">Width</label>
                                                 </div>
                                                 <div class="col-8">
                                                     <div class="row g-0">
@@ -453,7 +453,7 @@
                                             </div>
                                             <div class="row g-0 align-items-end mb-2">
                                                 <div class="col-4">
-                                                    <label for="">Height: </label>
+                                                    <label for="">Height</label>
                                                 </div>
                                                 <div class="col-8">
                                                     <div class="row g-0">

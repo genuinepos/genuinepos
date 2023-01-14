@@ -73,18 +73,18 @@
                     <!--begin::Form-->
                     <form id="add_holiday_form" action="{{ route('hrm.holidays.store') }}">
                         <div class="form-group ">
-                            <label><b>{{ __('Holiday Name') }} :</b> <span class="text-danger">*</span></label>
+                            <label><b>{{ __('Holiday Name') }} </b> <span class="text-danger">*</span></label>
                             <input type="text" name="holiday_name" required class="form-control" placeholder="{{ __('Holiday Name') }}">
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>@lang('menu.start_date') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.start_date') </b> <span class="text-danger">*</span></label>
                                 <input type="date" name="start_date" required class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>@lang('menu.end_date') :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.end_date') </b> <span class="text-danger">*</span></label>
                                 <input type="date" name="end_date" required class="form-control">
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                         @endif
 
                         <div class="form-group mt-1">
-                            <label><b>@lang('menu.note') :</b> </label>
+                            <label><b>@lang('menu.note') </b> </label>
                             <textarea name="notes" class="form-control" cols="10" rows="3" placeholder="@lang('menu.note')"></textarea>
 
                         </div>

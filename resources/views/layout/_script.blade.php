@@ -62,7 +62,7 @@
             $('.select2-dropdown').css({"display":"none"});
         }
     });
-    
+
     $(document).on('click', '.select2', function (e) {
         e.preventDefault();
         $('.select2-dropdown').css({"display":""});
@@ -79,7 +79,7 @@
     });
 
     $(document).on('select2:open', () => {
-        
+
         document.querySelector('.select2-search__field').focus();
     });
 </script>

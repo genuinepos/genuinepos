@@ -28,7 +28,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') :</strong></label>
+                                                <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
@@ -45,7 +45,7 @@
 
                                     <div class="col-md-2">
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <label><strong>@lang('menu.warehouse') :</strong></label>
+                                            <label><strong>@lang('menu.warehouse') </strong></label>
                                             <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
                                                 <option value="">@lang('menu.select_business_location_first')</option>
                                             </select>
@@ -56,7 +56,7 @@
                                                 ->get(['id', 'warehouse_name', 'warehouse_code']);
                                             @endphp
 
-                                            <label><strong>@lang('menu.warehouse') :</strong></label>
+                                            <label><strong>@lang('menu.warehouse') </strong></label>
                                             <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($wh as $row)
@@ -67,7 +67,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.status') :</strong></label>
+                                        <label><strong>@lang('menu.status') </strong></label>
                                         <div class="input-group">
                                             <select name="status" class="form-control" id="status" autofocus>
                                                 <option value="">@lang('menu.all')</option>
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') :</strong></label>
+                                        <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -92,7 +92,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') :</strong></label>
+                                        <label><strong>@lang('menu.to_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">

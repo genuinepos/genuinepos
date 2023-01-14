@@ -1428,7 +1428,7 @@
                 $('#category_id').append('<option value="' + data.id + '">' + data.name +
                     '</option>');
                 $('#category_id').val(data.id);
-                toastr.success(data);
+                toastr.success('Category add successfully.');
             }
         });
     });

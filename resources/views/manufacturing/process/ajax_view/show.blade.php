@@ -47,8 +47,8 @@
                         <td class="text-start"> {{ $process->total_output_qty.' '.$process->unit->name }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">@lang('menu.instructions') </th>
-                        <td ></td>
+                        {{-- <th class="text-start">@lang('menu.instructions') </th>
+                        <td ></td> --}}
                     </tr>
                </tbody>
            </table>

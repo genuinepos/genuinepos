@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong>@lang('menu.account_types') : <span class="text-danger">*</span></strong></label>
+                            <label><strong>@lang('menu.account_types') <span class="text-danger">*</span></strong></label>
                             <select name="account_type" class="form-control add_input" data-name="Account Type"
                                 id="account_type">
                                 <option value="">@lang('menu.select_account_type')</option>

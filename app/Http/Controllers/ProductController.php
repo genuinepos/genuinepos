@@ -52,7 +52,7 @@ class ProductController extends Controller
 
             return $this->productUtil->productListTable($request);
         }
-        
+
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);

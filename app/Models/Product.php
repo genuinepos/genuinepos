@@ -81,7 +81,7 @@ class Product extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo(Category::class, 'parent_category_id', 'id')->select(['id', 'name']);
+        return $this->belongsTo(Category::class, 'sub_category_id', 'id')->select(['id', 'name']);
     }
 
     public function tax()

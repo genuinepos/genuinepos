@@ -121,15 +121,15 @@
                                             <div class="input-group">
                                                 <label for="inputEmail3" class="col-5"> <b>@lang('menu.sub_category') :</b> </label>
                                                 <div class="col-7">
-                                                    <select class="form-control" name="child_category_id"
-                                                        id="child_category_id">
+                                                    <select class="form-control" name="sub_category_id"
+                                                        id="sub_category_id">
                                                         @php
                                                             $subCategories = DB::table('categories')
-                                                            ->where('parent_category_id', $product->category_id)->get();
+                                                            ->where('sub_category_id', $product->category_id)->get();
                                                         @endphp
                                                         <option value="">@lang('menu.select_child_category')</option>
                                                         @foreach ($subCategories as $subCategory)
-                                                            <option {{ $product->parent_category_id == $subCategory->id ? 'SELECTED' : '' }} value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
+                                                            <option {{ $product->sub_category_id == $subCategory->id ? 'SELECTED' : '' }} value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -1474,12 +1474,12 @@
             var category_id = $(this).val();
             $.get("{{ url('common/ajax/call/category/subcategories/') }}"+"/"+category_id, function(subCategories) {
 
-                $('#child_category_id').empty();
-                $('#child_category_id').append('<option value="">Select Sub-Category</option>');
+                $('#sub_category_id').empty();
+                $('#sub_category_id').append('<option value="">Select Sub-Category</option>');
 
                 $.each(subCategories, function(key, val) {
 
-                    $('#child_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
+                    $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 });
             });
         });

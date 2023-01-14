@@ -44,7 +44,7 @@ class ProductUtil
         $query = DB::table('product_branches')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')

@@ -67,7 +67,7 @@ class Util
         $addProduct->name = $request->name;
         $addProduct->product_code = $request->product_code ? $request->product_code : $code;
         $addProduct->category_id = $request->category_id;
-        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
         $addProduct->product_cost = $request->product_cost;
@@ -135,7 +135,7 @@ class Util
         $addProduct->name = $request->name;
         $addProduct->product_code = $request->product_code;
         $addProduct->category_id = $request->category_id;
-        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
         $addProduct->product_cost = $request->product_cost;

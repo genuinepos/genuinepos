@@ -16,7 +16,7 @@ class AddForeignKeysToProductsTable extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->foreign(['brand_id'])->references(['id'])->on('brands')->onUpdate('NO ACTION')->onDelete('SET NULL');
             $table->foreign(['category_id'])->references(['id'])->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign(['parent_category_id'])->references(['id'])->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign(['sub_category_id'])->references(['id'])->on('categories')->onUpdate('NO ACTION')->onDelete('SET NULL');
             $table->foreign(['tax_id'])->references(['id'])->on('taxes')->onUpdate('NO ACTION')->onDelete('SET NULL');
             $table->foreign(['unit_id'])->references(['id'])->on('units')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['warranty_id'])->references(['id'])->on('warranties')->onUpdate('NO ACTION')->onDelete('SET NULL');
@@ -33,7 +33,7 @@ class AddForeignKeysToProductsTable extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->dropForeign('products_brand_id_foreign');
             $table->dropForeign('products_category_id_foreign');
-            $table->dropForeign('products_parent_category_id_foreign');
+            $table->dropForeign('products_sub_category_id_foreign');
             $table->dropForeign('products_tax_id_foreign');
             $table->dropForeign('products_unit_id_foreign');
             $table->dropForeign('products_warranty_id_foreign');

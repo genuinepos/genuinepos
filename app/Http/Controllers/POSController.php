@@ -57,13 +57,13 @@ class POSController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-
     }
 
     // Create pos view
     public function create()
     {
         if (!auth()->user()->can('pos_add')) {
+
             abort(403, 'Access Forbidden.');
         }
 

@@ -32,7 +32,7 @@ class CategoryController extends Controller
         if ($request->ajax()) {
 
             $categories = DB::table('categories')
-                ->where('parent_category_id', NULL)
+                ->where('sub_category_id', NULL)
                 ->orderBy('id', 'DESC')->get();
 
             return DataTables::of($categories)
@@ -69,7 +69,7 @@ class CategoryController extends Controller
 
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', NULL);
+                return $query->where('sub_category_id', NULL);
             })],
             'photo' => 'sometimes|image|max:2048',
         ]);
@@ -122,7 +122,7 @@ class CategoryController extends Controller
 
         $this->validate($request, [
             'name' => ['required', Rule::unique('categories')->where(function ($query) use ($request) {
-                return $query->where('parent_category_id', NULL)->where('id', '!=', $request->id);
+                return $query->where('sub_category_id', NULL)->where('id', '!=', $request->id);
             })],
             'photo' => 'sometimes|image|max:2048',
         ]);

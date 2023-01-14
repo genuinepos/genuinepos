@@ -1661,7 +1661,7 @@ class SaleController extends Controller
 
     public function getAllSubCategory($categoryId)
     {
-        $sub_categories = DB::table('categories')->where('parent_category_id', $categoryId)->get();
+        $sub_categories = DB::table('categories')->where('sub_category_id', $categoryId)->get();
         return response()->json($sub_categories);
     }
 
@@ -1761,6 +1761,7 @@ class SaleController extends Controller
     public function settings()
     {
         if (!auth()->user()->can('add_sale_settings')) {
+            
             abort(403, 'Access Forbidden.');
         }
 

@@ -15,7 +15,7 @@ class ProcessUtil
             ->leftJoin('products', 'processes.product_id', 'products.id')
             ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as subCate', 'products.parent_category_id', 'subCate.id')
+            ->leftJoin('categories as subCate', 'products.sub_category_id', 'subCate.id')
             ->leftJoin('units', 'processes.unit_id', 'units.id')
             ->select(
                 'processes.*',

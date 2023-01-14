@@ -18,14 +18,14 @@
 
                     <div class="form-group">
                         <label><b>@lang('menu.parent_category') : <span class="text-danger">*</span></b></label>
-                        <select name="parent_category_id" class="form-control " id="parent_category"
+                        <select name="sub_category_id" class="form-control " id="parent_category"
                             required>
                             <option selected="" disabled="">Select Parent Category</option>
                             @foreach ($categories as $row)
                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
                             @endforeach
                         </select>
-                        <span class="error error_sub_parent_category_id"></span>
+                        <span class="error error_sub_sub_category_id"></span>
                     </div>
 
                     <div class="form-group mt-1">

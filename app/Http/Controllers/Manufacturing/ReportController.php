@@ -116,7 +116,7 @@ class ReportController extends Controller
         }
 
         if ($request->sub_category_id) {
-            $query->where('products.parent_category_id', $request->sub_category_id);
+            $query->where('products.sub_category_id', $request->sub_category_id);
         }
 
         if ($request->status != '') {

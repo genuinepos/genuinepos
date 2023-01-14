@@ -1039,7 +1039,7 @@ class SaleUtil
             ->leftJoin('customers', 'sales.customer_id', 'customers.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
             ->where('sales.status', 1);
 
         if ($request->product_id) {
@@ -1081,7 +1081,7 @@ class SaleUtil
 
         if ($request->sub_category_id) {
 
-            $query->where('products.parent_category_id', $request->sub_category_id);
+            $query->where('products.sub_category_id', $request->sub_category_id);
         }
 
         if ($request->sold_by) {

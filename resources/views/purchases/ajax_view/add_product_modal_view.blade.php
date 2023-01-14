@@ -55,8 +55,8 @@
         @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
             <div class="col-md-3 parent_category">
                 <label><b>@lang('menu.child_category') :</b></label>
-                <select class="form-control" name="child_category_id"
-                    id="add_child_category_id">
+                <select class="form-control" name="sub_category_id"
+                    id="add_sub_category_id">
                     <option value="">@lang('menu.select_child_category_first')</option>
                 </select>
             </div>
@@ -280,12 +280,12 @@
             dataType: 'json',
             success:function(subcate){
 
-                $('#add_child_category_id').empty();
-                $('#add_child_category_id').append('<option value="">Select Sub-Category</option>');
+                $('#add_sub_category_id').empty();
+                $('#add_sub_category_id').append('<option value="">Select Sub-Category</option>');
 
                 $.each(subcate, function(key, val){
 
-                    $('#add_child_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
+                    $('#add_sub_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
                 });
             }
         });

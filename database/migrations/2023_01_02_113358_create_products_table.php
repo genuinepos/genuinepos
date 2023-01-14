@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('product_code');
             $table->unsignedBigInteger('category_id')->nullable()->index('products_category_id_foreign');
-            $table->unsignedBigInteger('parent_category_id')->nullable()->index('products_parent_category_id_foreign');
+            $table->unsignedBigInteger('sub_category_id')->nullable()->index('products_sub_category_id_foreign');
             $table->unsignedBigInteger('brand_id')->nullable()->index('products_brand_id_foreign');
             $table->unsignedBigInteger('unit_id')->nullable()->index('products_unit_id_foreign');
             $table->unsignedBigInteger('tax_id')->nullable()->index('products_tax_id_foreign');

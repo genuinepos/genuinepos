@@ -23,7 +23,7 @@ class CommonAjaxCallController extends Controller
 
     public function categorySubcategories($categoryId)
     {
-        return DB::table('categories')->where('parent_category_id', $categoryId)->select('id', 'name')->get();
+        return DB::table('categories')->where('sub_category_id', $categoryId)->select('id', 'name')->get();
     }
 
     public function onlySearchProductForReports($product_name)

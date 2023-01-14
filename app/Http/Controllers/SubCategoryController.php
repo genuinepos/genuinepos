@@ -33,9 +33,9 @@ class SubCategoryController extends Controller
         if ($request->ajax()) {
 
             $subCategories = DB::table('categories')
-                ->join('categories as parentcat', 'parentcat.id', 'categories.parent_category_id')
+                ->join('categories as parentcat', 'parentcat.id', 'categories.sub_category_id')
                 ->select('parentcat.name as parentname', 'categories.*')
-                ->whereNotNull('categories.parent_category_id')->orderBy('id', 'DESC');
+                ->whereNotNull('categories.sub_category_id')->orderBy('id', 'DESC');
 
             return DataTables::of($subCategories)
                 ->addIndexColumn()
@@ -79,12 +79,12 @@ class SubCategoryController extends Controller
 
         $this->validate($request, [
             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
-            //     return $query->where('parent_category_id', '!=', NULL);
+            //     return $query->where('sub_category_id', '!=', NULL);
             // })],
             'name' => 'required',
-            'parent_category_id' => 'required',
+            'sub_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => 'Parent category field is required']);
+        ], ['sub_category_id.required' => 'Sub category field is required']);
 
         $addSubCategory = '';
 
@@ -97,7 +97,7 @@ class SubCategoryController extends Controller
             $addSubCategory = Category::insert([
                 'name' => $request->name,
                 'description' => $request->description,
-                'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
+                'sub_category_id' => $request->_category_id ? $request->sub_category_id : NULL,
                 'photo' => $categoryPhotoName
             ]);
         } else {
@@ -105,7 +105,7 @@ class SubCategoryController extends Controller
             $addSubCategory = Category::insert([
                 'name' => $request->name,
                 'description' => $request->description,
-                'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
+                'sub_category_id' => $request->sub_category_id ? $request->sub_category_id : NULL,
             ]);
         }
 
@@ -126,12 +126,12 @@ class SubCategoryController extends Controller
 
         $this->validate($request, [
             // 'name' => ['required', Rule::unique('categories')->where(function ($query) {
-            //     return $query->where('parent_category_id', '!=', NULL);
+            //     return $query->where('sub_category_id', '!=', NULL);
             // })],
             'name' => 'required',
-            'parent_category_id' => 'required',
+            'sub_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => 'Parent category field is required']);
+        ], ['sub_category_id.required' => 'Parent category field is required']);
 
         $updateCategory = Category::where('id', $request->id)->first();
 
@@ -152,7 +152,7 @@ class SubCategoryController extends Controller
             $updateCategory->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
+                'sub_category_id' => $request->sub_category_id ? $request->sub_category_id : NULL,
                 'photo' => $categoryPhotoName
             ]);
         } else {
@@ -160,7 +160,7 @@ class SubCategoryController extends Controller
             $updateCategory->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                'parent_category_id' => $request->parent_category_id ? $request->parent_category_id : NULL,
+                'sub_category_id' => $request->sub_category_id ? $request->sub_category_id : NULL,
             ]);
         }
 

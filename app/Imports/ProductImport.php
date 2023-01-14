@@ -71,13 +71,13 @@ class ProductImport implements ToCollection
                 if (!empty($c[4])) {
                     $childCategory = Category::where('name', $c[4])->first();
                     if ($childCategory) {
-                        $addProduct->parent_category_id = $childCategory->id;
+                        $addProduct->sub_category_id = $childCategory->id;
                     } else {
                         $addChildCategory = new Category();
                         $addChildCategory->name = $c[4];
-                        $addChildCategory->parent_category_id = $childCategoryId;
+                        $addChildCategory->sub_category_id = $childCategoryId;
                         $addChildCategory->save();
-                        $addProduct->parent_category_id = $addChildCategory->id;
+                        $addProduct->sub_category_id = $addChildCategory->id;
                         Cache::forget('all-categories');
                         Cache::forget('all-main_categories');
                     }

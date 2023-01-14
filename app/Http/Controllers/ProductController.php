@@ -48,6 +48,7 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
+            
             return $this->productUtil->productListTable($request);
         }
 
@@ -62,6 +63,7 @@ class ProductController extends Controller
             'active' => DB::table('products')->where('status', 1)->count(),
             'inActive' => DB::table('products')->where('status', 0)->count(),
         ];
+
         return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches', 'total'));
     }
 
@@ -148,7 +150,7 @@ class ProductController extends Controller
         $addProduct->name = $request->name;
         $addProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
         $addProduct->category_id = $request->category_id;
-        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
@@ -646,7 +648,7 @@ class ProductController extends Controller
         $updateProduct->name = $request->name;
         $updateProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
         $updateProduct->category_id = $request->category_id;
-        $updateProduct->parent_category_id = $request->child_category_id;
+        $updateProduct->sub_category_id = $request->sub_category_id;
         $updateProduct->brand_id = $request->brand_id;
         $updateProduct->unit_id = $request->unit_id;
         $updateProduct->alert_quantity = $request->alert_quantity;

@@ -354,7 +354,12 @@ class SaleController extends Controller
                 } else {
 
                     $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-                    $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
+                    
+                    if($defaultSchemas){
+
+                        $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
+                    }
+                    
                 }
             }
 

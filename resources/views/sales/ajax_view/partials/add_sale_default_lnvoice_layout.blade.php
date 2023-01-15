@@ -111,23 +111,23 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.customer') </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                                 </li>
                                 @if ($defaultLayout->customer_address)
                                     <li>
-                                        <strong>@lang('menu.address') </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                        <strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                                     </li>
                                 @endif
 
                                 @if ($defaultLayout->customer_tax_no)
                                     <li>
-                                        <strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                        <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                                     </li>
                                 @endif
 
                                 @if ($defaultLayout->customer_phone)
                                     <li>
-                                        <strong>@lang('menu.phone') </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                                        <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                                     </li>
                                 @endif
                             </ul>
@@ -155,9 +155,9 @@
                         </div>
                         <div class="col-lg-4">
                             <ul class="list-unstyled">
-                                <li><strong> @lang('menu.invoice_no') </strong> {{ $sale->invoice_id }}</li>
+                                <li><strong> @lang('menu.invoice_no') : </strong> {{ $sale->invoice_id }}</li>
                                 <li><strong>@lang('menu.date')</strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
-                                <li><strong> @lang('menu.entered_by') </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
+                                <li><strong> @lang('menu.entered_by') : </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                             </ul>
                         </div>
                     </div>
@@ -393,7 +393,7 @@
 
                         <div class="col-4 text-center">
                             @if (env('PRINT_SD_SALE') == true)
-                                <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                                <small class="d-block">@lang('menu.software_by') : <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                             @endif
                         </div>
 
@@ -448,13 +448,13 @@
 
                                   <tr>
                                       <th class="text-center">
-                                          <span><b>@lang('menu.phone') </b>  {{ $sale->branch->phone }}</span>
+                                          <span><b>@lang('menu.phone') : </b>  {{ $sale->branch->phone }}</span>
                                       </th>
                                   </tr>
 
                                   <tr>
                                       <th class="text-center">
-                                          <span><b>@lang('menu.email') </b> {{ $sale->branch->email }}</span>
+                                          <span><b>@lang('menu.email') : </b> {{ $sale->branch->email }}</span>
                                       </th>
                                   </tr>
                               @else
@@ -466,13 +466,13 @@
 
                                   <tr>
                                       <th class="text-center">
-                                          <span><b>@lang('menu.phone') </b> {{ $generalSettings['business__phone'] }} </span>
+                                          <span><b>@lang('menu.phone') : </b> {{ $generalSettings['business__phone'] }} </span>
                                       </th>
                                   </tr>
 
                                   <tr>
                                       <th class="text-center">
-                                          <span><b>@lang('menu.email') </b> {{ $generalSettings['business__email'] }} </span>
+                                          <span><b>@lang('menu.email') : </b> {{ $generalSettings['business__email'] }} </span>
                                       </th>
                                   </tr>
                               @endif
@@ -644,7 +644,7 @@
                               @if (env('PRINT_SD_SALE') == true)
                                   <tr>
                                       <th class="text-center">
-                                          <span>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b> </span>
+                                          <span>@lang('menu.software_by') : <b>@lang('menu.speedDigit_pvt_ltd').</b> </span>
                                       </th>
                                   </tr>
                               @endif

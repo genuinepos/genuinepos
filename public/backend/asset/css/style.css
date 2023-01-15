@@ -247,6 +247,9 @@ ul#search_box {
 .settings-wrap {
     border: 1px solid #f70000 !important;
 }
+.settings-wrap .switch_bar {
+    border-color: #f70000;
+}
 .switch_bar {
     border-right: 1px solid #a7a7a7;
     text-align: center;

@@ -57,11 +57,11 @@
                                 </p>
 
                                 @if ($defaultLayout->branch_phone)
-                                    <p><b>@lang('menu.phone') </b>{{ $sale->branch->phone }}</p>
+                                    <p><b>@lang('menu.phone') : </b>{{ $sale->branch->phone }}</p>
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
-                                    <p><b>@lang('menu.email') </b> {{ $sale->branch->email }}</p>
+                                    <p><b>@lang('menu.email') : </b> {{ $sale->branch->email }}</p>
                                 @endif
                             @else
                                 <h5>{{ $generalSettings['business__shop_name'] }}</h5>
@@ -70,13 +70,13 @@
                                 </p>
 
                                 @if ($defaultLayout->branch_phone)
-                                    <p><b>@lang('menu.phone') </b>
+                                    <p><b>@lang('menu.phone') : </b>
                                         {{ $generalSettings['business__phone'] }}
                                     </p>
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
-                                    <p><b>@lang('menu.email') </b>
+                                    <p><b>@lang('menu.email') : </b>
                                         {{ $generalSettings['business__email'] }}
                                     </p>
                                 @endif
@@ -181,7 +181,7 @@
             </div>
             <div class="col-md-6">
                 <div class="details_area text-end">
-                    <h6> @lang('menu.signature_of_authority') </h6>
+                    <h6> @lang('menu.signature_of_authority') : </h6>
                 </div>
             </div>
         </div><br>

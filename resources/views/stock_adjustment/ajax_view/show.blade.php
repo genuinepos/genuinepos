@@ -295,11 +295,11 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>@lang('menu.checked_by') : </strong></h6>
+                    <h6><strong>@lang('menu.checked_by')</strong></h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6><strong>@lang('menu.approved_by') : </strong></h6>
+                    <h6><strong>@lang('menu.approved_by')</strong></h6>
                 </div>
             </div>
         </div>

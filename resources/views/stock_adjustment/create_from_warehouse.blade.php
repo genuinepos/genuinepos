@@ -53,7 +53,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('Adjust. A/C') }} :
+                                        <label class="col-4"><b>{{ __('Adjust. A/C') }}
                                             <span class="text-danger">*</span></b>
                                         </label>
                                         <div class="col-8">
@@ -89,7 +89,7 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <label class=" col-4"><b>{{ __('Adjust. Date') }} </b>
-                                            <span class="text-danger">*</span>
+                                            <span class="text-danger"> * </span>
                                         </label>
 
                                         <div class="col-8">
@@ -101,7 +101,7 @@
 
                                 <div class="col-md-3">
                                     <div class="input-group">
-                                        <label class=" col-4"> <b>@lang('menu.type') </b> <span class="text-danger">*</span>
+                                        <label class=" col-4"> <b>@lang('menu.type') </b> <span class="text-danger"> * </span>
                                             <i data-bs-toggle="tooltip" data-bs-placement="top" title="Normal: like Leakage, Damage etc. Abnormal: like Fire, Accident, stolen etc." class="fas fa-info-circle tp"></i>
                                         </label>
 
@@ -240,7 +240,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>@lang('menu.payment_method') <span
-                                                            class="text-danger">*</span></b> </label>
+                                                            class="text-danger"> * </span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
 
@@ -257,7 +257,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>@lang('menu.debit') A/C<span
-                                                            class="text-danger">*</span></b> </label>
+                                                            class="text-danger"> * </span></b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="@lang('menu.debit') A/C">
                                                                 @foreach ($accounts as $account)

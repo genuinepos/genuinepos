@@ -15,18 +15,18 @@
                     <div class="col-md-6">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.return_details') </strong> </li>
+                                <strong>@lang('menu.return_details') : </strong> </li>
                             <li>
                                 <strong>{{ __('PR.Invoice ID') }} </strong> {{ $return->invoice_id }}
                             </li>
                             <li>
-                                <strong>@lang('menu.return_date') </strong> {{ $return->date }}
+                                <strong>@lang('menu.return_date') : </strong> {{ $return->date }}
                             </li>
                             <li>
-                                <strong>@lang('menu.supplier_name') </strong>
+                                <strong>@lang('menu.supplier_name') : </strong>
                                 {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
                             </li>
-                            <li class="warehouse"><strong>@lang('menu.business_location') </strong>
+                            <li class="warehouse"><strong>@lang('menu.business_location') : </strong>
                                 @if($return->branch)
                                     {{ $return->branch->name.'/'.$return->branch->branch_code }}<b>(BL)</b>
                                 @else
@@ -51,12 +51,12 @@
                     </div>
                     <div class="col-md-5 text-left">
                         <ul class="list-unstyled">
-                            <li class="parent_purchase"><strong>@lang('menu.purchase_details') </strong>  </li>
+                            <li class="parent_purchase"><strong>@lang('menu.purchase_details') : </strong>  </li>
                             <li class="parent_purchase">
                                 <strong>{{ __('P.Invoice ID') }} </strong>
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
                             </li>
-                            <li class="parent_purchase"><strong>@lang('menu.date') </strong>
+                            <li class="parent_purchase"><strong>@lang('menu.date') : </strong>
                                 {{ $return->purchase ? $return->purchase->date : 'N/A' }}
                             </li>
                         </ul>
@@ -123,7 +123,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <th class="text-start">@lang('menu.total_return_amount') </th>
+                                    <th class="text-start">@lang('menu.total_return_amount') : </th>
                                     <td class="total_return_amount text-start">{{ $return->total_return_amount }}</td>
                                 </tr>
                             </table>
@@ -189,17 +189,17 @@
             <div class="row">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.return_details') </strong> </li>
+                        <li><strong>@lang('menu.return_details') : </strong> </li>
 
                         <li><strong>{{ __('PR.Invoice ID') }} </strong>
                             <span class="return_invoice_id">{{ $return->invoice_id }}</span>
                         </li>
 
-                        <li><strong>@lang('menu.return_date') </strong>
+                        <li><strong>@lang('menu.return_date') : </strong>
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
-                        <li><strong>@lang('menu.supplier_name') </strong>
+                        <li><strong>@lang('menu.supplier_name') : </strong>
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
@@ -220,9 +220,9 @@
 
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
-                        <li><strong>@lang('menu.purchase_details') </strong> </li>
-                        <li><strong>@lang('menu.invoice_no') </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
-                        <li><strong>@lang('menu.date') </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
+                        <li><strong>@lang('menu.purchase_details') : </strong> </li>
+                        <li><strong>@lang('menu.invoice_no') : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
             </div>
@@ -326,7 +326,7 @@
         @if (env('PRINT_SD_PURCHASE') == true)
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                    <small>@lang('menu.software_by') : <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 </div>
             </div>
         @endif

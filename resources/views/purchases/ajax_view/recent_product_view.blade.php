@@ -5,8 +5,8 @@
 
     <tr class="text-center">
         <td>
-            <span class="product_name">{{ $product->name }}</span><br>
-            <span class="product_code">({{ $product->product_code }})</span><br>
+            <span class="product_name">{{ $product->name }} : </span><br>
+            <span class="product_code">({{ $product->product_code }}) : </span><br>
             <span class="product_variant"></span>
             <input value="{{ $product->id }}" type="hidden" class="productId-{{ $product->id }}" id="product_id"
                 name="product_ids[]">
@@ -72,14 +72,14 @@
                 <input value="{{ bcadd($product->profit, 0, 2) }}" type="text" name="profits[]"
                     class="form-control" id="profit">
             </td>
- 
+
             <td>
                 <input value="{{ bcadd($product->product_price, 0, 2) }}" type="text" name="selling_prices[]"
                     class="form-control" id="selling_price">
                 <a href="#" id="remove_product_btn" class="btn btn-sm btn-danger mt-1">-</a>
             </td>
         @endif
-        
+
        <td class="text-start">
             <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>
         </td>

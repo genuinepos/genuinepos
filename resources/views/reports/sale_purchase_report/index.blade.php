@@ -38,7 +38,7 @@
                                                             @if ($generalSettings['addons__branches'] == 1)
                                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                                     <div class="col-md-3">
-                                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                                        <label><strong>@lang('menu.business_location') : </strong></label>
                                                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                             <option value="">@lang('menu.all')</option>
                                                                             <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -55,7 +55,7 @@
                                                             @endif
 
                                                             <div class="col-md-3">
-                                                                <label><strong>@lang('menu.from_date') </strong></label>
+                                                                <label><strong>@lang('menu.from_date') : </strong></label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i
@@ -68,7 +68,7 @@
                                                             </div>
 
                                                             <div class="col-md-3">
-                                                                <label><strong>@lang('menu.to_date') </strong></label>
+                                                                <label><strong>@lang('menu.to_date') : </strong></label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i
@@ -119,12 +119,12 @@
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th>@lang('menu.total_purchase') </th>
+                                                                    <th>@lang('menu.total_purchase') : </th>
                                                                     <td>{{ $generalSettings['business__currency'] }} 0.00</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th>@lang('menu.purchase_including_tax') </th>
+                                                                    <th>@lang('menu.purchase_including_tax') : </th>
                                                                     <td>{{ $generalSettings['business__currency'] }} 0.00</td>
                                                                 </tr>
 
@@ -148,12 +148,12 @@
                                                         <table class="table modal-table table-sm">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th>@lang('menu.total_sale') </th>
+                                                                    <th>@lang('menu.total_sale') : </th>
                                                                     <td>{{ $generalSettings['business__currency'] }} 0.00</td>
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <th>@lang('menu.sale_including_tax') </th>
+                                                                    <th>@lang('menu.sale_including_tax') : </th>
                                                                     <td>{{ $generalSettings['business__currency'] }} 0.00</td>
                                                                 </tr>
 

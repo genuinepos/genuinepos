@@ -24,52 +24,52 @@
                             </li>
 
                             <li>
-                                <strong>@lang('menu.name') </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.name') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                             </li>
 
                             <li>
-                                <strong>@lang('menu.address') </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                                <strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
 
                             <li>
-                                <strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                                <strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                             </li>
 
                             <li>
-                                <strong>@lang('menu.phone') </strong>{{ $sale->customer ? $sale->customer->phone : '' }}
+                                <strong>@lang('menu.phone') : </strong>{{ $sale->customer ? $sale->customer->phone : '' }}
                             </li>
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.sale_from') </strong></li>
+                            <li><strong>@lang('menu.sale_from') : </strong></li>
                             @if ($sale->branch)
                                 <li>
-                                    <strong>@lang('menu.stock_location') </strong>
+                                    <strong>@lang('menu.stock_location') : </strong>
                                     {{ $sale->branch->name }}/{{ $sale->branch->branch_code }}
                                 </li>
                                 <li>
-                                    <strong>@lang('menu.address') </strong>
+                                    <strong>@lang('menu.address') : </strong>
                                     {{ $sale->branch->city }}, {{ $sale->branch->state }},
                                         {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}
                                 </li>
-                                <li><strong>@lang('menu.phone') </strong> {{ $sale->branch->phone }}</li>
+                                <li><strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}</li>
                             @else
-                                <li><strong>@lang('menu.stock_location') </strong>
+                                <li><strong>@lang('menu.stock_location') : </strong>
                                     {{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b>
                                 </li>
-                                <li><strong>@lang('menu.address') </strong>{{ $generalSettings['business__address'] }}</li>
-                                <li><strong>@lang('menu.phone') </strong>{{ $generalSettings['business__phone'] }}</li>
+                                <li><strong>@lang('menu.address') : </strong>{{ $generalSettings['business__address'] }}</li>
+                                <li><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}</li>
                             @endif
                         </ul>
                     </div>
 
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
-                            <li><strong> {{ $sale->status == 1 ? 'Invoice ID' : 'Order No' }}  </strong> {{ $sale->invoice_id }}</li>
-                            <li><strong>@lang('menu.sale_status') </strong>
+                            <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
+                            <li><strong> {{ $sale->status == 1 ? 'Invoice ID' : 'Order No' }} : </strong> {{ $sale->invoice_id }}</li>
+                            <li><strong>@lang('menu.sale_status') : </strong>
                                 @if ($sale->status == 1)
                                     <span class="badge bg-success">@lang('menu.final')</span>
                                 @elseif($sale->status == 2)
@@ -78,19 +78,19 @@
                                     <span class="badge bg-dark">@lang('menu.ordered')</span>
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.payment_status') </strong>
+                            <li><strong>@lang('menu.payment_status') : </strong>
                                 @php
                                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                 @endphp
                                 @if ($sale->due <= 0)
-                                    <span class="badge bg-success"> @lang('menu.paid') </span>
+                                    <span class="badge bg-success"> @lang('menu.paid') : </span>
                                 @elseif ($sale->due > 0 && $sale->due < $payable)
                                     <span class="badge bg-primary text-white">@lang('menu.partial')</span>
                                 @elseif ($payable == $sale->due)
                                     <span class="badge bg-danger text-white">@lang('menu.due')</span>
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.shipment_status') </strong>
+                            <li><strong>@lang('menu.shipment_status') : </strong>
                                 @if ($sale->shipment_status == null)
                                     <span class="badge bg-danger">{{ __('Not-Available') }}</span>
                                 @elseif($sale->shipment_status == 1)
@@ -105,7 +105,7 @@
                                     <span class="badge bg-info">{{ __('Cancelled') }}</span>
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.created_by') </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 @php
                                     $admin_role = '';
                                     $prefix = '';

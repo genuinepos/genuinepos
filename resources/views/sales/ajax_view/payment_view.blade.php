@@ -11,10 +11,10 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.customer') </strong>
+                    <li><strong>@lang('menu.customer') : </strong>
                         {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                     </li>
-                    <li><strong>@lang('menu.business') </strong>
+                    <li><strong>@lang('menu.business') : </strong>
                         {{ $sale->customer ? $sale->customer->business_name : '' }}
                     </li>
                 </ul>
@@ -24,7 +24,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> @lang('menu.invoice_id') </strong>{{ $sale->invoice_id }}</li>
+                    <li><strong> @lang('menu.invoice_id') : </strong>{{ $sale->invoice_id }}</li>
                     <li><strong>@lang('menu.business_location')</strong>
                         @if ($sale->branch)
                             {{ $sale->branch->name . '/' . $sale->branch->branch_code }}
@@ -41,7 +41,7 @@
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}
                         </strong>{{ $sale->due }}</li>
-                    <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}</li>
+                    <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}</li>
                 </ul>
             </div>
         </div>

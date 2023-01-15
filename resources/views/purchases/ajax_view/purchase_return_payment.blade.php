@@ -22,11 +22,11 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.supplier') </strong><span>{{ $purchase->supplier->name }}</span></li>
-                                <li><strong>@lang('menu.business') </strong>
+                                <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span></li>
+                                <li><strong>@lang('menu.business') : </strong>
                                     <span>{{ $purchase->supplier->business_name }}</span>
                                 </li>
-                                <li><strong>@lang('menu.phone') </strong>
+                                <li><strong>@lang('menu.phone') : </strong>
                                     <span>{{ $purchase->supplier->phone }}</span>
                                 </li>
                             </ul>
@@ -37,7 +37,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>{{ __('P.Invoice ID') }} </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
                                 </li>
-                                <li><strong>@lang('menu.b_location') </strong>
+                                <li><strong>@lang('menu.b_location') : </strong>
                                     {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business__shop_name'].' (HO)'}}
                                 </li>
                             </ul>
@@ -59,7 +59,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.amount') </strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -86,7 +86,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -107,7 +107,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
-                        <label><strong>@lang('menu.debit_account') </strong> </label>
+                        <label><strong>@lang('menu.debit_account') : </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -132,13 +132,13 @@
                     </div>
 
                     <div class="col-md-5">
-                        <label><strong>@lang('menu.attach_document') </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
+                        <label><strong>@lang('menu.attach_document') : </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> @lang('menu.payment_note') </strong></label>
+                    <label><strong> @lang('menu.payment_note') : </strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                 </div>
 

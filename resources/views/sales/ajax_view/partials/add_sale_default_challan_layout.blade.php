@@ -97,20 +97,20 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.customer') </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                        <li><strong>@lang('menu.customer') : </strong> {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         @if ($defaultLayout->customer_address)
-                            <li><strong>@lang('menu.address') </strong> {{ $sale->customer ? $sale->customer->address : '' }}
+                            <li><strong>@lang('menu.address') : </strong> {{ $sale->customer ? $sale->customer->address : '' }}
                             </li>
                         @endif
 
                         @if ($defaultLayout->customer_tax_no)
-                            <li><strong>@lang('menu.tax_number') </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $sale->customer ? $sale->customer->tax_number : '' }}
                             </li>
                         @endif
 
                         @if ($defaultLayout->customer_phone)
-                            <li><strong>@lang('menu.phone') </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
                         @endif
                     </ul>
                 </div>
@@ -124,10 +124,10 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong> @lang('menu.challan_no') </strong> {{ $sale->invoice_id }}
+                        <li><strong> @lang('menu.challan_no') : </strong> {{ $sale->invoice_id }}
                             </li>
-                        <li><strong>@lang('menu.date')</strong> {{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }} </li>
-                        <li><strong> @lang('menu.entered_by') </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
+                        <li><strong>@lang('menu.date') :  </strong> {{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }} </li>
+                        <li><strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
             </div>

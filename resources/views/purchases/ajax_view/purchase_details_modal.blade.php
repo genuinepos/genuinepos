@@ -38,7 +38,7 @@
                                 @endif
                             </li>
 
-                             <li><strong>@lang('menu.phone')  : </strong>
+                             <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}, <br>
                                 @elseif($purchase->warehouse_id)
@@ -51,7 +51,7 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>@lang('menu.date')  : </strong> {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                             <li><strong>@lang('menu.date') : </strong> {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                              <li><strong>{{ __('P.Invoice ID') }}  : </strong> {{ $purchase->invoice_id }}</li>
 
                              <li>
@@ -66,7 +66,7 @@
                                 @endif
                              </li>
 
-                             <li><strong>@lang('menu.payment_status')  : </strong>
+                             <li><strong>@lang('menu.payment_status') : </strong>
                                 @php
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                 @endphp

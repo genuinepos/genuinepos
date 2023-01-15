@@ -48,17 +48,17 @@
             <div class="row">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.return_details') </strong> </li>
+                        <li><strong>@lang('menu.return_details') : </strong> </li>
 
                         <li><strong>{{ __('PR.Invoice ID') }} </strong>
                             <span class="return_invoice_id">{{ $return->invoice_id }}</span>
                         </li>
 
-                        <li><strong>@lang('menu.return_date') </strong>
+                        <li><strong>@lang('menu.return_date') : </strong>
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
-                        <li><strong>@lang('menu.supplier_name') </strong>
+                        <li><strong>@lang('menu.supplier_name') : </strong>
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
@@ -79,9 +79,9 @@
 
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
-                        <li><strong>@lang('menu.purchase_details') </strong> </li>
-                        <li><strong>@lang('menu.invoice_no') </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
-                        <li><strong>@lang('menu.date') </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
+                        <li><strong>@lang('menu.purchase_details') : </strong> </li>
+                        <li><strong>@lang('menu.invoice_no') : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
             </div>
@@ -184,7 +184,7 @@
         @if (env('PRINT_SD_PURCHASE') == true)
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                    <small>@lang('menu.software_by') : <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 </div>
             </div>
         @endif

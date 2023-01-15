@@ -14,11 +14,11 @@
             <div class="row">
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.b_location') (To) </strong></li>
-                        <li><strong>@lang('menu.name') </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
@@ -33,17 +33,17 @@
                 <div class="col-md-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.warehouse') (From) </strong></li>
-                        <li><strong>@lang('menu.name') </strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>@lang('menu.phone') </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>@lang('menu.address') </strong>{{ $transfer->warehouse->address }}</li>
+                        <li><strong>@lang('menu.name') : </strong>{{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.address') : </strong>{{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled float-right">
-                        <li><strong>@lang('menu.date') </strong> {{ $transfer->date }}</li>
-                        <li><strong>@lang('menu.reference_id') </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>@lang('menu.status') </strong>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->status == 1)
                                 <span class="badge bg-danger">@lang('menu.pending')</span>
                             @elseif($transfer->status == 2)
@@ -99,7 +99,7 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm">
                             <tr>
-                                <th class="text-start" colspan="6">@lang('menu.net_total_amount') </th>
+                                <th class="text-start" colspan="6">@lang('menu.net_total_amount') : </th>
                                 <th class="text-start" colspan="2">
                                     {{$generalSettings['business__currency'] }}
                                     {{ $transfer->net_total_amount }}
@@ -175,10 +175,10 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.b_location') (From) </strong></li>
-                        <li><strong>@lang('menu.name') </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
@@ -193,17 +193,17 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.warehouse') (To) </strong></li>
-                        <li><strong>@lang('menu.name') </strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>@lang('menu.phone') </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>@lang('menu.address') </strong> {{ $transfer->warehouse->address }}</li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.address') : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
 
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>@lang('menu.date') </strong> {{ $transfer->date }}</li>
-                        <li><strong>@lang('menu.reference_id') </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>@lang('menu.status') </strong>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->status == 1)
                             @lang('menu.pending')
                             @elseif($transfer->status == 2)
@@ -250,7 +250,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th class="text-start" colspan="6">@lang('menu.net_total_amount') </th>
+                        <th class="text-start" colspan="6">@lang('menu.net_total_amount') : </th>
                         <th class="text-start" colspan="2">
                             {{$generalSettings['business__currency'] }}
                             {{ $transfer->net_total_amount }}
@@ -258,7 +258,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">@lang('menu.shipping_charge') </th>
+                        <th class="text-start" colspan="6">@lang('menu.shipping_charge') : </th>
                         <th class="text-start" colspan="2">
                             {{$generalSettings['business__currency'] }}
                             {{ $transfer->shipping_charge }}
@@ -266,7 +266,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">@lang('menu.grand_total') </th>
+                        <th class="text-start" colspan="6">@lang('menu.grand_total') : </th>
                         @php
                             $grandTotal = $transfer->net_total_amount  + $transfer->shipping_charge;
                         @endphp

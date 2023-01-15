@@ -29,7 +29,7 @@
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                                            <label><strong>@lang('menu.business_location') : </strong></label>
                                                             <select name="branch_id"
                                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
@@ -45,7 +45,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.supplier') </strong></label>
+                                                    <label><strong>@lang('menu.supplier') : </strong></label>
                                                     <select name="supplier_id"
                                                         class="form-control submit_able select2"
                                                         id="supplier_id" autofocus>
@@ -57,7 +57,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.purchases_status') </strong></label>
+                                                    <label><strong>@lang('menu.purchases_status') : </strong></label>
                                                     <select name="status" id="status"
                                                         class="form-control  submit_able select2">
                                                         <option value="">@lang('menu.all')</option>
@@ -68,7 +68,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.from_date') </strong></label>
+                                                    <label><strong>@lang('menu.from_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -82,7 +82,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.to_date') </strong></label>
+                                                    <label><strong>@lang('menu.to_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">

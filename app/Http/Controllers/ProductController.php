@@ -183,20 +183,10 @@ class ProductController extends Controller
 
         if ($request->type == 1) {
 
-            $this->validate(
-                $request,
-                [
-                    'profit' => 'required',
-                    'product_price' => 'required',
-                    'product_cost' => 'required',
-                    'product_cost_with_tax' => 'required',
-                ],
-            );
-
-            $addProduct->product_cost = $request->product_cost;
-            $addProduct->profit = $request->profit ? $request->profit : 0.00;
-            $addProduct->product_cost_with_tax = $request->product_cost_with_tax;
-            $addProduct->product_price = $request->product_price;
+            $addProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+            $addProduct->profit = $request->profit ? $request->profit : 0;
+            $addProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+            $addProduct->product_price = $request->product_price ? $request->product_price : 0;
 
             if ($request->file('photo')) {
 
@@ -672,20 +662,10 @@ class ProductController extends Controller
 
         if ($updateProduct->type == 1) {
 
-            $this->validate(
-                $request,
-                [
-                    'profit' => 'required',
-                    'product_price' => 'required',
-                    'product_cost' => 'required',
-                    'product_cost_with_tax' => 'required',
-                ],
-            );
-
-            $updateProduct->product_cost = $request->product_cost;
-            $updateProduct->profit = $request->profit ? $request->profit : 0.00;
-            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax;
-            $updateProduct->product_price = $request->product_price;
+            $updateProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+            $updateProduct->profit = $request->profit ? $request->profit : 0;
+            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+            $updateProduct->product_price = $request->product_price ? $request->product_price : 0;
 
             // Upload product thumbnail
             if ($request->file('photo')) {

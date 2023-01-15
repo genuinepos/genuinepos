@@ -244,6 +244,9 @@ ul#search_box {
     color: #323232;
     transition: .3s;
 }
+.settings-wrap {
+    border: 1px solid #f70000 !important;
+}
 .switch_bar {
     border-right: 1px solid #a7a7a7;
     text-align: center;

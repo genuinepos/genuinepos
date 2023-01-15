@@ -538,7 +538,7 @@
                                     auth()->user()->can('product_settings')
                                 )
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('products.settings') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('products.settings') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -876,7 +876,7 @@
                                             auth()->user()->can('purchase_settings')
                                         )
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchase.settings') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchase.settings') }}" class="switch-bar-wrap settings-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-sliders-h"></i></span>
@@ -1068,7 +1068,7 @@
                                         auth()->user()->can('add_sale_settings')
                                     )
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('sales.add.sale.settings') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('sales.add.sale.settings') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-sliders-h"></i></span>
@@ -1117,7 +1117,7 @@
                                         auth()->user()->can('pos_sale_settings')
                                     )
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('sales.pos.settings') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('sales.pos.settings') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-sliders-h"></i></span>
@@ -2220,7 +2220,7 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('g_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-cogs"></i></span>
@@ -2421,7 +2421,7 @@
 
                                     @if (auth()->user()->can('manuf_settings'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-sliders-h"></i></span>
@@ -2566,7 +2566,7 @@
                                 </div>
 
                                 <div class="sub-menu-col">
-                                    <a href="{{ route('communication.email.settings') }}" class="switch-bar-wrap">
+                                    <a href="{{ route('communication.email.settings') }}" class="switch-bar-wrap settings-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="fas fa-sliders-h"></i></span>
@@ -2601,7 +2601,7 @@
                                 </div>
 
                                 <div class="sub-menu-col">
-                                    <a href="{{ route('communication.sms.settings') }}" class="switch-bar-wrap">
+                                    <a href="{{ route('communication.sms.settings') }}" class="switch-bar-wrap settings-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="fas fa-sliders-h"></i></span>

@@ -269,7 +269,7 @@
                                                     <label class="col-5"><b>@lang('menu.unit_cost') </b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" name="product_cost" class="form-control"
-                                                        autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
+                                                        autocomplete="off" id="product_cost" placeholder="0.00" >
                                                         <span class="error error_product_cost"></span>
                                                     </div>
                                                 </div>
@@ -289,7 +289,7 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) </b> <span class="text-danger">*</span></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="0.00">
+                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')%" value="0.00">
                                                         <span class="error error_product_cost_with_tax"></span>
                                                     </div>
                                                 </div>

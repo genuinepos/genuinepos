@@ -35,15 +35,14 @@
                                             @csrf
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
-                                                <input type="text" name="username" class="form-control form-st"
-                                                    value="{{ old('username') }}" placeholder="@lang('menu.username')" required />
+                                                <input required type="text" name="username" class="form-control form-st" value="{{ old('username') }}" placeholder="@lang('menu.username')"/>
                                             </div>
+
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>
-                                                <input name="password" type="Password"
-                                                    class="form-control form-st rounded-bottom" placeholder="Password"
-                                                    required />
+                                                <input required name="password" type="Password" class="form-control form-st rounded-bottom" placeholder="Password"/>
                                             </div>
+
                                             @if (Session::has('errorMsg'))
                                                 <div class="bg-danger p-3 mt-4">
                                                     <p class="text-white">
@@ -51,12 +50,11 @@
                                                     </p>
                                                 </div>
                                             @endif
+
                                             <button type="submit" class="submit-button">Login</button>
                                             <div class="login_opt_link">
                                                 @if (Route::has('password.request'))
-                                                    <a class="forget-pw" href="{{ route('password.request') }}">
-                                                        &nbsp; {{ __('Forgot Your Password?') }}
-                                                    </a>
+                                                    <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp; {{ __('Forgot Your Password?') }}</a>
                                                 @endif
                                                 <div class="form-group cx-box">
                                                     <input type="checkbox" id="remembar" class="form-control">
@@ -78,10 +76,10 @@
                                             <p class="logo-main-sec">
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  config('speeddigit.app_logo_alt') }}">
                                             </p>
-                                            <p class="version"><span>@lang('menu.version')</span> {{ config('speeddigit.version')  }}</p>
-                                            <p class="details"><span>@lang('menu.address')</span> {{ config('speeddigit.address')  }}</p>
-                                            <p class="details"><span>@lang('menu.support')</span> {{ config('speeddigit.support_email')  }}</p>
-                                            <p class="details"><span>@lang('menu.website')</span> {{ config('speeddigit.website')  }}</p>
+                                            <p class="version"><span>@lang('menu.version')</span> {{ config('speeddigit.version') }}</p>
+                                            <p class="details"><span>@lang('menu.address')</span> {{ config('speeddigit.address') }}</p>
+                                            <p class="details"><span>@lang('menu.support')</span> {{ config('speeddigit.support_email') }}</p>
+                                            <p class="details"><span>@lang('menu.website')</span> {{ config('speeddigit.website') }}</p>
 
                                             <div class="function-btn">
                                                 <a href="{{ config('speeddigit.facebook')  }}" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>

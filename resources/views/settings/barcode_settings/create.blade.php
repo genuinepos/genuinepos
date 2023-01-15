@@ -30,9 +30,8 @@
                                         <label class="col-5"><b>@lang('menu.setting_name') </b> <span class="text-danger">*
                                         </span></label>
                                         <div class="col-7">
-                                            <input type="text" name="name" class="form-control" id="name"
-                                                placeholder="Sticker Sheet setting Name" autofocus>
-                                                <span class="error error_name"></span>
+                                            <input type="text" name="name" class="form-control" id="name" placeholder="Sticker Sheet setting Name" autofocus>
+                                            <span class="error error_name"></span>
                                         </div>
                                     </div>
                                 </div>

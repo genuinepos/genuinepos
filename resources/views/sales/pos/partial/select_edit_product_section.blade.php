@@ -17,7 +17,7 @@
                         <div class="cat-ban-sec">
                             <div class="row g-1">
                                 <div class="col-6">
-                                    <select name="category_id" id="category_id" class="form-select form-control cat-bg-1 common_submitable" tabindex="-1">
+                                    <select name="category_id" id="category_id" class="form-control cat-bg-1 common_submitable" tabindex="-1">
                                         <option value="">@lang('menu.all_categories')</option>
                                         @foreach ($categories as $cate)
                                             <option value="{{ $cate->id }}">{{ $cate->name }}</option>
@@ -26,7 +26,7 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <select id="brand_id" id="brand_id" class="form-select form-control cat-bg-2 bg common_submitable" tabindex="-1">
+                                    <select id="brand_id" id="brand_id" class=" form-control cat-bg-2 bg common_submitable" tabindex="-1">
                                         <option value="">@lang('menu.all_brands')</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>

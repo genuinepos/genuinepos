@@ -2,21 +2,19 @@
     <div class="row mt-1">
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.unit_cost') </b> <span class="text-danger">*</span></label>
-                <div class="col-8">
+                <label class="col-5"><b>@lang('menu.unit_cost') </b></label>
+                <div class="col-7">
                     <input type="number" step="any" name="product_cost" class="form-control"
-                    autocomplete="off" id="product_cost" placeholder="Unit cost" value="0.00">
-                    <span class="error error_product_cost"></span>
+                    autocomplete="off" id="product_cost" placeholder="0.00">
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.price_exc_tax') </b> <span class="text-danger">*</span></label>
-                <div class="col-8">
-                    <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="">
-                <span class="error error_product_price"></span>
+                <label class="col-5"><b>@lang('menu.price_exc_tax') </b></label>
+                <div class="col-7">
+                    <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="0.00">
                 </div>
             </div>
         </div>
@@ -25,19 +23,18 @@
     <div class="row mt-1">
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.unit_cost')(Inc.Tax) </b> <span class="text-danger">*</span></label>
-                <div class="col-8">
-                    <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="0.00">
-                    <span class="error error_product_cost_with_tax"></span>
+                <label class="col-5"><b>@lang('menu.unit_cost') (Inc.Tax)</b></label>
+                <div class="col-7">
+                    <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="0.00">
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.profit_margin')(%) </b> <span class="text-danger">*</span></label>
-                <div class="col-8">
-                    <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
+                <label class="col-5"><b>@lang('menu.profit_margin')(%) </b></label>
+                <div class="col-7">
+                    <input type="text" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : '' }}">
                 </div>
             </div>
         </div>
@@ -47,8 +44,8 @@
         <div class="row mt-1">
             <div class="col-md-6">
                 <div class="input-group">
-                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax') </b> </label>
-                    <div class="col-8">
+                    <label class="col-5"><b>@lang('menu.tax') </b> </label>
+                    <div class="col-7">
                         <select class="form-control" name="tax_id" id="tax_id">
                             <option value="">@lang('menu.no_tax')</option>
                             @foreach ($taxes as $tax)
@@ -61,8 +58,8 @@
 
             <div class="col-md-6">
                 <div class="input-group">
-                    <label for="inputEmail3" class="col-4"><b>@lang('menu.tax_type') </b> </label>
-                    <div class="col-8">
+                    <label class="col-5"><b>@lang('menu.tax_type') </b> </label>
+                    <div class="col-7">
                         <select name="tax_type" class="form-control" id="tax_type">
                             <option value="1">@lang('menu.exclusive')</option>
                             <option value="2">@lang('menu.exclusive')</option>
@@ -76,8 +73,8 @@
     <div class="row mt-1">
         <div class="col-md-6">
             <div class="input-group">
-                <label for="inputEmail3" class="col-4"><b>@lang('menu.thumbnail_photo') </b> </label>
-                <div class="col-8">
+                <label class="col-5"><b>@lang('menu.thumbnail_photo') </b> </label>
+                <div class="col-7">
                     <input type="file" name="photo" class="form-control" id="photo">
                     <span class="error error_photo"></span>
                 </div>
@@ -129,19 +126,15 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <input type="text" name="variant_combinations[]"
-                                            id="variant_combination" class="form-control"
-                                            placeholder="Variant Combination">
+                                        <input type="text" name="variant_combinations[]" id="variant_combination" class="form-control" placeholder="Variant Combination">
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="text" name="variant_codes[]" id="variant_code" class="form-control"
-                                            placeholder="@lang('menu.variant_code')">
+                                        <input type="text" name="variant_codes[]" id="variant_code" class="form-control" placeholder="@lang('menu.variant_code')">
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="number" name="variant_costings[]"
-                                            class="form-control" placeholder="Cost" id="variant_costing">
+                                        <input type="number" name="variant_costings[]" class="form-control" placeholder="Cost" id="variant_costing">
                                     </td>
 
                                     <td class="text-start">
@@ -153,8 +146,7 @@
                                     </td>
 
                                     <td class="text-start">
-                                        <input type="text" name="variant_prices_exc_tax[]"
-                                            class="form-control" placeholder="@lang('menu.price_inc_tax')" id="variant_price_exc_tax">
+                                        <input type="text" name="variant_prices_exc_tax[]" class="form-control" placeholder="@lang('menu.price_inc_tax')" id="variant_price_exc_tax">
                                     </td>
 
                                     <td class="text-start">
@@ -162,8 +154,7 @@
                                     </td>
 
                                     <td class="text-start">
-                                        <a href="#" id="variant_remove_btn"
-                                            class="btn btn-xs btn-sm btn-danger">X</a>
+                                        <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
                                     </td>
                                 </tr>
                             </tbody>

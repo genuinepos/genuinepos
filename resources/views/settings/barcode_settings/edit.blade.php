@@ -81,7 +81,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"> <b>{{ __('Sticker Width') }} (Inc)<span class="text-danger">*
+                                        <label class="col-4"> <b>@lang('menu.left_margin') (Inc)<span class="text-danger">*
                                         </span> </b> </label>
                                         <div class="col-8">
                                             <div class="input-group">

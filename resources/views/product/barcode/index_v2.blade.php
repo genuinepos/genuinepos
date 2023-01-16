@@ -74,7 +74,7 @@
                                                             </li>
 
                                                             <li>
-                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.tax') &nbsp; </p>
+                                                                <p class="checkbox_input_wrap"><input type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.tax') &nbsp; </p>
                                                             </li>
 
                                                             <li>

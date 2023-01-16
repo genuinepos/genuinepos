@@ -72,6 +72,7 @@ use App\Http\Controllers\ImportPriceGroupProductController;
 use App\Http\Controllers\Report\ProfitLossReportController;
 use App\Http\Controllers\Report\StockInOutReportController;
 use App\Http\Controllers\AccountingRelatedSectionController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Report\ProductSaleReportController;
 use App\Http\Controllers\Report\PurchaseStatementController;
 use App\Http\Controllers\Report\SalePaymentReportController;
@@ -1077,5 +1078,11 @@ Route::group(['prefix' => 'communication'], function () {
         Route::post('settings/store', [SmsController::class, 'smsSettingsStore'])->name('communication.sms.settings.store');
 
         Route::get('settings/server/setup/design/pages', [SmsController::class, 'smsServerSetupDesignPages'])->name('communication.sms.settings.server.setup.design.pages');
+    });
+});
+Route::controller(FeedbackController::class)->group(function() {
+    Route::group(['prefix' => 'feedback'], function() {
+        Route::get('/', 'index')->name('feedback.index');
+        Route::post('/store', 'store')->name('feedback.store');
     });
 });

@@ -30,7 +30,7 @@
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>@lang('menu.transfer_reference_id') </strong> {{ $transfer->ref_id }}</p>
+                                    <p class="m-0"><strong>@lang('menu.transfer_reference_id') : </strong> {{ $transfer->ref_id }}</p>
                                     <p class="m-0"><strong>@lang('menu.date')</strong> {{ $transfer->date }}</p>
                                     </div>
 
@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4">@lang('menu.store_in_location') </label>
+                                        <label class="col-4">@lang('menu.store_in_location') : </label>
                                         <div class="col-8">
                                             <input
                                                 readonly
@@ -168,7 +168,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4">@lang('menu.total') @lang('menu.received_qty') </label>
+                                        <label class=" col-4">@lang('menu.total') @lang('menu.received_qty') : </label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control" value="0.00">
                                         </div>

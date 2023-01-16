@@ -29,12 +29,12 @@
                             <hr class="m-1">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="m-0"><strong>@lang('menu.reference_id')</strong> <span class="transfer_invoice_id"></span> </p>
-                                    <p class="m-0"><strong>@lang('menu.date')</strong> <span class="transfer_date"></span></p>
+                                    <p class="m-0"><strong>@lang('menu.reference_id') : </strong> <span class="transfer_invoice_id"></span> </p>
+                                    <p class="m-0"><strong>@lang('menu.date') : </strong> <span class="transfer_date"></span></p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p class="m-0"><strong>@lang('menu.warehouse') (From) </strong> <span class="warehouse"></span> </p>
-                                        <p class="m-0"><strong>@lang('menu.business_location') </strong> <span class="branch"></span></p>
+                                        <p class="m-0"><strong>@lang('menu.warehouse') (From) : </strong> <span class="warehouse"></span> </p>
+                                        <p class="m-0"><strong>@lang('menu.business_location') : </strong> <span class="branch"></span></p>
                                     </div>
                             </div>
                         </div>

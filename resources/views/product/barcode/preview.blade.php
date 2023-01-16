@@ -8,14 +8,14 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Print Barcode</title>
+    <title>Barcode - {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }} </title>
     <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}">
 
     <style>
         /* p {margin: 0px;padding: 0px;font-size: 7px;}
         p.sku {font-size: 7px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;} */
         .company_name {margin: 0;}
-        .company_name {font-size: 10px !important;font-weight: bolder;margin: 0;padding: 0;}
+        .company_name {font-size: 8px !important;font-weight: bolder;margin: 0;padding: 0;}
         .barcode {margin-bottom: -2px;}
 
 
@@ -153,14 +153,12 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
                         <div class="barcode_area text-center" style="margin-bottom: {{$br_setting->top_margin}}in; margin-left : {{ $br_setting->left_margin }}in; height:{{ $br_setting->sticker_height }}in; width:{{ $br_setting->sticker_width }}in; ">
                             <div class="barcode">
-                                <p class="company_name">
-                                    <small class="p-0 m-0 text-dark">
-                                        <strong>
-                                            @if (isset($req->is_business_name))
-                                                {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }}
-                                            @endif
-                                        </strong>
-                                    </small>
+                                <p class="company_name" style="margin: 0px;padding: 0px;font-size: 4px;">
+                                    <strong>
+                                        @if (isset($req->is_business_name))
+                                            {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }}
+                                        @endif
+                                    </strong>
                                 </p>
 
                                 <img style="width: 100%; height:25px; margin:auto;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($req->product_code[$index], $generator::TYPE_CODE_128)) }}">
@@ -180,9 +178,9 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
                                 @if (isset($req->is_price))
                                     <p class="price_details" style="margin: 0px;padding: 0px;font-size: 9px;">
-                                        @lang('menu.price'):
+                                        {{ $generalSettings['business__currency'] }}
                                         <b>{{ App\Utils\Converter::format_in_bdt($req->product_price[$index]) }}
-                                        {{ isset($req->is_tax) ? '+ ' . App\Utils\Converter::format_in_bdt($req->product_tax[$index]) . '% Tax' : '' }}</b>
+                                        {{ isset($req->is_tax) ? '+ ' . App\Utils\Converter::format_in_bdt($req->product_tax[$index]) . '%' : '' }}</b>
                                     </p>
                                 @endif
                             </div>

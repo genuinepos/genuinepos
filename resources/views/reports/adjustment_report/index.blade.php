@@ -36,7 +36,7 @@
                                                     @if ($generalSettings['addons__branches'] == 1)
                                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                             <div class="col-md-3">
-                                                                <label><strong>@lang('menu.business_location') </strong></label>
+                                                                <label><strong>@lang('menu.business_location') : </strong></label>
                                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                     <option value="">@lang('menu.all')</option>
                                                                     <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -52,7 +52,7 @@
                                                         @endif
                                                     @endif
                                                     <div class="col-md-3">
-                                                        <label><strong>@lang('menu.from_date') </strong></label>
+                                                        <label><strong>@lang('menu.from_date') : </strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1">
@@ -66,7 +66,7 @@
                                                     </div>
 
                                                     <div class="col-md-3">
-                                                        <label><strong>@lang('menu.to_date') </strong></label>
+                                                        <label><strong>@lang('menu.to_date') : </strong></label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -108,17 +108,17 @@
                                                 <table class="table modal-table table-sm">
                                                     <tbody>
                                                         <tr>
-                                                            <th class="text-start">@lang('menu.total_normal') </th>
+                                                            <th class="text-start">@lang('menu.total_normal') : </th>
                                                             <td class="text-start"> <span class="total_normal"></span></td>
                                                         </tr>
 
                                                         <tr>
-                                                            <th class="text-start">@lang('menu.total_abnormal') </th>
+                                                            <th class="text-start">@lang('menu.total_abnormal') : </th>
                                                             <td class="text-start"><span class="total_abnormal"></span></td>
                                                         </tr>
 
                                                         <tr>
-                                                            <th class="text-start"> @lang('menu.total_stock_adjustment') </th>
+                                                            <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
                                                             <td class="text-start"> <span class="total_adjustment"></span></td>
                                                         </tr>
                                                     </tbody>

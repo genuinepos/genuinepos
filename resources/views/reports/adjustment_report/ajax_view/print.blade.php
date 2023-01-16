@@ -25,7 +25,7 @@
         @if ($branch_id == '')
             <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
-            <p><b>@lang('menu.all_business_location')</b></p>
+            <p><b>@lang('menu.all_business_location') : </b></p>
         @elseif ($branch_id == 'NULL')
             <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
@@ -43,7 +43,7 @@
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                <b>@lang('menu.to') : </b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.stock_adjustment_report') </b></h6>
@@ -55,12 +55,12 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">@lang('menu.date')</th>
-                    <th class="text-start">@lang('menu.reference_no').</th>
-                    <th class="text-start">@lang('menu.b_location')</th>
-                    <th class="text-start">@lang('menu.type')</th>
-                    <th class="text-end">@lang('menu.total_amount')({{$generalSettings['business__currency']}})</th>
-                    <th class="text-end">@lang('menu.total_recovered_amount')({{$generalSettings['business__currency']}})</th>
+                    <th class="text-start">@lang('menu.date') : </th>
+                    <th class="text-start">@lang('menu.reference_no'). : </th>
+                    <th class="text-start">@lang('menu.b_location') : </th>
+                    <th class="text-start">@lang('menu.type') : </th>
+                    <th class="text-end">@lang('menu.total_amount')({{$generalSettings['business__currency']}}) : </th>
+                    <th class="text-end">@lang('menu.total_recovered_amount')({{$generalSettings['business__currency']}}) : </th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

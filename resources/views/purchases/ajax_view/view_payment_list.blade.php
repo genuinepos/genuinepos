@@ -38,7 +38,7 @@
                     <li><strong>{{ __('Stored Location') }} : </strong>
                         @if ($purchase->branch)
                             {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
-                            (<b>@lang('menu.branch')/@lang('menu.company')</b>) ,<br>
+                            (<b>@lang('menu.branch')/@lang('menu.company') : </b>) ,<br>
                             {{ $purchase->branch ? $purchase->branch->city : '' }},
                             {{ $purchase->branch ? $purchase->branch->state : '' }},
                             {{ $purchase->branch ? $purchase->branch->zip_code : '' }},
@@ -61,11 +61,11 @@
                     <li><strong>@lang('menu.date') : </strong>{{date($generalSettings['business__date_format'], strtotime($purchase->date))  . ' ' . date($timeFormat, strtotime($purchase->time)) }} </li>
                     <li><strong>@lang('menu.purchases_status') : </strong>
                         @if ($purchase->purchase_status == 1)
-                            <span class="text-success"><b>@lang('menu.receive')</b></span>
+                            <span class="text-success"><b>@lang('menu.receive') : </b></span>
                         @elseif($purchase->purchase_status == 2){
-                            <span class="text-warning"><b>@lang('menu.pending')</b></span>
+                            <span class="text-warning"><b>@lang('menu.pending') : </b></span>
                         @else
-                            <span class="text-primary"><b>@lang('menu.ordered')</b></span>
+                            <span class="text-primary"><b>@lang('menu.ordered') : </b></span>
                         @endif
                     </li>
                     <li><strong>@lang('menu.payment_status') : </strong>
@@ -73,11 +73,11 @@
                             $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                         @endphp
                         @if ($purchase->due <= 0)
-                            <span class="text-success"><b>@lang('menu.paid')</b></span>
+                            <span class="text-success"><b>@lang('menu.paid') : </b></span>
                         @elseif($purchase->due > 0 && $purchase->due < $payable)
-                            <span class="text-primary"><b>@lang('menu.partial')</b></span>
+                            <span class="text-primary"><b>@lang('menu.partial') : </b></span>
                         @elseif($payable == $purchase->due)
-                            <span class="text-danger"><b>@lang('menu.due')</b></span>
+                            <span class="text-danger"><b>@lang('menu.due') : </b></span>
                         @endif
                     </li>
                 </ul>
@@ -94,13 +94,13 @@
         <table class="display modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-secondary">
-                    <th class="text-start text-white">@lang('menu.date')</th>
-                    <th class="text-start text-white">@lang('menu.voucher_no')</th>
-                    <th class="text-start text-white">@lang('menu.method')</th>
-                    <th class="text-start text-white">@lang('menu.type')</th>
-                    <th class="text-start text-white">@lang('menu.account')</th>
+                    <th class="text-start text-white">@lang('menu.date') : </th>
+                    <th class="text-start text-white">@lang('menu.voucher_no') : </th>
+                    <th class="text-start text-white">@lang('menu.method') : </th>
+                    <th class="text-start text-white">@lang('menu.type') : </th>
+                    <th class="text-start text-white">@lang('menu.account') : </th>
                     <th class="text-end text-white">@lang('menu.amount')({{ $generalSettings['business__currency'] }})</th>
-                    <th class="text-start text-white">@lang('menu.action')</th>
+                    <th class="text-start text-white">@lang('menu.action') : </th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -121,7 +121,7 @@
 
                             <td>
                                 @if ($payment->is_advanced == 1)
-                                    <b>@lang('menu.po_advance_payment')</b>
+                                    <b>@lang('menu.po_advance_payment') : </b>
                                 @else
                                     {{ $payment->payment_type == 1 ? 'Purchase Payment' : 'Received Return Amt.' }}
                                 @endif
@@ -156,7 +156,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
+                        <td colspan="7" class="text-center">@lang('menu.no_data_found') : </td>
                     </tr>
                 @endif
             </tbody>

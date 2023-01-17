@@ -32,7 +32,7 @@
                                     <li>@lang('menu.designation') : <span>{{ $user?->designation?->designation_name ?? 'N/A' }}</span></li>
 
                                     <li>@lang('menu.basic_salary') : <span>{{ App\Utils\Converter::format_in_bdt($user->salary) }}</span></li>
-                                    <li>@lang('menu.pay_type') : <span>{{ $user->salary_type }}</span></li>
+                                    <li>{{ __('Pay Type') }} : <span>{{ $user->salary_type }}</span></li>
                                     <li>@lang('menu.work_shift') : <span>{{ $user?->shift?->shift_name ?? 'N/A' }}</span></li>
                                     <li>@lang('menu.date_of_joining')<span>...</span></li>
                                 </ul>
@@ -62,7 +62,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>@lang('menu.name')</td>
-                                                            <td>{{ $user->username }}</td>
+                                                            <td>{{ $user->name }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>@lang('menu.phone')</td>
@@ -102,7 +102,7 @@
                                                 <table class="display table-striped">
                                                     <tbody>
                                                         <tr>
-                                                            <td>@lang('menu.current') @lang('menu.address')</td>
+                                                            <td>@lang('menu.current_address')</td>
                                                             <td>{{ $user->current_address }}</td>
                                                         </tr>
                                                         <tr>
@@ -139,7 +139,7 @@
                                                             <td>{{ $user->bank_ac_no }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>IFSC Code</td>
+                                                            <td>{{ __('IFSC Code') }}</td>
                                                             <td>{{ $user->bank_identifier_code }}</td>
                                                         </tr>
                                                     </tbody>
@@ -173,11 +173,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab" tabindex="0">2...</div>
-                                <div class="tab-pane fade" id="nav-leaves" role="tabpanel" aria-labelledby="nav-leaves-tab" tabindex="0">3...</div>
-                                <div class="tab-pane fade" id="nav-attendance" role="tabpanel" aria-labelledby="nav-attendance-tab" tabindex="0">4...</div>
-                                <div class="tab-pane fade" id="nav-documents" role="tabpanel" aria-labelledby="nav-documents-tab" tabindex="0">5...</div>
-                                <div class="tab-pane fade" id="nav-timeline" role="tabpanel" aria-labelledby="nav-timeline-tab" tabindex="0">6...</div>
+                                <div class="tab-pane fade text-center" id="nav-payroll" role="tabpanel" aria-labelledby="nav-payroll-tab" tabindex="0"><img src="{{ asset('assets/images/no-data.png') }}" alt="" ></div>
+                                <div class="tab-pane fade text-center" id="nav-leaves" role="tabpanel" aria-labelledby="nav-leaves-tab" tabindex="0"><img src="{{ asset('assets/images/no-data.png') }}" alt="" ></div>
+                                <div class="tab-pane fade text-center" id="nav-attendance" role="tabpanel" aria-labelledby="nav-attendance-tab" tabindex="0"><img src="{{ asset('assets/images/no-data.png') }}" alt="" ></div>
+                                <div class="tab-pane fade text-center" id="nav-documents" role="tabpanel" aria-labelledby="nav-documents-tab" tabindex="0"><img src="{{ asset('assets/images/no-data.png') }}" alt="" ></div>
+                                <div class="tab-pane fade text-center" id="nav-timeline" role="tabpanel" aria-labelledby="nav-timeline-tab" tabindex="0"><img src="{{ asset('assets/images/no-data.png') }}" alt="" ></div>
                             </div>
                         </div>
                     </div>

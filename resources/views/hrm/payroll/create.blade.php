@@ -20,7 +20,7 @@
                                 <div class="form_element m-0 mt-4">
                                     <div class="py-2 px-2 form-header">
                                         <div class="row">
-                                            <div class="col-8"><h5>{{ __('Generate Payroll Of') }} {{ $month.'/'.$year }}</h5></div>
+                                            <div class="col-8"><h5>{{ __('Generate Payroll Of') }} {{ $month.'/'.$year }} -- ({{ $employee->prefix .$employee->name . $employee->last_name}})</h5></div>
 
                                             <div class="col-4">
                                                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>

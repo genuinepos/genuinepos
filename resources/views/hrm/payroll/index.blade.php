@@ -162,9 +162,9 @@
                                 <label class="text-navy-blue"><b>{{ __('Employee') }} </b></label>
                                 <select required name="user_id" class="form-control" id="employee">
                                     <option value=""> {{ __('Select Employee') }} </option>
-                                    {{-- @foreach($employee as $row)
+                                    @foreach($employee as $row)
                                        <option value="{{ $row->id }}">{{$row->prefix.' '.$row->name.' '.$row->last_name }}</option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -306,7 +306,7 @@
         e.preventDefault();
         var department_id = $(this).val();
         $.ajax({
-            url:"{{ url('hrm/leave/department/employees/') }}"+"/"+department_id,
+            url:"{{ url('hrm/leaves/department/employees/') }}"+"/"+department_id,
             type:'get',
             success:function(employees){
                 $('#employee').empty();

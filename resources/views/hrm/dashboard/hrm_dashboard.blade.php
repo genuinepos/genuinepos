@@ -156,7 +156,7 @@
                                     <div class="widget_content">
                                         <div class="mtr-table">
                                             <div class="table-responsive" id="today_attendance_table">
-                                                <table class="display data__table data_tble stock_table compact"
+                                                {{-- <table class="display data__table data_tble stock_table compact"
                                                     width="100%">
                                                     <thead>
                                                         <tr>
@@ -172,7 +172,7 @@
                                                             <td>04:00pm</td>
                                                         </tr>
                                                     </tbody>
-                                                </table>
+                                                </table> --}}
                                             </div>
                                         </div>
                                     </div>

@@ -485,6 +485,11 @@
                 data:request,
                 success:function(data){
                     table.ajax.reload();
+
+                    if(!$.isEmptyObject(data.errorMsg)){
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }

@@ -216,7 +216,13 @@ class SupplierController extends Controller
 
     public function delete(Request $request, $supplierId)
     {
-        $deleteSupplier = Supplier::find($supplierId);
+
+        $deleteSupplier = Supplier::with(['supplier_ledgers'])->where('id', $supplierId)->first();
+
+        if (count($deleteSupplier->supplier_ledgers) > 1){
+            return response()->json(['errorMsg' => 'Customer can\'t be deleted. One or more entry has been created in ledger.']);
+        }
+        // $deleteSupplier = Supplier::find($supplierId);
 
         if (!is_null($deleteSupplier)) {
 

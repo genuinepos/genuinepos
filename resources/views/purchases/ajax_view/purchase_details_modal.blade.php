@@ -92,17 +92,17 @@
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
                                      <tr class="bg-secondary">
-                                         <th class="text-white text-start">@lang('menu.product') : </th>
-                                         <th class="text-white text-start">@lang('menu.quantity') : </th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_discount')) : </th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost') : </th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax')) : </th>
-                                         <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax')) : </th>
-                                         <th class="text-white text-start">@lang('menu.tax')(%) : </th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax')) : </th>
-                                         <th class="text-white text-start">@lang('menu.unit_selling_price') : </th>
-                                         <th class="text-white text-start">@lang('menu.sub_total') : </th>
-                                         <th class="text-white text-start">@lang('menu.lot_number') : </th>
+                                         <th class="text-white text-start">@lang('menu.product')</th>
+                                         <th class="text-white text-start">@lang('menu.quantity')</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_discount'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.tax')(%)</th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax'))</th>
+                                         <th class="text-white text-start">@lang('menu.unit_selling_price')</th>
+                                         <th class="text-white text-start">@lang('menu.sub_total')</th>
+                                         <th class="text-white text-start">@lang('menu.lot_number')</th>
                                      </tr>
                                  </thead>
                                  <tbody class="purchase_product_list">

@@ -326,7 +326,7 @@
                 <li data-menu="communication" class="{{ request()->is('communication*') ? 'menu_active' : '' }}">
                     <a href="#">
                         <img src="{{ asset('backend/asset/img/icon/communication.svg') }}">
-                        <p class="title">@lang('menu.communication')</p>
+                        <p class="title">@lang('menu.communicate')</p>
                     </a>
                 </li>
 

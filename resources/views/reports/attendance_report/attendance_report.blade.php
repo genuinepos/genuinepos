@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-1 mt-md-0 mt-3">
+                                    <div class="col-md-2 mt-md-0 mt-3">
                                         <a href="{{ route('reports.attendance.print') }}" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                     </div>
                                 </div>

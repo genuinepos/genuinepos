@@ -50,7 +50,7 @@
                     <h5>@lang('menu.general_settings')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                 </a>
             </div>
         </div>
@@ -163,7 +163,6 @@
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Business Logo') }} </strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
-                                            <small>{{ __('Previous logo (if exists) will be replaced') }}</small><br>
 
                                             <span class="error error_business_logo"></span>
                                         </div>

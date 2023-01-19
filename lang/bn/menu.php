@@ -1017,7 +1017,7 @@ return [
     'customer_group' => 'গ্রাহকগণ',
     'business' => 'ব্যবসা',
     'receiving_amount' => 'প্রাপ্তির পরিমাণ',
-    'account_details' => 'বিস্তারিত হিসাব',
+    'account_details' => 'হিসাব',
     'receiver' => 'রিসিভার',
     'paper_note' => 'কাগজের নোট',
     'show_customer_name' => 'গ্রাহকের নাম দেখান',

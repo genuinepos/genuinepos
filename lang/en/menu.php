@@ -1157,7 +1157,7 @@ return [
   'receipt_details' => 'Receipt Details',
   'income' => 'Income',
   'communication_permissions' => 'Communication Permissions',
-  'communication' => 'Communication',
+  'communicate' => 'Communicate',
   'process_report' => 'Process report',
   'manufacturing_report' => 'Manufacturing report',
   'edit_production' => 'Edit production',

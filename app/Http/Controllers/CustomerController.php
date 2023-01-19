@@ -146,7 +146,8 @@ class CustomerController extends Controller
 
         $this->userActivityLogUtil->addLog(action: 1, subject_type: 1, data_obj: $addCustomer);
 
-        return $addCustomer;
+        // return $addCustomer;
+        return response()->json(['Customer created successfully!']);
     }
 
     public function edit($customerId)
@@ -283,7 +284,14 @@ class CustomerController extends Controller
             return response()->json('Access Denied');
         }
 
-        $deleteCustomer = Customer::find($customerId);
+        $deleteCustomer = Customer::with(['ledgers'])->where('id', $customerId)->first();
+
+        if (count($deleteCustomer->ledgers) > 1) {
+
+            return response()->json(['errorMsg' => 'Customer can\'t be deleted. One or more entry has been created in ledger.']);
+        }
+
+        // $deleteCustomer = Customer::find($customerId);
 
         if (!is_null($deleteCustomer)) {
 

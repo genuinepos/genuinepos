@@ -80,6 +80,7 @@
 
             @php $tax = $product->tax ? $product->tax->tax_percent : 0  @endphp
             @if ($product->is_combo == 1)
+            
                 <div class="row">
                     <div class="heading">
                         <label class="p-0 m-0"><strong>@lang('menu.combo')</strong></label>
@@ -92,6 +93,7 @@
                 </div>
             @else
                 @if ($product->is_variant == 0)
+
                     <div class="row">
                         <div class="heading">
                             <label class="p-0 m-0"><strong>PURCHASE AND SELLING PRICE DETAILS </strong></label>
@@ -103,6 +105,7 @@
                         </div>
                     </div>
                 @elseif($product->is_variant == 1)
+
                     <div class="row">
                         <div class="heading">
                             <label class="p-0 m-0"><strong>{{ __('PURCHASE AND SELLING PRICING DETAILS') }} : </strong></label>
@@ -118,6 +121,7 @@
             @endif
 
             @if ($product->is_manage_stock == 1)
+
                 @if (count($own_warehouse_stocks) > 0)
                     <hr class="m-0">
 
@@ -147,6 +151,7 @@
                         </div>
                     </div>
                 @endif
+
                 <hr class="m-0">
 
                 <div class="row">
@@ -169,7 +174,7 @@
                         <div class="table-responsive" id="branch_stock_details">
                             @include('product.products.ajax_view.partials.another_branch_details')
                         </div>
-                    @endif
+                    </div>
                 @endif
             @endif
 

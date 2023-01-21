@@ -244,6 +244,12 @@ ul#search_box {
     color: #323232;
     transition: .3s;
 }
+.settings-wrap {
+    border: 1px solid #f70000 !important;
+}
+.settings-wrap .switch_bar {
+    border-color: #f70000;
+}
 .switch_bar {
     border-right: 1px solid #a7a7a7;
     text-align: center;
@@ -2061,7 +2067,7 @@ table.display tbody tr:hover {
     background: var(--dark-color-2);
 }
 .dataTables_wrapper {
-    margin-top: 0;
+    margin-top: 13px;
     border-top: 0;
 }
 .modal.show .modal-dialog {

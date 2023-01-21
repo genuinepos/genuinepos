@@ -17,20 +17,20 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                              <li><strong>@lang('menu.supplier') : - </strong></li>
-                             <li><strong>@lang('menu.name') </strong> <span
+                             <li><strong>@lang('menu.name') : </strong> <span
                                      class="supplier_name">{{ $purchase->supplier->name }}</span></li>
-                             <li><strong>@lang('menu.address') </strong> <span
+                             <li><strong>@lang('menu.address') : </strong> <span
                                      class="supplier_address">{{ $purchase->supplier->address }}</span></li>
-                             <li><strong>@lang('menu.tax_number') </strong> <span
+                             <li><strong>@lang('menu.tax_number') : </strong> <span
                                      class="supplier_tax_number">{{ $purchase->supplier->tax_number }}</span></li>
-                             <li><strong>@lang('menu.phone') </strong> <span
+                             <li><strong>@lang('menu.phone') : </strong> <span
                                      class="supplier_phone">{{ $purchase->supplier->phone }}</span></li>
                          </ul>
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>@lang('menu.purchase_from') </strong></li>
-                             <li><strong>@lang('menu.business_location') </strong>
+                             <li><strong>@lang('menu.purchase_from') : </strong></li>
+                             <li><strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch_id)
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}(<b>BL</b>)
                                 @else
@@ -38,7 +38,7 @@
                                 @endif
                             </li>
 
-                             <li><strong>@lang('menu.phone') </strong>
+                             <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}, <br>
                                 @elseif($purchase->warehouse_id)
@@ -51,35 +51,35 @@
                      </div>
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li><strong>@lang('menu.date') </strong> {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                             <li><strong>{{ __('P.Invoice ID') }} </strong> {{ $purchase->invoice_id }}</li>
+                             <li><strong>@lang('menu.date') : </strong> {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                             <li><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
 
                              <li>
-                                <strong>@lang('menu.purchases_status') </strong>
+                                <strong>@lang('menu.purchases_status') : </strong>
                                 @if ($purchase->purchase_status == 1)
-                                    <span class="badge bg-success">@lang('menu.purchased')</span>
+                                    <span class="badge bg-success">@lang('menu.purchased') : </span>
                                 @elseif($purchase->purchase_status == 2){
-                                    <span class="badge bg-warning text-white">@lang('menu.pending')</span>
+                                    <span class="badge bg-warning text-white">@lang('menu.pending') : </span>
                                 }
                                 @else
-                                    <span class="badge bg-primary">@lang('menu.purchased_by_order')</span>
+                                    <span class="badge bg-primary">@lang('menu.purchased_by_order') : </span>
                                 @endif
                              </li>
 
-                             <li><strong>@lang('menu.payment_status') </strong>
+                             <li><strong>@lang('menu.payment_status') : </strong>
                                 @php
                                     $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                 @endphp
                                 @if ($purchase->due <= 0)
-                                     <span class="badge bg-success">@lang('menu.paid')</span>
+                                     <span class="badge bg-success">@lang('menu.paid') : </span>
                                 @elseif($purchase->due > 0 && $purchase->due < $payable)
-                                    <span class="badge bg-primary text-white">@lang('menu.partial')</span>
+                                    <span class="badge bg-primary text-white">@lang('menu.partial') : </span>
                                 @elseif($payable == $purchase->due)
-                                    <span class="badge bg-danger text-white">@lang('menu.due')</span>
+                                    <span class="badge bg-danger text-white">@lang('menu.due') : </span>
                                 @endif
                              </li>
                              <li>
-                                 <strong>@lang('menu.created_by') </strong>
+                                 <strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : 'N/A' }}
                              </li>
                          </ul>
@@ -92,17 +92,17 @@
                              <table id="" class="table modal-table table-sm table-striped">
                                  <thead>
                                      <tr class="bg-secondary">
-                                         <th class="text-white text-start">@lang('menu.product')</th>
-                                         <th class="text-white text-start">@lang('menu.quantity')</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_discount'))</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax'))</th>
-                                         <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax'))</th>
-                                         <th class="text-white text-start">@lang('menu.tax')(%)</th>
-                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax'))</th>
-                                         <th class="text-white text-start">@lang('menu.unit_selling_price')</th>
-                                         <th class="text-white text-start">@lang('menu.sub_total')</th>
-                                         <th class="text-white text-start">@lang('menu.lot_number')</th>
+                                         <th class="text-white text-start">@lang('menu.product') : </th>
+                                         <th class="text-white text-start">@lang('menu.quantity') : </th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_discount')) : </th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost') : </th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.before_tax')) : </th>
+                                         <th class="text-white text-start">@lang('menu.sub_total') (@lang('menu.before_tax')) : </th>
+                                         <th class="text-white text-start">@lang('menu.tax')(%) : </th>
+                                         <th class="text-white text-start">@lang('menu.unit_cost')(@lang('menu.after_tax')) : </th>
+                                         <th class="text-white text-start">@lang('menu.unit_selling_price') : </th>
+                                         <th class="text-white text-start">@lang('menu.sub_total') : </th>
+                                         <th class="text-white text-start">@lang('menu.lot_number') : </th>
                                      </tr>
                                  </thead>
                                  <tbody class="purchase_product_list">
@@ -334,24 +334,24 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.supplier') : - </strong></li>
-                            <li><strong>@lang('menu.name') </strong>{{ $purchase->supplier->name }}</li>
-                            <li><strong>@lang('menu.address') </strong>{{ $purchase->supplier->address }}</li>
-                            <li><strong>@lang('menu.tax_number') </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $purchase->supplier->phone }}</li>
+                            <li><strong>@lang('menu.name') : </strong>{{ $purchase->supplier->name }}</li>
+                            <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
+                            <li><strong>@lang('menu.tax_number') : </strong> {{ $purchase->supplier->tax_number }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.purchase_from') </strong></li>
+                            <li><strong>@lang('menu.purchase_from') : </strong></li>
                             <li>
-                                <strong>@lang('menu.business_location') </strong>
+                                <strong>@lang('menu.business_location') : </strong>
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
                                     {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.stored_location') </strong>
+                            <li><strong>@lang('menu.stored_location') : </strong>
                                 @if ($purchase->warehouse_id )
                                     {{ $purchase->warehouse->warehouse_name . '/' . $purchase->warehouse->warehouse_code }}
                                     (<b>WH</b>)
@@ -362,7 +362,7 @@
                                     {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
-                            <li><strong>@lang('menu.phone') </strong>
+                            <li><strong>@lang('menu.phone') : </strong>
                                 @if ($purchase->branch)
                                     {{ $purchase->branch->phone }}
                                 @elseif($purchase->warehouse_id)
@@ -375,9 +375,9 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>{{ __('P.Invoice ID') }} </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
-                            <li><strong>@lang('menu.purchases_status') </strong>
+                            <li><strong>{{ __('P.Invoice ID') }} : </strong> {{ $purchase->invoice_id }}</li>
+                            <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                            <li><strong>@lang('menu.purchases_status') : </strong>
                                 <span class="purchase_status">
                                     @if ($purchase->purchase_status == 1)
                                         Purchased
@@ -388,7 +388,7 @@
                                     @endif
                                 </span>
                             </li>
-                            <li><strong>@lang('menu.payment_status') </strong>
+                            <li><strong>@lang('menu.payment_status') : </strong>
                                @php
                                    $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                @endphp
@@ -400,7 +400,7 @@
                                @lang('menu.due')
                                @endif
                             </li>
-                            <li><strong>@lang('menu.created_by') </strong>
+                            <li><strong>@lang('menu.created_by') : </strong>
                                 {{ $purchase->admin ? $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name : '' }}
                             </li>
                         </ul>
@@ -414,7 +414,7 @@
                         <tr>
                             <th scope="col">@lang('menu.description')</th>
                             <th scope="col">@lang('menu.quantity')</th>
-                            <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }}) </th>
+                            <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }}) : </th>
                             <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
                             <th scope="col">@lang('menu.tax')(%)</th>
                             <th scope="col">{{ __('Net Unit Cost') }}({{ $generalSettings['business__currency'] }})</th>
@@ -499,11 +499,11 @@
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <h6>@lang('menu.checked_by') </h6>
+                    <h6>@lang('menu.checked_by') : </h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6>@lang('menu.approved_by') </h6>
+                    <h6>@lang('menu.approved_by') : </h6>
                 </div>
             </div>
 
@@ -517,7 +517,7 @@
             @if (env('PRINT_SD_PURCHASE') == true)
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                        <small>@lang('menu.software_by') : <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                     </div>
                 </div>
             @endif

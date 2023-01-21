@@ -31,10 +31,10 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>@lang('menu.name') </strong>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
+                            <strong>@lang('menu.name') : </strong>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.address') </strong>
+                            <strong>@lang('menu.address') : </strong>
                             @if ($sale->shipment_address)
                                 {{  $sale->shipment_address }}
                             @else
@@ -42,25 +42,25 @@
                             @endif
                         </li>
                         <li>
-                            <strong>@lang('menu.tax_number') </strong>{{ $sale->customer ? $sale->customer->tax_number : '' }}
+                            <strong>@lang('menu.tax_number') : </strong>{{ $sale->customer ? $sale->customer->tax_number : '' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.phone') </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
+                            <strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}
                         </li>
                     </ul>
                 </div>
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.invoice_id') </strong> {{ $sale->invoice_id }}
+                        <li><strong>@lang('menu.invoice_id') : </strong> {{ $sale->invoice_id }}
                         </li>
-                        <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
                         <li><img style="width: 100%; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}"></li>
 
                     </ul>
                 </div>
                 <div class="col-4">
                     <ul class="list-unstyled float-right">
-                        <li><strong>@lang('menu.shipping_address') </strong></li>
+                        <li><strong>@lang('menu.shipping_address') : </strong></li>
                         <li>
                             @if ($sale->shipment_address)
                                 {{ $sale->shipment_address }}

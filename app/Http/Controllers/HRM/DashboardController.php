@@ -57,7 +57,7 @@ class DashboardController extends Controller
         $todayAttendances = '';
         $todayAttQ = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
-            ->where('hrm_attendances.at_date_ts', Carbon::today());
+            ->whereDate('hrm_attendances.at_date_ts', Carbon::today());
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {

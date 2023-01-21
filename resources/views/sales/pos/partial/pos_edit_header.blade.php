@@ -79,7 +79,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <input readonly type="text" class="form-control form-select" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
+                                    <input readonly type="text" class="form-control" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
                                     <div class="input-group-append add_button" id="addCustomer">
                                         <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                     </div>

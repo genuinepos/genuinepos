@@ -12,7 +12,7 @@
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>@lang('menu.business_location') </strong>
+                            <strong>@lang('menu.business_location') : </strong>
                             {{
                                 $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : $generalSettings['business__shop_name'].' (HO)'
                             }}
@@ -20,27 +20,27 @@
 
                         @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>@lang('menu.adjustment_location') </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $adjustment->warehouse->phone}}</li>
-                            <li><strong>@lang('menu.address') </strong> {{ $adjustment->warehouse->address}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone}}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>@lang('menu.adjustment_location') </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
                             <li>
-                                <strong>@lang('menu.adjustment_location') </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $generalSettings['business__phone'] }}</li>
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
@@ -49,12 +49,12 @@
 
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>@lang('menu.reference_no') </strong> {{ $adjustment->invoice_id }}</li>
-                        <li><strong>@lang('menu.type') </strong>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong> {{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.type') : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
                         </li>
-                        <li><strong>@lang('menu.created_by') </strong>
+                        <li><strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>
@@ -135,13 +135,13 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm">
                             <tr>
-                                <th class="text-start">@lang('menu.net_total_amount')</th>
+                                <th class="text-start">@lang('menu.net_total_amount') : </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'].' '.$adjustment->net_total_amount}}
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-start">@lang('menu.recovered_amount') </th>
+                                <th class="text-start">@lang('menu.recovered_amount') : </th>
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'].' '.$adjustment->recovered_amount }}
                                 </td>
@@ -155,7 +155,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>@lang('menu.reason') </h6>
+                        <h6>@lang('menu.reason') : </h6>
                         <p class="reason">{{ $adjustment->reason }}</p>
                     </div>
                 </div>
@@ -199,31 +199,31 @@
             <div class="row">
                 <div class="col-8">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>@lang('menu.reference_no') </strong>{{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>@lang('menu.adjustment_location') </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(@lang('menu.warehouse'))</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $adjustment->warehouse->phone }}</li>
-                            <li><strong>@lang('menu.address') </strong> {{ $adjustment->warehouse->address }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>@lang('menu.adjustment_location') </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
                             <li>
-                                <strong>@lang('menu.adjustment_location') </strong>
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $generalSettings['business__phone'] }}</li>
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
@@ -233,11 +233,11 @@
                 <div class="col-4">
                     <ul class="list-unstyled float-right">
                         <li>
-                            <strong>@lang('menu.type') </strong>
+                            <strong>@lang('menu.type') : </strong>
                             {{ $adjustment->type == 1 ? 'Normal' : 'Abnormal' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.created_by') </strong>
+                            <strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>
@@ -276,13 +276,13 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">@lang('menu.net_total_amount') </th>
+                        <th colspan="4" class="text-end">@lang('menu.net_total_amount') : </th>
                         <td class="text-start">
                             {{ $generalSettings['business__currency'].' '.$adjustment->net_total_amount}}
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="4" class="text-end">@lang('menu.recovered_amount') </th>
+                        <th colspan="4" class="text-end">@lang('menu.recovered_amount') : </th>
                         <td class="text-start">
                             {{ $generalSettings['business__currency'].' '.$adjustment->recovered_amount }}
                         </td>
@@ -295,11 +295,11 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>@lang('menu.checked_by') </strong></h6>
+                    <h6><strong>@lang('menu.checked_by')</strong></h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6><strong>@lang('menu.approved_by') </strong></h6>
+                    <h6><strong>@lang('menu.approved_by')</strong></h6>
                 </div>
             </div>
         </div>

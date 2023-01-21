@@ -12,8 +12,8 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong> @lang('menu.reference_id') </strong>{{ $payment->invoice_id }}</li>
-                    <li><strong>@lang('menu.business_location') </strong>{{ $payment->expense->branch ? $payment->expense->branch->name.''.$payment->expense->branch->branch_code : 'Head Office' }}</li>
+                    <li><strong> @lang('menu.reference_id') : </strong>{{ $payment->invoice_id }}</li>
+                    <li><strong>@lang('menu.business_location') : </strong>{{ $payment->expense->branch ? $payment->expense->branch->name.''.$payment->expense->branch->branch_code : 'Head Office' }}</li>
                 </ul>
             </div>
         </div>
@@ -21,7 +21,7 @@
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.total_due') </strong>{{ $payment->expense->due }}</li>
+                    <li><strong>@lang('menu.total_due') : </strong>{{ $payment->expense->due }}</li>
                 </ul>
             </div>
         </div>
@@ -77,7 +77,7 @@
 
     <div class="form-group row mt-2">
         <div class="col-md-7">
-            <label><strong>@lang('menu.credit_account') </strong> </label>
+            <label><strong>@lang('menu.credit_account') : </strong> </label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>

@@ -20,7 +20,7 @@
                     <h5>@lang('menu.tax_report') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Output: Purchase Order Tax, Input: Sale Order Tax, Expense: Tax On Expense" class="fas fa-info-circle tp"></i></h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                 </a>
             </div>
 
@@ -35,7 +35,7 @@
                                         @if ($generalSettings['addons__branches'] == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3">
-                                                    <label><strong>@lang('menu.branch') </strong></label>
+                                                    <label><strong>@lang('menu.branch') : </strong></label>
                                                     <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -52,7 +52,7 @@
                                         @endif
 
                                         <div class="col-md-3">
-                                            <label><strong>@lang('menu.date_range') </strong></label>
+                                            <label><strong>@lang('menu.date_range') : </strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i
@@ -79,7 +79,7 @@
                                     <div class="card-body card-custom px-0">
 
                                         <div class="heading">
-                                            <h4>@lang('menu.overall_output_expense') </h4>
+                                            <h4>@lang('menu.overall_output_expense') : </h4>
                                         </div>
 
                                         <div class="row">

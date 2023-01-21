@@ -19,7 +19,7 @@
                     <h5>@lang('menu.stock_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                 </a>
             </div>
 
@@ -48,7 +48,7 @@
                                             @if ($generalSettings['addons__branches'] == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-2 col-md-4">
-                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                        <label><strong>@lang('menu.business_location') : </strong></label>
                                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -63,7 +63,7 @@
                                             @endif
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.category') </strong></label>
+                                                <label><strong>@lang('menu.category') : </strong></label>
                                                 <select id="category_id" name="category_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($categories as $c)
@@ -83,7 +83,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.unit') </strong></label>
+                                                <label><strong>@lang('menu.unit') : </strong></label>
                                                 <select id="unit_id" name="unit_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($units as $u)
@@ -93,7 +93,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.tax') </strong></label>
+                                                <label><strong>@lang('menu.tax') : </strong></label>
                                                 <select id="tax_id" name="tax_id" class="form-control select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($taxes as $t)
@@ -144,7 +144,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th class="text-white text-end" colspan="3">@lang('menu.total') </th>
+                                                <th class="text-white text-end" colspan="3">@lang('menu.total') : </th>
                                                 <th class="text-white text-end">---</th>
                                                 <th class="text-white text-end" id="stock"></th>
                                                 <th class="text-white text-end" id="stock_value"></th>
@@ -169,7 +169,7 @@
                                             @if ($generalSettings['addons__branches'] == 1)
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-lg-2 col-md-4">
-                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                        <label><strong>@lang('menu.business_location') : </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="w_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -185,7 +185,7 @@
 
                                             <div class="col-lg-2 col-md-4">
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    <label><strong>@lang('menu.warehouse') </strong></label>
+                                                    <label><strong>@lang('menu.warehouse') : </strong></label>
                                                     <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
                                                         <option value="">@lang('menu.select_business_location_first')</option>
                                                     </select>
@@ -202,7 +202,7 @@
                                                             )->get();
                                                     @endphp
 
-                                                    <label><strong>@lang('menu.warehouse') </strong></label>
+                                                    <label><strong>@lang('menu.warehouse') : </strong></label>
                                                     <select name="warehouse_id" class="form-control submit_able select2" id="warehouse_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($wh as $row)
@@ -213,7 +213,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.category') </strong></label>
+                                                <label><strong>@lang('menu.category') : </strong></label>
                                                 <select id="w_category_id" name="category_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($categories as $c)
@@ -223,7 +223,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.brand') </strong></label>
+                                                <label><strong>@lang('menu.brand') : </strong></label>
                                                 <select id="w_brand_id" name="brand_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($brands as $b)
@@ -233,7 +233,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.unit') </strong></label>
+                                                <label><strong>@lang('menu.unit') : </strong></label>
                                                 <select id="w_unit_id" name="unit_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($units as $u)
@@ -243,7 +243,7 @@
                                             </div>
 
                                             <div class="col-lg-2 col-md-4">
-                                                <label><strong>@lang('menu.tax') </strong></label>
+                                                <label><strong>@lang('menu.tax') : </strong></label>
                                                 <select id="w_tax_id" name="tax_id" class="form-control common_submitable select2">
                                                     <option value="">@lang('menu.all')</option>
                                                     @foreach ($taxes as $t)
@@ -289,7 +289,7 @@
                                         </thead>
                                         <tbody></tbody>
                                         <tr class="bg-secondary">
-                                            <th class="text-white text-end" colspan="4">@lang('menu.total') </th>
+                                            <th class="text-white text-end" colspan="4">@lang('menu.total') : </th>
                                             <th class="text-white text-end">---</th>
                                             <th class="text-white text-end" id="w_stock"></th>
                                             <th class="text-white text-end" id="w_stock_value"></th>

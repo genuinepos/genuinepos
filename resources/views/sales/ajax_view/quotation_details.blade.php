@@ -19,16 +19,16 @@
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.customer') :- </strong></li>
                         <li>
-                            <strong>@lang('menu.name') </strong>{{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
+                            <strong>@lang('menu.name') : </strong>{{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.address') </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
+                            <strong>@lang('menu.address') : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.tax_number') </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
+                            <strong>@lang('menu.tax_number') : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
                         </li>
                         <li>
-                            <strong>@lang('menu.phone') </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}
+                            <strong>@lang('menu.phone') : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}
                         </li>
                     </ul>
                 </div>
@@ -37,37 +37,37 @@
                         <li><strong>Entered From </strong></li>
                         @if ($quotation->branch)
                             <li>
-                                <strong>@lang('menu.business_location') </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
+                                <strong>@lang('menu.business_location') : </strong> {{ $quotation->branch->name.'/'.$quotation->branch->branch_code }}
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $quotation->branch->phone }}</li>
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $quotation->branch->phone }}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $quotation->branch->name }}/{{ $quotation->branch->branch_code }},
                                 {{ $quotation->branch->city }}, {{ $quotation->branch->state }},
                                 {{ $quotation->branch->zip_code }}, {{ $quotation->branch->country }}
                             </li>
                         @else
-                            <li><strong>@lang('menu.business_location') </strong>
+                            <li><strong>@lang('menu.business_location') : </strong>
                                 {{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>@lang('menu.phone') </strong> <span>{{ $generalSettings['business__phone'] }}</span></li>
-                            <li><strong>@lang('menu.address') </strong> <span>{{ $generalSettings['business__address'] }}</span></li>
+                            <li><strong>@lang('menu.phone') : </strong> <span>{{ $generalSettings['business__phone'] }}</span></li>
+                            <li><strong>@lang('menu.address') : </strong> <span>{{ $generalSettings['business__address'] }}</span></li>
                         @endif
                     </ul>
                 </div>
                 <div class="col-md-4 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>@lang('menu.date') </strong> {{ $quotation->date . ' ' . $quotation->time }}
+                            <strong>@lang('menu.date') : </strong> {{ $quotation->date . ' ' . $quotation->time }}
                         </li>
                         <li>
-                            <strong>@lang('menu.quotation_id') </strong> {{ $quotation->invoice_id }}
+                            <strong>@lang('menu.quotation_id') : </strong> {{ $quotation->invoice_id }}
                         </li>
-                    <li><strong>@lang('menu.status') </strong>
+                    <li><strong>@lang('menu.status') : </strong>
                         <span class="sale_status">
                             <span class="badge bg-info">@lang('menu.quotation')</span>
                         </span>
                     </li>
-                    <li><strong>@lang('menu.shipment_status') </strong>
+                    <li><strong>@lang('menu.shipment_status') : </strong>
                         <span class="shipment_status">
                             @if ($quotation->shipment_status == null)
                                 <span class="badge bg-danger">{{ __('Not-Available') }}</span>
@@ -85,7 +85,7 @@
                         </span>
                     </li>
                     <li>
-                        <strong>@lang('menu.created_by') </strong>
+                        <strong>@lang('menu.created_by') : </strong>
                         @php
                             $admin_role = '';
                             $prefix = '';
@@ -220,14 +220,14 @@
           <div class="row">
             <div class="col-md-6">
                 <div class="details_area">
-                    <p><b>@lang('menu.shipping_details') </b></p>
+                    <p><b>@lang('menu.shipping_details') : </b></p>
                     <p class="shipping_details">
                         {{ $quotation->shipment_details ? $quotation->shipment_details : 'N/A' }}</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="details_area">
-                    <p><b>@lang('menu.note') </b></p>
+                    <p><b>@lang('menu.note') : </b></p>
                     <p class="sale_note">{{ $quotation->sale_note ? $quotation->sale_note : 'N/A' }}</p>
                 </div>
             </div>
@@ -310,7 +310,7 @@
                                         <p>@lang('menu.email') : {{ $generalSettings['business__email'] }}</p>
                                     @endif
                                 @endif
-                                <p class="bill_name"><b>@lang('menu.entered_by') </b>
+                                <p class="bill_name"><b>@lang('menu.entered_by') : </b>
                                     {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
                                 </p>
                             </div>
@@ -329,17 +329,17 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.customer') </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
+                            <li><strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}</li>
                             @if ($quotation->branch->add_sale_invoice_layout->customer_address)
-                                <li><strong>@lang('menu.address') </strong> {{ $quotation->customer ? $quotation->customer->address : '' }}</li>
+                                <li><strong>@lang('menu.address') : </strong> {{ $quotation->customer ? $quotation->customer->address : '' }}</li>
                             @endif
 
                             @if ($quotation->branch->add_sale_invoice_layout->customer_tax_no)
-                                <li><strong>@lang('menu.tax_number') </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}</li>
+                                <li><strong>@lang('menu.tax_number') : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}</li>
                             @endif
 
                             @if ($quotation->branch->add_sale_invoice_layout->customer_phone)
-                                <li><strong>@lang('menu.phone') </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}</li>
+                                <li><strong>@lang('menu.phone') : </strong> {{ $quotation->customer ? $quotation->customer->phone : '' }}</li>
                             @endif
                         </ul>
                     </div>
@@ -352,9 +352,9 @@
                     </div>
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> @lang('menu.invoice_no') </strong> {{ $quotation->invoice_id }}</li>
+                            <li><strong> @lang('menu.invoice_no') : </strong> {{ $quotation->invoice_id }}</li>
                             <li><strong>@lang('menu.date')</strong> <{{ $quotation->date . ' ' . $quotation->time }}</li>
-                            <li><strong> @lang('menu.entered_by') </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
+                            <li><strong> @lang('menu.entered_by') : </strong> {{ $quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}
                             </li>
                         </ul>
                     </div>
@@ -404,7 +404,7 @@
                                     @endif
                                 </td>
 
-                                <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
+                                <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) : </td>
 
                                 <td class="text-start">
                                     {{ $generalSettings['business__currency'] }}
@@ -454,7 +454,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>@lang('menu.net_total_amount') </strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ $generalSettings['business__currency'] }}
@@ -463,7 +463,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_discount') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($quotation->order_discount_type == 1)
@@ -476,7 +476,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_tax') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ $generalSettings['business__currency'] }}
@@ -487,7 +487,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.shipment_charge') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ $generalSettings['business__currency'] }}
@@ -497,7 +497,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.total_payable') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{ $generalSettings['business__currency'] }}
@@ -659,23 +659,23 @@
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>@lang('menu.customer') </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
+                                <strong>@lang('menu.customer') : </strong> {{ $quotation->customer ? $quotation->customer->name : 'Walk-In-Customer' }}
                             </li>
                             @if ($defaultLayout->customer_address)
                                 <li>
-                                    <strong>@lang('menu.address') </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
+                                    <strong>@lang('menu.address') : </strong>{{ $quotation->customer ? $quotation->customer->address : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_tax_no)
                                 <li>
-                                    <strong>@lang('menu.tax_number') </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
+                                    <strong>@lang('menu.tax_number') : </strong> {{ $quotation->customer ? $quotation->customer->tax_number : '' }}
                                 </li>
                             @endif
 
                             @if ($defaultLayout->customer_phone)
                                 <li>
-                                    <strong>@lang('menu.phone') </strong>{{ $quotation->customer ? $quotation->customer->phone : '' }}
+                                    <strong>@lang('menu.phone') : </strong>{{ $quotation->customer ? $quotation->customer->phone : '' }}
                                 </li>
                             @endif
                         </ul>
@@ -691,9 +691,9 @@
 
                     <div class="col-lg-4">
                         <ul class="list-unstyled">
-                            <li><strong> @lang('menu.quotation_id') </strong> {{ $quotation->invoice_id }}</li>
+                            <li><strong> @lang('menu.quotation_id') : </strong> {{ $quotation->invoice_id }}</li>
                             <li><strong>@lang('menu.date')</strong> {{ $quotation->date . ' ' . $quotation->time }}</li>
-                            <li><strong> @lang('menu.entered_by') </strong> {{$quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}</li>
+                            <li><strong> @lang('menu.entered_by') : </strong> {{$quotation->admin ? $quotation->admin->prefix . ' ' . $quotation->admin->name . ' ' . $quotation->admin->last_name : 'N/A' }}</li>
                         </ul>
                     </div>
                 </div>
@@ -741,7 +741,7 @@
                                     @endif
                                 </td>
 
-                                <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) </td>
+                                <td class="text-start">{{ $sale_product->quantity }} ({{ $sale_product->unit }}) : </td>
 
                                 <td class="text-start">
                                     {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -790,7 +790,7 @@
                     <table class="table modal-table table-sm table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><strong>@lang('menu.net_total_amount') </strong></td>
+                                <td class="text-start"><strong>@lang('menu.net_total_amount') : </strong></td>
                                 <td class="net_total text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -800,7 +800,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_discount') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_discount') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         @if ($quotation->order_discount_type == 1)
@@ -815,7 +815,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.order_tax') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.order_tax') : </strong></td>
                                 <td class="order_tax text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -826,7 +826,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.shipment_charge') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.shipment_charge') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}
@@ -836,7 +836,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-start"><strong> @lang('menu.total_payable') </strong></td>
+                                <td class="text-start"><strong> @lang('menu.total_payable') : </strong></td>
                                 <td class="text-end">
                                     <b>
                                         {{-- {{ $generalSettings['business__currency'] }} --}}

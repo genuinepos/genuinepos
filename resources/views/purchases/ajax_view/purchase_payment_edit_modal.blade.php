@@ -22,13 +22,13 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>@lang('menu.supplier') </strong>
+                                <li><strong>@lang('menu.supplier') : </strong>
                                     {{ $payment->purchase->supplier->name }}
                                 </li>
-                                <li><strong>@lang('menu.business') </strong>
+                                <li><strong>@lang('menu.business') : </strong>
                                     {{ $payment->purchase->supplier->business_name }}
                                 </li>
-                                <li><strong>@lang('menu.phone') </strong>
+                                <li><strong>@lang('menu.phone') : </strong>
                                     {{ $payment->purchase->supplier->phone }}
                                 </li>
                             </ul>
@@ -37,10 +37,10 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> @lang('menu.reference_id') </strong>
+                                <li><strong> @lang('menu.reference_id') : </strong>
                                     {{ $payment->purchase->invoice_id }}
                                 </li>
-                                <li><strong>@lang('menu.b_location') </strong>
+                                <li><strong>@lang('menu.b_location') : </strong>
                                     {!! $payment->purchase->branch ? $payment->purchase->branch->name . '/' . $payment->purchase->branch->branch_code : $generalSettings['business__shop_name'].'(<b>HO</b>)' !!}
                                 </li>
                             </ul>
@@ -53,12 +53,12 @@
                                 <li><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong>
                                     <span class="total_due">{{ $payment->purchase->due }}</span>
                                 </li>
-                                <li><strong>@lang('menu.date') </strong>
+                                <li><strong>@lang('menu.date') : </strong>
                                     {{
                                         date($generalSettings['business__date_format'], strtotime($payment->purchase->date)) . ' ' . date($timeFormat, strtotime($payment->purchase->time))
                                     }}
                                 </span> </li>
-                                <li><strong>@lang('menu.purchases_status') </strong>
+                                <li><strong>@lang('menu.purchases_status') : </strong>
                                     @if ($payment->purchase->purchase_status == 1)
                                         <span class="text-success"><b>@lang('menu.receive')</b></span>
                                     @elseif($payment->purchase->purchase_status == 2){
@@ -68,7 +68,7 @@
                                         <span class="text-primary"><b>@lang('menu.ordered')</b></span>
                                     @endif
                                 </li>
-                                <li><strong>@lang('menu.payment_status') </strong>
+                                <li><strong>@lang('menu.payment_status') : </strong>
                                     @php
                                         $payable = $payment->purchase->total_purchase_amount - $payment->purchase->total_return_amount;
                                     @endphp
@@ -90,7 +90,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.amount') </strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
@@ -102,7 +102,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.date') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
@@ -113,7 +113,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -137,7 +137,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.credit_account') </strong> </label>
+                        <label><strong>@lang('menu.credit_account') : </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -160,13 +160,13 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>@lang('menu.attach_document') </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
+                        <label><strong>@lang('menu.attach_document') : </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> @lang('menu.payment_note') </strong></label>
+                    <label><strong> @lang('menu.payment_note') : </strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note">{{ $payment->note }}</textarea>
                 </div>
 

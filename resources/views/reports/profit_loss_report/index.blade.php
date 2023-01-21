@@ -23,7 +23,7 @@
                     <h5>@lang('menu.daily_profit_loss_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back')
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                 </a>
             </div>
 
@@ -39,7 +39,7 @@
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-3">
-                                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                                            <label><strong>@lang('menu.business_location') : </strong></label>
                                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                 <option value="">@lang('menu.all')</option>
                                                                 <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
@@ -56,7 +56,7 @@
                                                 @endif
 
                                                 <div class="col-md-3">
-                                                    <label><strong>@lang('menu.from_date') </strong></label>
+                                                    <label><strong>@lang('menu.from_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -69,7 +69,7 @@
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label><strong>@lang('menu.to_date') </strong></label>
+                                                    <label><strong>@lang('menu.to_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -118,42 +118,42 @@
                                             <table class="table modal-table table-sm">
                                                 <tbody>
                                                     <tr>
-                                                        <th class="text-start"> @lang('menu.total_stock_adjustment') </th>
+                                                        <th class="text-start"> @lang('menu.total_stock_adjustment') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start"> @lang('menu.total_expense') </th>
+                                                        <th class="text-start"> @lang('menu.total_expense') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_transfer_shipping_charge') </th>
+                                                        <th class="text-start">@lang('menu.total_transfer_shipping_charge') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_sell_discount') </th>
+                                                        <th class="text-start">@lang('menu.total_sell_discount') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start"> @lang('menu.total_customer_reward') </th>
+                                                        <th class="text-start"> @lang('menu.total_customer_reward') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_sell_return') </th>
+                                                        <th class="text-start">@lang('menu.total_sell_return') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_payroll') </th>
+                                                        <th class="text-start">@lang('menu.total_payroll') : </th>
                                                         <td class="text-start"> 0.00</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_production_cost') </th>
+                                                        <th class="text-start">@lang('menu.total_production_cost') : </th>
                                                         <td class="text-start">0.00</td>
                                                     </tr>
                                                 </tbody>
@@ -176,17 +176,17 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_sell_shipping_charge') </th>
+                                                        <th class="text-start">@lang('menu.total_sell_shipping_charge') : </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_stock_recovered') </th>
+                                                        <th class="text-start">@lang('menu.total_stock_recovered') : </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
 
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.total_sell_round_off') </th>
+                                                        <th class="text-start">@lang('menu.total_sell_round_off') : </th>
                                                         <td class="text-start"> 0.0</td>
                                                     </tr>
                                                 </tbody>

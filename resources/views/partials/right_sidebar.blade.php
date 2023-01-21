@@ -46,7 +46,7 @@
             <ul class="d-flex flex-row justify-content-start">
                 <li class="icon text-white"><small class=""><i class="far fa-comment-alt fs-3"></i></small></li>
                 <li class="my-2 me-2 ms-1">
-                    <a href="#">
+                    <a href="{{ route('feedback.index') }}">
                         <p class="title text-white">@lang('menu.feedback')</p>
                     </a>
                 </li>
@@ -68,7 +68,7 @@
                 <li><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog fa-2x"></i></span></a></li>
 
                 <li>
-                    <a href="#" class="text-white" id="fullscreen"  onclick="toggleFullScreen(document.body)"><i class="fas fa-expand fa-2x"></i></a>
+                    <a href="#" class="text-white" id="btnFullscreen"><i class="fas fa-expand fa-2x"></i></a>
                 </li>
 
                 <li><a href="#" class="text-white" id="logout_option"><span><i class="fas fa-power-off fa-2x"></i></span></a></li>
@@ -123,8 +123,6 @@
             $("#closeRightSidebar").on('click', function(){
                 $("#rightSidebar").removeClass("open");
             });
-
-
 
             $("#shortcutUrl").on("change", function() {
                 if($("#shortcutUrl").is(":valid")) {
@@ -211,6 +209,38 @@
                         $(this).parents(".shorcut-box").remove();
                     }
                 });
+            });
+
+            function toggleFullscreen(elem) {
+                elem = elem || document.documentElement;
+                if (!document.fullscreenElement && !document.mozFullScreenElement &&
+                    !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                    if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                    } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                    } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                    } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                    }
+                    } else {
+                        if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                        } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                        } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                        }
+                    }
+                }
+                document.getElementById('btnFullscreen').addEventListener('click', function() {
+                toggleFullscreen();
+                });
+                document.getElementById('exampleImage').addEventListener('click', function() {
+                toggleFullscreen(this);
             });
         });
     </script>

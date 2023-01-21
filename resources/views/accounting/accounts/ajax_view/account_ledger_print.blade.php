@@ -30,10 +30,10 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') : </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
-        <p><b>@lang('menu.account') @lang('menu.ledger') </b></p>
+        <p><b>@lang('menu.account') @lang('menu.ledger') : </b></p>
     </div>
 </div>
 
@@ -41,10 +41,10 @@
     <div class="row">
         <div class="col-12">
             <ul class="list-unstyled">
-                <li><strong>@lang('menu.account_types') </strong> {{ App\Utils\Util::accountType($account->account_type) }}</li>
-                <li><strong>@lang('menu.account_name') </strong> {{ $account->name }}</li>
-                <li><strong>@lang('menu.bank') </strong> {{ $account->bank_name }}</li>
-                <li><strong>@lang('menu.balance') </strong> {{ App\Utils\Converter::format_in_bdt($account->balance) }}</li>
+                <li><strong>@lang('menu.account_types') : </strong> {{ App\Utils\Util::accountType($account->account_type) }}</li>
+                <li><strong>@lang('menu.account_name') : </strong> {{ $account->name }}</li>
+                <li><strong>@lang('menu.bank') : </strong> {{ $account->bank_name }}</li>
+                <li><strong>@lang('menu.balance') : </strong> {{ App\Utils\Converter::format_in_bdt($account->balance) }}</li>
             </ul>
         </div>
     </div>
@@ -160,7 +160,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_debit') </strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_debit') : </strong> {{ $generalSettings['business__currency'] }}
                     </td>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalDebit) }}
@@ -169,7 +169,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_credit') </strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_credit') : </strong> {{ $generalSettings['business__currency'] }}
                     </td>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
@@ -177,7 +177,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.closing_balance') </strong> {{ $generalSettings['business__currency'] }}</td>
+                    <td class="text-end"><strong>@lang('menu.closing_balance') : </strong> {{ $generalSettings['business__currency'] }}</td>
                     <td class="text-end">
                         @php
 

@@ -16,19 +16,19 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.warehouse') (From) </strong></li>
-                        <li><strong>@lang('menu.name') </strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>@lang('menu.phone') </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>@lang('menu.address') </strong> {{ $transfer->warehouse->address }}</li>
+                        <li><strong>@lang('menu.warehouse') (From) : </strong></li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.address') : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>@lang('menu.b_location') (To) </strong></li>
-                        <li><strong>@lang('menu.name') </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
-                        <li><strong>@lang('menu.phone') </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (To) : </strong></li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>@lang('menu.address') </strong>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
@@ -42,9 +42,9 @@
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>@lang('menu.date') </strong> {{ $transfer->date }}</li>
-                        <li><strong>@lang('menu.reference_id') </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>@lang('menu.status') </strong>
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
                             @if ($transfer->status == 1)
                             @lang('menu.pending')
                             @elseif($transfer->status == 2)
@@ -123,12 +123,12 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-4 text-center">
                 <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($transfer->invoice_id, $generator::TYPE_CODE_128)) }}">
                 <p class="p-0 m-0">{{ $transfer->invoice_id }}</b></small>
                 @if (env('PRINT_SD_OTHERS') == true)
-                    <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+                    <small class="d-block">@lang('menu.software_by')<b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 @endif
             </div>
         </div>

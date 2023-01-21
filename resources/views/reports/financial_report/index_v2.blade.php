@@ -33,7 +33,7 @@
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') </strong></label>
+                                                <label><strong>@lang('menu.business_location') : </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
@@ -49,7 +49,7 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.from_date') </strong></label>
+                                        <label><strong>@lang('menu.from_date') : </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>@lang('menu.to_date') </strong></label>
+                                        <label><strong>@lang('menu.to_date') : </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -113,20 +113,20 @@
                                                     {{-- Cash Flow from investing --}}
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.asset') </span>
+                                                            <span>@lang('menu.asset') : </span>
                                                         </th>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.fixed_asset') </em>
+                                                            <em>@lang('menu.fixed_asset') : </em>
                                                         </td>
                                                         <td class="text-start"><b><em>0.00</em></b>  </td>
                                                     </tr>
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.sales') </span>
+                                                            <span>@lang('menu.sales') : </span>
                                                         </th>
                                                     </tr>
 
@@ -142,7 +142,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_sale_due') </em>
+                                                            <em>@lang('menu.total_sale_due') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -152,7 +152,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_sale_return') </em>
+                                                            <em>@lang('menu.total_sale_return') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -162,13 +162,13 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.purchase') </span>
+                                                            <span>@lang('menu.purchase') : </span>
                                                         </th>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_purchase') </em>
+                                                            <em>@lang('menu.total_purchase') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -178,7 +178,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_purchase_due') </em>
+                                                            <em>@lang('menu.total_purchase_due') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -188,7 +188,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_purchase_return') </em>
+                                                            <em>@lang('menu.total_purchase_return') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -198,13 +198,13 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.expenses') </span>
+                                                            <span>@lang('menu.expenses') : </span>
                                                         </th>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_direct_expense') </em>
+                                                            <em>@lang('menu.total_direct_expense') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -224,13 +224,13 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.products') </span>
+                                                            <span>@lang('menu.products') : </span>
                                                         </th>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.closing_stock') </em>
+                                                            <em>@lang('menu.closing_stock') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -240,7 +240,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_stock_adjustment') </em>
+                                                            <em>@lang('menu.total_stock_adjustment') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -260,7 +260,7 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.loan_and_liabilities') </span>
+                                                            <span>@lang('menu.loan_and_liabilities') : </span>
                                                         </th>
                                                     </tr>
 
@@ -286,7 +286,7 @@
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.payable_loan_liabilities_due') </em>
+                                                            <em>@lang('menu.payable_loan_liabilities_due') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -296,13 +296,13 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.loan_and_advance') </span>
+                                                            <span>@lang('menu.loan_and_advance') : </span>
                                                         </th>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="text-start">
-                                                            <em>@lang('menu.total_loan_advance') </em>
+                                                            <em>@lang('menu.total_loan_advance') : </em>
                                                         </td>
 
                                                         <td class="text-start">
@@ -332,7 +332,7 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.profit_loss') </span>
+                                                            <span>@lang('menu.profit_loss') : </span>
                                                         </th>
                                                     </tr>
 
@@ -368,7 +368,7 @@
 
                                                     <tr>
                                                         <th class="text-start bg-secondary text-white" colspan="2">
-                                                            <span>@lang('menu.account_balance') </span>
+                                                            <span>@lang('menu.account_balance') : </span>
                                                         </th>
                                                     </tr>
 

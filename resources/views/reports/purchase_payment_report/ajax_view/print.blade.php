@@ -55,7 +55,7 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">@lang('menu.date')</th>
+                    <th class="text-start">@lang('menu.date') : </th>
                     <th class="text-start">@lang('menu.voucher_no')</th>
                     <th class="text-start">@lang('menu.supplier')</th>
                     <th class="text-start">{{ __('Pay Method') }}</th>

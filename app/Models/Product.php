@@ -7,6 +7,7 @@ use App\Models\Unit;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Warranty;
+use App\Models\BaseModel;
 use App\Models\SaleProduct;
 use App\Models\ComboProduct;
 use App\Models\ProductImage;
@@ -14,10 +15,12 @@ use App\Models\ProductBranch;
 use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use App\Models\ProductWarehouse;
-use Illuminate\Support\Facades\DB;
-use App\Models\BaseModel;
+use App\Models\Manufacturing\Process;
+use App\Models\Manufacturing\Production;
 use App\Models\TransferStockToBranchProduct;
+use App\Models\Manufacturing\ProcessIngredient;
 use App\Models\TransferStockToWarehouseProduct;
+use App\Models\TransferStockBranchToBranchProducts;
 
 class Product extends BaseModel
 {
@@ -57,6 +60,26 @@ class Product extends BaseModel
     public function sale_products()
     {
         return $this->hasMany(SaleProduct::class, 'product_id');
+    }
+
+    public function productions()
+    {
+        return $this->hasMany(Production::class, 'product_id');
+    }
+
+    public function processes()
+    {
+        return $this->hasMany(Process::class, 'product_id');
+    }
+
+    public function transferBranchToBranchProducts()
+    {
+        return $this->hasMany(TransferStockBranchToBranchProducts::class, 'product_id');
+    }
+
+    public function processIngredients()
+    {
+        return $this->hasMany(ProcessIngredient::class, 'product_id');
     }
 
     public function order_products()
@@ -111,14 +134,14 @@ class Product extends BaseModel
 
     public function updateProductCost()
     {
-        
+
         $generalSettings = config('generalSettings');
 
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
             $ordering = 'asc';
-        }else {
+        } else {
             $ordering = 'desc';
         }
 
@@ -129,6 +152,6 @@ class Product extends BaseModel
     public function stock_limit()
     {
         return $this->hasOne(ProductBranch::class)->where('branch_id', auth()->user()->branch_id)
-        ->select('id', 'branch_id', 'product_id', 'product_quantity');
+            ->select('id', 'branch_id', 'product_id', 'product_quantity');
     }
 }

@@ -344,6 +344,12 @@
             data: request,
             success: function(data) {
 
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
                 product_table.ajax.reload();
                 toastr.error(data);
             }

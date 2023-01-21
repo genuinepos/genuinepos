@@ -77,6 +77,7 @@
                     </ul>
                 </div>
             </div><br>
+
             @php $tax = $product->tax ? $product->tax->tax_percent : 0  @endphp
             @if ($product->is_combo == 1)
                 <div class="row">
@@ -147,7 +148,7 @@
                     </div>
                 @endif
                 <hr class="m-0">
-{{--
+
                 <div class="row">
                     <div class="heading">
                         <label class="p-0 m-0">@lang('menu.own')<strong>@lang('menu.business_location')</strong> @lang('menu.stock_details') </label>
@@ -155,21 +156,23 @@
                     <div class="table-responsive" id="branch_stock_details">
                         @include('product.products.ajax_view.partials.branch_stock_details')
                     </div>
-                </div> --}}
+                </div>
 
                 <hr class="m-0">
 
                 @if ($generalSettings['addons__branches'] == 1)
-                    <div class="row">
-                        <div class="heading">
-                            <label class="p-0 m-0">@lang('menu.another') <strong>@lang('menu.business_location')</strong> @lang('menu.stock_details') </label>
-                        </div>
-                        <div class="table-responsive" id="branch_stock_details">
-                            @include('product.products.ajax_view.partials.another_branch_details')
-                        </div>
-                    </div>
-                @endif
 
+                    @if (count($another_branch_stocks) > 0)
+                        <div class="row">
+                            <div class="heading">
+                                <label class="p-0 m-0">@lang('menu.another') <strong>@lang('menu.business_location'):</strong>@lang('menu.stock_details') </label>
+                            </div>
+                            <div class="table-responsive" id="branch_stock_details">
+                                @include('product.products.ajax_view.partials.another_branch_details')
+                            </div>
+                        </div>
+                    @endif
+                @endif
             @endif
 
         <div class="modal-footer text-end">

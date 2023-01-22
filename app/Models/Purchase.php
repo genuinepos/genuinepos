@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Supplier;
+use App\Models\BaseModel;
 use App\Models\Warehouse;
-use App\Models\User;
 use App\Models\PurchaseReturn;
 use App\Models\SupplierLedger;
 use App\Models\PurchaseProduct;
 use App\Models\PurchaseOrderProduct;
-use App\Models\BaseModel;
+use App\Models\TransferStockToWarehouse;
 
 class Purchase extends BaseModel
 {
@@ -27,7 +28,7 @@ class Purchase extends BaseModel
     {
         return $this->belongsTo(Branch::class, 'branch_id')->select(['id', 'name', 'branch_code', 'phone', 'city', 'state', 'zip_code', 'country', 'logo']);
     }
-    
+
     public function purchase_products()
     {
         return $this->hasMany(PurchaseProduct::class, 'purchase_id');
@@ -37,12 +38,12 @@ class Purchase extends BaseModel
     {
         return $this->hasMany(PurchaseOrderProduct::class);
     }
-    
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id','name', 'business_name', 'phone', 'email', 'address', 'prefix']);
     }
-    
+
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
@@ -61,5 +62,14 @@ class Purchase extends BaseModel
     public function ledger()
     {
         return $this->hasOne(SupplierLedger::class);
+    }
+
+    public function transfer_to_warehouse()
+    {
+        return $this->hasMany(TransferStockToWarehouse::class);
+    }
+    public function transfer_to_branch()
+    {
+        return $this->hasMany(TransferStockToBranch::class);
     }
 }

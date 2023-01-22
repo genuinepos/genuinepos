@@ -172,8 +172,6 @@ class SubCategoryController extends Controller
 
     public function delete(Request $request, $categoryId)
     {
-        return response()->json('Feature is disabled in this demo');
-
         if (!auth()->user()->can('categories')) {
 
             return response()->json('Access Denied');

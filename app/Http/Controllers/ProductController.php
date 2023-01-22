@@ -857,53 +857,78 @@ class ProductController extends Controller
                 'purchase_products',
                 'sale_products',
                 'order_products',
+                'productions',
+                'processes',
+                'processIngredients',
+                'transferBranchToBranchProducts',
                 'transfer_to_branch_products',
                 'transfer_to_warehouse_products',
             ]
         )->where('id', $productId)->first();
 
-        if (!is_null($deleteProduct)) {
+        if (count($deleteProduct->purchase_products) > 0) {
 
-            if ($deleteProduct->thumbnail_photo !== 'default.png') {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with purchase.']);
+        }
 
-                if (file_exists(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo))) {
+        if (count($deleteProduct->sale_products) > 0) {
 
-                    unlink(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo));
-                }
-            }
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with sales.']);
+        }
 
-            if ($deleteProduct->product_images->count() > 0) {
+        if (count($deleteProduct->order_products) > 0) {
 
-                foreach ($deleteProduct->product_images as $product_image) {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with purchase order.']);
+        }
 
-                    if (file_exists(public_path('uploads/product/' . $product_image->image))) {
+        if (count($deleteProduct->productions) > 0) {
 
-                        unlink(public_path('uploads/product/' . $product_image->image));
-                    }
-                }
-            }
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with manufacturing production.']);
+        }
 
-            if ($deleteProduct->product_variants->count() > 0) {
+        if (count($deleteProduct->processes) > 0) {
 
-                foreach ($deleteProduct->product_variants as $product_variant) {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with manufacturing process.']);
+        }
 
-                    if ($product_variant->variant_image) {
+        if (count($deleteProduct->processIngredients) > 0) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/' . $product_variant->variant_image))) {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with manufacturing process ingredients.']);
+        }
 
-                            unlink(public_path('uploads/product/variant_image/' . $product_variant->variant_image));
-                        }
-                    }
-                }
-            }
+        if (count($deleteProduct->transferBranchToBranchProducts) > 0) {
+
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with Transfer Stock Business Location To Business Location.']);
+        }
+
+        if (count($deleteProduct->transfer_to_branch_products) > 0) {
+
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with Transfer Stock Warehouse To Business Location.']);
+        }
+
+        if (count($deleteProduct->transfer_to_warehouse_products) > 0) {
+
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with Transfer Stock Business Location To warehouse.']);
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $deleteProduct = $this->productUtil->deleteProduct($deleteProduct);
 
             if ($deleteProduct) {
 
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $deleteProduct);
             }
 
-            $deleteProduct->delete();
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
+
+        DB::statement('ALTER TABLE products AUTO_INCREMENT = 1');
 
         return response()->json('Product deleted successfully');
     }

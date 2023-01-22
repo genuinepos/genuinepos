@@ -269,8 +269,7 @@
                                                     <label class="col-5"><b>@lang('menu.unit_cost') </b> </label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" name="product_cost" class="form-control"
-                                                        autocomplete="off" id="product_cost" placeholder="0.00" required>
-                                                        <span class="error error_product_cost"></span>
+                                                        autocomplete="off" id="product_cost" placeholder="0.00">
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,8 +278,7 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.price_exc_tax') </b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" required>
-                                                        <span class="error error_product_price"></span>
+                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')">
                                                     </div>
                                                 </div>
                                             </div>
@@ -289,8 +287,7 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.unit_cost') (Inc. Tax) </b> </label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')%" value="0.00" required>
-                                                        <span class="error error_product_cost_with_tax"></span>
+                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')%" value="0.00">
                                                     </div>
                                                 </div>
                                             </div>
@@ -299,8 +296,7 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.profit_margin')(%) </b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}" required>
-                                                        <span class="error error_profit"></span>
+                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
                                                     </div>
                                                 </div>
                                             </div>

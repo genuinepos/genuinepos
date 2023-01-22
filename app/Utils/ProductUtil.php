@@ -434,4 +434,45 @@ class ProductUtil
             }
         }
     }
+
+    public function deleteProduct($deleteProduct)
+    {
+        if (!is_null($deleteProduct)) {
+
+            if ($deleteProduct->thumbnail_photo !== 'default.png') {
+
+                if (file_exists(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo))) {
+
+                    unlink(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo));
+                }
+            }
+
+            if ($deleteProduct->product_images->count() > 0) {
+
+                foreach ($deleteProduct->product_images as $product_image) {
+
+                    if (file_exists(public_path('uploads/product/' . $product_image->image))) {
+
+                        unlink(public_path('uploads/product/' . $product_image->image));
+                    }
+                }
+            }
+
+            if ($deleteProduct->product_variants->count() > 0) {
+
+                foreach ($deleteProduct->product_variants as $product_variant) {
+
+                    if ($product_variant->variant_image) {
+
+                        if (file_exists(public_path('uploads/product/variant_image/' . $product_variant->variant_image))) {
+
+                            unlink(public_path('uploads/product/variant_image/' . $product_variant->variant_image));
+                        }
+                    }
+                }
+            }
+
+            $deleteProduct->delete();
+        }
+    }
 }

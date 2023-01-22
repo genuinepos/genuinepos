@@ -63,7 +63,10 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         th {padding: 0px;letter-spacing: 1px;}
     </style>
 </head>
-
+@php
+    $limit = 50;
+    $currentPublished = 0;
+@endphp
 <body>
     <div class="print_area">
         @if ($br_setting->is_continuous == 1)
@@ -150,7 +153,9 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                     @php $qty = isset($req->left_qty[$index]) ? $req->left_qty[$index] : 0; @endphp
 
                     @for ($i = 0; $i < $qty; $i++)
-
+                        @php
+                            $currentPublished += 1;
+                        @endphp
                         <div class="barcode_area text-center" style="margin-bottom: {{$br_setting->top_margin}}in; margin-left : {{ $br_setting->left_margin }}in; height:{{ $br_setting->sticker_height }}in; width:{{ $br_setting->sticker_width }}in; ">
                             <div class="barcode">
                                 <p class="company_name" style="margin: 0px;padding: 0px;font-size: 4px;">
@@ -185,6 +190,13 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                 @endif
                             </div>
                         </div>
+
+                        @if ($currentPublished == $limit)
+                            <div id="pageBreaker" style="page-break-after: always;"></div>
+                            @php
+                               $currentPublished = 0; 
+                            @endphp
+                        @endif
                     @endfor
                     @php $index++; @endphp
                 @endforeach

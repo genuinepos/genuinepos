@@ -377,9 +377,11 @@ class TransferToBranchController extends Controller
     public function delete($transferId)
     {
         $deleteTransferToBranch = TransferStockToBranch::with('transfer_products')
-            ->where('id', $transferId)
-            ->first();
-
+        ->where('id', $transferId)
+        ->first();
+        if (($deleteTransferToBranch->status) !== 1){
+            return response()->json(['errorMsg' => 'Transfer can\'t be deleted. One or more quantity has already been receive from this transfer.']);
+        }
         if (!is_null($deleteTransferToBranch)) {
 
             $storedTransferredProducts = $deleteTransferToBranch->transfer_products;

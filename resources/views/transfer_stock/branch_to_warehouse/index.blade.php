@@ -125,6 +125,10 @@
                 type:'post',
                 data:request,
                 success:function(data){
+                    if (!$.isEmptyObject(data.errorMsg)) {
+                        toastr.error(data.errorMsg, 'Attention');
+                        return;
+                    }
                     table.ajax.reload();
                     toastr.error(data);
                 }

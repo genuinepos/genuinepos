@@ -214,5 +214,19 @@
                 $('.data_id').prop('checked', false);
             }
         });
+        $(document).on('click', '.print_btn',function (e) {
+           e.preventDefault();
+            var body = $('.transfer_print_template').html();
+            var header = $('.heading_area').html();
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 1000,
+                header: null,
+            });
+        });
     </script>
 @endpush

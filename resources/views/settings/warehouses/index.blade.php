@@ -297,11 +297,9 @@
                 success:function(data){
 
                     if($.isEmptyObject(data.errorMsg)){
-
                         toastr.error(data);
                         table.ajax.reload();
                     }else{
-
                         toastr.error(data.errorMsg, 'Error');
                     }
                 }

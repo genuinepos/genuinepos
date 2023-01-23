@@ -192,6 +192,22 @@ class WarehouseController extends Controller
     public function delete(Request $request, $warehouseId)
     {
         $deleteWarehouse = Warehouse::where('id', $warehouseId)->first();
+
+        if (count($deleteWarehouse->transfer_stock_branch_to_branch) > 0){
+            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transfer branch to branch.']);
+        }
+        if (count($deleteWarehouse->transfer_stock_branch) > 0){
+            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transfer warehouse to branch.']);
+        }
+        if (count($deleteWarehouse->sale_product) > 0){
+            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in sale.']);
+        }
+        if (count($deleteWarehouse->transfer_to_branch) > 0){
+            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transferred.']);
+        }
+        if (count($deleteWarehouse->purchase) > 0) {
+            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in purchase.']);
+        }
         if (!is_null($deleteWarehouse)) {
 
             $deleteWarehouse->delete();

@@ -374,7 +374,10 @@ class TransferToWarehouseController extends Controller
         $deleteTransferToWarehouse = TransferStockToWarehouse::with('transfer_products')
             ->where('id', $transferId)
             ->first();
-
+        // return $deleteTransferToWarehouse->status;
+        if (($deleteTransferToWarehouse->status) !== 1){
+            return response()->json(['errorMsg' => 'Transfer can\'t be deleted. One or more quantity has already been receive from this transfer.']);
+        }
         if (!is_null($deleteTransferToWarehouse)) {
 
             $this->userActivityLogUtil->addLog(

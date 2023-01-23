@@ -26,4 +26,8 @@ class Supplier extends BaseModel
     {
         return $this->hasMany(SupplierPayment::class);
     }
+    public function supplier_ledgers()
+    {
+        return $this->hasMany(SupplierLedger::class);
+    }
 }

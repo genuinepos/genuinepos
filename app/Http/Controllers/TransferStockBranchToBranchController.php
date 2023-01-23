@@ -182,11 +182,7 @@ class TransferStockBranchToBranchController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
 
-        return view(
-
-            'transfer_stock.branch_to_branch.transfer_list',
-
-            compact('warehouses', 'branches')
+        return view('transfer_stock.branch_to_branch.transfer_list', compact('warehouses', 'branches')
         );
     }
 
@@ -502,6 +498,9 @@ class TransferStockBranchToBranchController extends Controller
         $deleteTransfer = TransferStockBranchToBranch::with('expense', 'expense.expense_payments')
             ->where('id', $transferId)->first();
 
+        if (($deleteTransfer->receive_status) !== 1){
+            return response()->json(['errorMsg' => 'Transfer can\'t be deleted. One or more quantity has already been receive from this transfer.']);
+        }
         if ($deleteTransfer->received_qty > 0) {
 
             return response()->json(['errorMsg' => 'Transfer can not be deleted. Cause one or more quantity has already been received from this transfer.']);

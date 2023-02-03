@@ -34,33 +34,51 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 
-    $customers = DB::table('customers')->get();
+    // $customers = DB::table('customers')->get();
 
-    foreach ($customers as $customer){
+    // foreach ($customers as $customer){
 
-        $customerOpeningBalance = new CustomerOpeningBalance();
-        $customerOpeningBalance->customer_id = $customer->id;
-        $customerOpeningBalance->amount = $customer->opening_balance;
-        $customerOpeningBalance->created_by_id = auth()->user()->id;
-        $customerOpeningBalance->save();
+    //     $customerOpeningBalance = new CustomerOpeningBalance();
+    //     $customerOpeningBalance->customer_id = $customer->id;
+    //     $customerOpeningBalance->amount = $customer->opening_balance;
+    //     $customerOpeningBalance->created_by_id = auth()->user()->id;
+    //     $customerOpeningBalance->save();
 
-        $customerCreditLimit = new CustomerCreditLimit();
-        $customerCreditLimit->customer_id = $customer->id;
-        $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
-        $customerCreditLimit->created_by_id = auth()->user()->id;
-        $customerCreditLimit->save();
-    }
+    //     $customerCreditLimit = new CustomerCreditLimit();
+    //     $customerCreditLimit->customer_id = $customer->id;
+    //     $customerCreditLimit->credit_limit = $customer->credit_limit ? $customer->credit_limit : 0;
+    //     $customerCreditLimit->created_by_id = auth()->user()->id;
+    //     $customerCreditLimit->save();
+    // }
 
-    $suppliers = DB::table('suppliers')->get();
+    // $suppliers = DB::table('suppliers')->get();
 
-    foreach ($suppliers as $supplier){
+    // foreach ($suppliers as $supplier){
 
-        $supplierOpeningBalance = new SupplierOpeningBalance();
-        $supplierOpeningBalance->supplier_id = $supplier->id;
-        $supplierOpeningBalance->amount = $supplier->opening_balance;
-        $supplierOpeningBalance->created_by_id = auth()->user()->id;
-        $supplierOpeningBalance->save();
-    }
+    //     $supplierOpeningBalance = new SupplierOpeningBalance();
+    //     $supplierOpeningBalance->supplier_id = $supplier->id;
+    //     $supplierOpeningBalance->amount = $supplier->opening_balance;
+    //     $supplierOpeningBalance->created_by_id = auth()->user()->id;
+    //     $supplierOpeningBalance->save();
+    // }
+
+    return $supplierPayments = DB::table('supplier_payments')
+        ->leftJoin('supplier_payment_invoices', 'supplier_payments.id', 'supplier_payment_invoices.supplier_payment_id')
+        ->select(
+            'supplier_payments.id',
+            'supplier_payments.payment_method_id',
+            'supplier_payments.account_id',
+            'supplier_payments.date',
+            'supplier_payments.voucher_no',
+            'supplier_payments.paid_amount',
+            // DB::raw('SUM(supplier_payment_invoices.paid_amount) as total_invoice_paid_amount'),
+            DB::raw('SUM(- IFNULL(supplier_payment_invoices.paid_amount, 0)) + supplier_payments.paid_amount as left_amount')
+        )
+        ->having('left_amount', '!=', 0)
+        ->groupBy('supplier_payments.id')
+        ->groupBy('supplier_payments.voucher_no')
+        ->groupBy('supplier_payment_invoices.supplier_payment_id')
+        ->get();
 });
 
 // Route::get('dbal', function() {

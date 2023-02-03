@@ -97,7 +97,8 @@ class CategoryController extends Controller
 
             $this->userActivityLogUtil->addLog(action: 1, subject_type: 20, data_obj: $addCategory);
         }
-        return response()->json('Category created Successfully');
+
+        return $addCategory;
     }
 
     public function edit($categoryId)

@@ -18,7 +18,7 @@
 
                     <div class="form-group mt-1">
                         <label><b>@lang('menu.parent_category') <span class="text-danger">*</span></b></label>
-                        <select name="parent_category_id" class="form-control " id="parent_category_id"
+                        <select name="parent_category_id" class="form-control" id="parent_category_id"
                             required>
                             <option value="">Select Parent Category</option>
                             @foreach ($categories as $row)

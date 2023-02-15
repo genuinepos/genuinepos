@@ -432,18 +432,33 @@
                             <tr>
                                 <th class="text-center">
                                     @if ($defaultLayout->show_shop_logo == 1)
+
                                         @if ($sale->branch)
+
                                             @if ($sale->branch->logo != 'default.png')
+
                                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                                             @else
-                                                <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $sale->branch->name }}</span>
+
+                                                <span style="font-family: 'Anton', sans-serif; font-size:12px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $sale->branch->name }}</span>
                                             @endif
                                         @else
-                                            @if ($generalSettings['business__business_logo'] != null)
+                                            @if ($generalSettings['business__shop_name'] != null)
+
                                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                             @else
+
                                                 <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $generalSettings['business__shop_name'] }}</span>
                                             @endif
+                                        @endif
+                                    @else
+
+                                        @if ($sale->branch)
+
+                                            <span style="font-family: 'Anton', sans-serif; font-size:12px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $sale->branch->name }}</span>
+                                        @else
+
+                                            <span style="font-family: 'Anton', sans-serif; font-size:12px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $generalSettings['business__shop_name'] }}</span>
                                         @endif
                                     @endif
                                 </th>
@@ -464,13 +479,13 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.phone') : </b>  {{ $sale->branch->phone }}</span>
+                                        <span>@lang('menu.phone') : {{ $sale->branch->phone }}</span>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.email') : </b> {{ $sale->branch->email }}</span>
+                                        <span>@lang('menu.email') : {{ $sale->branch->email }}</span>
                                     </th>
                                 </tr>
                             @else
@@ -482,13 +497,13 @@
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.phone') : </b> {{ $generalSettings['business__phone'] }} </span>
+                                        <span>@lang('menu.phone') : {{ $generalSettings['business__phone'] }} </span>
                                     </th>
                                 </tr>
 
                                 <tr>
                                     <th class="text-center">
-                                        <span><b>@lang('menu.email') : </b> {{ $generalSettings['business__email'] }} </span>
+                                        <span>@lang('menu.email') : {{ $generalSettings['business__email'] }} </span>
                                     </th>
                                 </tr>
                             @endif
@@ -501,26 +516,25 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.date') : </b> <span> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
+                                    @lang('menu.date') : <span> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th class="text-center">@lang('menu.inv_no') : <span>{{ $sale->invoice_id }}</span>
                                 </th>
                             </tr>
 
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.inv_no') : </b> <span>{{ $sale->invoice_id }}</span>
-                                </th>
-                            </tr>
-
-                            <tr>
-                                <th class="text-center">
-                                    <b>@lang('menu.customer') : </b> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                                    @lang('menu.customer') : <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                 </th>
                             </tr>
 
                             @if ($generalSettings['reward_point_settings__enable_cus_point'] == 1)
                                 <tr>
                                     <th class="text-center">
-                                        <b>{{ $generalSettings['reward_point_settings__point_display_name'] }} </b>
+                                        {{ $generalSettings['reward_point_settings__point_display_name'] }}
                                         <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span>
                                     </th>
                                 </tr>
@@ -543,7 +557,7 @@
                             @foreach ($sale->sale_products as $saleProduct)
                                 <tr>
                                     @php
-                                        $variant = $saleProduct->variant ? ' '.$saleProduct->variant->variant_name : '';
+                                        $variant = $saleProduct->variant ? ' - '.$saleProduct->variant->variant_name : '';
                                     @endphp
                                     <th class="text-start">
                                         {{ $loop->index + 1 }}. {{ Str::limit($saleProduct->product->name, 25, '').$variant }}{!! $saleProduct->ex_quantity != 0 ? '(<strong>EX</strong>'.$saleProduct->ex_quantity.')' : '' !!}
@@ -580,7 +594,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business__currency'] }} </th>
+                                <th class="text-end">@lang('menu.sale_tax') : {{ $generalSettings['business__currency'] }} </th>
                                 <th class="text-end">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)

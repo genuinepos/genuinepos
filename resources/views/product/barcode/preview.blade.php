@@ -15,7 +15,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         /* p {margin: 0px;padding: 0px;font-size: 7px;}
         p.sku {font-size: 7px;margin: 0px;padding: 0;font-weight: 700;margin-bottom: 1px;} */
         .company_name {margin: 0;}
-        .company_name {font-size: 8px !important;font-weight: bolder;margin: 0;padding: 0;}
+        .company_name {font-size: 10px !important;font-weight: 400;margin: 0;padding: 0;color: #000}
         .barcode {margin-bottom: -2px;}
 
 
@@ -35,7 +35,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                 size: 38mm 25mm;
                  /* margin: 5px 0px; */
                 /* margin: 0mm 15mm 0mm 15mm; */
-                margin-top: 0.8cm;
+                margin-top: 0.3cm;
                 margin-bottom: 28px;
             }
         @else 
@@ -57,9 +57,9 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
         body {font-family: Verdana, Geneva, Tahoma, sans-serif;}
 
-        .product_name {font-size: 9px;font-weight: 600;}
-        .product_price {font-size: 10px;letter-spacing: 0px !important;}
-        .product_code {font-size: 10px;font-weight: 600;}
+        .product_name {font-size: 10px;font-weight: 400;font-family: Arial, Helvetica, sans-serif;color: #000}
+        .product_price {font-size: 10px;font-weight: 400;letter-spacing: 0px !important;font-family: Arial, Helvetica, sans-serif;color: #000}
+        .product_code {font-size: 10px;font-weight: 400;color: #000}
         th {padding: 0px;letter-spacing: 1px;}
     </style>
 </head>
@@ -121,10 +121,10 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                             <th class="product_name">
                                                 @if (isset($req->is_product_name))
                                                     @php
-                                                        $variant = isset($req->is_product_variant) ? $req->product_variant[$index] : '';
+                                                        $variant = isset($req->is_product_variant) ? '-' . Str::limit($req->product_variant[$index], 10, '') : '';
                                                     @endphp
-                                                    {{ Str::limit($req->product_name[$index] . '' . $variant, 14, '') }}
-                                                    :{{ isset($req->is_supplier_prefix) ? $req->supplier_prefix[$index] : '' }}
+                                                    {{ Str::limit($req->product_name[$index], 12, '') . $variant }}
+                                                    {{ isset($req->is_supplier_prefix) ? ':'.$req->supplier_prefix[$index] : '' }}
                                                 @endif
                                             </th>
                                         </tr>

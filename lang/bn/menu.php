@@ -1939,4 +1939,5 @@ return [
     'delete_permission_msg' => 'আপনি মুছে ফেলার বিষয়ে নিশ্চিত?',
     'edit_expense_category' => 'ব্যয় বিভাগ সম্পাদনা করুন',
     'code' => 'কোড',
+    'sale_tax' => 'বিক্রয় কর',
 ];

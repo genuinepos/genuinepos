@@ -1939,4 +1939,5 @@ return [
   'delete_permission_msg' => 'Are you sure to delete?',
   'edit_expense_category' => 'Edit Expense Category',
   'code' => 'Code',
+  'sale_tax' => 'Sale Tax',
 ];

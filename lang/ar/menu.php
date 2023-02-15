@@ -1939,4 +1939,5 @@ return [
     'delete_permission_msg' => 'هل انت متأكد من الحذف؟',
     'edit_expense_category' => 'تحرير فئة المصاريف',
     'code' => 'الشفرة',
+    'sale_tax' => 'ضريبة البيع',
 ];

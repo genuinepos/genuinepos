@@ -131,6 +131,7 @@
                     $(".save-shortcut").prop("disabled", true);
                 }
             })
+            
             $(".save-shortcut").on("click", function() {
                 $(".shortcut-bar").prepend(`
                 <div class='shorcut-box'>
@@ -193,7 +194,6 @@
                     $(this).parents(".shorcut-box").remove();
                 });
 
-
                 $(".shortcut-modal").find(".shortcut-name").on("change", function(){
                     if($(this).is(":valid")) {
                         $(this).parents(".shorcut-box").find("a").attr('title', $(this).val());
@@ -224,6 +224,7 @@
                     } else if (elem.webkitRequestFullscreen) {
                     elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                     }
+
                     } else {
                         if (document.exitFullscreen) {
                         document.exitFullscreen();
@@ -237,11 +238,12 @@
                     }
                 }
                 document.getElementById('btnFullscreen').addEventListener('click', function() {
-                toggleFullscreen();
+                    toggleFullscreen();
                 });
-                document.getElementById('exampleImage').addEventListener('click', function() {
-                toggleFullscreen(this);
-            });
+
+                // document.getElementById('exampleImage').addEventListener('click', function() {
+                //     toggleFullscreen(this);
+                // });
         });
     </script>
 @endpush

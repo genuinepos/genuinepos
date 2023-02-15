@@ -44,11 +44,13 @@
                 success: function(data) {
 
                     $('.error').html('');
-                    toastr.success(data);
+                    toastr.success('Category Added Successfully');
                     $('#add_category_form')[0].reset();
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
                     table.ajax.reload();
+
+                    $('#parent_category_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 },error: function(err) {
 
                     $('.loading_button').hide();

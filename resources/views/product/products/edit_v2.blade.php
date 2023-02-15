@@ -41,7 +41,7 @@
                 method="POST">
                 @csrf
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                             <div class="element-body">
                                 <div class="row gx-2 gy-1">
@@ -520,7 +520,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                             <div class="element-body">
                                 <div class="row gx-2 g-1">
@@ -1696,8 +1696,7 @@
             success: function(data) {
                 $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully warranty is added.');
-                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
-                    .type+' '+data.duration_type+ ')' + '</option>');
+                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data.type+' '+data.duration_type+ ')' + '</option>');
                 $('#warranty_id').val(data.id);
                 $('#addWarrantyModal').modal('hide');
                 $('#add_warranty_form')[0].reset();
@@ -1750,6 +1749,7 @@
                         variant.variant_price + '">';
                         html += '</td>';
                         html += '<td>';
+                        
                         html += '<input type="file" name="variant_image[]" class="form-control" id="variant_image">';
                         html += '</td>';
                         html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';

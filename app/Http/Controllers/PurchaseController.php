@@ -14,18 +14,19 @@ use App\Utils\SupplierUtil;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use App\Utils\NameSearchUtil;
+use App\Models\GeneralSetting;
 use App\Models\ProductVariant;
 use App\Models\PurchaseReturn;
-use App\Models\GeneralSetting;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
 use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseReturnUtil;
+use App\Utils\SupplierPaymentUtil;
 use App\Utils\UserActivityLogUtil;
 use App\Models\PurchaseOrderProduct;
-use App\Services\GeneralSettingServiceInterface;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Services\GeneralSettingServiceInterface;
 
 class PurchaseController extends Controller
 {
@@ -33,6 +34,7 @@ class PurchaseController extends Controller
     protected $nameSearchUtil;
     protected $util;
     protected $supplierUtil;
+    protected $supplierPaymentUtil;
     protected $productStockUtil;
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
@@ -43,6 +45,7 @@ class PurchaseController extends Controller
         PurchaseUtil $purchaseUtil,
         Util $util,
         SupplierUtil $supplierUtil,
+        SupplierPaymentUtil $supplierPaymentUtil,
         ProductStockUtil $productStockUtil,
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
@@ -53,6 +56,7 @@ class PurchaseController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->util = $util;
         $this->supplierUtil = $supplierUtil;
+        $this->supplierPaymentUtil = $supplierPaymentUtil;
         $this->productStockUtil = $productStockUtil;
         $this->accountUtil = $accountUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
@@ -161,6 +165,7 @@ class PurchaseController extends Controller
     public function create()
     {
         if (!auth()->user()->can('purchase_add')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -233,6 +238,7 @@ class PurchaseController extends Controller
         try {
 
             DB::beginTransaction();
+            
             $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
             $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
@@ -399,6 +405,11 @@ class PurchaseController extends Controller
                 );
             }
 
+            if($request->purchase_due > 0) {
+
+                $this->supplierPaymentUtil->distributePurchaseDueAmount(request: $request, purchase: $addPurchase, paymentInvoicePrefix: $paymentInvoicePrefix);
+            }
+
             // update main product and variant price
             $loop = 0;
             foreach ($product_ids as $productId) {
@@ -548,6 +559,7 @@ class PurchaseController extends Controller
 
             $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
+            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $product_ids = $request->product_ids;
@@ -786,6 +798,11 @@ class PurchaseController extends Controller
             }
 
             $adjustedPurchase = $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
+
+            if($adjustedPurchase->due > 0) {
+
+                $this->supplierPaymentUtil->distributePurchaseDueAmount(request: $request, purchase: $adjustedPurchase, paymentInvoicePrefix: $paymentInvoicePrefix);
+            }
 
             // Add user Log
             $this->userActivityLogUtil->addLog(

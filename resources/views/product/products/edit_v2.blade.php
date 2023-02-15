@@ -1696,8 +1696,7 @@
             success: function(data) {
                 $('.loading_button').addClass('d-hide');
                 toastr.success('Successfully warranty is added.');
-                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data
-                    .type+' '+data.duration_type+ ')' + '</option>');
+                $('#warranty_id').append('<option value="' + data.id + '">' + data.name + ' (' + data.type+' '+data.duration_type+ ')' + '</option>');
                 $('#warranty_id').val(data.id);
                 $('#addWarrantyModal').modal('hide');
                 $('#add_warranty_form')[0].reset();

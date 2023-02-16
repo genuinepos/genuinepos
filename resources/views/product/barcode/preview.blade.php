@@ -18,7 +18,6 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         .company_name {font-size: 10px !important;font-weight: 400;margin: 0;padding: 0;color: #000}
         .barcode {margin-bottom: -2px;}
 
-
         @if ($br_setting->is_continuous == 1)
 
             .div {page-break-after: always;}
@@ -57,8 +56,8 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 
         body {font-family: Verdana, Geneva, Tahoma, sans-serif;}
 
-        .product_name {font-size: 10px;font-weight: 400;font-family: Arial, Helvetica, sans-serif;color: #000}
-        .product_price {font-size: 10px;font-weight: 400;letter-spacing: 0px !important;font-family: Arial, Helvetica, sans-serif;color: #000}
+        .product_name {font-size: 10px;font-weight: 400;color: #000}
+        .product_price {font-size: 10px;font-weight: 400;color: #000}
         .product_code {font-size: 10px;font-weight: 400;color: #000}
         th {padding: 0px;letter-spacing: 1px;}
     </style>

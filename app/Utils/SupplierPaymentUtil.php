@@ -233,6 +233,7 @@ class SupplierPaymentUtil
             ->groupBy('supplier_payments.id')
             ->groupBy('supplier_payments.voucher_no')
             ->groupBy('supplier_payment_invoices.supplier_payment_id')
+            ->groupBy('supplier_payment_invoices.payment_method_id')
             ->get();
 
         foreach ($supplierPayments as $supplierPayment) {

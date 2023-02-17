@@ -232,6 +232,7 @@ class SupplierPaymentUtil
             ->having('left_amount', '!=', 0)
             ->groupBy('supplier_payments.id')
             ->groupBy('supplier_payments.voucher_no')
+            ->groupBy('supplier_payments.date')
             ->groupBy('supplier_payments.payment_method_id')
             ->groupBy('supplier_payments.account_id')
             ->groupBy('supplier_payment_invoices.supplier_payment_id')

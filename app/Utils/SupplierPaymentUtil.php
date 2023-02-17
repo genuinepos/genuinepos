@@ -225,7 +225,7 @@ class SupplierPaymentUtil
                 'supplier_payments.account_id',
                 'supplier_payments.date',
                 'supplier_payments.voucher_no',
-                // 'supplier_payments.paid_amount',
+                'supplier_payments.paid_amount',
                 // DB::raw('SUM(supplier_payment_invoices.paid_amount) as total_invoice_paid_amount'),
                 DB::raw('SUM(- IFNULL(supplier_payment_invoices.paid_amount, 0)) + supplier_payments.paid_amount as left_amount')
             )
@@ -235,6 +235,7 @@ class SupplierPaymentUtil
             ->groupBy('supplier_payments.date')
             ->groupBy('supplier_payments.payment_method_id')
             ->groupBy('supplier_payments.account_id')
+            ->groupBy('supplier_payments.paid_amount')
             ->groupBy('supplier_payment_invoices.supplier_payment_id')
             ->get();
 

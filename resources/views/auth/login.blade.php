@@ -11,7 +11,7 @@
                     <div class="border-div">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-head">
+                                {{-- <div class="form-head">
                                     <div class="head p-1">
                                         @if ($generalSettings['business__business_logo'] != null)
                                             <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
@@ -24,7 +24,7 @@
                                             {{ config('speeddigit.name') }}, {{ config('speeddigit.slogan')}}
                                         </span>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="main-form">
                                    <div class="form_inner">
@@ -68,18 +68,22 @@
 
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
-                                    <div class="head addr-t pt-4">
+                                    <div class="head addr-t">
                                         {{-- <h2>
                                             Genuine Point Of Sale
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  config('speeddigit.app_logo_alt') }}">
+                                                    <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
                                             </p>
-                                            <p class="version"><span>@lang('menu.version')</span> {{ config('speeddigit.version') }}</p>
-                                            <p class="details"><span>@lang('menu.address')</span> {{ config('speeddigit.address') }}</p>
-                                            <p class="details"><span>@lang('menu.support')</span> {{ config('speeddigit.support_email') }}</p>
-                                            <p class="details"><span>@lang('menu.website')</span> {{ config('speeddigit.website') }}</p>
+                                            <table class="text-white">
+                                                <tbody>
+                                                    <tr class="details"><td>@lang('menu.address') :</td><td>{{ config('speeddigit.address') }}</td></tr>
+                                                    <tr class="details"><td>@lang('menu.support') :</td><td>{{ config('speeddigit.support_email') }}</td></tr>
+                                                    <tr class="details"><td>@lang('menu.website') :</td><td>{{ config('speeddigit.website') }}</td></tr>
+                                                </tbody>
+                                            </table>
 
                                             <div class="function-btn">
                                                 <a href="{{ config('speeddigit.facebook')  }}" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
@@ -105,6 +109,9 @@
 @endsection
 
 <style>
+    .head {
+        padding-top: 10px !important;
+    }
     .back_btn_wrapper {
         position: fixed;
         top: 10px;
@@ -150,7 +157,6 @@
     }
 
     .main-form {
-        margin-top: 11px;
         padding: 6px;
         border-radius: 3px;
         box-shadow: -1px 0px 10px 1px #0a0a0a52;
@@ -166,6 +172,11 @@
 
     .left-inner-addon i {
         color: #f5f5f5!important;
+    }
+
+    .btn-fn {
+        width: 30px !important;
+        height: 30px !important;
     }
 
     .btn-fn a {
@@ -189,14 +200,32 @@
     }
 
     .version {
-        margin-bottom: 40px;
+        margin-bottom: 5px;
         color: white;
         font-weight: 400;
-        font-size: 14px
+        font-size: 10px
+    }
+
+    .logo-main-sec {
+        margin-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .function-btn {
+        margin-top: 9px !important;
     }
 
     .login_opt_link .form-group input {
         display: inline-block;
+    }
+    table {
+        width: min-content;
+        margin: auto !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+    }
+    table td:first-child {
+        min-width: 60px;
     }
 </style>
 

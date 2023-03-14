@@ -327,9 +327,11 @@
         $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
         $('#pre_redeemed_amount').val(0);
 
-        var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+customerId;
+        // var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+customerId;
+        var url = "{{ route('contacts.customer.amounts.branch.wise', ':customerId') }}";
+        var route = url.replace(':customerId', customerId);
 
-        $.get(url, function(data) {
+        $.get(route, function(data) {
 
             $('#previous_due').val(data.total_sale_due);
 

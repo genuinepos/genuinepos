@@ -190,6 +190,29 @@ class POSController extends Controller
                 return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
             }
 
+            if ($request->customer_id && ($request->action == 1)) {
+
+                if ($request->total_due > 0) {
+
+                    $customerCreditLimit = DB::table('customer_credit_limits')
+                        ->where('customer_id', $request->customer_id)
+                        ->where('branch_id', auth()->user()->branch_id)
+                        ->select('credit_limit')
+                        ->first();
+
+                    $creditLimit = $customerCreditLimit ? $customerCreditLimit->credit_limit : 0;
+                    $__credit_limit = $creditLimit ? $creditLimit : 0;
+                    $msg_1 = 'Customer does not have any credit limit.';
+                    $msg_2 = "Customer Credit Limit is ${__credit_limit}.";
+                    $__show_msg = $__credit_limit ? $msg_2 : $msg_1;
+
+                    if ($request->total_due > $__credit_limit) {
+
+                        return response()->json(['errorMsg' => $__show_msg]);
+                    }
+                }
+            }
+
             // generate invoice ID
             $invoiceId =  $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
 

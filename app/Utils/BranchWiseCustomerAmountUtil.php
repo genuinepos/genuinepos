@@ -93,9 +93,8 @@ class BranchWiseCustomerAmountUtil
                 $totalRefund += $amount->amt;
             }
         }
-
+        
         $totalDue = ($totalSaleAndOrder + $openingBalance + $totalRefund) - $totalPaid - $totalReturn - $totalLess;
-
         $totalReturnDue = $totalReturn - ($totalSaleAndOrder + $openingBalance - $totalPaid) - $totalRefund;
 
         return [

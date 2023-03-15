@@ -504,4 +504,7 @@
     if($(window).width() >= 1200) {
         $(".function-sec .btn-bg").height(width / 1.6);
     }
+
+    var windowHeight = $(window).height();
+    $('.set-height').height(windowHeight - 331 + 'px');
 </script>

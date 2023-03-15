@@ -346,12 +346,26 @@ a.head-tbl-icon::before {
 }
 
 .set-height {
-    overflow-x: scroll;
+    overflow-y: scroll;
     height: calc(100% - 200px);
+    /* -ms-overflow-style: none; */
+    scrollbar-width: thin;
 }
 
 .set-height::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
+}
+
+.set-height::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.set-height::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.set-height::-webkit-scrollbar-thumb:hover {
+    background: #666;
 }
 
 .product-img img {

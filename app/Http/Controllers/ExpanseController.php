@@ -262,7 +262,7 @@ class ExpanseController extends Controller
             return redirect()->back();
         }
 
-        $categories = DB::table('expanse_categories')->get();
+        $categories = DB::table('expanse_categories')->orderBy('code', 'asc')->get();
 
         $taxes = DB::table('taxes')->get();
 
@@ -391,7 +391,7 @@ class ExpanseController extends Controller
     // Get all form Categories by ajax request
     public function allCategories()
     {
-        $categories = ExpanseCategory::orderBy('id', 'DESC')->get();
+        $categories = ExpanseCategory::orderBy('code', 'asc')->get();
         return response()->json($categories);
     }
 

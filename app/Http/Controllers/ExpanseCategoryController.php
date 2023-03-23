@@ -49,7 +49,7 @@ class ExpanseCategoryController extends Controller
 
         $addCategory = ExpanseCategory::create([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_leaves'), 4, "0", STR_PAD_LEFT),
+            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, "0", STR_PAD_LEFT),
         ]);
 
         return $addCategory;

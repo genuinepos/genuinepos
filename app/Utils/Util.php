@@ -169,19 +169,9 @@ class Util
             ],
         );
 
-        $lastExpenseCategory = DB::table('expanse_categories')->orderBy('id', 'desc')->first();
-        $code = 0;
-        if ($lastExpenseCategory) {
-
-            $code = ++$lastExpenseCategory->id;
-        } else {
-
-            $code = 1;
-        }
-
         $addExpenseCategory = ExpanseCategory::create([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : $code,
+            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, "0", STR_PAD_LEFT),
         ]);
 
         return response()->json($addExpenseCategory);

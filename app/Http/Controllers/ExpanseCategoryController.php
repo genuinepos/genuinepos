@@ -22,7 +22,7 @@ class ExpanseCategoryController extends Controller
     {
         if ($request->ajax()) {
 
-            $expenseCategories = DB::table('expanse_categories')->orderBy('name', 'asc')->get();
+            $expenseCategories = DB::table('expanse_categories')->orderBy('code', 'asc')->get();
 
             return DataTables::of($expenseCategories)
                 ->addIndexColumn()

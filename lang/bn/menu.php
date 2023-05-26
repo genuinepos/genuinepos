@@ -153,6 +153,7 @@ return [
     'add_expense' => 'যোগ করুন। ব্যয়',
     'expense_list' => 'ব্যয়ের তালিকা',
     'category_wise_expenses' => 'বিভাগ অনুযায়ী খরচ',
+    'category_wise_expense_report' => 'বিভাগ অনুযায়ী ব্যয় প্রতিবেদন',
     'category' => 'শ্রেণী',
     'expense_categories' => 'ব্যয় বিভাগ',
     'incomes' => 'আয়',

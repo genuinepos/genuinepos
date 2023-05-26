@@ -23,6 +23,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarrantyController;
@@ -72,7 +73,6 @@ use App\Http\Controllers\ImportPriceGroupProductController;
 use App\Http\Controllers\Report\ProfitLossReportController;
 use App\Http\Controllers\Report\StockInOutReportController;
 use App\Http\Controllers\AccountingRelatedSectionController;
-use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Report\ProductSaleReportController;
 use App\Http\Controllers\Report\PurchaseStatementController;
 use App\Http\Controllers\Report\SalePaymentReportController;
@@ -87,6 +87,7 @@ use App\Http\Controllers\Report\StockAdjustmentReportController;
 use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
+use App\Http\Controllers\Report\ExpenseReportCategoryWiseController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.dashboard');
 
@@ -760,6 +761,12 @@ Route::group(['prefix' => 'expenses'], function () {
 
         Route::get('/', [ExpanseReportController::class, 'index'])->name('reports.expenses.index');
         Route::get('print', [ExpanseReportController::class, 'print'])->name('reports.expenses.print');
+    });
+
+    Route::group(['prefix' => 'report/category/wise/expenses'], function () {
+
+        Route::get('/', [ExpenseReportCategoryWiseController::class, 'index'])->name('reports.expenses.category.wise.index');
+        Route::get('print', [ExpenseReportCategoryWiseController::class, 'print'])->name('reports.expenses.category.wise.print');
     });
 });
 

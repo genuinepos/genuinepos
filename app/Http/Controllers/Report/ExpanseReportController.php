@@ -16,7 +16,6 @@ class ExpanseReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-
     }
 
     // Index view of expense report
@@ -100,13 +99,13 @@ class ExpanseReportController extends Controller
                     }
                     return $html;
                 })
-                ->editColumn('tax_percent',  function ($row) use($converter) {
+                ->editColumn('tax_percent',  function ($row) use ($converter) {
                     $tax_amount = $row->total_amount / 100 * $row->tax_percent;
                     return '<b><span class="tax_amount" data-value="' . $tax_amount . '">' . $converter->format_in_bdt($tax_amount) . '(' . $row->tax_percent . '%)</span></b>';
                 })
                 ->editColumn('net_total', fn ($row) => '<span class="net_total" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
                 ->editColumn('paid', fn ($row) => '<span class="paid" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
-                ->editColumn('due', fn ($row) => '<span class="due" data-value="' . $row->due . '" class="text-danger">' . $this->converter->format_in_bdt($row->due) .'</span>')
+                ->editColumn('due', fn ($row) => '<span class="due" data-value="' . $row->due . '" class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'paid', 'due', 'net_total'])
                 ->make(true);
         }
@@ -125,49 +124,55 @@ class ExpanseReportController extends Controller
             ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $query->where('expanses.branch_id', NULL);
             } else {
+
                 $query->where('expanses.branch_id', $request->branch_id);
             }
         }
 
         if ($request->admin_id) {
+
             $query->where('expanses.admin_id', $request->admin_id);
         }
 
         if ($request->from_date) {
+
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
             $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
             $query->whereBetween('expanses.report_date', $date_range); // Final
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $expenses = $query->select(
-                'expanses.*',
-                'branches.id as branch_id',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'users.prefix as cr_prefix',
-                'users.name as cr_name',
-                'users.last_name as cr_last_name',
-            )->orderBy('expanses.report_date', 'desc')->get();
+
+            $query;
         } else {
-            $expenses = $query->select(
-                'expanses.*',
-                'branches.id as branch_id',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'users.prefix as cr_prefix',
-                'users.name as cr_name',
-                'users.last_name as cr_last_name',
-            )->where('expanses.branch_id', auth()->user()->branch_id)
-                ->orderBy('expanses.report_date', 'desc')->get();
+
+            $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id);
         }
 
-        return view('reports.expense_report.ajax_view.print', compact('expenses', 'fromDate', 'toDate', 'branch_id'));
+        $expenses = $query->select(
+            'expanses.*',
+            'branches.id as branch_id',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'users.prefix as cr_prefix',
+            'users.name as cr_name',
+            'users.last_name as cr_last_name',
+        )->orderBy('expanses.report_date', 'desc')->get();
+
+        $count = count($expenses);
+        $veryLastDate = $count > 0 ? $expenses->last()->report_date : '';
+        $lastRow = $count - 1;
+
+        return view(
+            'reports.expense_report.ajax_view.print',
+            compact('expenses', 'fromDate', 'toDate', 'branch_id', 'count', 'veryLastDate', 'lastRow')
+        );
     }
 
     public function getFilteredExpenseReport(Request $request)

@@ -1677,19 +1677,6 @@
                                             </a>
                                         </div>
                                     @endif
-
-                                    @if (auth()->user()->can('category_wise_expense') )
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('expanses.category.wise.expense') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-list-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.category_wise_expenses')</p>
-                                            </a>
-                                        </div>
-                                    @endif
                                 </div>
                             </div>
                             @if (
@@ -1716,6 +1703,17 @@
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">@lang('menu.expense_report')</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('reports.expenses.category.wise.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="far fa-list-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.category_wise_expense_report')</p>
                                             </a>
                                         </div>
                                     </div>

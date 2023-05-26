@@ -302,7 +302,7 @@
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
 
-                if(idValue == ''){
+                if(idValue == '') {
 
                     countErrorField += 1;
                     var fieldName = $('#'+inputId).data('name');

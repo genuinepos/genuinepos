@@ -12,7 +12,7 @@
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else
-                            @if ($generalSettings['business__business_logo'] != null)
+                            @if ($generalSettings['business__business_logo'])
                                 <img style="height: 40px; width:110px;"
                                 src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                 alt="logo" class="logo__img">

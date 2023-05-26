@@ -29,7 +29,7 @@
                                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                                         @endif
                                     @else
-                                        @if ($generalSettings['business__business_logo'] != null)
+                                        @if ($generalSettings['business__business_logo'])
                                             <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
@@ -167,25 +167,25 @@
                     <table class="table modal-table table-sm table-bordered">
                         <thead>
                             <tr>
-                                <th class="text-start">@lang('menu.sl')</th>
-                                <th class="text-start">@lang('menu.department')</th>
-                                <th class="text-start">{{ __('Sold Price') }}</th>
+                                <th class="text-start fw-bold">@lang('menu.sl')</th>
+                                <th class="text-start fw-bold">@lang('menu.description')</th>
+                                <th class="text-start fw-bold">{{ __('Sold Price') }}</th>
 
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
-                                    <th class="text-end">@lang('menu.warranty')</th>
+                                    <th class="text-end fw-bold">@lang('menu.warranty')</th>
                                 @endif
 
-                                <th class="text-end">@lang('menu.price')</th>
+                                <th class="text-end fw-bold">@lang('menu.price')</th>
 
                                 @if ($defaultLayout->product_discount)
-                                    <th class="text-end">@lang('menu.discount')</th>
+                                    <th class="text-end fw-bold">@lang('menu.discount')</th>
                                 @endif
 
                                 @if ($defaultLayout->product_tax)
-                                    <th class="text-end">@lang('menu.tax')</th>
+                                    <th class="text-end fw-bold">@lang('menu.tax')</th>
                                 @endif
 
-                                <th class="text-end">@lang('menu.subtotal')</th>
+                                <th class="text-end fw-bold">@lang('menu.subtotal')</th>
                             </tr>
                         </thead>
                         <tbody class="sale_print_product_list">

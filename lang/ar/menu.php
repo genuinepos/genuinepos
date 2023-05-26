@@ -153,6 +153,7 @@ return [
     'add_expense' => 'يضيف. مصروف',
     'expense_list' => 'قائمة المصاريف',
     'category_wise_expenses' => 'فئة المصاريف الحكيمة',
+    'category_wise_expense_report' => 'تقرير المصاريف الحكيمة للفئة',
     'category' => 'فئة',
     'expense_categories' => 'فئات المصاريف',
     'incomes' => 'الدخل',

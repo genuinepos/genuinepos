@@ -15,9 +15,7 @@
 </style>
 
 @php
-    $totalExpense = 0;
-    $totalPaid = 0;
-    $totalDue = 0;
+    $totalAmount = 0;
     $branch = '';
     $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
@@ -84,7 +82,7 @@
 
 <div class="row mt-2">
     <div class="col-12 text-center">
-        <h6 style="text-transform:uppercase;"><strong>@lang('menu.expense_report') </strong></h6>
+        <h6 style="text-transform:uppercase;"><strong>@lang('menu.category_wise_expense_report') </strong></h6>
     </div>
 </div>
 
@@ -105,107 +103,78 @@
         <table class="table modal-table table-sm table-bordered print_table">
             <thead>
                 <tr>
+                    <th class="text-start">@lang('menu.date')</th>
                     <th class="text-start">@lang('menu.reference_no')</th>
-                    <th class="text-start">@lang('menu.description')</th>
-                    <th class="text-start">@lang('menu.b_location')</th>
+                    <th class="text-start">@lang('menu.business_location')</th>
                     <th class="text-end">@lang('menu.total_amount')</th>
-                    <th class="text-end">@lang('menu.paid')</th>
-                    <th class="text-end">@lang('menu.due')</th>
                 </tr>
             </thead>
             <tbody>
                 @php
-                    $previousDate = '';
-                    $dateTotalExpense = 0;
-                    $dateTotalPaid = 0;
-                    $dateTotalDue = 0;
+                    $previousCategoryId = '';
+                    $dateTotalAmount = 0;
                     $isSameGroup = true;
-                    $lastDate = null;
-                    $lastDateTotalExpense = 0;
-                    $lastDateTotalPaid = 0;
-                    $lastDateTotalDue = 0;
+                    $lastCategoryId = null;
+                    $lastDateTotalAmount = 0;
                 @endphp
                 @foreach ($expenses as $ex)
                     @php
-                        $totalExpense += $ex->net_total_amount;
-                        $totalPaid += $ex->paid;
-                        $totalDue += $ex->due;
-
+                        $totalAmount += $ex->amount;
                         $date = date($__date_format, strtotime($ex->report_date));
-                        $isSameGroup = (null != $lastDate && $lastDate == $date) ? true : false;
-                        $lastDate = $date;
+                        $isSameGroup = (null != $lastCategoryId && $lastCategoryId == $ex->category_id) ? true : false;
+                        $lastCategoryId = $ex->category_id;
                     @endphp
 
                     @if ($isSameGroup == true)
 
                         @php
-                            $dateTotalExpense += $ex->net_total_amount;
-                            $dateTotalPaid += $ex->paid;
-                            $dateTotalDue += $ex->due;
+                            $dateTotalAmount += $ex->amount;
                         @endphp
                     @else
-                        @if ($dateTotalExpense != 0 || $dateTotalPaid != 0 || $dateTotalDue != 0)
+                        @if ($dateTotalAmount != 0)
                             <tr>
                                 <td colspan="3" class="fw-bold text-end">@lang('menu.total') : </td>
-                                <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($dateTotalExpense) }}</td>
-                                <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($dateTotalPaid) }}</td>
-                                <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($dateTotalDue) }}</td>
+                                <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($dateTotalAmount) }}</td>
                             </tr>
                         @endif
 
-                        @php $sum = 0; @endphp
+                        @php $dateTotalAmount = 0; @endphp
                     @endif
 
-                    @if ($previousDate != $date)
+                    @if ($previousCategoryId != $ex->category_id)
                         @php
-                            $previousDate = $date;
-                            $dateTotalExpense += $ex->net_total_amount;
-                            $dateTotalPaid += $ex->paid;
-                            $dateTotalDue += $ex->due;
+                            $previousCategoryId = $ex->category_id;
+                            $dateTotalAmount += $ex->amount;
                         @endphp
 
                         <tr>
-                            <th class="text-start" colspan="6">{{ $date }} </th>
+                            <td class="text-start text-uppercase fw-bold" colspan="4">{{ $ex->category_name.' ('.$ex->category_code.')' }} </td>
                         </tr>
                     @endif
 
                     <tr>
-                        <td class="text-start">{{ $ex->invoice_id }}</td>
-
-                        <td class="text-start">
-                            @php
-                                $expenseDescriptions = DB::table('expense_descriptions')
-                                    ->where('expense_id', $ex->id)
-                                    ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
-                                    ->select('expanse_categories.name', 'expanse_categories.code', 'expense_descriptions.amount')
-                                    ->get();
-                            @endphp
-                            @foreach ($expenseDescriptions as $exDescription)
-                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . ') : </b>'. App\Utils\Converter::format_in_bdt($exDescription->amount) !!} <br>
-                            @endforeach
-                        </td>
+                        <td class="text-start">{{ $date }}</td>
+                        <td class="text-start fw-bold">{{ $ex->invoice_id }}</td>
 
                         <td class="text-start">
                             @if ($ex->branch_name)
+
                                 {!! $ex->branch_name . '/' . $ex->branch_code . '(<b>B.L.</b>)' !!}
                             @else
+
                                 {!! $generalSettings['business__shop_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->net_total_amount) }}</td>
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->paid) }}</td>
-                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->due) }}</td>
+                        <td class="text-end">{{ App\Utils\Converter::format_in_bdt($ex->amount) }}</td>
                     </tr>
 
                     @php
-                        $__veryLastDate = date($__date_format, strtotime($veryLastDate));
-                        $currentDate = $date;
-                        if ($currentDate == $__veryLastDate) {
+                        $__veryLastCategoryId = $veryLastCategoryId;
+                        $currentCategoryId = $ex->category_id;
+                        if ($currentCategoryId == $__veryLastCategoryId) {
 
-                            $lastDateTotalExpense += $ex->net_total_amount;
-                            $lastDateTotalPaid += $ex->paid;
-                            $lastDateTotalDue += $ex->due;
+                            $lastDateTotalAmount += $ex->amount;
                         }
                     @endphp
 
@@ -213,9 +182,7 @@
 
                         <tr>
                             <td colspan="3" class="fw-bold text-end">@lang('menu.total') : </td>
-                            <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($lastDateTotalExpense) }}</td>
-                            <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($lastDateTotalPaid) }}</td>
-                            <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($lastDateTotalDue) }}</td>
+                            <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($lastDateTotalAmount) }}</td>
                         </tr>
                     @endif
                 @endforeach
@@ -230,23 +197,9 @@
         <table class="table modal-table table-sm table-bordered print_table">
             <thead>
                 <tr>
-                    <th class="text-end">@lang('menu.total_expense') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_amount') : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <th class="text-end">@lang('menu.total_paid') : {{$generalSettings['business__currency']}}</th>
-                    <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalPaid) }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
-                    <td class="text-end">
-                        {{ App\Utils\Converter::format_in_bdt($totalDue) }}
+                        {{ App\Utils\Converter::format_in_bdt($totalAmount) }}
                     </td>
                 </tr>
             </thead>

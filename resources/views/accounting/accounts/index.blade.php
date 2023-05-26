@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{asset('backend/asset/css/select2.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'Account List - ')
 @section('content')

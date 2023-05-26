@@ -116,23 +116,23 @@
         },
         columns: [
             { data: 'name', name: 'name'},
-            { data: 'opening_balance', name: 'opening_balance', className: 'text-end'},
-            { data: 'total_sale', name: 'total_sale', className: 'text-end'},
-            { data: 'total_paid', name: 'total_paid', className: 'text-end'},
-            { data: 'total_sale_due', name: 'total_sale_due', className: 'text-end'},
-            { data: 'total_sale_return_due', name: 'total_sale_return_due', className: 'text-end'},
+            { data: 'opening_balance', name: 'opening_balance', className: 'text-end fw-bold'},
+            { data: 'total_sale', name: 'total_sale', className: 'text-end fw-bold'},
+            { data: 'total_paid', name: 'total_paid', className: 'text-end fw-bold'},
+            { data: 'total_sale_due', name: 'total_sale_due', className: 'text-end fw-bold'},
+            { data: 'total_sale_return_due', name: 'total_sale_return_due', className: 'text-end fw-bold'},
         ],
         fnDrawCallback: function() {
             var totalSale = sum_table_col($('.data_tbl'), 'total_sale');
-            $('#total_sale').text(parseFloat(totalSale).toFixed(2));
+            $('#total_sale').text(bdFormat(totalSale));
             var totalPaid = sum_table_col($('.data_tbl'), 'total_paid');
-            $('#total_paid').text(parseFloat(totalPaid).toFixed(2));
+            $('#total_paid').text(bdFormat(totalPaid));
             var totalOpeningBalance = sum_table_col($('.data_tbl'), 'opening_balance');
-            $('#total_op_blc_due').text(parseFloat(totalOpeningBalance).toFixed(2));
+            $('#total_op_blc_due').text(bdFormat(totalOpeningBalance));
             var totalDue = sum_table_col($('.data_tbl'), 'total_purchase_due');
-            $('#total_sale_due').text(parseFloat(totalDue).toFixed(2));
+            $('#total_sale_due').text(bdFormat(totalDue));
             var totalReturnDue = sum_table_col($('.data_tbl'), 'total_purchase_return_due');
-            $('#total_return_due').text(parseFloat(totalReturnDue).toFixed(2));
+            $('#total_return_due').text(bdFormat(totalReturnDue));
         },
     });
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Report;
 
-use App\Utils\Converter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -10,46 +9,63 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CustomerReportController extends Controller
 {
-    protected $converter;
-    public function __construct(Converter $converter)
-    {
-        $this->converter = $converter;
-
-    }
-
-    // Index view of supplier report
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = config('generalSettings');
-            $customers = '';
-            $query = DB::table('customers')->where('status', 1);
-            if ($request->customer_id) {
-                $query->where('customers.id', $request->customer_id);
-            }
 
-            $customers = $query->select(
-                'customers.name',
-                // 'customers.contact_id',
-                'customers.phone',
-                'customers.address',
-                'customers.opening_balance',
-                'customers.total_paid',
-                'customers.total_sale',
-                'customers.total_sale_due',
-                'customers.total_sale_return_due'
-            );
+            $generalSettings = config('generalSettings');
+            $branchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
+
+            $customers = DB::table('customers')
+                ->select(
+                    'customers.id',
+                    'customers.contact_id',
+                    'customers.name',
+                    'customers.phone',
+                )->orderBy('customers.name');
 
             return DataTables::of($customers)
                 ->editColumn('name', function ($row) {
-                    return $row->name.'(<b>'.$row->phone.'</b>)';
+
+                    return $row->name . '(<b>' . $row->phone . '</b>)';
                 })
-                ->editColumn('opening_balance', fn ($row) => '<span class="opening_balance" data-value="' . $row->opening_balance . '">' . $this->converter->format_in_bdt($row->opening_balance) . '</span>')
-                ->editColumn('total_paid', fn ($row) => '<span class="total_paid" data-value="' . $row->total_paid . '">' . $this->converter->format_in_bdt($row->total_paid) . '</span></>')
-                ->editColumn('total_sale_due', fn ($row) => '<span class="total_purchase_due" data-value="' . $row->total_sale_due . '">' . $this->converter->format_in_bdt($row->total_sale_due) . '</span>')
-                ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . $row->total_sale . '">' . $this->converter->format_in_bdt($row->total_sale) . '</span>')
-                ->editColumn('total_sale_return_due', fn ($row) => '<span class="total_sale_return_due" data-value="' . $row->total_sale_return_due . '">' . $this->converter->format_in_bdt($row->total_sale_return_due) . '</span>')
-                ->rawColumns(['name', 'opening_balance', 'total_paid', 'total_sale', 'total_sale_due', 'total_due', 'total_sale_return_due'])
+                ->editColumn('opening_balance', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+
+                    $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
+                    return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
+                })
+
+                ->editColumn('total_sale', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+
+                    $totalSale = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale'];
+                    return '<span class="total_sale" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
+                })
+
+                ->editColumn('total_paid', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+
+                    $totalPaid = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_paid'];
+                    return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
+                })
+
+                ->editColumn('total_sale_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+
+                    $totalSaleDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
+                    return '<span class="total_sale_due" data-value="' . $totalSaleDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleDue) . '</span>';
+                })
+
+                ->editColumn('total_return', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+
+                    $totalReturn = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_return'];
+                    return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+                })
+
+                ->editColumn('total_sale_return_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+
+                    $totalSaleReturnDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_return_due'];
+                    return '<span class="total_sale_return_due" data-value="' . $totalSaleReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleReturnDue) . '</span>';
+                })
+
+                ->rawColumns(['name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due'])
                 ->make(true);
         }
 
@@ -61,21 +77,21 @@ class CustomerReportController extends Controller
     {
         $customerReports = '';
         $query = DB::table('customers')->where('status', 1);
+
         if ($request->customer_id) {
+
             $query->where('customers.id', $request->customer_id);
         }
 
-        $customerReports = $query->select(
+        $branchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
+
+        $customerReports = DB::table('customers')->select(
+            'customers.id',
+            'customers.contact_id',
             'customers.name',
-            // 'customers.contact_id',
             'customers.phone',
-            'customers.address',
-            'customers.opening_balance',
-            'customers.total_paid',
-            'customers.total_sale',
-            'customers.total_sale_due',
-            'customers.total_sale_return_due'
-        )->get();
-        return view('reports.customer_report.ajax_view.print', compact('customerReports'));
+        )->orderBy('customers.name')->get();
+
+        return view('reports.customer_report.ajax_view.print', compact('customerReports', 'branchWiseCustomerAmountUtil'));
     }
 }

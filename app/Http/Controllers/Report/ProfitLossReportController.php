@@ -18,7 +18,7 @@ class ProfitLossReportController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     // Index view of profit loss report
@@ -317,12 +317,14 @@ class ProfitLossReportController extends Controller
     {
         $stock_adjustments = '';
         $sales = '';
+        $saleReturns = '';
         $saleProducts = '';
         $expanses = '';
         $payrolls = '';
         $saleProducts = '';
         $transferStBranch = '';
         $transferStWarehouse = '';
+
         $fromDate = '';
         $toDate = '';
         $branch_id = $request->branch_id;
@@ -333,13 +335,17 @@ class ProfitLossReportController extends Controller
         $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
             ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
+        // $saleProductQuery = DB::table('sale_products')->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+        //     ->select(DB::raw('sum(quantity * unit_cost_inc_tax) as total_unit_cost'));
+
         $saleProductQuery = DB::table('purchase_sale_product_chains')
             ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
             ->leftJoin('sale_products', 'purchase_sale_product_chains.sale_product_id', 'sale_products.id')
+            ->leftJoin('products', 'purchase_sale_product_chains.sale_product_id', 'products.id')
             ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
             ->select(
-                DB::raw('SUM(net_unit_cost * sold_qty) as total_unit_cost'),
-                 // DB::raw(
+                DB::raw('SUM(net_unit_cost * sold_qty) as total_unit_cost')
+                // DB::raw(
                 //     'SUM(IF(purchase_products.net_unit_cost, products.product_cost_with_tax, 0)
                 //         * purchase_sale_product_chains.sold_qty
                 //     ) as total_unit_cost'
@@ -353,8 +359,11 @@ class ProfitLossReportController extends Controller
 
         $saleQuery = DB::table('sales')->select(
             DB::raw('sum(total_payable_amount) as total_sale'),
-            DB::raw('sum(sale_return_amount) as total_return'),
             DB::raw('sum(order_tax_amount) as total_order_tax'),
+        );
+
+        $saleReturnQuery = DB::table('sale_returns')->select(
+            DB::raw('sum(total_return_amount) as total_sale_return'),
         );
 
         $expenseQuery = DB::table('expanses')->select(DB::raw('sum(net_total_amount) as total_expense'));
@@ -370,6 +379,7 @@ class ProfitLossReportController extends Controller
 
                 $adjustmentQuery->where('branch_id', NULL);
                 $saleQuery->where('sales.branch_id', NULL);
+                $saleReturnQuery->where('branch_id', NULL)->get();
                 $expenseQuery->where('expanses.branch_id', NULL);
                 $payrollQuery->where('users.branch_id', NULL);
                 $saleProductQuery->where('sales.branch_id', NULL);
@@ -380,6 +390,7 @@ class ProfitLossReportController extends Controller
                 $adjustmentQuery->where('branch_id', $request->branch_id);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id);
+                $saleReturnQuery->where('branch_id', $request->branch_id)->get();
                 $payrollQuery->where('users.branch_id', $request->branch_id);
                 $saleProductQuery->where('sales.branch_id', $request->branch_id);
                 $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
@@ -389,12 +400,13 @@ class ProfitLossReportController extends Controller
 
         if ($request->from_date) {
 
-            $fromDate = date('Y-m-d', strtotime($request->from_date));
-            $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
-            //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
-            $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $adjustmentQuery->whereBetween('stock_adjustments.report_date_ts', $date_range);
             $saleQuery->whereBetween('sales.report_date', $date_range);
+            $saleReturnQuery->whereBetween('sale_returns.report_date', $date_range)->get();
             $expenseQuery->whereBetween('expanses.report_date', $date_range);
             $payrollQuery->whereBetween('hrm_payroll_payments.report_date', $date_range);
             $saleProductQuery->whereBetween('sales.report_date', $date_range);
@@ -405,21 +417,21 @@ class ProfitLossReportController extends Controller
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $stock_adjustments = $adjustmentQuery->get();
-            $sales = $saleQuery->where('sales.status', 1)->get();
+            $sales = $saleQuery->whereIn('sales.status', [1, 3])->get();
+            $saleReturns = $saleReturnQuery->get();
             $expense = $expenseQuery->get();
             $payrolls = $payrollQuery->get();
-            $saleProducts = $saleProductQuery->where('sales.status', 1)->get();
+            $saleProducts = $saleProductQuery->whereIn('sales.status', [1, 3])->get();
             $transferStBranch = $transferStBranchQuery->get();
             $transferStWarehouse = $transferStWarehouseQuery->get();
         } else {
 
             $stock_adjustments = $adjustmentQuery->where('branch_id', auth()->user()->branch_id)->get();
-            $sales = $saleQuery->where('sales.status', 1)
-                ->where('branch_id', auth()->user()->branch_id)->get();
+            $sales = $saleQuery->whereIn('sales.status', [1, 3])->where('branch_id', auth()->user()->branch_id)->get();
+            $saleReturns = $saleReturnQuery->where('branch_id', auth()->user()->branch_id)->get();
             $expense = $expenseQuery->where('branch_id', auth()->user()->branch_id)->get();
             $payrolls = $payrollQuery->where('users.branch_id', auth()->user()->branch_id)->get();
-            $saleProducts = $saleProductQuery->where('sales.status', 1)
-                ->where('users.branch_id', auth()->user()->branch_id)->get();
+            $saleProducts = $saleProductQuery->whereIn('sales.status', [1, 3])->where('users.branch_id', auth()->user()->branch_id)->get();
             $transferStBranch = $transferStBranchQuery->where('users.branch_id', auth()->user()->branch_id)->get();
             $transferStWarehouse = $transferStWarehouseQuery->where('users.branch_id', auth()->user()->branch_id)->get();
         }
@@ -427,7 +439,7 @@ class ProfitLossReportController extends Controller
         $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
         $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
         $totalSale = $sales->sum('total_sale');
-        $totalReturn = $sales->sum('total_return');
+        $totalSaleReturn = $saleReturns->sum('total_return');
         $totalOrderTax = $sales->sum('total_order_tax');
         $totalExpense = $expense->sum('total_expense');
         $totalPayroll = $payrolls->sum('total_payroll');
@@ -441,7 +453,7 @@ class ProfitLossReportController extends Controller
                 'totalStockAdjustmentRecovered',
                 'totalSale',
                 'totalExpense',
-                'totalReturn',
+                'totalSaleReturn',
                 'totalOrderTax',
                 'totalPayroll',
                 'totalTotalUnitCost',

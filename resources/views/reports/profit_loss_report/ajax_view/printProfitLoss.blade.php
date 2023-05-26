@@ -195,7 +195,7 @@
                             <tr>
                                 <td class="text-end"><strong>@lang('menu.total_sell_return') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-end">
-                                    ({{ App\Utils\Converter::format_in_bdt($totalReturn) }})
+                                    ({{ App\Utils\Converter::format_in_bdt($totalSaleReturn) }})
                                 </td>
                             </tr>
 
@@ -215,7 +215,7 @@
                                 $netProfit = $grossProfit
                                             - $totalStockAdjustmentAmount
                                             - $totalExpense
-                                            - $totalReturn
+                                            - $totalSaleReturn
                                             - $totalOrderTax
                                             - $totalPayroll
                                             - $totalTransferShipmentCost;

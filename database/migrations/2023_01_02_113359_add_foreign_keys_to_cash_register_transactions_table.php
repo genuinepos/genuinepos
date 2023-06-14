@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToCashRegisterTransactionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -31,4 +31,4 @@ class AddForeignKeysToCashRegisterTransactionsTable extends Migration
             $table->dropForeign('cash_register_transactions_sale_id_foreign');
         });
     }
-}
+};

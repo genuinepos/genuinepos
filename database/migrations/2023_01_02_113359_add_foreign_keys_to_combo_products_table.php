@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToComboProductsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,4 +33,4 @@ class AddForeignKeysToComboProductsTable extends Migration
             $table->dropForeign('combo_products_product_variant_id_foreign');
         });
     }
-}
+};

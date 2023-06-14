@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToPaymentMethodSettingsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,4 +33,4 @@ class AddForeignKeysToPaymentMethodSettingsTable extends Migration
             $table->dropForeign('payment_method_settings_payment_method_id_foreign');
         });
     }
-}
+};

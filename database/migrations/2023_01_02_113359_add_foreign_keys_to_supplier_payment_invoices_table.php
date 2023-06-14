@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToSupplierPaymentInvoicesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,4 +33,4 @@ class AddForeignKeysToSupplierPaymentInvoicesTable extends Migration
             $table->dropForeign('supplier_payment_invoices_supplier_return_id_foreign');
         });
     }
-}
+};

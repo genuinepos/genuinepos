@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToRoleHasPermissionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -31,4 +31,4 @@ class AddForeignKeysToRoleHasPermissionsTable extends Migration
             $table->dropForeign('role_has_permissions_role_id_foreign');
         });
     }
-}
+};

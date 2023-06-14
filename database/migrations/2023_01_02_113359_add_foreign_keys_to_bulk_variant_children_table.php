@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToBulkVariantChildrenTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -29,4 +29,4 @@ class AddForeignKeysToBulkVariantChildrenTable extends Migration
             $table->dropForeign('bulk_variant_children_bulk_variant_id_foreign');
         });
     }
-}
+};

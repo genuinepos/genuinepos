@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToSvJobSheetsPartsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,4 +33,4 @@ class AddForeignKeysToSvJobSheetsPartsTable extends Migration
             $table->dropForeign('sv_job_sheets_parts_product_variant_id_foreign');
         });
     }
-}
+};

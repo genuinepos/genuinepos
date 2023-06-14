@@ -62,6 +62,6 @@ class ShortMenusSeeder extends Seeder
             array('id' => '45', 'url' => 'settings.cash.counter.index', 'name' => 'Cash Counter', 'icon' => 'fas fa-store', 'created_at' => NULL, 'updated_at' => NULL)
         );
 
-        \DB::table('short_menus')->insert($short_menus);
+        \Illuminate\Support\Facades\DB::table('short_menus')->insert($short_menus);
     }
 }

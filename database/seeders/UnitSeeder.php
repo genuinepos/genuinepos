@@ -27,6 +27,6 @@ class UnitSeeder extends Seeder
             array('name' => 'Litter', 'code_name' => '1', 'dimension' => NULL, 'created_at' => '2021-11-18 18:32:46', 'updated_at' => '2021-11-18 18:32:46'),
             array('name' => 'Miter', 'code_name' => 'MI', 'dimension' => NULL, 'created_at' => '2022-11-20 17:46:50', 'updated_at' => '2022-11-20 17:46:50'),
         );
-        \DB::table('units')->insert($units);
+        \Illuminate\Support\Facades\DB::table('units')->insert($units);
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('hrm_leavetypes', function (Blueprint $table) {
             $table->id('id');
-            $table->unsignedBigInteger('branch_id')->after('id')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('leave_type');
             $table->integer('max_leave_count');
             $table->integer('leave_count_interval');

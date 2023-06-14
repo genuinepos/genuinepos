@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('expanse_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('branch_id')->after('id')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('name');
             $table->string('code');
             $table->timestamps();

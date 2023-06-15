@@ -14,7 +14,7 @@
                     @elseif(auth()->user()->role_type == 2)
                     (@lang('menu.admin'))
                     @else
-                        {{ auth()->user()->roles()->first()->name }}
+                        {{ auth()->user()?->roles()?->first()?->name }}
                     @endif
                 </li>
             </ul>
@@ -131,7 +131,7 @@
                     $(".save-shortcut").prop("disabled", true);
                 }
             })
-            
+
             $(".save-shortcut").on("click", function() {
                 $(".shortcut-bar").prepend(`
                 <div class='shorcut-box'>

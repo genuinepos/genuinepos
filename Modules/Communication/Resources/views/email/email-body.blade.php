@@ -144,7 +144,7 @@
                 @method('DELETE')
                 @csrf
             </form>
-            
+
         </div>
     </div>
 </div>
@@ -159,7 +159,7 @@
     var email_table = $('.data_tbl').DataTable({
         "processing": true,
 
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [
             [10, 25, 50, 100, 500, 1000, -1],
             [10, 25, 50, 100, 500, 1000, "All"]
@@ -194,7 +194,7 @@
                 success: function(data) {
                     $('.loading_button').hide();
                     $('.emailBodyTable').DataTable().ajax.reload();
-                    
+
                     toastr.success(data);
                 },
                 error: function(err) {
@@ -237,10 +237,10 @@
                     $('.rich_data_view').html(data.template.body_format);
 
                     $('#body_format').val(data.template.body_format);
-                    
+
                     $('#format_name').val(data.template.format_name);
                     $('#mail_subject').val(data.template.mail_subject);
-                    
+
 
                     $('.emailBodyTable').DataTable().ajax.reload();
                 },

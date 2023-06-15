@@ -1,3 +1,4 @@
+
 @extends('layout.master')
 @push('stylesheets')
 
@@ -165,7 +166,7 @@
     var email_table = $('.data_tbl').DataTable({
         "processing": true,
 
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatable_page_entry'] }}"),
         "lengthMenu": [
             [10, 25, 50, 100, 500, 1000, -1],
             [10, 25, 50, 100, 500, 1000, "All"]
@@ -208,7 +209,7 @@
             cache: false,
             processData: false,
             success: function(data) {
-                
+
                 $('#server_name').val("");
                 $('#host').val("");
                 $('#port').val("");
@@ -243,7 +244,7 @@
         });
     });
 
-    
+
     $('#resetForm').on('click', function(e){
         $('#server_name').val("");
         $('#host').val("");
@@ -329,7 +330,7 @@
                 success: function(data) {
                     $('.loading_button').hide();
                     $('.emailBodyTable').DataTable().ajax.reload();
-                    
+
                     toastr.success(data);
                 },
                 error: function(err) {
@@ -378,7 +379,7 @@
                     $('#encryption').val(data.serverCredentialVal.encryption);
                     $('#name').val(data.serverCredentialVal.name);
                     $('#mail_server_primary_id').val(data.serverCredentialVal.id);
-                     
+
                     $('.emailBodyTable').DataTable().ajax.reload();
                 },
                 error: function(err) {
@@ -455,6 +456,6 @@
         });
     });
 
- 
+
 </script>
 @endpush

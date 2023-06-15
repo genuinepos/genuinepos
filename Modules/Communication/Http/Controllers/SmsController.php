@@ -89,7 +89,7 @@ class SmsController extends Controller
 
             foreach ($request->group_id as $ids) {
 
-                $numbers = Contact::where('group_id', $ids)->get();
+                $numbers = Contact::where('contact_group_id', $ids)->get();
                 foreach ($numbers as $number) {
                     array_push($numbersArray, $number->phone_number);
                 }

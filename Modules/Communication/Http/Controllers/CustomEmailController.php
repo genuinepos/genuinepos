@@ -106,7 +106,7 @@ class CustomEmailController extends Controller
 
             foreach ($request->group_id as $ids) {
 
-                $email = Contact::where('group_id', $ids)->get();
+                $email = Contact::where('contact_group_id', $ids)->get();
                 foreach ($email as $email) {
                     array_push($emailArray, $email->email);
                 }

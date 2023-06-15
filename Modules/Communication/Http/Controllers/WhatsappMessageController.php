@@ -87,7 +87,7 @@ class WhatsappMessageController extends Controller
         if(!empty($request->group_id)){
 
             foreach($request->group_id as $id){
-                $numbers = Contact::where('group_id', $id)->get();
+                $numbers = Contact::where('contact_group_id', $id)->get();
                 foreach($numbers as $number){
                     array_push($numbersArray, $number->phone_number);
                 }

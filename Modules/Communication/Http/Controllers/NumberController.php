@@ -5,14 +5,14 @@ namespace Modules\Communication\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\Communication\Entities\ContactGroup;
-use Modules\Communication\Entities\Contacts;
+use Modules\Communication\Entities\Contact;
 use Modules\Communication\Http\Controllers\Controller;
 
 class NumberController extends Controller
 {
     public function index(Request $request)
     {
-        $numbers = Contacts::all();
+        $numbers = Contact::all();
         if ($request->ajax()) {
             return DataTables::of($numbers)
                 ->addIndexColumn()
@@ -52,7 +52,7 @@ class NumberController extends Controller
             'group_name' => 'required'
         ]);
 
-        $number = new Contacts();
+        $number = new Contact();
 
         $number->phone_number = $request->phone_number;
         $number->email = $request->email;
@@ -68,7 +68,7 @@ class NumberController extends Controller
     public function edit(Request $request)
     {
         $groups = ContactGroup::all();
-        $number = Contacts::find($request->id);
+        $number = Contact::find($request->id);
         return view('communication::contacts.list.ajax_view_unit.edit_modal_body', compact('number','groups'));
     }
 
@@ -83,7 +83,7 @@ class NumberController extends Controller
             'group_name' => 'required'
         ]);
 
-        $number = Contacts::find($request->id);
+        $number = Contact::find($request->id);
         $number->group_id = $request->group_name;
         $number->name = $request->name;
         $number->phone_number = $request->phone_number;
@@ -98,7 +98,7 @@ class NumberController extends Controller
     public function destroy(Request $request)
     {
 
-        $number = Contacts::find($request->id);
+        $number = Contact::find($request->id);
         $number->delete();
         return response()->json('Contacts delete successfully');
     }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\Communication\Entities\Sms;
 use Modules\Communication\Entities\ContactGroup;
-use Modules\Communication\Entities\Contacts;
+use Modules\Communication\Entities\Contact;
 use Modules\Communication\Http\Controllers\Controller;
 use Modules\Communication\Interface\SmsServiceInterface;
 
@@ -61,7 +61,7 @@ class SmsController extends Controller
 
         $sms = Sms::all();
         $groupIds = ContactGroup::pluck('id');
-        $filtered_contact_numbers = Contacts::whereNotNull('phone_number')->whereIn('group_id', $groupIds)->get();
+        $filtered_contact_numbers = Contact::whereNotNull('phone_number')->whereIn('group_id', $groupIds)->get();
         return view('communication::sms.index', [
             'sms' => $sms,
             'filtered_contact_numbers' => $filtered_contact_numbers,
@@ -89,7 +89,7 @@ class SmsController extends Controller
 
             foreach ($request->group_id as $ids) {
 
-                $numbers = Contacts::where('group_id', $ids)->get();
+                $numbers = Contact::where('group_id', $ids)->get();
                 foreach ($numbers as $number) {
                     array_push($numbersArray, $number->phone_number);
                 }

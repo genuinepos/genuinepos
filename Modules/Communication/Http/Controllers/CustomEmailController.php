@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 use Modules\Communication\Entities\Email;
-use Modules\Communication\Entities\Contacts;
+use Modules\Communication\Entities\Contact;
 use Modules\Communication\Mail\WelcomeEmail;
 use App\Interface\FileUploaderServiceInterface;
 use Modules\Communication\Entities\ContactGroup;
@@ -77,7 +77,7 @@ class CustomEmailController extends Controller
 
         $mails = Email::all();
         $groupIds = ContactGroup::pluck('id');
-        $filtered_contact_email = Contacts::whereNotNull('email')->whereIn('group_id', $groupIds)->get();
+        $filtered_contact_email = Contact::whereNotNull('email')->whereIn('group_id', $groupIds)->get();
         return view('communication::email.index', [
             'mails' => $mails,
             'filtered_contact_email' => $filtered_contact_email,
@@ -106,7 +106,7 @@ class CustomEmailController extends Controller
 
             foreach ($request->group_id as $ids) {
 
-                $email = Contacts::where('group_id', $ids)->get();
+                $email = Contact::where('group_id', $ids)->get();
                 foreach ($email as $email) {
                     array_push($emailArray, $email->email);
                 }
@@ -140,9 +140,9 @@ class CustomEmailController extends Controller
             'title' => 'Mail from ItSolutionStuff.com',
             'body' => 'This is for testing email using smtp.'
         ];
-         
+
         Mail::to('your_email@gmail.com')->send(new SendWeeklyPostsEmail($testMailData));
-           
+
         dd("Email is sent successfully.");
         return response()->json('Mail sent successfully');
     }

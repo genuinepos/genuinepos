@@ -2,7 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HRM\LeaveController;
+use App\Http\Controllers\HRM\ShiftController;
+use App\Http\Controllers\HRM\HolidayController;
+use App\Http\Controllers\HRM\PayrollController;
+use App\Http\Controllers\HRM\AllowanceController;
+use App\Http\Controllers\HRM\DashboardController;
 use App\Http\Controllers\HRM\LeaveTypeController;
+use App\Http\Controllers\HRM\AttendanceController;
+use App\Http\Controllers\HRM\DepartmentController;
+use App\Http\Controllers\HRM\DesignationController;
 use App\Http\Controllers\Report\PayrollReportController;
 use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\Report\PayrollPaymentReportController;
@@ -11,21 +19,21 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], fun
     // Designations route group
     Route::group(['prefix' => 'designations'], function () {
 
-        Route::get('/', 'DesignationController@index')->name('hrm.designations');
-        Route::get('/ajax-all-designation', 'DesignationController@allDesignation')->name('hrm.designations.all');
-        Route::post('/hrm/designation/store', 'DesignationController@storeDesignation')->name('hrm.designations.store');
-        Route::post('/hrm/designation/update', 'DesignationController@updateDesignation')->name('hrm.designations.update');
-        Route::delete('hrm/delete/{designationId}', 'DesignationController@deleteDesignation')->name('hrm.designations.delete');
+        Route::get('/', [DesignationController::class, 'index'])->name('hrm.designations');
+        Route::get('/ajax-all-designation', [DesignationController::class, 'allDesignation'])->name('hrm.designations.all');
+        Route::post('/hrm/designation/store', [DesignationController::class, 'storeDesignation'])->name('hrm.designations.store');
+        Route::post('/hrm/designation/update', [DesignationController::class, 'updateDesignation'])->name('hrm.designations.update');
+        Route::delete('hrm/delete/{designationId}', [DesignationController::class, 'deleteDesignation'])->name('hrm.designations.delete');
     });
 
     //Departments routes group
     Route::group(['prefix' => 'departments'], function () {
 
-        Route::get('/', 'DepartmentController@index')->name('hrm.departments');
-        Route::get('/ajax-all-department', 'DepartmentController@alldepartment')->name('hrm.departments.all');
-        Route::post('/hrm/departments/store', 'DepartmentController@storedepartment')->name('hrm.departments.store');
-        Route::post('/hrm/departments/update', 'DepartmentController@updatedepartments')->name('hrm.departments.update');
-        Route::delete('hrm/delete/{departmentId}', 'DepartmentController@deletedepartment')->name('hrm.department.delete');
+        Route::get('/', [DepartmentController::class, 'index'])->name('hrm.departments');
+        Route::get('/ajax-all-department', [DepartmentController::class, 'alldepartment'])->name('hrm.departments.all');
+        Route::post('/hrm/departments/store', [DepartmentController::class, 'storedepartment'])->name('hrm.departments.store');
+        Route::post('/hrm/departments/update', [DepartmentController::class, 'updatedepartments'])->name('hrm.departments.update');
+        Route::delete('hrm/delete/{departmentId}', [DepartmentController::class, 'deletedepartment'])->name('hrm.department.delete');
     });
 
     //Leave type routes group
@@ -41,91 +49,91 @@ Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], fun
     //Holidays routes group
     Route::group(['prefix' => 'holidays'], function () {
 
-        Route::get('/', 'HolidayController@index')->name('hrm.holidays');
-        Route::get('/ajax-all-holidays', 'HolidayController@allholidays')->name('hrm.holidays.all');
-        Route::post('/hrm/holidays/store', 'HolidayController@storeholidays')->name('hrm.holidays.store');
-        Route::get('/hrm/holidays/edit/{id}', 'HolidayController@edit')->name('hrm.holidays.edit');
-        Route::post('/hrm/holidays/update', 'HolidayController@updateholiday')->name('hrm.holidays.update');
-        Route::delete('hrm/holidays/{id}', 'HolidayController@deleteholidays')->name('hrm.holidays.delete');
+        Route::get('/', [HolidayController::class, 'index'])->name('hrm.holidays');
+        Route::get('/ajax-all-holidays', [HolidayController::class, 'allholidays'])->name('hrm.holidays.all');
+        Route::post('/hrm/holidays/store', [HolidayController::class, 'storeholidays'])->name('hrm.holidays.store');
+        Route::get('/hrm/holidays/edit/{id}', [HolidayController::class, 'edit'])->name('hrm.holidays.edit');
+        Route::post('/hrm/holidays/update', [HolidayController::class, 'updateholiday'])->name('hrm.holidays.update');
+        Route::delete('hrm/holidays/{id}', [HolidayController::class, 'deleteholidays'])->name('hrm.holidays.delete');
     });
 
     //Allowance & deduction routes group
     Route::group(['prefix' => 'allowance-deduction'], function () {
 
-        Route::get('/', 'AllowanceController@index')->name('hrm.allowance');
-        Route::get('/ajax-all-allowance', 'AllowanceController@allallowance')->name('hrm.allowance.all');
-        Route::post('/hrm/allowance/store', 'AllowanceController@storeallowance')->name('hrm.allowance.store');
-        Route::get('/ajax-all-employees', 'AllowanceController@getemployee')->name('hrm.get.all.employee');
-        Route::get('edit/{alowanceId}', 'AllowanceController@edit')->name('hrm.allowance.edit');
-        Route::post('/hrm/allowance/update', 'AllowanceController@updateallowance')->name('hrm.allowance.update');
-        Route::delete('hrm/allowance/{id}', 'AllowanceController@deleteallowance')->name('hrm.allowance.delete');
+        Route::get('/', [AllowanceController::class, 'index'])->name('hrm.allowance');
+        Route::get('/ajax-all-allowance', [AllowanceController::class, 'allallowance'])->name('hrm.allowance.all');
+        Route::post('/hrm/allowance/store', [AllowanceController::class, 'storeallowance'])->name('hrm.allowance.store');
+        Route::get('/ajax-all-employees', [AllowanceController::class, 'getemployee'])->name('hrm.get.all.employee');
+        Route::get('edit/{alowanceId}', [AllowanceController::class, 'edit'])->name('hrm.allowance.edit');
+        Route::post('/hrm/allowance/update', [AllowanceController::class, 'updateallowance'])->name('hrm.allowance.update');
+        Route::delete('hrm/allowance/{id}', [AllowanceController::class, 'deleteallowance'])->name('hrm.allowance.delete');
     });
 
     //Leave  routes group
     Route::controller(LeaveController::class)->prefix('leaves')->group(function () {
 
-        Route::get('/', 'LeaveController@index')->name('hrm.leaves.index');
-        Route::get('department/employees/{departmentId}', 'LeaveController@departmentEmployees');
-        Route::post('store', 'LeaveController@store')->name('hrm.leaves.store');
-        Route::get('edit/{id}', 'LeaveController@edit')->name('hrm.leaves.edit');
-        Route::post('update/{id}', 'LeaveController@update')->name('hrm.leaves.update');
+        Route::get('/', [LeaveController::class, 'index'])->name('hrm.leaves.index');
+        Route::get('department/employees/{departmentId}', [LeaveController::class, 'departmentEmployees']);
+        Route::post('store', [LeaveController::class, 'store'])->name('hrm.leaves.store');
+        Route::get('edit/{id}', [LeaveController::class, 'edit'])->name('hrm.leaves.edit');
+        Route::post('update/{id}', [LeaveController::class, 'update'])->name('hrm.leaves.update');
         Route::delete('delete/{id}', 'delete')->name('hrm.leaves.delete');
     });
 
     //Leave  routes group
     Route::group(['prefix' => 'shift'], function () {
 
-        Route::get('/', 'ShiftController@index')->name('hrm.attendance.shift');
-        Route::get('/ajax-all-shift', 'ShiftController@allshift')->name('hrm.shift.all');
-        Route::get('/hrm/shift/edit/{id}', 'ShiftController@shiftEdit')->name('hrm.shift.edit');
-        Route::post('/hrm/shift/store', 'ShiftController@storeshift')->name('hrm.shift.store');
-        Route::post('/hrm/shift/update', 'ShiftController@updateShift')->name('hrm.shift.update');
-        Route::delete('/hrm/shift/delete/{id}', 'ShiftController@deleteShift')->name('hrm.shift.delete');
+        Route::get('/', [ShiftController::class, 'index'])->name('hrm.attendance.shift');
+        Route::get('/ajax-all-shift', [ShiftController::class, 'allshift'])->name('hrm.shift.all');
+        Route::get('/hrm/shift/edit/{id}', [ShiftController::class, 'shiftEdit'])->name('hrm.shift.edit');
+        Route::post('/hrm/shift/store', [ShiftController::class, 'storeshift'])->name('hrm.shift.store');
+        Route::post('/hrm/shift/update', [ShiftController::class, 'updateShift'])->name('hrm.shift.update');
+        Route::delete('/hrm/shift/delete/{id}', [ShiftController::class, 'deleteShift'])->name('hrm.shift.delete');
     });
 
     //Attendance  routes group
     Route::group(['prefix' => 'attendances'], function () {
 
-        Route::get('/', 'AttendanceController@index')->name('hrm.attendance');
-        Route::get('ajax-all-attendance', 'AttendanceController@allAttendance')->name('hrm.attendance.all');
-        Route::get('get/user/attendance/row/{userId}', 'AttendanceController@getUserAttendanceRow');
-        Route::post('store', 'AttendanceController@storeAttendance')->name('hrm.attendance.store');
-        Route::get('edit/{attendanceId}', 'AttendanceController@edit')->name('hrm.attendance.edit');
-        Route::post('update', 'AttendanceController@update')->name('hrm.attendance.update');
-        Route::delete('delete/{attendanceId}', 'AttendanceController@delete')->name('hrm.attendance.delete');
+        Route::get('/', [AttendanceController::class, 'index'])->name('hrm.attendance');
+        Route::get('ajax-all-attendance', [AttendanceController::class, 'allAttendance'])->name('hrm.attendance.all');
+        Route::get('get/user/attendance/row/{userId}', [AttendanceController::class, 'getUserAttendanceRow']);
+        Route::post('store', [AttendanceController::class, 'storeAttendance'])->name('hrm.attendance.store');
+        Route::get('edit/{attendanceId}', [AttendanceController::class, 'edit'])->name('hrm.attendance.edit');
+        Route::post('update', [AttendanceController::class, 'update'])->name('hrm.attendance.update');
+        Route::delete('delete/{attendanceId}', [AttendanceController::class, 'delete'])->name('hrm.attendance.delete');
     });
 
     //Attendance  routes group
     Route::group(['prefix' => 'payrolls'], function () {
 
-        Route::get('/', 'PayrollController@index')->name('hrm.payroll.index');
-        Route::get('get', 'PayrollController@getPayrolls')->name('hrm.payroll.get.payrolls');
-        Route::get('create', 'PayrollController@create')->name('hrm.payroll.create');
-        Route::post('store', 'PayrollController@store')->name('hrm.payroll.store');
-        Route::get('edit/{payrollId}', 'PayrollController@edit')->name('hrm.payrolls.edit');
-        Route::post('update/{payrollId}', 'PayrollController@update')->name('hrm.payrolls.update');
-        Route::get('show/{payrollId}', 'PayrollController@show')->name('hrm.payrolls.show');
-        Route::delete('delete/{payrollId}', 'PayrollController@delete')->name('hrm.payrolls.delete');
-        Route::get('payment/view/{payrollId}', 'PayrollController@paymentView')->name('hrm.payrolls.payment.view');
-        Route::get('payment/{payrollId}', 'PayrollController@payment')->name('hrm.payrolls.payment');
-        Route::post('add/payment/{payrollId}', 'PayrollController@addPayment')->name('hrm.payrolls.add.payment');
-        Route::get('payment/details/{paymentId}', 'PayrollController@paymentDetails')->name('hrm.payrolls.payment.details');
-        Route::delete('payment/delete/{paymentId}', 'PayrollController@paymentDelete')->name('hrm.payrolls.payment.delete');
-        Route::get('payment/edit/{paymentId}', 'PayrollController@paymentEdit')->name('hrm.payrolls.payment.edit');
-        Route::post('payment/update/{paymentId}', 'PayrollController@paymentUpdate')->name('hrm.payrolls.payment.update');
-        Route::get('all/employees', 'PayrollController@getAllEmployee')->name('hrm.payroll.get.allEmployee');
-        Route::get('all/departments', 'PayrollController@getAllDeparment')->name('hrm.payroll.get.department');
-        Route::get('all/designations', 'PayrollController@getAllDesignation')->name('hrm.payroll.get.designations');
+        Route::get('/', [PayrollController::class, 'index'])->name('hrm.payroll.index');
+        Route::get('get', [PayrollController::class, 'getPayrolls'])->name('hrm.payroll.get.payrolls');
+        Route::get('create', [PayrollController::class, 'create'])->name('hrm.payroll.create');
+        Route::post('store', [PayrollController::class, 'store'])->name('hrm.payroll.store');
+        Route::get('edit/{payrollId}', [PayrollController::class, 'edit'])->name('hrm.payrolls.edit');
+        Route::post('update/{payrollId}', [PayrollController::class, 'update'])->name('hrm.payrolls.update');
+        Route::get('show/{payrollId}', [PayrollController::class, 'show'])->name('hrm.payrolls.show');
+        Route::delete('delete/{payrollId}', [PayrollController::class, 'delete'])->name('hrm.payrolls.delete');
+        Route::get('payment/view/{payrollId}', [PayrollController::class, 'paymentView'])->name('hrm.payrolls.payment.view');
+        Route::get('payment/{payrollId}', [PayrollController::class, 'payment'])->name('hrm.payrolls.payment');
+        Route::post('add/payment/{payrollId}', [PayrollController::class, 'addPayment'])->name('hrm.payrolls.add.payment');
+        Route::get('payment/details/{paymentId}', [PayrollController::class, 'paymentDetails'])->name('hrm.payrolls.payment.details');
+        Route::delete('payment/delete/{paymentId}', [PayrollController::class, 'paymentDelete'])->name('hrm.payrolls.payment.delete');
+        Route::get('payment/edit/{paymentId}', [PayrollController::class, 'paymentEdit'])->name('hrm.payrolls.payment.edit');
+        Route::post('payment/update/{paymentId}', [PayrollController::class, 'paymentUpdate'])->name('hrm.payrolls.payment.update');
+        Route::get('all/employees', [PayrollController::class, 'getAllEmployee'])->name('hrm.payroll.get.allEmployee');
+        Route::get('all/departments', [PayrollController::class, 'getAllDeparment'])->name('hrm.payroll.get.department');
+        Route::get('all/designations', [PayrollController::class, 'getAllDesignation'])->name('hrm.payroll.get.designations');
     });
 
     //Attendance
     Route::group(['prefix' => 'dashboard'], function () {
 
-        Route::get('/', 'DashboardController@index')->name('hrm.dashboard.index');
-        Route::get('user/count/table', 'DashboardController@userCountTable')->name('hrm.dashboard.user.count.table');
-        Route::get('today/attr/table', 'DashboardController@todayAttTable')->name('hrm.dashboard.today.attr.table');
-        Route::get('leave/table', 'DashboardController@leaveTable')->name('hrm.dashboard.leave.table');
-        Route::get('upcoming/holidays', 'DashboardController@upcomingHolidays')->name('hrm.dashboard.upcoming.holidays');
+        Route::get('/', [DashboardController::class, 'index'])->name('hrm.dashboard.index');
+        Route::get('user/count/table', [DashboardController::class, 'userCountTable'])->name('hrm.dashboard.user.count.table');
+        Route::get('today/attr/table', [DashboardController::class, 'todayAttTable'])->name('hrm.dashboard.today.attr.table');
+        Route::get('leave/table', [DashboardController::class, 'leaveTable'])->name('hrm.dashboard.leave.table');
+        Route::get('upcoming/holidays', [DashboardController::class, 'upcomingHolidays'])->name('hrm.dashboard.upcoming.holidays');
     });
 
     Route::group(['prefix' => 'reports'], function () {

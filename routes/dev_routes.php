@@ -1,5 +1,16 @@
 <?php
 
+use App\Models\User;
+use App\Models\Purchase;
+use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Facades\DB;
+use App\Models\CustomerCreditLimit;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use App\Models\CustomerOpeningBalance;
+use App\Models\SupplierOpeningBalance;
+use App\Http\Controllers\DashboardController;
+
 
 Route::get('change/lang/{lang}', [DashboardController::class, 'changeLang'])->name('change.lang');
 

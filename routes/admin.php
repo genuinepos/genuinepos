@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Purchase;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\SmsController;

@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Essentials\MemoController;
 use App\Http\Controllers\Essentials\TodoController;
+use App\Http\Controllers\Essentials\MessageController;
 use App\Http\Controllers\Essentials\WorkSpaceController;
 use App\Http\Controllers\Essentials\WorkSpaceTaskController;
 
-Route::group(['prefix' => 'essentials', 'namespace' => 'App\Http\Controllers\Essentials'], function () {
+Route::group(['prefix' => 'essentials'], function () {
 
     Route::group(['prefix' => 'workspaces'], function () {
         Route::get('/', [WorkSpaceController::class, 'index'])->name('workspace.index');

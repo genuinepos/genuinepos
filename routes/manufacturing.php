@@ -5,7 +5,7 @@ use App\Http\Controllers\Manufacturing\ProcessController;
 use App\Http\Controllers\Manufacturing\SettingsController;
 use App\Http\Controllers\Manufacturing\ProductionController;
 
-Route::group(['prefix' => 'manufacturing', 'namespace' => 'App\Http\Controllers\Manufacturing'], function ()
+Route::group(['prefix' => 'manufacturing'], function ()
 {
     Route::group(['prefix' => 'process'], function ()
     {

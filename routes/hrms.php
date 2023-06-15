@@ -15,7 +15,7 @@ use App\Http\Controllers\Report\PayrollReportController;
 use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\Report\PayrollPaymentReportController;
 
-Route::group(['prefix' => 'hrm', 'namespace' => 'App\Http\Controllers\HRM'], function () {
+Route::group(['prefix' => 'hrm'], function () {
     // Designations route group
     Route::group(['prefix' => 'designations'], function () {
 

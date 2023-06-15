@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
+            $table->text('mail_subject')->nullable();
             $table->string('format_name')->nullable();
             $table->longText('body_format')->nullable();
             $table->boolean('status')->default(false);

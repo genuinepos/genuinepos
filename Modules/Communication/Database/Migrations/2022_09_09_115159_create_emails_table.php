@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('whatsapp_messages', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->string('to')->nullable();
+            $table->string('mail')->nullable();
+            $table->string('subject')->nullable();
             $table->text('message')->nullable();
+            $table->string('attachment')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('whatsapp_messages');
+        Schema::dropIfExists('emails');
     }
 };

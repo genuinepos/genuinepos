@@ -36,33 +36,34 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
+        $this->mapWebRoutes();
+        $this->mapApiRoutes();
+    }
 
-        $this->routes(function () {
+    protected function mapWebRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
             Route::middleware('web')
                 ->namespace($this->namespace)
+                ->domain($domain)
                 ->group(base_path('routes/web.php'));
+        }
+    }
 
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/admin.php'));
-
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/hrms.php'));
-
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/essential.php'));
-
-            Route::middleware(['web', 'auth'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/manufacturing.php'));
-
+    protected function mapApiRoutes()
+    {
+        foreach ($this->centralDomains() as $domain) {
             Route::prefix('api')
+                ->domain($domain)
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
-        });
+        }
+    }
+
+    protected function centralDomains(): array
+    {
+        return config('tenancy.central_domains');
     }
 
     /**

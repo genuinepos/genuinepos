@@ -17,10 +17,10 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
-        '127.0.0.1',
+        // '127.0.0.1',
         '127.0.0.1:8000',
-        'localhost',
-        'localhost:800',
+        // 'localhost',
+        // 'localhost:800',
         'pos.test',
     ],
 

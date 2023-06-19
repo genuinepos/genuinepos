@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/', fn() => view('saas.welcome-page'));
+
 Auth::routes();
 Route::get('pin_login', fn () => view('auth.pin_login'));
 

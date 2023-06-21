@@ -1,18 +1,19 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Tenancy\Database\Seeders;
 
-use App\Models\Tenant;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Modules\Tenancy\Entities\Tenant;
+use Illuminate\Database\Eloquent\Model;
 
-class SaasSeeder extends Seeder
+class TenancyDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
         $t1 = Tenant::create(['id' => 'customer1']);
         $t2 = Tenant::create(['id' => 'customer2']);

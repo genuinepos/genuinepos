@@ -1,4 +1,4 @@
 {
-    "Communication": true,
-    "Tenancy": true
+    "Communication": false,
+    "Tenancy": false
 }

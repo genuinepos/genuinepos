@@ -2,7 +2,7 @@
 
 namespace Modules\Tenancy\Providers;
 
-use App\Providers\TenancyServiceProviderCore;
+use Modules\Tenancy\Providers\TenancyServiceProviderCore;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 

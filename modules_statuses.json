@@ -1,4 +1,5 @@
 {
     "Communication": false,
-    "Tenancy": false
+    "Tenancy": false,
+    "SAAS": true
 }

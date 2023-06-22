@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
         $this->mapApiRoutes();
     }
-    
+
     protected function mapWebRoutes()
     {
         foreach ($this->centralDomains() as $domain) {

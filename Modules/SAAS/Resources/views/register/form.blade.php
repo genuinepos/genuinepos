@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class=" pt-3">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('saas.register') }}">
                         @csrf
 
                         <div class="form-group  mb-2 row">

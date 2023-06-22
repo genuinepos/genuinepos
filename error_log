@@ -1,2 +1,0 @@
-[15-Jan-2023 19:08:19 Asia/Dhaka] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /home/genuinep/rose.genuinepos.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/RouteListCommand.php on line 356
-[15-Jan-2023 19:08:19 Asia/Dhaka] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 20480 bytes) in /home/genuinep/rose.genuinepos.com/vendor/symfony/error-handler/Error/FatalError.php on line 14

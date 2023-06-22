@@ -4,19 +4,13 @@ namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Modules\Communication\Entities\Contact;
 use Modules\Communication\Entities\ContactGroup;
-use Modules\Communication\Entities\Contacts;
 use Modules\Communication\Entities\WhatsappMessage;
 use Modules\Communication\Http\Controllers\Controller;
-use Modules\Communication\Interface\SmsServiceInterface;
 
 class WhatsappMessageController extends Controller
 {
-    private $whatsappService;
-    public function __construct(SmsServiceInterface $whatsappService)
-    {
-        $this->smsService = $whatsappService;
-    }
 
     public function index(Request $request)
     {
@@ -65,7 +59,7 @@ class WhatsappMessageController extends Controller
         $whatsapp = WhatsappMessage::all();
 
         $groupIds = ContactGroup::pluck('id');
-        $filtered_contact_whatsapp = Contacts::whereNotNull('whatsapp_number')->whereIn('group_id', $groupIds)->get();
+        $filtered_contact_whatsapp = Contact::whereNotNull('whatsapp_number')->whereIn('group_id', $groupIds)->get();
 
         return view('communication::whatsapp.index', [
             'whatsapp' => $whatsapp,
@@ -93,7 +87,7 @@ class WhatsappMessageController extends Controller
         if(!empty($request->group_id)){
 
             foreach($request->group_id as $id){
-                $numbers = Contacts::where('group_id', $id)->get();
+                $numbers = Contact::where('contact_group_id', $id)->get();
                 foreach($numbers as $number){
                     array_push($numbersArray, $number->phone_number);
                 }

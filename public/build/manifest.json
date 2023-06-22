@@ -1,17 +1,17 @@
 {
-  "resources/scripts/main.ts": {
-    "file": "assets/main.ae6ef804.js",
-    "src": "resources/scripts/main.ts",
-    "isEntry": true
-  },
   "resources/js/app.js": {
-    "file": "assets/app.0cb858ec.js",
-    "src": "resources/js/app.js",
-    "isEntry": true
+    "file": "assets/app-9a77ba08.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app.a4b66a92.css",
-    "src": "resources/sass/app.scss",
-    "isEntry": true
+    "file": "assets/app-a4b66a92.css",
+    "isEntry": true,
+    "src": "resources/sass/app.scss"
+  },
+  "resources/scripts/main.ts": {
+    "file": "assets/main-df86a321.js",
+    "isEntry": true,
+    "src": "resources/scripts/main.ts"
   }
 }

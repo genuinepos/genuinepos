@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToPurchaseProductsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -45,4 +45,4 @@ class AddForeignKeysToPurchaseProductsTable extends Migration
             $table->dropForeign('purchase_products_transfer_branch_to_branch_product_id_foreign');
         });
     }
-}
+};

@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title -->
-    <title>@yield('title') Genuine POS</title>
+    <title>@yield('title') {{ config('app.name') }}  </title>
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 

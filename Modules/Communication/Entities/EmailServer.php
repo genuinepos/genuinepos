@@ -10,9 +10,9 @@ class EmailServer extends Model
     use HasFactory;
 
     protected $fillable = ['server_name', 'host', 'port', 'user_name', 'password', 'encryption', 'address', 'name'];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Communication\Database\factories\EmailServerFactory::new();
-    }
+
+    // protected static function newFactory()
+    // {
+    //     return \Modules\Communication\Database\factories\EmailServerFactory::new();
+    // }
 }

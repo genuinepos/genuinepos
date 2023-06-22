@@ -10,9 +10,9 @@ class EmailTemplate extends Model
     use HasFactory;
 
     protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Communication\Database\factories\EmailTemplateFactory::new();
-    }
+
+    // protected static function newFactory()
+    // {
+    //     return \Modules\Communication\Database\factories\EmailTemplateFactory::new();
+    // }
 }

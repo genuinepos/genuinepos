@@ -1,8 +1,8 @@
 @extends('layout.app')
 @section('title', 'Login - ')
-    @push('css')
-        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    @endpush
+@push('css')
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+@endpush
 @section('content')
     <div class="form-wraper user_login">
         <div class="container">
@@ -27,7 +27,7 @@
                                 </div> --}}
 
                                 <div class="main-form">
-                                   <div class="form_inner">
+                                    <div class="form_inner">
                                         <div class="form-title">
                                             <p>@lang('menu.user_login')</p>
                                         </div>
@@ -35,12 +35,14 @@
                                             @csrf
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
-                                                <input required type="text" name="username" class="form-control form-st" value="{{ old('username') }}" placeholder="@lang('menu.username')"/>
+                                                <input required type="text" name="username" class="form-control form-st"
+                                                    value="{{ old('username') }}" placeholder="@lang('menu.username')" />
                                             </div>
 
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>
-                                                <input required name="password" type="Password" class="form-control form-st rounded-bottom" placeholder="Password"/>
+                                                <input required name="password" type="Password"
+                                                    class="form-control form-st rounded-bottom" placeholder="Password" />
                                             </div>
 
                                             @if (Session::has('errorMsg'))
@@ -54,7 +56,8 @@
                                             <button type="submit" class="submit-button">Login</button>
                                             <div class="login_opt_link">
                                                 @if (Route::has('password.request'))
-                                                    <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp; {{ __('Forgot Your Password?') }}</a>
+                                                    <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp;
+                                                        {{ __('Forgot Your Password?') }}</a>
                                                 @endif
                                                 <div class="form-group cx-box">
                                                     <input type="checkbox" id="remembar" class="form-control">
@@ -62,7 +65,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                   </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -74,21 +77,35 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{  config('speeddigit.app_logo_alt') }}">
-                                                    <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
+                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo"
+                                                    alt="{{ config('speeddigit.app_logo_alt') }}">
+                                            <p class="version"><span>@lang('menu.version')
+                                                    :</span>{{ config('speeddigit.version') }}</p>
                                             </p>
                                             <table class="text-white">
                                                 <tbody>
-                                                    <tr class="details"><td>@lang('menu.address') :</td><td>{{ config('speeddigit.address') }}</td></tr>
-                                                    <tr class="details"><td>@lang('menu.support') :</td><td>{{ config('speeddigit.support_email') }}</td></tr>
-                                                    <tr class="details"><td>@lang('menu.website') :</td><td>{{ config('speeddigit.website') }}</td></tr>
+                                                    <tr class="details">
+                                                        <td>@lang('menu.address') :</td>
+                                                        <td>{{ config('speeddigit.address') }}</td>
+                                                    </tr>
+                                                    <tr class="details">
+                                                        <td>@lang('menu.support') :</td>
+                                                        <td>{{ config('speeddigit.support_email') }}</td>
+                                                    </tr>
+                                                    <tr class="details">
+                                                        <td>@lang('menu.website') :</td>
+                                                        <td>{{ config('speeddigit.website') }}</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
 
                                             <div class="function-btn">
-                                                <a href="{{ config('speeddigit.facebook')  }}" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
-                                                <a href="{{ config('speeddigit.twitter')  }}" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
-                                                <a href="{{ config('speeddigit.youtube')  }}" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
+                                                <a href="{{ config('speeddigit.facebook') }}" target="_blank"><span
+                                                        class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
+                                                <a href="{{ config('speeddigit.twitter') }}" target="_blank"><span
+                                                        class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
+                                                <a href="{{ config('speeddigit.youtube') }}" target="_blank"><span
+                                                        class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -112,6 +129,7 @@
     .head {
         padding-top: 10px !important;
     }
+
     .back_btn_wrapper {
         position: fixed;
         top: 10px;
@@ -171,7 +189,7 @@
     }
 
     .left-inner-addon i {
-        color: #f5f5f5!important;
+        color: #f5f5f5 !important;
     }
 
     .btn-fn {
@@ -218,17 +236,18 @@
     .login_opt_link .form-group input {
         display: inline-block;
     }
+
     table {
         width: min-content;
         margin: auto !important;
         margin-top: 20px !important;
         margin-bottom: 20px !important;
     }
+
     table td:first-child {
         min-width: 60px;
     }
 </style>
 
 @push('js')
-
 @endpush

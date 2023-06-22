@@ -29,7 +29,7 @@ class PaymentMethodSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         PaymentMethod::truncate();
         if (PaymentMethod::count() == 0) {
-            \DB::statement("ALTER TABLE payment_methods AUTO_INCREMENT=1");
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE payment_methods AUTO_INCREMENT=1");
         }
         $paymentMethods = $this->getDefaultPaymentMethod();
         foreach ($paymentMethods as $paymentMethod) {

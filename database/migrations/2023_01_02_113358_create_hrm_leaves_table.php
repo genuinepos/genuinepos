@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHrmLeaveAndLeaveTypesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,6 @@ class CreateHrmLeaveAndLeaveTypesTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('hrm_leaves');
-        Schema::dropIfExists('hrm_leavetypes');
-
-        Schema::create('hrm_leavetypes', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('leave_type');
-            $table->integer('max_leave_count');
-            $table->integer('leave_count_interval');
-            $table->timestamps();
-        });
-
         Schema::create('hrm_leaves', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger('branch_id')->nullable();
@@ -49,6 +38,6 @@ class CreateHrmLeaveAndLeaveTypesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('hrm_leaves');
-        Schema::dropIfExists('hrm_leavetypes');
     }
-}
+};
+;

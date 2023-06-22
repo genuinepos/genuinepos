@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToTransferStockBranchToBranchesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -41,4 +41,4 @@ class AddForeignKeysToTransferStockBranchToBranchesTable extends Migration
             $table->dropForeign('transfer_stock_branch_to_branches_sender_warehouse_id_foreign');
         });
     }
-}
+};

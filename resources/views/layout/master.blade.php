@@ -14,7 +14,11 @@
     @stack('stylesheets')
 
     <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
-    @vite
+    @vite([
+        'resources/sass/app.scss',
+        'resources/js/app.js',
+        'resources/scripts/main.ts',
+    ])
 </head>
 
 <body id="dashboard-8"

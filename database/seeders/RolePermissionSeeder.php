@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use \Illuminate\Support\Facades\DB;
 use Database\Seeders\UserRoleSeeder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
@@ -38,14 +38,14 @@ class RolePermissionSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         if (Role::count() == 0) {
             echo 'No role in DB. Making `roles` PK count from 1' . PHP_EOL;
-            \DB::statement("ALTER TABLE `roles` AUTO_INCREMENT = 1");
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE `roles` AUTO_INCREMENT = 1");
         }
 
         echo 'Erasing `permissions` table...';
         Permission::truncate();
         if (Permission::count() == 0) {
             echo 'No permissions in DB. PK count from 1' . PHP_EOL;
-            \DB::statement('ALTER TABLE `permissions` AUTO_INCREMENT = 1');
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE `permissions` AUTO_INCREMENT = 1');
         }
 
         echo 'Finished `roles` and `permissions` truncate operation!' . PHP_EOL;

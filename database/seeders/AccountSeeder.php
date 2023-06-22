@@ -6,7 +6,7 @@ use App\Models\Account;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use \Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AccountSeeder extends Seeder
@@ -79,7 +79,7 @@ class AccountSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         if(Account::count() == 0) {
             Account::truncate();
-            \DB::statement("ALTER TABLE accounts AUTO_INCREMENT=1");
+            DB::statement("ALTER TABLE accounts AUTO_INCREMENT=1");
         }
         foreach ($this->creatableDefaultAccount() as $account_type => $account_array) {
 

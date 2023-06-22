@@ -19,7 +19,7 @@ class CashCounterSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         if(CashCounter::count() == 0) {
             CashCounter::truncate();
-            \DB::statement("ALTER TABLE cash_counters AUTO_INCREMENT=1");
+            \Illuminate\Support\Facades\DB::statement("ALTER TABLE cash_counters AUTO_INCREMENT=1");
         }
         CashCounter::insert([
             'branch_id' => auth()->user()?->branch_id ?? null,

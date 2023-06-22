@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToSaleProductsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -37,4 +37,4 @@ class AddForeignKeysToSaleProductsTable extends Migration
             $table->dropForeign('sale_products_stock_warehouse_id_foreign');
         });
     }
-}
+};

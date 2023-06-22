@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('expanse_categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('hrm_leavetypes', function (Blueprint $table) {
+            $table->id('id');
             $table->unsignedBigInteger('branch_id')->nullable();
-            $table->string('name');
-            $table->string('code');
+            $table->string('leave_type');
+            $table->integer('max_leave_count');
+            $table->integer('leave_count_interval');
             $table->timestamps();
-
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('cascade');
         });
     }
@@ -31,6 +31,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expanse_categories');
+        Schema::dropIfExists('hrm_leavetypes');
     }
 };
+;

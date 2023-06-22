@@ -156,7 +156,7 @@ class CurrencySeeder extends Seeder
             array('id' => '139','country' => 'Angola','currency' => 'Kwanza','code' => 'AOA','symbol' => 'Kz','thousand_separator' => ',','decimal_separator' => '.','created_at' => NULL,'updated_at' => NULL),
             array('id' => '140','country' => 'Kuwait','currency' => 'Kuwaiti dinar','code' => 'KWD','symbol' => 'KD','thousand_separator' => ',','decimal_separator' => '.','created_at' => NULL,'updated_at' => NULL)
           );
-        
-          \DB::table('currencies')->insert($currencies);
+
+          \Illuminate\Support\Facades\DB::table('currencies')->insert($currencies);
     }
 }

@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('test', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('test_value')->nullable();
-            $table->text('text')->nullable();
+        Schema::create('emails', function (Blueprint $table) {
+            $table->id();
+            $table->string('mail')->nullable();
+            $table->string('subject')->nullable();
+            $table->text('message')->nullable();
+            $table->string('attachment')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test');
+        Schema::dropIfExists('emails');
     }
 };

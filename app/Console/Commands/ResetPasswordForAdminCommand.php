@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Dev;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -32,13 +32,17 @@ class ResetPasswordForAdminCommand extends Command
             exit(1);
         }
 
-        $firstAdmin = \App\Models\User::role('superadmin')->first();
         $newPassword = 'password';
-        $firstAdmin->password = bcrypt($newPassword);
-        $firstAdmin->save();
-        echo "Username: {$firstAdmin->username}\nPassword: {$newPassword}\n";
 
-        $this->info("Reset succeed!");
-        return 0;
+        $firstAdmin = \App\Models\User::role('superadmin')->first();
+        if(isset($firstAdmin)) {
+            $firstAdmin->password = bcrypt($newPassword);
+            $firstAdmin->save();
+            echo "Username: {$firstAdmin->username}\nPassword: {$newPassword}\n";
+            $this->info("Reset succeed!");
+        }
+
+        return Command::SUCCESS;
+
     }
 }

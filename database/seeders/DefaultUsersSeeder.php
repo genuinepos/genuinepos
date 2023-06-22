@@ -16,7 +16,7 @@ class DefaultUsersSeeder extends Seeder
     {
         list('superAdmin' => $superAdmin, 'admin' => $admin, 'testUser' => $testUser) = $this->getDefaultUsers();
         if(User::count() == 0) {
-            \DB::statement('ALTER TABLE `users` AUTO_INCREMENT=1');
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE `users` AUTO_INCREMENT=1');
             User::create($superAdmin);
             User::create($admin);
             User::create($testUser);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransferStockToWarehousesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -44,4 +44,4 @@ class CreateTransferStockToWarehousesTable extends Migration
     {
         Schema::dropIfExists('transfer_stock_to_warehouses');
     }
-}
+};

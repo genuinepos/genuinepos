@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::dropIfExists('whatsapp_messages');
-        if (! Schema::hasTable('whatsapp_messages')) {
-            Schema::create('whatsapp_messages', function (Blueprint $table) {
-                $table->id();
-                $table->string('to')->nullable();
-                $table->text('message')->nullable();
-                $table->boolean('status')->default(false);
-                $table->timestamps();
-            });
-        }
+        Schema::create('whatsapp_messages', function (Blueprint $table) {
+            $table->id();
+            $table->string('to')->nullable();
+            $table->text('message')->nullable();
+            $table->boolean('status')->default(false);
+            $table->timestamps();
+        });
     }
 
     /**

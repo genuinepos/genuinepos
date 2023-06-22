@@ -27,9 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-    'env' => env('PRINT_SD_SALE', true),
-    'env' => env('PRINT_SD_PURCHASE', true),
-    'env' => env('PRINT_SD_PAYMENT', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

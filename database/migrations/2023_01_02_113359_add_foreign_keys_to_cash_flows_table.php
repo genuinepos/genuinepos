@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeysToCashFlowsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -53,4 +53,4 @@ class AddForeignKeysToCashFlowsTable extends Migration
             $table->dropForeign('cash_flows_supplier_payment_id_foreign');
         });
     }
-}
+};

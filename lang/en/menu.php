@@ -113,6 +113,7 @@ return [
   'add_item' => 'Add Item',
   'dontinued_to_this_next_page' => 'Continued To this next page',
   'change_amount' => 'Change Amount',
+  'change_amt' => 'Change Amt.',
   'item_list' => 'Item List',
   'import_item' => 'Import Items',
   'item_settings' => 'Item Settings',
@@ -1941,4 +1942,5 @@ return [
   'edit_expense_category' => 'Edit Expense Category',
   'code' => 'Code',
   'sale_tax' => 'Sale Tax',
+  'curr_receivable' => 'Curr. Receivable',
 ];

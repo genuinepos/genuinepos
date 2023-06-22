@@ -205,46 +205,42 @@
 
         <!-- Recent transection list modal-->
         <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-dialog col-60-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">{{ __('Recent Transactions') }}</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="tab_list_area">
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
-                                </li>
+                            <div class="btn-group">
+                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
 
-                                <li>
-                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
-                                </li>
+                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
 
-                                <li>
-                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/drafts')}}"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
-                                </li>
-                            </ul>
+                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
+                            </div>
                         </div>
 
                         <div class="tab_contant">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="table_area">
+                                    <div class="recent_sale_table_area">
                                         <div class="data_preloader" id="recent_trans_preloader">
-                                            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                                            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table modal-table table-sm table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-start">@lang('menu.sl')</th>
-                                                        <th class="text-start">@lang('menu.reference')/@lang('menu.invoice_id')</th>
-                                                        <th class="text-start">@lang('menu.customer')</th>
-                                                        <th class="text-start">@lang('menu.total')</th>
-                                                        <th class="text-start">@lang('menu.action')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.sl')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.date')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.reference')/@lang('menu.invoice_id')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.customer')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.total')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.actions')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="data-list" id="transection_list"></tbody>
@@ -257,7 +253,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </div>
@@ -468,74 +464,7 @@
             });
         }
         allPosShortcutMenus();
-
-        // Calculate total amount functionalitie
-        function calculateTotalAmount() {
-
-            var indexs = document.querySelectorAll('#index');
-            indexs.forEach(function(index) {
-
-                var className = index.getAttribute("class");
-                var rowIndex = $('.' + className).closest('tr').index();
-                $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
-            });
-
-            var quantities = document.querySelectorAll('#quantity');
-            var subtotals = document.querySelectorAll('#subtotal');
-            // Update Total Item
-            var total_item = 0;
-            quantities.forEach(function(qty) {
-
-                total_item += 1;
-            });
-
-            $('#total_item').val(parseFloat(total_item));
-
-            // Update Net total Amount
-            var netTotalAmount = 0;
-            subtotals.forEach(function(subtotal) {
-
-                netTotalAmount += parseFloat(subtotal.value);
-            });
-
-            $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
-
-            if ($('#order_discount_type').val() == 2) {
-
-                var orderDisAmount = parseFloat(netTotalAmount) / 100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
-                $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
-            } else {
-
-                var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
-                $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
-            }
-
-            var orderDiscountAmount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
-            // Calc order tax amount
-            var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
-            var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax);
-            $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
-
-            // Update Total payable Amount
-            var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
-            var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
-            var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
-
-            var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
-
-            $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
-
-            var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge) + parseFloat(previousDue);
-            $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            $('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            // Update purchase due
-            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-            var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
-            $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-            var calcTotalDue = parseFloat(calcTotalPayableAmount) - parseFloat(payingAmount);
-            $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
-        }
-
+        
         $(document).keypress(".scanable", function(event) {
 
             if (event.which == '10' || event.which == '13') {
@@ -564,8 +493,8 @@
                         }
                     }
                     , 'No': {
-                        'class': 'no btn-danger'
-                        , 'action': function() {
+                        'class': 'no btn-danger',
+                        'action': function() {
                             console.log('Deleted canceled.');
                         }
                     }
@@ -595,28 +524,25 @@
 
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
-            var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Confirmation'
                 , 'content': 'Are you sure, you want to exit?'
                 , 'buttons': {
                     'Yes': {
-                        'class': 'yes btn-modal-primary'
-                        , 'action': function() {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
                             window.location = "{{ route('sales.pos.create') }}";
                         }
                     }
                     , 'No': {
-                        'class': 'no btn-danger'
-                        , 'action': function() {
+                        'class': 'no btn-danger',
+                        'action': function() {
                             console.log('Deleted canceled.');
                         }
                     }
                 }
             });
         });
-
     </script>
     @stack('js')
 </body>

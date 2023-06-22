@@ -139,9 +139,9 @@
 
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
-                    <div class="row g-1">
-                        <label for="inputEmail3" class="col-sm-3 col-4 col-form-label text-white"><b>@lang('menu.total')</b></label>
-                        <div class="col-sm-9 col-8">
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label text-white text-end"><b>@lang('menu.net_total')</b></label>
+                        <div class="col-sm-7">
                             <strong>
                                 <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                             </strong>
@@ -149,10 +149,9 @@
                     </div>
 
                     @if ($generalSettings['pos__is_enabled_discount'] == '1')
-                        <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">@lang('menu.discount')</label>
-                            <div class="col-sm-9 col-8">
-
+                        <div class="row">
+                            <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.discount')</label>
+                            <div class="col-sm-7">
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <select name="order_discount_type" id="order_discount_type" class="form-control pos-amounts">
@@ -163,7 +162,7 @@
                                     </div>
 
                                     <div class="col-6">
-                                        <input name="order_discount" type="number" step="any" class="form-control pos-amounts" id="order_discount" value="0.00">
+                                        <input name="order_discount" type="number" step="any" class="form-control pos-amounts fw-bold" id="order_discount" value="0.00">
                                     </div>
                                 </div>
 
@@ -179,16 +178,16 @@
                     @endif
 
                     @if ($generalSettings['pos__is_enabled_order_tax'] == '1')
-                        <div class="row g-1">
-                            <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Vat/Tax') }}</label>
-                            <div class="col-sm-9 col-8">
+                        <div class="row">
+                            <label class="col-sm-5 col-form-label text-white text-end">{{ __('Vat/Tax') }}</label>
+                            <div class="col-sm-7">
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <select name="order_tax" class="form-control pos-amounts" id="order_tax"></select>
                                     </div>
 
                                     <div class="col-6">
-                                        <input type="number" class="form-control pos-amounts" name="order_tax_amount" id="order_tax_amount"
+                                        <input type="number" class="form-control pos-amounts fw-bold" name="order_tax_amount" id="order_tax_amount"
                                         value="0.00">
                                     </div>
                                 </div>
@@ -199,51 +198,45 @@
                         <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00" tabindex="-1">
                     @endif
 
-                    <div class="row g-1">
-                        <label class="col-sm-3 col-4 col-form-label text-white">{{ __('Pre. Due') }}</label>
-
-                        <div class="col-sm-9 col-8">
-                            <input readonly class="form-control pos-amounts" type="number" step="any" name="previous_due"
-                                id="previous_due" value="0.00" tabindex="-1">
-                        </div>
-
-                        <label class="col-sm-3 col-4 col-form-label text-white">Payable</label>
-                        <div class="col-sm-9 col-8">
-                            <input readonly class="form-control pos-amounts" type="number" step="any"
-                                name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
-
-                            <input class="d-hide" type="number" step="any" name="total_invoice_payable"
-                                id="total_invoice_payable" value="0.00" tabindex="-1">
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label text-white text-end">{{ __('Previous Due') }}</label>
+                        <div class="col-sm-7">
+                            <input readonly class="form-control pos-amounts fw-bold" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
-                    <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.cash_receive')</label>
-                        <div class="col-sm-6 col-7">
-                            {{-- <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
-                                class="form-control pos-amounts" autocomplete="off"> --}}
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.receivable')</label>
+                        <div class="col-sm-7">
+                            <input readonly class="form-control pos-amounts fw-bold" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
+                            <input class="d-hide" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.cash_receive')</label>
+                        <div class="col-sm-7">
                             <div class="input-group">
                                 <span class="input-group-text cash_receive_input">>></span>
                                 <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
-                                class="form-control pos-amounts input_i" autocomplete="off">
+                                class="form-control pos-amounts input_i fw-bold" autocomplete="off">
                             </div>
                         </div>
                     </div>
 
-                    <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-white">@lang('menu.change_amount')</label>
-                        <div class="col-sm-6 col-7">
+                    <div class="row">
+                        <label class="col-sm-5 col-5 col-form-label text-white text-end">@lang('menu.change_amount')</label>
+                        <div class="col-sm-7 col-7">
                             <input readonly type="text" name="change_amount" id="change_amount" value="0.00"
-                                class="form-control pos-amounts" tabindex="-1">
+                                class="form-control pos-amounts fw-bold" tabindex="-1">
                         </div>
                     </div>
 
-                    <div class="row g-1">
-                        <label class="col-sm-6 col-5 col-form-label text-danger"><b>@lang('menu.due') </b></label>
-                        <div class="col-sm-6 col-7">
+                    <div class="row">
+                        <label class="col-sm-5 col-5 col-form-label text-danger text-end"><b>@lang('menu.due') </b></label>
+                        <div class="col-sm-7 col-7">
                             <input type="text" readonly name="total_due" id="total_due" value="0.00"
-                                class="form-control pos-amounts text-danger" tabindex="-1">
+                                class="form-control pos-amounts text-danger fw-bold" tabindex="-1">
                         </div>
                     </div>
                 </div>
@@ -294,129 +287,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    var actionMessage = 'Data inserted Successfull.';
-
-    $('#pos_submit_form').on('submit', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var request = $(this).serialize();
-        var url = $(this).attr('action');
-        $('.submit_preloader').show();
-        $.ajax({
-            url:url,
-            type:'post',
-            data: request,
-            success:function(data){
-                $('.loading_button').hide();
-                $('.submit_preloader').hide();
-
-                if(!$.isEmptyObject(data.errorMsg)){
-
-                    toastr.error(data.errorMsg,'Attention');
-                    return;
-                }else if(data.suspendMsg){
-
-                    toastr.success(data.suspendMsg);
-                    afterSubmitForm();
-                    document.getElementById('search_product').focus();
-                }else if(data.holdInvoiceMsg){
-
-                    toastr.success(data.holdInvoiceMsg);
-                    afterSubmitForm();
-                    document.getElementById('search_product').focus();
-                }else {
-
-                    toastr.success(actionMessage);
-                    afterSubmitForm();
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                        removeInline: false,
-                        printDelay: 1000,
-                        header: null,
-                    });
-                    document.getElementById('search_product').focus();
-                }
-            },error: function(err) {
-
-                $('.loading_button').hide();
-                $('.submit_preloader').hide();
-                if (err.status == 0) {
-
-                    toastr.error('Net Connetion Error. Reload This Page.');
-                    return;
-                }else if (err.status == 500) {
-
-                    toastr.error('Server error. Please contact the support team.');
-                    return;
-                }
-
-                $.each(err.responseJSON.errors, function(key, error) {
-                    toastr.error(error[0]);
-                });
-            }
-        });
-    });
-
-    @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
-        //Key shorcut for pic hold invoice
-        shortcuts.add('f9',function() {
-            $('#hold_invoice_preloader').show();
-            pickHoldInvoice();
-        });
-
-        // Pick hold invoice
-        $(document).on('click', '#pick_hold_btn',function (e) {
-            e.preventDefault();
-            $('#hold_invoice_preloader').show();
-            pickHoldInvoice();
-        });
-
-        function pickHoldInvoice() {
-            $('#holdInvoiceModal').modal('show');
-            $.ajax({
-                url:"{{url('sales/pos/pick/hold/invoice/')}}",
-                type:'get',
-                success:function(data){
-                    $('#hold_invoices').html(data);
-                    $('#hold_invoice_preloader').hide();
-                }
-            });
-        }
-    @endif
-
-    function showStock() {
-        $('#stock_preloader').show();
-        $('#showStockModal').modal('show');
-        $.ajax({
-            url:"{{route('sales.pos.branch.stock')}}",
-            type:'get',
-            success:function(data){
-                $('#stock_modal_body').html(data);
-                $('#stock_preloader').hide();
-            }
-        });
-    }
-
-    $(".cat-button").on("click", function(){
-        $(this).addClass("active");
-        $(this).siblings().removeClass("active");
-    });
-
-    var width = $(".function-sec .btn-bg").width();
-    $(".function-sec .btn-bg").height(width / 1.2);
-    if($(window).width() >= 992) {
-        $(".function-sec .btn-bg").height(width / 1.4);
-    }
-    if($(window).width() >= 1200) {
-        $(".function-sec .btn-bg").height(width / 1.6);
-    }
-
-
-    var windowHeight = $(window).height();
-    $('.set-height').height(windowHeight - 331 + 'px');
-</script>

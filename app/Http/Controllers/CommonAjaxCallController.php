@@ -10,7 +10,7 @@ class CommonAjaxCallController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function branchAuthenticatedUsers($branchId)
@@ -37,10 +37,10 @@ class CommonAjaxCallController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query->distinct('product_branches.branch_id')->get(); 
+            $query->distinct('product_branches.branch_id')->get();
         }else{
 
-            $query->where('product_branches.branch_id', auth()->user()->branch_id)->distinct('product_branches.branch_id')->get(); 
+            $query->where('product_branches.branch_id', auth()->user()->branch_id)->distinct('product_branches.branch_id')->get();
         }
 
         $products = $query->select(
@@ -133,7 +133,7 @@ class CommonAjaxCallController extends Controller
             ->where('created_by', $create_by)
             ->where('is_return_available', 0)
             ->orderBy('id', 'desc')
-            ->limit(10)
+            ->limit(40)
             ->get();
 
         return view('common_ajax_view.recent_sale_list', compact('sales'));
@@ -167,7 +167,7 @@ class CommonAjaxCallController extends Controller
         return view('common_ajax_view.recent_draft_list', compact('drafts'));
     }
 
-    // Search product 
+    // Search product
     public function searchProductForReportFilter($product_name)
     {
         return $products = DB::table('products')

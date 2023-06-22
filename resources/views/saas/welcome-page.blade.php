@@ -23,7 +23,7 @@
                     <h1 class="text-center display-1">Welcome to {{config('app.name')}}</h1>
                    <p class="text-center pt-3">
                     <a href="{{ route('saas.register') }}" class="btn btn-primary btn-bg  pe-2">{{ _('Register') }}</a>
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-bg ">{{ _('Login') }}</a>
+                    <a href="{{ route('saas.login') }}" class="btn btn-primary btn-bg ">{{ _('Login') }}</a>
                    </p>
                 </div>
             </div>

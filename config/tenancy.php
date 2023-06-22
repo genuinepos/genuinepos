@@ -20,7 +20,7 @@ return [
      */
     'central_domains' => [
         // '127.0.0.1',
-        // '127.0.0.1:8000',
+        '127.0.0.1:8000',
         // 'localhost',
         // 'localhost:800',
         'pos.test',
@@ -140,7 +140,8 @@ return [
          * disable asset() helper tenancy and explicitly use tenant_asset() calls in places
          * where you want to use tenant-specific assets (product images, avatars, etc).
          */
-        'asset_helper_tenancy' => true,
+        // 'asset_helper_tenancy' => true,
+        'asset_helper_tenancy' => false,
     ],
 
     /**

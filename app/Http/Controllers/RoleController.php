@@ -60,6 +60,9 @@ class RoleController extends Controller
 
     public function update(Request $request, $roleId)
     {
+        if (!auth()->user()->can('user_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
         // return $request->all();
         $this->validate($request, [
             'role_name' => 'required|unique:roles,name,' . $roleId,

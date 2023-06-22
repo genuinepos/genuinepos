@@ -16,16 +16,14 @@ class TenancyDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $t1 = Tenant::create(['id' => 'customer1']);
-        // $t2 = Tenant::create(['id' => 'customer2']);
-        // $t5 = Tenant::create(['id' => 'gposs']);
-
-        // $t1->domains()->create(['domain' => 'customer1']);
-        // $t2->domains()->create(['domain' => 'customer2']);
-        // $t5->domains()->create(['domain' => 'gposs.test']);
-
+        $domains = ['customer1',  'customer2', 'gposs'];
+        $tenants = [];
+        foreach($domains as $key => $domain) {
+            $tenants[$key] = Tenant::create(['id' => $domain]);
+            $tenants[$key]->domains()->create(['domain' => $domain]);
+        }
         Tenant::all()->runForEach(function () {
-            // Artisan::call('migrate');
+            Artisan::call('migrate');
             Artisan::call('db:seed');
         });
     }

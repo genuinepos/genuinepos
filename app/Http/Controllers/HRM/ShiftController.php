@@ -18,6 +18,11 @@ class ShiftController extends Controller
     //shift page shown
     public function index(Request $request)
     {
+        if (!auth()->user()->can('shift')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $assetTypes = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
             return DataTables::of($assetTypes)
@@ -37,7 +42,12 @@ class ShiftController extends Controller
         return view('hrm.shift.index');
     }
 
-    public function shiftEdit($id){
+    public function shiftEdit($id)
+    {
+        if (!auth()->user()->can('shift')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $type = DB::table('hrm_shifts')->where('id', $id)->first();
         return view('hrm.shift.ajax.edit', compact('type'));
     }
@@ -51,6 +61,10 @@ class ShiftController extends Controller
     //shift store method
     public function storeShift(Request $request)
     {
+        if (!auth()->user()->can('shift')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $this->validate($request, [
             'shift_name' => 'required',
             'start_time' => 'required',
@@ -69,6 +83,11 @@ class ShiftController extends Controller
     //update shift
     public function updateShift(Request $request)
     {
+        if (!auth()->user()->can('shift')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'shift_name' => 'required',
             'start_time' => 'required',
@@ -88,6 +107,11 @@ class ShiftController extends Controller
     }
     public function deleteShift(Request $request, $id)
     {
+        if (!auth()->user()->can('shift')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+               
        $shift = Shift::find($id);
        if (!is_null($shift)) {
            $shift->delete();

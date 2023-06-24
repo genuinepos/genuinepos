@@ -17,12 +17,22 @@ class DesignationController extends Controller
     //show designation page only
     public function index()
     {
+        if (!auth()->user()->can('designation')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         return view('hrm.designation.index');
     }
 
     //ajax request for all designation
     public function allDesignation()
     {
+        if (!auth()->user()->can('designation')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $designation = Designation::orderBy('id', 'DESC')->get();
         return view('hrm.designation.ajax.designation_list', compact('designation'));
     }
@@ -30,6 +40,11 @@ class DesignationController extends Controller
     //designations store
     public function storeDesignation(Request $request)
     {
+        if (!auth()->user()->can('designation')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'designation_name' => 'required|unique:hrm_designations',
         ]);
@@ -44,6 +59,11 @@ class DesignationController extends Controller
     //designations update
     public function updateDesignation(Request $request)
     {
+        if (!auth()->user()->can('designation')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'designation_name' => 'required',
         ]);
@@ -59,6 +79,11 @@ class DesignationController extends Controller
     //destroy designation
     public function deleteDesignation(Request $request, $designationId)
     {
+        if (!auth()->user()->can('designation')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $deleteCategory = Designation::find($designationId);
         $deleteCategory->delete();
         Cache::forget('all-categories');

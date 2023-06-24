@@ -724,9 +724,15 @@ a.resent-tn:hover {
  /* amar code ------------ */
 
 .big_field {
-    font-size: 28px !important;
-    font-weight: 500 !important;
+    font-size: 36px !important;
+    font-weight: 600 !important;
+    padding: 27px 6px!important;
+    text-align: end;
 }
+
+/* .big_field:hover {
+    background: #fff!important;
+} */
 
 .big_label {
     font-size: 15px;
@@ -1137,4 +1143,10 @@ input#quantity {
     .sub-total-input {
         padding-top: 10px;
     }
+}
+
+.recent_sale_table_area{
+    max-height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }

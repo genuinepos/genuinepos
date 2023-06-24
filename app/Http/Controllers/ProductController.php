@@ -468,6 +468,9 @@ class ProductController extends Controller
     // Get opening stock
     public function openingStock($productId)
     {
+        if (!auth()->user()->can('openingStock_add')) {
+            abort(403, 'Access Forbidden.');
+        }
         $products = DB::table('products')->where('products.id', $productId)
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
@@ -549,6 +552,10 @@ class ProductController extends Controller
     // edit view of product
     public function edit($productId)
     {
+        if (!auth()->user()->can('product_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $product = DB::table('products')->where('products.id', $productId)
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->select('products.*', 'taxes.tax_percent')
@@ -850,6 +857,10 @@ class ProductController extends Controller
     // delete product
     public function delete(Request $request, $productId)
     {
+        if (!auth()->user()->can('product_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $deleteProduct = Product::with(
             [
                 'product_images',
@@ -936,6 +947,10 @@ class ProductController extends Controller
     // multiple delete method
     public function multipleDelete(Request $request)
     {
+        if (!auth()->user()->can('product_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         if ($request->data_ids == null) {
             return response()->json(['errorMsg' => 'You did not select any product.']);
         }

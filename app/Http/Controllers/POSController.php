@@ -161,7 +161,6 @@ class POSController extends Controller
 
                     $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
                 }
-                
             }
 
             if ($request->product_ids == null) {
@@ -548,8 +547,7 @@ class POSController extends Controller
             'sale_products.product',
             'sale_products.variant',
             'sale_products.product.comboProducts'
-        ])
-            ->where('id', $request->sale_id)->first();
+        ])->where('id', $request->sale_id)->first();
 
         if ($request->product_ids == null) {
 
@@ -619,6 +617,7 @@ class POSController extends Controller
                 //     trans_id: $updateSale->id,
                 //     amount: $request->total_payable_amount
                 // );
+
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 1,
                     customer_id: $updateSale->customer_id,

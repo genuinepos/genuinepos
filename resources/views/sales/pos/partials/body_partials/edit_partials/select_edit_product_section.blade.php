@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     function selectProductList() {
         $('.select_product_preloader').show();
         var category_id = $('#category_id').val();
@@ -65,7 +65,6 @@
                 //console.log(data);
                 $('#select_product_list').html(data);
                 $('.select_product_preloader').hide();
-                activeSelectedItems();
             }
         });
     }
@@ -79,7 +78,8 @@
     $(document).on('click', '.cat-button', function(e) {
         e.preventDefault();
         var cate_id = $(this).data('id');
+        console.log();
         $('#category_id').val(cate_id);
         selectProductList();
     });
-</script>
+</script> --}}

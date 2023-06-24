@@ -280,6 +280,12 @@ class RolePermissionSeeder extends Seeder
             array('id' => '171', 'name' => 'own_to_other_business_location__add_transfer', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:42', 'updated_at' => '2022-11-22 10:42:42'),
             array('id' => '172', 'name' => 'own_to_other_business_location__transfer_list', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:42', 'updated_at' => '2022-11-22 10:42:42'),
             array('id' => '173', 'name' => 'own_to_other_business_location__receive_stock', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:42', 'updated_at' => '2022-11-22 10:42:42'),
+            array('id' => '174', 'name' => 'brand_create', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:38', 'updated_at' => '2022-11-22 10:42:38'),
+            array('id' => '175', 'name' => 'brand_edit', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:38', 'updated_at' => '2022-11-22 10:42:38'),
+            array('id' => '176', 'name' => 'brand_delete', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:38', 'updated_at' => '2022-11-22 10:42:38'),
+            array('id' => '177', 'name' => 'unit_create', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:38', 'updated_at' => '2022-11-22 10:42:38'),
+            array('id' => '178', 'name' => 'unit_edit', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:38', 'updated_at' => '2022-11-22 10:42:38'),
+            array('id' => '179', 'name' => 'unit_delete', 'guard_name' => 'web', 'created_at' => '2022-11-22 10:42:38', 'updated_at' => '2022-11-22 10:42:38'),
         );
 
         return $permissions;

@@ -17,12 +17,21 @@ class DepartmentController extends Controller
     //department showing page method
     public function index()
     {
+        if (!auth()->user()->can('department')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         return view('hrm.department.index');
     }
 
     //department ajax data show method
     public function allDepartment()
     {
+        if (!auth()->user()->can('department')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $department = Department::orderBy('id', 'DESC')->get();
         return view('hrm.department.ajax.department_list', compact('department'));
     }
@@ -30,6 +39,11 @@ class DepartmentController extends Controller
     //store department method
     public function storeDepartment(Request $request)
     {
+        if (!auth()->user()->can('department')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'department_name' => 'required',
             'department_id' => 'required|unique:hrm_department',
@@ -47,6 +61,11 @@ class DepartmentController extends Controller
     //update departments method
     public function updateDepartments(Request $request)
     {
+        if (!auth()->user()->can('department')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'department_name' => 'required',
             'department_id' => 'required',
@@ -64,6 +83,11 @@ class DepartmentController extends Controller
     //destroy single department
     public function deleteDepartment($departmentId)
     {
+        if (!auth()->user()->can('department')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $deleteDepartment = Department::find($departmentId);
         $deleteDepartment->delete();
         return response()->json('Successfully Department Deleted');

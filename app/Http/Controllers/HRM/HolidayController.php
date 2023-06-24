@@ -13,12 +13,17 @@ class HolidayController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //holiday page show methods
     public function index()
     {
+        if (!auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
         return view('hrm.holiday.index', compact('branches'));
     }
@@ -26,6 +31,11 @@ class HolidayController extends Controller
     //all holidays data get for holiday pages
     public function allHolidays()
     {
+        if (!auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $holidays = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $holidays = Holiday::with('branch')->orderBy('id', 'DESC')->get();
@@ -42,6 +52,11 @@ class HolidayController extends Controller
     //store holidays methods
     public function storeHolidays(Request $request)
     {
+        if (!auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'holiday_name' => 'required',
             'start_date' => 'required',
@@ -75,6 +90,11 @@ class HolidayController extends Controller
     //Edit holid
     public function edit($id)
     {
+        if (!auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $holiday = Holiday::with('branch')->where('id', $id)->first();
         $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
         return view('hrm.holiday.ajax.edit', compact('holiday', 'branches'));
@@ -83,6 +103,11 @@ class HolidayController extends Controller
     //update holiday
     public function updateHoliday(Request $request)
     {
+        if (!auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'holiday_name' => 'required',
             'start_date' => 'required',
@@ -116,6 +141,11 @@ class HolidayController extends Controller
     //destroy holidays
     public function deleteHolidays(Request $request, $id)
     {
+        if (!auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $holiday = Holiday::find($id);
         if (!is_null($holiday)) {
             $holiday->delete();

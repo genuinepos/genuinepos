@@ -20,6 +20,7 @@ class LeaveController extends Controller
 
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
 
             $leaves = '';

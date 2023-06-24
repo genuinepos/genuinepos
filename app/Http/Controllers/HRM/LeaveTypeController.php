@@ -15,6 +15,10 @@ class LeaveTypeController extends Controller
 
     public function index(Request $request)
     {
+        if (!auth()->user()->can('leave_type')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         if ($request->ajax()) {
 
             $leaveTypes = LeaveType::orderBy('id', 'DESC')->get();
@@ -46,6 +50,11 @@ class LeaveTypeController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('leave_type')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'leave_type' => 'required',
         ]);
@@ -62,12 +71,22 @@ class LeaveTypeController extends Controller
 
     public function edit($id)
     {
+        if (!auth()->user()->can('leave_type')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $leaveType = LeaveType::where('id', $id)->first();
         return view('hrm.leave_types.ajax_view.edit', compact('leaveType'));
     }
 
     public function update(Request $request)
     {
+        if (!auth()->user()->can('leave_type')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'leave_type' => 'required',
         ]);
@@ -84,6 +103,11 @@ class LeaveTypeController extends Controller
 
     public function delete(Request $request, $id)
     {
+        if (!auth()->user()->can('leave_type')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteCategory = LeaveType::find($id);
         $deleteCategory->delete();
 

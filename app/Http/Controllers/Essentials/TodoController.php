@@ -13,6 +13,10 @@ class TodoController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -130,6 +134,12 @@ class TodoController extends Controller
 
     public function store(Request $request)
     {
+        
+        if (!auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -181,6 +191,12 @@ class TodoController extends Controller
 
     public function edit($id)
     {
+        
+        if (!auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -195,6 +211,10 @@ class TodoController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -274,6 +294,11 @@ class TodoController extends Controller
 
     public function show($id)
     {
+        if (!auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -285,6 +310,11 @@ class TodoController extends Controller
 
     public function delete(Request $request, $id)
     {
+        if (!auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');

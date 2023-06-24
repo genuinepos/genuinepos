@@ -12,12 +12,16 @@ class CashRegisterController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     // Create cash register
     public function create()
     {
+        if (!auth()->user()->can('cash_counters')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $cashCounters = DB::table('cash_counters')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'counter_name', 'short_name']);
@@ -44,6 +48,11 @@ class CashRegisterController extends Controller
     // Store cash register
     public function store(Request $request)
     {
+        if (!auth()->user()->can('cash_counters')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
 
         $this->validate($request, [
@@ -56,7 +65,7 @@ class CashRegisterController extends Controller
 
         $dateFormat = $generalSettings['business__date_format'];
         $timeFormat = $generalSettings['business__time_format'];
-        
+
         $__timeFormat = '';
         if ($timeFormat == '12') {
             $__timeFormat = ' h:i:s';
@@ -132,7 +141,7 @@ class CashRegisterController extends Controller
         );
     }
 
-    // get closing cash register details 
+    // get closing cash register details
     public function closeCashRegisterModalView()
     {
         $queries = $this->detailsRegisterQuery();

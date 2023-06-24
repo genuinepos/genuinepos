@@ -12,6 +12,11 @@ class AttendanceReportController extends Controller
 {
     public function attendanceReport(Request $request)
     {
+        if (!auth()->user()->can('attendance')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $attendances = '';
             $query = DB::table('hrm_attendances')
@@ -47,7 +52,7 @@ class AttendanceReportController extends Controller
 
                 $query;
             } else {
-                
+
                 $query->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc');
             }
 
@@ -95,6 +100,11 @@ class AttendanceReportController extends Controller
 
     public function attendanceReportPrint(Request $request)
     {
+        if (!auth()->user()->can('attendance')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $branch_id = '';
         $fromDate = '';
         $toDate = '';
@@ -109,7 +119,7 @@ class AttendanceReportController extends Controller
             $branch_id = $request->branch_id;
 
             if ($request->branch_id == 'NULL') {
-                
+
                 $query->where('users.branch_id', NULL);
             } else {
 

@@ -13,10 +13,8 @@ class ExpenseReportCategoryWiseController extends Controller
     public function index(Request $request)
     {
         if (!auth()->user()->can('category_wise_expense')) {
-
             abort(403, 'Access Forbidden.');
         }
-
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');

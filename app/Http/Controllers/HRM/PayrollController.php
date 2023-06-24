@@ -40,6 +40,10 @@ class PayrollController extends Controller
     // Index view of payroll
     public function index(Request $request)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         if ($request->ajax()) {
             $payrolls = '';
             $query = DB::table('hrm_payrolls')
@@ -147,6 +151,10 @@ class PayrollController extends Controller
     // Create payroll
     public function create(Request $request)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         // return  $result = (float)$float + $hour;
         // $number = str_replace(['+', '-'], '', filter_var($a, FILTER_SANITIZE_NUMBER_INT));
 
@@ -185,6 +193,11 @@ class PayrollController extends Controller
     // Store payroll
     public function store(Request $request)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'amount_per_unit' => 'required',
             'duration_time' => 'required',
@@ -255,6 +268,11 @@ class PayrollController extends Controller
     // Payroll Edit view
     public function edit($payrollId)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $payroll = Payroll::with(['employee', 'allowances', 'deductions'])->where('id', $payrollId)->first();
         return view('hrm.payroll.edit', compact('payroll'));
     }
@@ -262,6 +280,11 @@ class PayrollController extends Controller
     // salary Update
     public function update(Request $request, $salaryId)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'amount_per_unit' => 'required',
             'duration_time' => 'required',
@@ -390,6 +413,11 @@ class PayrollController extends Controller
     // Show payroll method
     public function show($payrollId)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $payroll = Payroll::with(['employee', 'allowances', 'deductions'])->where('id', $payrollId)->first();
         return view('hrm.payroll.ajax_view.show', compact('payroll'));
     }
@@ -397,6 +425,11 @@ class PayrollController extends Controller
     // Payroll delete method
     public function delete(Request $request, $payrollId)
     {
+        if (!auth()->user()->can('payroll')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $deletePayroll = Payroll::find($payrollId);
         if (!is_null($deletePayroll)) {
             $deletePayroll->delete();

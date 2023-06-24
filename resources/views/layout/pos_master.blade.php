@@ -252,7 +252,7 @@
 
      <!-- Recent transection list modal-->
      <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
@@ -274,7 +274,7 @@
                     <div class="tab_contant">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="table_area">
+                                <div class="recent_sale_table_area">
                                     <div class="data_preloader" id="recent_trans_preloader">
                                         <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
                                     </div>
@@ -282,11 +282,12 @@
                                         <table class="table modal-table table-sm table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-startx">@lang('menu.sl')</th>
-                                                    <th class="text-startx">@lang('menu.reference')/@lang('menu.invoice_id')</th>
-                                                    <th class="text-startx">@lang('menu.customer')</th>
-                                                    <th class="text-startx">@lang('menu.total')</th>
-                                                    <th class="text-startx">@lang('menu.actions')</th>
+                                                    <th class="text-start fw-bold">@lang('menu.sl')</th>
+                                                    <th class="text-start fw-bold">@lang('menu.date')</th>
+                                                    <th class="text-start fw-bold">@lang('menu.reference')/@lang('menu.invoice_id')</th>
+                                                    <th class="text-start fw-bold">@lang('menu.customer')</th>
+                                                    <th class="text-start fw-bold">@lang('menu.total')</th>
+                                                    <th class="text-start fw-bold">@lang('menu.actions')</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="data-list" id="transection_list"></tbody>
@@ -624,16 +625,9 @@
         </div>
     </div>
 
-    <!--Data delete form-->
-    <form id="deleted_form" action="" method="post">
-        @method('DELETE')
-        @csrf
-    </form>
-    <!--Data delete form end-->
-
     <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('backend/asset/js/pos.js') }}"></script>
-    <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script>
+    {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}
     <script src="{{asset('')}}/backend/asset/js/sale.exchange.js"></script>
     <script>
         // Get all pos shortcut menus by ajax

@@ -3,6 +3,7 @@
 namespace Modules\SAAS\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\SAAS\Http\Middleware\IsAuthenticated;
 
 class SAASServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,7 @@ class SAASServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
     }
 
     /**

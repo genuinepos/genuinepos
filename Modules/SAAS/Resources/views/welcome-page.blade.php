@@ -1,4 +1,4 @@
-<x-saas::guest title="Welcomee">
+<x-saas::guest title="Welcome">
     @push('css')
     <style>
         .bg {

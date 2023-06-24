@@ -10,4 +10,9 @@ class RegistrationController extends Controller
     {
         return view('saas::register.form');
     }
+
+    public function store(Request $request)
+    {
+
+    }
 }

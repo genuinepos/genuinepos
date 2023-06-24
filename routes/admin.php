@@ -88,7 +88,7 @@ use App\Http\Controllers\WarehouseReceiveStockController;
 use App\Http\Controllers\WarrantyController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard.dashboard');
+// Route::get('/', [DashboardController::class, 'index'])->name('dashboard.dashboard');
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');

@@ -1,4 +1,4 @@
-<x-saas-layout  title="Welcomee page">
+<x-saas::guest title="Welcomee">
     @push('css')
     <style>
         .bg {
@@ -29,4 +29,4 @@
             </div>
        </div>
     </div>
-</x-saas-layout>
+</x-saas::guest>

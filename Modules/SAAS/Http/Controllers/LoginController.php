@@ -2,16 +2,43 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
+
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Modules\SAAS\Http\Requests\LoginRequest;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request)
+    public function showForm()
     {
-        //
+        return view('saas::auth.login');
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $userRequest = $request->validated();
+        $user = User::where('email', $userRequest['email'])->first();
+        if (! $user || ! Hash::check($userRequest['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        Auth::guard()->login($user);
+        return redirect()->to(route('saas.dashboard'));
+    }
+    
+    public function logout(Request $request)
+    {
+        Auth::guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->to(route('saas.welcome-page'));
     }
 }

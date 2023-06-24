@@ -23,6 +23,6 @@ class Guest extends Component
      */
     public function render()
     {
-        return view('saas::componnents.guest');
+        return view('saas::components.guest');
     }
 }

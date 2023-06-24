@@ -4,7 +4,7 @@ namespace Modules\SAAS\View\Components;
 
 use Illuminate\View\Component;
 
-class Admin extends Component
+class Nav extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class Admin extends Component
      */
     public function render()
     {
-        return view('saas::components.admin');
+        return view('saas::components.nav');
     }
 }

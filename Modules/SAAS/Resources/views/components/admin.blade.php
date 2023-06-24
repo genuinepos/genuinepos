@@ -25,46 +25,258 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        <x-saas::nav />
         {{ $slot }}
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-Token': '{{ csrf_token() }}'
+            }
+        });
+
+        // $(document).ready(function() {
+        //     $('.select2').select2();
+        // });
+
+        $(document).on('click', '.delete-btn', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            console.log(url);
+            $.confirm({
+                'title': 'Confirmation'
+                , 'message': 'Are you sure?'
+                , 'buttons': {
+                    'Yes': {
+                        'class': 'yes btn btn-danger'
+                        , 'action': function() {
+                            console.log("goint to " + url);
+                            $.ajax({
+                                url: url
+                                , type: 'DELETE'
+                                , processData: false
+                                , dataType: false
+                                , cache: false
+                                , success: function(data) {
+                                    toastr.error(data);
+                                    $('.dataTable').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    }
+                    , 'No': {
+                        'class': 'btn btn-secondary'
+                        , 'action': function() {
+
+                        }
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.delete-and-refresh-btn', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            console.log(url);
+            $.confirm({
+                'title': 'Confirmation'
+                , 'message': 'Are you sure?'
+                , 'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-danger'
+                        , 'action': function() {
+                            // console.log("Deleting from: " + url);
+                            $.ajax({
+                                url: url
+                                , type: 'DELETE'
+                                , processData: false
+                                , dataType: false
+                                , cache: false
+                                , success: function(data) {
+                                    window.location.reload();
+                                    toastr.success(data);
+                                }
+                            });
+                        }
+                    }
+                    , 'No': {
+                        'class': 'btn-secondary'
+                        , 'action': function() {
+
+                        }
+                    }
+                }
+            });
+        });
+
+        $('body').on('click', '.show-btn', function(e) {
+            e.preventDefault();
+            console.log($(this).attr('href'));
+            $.ajax({
+                url: $(this).attr('href')
+                , success: function(html) {
+                    $('#modal').html(html).modal('show');
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        @if(session('errors'))
+        @foreach($errors->all() as $error)
+        toastr.error("{{ $error }}");
+        @endforeach
+        @endif
+
+        @if(session('success'))
+        toastr.success("{{ session('success') }}");
+        @endif
+
+        @if(isset($success))
+        toastr.success("{{ $success }}");
+        @endif
+
+        @if(session('info'))
+        toastr.info("{{ session('info') }}");
+        @endif
+
+        @if(session('error'))
+        toastr.error("{{ session('error') }}");
+        @endif
+
+    </script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-Token': '{{ csrf_token() }}'
+            }
+        });
+
+        // $(document).ready(function() {
+        //     $('.select2').select2();
+        // });
+
+        $(document).on('click', '.delete-btn', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            console.log(url);
+            $.confirm({
+                'title': 'Confirmation'
+                , 'message': 'Are you sure?'
+                , 'buttons': {
+                    'Yes': {
+                        'class': 'yes btn btn-danger'
+                        , 'action': function() {
+                            console.log("goint to " + url);
+                            $.ajax({
+                                url: url
+                                , type: 'DELETE'
+                                , processData: false
+                                , dataType: false
+                                , cache: false
+                                , success: function(data) {
+                                    toastr.error(data);
+                                    $('.dataTable').DataTable().ajax.reload();
+                                }
+                            });
+                        }
+                    }
+                    , 'No': {
+                        'class': 'btn btn-secondary'
+                        , 'action': function() {
+
+                        }
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.delete-and-refresh-btn', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            console.log(url);
+            $.confirm({
+                'title': 'Confirmation'
+                , 'message': 'Are you sure?'
+                , 'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-danger'
+                        , 'action': function() {
+                            // console.log("Deleting from: " + url);
+                            $.ajax({
+                                url: url
+                                , type: 'DELETE'
+                                , processData: false
+                                , dataType: false
+                                , cache: false
+                                , success: function(data) {
+                                    window.location.reload();
+                                    toastr.success(data);
+                                }
+                            });
+                        }
+                    }
+                    , 'No': {
+                        'class': 'btn-secondary'
+                        , 'action': function() {
+
+                        }
+                    }
+                }
+            });
+        });
+
+        $('body').on('click', '.show-btn', function(e) {
+            e.preventDefault();
+            console.log($(this).attr('href'));
+            $.ajax({
+                url: $(this).attr('href')
+                , success: function(html) {
+                    $('#modal').html(html).modal('show');
+                }
+            });
+        });
+
+    </script>
+    <script>
+        function handleLogout() {
+            document.getElementById('logout-form').submit();
+        }
+    </script>
+    <script>
+        @if(session('errors'))
+        @foreach($errors->all() as $error)
+        toastr.error("{{ $error }}");
+        @endforeach
+        @endif
+
+        @if(session('success'))
+        toastr.success("{{ session('success') }}");
+        @endif
+
+        @if(isset($success))
+        toastr.success("{{ $success }}");
+        @endif
+
+        @if(session('info'))
+        toastr.info("{{ session('info') }}");
+        @endif
+
+        @if(session('error'))
+        toastr.error("{{ session('error') }}");
+        @endif
+
+    </script>
 </body>
 
 </html>

@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\CashRegister;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\CashRegisterTransaction;
 
 class CashRegisterController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     // Create cash register
@@ -32,7 +31,7 @@ class CashRegisterController extends Controller
             ->where('admin_id', auth()->user()->id)->where('status', 1)
             ->first();
 
-        if (!$openedCashRegister) {
+        if (! $openedCashRegister) {
 
             return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts'));
         } else {
@@ -56,11 +55,11 @@ class CashRegisterController extends Controller
 
         $dateFormat = $generalSettings['business__date_format'];
         $timeFormat = $generalSettings['business__time_format'];
-        
+
         $__timeFormat = '';
         if ($timeFormat == '12') {
             $__timeFormat = ' h:i:s';
-        } else if ($timeFormat == '24') {
+        } elseif ($timeFormat == '24') {
             $__timeFormat = ' H:i:s';
         }
 
@@ -79,7 +78,7 @@ class CashRegisterController extends Controller
     // cash register Details
     public function cashRegisterDetails()
     {
-        if (!auth()->user()->can('register_view')) {
+        if (! auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -107,7 +106,7 @@ class CashRegisterController extends Controller
     // Cash Register Details For Report
     public function cashRegisterDetailsForReport($crId)
     {
-        if (!auth()->user()->can('register_view')) {
+        if (! auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -132,7 +131,7 @@ class CashRegisterController extends Controller
         );
     }
 
-    // get closing cash register details 
+    // get closing cash register details
     public function closeCashRegisterModalView()
     {
         $queries = $this->detailsRegisterQuery();
@@ -171,7 +170,7 @@ class CashRegisterController extends Controller
         return redirect()->back();
     }
 
-    private function detailsRegisterQuery($crId = NULL)
+    private function detailsRegisterQuery($crId = null)
     {
         $activeCashRegister = '';
         $activeCashRegisterQuery = DB::table('cash_registers')
@@ -194,7 +193,7 @@ class CashRegisterController extends Controller
                 'branches.branch_code as b_name',
             );
 
-        if (!$crId) {
+        if (! $crId) {
 
             $activeCashRegister = $activeCashRegisterQuery
                 ->where('users.id', auth()->user()->id)
@@ -232,7 +231,7 @@ class CashRegisterController extends Controller
             'activeCashRegister' => $activeCashRegister,
             'paymentMethodPayments' => $paymentMethodPayments,
             'accountPayments' => $accountPayments,
-            'totalCredit' => $totalCredit
+            'totalCredit' => $totalCredit,
         ];
     }
 }

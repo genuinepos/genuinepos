@@ -2,13 +2,15 @@
 
 namespace App\Models\Hrm;
 
-use App\Models\User;
 use App\Models\BaseModel;
+use App\Models\User;
 
 class Payroll extends BaseModel
 {
     protected $table = 'hrm_payrolls';
+
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function payments()

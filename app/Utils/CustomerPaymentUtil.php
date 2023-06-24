@@ -2,19 +2,17 @@
 
 namespace App\Utils;
 
-use App\Models\Sale;
-use App\Utils\SaleUtil;
-use App\Models\SalePayment;
 use App\Models\CustomerPaymentInvoice;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use Illuminate\Support\Facades\Log;
+use App\Models\Sale;
+use App\Models\SalePayment;
 
 class CustomerPaymentUtil
 {
     public $saleUtil;
+
     public $invoiceVoucherRefIdUtil;
 
-    public function __construct(SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,)
+    public function __construct(SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->saleUtil = $saleUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
@@ -190,7 +188,7 @@ class CustomerPaymentUtil
     public function saleOrSalesOrderFillUpByPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix, $dueInvoice, $payingAmount)
     {
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
+        $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '').str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, '0', STR_PAD_LEFT);
         $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_id = $dueInvoice->id;
         $addSalePayment->customer_id = $customerId;
@@ -199,7 +197,7 @@ class CustomerPaymentUtil
         $addSalePayment->paid_amount = $payingAmount;
         $addSalePayment->date = date('d-m-Y', strtotime($request->date));
         $addSalePayment->time = date('h:i:s a');
-        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addSalePayment->month = date('F');
         $addSalePayment->year = date('Y');
         $addSalePayment->payment_method_id = $request->payment_method_id;

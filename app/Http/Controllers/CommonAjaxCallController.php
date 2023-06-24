@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CommonAjaxCallController extends Controller
@@ -15,7 +14,8 @@ class CommonAjaxCallController extends Controller
 
     public function branchAuthenticatedUsers($branchId)
     {
-        $branch_id = $branchId != 'NULL' ? $branchId : NULL;
+        $branch_id = $branchId != 'NULL' ? $branchId : null;
+
         return DB::table('users')
             ->where('branch_id', $branch_id)
             ->where('allow_login', 1)->get();
@@ -38,7 +38,7 @@ class CommonAjaxCallController extends Controller
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
             $query->distinct('product_branches.branch_id')->get();
-        }else{
+        } else {
 
             $query->where('product_branches.branch_id', auth()->user()->branch_id)->distinct('product_branches.branch_id')->get();
         }
@@ -194,22 +194,22 @@ class CommonAjaxCallController extends Controller
     // Get all parent Category
     public function branchWarehouses($branch_id)
     {
-        $branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
+        $branch_id = $branch_id == 'NULL' ? null : $branch_id;
 
-        return  DB::table('warehouse_branches')
-        ->where('warehouse_branches.branch_id', $branch_id)
-        ->orWhere('warehouse_branches.is_global', 1)
-        ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
-        ->select(
-            'warehouses.id',
-            'warehouses.warehouse_name',
-            'warehouses.warehouse_code',
-        )->get();
+        return DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', $branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
     }
 
     public function branchAllowLoginUsers($branchId)
     {
-        $branch_id = $branchId == 'NULL' ? NULL : $branchId;
+        $branch_id = $branchId == 'NULL' ? null : $branchId;
 
         return DB::table('users')
             ->where('branch_id', $branch_id)
@@ -220,7 +220,7 @@ class CommonAjaxCallController extends Controller
 
     public function branchUsers($branchId)
     {
-        $branch_id = $branchId == 'NULL' ? NULL : $branchId;
+        $branch_id = $branchId == 'NULL' ? null : $branchId;
 
         return DB::table('users')
             ->where('branch_id', $branch_id)
@@ -245,6 +245,7 @@ class CommonAjaxCallController extends Controller
                 'total_purchase_return_due',
             )
             ->first();
+
         return response()->json($supplier);
     }
 }

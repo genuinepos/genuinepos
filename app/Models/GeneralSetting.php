@@ -2,25 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GeneralSetting extends BaseModel
 {
     use HasFactory;
+
     public $timestamps = false;
 
     public static function boot()
-
     {
         parent::boot();
-        \Log::info("GeneralSetting Called");
+        \Log::info('GeneralSetting Called');
     }
 
     public function scopeSms($query)
     {
         return $this->sms_setting ?? [];
     }
+
     public function scopeEmail($query)
     {
         return $this->email_setting ?? [];

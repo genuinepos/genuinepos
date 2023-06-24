@@ -3,16 +3,16 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-use Modules\Communication\Entities\Sms;
-use Modules\Communication\Entities\ContactGroup;
 use Modules\Communication\Entities\Contact;
-use Modules\Communication\Http\Controllers\Controller;
+use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\Sms;
 use Modules\Communication\Interface\SmsServiceInterface;
+use Yajra\DataTables\Facades\DataTables;
 
 class SmsController extends Controller
 {
     private $smsService;
+
     public function __construct(SmsServiceInterface $smsService)
     {
         $this->smsService = $smsService;
@@ -22,38 +22,43 @@ class SmsController extends Controller
     {
         if ($request->ajax()) {
             $sms = Sms::all();
+
             return DataTables::of($sms)
                 ->addColumn('check', function ($row) {
 
                     $html = '';
                     $html .= '<div class="icheck-primary text-center">
-                                    <input type="checkbox" name="sms_id[]" value="' . $row->id . '" id="check1" class="mt-2 check1">
+                                    <input type="checkbox" name="sms_id[]" value="'.$row->id.'" id="check1" class="mt-2 check1">
                                     <label for="check1"></label>
                                 </div>';
+
                     return $html;
                 })
                 ->editColumn('message', function ($row) {
                     $html = '';
                     $html .= $row['message'];
+
                     return $html;
                 })
                 ->addColumn('status', function ($row) {
                     $html = '';
                     if ($row['status'] == 1) {
-                        $html .= '<div class="text-center"><a class="" href="' . route('communication.sms.important', [$row->id, 1]) . '" id="status"><i class="fa-solid fa-star fa-lg"></i></a></div>';
+                        $html .= '<div class="text-center"><a class="" href="'.route('communication.sms.important', [$row->id, 1]).'" id="status"><i class="fa-solid fa-star fa-lg"></i></a></div>';
                     } else {
-                        $html .= '<div class="text-center"><a class="" href="' . route('communication.sms.important', [$row->id, 2]) . '" id="status"><i class="fa-thin fa-star fa-lg"></i></a></div>';
+                        $html .= '<div class="text-center"><a class="" href="'.route('communication.sms.important', [$row->id, 2]).'" id="status"><i class="fa-thin fa-star fa-lg"></i></a></div>';
                     }
+
                     return $html;
                 })
                 ->addColumn('delete', function ($row) {
                     $html = '';
-                    $html .= '<div class="text-center"><a class="" href="' . route('communication.sms.delete', $row->id) . '" id="delete"><i class="fa-solid fa-trash-can"></i></a></div>';
+                    $html .= '<div class="text-center"><a class="" href="'.route('communication.sms.delete', $row->id).'" id="delete"><i class="fa-solid fa-trash-can"></i></a></div>';
+
                     return $html;
                 })
                 ->addColumn('time', function ($row) {
 
-                    return  $row['created_at']->diffForHumans();
+                    return $row['created_at']->diffForHumans();
                 })
                 ->rawColumns(['check', 'status', 'message', 'delete', 'time'])
                 ->make(true);
@@ -62,6 +67,7 @@ class SmsController extends Controller
         $sms = Sms::all();
         $groupIds = ContactGroup::pluck('id');
         $filtered_contact_numbers = Contact::whereNotNull('phone_number')->whereIn('group_id', $groupIds)->get();
+
         return view('communication::sms.index', [
             'sms' => $sms,
             'filtered_contact_numbers' => $filtered_contact_numbers,
@@ -83,9 +89,9 @@ class SmsController extends Controller
             'message' => 'required',
         ]);
 
-        $numbersArray = array();
+        $numbersArray = [];
 
-        if (!empty($request->group_id)) {
+        if (! empty($request->group_id)) {
 
             foreach ($request->group_id as $ids) {
 
@@ -112,7 +118,7 @@ class SmsController extends Controller
         if ($flag == 1) {
             $sms = Sms::find($id);
 
-            $sms->status = FALSE;
+            $sms->status = false;
             $sms->save();
 
             return response()->json('Message marked as unimportant');
@@ -130,18 +136,20 @@ class SmsController extends Controller
     {
         $sms = Sms::find($id);
         $sms->delete();
+
         return response()->json(['errorMsg' => 'Message deleted successfully']);
     }
 
     public function delete_all(Request $request)
     {
-        if (!isset($request->sms_id)) {
+        if (! isset($request->sms_id)) {
             return response()->json(['errorMsg' => 'Select messages first']);
         }
         foreach ($request->sms_id as $key => $items) {
             $sms = Sms::find($items);
             $sms->delete();
         }
+
         return response()->json(['errorMsg' => 'Message deleted successfully']);
     }
 }

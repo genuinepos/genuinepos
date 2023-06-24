@@ -2,15 +2,12 @@
 
 namespace App\Providers;
 
-use Exception;
 use App\Models\GeneralSetting;
 use App\Services\CacheService;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use App\Services\CacheServiceInterface;
 use App\Services\GeneralSettingService;
-use Illuminate\Support\ServiceProvider;
 use App\Services\GeneralSettingServiceInterface;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

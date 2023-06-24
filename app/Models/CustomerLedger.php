@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Sale;
-use App\Models\Customer;
-use App\Models\SalePayment;
-use App\Models\MoneyReceipt;
-use App\Models\BaseModel;
-
 class CustomerLedger extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function sale()

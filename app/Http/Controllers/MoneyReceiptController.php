@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sale;
 use App\Models\Account;
 use App\Models\CashFlow;
 use App\Models\Customer;
-use App\Models\SalePayment;
-use App\Models\MoneyReceipt;
-use Illuminate\Http\Request;
 use App\Models\CustomerLedger;
+use App\Models\MoneyReceipt;
+use App\Models\Sale;
+use App\Models\SalePayment;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MoneyReceiptController extends Controller
 {
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        
+
     }
 
     public function moneyReceiptList($customerId)
@@ -27,6 +28,7 @@ class MoneyReceiptController extends Controller
         $customer = Customer::with('receipts', 'receipts.branch')
             ->where('id', $customerId)
             ->first();
+
         return view('contacts.customers.ajax_view.money_receipt_list', compact('customer'));
     }
 
@@ -48,6 +50,7 @@ class MoneyReceiptController extends Controller
                 'branches.country',
                 'branches.logo',
             )->where('money_receipts.id', $receiptId)->first();
+
         return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
     }
 
@@ -55,16 +58,17 @@ class MoneyReceiptController extends Controller
     {
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $branches = DB::table('branches')->get();
+
         return view('contacts.customers.ajax_view.money_receipt_add_modal', compact('customer', 'branches'));
     }
 
     public function store(Request $request, $customerId)
     {
         $addReceipt = new MoneyReceipt();
-        $addReceipt->invoice_id = 'MR'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('money_receipts'), 4, "0", STR_PAD_LEFT);
+        $addReceipt->invoice_id = 'MR'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('money_receipts'), 4, '0', STR_PAD_LEFT);
         $addReceipt->customer_id = $customerId;
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $addReceipt->branch_id = NULL;
+            $addReceipt->branch_id = null;
         } else {
             $addReceipt->branch_id = auth()->user()->branch_id;
         }
@@ -76,7 +80,7 @@ class MoneyReceiptController extends Controller
         $addReceipt->is_date = isset($request->is_date) ? 1 : 0;
         $addReceipt->is_customer_name = isset($request->is_customer_name) ? 1 : 0;
         $addReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
-        $addReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
+        $addReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : null;
         $addReceipt->date = date('d-m-Y');
         $addReceipt->save();
 
@@ -96,6 +100,7 @@ class MoneyReceiptController extends Controller
                 'branches.country',
                 'branches.logo',
             )->where('money_receipts.id', $addReceipt->id)->first();
+
         return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
     }
 
@@ -108,7 +113,7 @@ class MoneyReceiptController extends Controller
         $updateReceipt->ac_details = $request->ac_details;
         $updateReceipt->is_date = isset($request->is_date) ? 1 : 0;
         $updateReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
-        $updateReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
+        $updateReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : null;
         $updateReceipt->is_customer_name = isset($request->is_customer_name) ? 1 : 0;
         $updateReceipt->date = date('d-m-Y');
         $updateReceipt->save();
@@ -129,6 +134,7 @@ class MoneyReceiptController extends Controller
                 'branches.country',
                 'branches.logo',
             )->where('money_receipts.id', $receiptId)->first();
+
         return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
     }
 
@@ -150,6 +156,7 @@ class MoneyReceiptController extends Controller
     {
         $receipt = DB::table('money_receipts')->where('id', $receiptId)->first();
         $accounts = DB::table('accounts')->get();
+
         return view('contacts.customers.ajax_view.change_receipt_status_modal', compact('receipt', 'accounts'));
     }
 
@@ -173,7 +180,10 @@ class MoneyReceiptController extends Controller
         $i = 6;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
 
         $dueInvoices = Sale::where('customer_id', $receipt->customer_id)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {
@@ -184,7 +194,7 @@ class MoneyReceiptController extends Controller
                     $dueInvoice->due -= $request->amount;
                     $dueInvoice->save();
                     $addSalePayment = new SalePayment();
-                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI').date('ymd').$invoiceId;
                     $addSalePayment->sale_id = $dueInvoice->id;
                     $addSalePayment->customer_id = $receipt->customer_id;
                     $addSalePayment->account_id = $request->account_id;
@@ -230,7 +240,7 @@ class MoneyReceiptController extends Controller
                         $addCustomerLedger->save();
                     }
 
-                    //$dueAmounts -= $dueAmounts; 
+                    //$dueAmounts -= $dueAmounts;
                     if ($index == 1) {
                         $request->amount = 0;
                         break;
@@ -240,7 +250,7 @@ class MoneyReceiptController extends Controller
                     $dueInvoice->due -= $request->amount;
                     $dueInvoice->save();
                     $addSalePayment = new SalePayment();
-                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI').date('ymd').$invoiceId;
                     $addSalePayment->sale_id = $dueInvoice->id;
                     $addSalePayment->customer_id = $receipt->customer_id;
                     $addSalePayment->account_id = $request->account_id;
@@ -292,7 +302,7 @@ class MoneyReceiptController extends Controller
                     }
                 } elseif ($dueInvoice->due < $request->amount) {
                     $addSalePayment = new SalePayment();
-                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI') . date('ymd') . $invoiceId;
+                    $addSalePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPI').date('ymd').$invoiceId;
                     $addSalePayment->sale_id = $dueInvoice->id;
                     $addSalePayment->customer_id = $receipt->customer_id;
                     $addSalePayment->account_id = $request->account_id;
@@ -347,15 +357,17 @@ class MoneyReceiptController extends Controller
                 $index++;
             }
         }
+
         return response()->json('Successfully money receipt voucher is completed.');
     }
 
     public function delete($receiptId)
     {
         $delete = MoneyReceipt::find($receiptId);
-        if (!is_null($delete)) {
+        if (! is_null($delete)) {
             $delete->delete();
         }
+
         return response()->json('Successfully money receipt voucher is deleted');
     }
 }

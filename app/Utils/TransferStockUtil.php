@@ -3,15 +3,17 @@
 namespace App\Utils;
 
 use App\Models\Expanse;
-use App\Models\ExpansePayment;
 use App\Models\ExpanseCategory;
+use App\Models\ExpansePayment;
 use App\Models\ExpenseDescription;
 use Illuminate\Support\Facades\DB;
 
 class TransferStockUtil
 {
     public $accountUtil;
+
     public $invoiceVoucherRefIdUtil;
+
     public $expenseUtil;
 
     public function __construct(
@@ -32,8 +34,7 @@ class TransferStockUtil
 
         $transferCostCategory = DB::table('expanse_categories')->where('name', 'Transferring Cost')->first();
 
-        $expense_category_id;
-        if (!$transferCostCategory) {
+        if (! $transferCostCategory) {
 
             $addGetId = ExpanseCategory::insertGetId([
                 'name' => 'Transferring Cost',
@@ -45,10 +46,10 @@ class TransferStockUtil
 
         $__expense_category_id = $transferCostCategory ? $transferCostCategory->id : $expense_category_id;
 
-        $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanses'), 5, "0", STR_PAD_LEFT);
+        $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanses'), 5, '0', STR_PAD_LEFT);
 
         $addExpense = new Expanse();
-        $addExpense->invoice_id = ($invoicePrefix != null ? $invoicePrefix : '') . $voucher_no;
+        $addExpense->invoice_id = ($invoicePrefix != null ? $invoicePrefix : '').$voucher_no;
         $addExpense->branch_id = auth()->user()->branch_id;
         $addExpense->category_ids = $__expense_category_id;
         $addExpense->total_amount = $request->transfer_cost;
@@ -57,7 +58,7 @@ class TransferStockUtil
         $addExpense->date = $request->date;
         $addExpense->month = date('F');
         $addExpense->year = date('Y');
-        $addExpense->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addExpense->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         //$addExpense->admin_id = auth()->user()->id;
         $addExpense->expense_account_id = $request->ex_account_id;
         $addExpense->transfer_branch_to_branch_id = $transfer_id;
@@ -105,14 +106,14 @@ class TransferStockUtil
         if ($request->transfer_cost != 0) {
 
             if ($transfer->expense) {
-                
+
                 $transfer->expense->total_amount = $request->transfer_cost;
                 $transfer->expense->net_total_amount = $request->transfer_cost;
                 $transfer->expense->paid = $request->transfer_cost;
                 $transfer->expense->date = $request->date;
                 $transfer->expense->month = date('F');
                 $transfer->expense->year = date('Y');
-                $transfer->expense->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+                $transfer->expense->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
                 //$addExpense->admin_id = auth()->user()->id;
                 $transfer->expense->expense_account_id = $request->ex_account_id;
                 $transfer->expense->transfer_branch_to_branch_id = $transfer->id;
@@ -137,8 +138,8 @@ class TransferStockUtil
 
                 //Update Expense payment
                 $this->expenseUtil->updatePayment(
-                    expensePayment : $updateExpansePayment, 
-                    request : $request, 
+                    expensePayment : $updateExpansePayment,
+                    request : $request,
                     another_amount : $request->transfer_cost
                 );
 
@@ -157,7 +158,7 @@ class TransferStockUtil
                 $this->addExpenseFromTransferStock($request, $transfer->id);
             }
         } else {
-            
+
             $this->expenseUtil->expenseDelete($transfer->expense);
         }
     }

@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class TenantBootstrapped
 {
@@ -23,7 +21,6 @@ class TenantBootstrapped
     public function handle(object $event): void
     {
         \Log::info(tenant('id'));
-
 
         try {
             if (! app()->runningInConsole()) {

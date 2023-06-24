@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\GeneralSetting;
-use Illuminate\Support\Facades\Artisan;
 use App\Services\GeneralSettingServiceInterface;
+use Illuminate\Http\Request;
 
 class EmailController extends Controller
 {
@@ -23,14 +21,14 @@ class EmailController extends Controller
     {
         $generalSettings = config('generalSettings');
         $emailSetting = [];
-        $emailSetting['MAIL_MAILER'] =  $generalSettings['email_config__MAIL_MAILER'] ?? '';
+        $emailSetting['MAIL_MAILER'] = $generalSettings['email_config__MAIL_MAILER'] ?? '';
         $emailSetting['MAIL_HOST'] = $generalSettings['email_config__MAIL_HOST'] ?? '';
         $emailSetting['MAIL_PORT'] = $generalSettings['email_config__MAIL_PORT'] ?? '';
         $emailSetting['MAIL_USERNAME'] = $generalSettings['email_config__MAIL_USERNAME'] ?? '';
-        $emailSetting['MAIL_PASSWORD'] =  $generalSettings['email_config__MAIL_PASSWORD'] ?? '';
-        $emailSetting['MAIL_ENCRYPTION'] =  $generalSettings['email_config__MAIL_ENCRYPTION'] ?? '';
+        $emailSetting['MAIL_PASSWORD'] = $generalSettings['email_config__MAIL_PASSWORD'] ?? '';
+        $emailSetting['MAIL_ENCRYPTION'] = $generalSettings['email_config__MAIL_ENCRYPTION'] ?? '';
         $emailSetting['MAIL_FROM_ADDRESS'] = $generalSettings['email_config__MAIL_FROM_ADDRESS'] ?? '';
-        $emailSetting['MAIL_FROM_NAME'] =  $generalSettings['email_config__MAIL_FROM_NAME'] ?? '';
+        $emailSetting['MAIL_FROM_NAME'] = $generalSettings['email_config__MAIL_FROM_NAME'] ?? '';
         $emailSetting['MAIL_ACTIVE'] = $generalSettings['email_config__MAIL_ACTIVE'] ?? '';
 
         return view('communication.email.settings.index', compact('emailSetting'));
@@ -49,7 +47,7 @@ class EmailController extends Controller
         $settings['email_config__MAIL_FROM_NAME'] = $request->get('MAIL_FROM_NAME');
         $settings['email_config__MAIL_ACTIVE'] = $request->MAIL_ACTIVE == 'on' ? true : false;
         $isSucceed = $this->generalSettingService->updateAndSync($settings);
-        if($isSucceed) {
+        if ($isSucceed) {
             return response()->json('Email settings updated successfully');
         }
     }

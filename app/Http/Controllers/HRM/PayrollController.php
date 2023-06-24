@@ -2,29 +2,27 @@
 
 namespace App\Http\Controllers\HRM;
 
-use DateTime;
-use Carbon\Carbon;
-use App\Models\Account;
-use App\Models\CashFlow;
-use App\Models\Hrm\Payroll;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Ramsey\Uuid\Type\Decimal;
-use App\Models\Hrm\PayrollPayment;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Hrm\Payroll;
 use App\Models\Hrm\PayrollAllowance;
 use App\Models\Hrm\PayrollDeduction;
+use App\Models\Hrm\PayrollPayment;
+use App\Models\User;
 use App\Utils\AccountUtil;
 use App\Utils\Hrm\PayrollUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
-use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PayrollController extends Controller
 {
     protected $invoiceVoucherRefIdUtil;
+
     protected $accountUtil;
+
     protected $payrollUtil;
 
     public function __construct(
@@ -50,7 +48,7 @@ class PayrollController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('users.branch_id', NULL);
+                    $query->where('users.branch_id', null);
                 } else {
                     $query->where('users.branch_id', $request->branch_id);
                 }
@@ -64,7 +62,7 @@ class PayrollController extends Controller
 
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $date_range = [$from_date.' 00:00:00', $to_date.' 00:00:00'];
                 $query->whereBetween('hrm_payrolls.report_date_ts', $date_range); // Final
             }
 
@@ -97,27 +95,28 @@ class PayrollController extends Controller
                         </button>';
 
                     $html .= '<div class="dropdown-menu">';
-                    $html .= '<a href="' . route('hrm.payrolls.show', [$row->id]) . '" class="dropdown-item" id="view_payroll"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a href="'.route('hrm.payrolls.show', [$row->id]).'" class="dropdown-item" id="view_payroll"><i class="far fa-eye text-primary"></i> View</a>';
 
-                    $html .= '<a href="' . route('hrm.payrolls.payment.view', [$row->id]) . '" class="dropdown-item" id="view_payment"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                    $html .= '<a href="'.route('hrm.payrolls.payment.view', [$row->id]).'" class="dropdown-item" id="view_payment"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
                         if ($row->due > 0) {
-                            $html .= '<a href="' . route('hrm.payrolls.payment', [$row->id]) . '" class="dropdown-item" id="add_payment"><i class="far fa-money-bill-alt text-primary"></i> Pay Salary</a>';
+                            $html .= '<a href="'.route('hrm.payrolls.payment', [$row->id]).'" class="dropdown-item" id="add_payment"><i class="far fa-money-bill-alt text-primary"></i> Pay Salary</a>';
                         }
-                        $html .= '<a href="' . route('hrm.payrolls.edit', [$row->id]) . '" class="dropdown-item" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
-                        $html .= '<a href="' . route('hrm.payrolls.delete', [$row->id]) . '" class="dropdown-item" id="delete"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                        $html .= '<a href="'.route('hrm.payrolls.edit', [$row->id]).'" class="dropdown-item" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a href="'.route('hrm.payrolls.delete', [$row->id]).'" class="dropdown-item" id="delete"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('employee', function ($row) {
-                    return $row->emp_prefix . ' ' . $row->emp_name . ' ' . $row->emp_last_name;
+                    return $row->emp_prefix.' '.$row->emp_name.' '.$row->emp_last_name;
                 })
                 ->editColumn('month_year', function ($row) {
-                    return $row->month . '/' . $row->year;
+                    return $row->month.'/'.$row->year;
                 })
                 ->editColumn('payment_status', function ($row) {
                     $html = '';
@@ -128,10 +127,11 @@ class PayrollController extends Controller
                     } elseif ($row->gross_amount == $row->due) {
                         $html = '<span class="badge bg-danger text-white">Due</span>';
                     }
+
                     return $html;
                 })
                 ->editColumn('created_by', function ($row) {
-                    return $row->user_prefix . ' ' . $row->user_name . ' ' . $row->user_last_name;
+                    return $row->user_prefix.' '.$row->user_name.' '.$row->user_last_name;
                 })
                 ->rawColumns(['action', 'employee', 'month_year', 'payment_status', 'created_by'])
                 ->make(true);
@@ -141,6 +141,7 @@ class PayrollController extends Controller
         $employee = DB::table('users')->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('hrm.payroll.index', compact('employee', 'departments', 'branches'));
     }
 
@@ -153,7 +154,7 @@ class PayrollController extends Controller
         $month_year = explode('-', $request->month_year);
         $year = $month_year[0];
         $dateTime = DateTime::createFromFormat('m', $month_year[1]);
-        $month = $dateTime->format("F");
+        $month = $dateTime->format('F');
 
         // return $employee = User::where('id', $request->employee_id)->first();
         $payroll = DB::table('hrm_payrolls')->where('user_id', $request->user_id)->where('month', $month)->where('year', $year)->first();
@@ -191,9 +192,8 @@ class PayrollController extends Controller
             'duration_unit' => 'required',
         ]);
 
-
         $addPayroll = new Payroll();
-        $addPayroll->reference_no = 'EP' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_payrolls'), 4, "0", STR_PAD_LEFT);
+        $addPayroll->reference_no = 'EP'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_payrolls'), 4, '0', STR_PAD_LEFT);
         $addPayroll->user_id = $request->user_id;
         $addPayroll->duration_time = $request->duration_time;
         $addPayroll->duration_unit = $request->duration_unit;
@@ -223,7 +223,7 @@ class PayrollController extends Controller
                     $addPayrollAllowance->allowance_name = $allowance_name;
                     $addPayrollAllowance->amount_type = $al_amount_types[$key];
                     $al_percent = $allowance_percents[$key] ? $allowance_percents[$key] : 0;
-                    $addPayrollAllowance->allowance_percent =  $al_amount_types[$key] == 2 ? $al_percent : 0;
+                    $addPayrollAllowance->allowance_percent = $al_amount_types[$key] == 2 ? $al_percent : 0;
                     $addPayrollAllowance->allowance_amount = $allowance_amounts[$key] ? $allowance_amounts[$key] : 0;
                     $addPayrollAllowance->save();
                 }
@@ -249,6 +249,7 @@ class PayrollController extends Controller
             }
         }
         session()->flash('successMsg', 'Payroll created successfully');
+
         return response()->json('Payroll created successfully');
     }
 
@@ -256,6 +257,7 @@ class PayrollController extends Controller
     public function edit($payrollId)
     {
         $payroll = Payroll::with(['employee', 'allowances', 'deductions'])->where('id', $payrollId)->first();
+
         return view('hrm.payroll.edit', compact('payroll'));
     }
 
@@ -384,6 +386,7 @@ class PayrollController extends Controller
         }
 
         session()->flash('successMsg', 'Payroll updated successfully.');
+
         return response()->json('Payroll updated successfully.');
     }
 
@@ -391,6 +394,7 @@ class PayrollController extends Controller
     public function show($payrollId)
     {
         $payroll = Payroll::with(['employee', 'allowances', 'deductions'])->where('id', $payrollId)->first();
+
         return view('hrm.payroll.ajax_view.show', compact('payroll'));
     }
 
@@ -398,15 +402,17 @@ class PayrollController extends Controller
     public function delete(Request $request, $payrollId)
     {
         $deletePayroll = Payroll::find($payrollId);
-        if (!is_null($deletePayroll)) {
+        if (! is_null($deletePayroll)) {
             $deletePayroll->delete();
         }
+
         return response()->json('Payroll deleted successfully.');
     }
 
     public function paymentView($payrollId)
     {
         $payroll = Payroll::with('payments', 'payments.paymentMethod', 'payments.account', 'employee', 'employee.branch')->where('id', $payrollId)->first();
+
         return view('hrm.payroll.ajax_view.view_payment', compact('payroll'));
     }
 
@@ -428,7 +434,7 @@ class PayrollController extends Controller
                     'accounts.name',
                     'accounts.account_number',
                     'accounts.account_type',
-                    'accounts.balance'
+                    'accounts.balance',
                 ]
             );
 
@@ -449,7 +455,7 @@ class PayrollController extends Controller
 
         // Add sale payment
         $addPayrollPayment = new PayrollPayment();
-        $addPayrollPayment->reference_no = 'PRP' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_payroll_payments'), 4, "0", STR_PAD_LEFT);
+        $addPayrollPayment->reference_no = 'PRP'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_payroll_payments'), 4, '0', STR_PAD_LEFT);
         $addPayrollPayment->payroll_id = $updatePayroll->id;
         $addPayrollPayment->account_id = $request->account_id;
         $addPayrollPayment->payment_method_id = $request->payment_method_id;
@@ -457,7 +463,7 @@ class PayrollController extends Controller
         $addPayrollPayment->due = $updatePayroll->due;
         $addPayrollPayment->date = $request->date;
         $addPayrollPayment->time = date('h:i:s a');
-        $addPayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPayrollPayment->month = date('F');
         $addPayrollPayment->year = date('Y');
         $addPayrollPayment->note = $request->note;
@@ -467,7 +473,7 @@ class PayrollController extends Controller
         if ($request->hasFile('attachment')) {
 
             $payrollPaymentAttachment = $request->file('attachment');
-            $payrollPaymentAttachmentName = uniqid() . '-' . '.' . $payrollPaymentAttachment->getClientOriginalExtension();
+            $payrollPaymentAttachmentName = uniqid().'-'.'.'.$payrollPaymentAttachment->getClientOriginalExtension();
             $payrollPaymentAttachment->move(public_path('uploads/payment_attachment/'), $payrollPaymentAttachmentName);
             $addPayrollPayment->attachment = $payrollPaymentAttachmentName;
         }
@@ -493,6 +499,7 @@ class PayrollController extends Controller
     {
         $payment = PayrollPayment::with('payroll', 'payroll.employee', 'payroll.employee.branch', 'paymentMethod')
             ->where('id', $paymentId)->first();
+
         return view('hrm.payroll.ajax_view.payment_details', compact('payment'));
     }
 
@@ -503,13 +510,13 @@ class PayrollController extends Controller
         $storedAccountId = $deletePayrollPayment->account_id;
         $storedPayroll = $deletePayrollPayment->payroll;
 
-        if (!is_null($deletePayrollPayment)) {
+        if (! is_null($deletePayrollPayment)) {
 
             if ($deletePayrollPayment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/' . $deletePayrollPayment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/'.$deletePayrollPayment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/' . $deletePayrollPayment->attachment));
+                    unlink(public_path('uploads/payment_attachment/'.$deletePayrollPayment->attachment));
                 }
             }
 
@@ -545,11 +552,12 @@ class PayrollController extends Controller
                     'accounts.name',
                     'accounts.account_number',
                     'accounts.account_type',
-                    'accounts.balance'
+                    'accounts.balance',
                 ]
             );
 
         $payment = PayrollPayment::with('payroll', 'payroll.employee')->where('id', $paymentId)->first();
+
         return view('hrm.payroll.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
     }
 
@@ -570,20 +578,20 @@ class PayrollController extends Controller
         $updatePayrollPayment->payment_method_id = $request->payment_method_id;
         $updatePayrollPayment->paid = $request->paying_amount;
         $updatePayrollPayment->date = $request->date;
-        $updatePayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $updatePayrollPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updatePayrollPayment->month = date('F');
         $updatePayrollPayment->year = date('Y');
         $updatePayrollPayment->note = $request->note;
 
         if ($request->hasFile('attachment')) {
             if ($updatePayrollPayment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/' . $updatePayrollPayment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/' . $updatePayrollPayment->attachment));
+                if (file_exists(public_path('uploads/payment_attachment/'.$updatePayrollPayment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/'.$updatePayrollPayment->attachment));
                 }
             }
 
             $payrollPaymentAttachment = $request->file('attachment');
-            $payrollPaymentAttachmentName = uniqid() . '-' . '.' . $payrollPaymentAttachment->getClientOriginalExtension();
+            $payrollPaymentAttachmentName = uniqid().'-'.'.'.$payrollPaymentAttachment->getClientOriginalExtension();
             $payrollPaymentAttachment->move(public_path('uploads/payment_attachment/'), $payrollPaymentAttachmentName);
             $updatePayrollPayment->attachment = $payrollPaymentAttachmentName;
         }
@@ -610,18 +618,21 @@ class PayrollController extends Controller
     public function getAllEmployee()
     {
         $employee = DB::table('users')->get();
+
         return response()->json($employee);
     }
 
     public function getAllDeparment()
     {
         $departments = DB::table('hrm_department')->get();
+
         return response()->json($departments);
     }
 
     public function getAllDesignation()
     {
         $designations = DB::table('hrm_designations')->get();
+
         return response()->json($designations);
     }
 }

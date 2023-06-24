@@ -125,7 +125,7 @@ class TenancyServiceProviderCore extends ServiceProvider
                 'web',
                 InitializeTenancyByDomain::class,
                 PreventAccessFromCentralDomains::class,
-            ])->group(function() {
+            ])->group(function () {
                 require_once base_path('routes/web.php');
             });
         }

@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HRM\LeaveController;
-use App\Http\Controllers\HRM\ShiftController;
-use App\Http\Controllers\HRM\HolidayController;
-use App\Http\Controllers\HRM\PayrollController;
 use App\Http\Controllers\HRM\AllowanceController;
-use App\Http\Controllers\HRM\DashboardController;
-use App\Http\Controllers\HRM\LeaveTypeController;
 use App\Http\Controllers\HRM\AttendanceController;
+use App\Http\Controllers\HRM\DashboardController;
 use App\Http\Controllers\HRM\DepartmentController;
 use App\Http\Controllers\HRM\DesignationController;
-use App\Http\Controllers\Report\PayrollReportController;
+use App\Http\Controllers\HRM\HolidayController;
+use App\Http\Controllers\HRM\LeaveController;
+use App\Http\Controllers\HRM\LeaveTypeController;
+use App\Http\Controllers\HRM\PayrollController;
+use App\Http\Controllers\HRM\ShiftController;
 use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\Report\PayrollPaymentReportController;
+use App\Http\Controllers\Report\PayrollReportController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'hrm'], function () {
     // Designations route group

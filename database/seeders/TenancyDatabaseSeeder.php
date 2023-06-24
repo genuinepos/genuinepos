@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Tenancy\Entities\Tenant;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Artisan;
+use Modules\Tenancy\Entities\Tenant;
 
 class TenancyDatabaseSeeder extends Seeder
 {
@@ -18,7 +17,7 @@ class TenancyDatabaseSeeder extends Seeder
     {
         $domains = ['customer1',  'customer2', 'gposs'];
         $tenants = [];
-        foreach($domains as $key => $domain) {
+        foreach ($domains as $key => $domain) {
             $tenants[$key] = Tenant::create(['id' => $domain]);
             $tenants[$key]->domains()->create(['domain' => $domain]);
         }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class PayrollPaymentReportController extends Controller
@@ -22,7 +22,7 @@ class PayrollPaymentReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $payrollPaymentQ->where('users.branch_id', NULL);
+                    $payrollPaymentQ->where('users.branch_id', null);
                 } else {
                     $payrollPaymentQ->where('users.branch_id', $request->branch_id);
                 }
@@ -72,17 +72,18 @@ class PayrollPaymentReportController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('employee', function ($row) {
-                    return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
+                    return $row->prefix.' '.$row->name.' '.$row->last_name;
                 })
                 ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span>';
+                    return '<span class="paid" data-value="'.$row->paid.'">'.$generalSettings['business__currency'].' '.$row->paid.'</span>';
                 })
                 ->editColumn('paid_by', function ($row) {
-                    return $row->pb_prefix . ' ' . $row->pb_name . ' ' . $row->pb_last_name;
+                    return $row->pb_prefix.' '.$row->pb_name.' '.$row->pb_last_name;
                 })->rawColumns(['date', 'employee', 'paid', 'paid_by'])->make(true);
         }
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.payroll_payment_report.payroll_payment_report', compact('branches'));
     }
 
@@ -100,7 +101,7 @@ class PayrollPaymentReportController extends Controller
         if ($request->branch_id) {
             $branch_id = $request->branch_id;
             if ($request->branch_id == 'NULL') {
-                $payrollPaymentQ->where('users.branch_id', NULL);
+                $payrollPaymentQ->where('users.branch_id', null);
             } else {
                 $payrollPaymentQ->where('users.branch_id', $request->branch_id);
             }

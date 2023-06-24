@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Http\Controllers\Controller;
 use App\Models\Hrm\Leave;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class LeaveController extends Controller
@@ -29,7 +29,6 @@ class LeaveController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $query;
             } else {
 
                 $query->where('branch_id', auth()->user()->branch_id);
@@ -47,24 +46,25 @@ class LeaveController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('hrm.leaves.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('hrm.leaves.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('hrm.leaves.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('hrm.leaves.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('employee', function ($row) {
 
-                    return $row->e_prefix . ' ' . $row->e_name . ' ' . $row->e_last_name;
+                    return $row->e_prefix.' '.$row->e_name.' '.$row->e_last_name;
                 })
                 ->editColumn('status', function ($row) {
 
-                    if ($row->status == 0) :
+                    if ($row->status == 0) {
 
-                        return '<span class="badge bg-warning">' . __('pending') . '</span>';
-                    else :
+                        return '<span class="badge bg-warning">'.__('pending').'</span>';
+                    } else {
 
-                        return '<span class="badge bg-success">' . __('success') . '</span>';
-                    endif;
+                        return '<span class="badge bg-success">'.__('success').'</span>';
+                    }
                 })
                 ->rawColumns(['employee', 'status', 'action'])->smart(true)->make(true);
         }
@@ -87,7 +87,7 @@ class LeaveController extends Controller
 
         Leave::insert([
             'branch_id' => auth()->user()->branch_id,
-            'leave_no' => str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_leaves'), 4, "0", STR_PAD_LEFT),
+            'leave_no' => str_pad($this->invoiceVoucherRefIdUtil->getLastId('hrm_leaves'), 4, '0', STR_PAD_LEFT),
             'employee_id' => $request->employee_id,
             'leave_type_id' => $request->leave_type_id,
             'start_date' => $request->start_date,
@@ -134,6 +134,7 @@ class LeaveController extends Controller
         $Leave = Leave::find($id);
         $Leave->delete();
         DB::statement('ALTER TABLE hrm_leaves AUTO_INCREMENT = 1');
+
         return response()->json('Leave Deleted successfully');
     }
 

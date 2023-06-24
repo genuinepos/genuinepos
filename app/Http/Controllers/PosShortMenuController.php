@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PosShortMenuUser;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PosShortMenuController extends Controller
@@ -12,34 +12,37 @@ class PosShortMenuController extends Controller
     {
         $posShortMenus = DB::table('pos_short_menus')
             ->get();
+
         return view('sales.pos.ajax_view.short-menu-modal-form', compact('posShortMenus'));
     }
 
     public function show()
     {
         $posShortMenus = DB::table('pos_short_menu_users')
-        ->where('user_id', auth()->user()->id)
-        ->leftJoin('pos_short_menus', 'pos_short_menu_users.short_menu_id', 'pos_short_menus.id')
-        ->select(
-            'pos_short_menus.url',
-            'pos_short_menus.name',
-            'pos_short_menus.icon',
-        )->orderBy('pos_short_menu_users.id', 'desc')
-        ->get();
+            ->where('user_id', auth()->user()->id)
+            ->leftJoin('pos_short_menus', 'pos_short_menu_users.short_menu_id', 'pos_short_menus.id')
+            ->select(
+                'pos_short_menus.url',
+                'pos_short_menus.name',
+                'pos_short_menus.icon',
+            )->orderBy('pos_short_menu_users.id', 'desc')
+            ->get();
+
         return view('sales.pos.ajax_view.pos-shortcut-menus', compact('posShortMenus'));
     }
 
     public function editPageShow()
     {
         $posShortMenus = DB::table('pos_short_menu_users')
-        ->where('user_id', auth()->user()->id)
-        ->leftJoin('pos_short_menus', 'pos_short_menu_users.short_menu_id', 'pos_short_menus.id')
-        ->select(
-            'pos_short_menus.url',
-            'pos_short_menus.name',
-            'pos_short_menus.icon',
-        )->orderBy('pos_short_menu_users.id', 'desc')
-        ->get();
+            ->where('user_id', auth()->user()->id)
+            ->leftJoin('pos_short_menus', 'pos_short_menu_users.short_menu_id', 'pos_short_menus.id')
+            ->select(
+                'pos_short_menus.url',
+                'pos_short_menus.name',
+                'pos_short_menus.icon',
+            )->orderBy('pos_short_menu_users.id', 'desc')
+            ->get();
+
         return view('sales.pos.ajax_view.edipos-edit-shortcut-munus', compact('posShortMenus'));
     }
 
@@ -54,13 +57,13 @@ class PosShortMenuController extends Controller
         if (isset($request->menu_ids)) {
             foreach ($request->menu_ids as $menu_id) {
                 $shortMenuUser = PosShortMenuUser::where('short_menu_id', $menu_id)
-                ->where('user_id', auth()->user()->id)
-                ->first();
+                    ->where('user_id', auth()->user()->id)
+                    ->first();
 
                 if ($shortMenuUser) {
                     $shortMenuUser->is_delete_in_update = 0;
                     $shortMenuUser->save();
-                }else {
+                } else {
                     $addShortMenuUser = new PosShortMenuUser();
                     $addShortMenuUser->short_menu_id = $menu_id;
                     $addShortMenuUser->user_id = auth()->user()->id;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Modules\Tenancy\Entities\Tenant;
 use Stancl\Tenancy\Database\Models\Domain;
+
 // use Stancl\Tenancy\Database\Models\Tenant;
 
 return [

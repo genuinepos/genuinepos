@@ -2,8 +2,8 @@
 
 namespace Modules\SAAS\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -42,6 +42,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         return config('tenancy.central_domains');
     }
+
     /**
      * Define the "web" routes for the application.
      *

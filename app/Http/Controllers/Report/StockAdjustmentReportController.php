@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -25,7 +26,7 @@ class StockAdjustmentReportController extends Controller
             $query = DB::table('stock_adjustments');
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('branch_id', NULL);
+                    $query->where('branch_id', null);
                 } else {
                     $query->where('branch_id', $request->branch_id);
                 }
@@ -48,6 +49,7 @@ class StockAdjustmentReportController extends Controller
         }
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.adjustment_report.index', compact('branches'));
     }
 
@@ -63,7 +65,7 @@ class StockAdjustmentReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('stock_adjustments.branch_id', NULL);
+                    $query->where('stock_adjustments.branch_id', null);
                 } else {
                     $query->where('stock_adjustments.branch_id', $request->branch_id);
                 }
@@ -103,28 +105,28 @@ class StockAdjustmentReportController extends Controller
                     'users.name as cr_name',
                     'users.last_name',
                 )->orderBy('stock_adjustments.report_date_ts', 'desc')
-                ->where('stock_adjustments.branch_id', auth()->user()->branch_id);
+                    ->where('stock_adjustments.branch_id', auth()->user()->branch_id);
             }
 
             return DataTables::of($adjustments)
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
-                })->editColumn('from',  function ($row) use ($generalSettings) {
-                    if (!$row->branch_name && !$row->warehouse_name) {
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                })->editColumn('from', function ($row) use ($generalSettings) {
+                    if (! $row->branch_name && ! $row->warehouse_name) {
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     } else {
                         if ($row->branch_name) {
-                            return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                            return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                         } else {
-                            return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
+                            return $row->warehouse_name.'/'.$row->warehouse_code.'(<b>WH</b>)';
                         }
                     }
-                })->editColumn('type',  function ($row) {
+                })->editColumn('type', function ($row) {
                     return $row->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>';
                 })->editColumn('net_total', fn ($row) => $this->converter->format_in_bdt($row->net_total_amount))
                 ->editColumn('recovered_amount', fn ($row) => $this->converter->format_in_bdt($row->recovered_amount))
                 ->editColumn('created_by', function ($row) {
-                    return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
+                    return $row->prefix.' '.$row->name.' '.$row->last_name;
                 })->rawColumns(['date', 'invoice_id', 'from', 'type', 'net_total', 'recovered_amount', 'created_by'])
                 ->make(true);
         }
@@ -143,7 +145,7 @@ class StockAdjustmentReportController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('stock_adjustments.branch_id', NULL);
+                $query->where('stock_adjustments.branch_id', null);
             } else {
                 $query->where('stock_adjustments.branch_id', $request->branch_id);
             }

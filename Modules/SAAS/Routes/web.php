@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
 
 Route::view('/', 'saas::welcome-page')->name('welcome-page');
 

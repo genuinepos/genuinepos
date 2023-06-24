@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseStatementController extends Controller
 {
     public $converter;
+
     public function __construct(
         Converter $converter
     ) {
@@ -32,18 +33,18 @@ class PurchaseStatementController extends Controller
                 ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
                 ->leftJoin('users', 'purchases.admin_id', 'users.id');
 
-            if (!empty($request->branch_id)) {
+            if (! empty($request->branch_id)) {
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('purchases.branch_id', NULL);
+                    $query->where('purchases.branch_id', null);
                 } else {
 
                     $query->where('purchases.branch_id', $request->branch_id);
                 }
             }
 
-            if (!empty($request->warehouse_id)) {
+            if (! empty($request->warehouse_id)) {
 
                 $query->where('purchases.warehouse_id', $request->warehouse_id);
             }
@@ -108,23 +109,23 @@ class PurchaseStatementController extends Controller
                     return date($generalSettings['business__date_format'], strtotime($row->date));
                 })
 
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name . '<b>(WH)</b>';
+                        return $row->warehouse_name.'<b>(WH)</b>';
                     } elseif ($row->branch_name) {
 
-                        return $row->branch_name . '<b>(BL)</b>';
+                        return $row->branch_name.'<b>(BL)</b>';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . ' (<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].' (<b>HO</b>)';
                     }
                 })
 
                 ->editColumn('created_by', function ($row) {
 
-                    return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+                    return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
                 })
 
                 ->editColumn('status', function ($row) {
@@ -141,21 +142,21 @@ class PurchaseStatementController extends Controller
                     }
                 })
 
-                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . $this->converter->format_in_bdt($row->total_item) . '</span>')
+                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.$this->converter->format_in_bdt($row->total_item).'</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.$this->converter->format_in_bdt($row->net_total_amount).'</span>')
 
-                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . $row->order_discount_amount . '">' . $this->converter->format_in_bdt($row->order_discount_amount) . '</span>')
+                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="'.$row->order_discount_amount.'">'.$this->converter->format_in_bdt($row->order_discount_amount).'</span>')
 
-                ->editColumn('purchase_tax_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->purchase_tax_amount . '">' . $this->converter->format_in_bdt($row->purchase_tax_amount) . '(' . $row->purchase_tax_percent . ')' . '</span>')
+                ->editColumn('purchase_tax_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->purchase_tax_amount.'">'.$this->converter->format_in_bdt($row->purchase_tax_amount).'('.$row->purchase_tax_percent.')'.'</span>')
 
-                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
+                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.$this->converter->format_in_bdt($row->total_purchase_amount).'</span>')
 
-                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
 
-                ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="' . $row->purchase_return_amount . '">' . $this->converter->format_in_bdt($row->purchase_return_amount) . '</span>')
+                ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="'.$row->purchase_return_amount.'">'.$this->converter->format_in_bdt($row->purchase_return_amount).'</span>')
 
-                ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span></span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span></span>')
 
                 ->rawColumns(['date', 'from', 'created_by', 'status', 'total_item', 'net_total_amount', 'order_discount_amount', 'purchase_tax_amount', 'total_purchase_amount', 'paid', 'purchase_return_amount', 'due'])
                 ->make(true);
@@ -181,18 +182,18 @@ class PurchaseStatementController extends Controller
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('users', 'purchases.admin_id', 'users.id');
 
-        if (!empty($request->branch_id)) {
+        if (! empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('purchases.branch_id', NULL);
+                $query->where('purchases.branch_id', null);
             } else {
 
                 $query->where('purchases.branch_id', $request->branch_id);
             }
         }
 
-        if (!empty($request->warehouse_id)) {
+        if (! empty($request->warehouse_id)) {
 
             $query->where('purchases.warehouse_id', $request->warehouse_id);
         }

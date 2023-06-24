@@ -4,7 +4,6 @@ namespace Modules\Tenancy\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Tenancy\Entities\Tenant;
-use Illuminate\Database\Eloquent\Model;
 
 class TenancyDatabaseSeeder extends Seeder
 {

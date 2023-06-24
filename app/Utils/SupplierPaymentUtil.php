@@ -3,18 +3,17 @@
 namespace App\Utils;
 
 use App\Models\Purchase;
-use App\Utils\PurchaseUtil;
 use App\Models\PurchasePayment;
-use Illuminate\Support\Facades\DB;
 use App\Models\SupplierPaymentInvoice;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use Illuminate\Support\Facades\DB;
 
 class SupplierPaymentUtil
 {
     public $purchaseUtil;
+
     public $invoiceVoucherRefIdUtil;
 
-    public function __construct(PurchaseUtil $purchaseUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,)
+    public function __construct(PurchaseUtil $purchaseUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->purchaseUtil = $purchaseUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
@@ -41,7 +40,7 @@ class SupplierPaymentUtil
 
                         $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $request->paying_amount);
 
-                        //$dueAmounts -= $dueAmounts; 
+                        //$dueAmounts -= $dueAmounts;
                         $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
@@ -94,7 +93,7 @@ class SupplierPaymentUtil
 
                             $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $request->paying_amount);
 
-                            //$dueAmounts -= $dueAmounts; 
+                            //$dueAmounts -= $dueAmounts;
                             $request->paying_amount -= $request->paying_amount;
                             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                         }
@@ -149,7 +148,7 @@ class SupplierPaymentUtil
                         $this->purchaseDueFillupBySupplierPayment($request, $supplierPayment, $paymentInvoicePrefix, $dueInvoice, $request->paying_amount);
 
                         $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $request->paying_amount);
-                        //$dueAmounts -= $dueAmounts; 
+                        //$dueAmounts -= $dueAmounts;
                         $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
@@ -188,14 +187,14 @@ class SupplierPaymentUtil
     public function purchaseDueFillupBySupplierPayment($request, $supplierPayment, $paymentInvoicePrefix, $dueInvoice, $payingAmount)
     {
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT);
+        $addPurchasePayment->invoice_id = ($paymentInvoicePrefix != null ? $paymentInvoicePrefix : '').str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT);
         $addPurchasePayment->purchase_id = $dueInvoice->id;
         $addPurchasePayment->branch_id = auth()->user()->branch_id;
         $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
         $addPurchasePayment->account_id = $request->account_id;
         $addPurchasePayment->paid_amount = $payingAmount;
         $addPurchasePayment->date = $request->date;
-        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchasePayment->month = date('F');
         $addPurchasePayment->year = date('Y');
         $addPurchasePayment->payment_method_id = $request->payment_method_id;
@@ -253,7 +252,7 @@ class SupplierPaymentUtil
 
                     $this->supplierPaymentInvoice($supplierPayment, $purchase, $supplierPayment->left_amount);
 
-                    //$dueAmounts -= $dueAmounts; 
+                    //$dueAmounts -= $dueAmounts;
                     $purchase->due -= $supplierPayment->left_amount;
                     $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                 } else {

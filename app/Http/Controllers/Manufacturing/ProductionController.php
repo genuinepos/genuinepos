@@ -2,28 +2,32 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use App\Models\Product;
+use App\Http\Controllers\Controller;
+use App\Models\Manufacturing\Production;
+use App\Models\Manufacturing\ProductionIngredient;
 use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\Manufacturing\ProductionUtil;
+use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseSaleChainUtil;
 use App\Utils\PurchaseUtil;
 use Illuminate\Http\Request;
-use App\Models\PurchaseProduct;
-use App\Utils\ProductStockUtil;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Utils\PurchaseSaleChainUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Models\Manufacturing\Production;
-use App\Utils\Manufacturing\ProductionUtil;
-use App\Models\Manufacturing\ProductionIngredient;
 
 class ProductionController extends Controller
 {
     protected $invoiceVoucherRefIdUtil;
+
     protected $productStockUtil;
+
     protected $productionUtil;
+
     protected $accountUtil;
+
     protected $purchaseUtil;
+
     protected $purchaseSaleChainUtil;
+
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         ProductStockUtil $productStockUtil,
@@ -42,7 +46,7 @@ class ProductionController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('production_view')) {
+        if (! auth()->user()->can('production_view')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -53,12 +57,13 @@ class ProductionController extends Controller
 
             return $this->productionUtil->productionList($request);
         }
+
         return view('manufacturing.production.index', compact('branches'));
     }
 
     public function create()
     {
-        if (!auth()->user()->can('production_add')) {
+        if (! auth()->user()->can('production_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -75,7 +80,7 @@ class ProductionController extends Controller
 
         $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
 
-        $products =  DB::table('processes')
+        $products = DB::table('processes')
             ->leftJoin('products', 'processes.product_id', 'products.id')
             ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
             ->select(
@@ -101,12 +106,12 @@ class ProductionController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('production_add')) {
+        if (! auth()->user()->can('production_add')) {
 
             return response()->json('Access Denied');
         }
 
-        $tax_id = NULL;
+        $tax_id = null;
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
         }
@@ -131,7 +136,7 @@ class ProductionController extends Controller
             ]);
         }
 
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
         }
@@ -148,9 +153,9 @@ class ProductionController extends Controller
         }
 
         $addProduction = new Production();
-        $addProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, "0", STR_PAD_LEFT);
+        $addProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '').str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, '0', STR_PAD_LEFT);
         $addProduction->branch_id = auth()->user()->branch_id;
-        $addProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : NULL;
+        $addProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : null;
         $addProduction->production_account_id = $request->production_account_id;
 
         if (isset($request->stock_warehouse_count)) {
@@ -163,7 +168,7 @@ class ProductionController extends Controller
 
         $addProduction->date = $request->date;
         $addProduction->time = date('h:i:s a');
-        $addProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addProduction->product_id = $request->product_id;
         $addProduction->variant_id = $request->variant_id;
         $addProduction->unit_id = $request->unit_id;
@@ -189,7 +194,7 @@ class ProductionController extends Controller
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
                 $addProductionIngredient = new ProductionIngredient();
                 $addProductionIngredient->production_id = $addProduction->id;
                 $addProductionIngredient->product_id = $product_id;
@@ -259,7 +264,7 @@ class ProductionController extends Controller
                 unitCostIncTax: $request->per_unit_cost_inc_tax,
                 sellingPrice: $request->selling_price,
                 subTotal: $request->total_cost,
-                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                createdAt: date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
                 xMargin: $request->xMargin,
             );
         }
@@ -280,6 +285,7 @@ class ProductionController extends Controller
                 'ingredients.variant:id,variant_name,variant_code',
                 'ingredients.unit:id,code_name',
             ])->where('id', $addProduction->id)->first();
+
             return view('manufacturing.production.save_and_print_template.print', compact('production'));
         } else {
 
@@ -289,7 +295,7 @@ class ProductionController extends Controller
 
     public function show($productionId)
     {
-        if (!auth()->user()->can('production_view')) {
+        if (! auth()->user()->can('production_view')) {
             return response()->json('Access Denied');
         }
 
@@ -307,12 +313,13 @@ class ProductionController extends Controller
             'ingredients.variant:id,variant_name,variant_code',
             'ingredients.unit:id,code_name',
         ])->where('id', $productionId)->first();
+
         return view('manufacturing.production.ajax_view.show', compact('production'));
     }
 
     public function edit($productionId)
     {
-        if (!auth()->user()->can('production_edit')) {
+        if (! auth()->user()->can('production_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -354,12 +361,12 @@ class ProductionController extends Controller
 
     public function update(Request $request, $productionId)
     {
-        if (!auth()->user()->can('production_edit')) {
+        if (! auth()->user()->can('production_edit')) {
 
             return response()->json('Access Denied');
         }
 
-        $tax_id = NULL;
+        $tax_id = null;
         if ($request->tax_id) {
 
             $tax_id = explode('-', $request->tax_id)[0];
@@ -382,7 +389,7 @@ class ProductionController extends Controller
             ]);
         }
 
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
         }
@@ -393,13 +400,13 @@ class ProductionController extends Controller
         $updateProduction = Production::where('id', $productionId)->first();
         $storedWarehouseId = $updateProduction->warehouse_id;
 
-        $updateProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, "0", STR_PAD_LEFT);
+        $updateProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '').str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, '0', STR_PAD_LEFT);
         $updateProduction->production_account_id = $request->production_account_id;
         $updateProduction->branch_id = auth()->user()->branch_id;
-        $updateProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : NULL;
+        $updateProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : null;
         $updateProduction->date = $request->date;
         $updateProduction->time = date('h:i:s a');
-        $updateProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $updateProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updateProduction->total_ingredient_cost = $request->total_ingredient_cost;
         $updateProduction->quantity = $request->output_quantity;
         $updateProduction->parameter_quantity = $request->parameter_quantity;
@@ -438,7 +445,7 @@ class ProductionController extends Controller
                 unitCostIncTax: $request->per_unit_cost_inc_tax,
                 sellingPrice: $request->selling_price,
                 subTotal: $request->total_cost,
-                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                createdAt: date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
                 xMargin: $request->xMargin,
             );
         }
@@ -448,7 +455,7 @@ class ProductionController extends Controller
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
 
                 $updateProductionIngredient = ProductionIngredient::where('production_id', $updateProduction->id)
                     ->where('product_id', $product_id)->where('variant_id', $variant_id)->first();
@@ -507,7 +514,7 @@ class ProductionController extends Controller
 
     public function delete(Request $request, $productionId)
     {
-        if (!auth()->user()->can('production_delete')) {
+        if (! auth()->user()->can('production_delete')) {
 
             return response()->json('Access Denied');
         }

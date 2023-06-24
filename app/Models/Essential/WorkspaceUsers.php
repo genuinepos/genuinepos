@@ -2,13 +2,13 @@
 
 namespace App\Models\Essential;
 
-use App\Models\User;
-use App\Models\Essential\Workspace;
 use App\Models\BaseModel;
+use App\Models\User;
 
 class WorkspaceUsers extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function workspace()

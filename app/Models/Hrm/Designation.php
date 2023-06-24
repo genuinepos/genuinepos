@@ -7,5 +7,6 @@ use App\Models\BaseModel;
 class Designation extends BaseModel
 {
     protected $table = 'hrm_designations';
-    protected $fillable = ['designation_name','description'];
+
+    protected $fillable = ['designation_name', 'description'];
 }

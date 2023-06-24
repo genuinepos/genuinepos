@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class PayrollReportController extends Controller
@@ -22,7 +22,7 @@ class PayrollReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('users.branch_id', NULL);
+                    $query->where('users.branch_id', null);
                 } else {
                     $query->where('users.branch_id', $request->branch_id);
                 }
@@ -69,10 +69,10 @@ class PayrollReportController extends Controller
             return DataTables::of($payrolls)
                 ->addIndexColumn()
                 ->editColumn('employee', function ($row) {
-                    return $row->emp_prefix . ' ' . $row->emp_name . ' ' . $row->emp_last_name;
+                    return $row->emp_prefix.' '.$row->emp_name.' '.$row->emp_last_name;
                 })
                 ->editColumn('month_year', function ($row) {
-                    return $row->month . '/' . $row->year;
+                    return $row->month.'/'.$row->year;
                 })
                 ->editColumn('payment_status', function ($row) {
                     $html = '';
@@ -83,19 +83,20 @@ class PayrollReportController extends Controller
                     } elseif ($row->gross_amount == $row->due) {
                         $html = '<span class="badge bg-danger text-white">Due</span>';
                     }
+
                     return $html;
                 })
                 ->editColumn('gross_amount', function ($row) use ($generalSettings) {
-                    return '<span class="gross_amount" data-value="' . $row->gross_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->gross_amount . '</span>';
+                    return '<span class="gross_amount" data-value="'.$row->gross_amount.'">'.$generalSettings['business__currency'].' '.$row->gross_amount.'</span>';
                 })
                 ->editColumn('paid', function ($row) use ($generalSettings) {
-                    return '<span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span>';
+                    return '<span class="paid" data-value="'.$row->paid.'">'.$generalSettings['business__currency'].' '.$row->paid.'</span>';
                 })
                 ->editColumn('due', function ($row) use ($generalSettings) {
-                    return '<span class="due" data-value="' . $row->due . '">' . $generalSettings['business__currency'] . ' ' . $row->due . '</span>';
+                    return '<span class="due" data-value="'.$row->due.'">'.$generalSettings['business__currency'].' '.$row->due.'</span>';
                 })
                 ->editColumn('created_by', function ($row) {
-                    return $row->user_prefix . ' ' . $row->user_name . ' ' . $row->user_last_name;
+                    return $row->user_prefix.' '.$row->user_name.' '.$row->user_last_name;
                 })
                 ->rawColumns(['employee', 'month_year', 'payment_status', 'gross_amount', 'paid', 'due', 'created_by'])
                 ->make(true);
@@ -103,6 +104,7 @@ class PayrollReportController extends Controller
 
         $departments = DB::table('hrm_department')->get(['id', 'department_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.payroll_report.payroll_report', compact('branches', 'departments'));
     }
 
@@ -120,7 +122,7 @@ class PayrollReportController extends Controller
         if ($request->branch_id) {
             $branch_id = $request->branch_id;
             if ($request->branch_id == 'NULL') {
-                $query->where('users.branch_id', NULL);
+                $query->where('users.branch_id', null);
             } else {
                 $query->where('users.branch_id', $request->branch_id);
             }

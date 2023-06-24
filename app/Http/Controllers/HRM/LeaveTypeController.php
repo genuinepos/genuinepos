@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\HRM;
 
-use Illuminate\Http\Request;
-use App\Models\Hrm\LeaveType;
 use App\Http\Controllers\Controller;
+use App\Models\Hrm\LeaveType;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class LeaveTypeController extends Controller
@@ -24,20 +24,21 @@ class LeaveTypeController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('hrm.leave.type.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('hrm.leave.type.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('hrm.leave.type.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('hrm.leave.type.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('leave_count_interval', function ($row) {
 
-                    if ($row->leave_count_interval == 1) :
-                        return '<span class="badge bg-primary">' . __('Current Month') . '</span>';
-                    elseif ($row->leave_count_interval == 2) :
-                        return '<span class="badge bg-warning">' . __('Current Financial Year') . '</span>';
-                    else :
-                        return '<span class="badge bg-info">' . __('none') . '</span>';
-                    endif;
+                    if ($row->leave_count_interval == 1) {
+                        return '<span class="badge bg-primary">'.__('Current Month').'</span>';
+                    } elseif ($row->leave_count_interval == 2) {
+                        return '<span class="badge bg-warning">'.__('Current Financial Year').'</span>';
+                    } else {
+                        return '<span class="badge bg-info">'.__('none').'</span>';
+                    }
                 })->rawColumns(['leave_count_interval', 'action'])->smart(true)->make(true);
         }
 
@@ -63,6 +64,7 @@ class LeaveTypeController extends Controller
     public function edit($id)
     {
         $leaveType = LeaveType::where('id', $id)->first();
+
         return view('hrm.leave_types.ajax_view.edit', compact('leaveType'));
     }
 

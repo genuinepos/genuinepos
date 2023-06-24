@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminUserBranch;
+use App\Models\Branch;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Branch;
-use Illuminate\Http\Request;
-use App\Models\RolePermission;
-use App\Models\AdminUserBranch;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use App\Utils\FileUploader;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,7 +17,7 @@ class UserController extends Controller
     // Users index view
     public function index(Request $request)
     {
-        if (!auth()->user()->can('user_view')) {
+        if (! auth()->user()->can('user_view')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -35,7 +32,7 @@ class UserController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('users.branch_id', NULL);
+                    $query->where('users.branch_id', null);
                 } else {
 
                     $query->where('users.branch_id', $request->branch_id);
@@ -62,28 +59,30 @@ class UserController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('users.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" id="edit" href="' . route('users.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit </a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('users.delete', [$row->id]) . '"><i class="fas fa-trash-alt text-primary"></i> Delete </a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('users.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" id="edit" href="'.route('users.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit </a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('users.delete', [$row->id]).'"><i class="fas fa-trash-alt text-primary"></i> Delete </a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('branch', function ($row) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>B.L</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>B.L</b>)';
                     } else {
 
                         return '';
                     }
                 })
-                ->editColumn('role_name',  function ($row) {
+                ->editColumn('role_name', function ($row) {
                     $user = User::find($row->id);
+
                     return $user?->roles->first()?->name ?? 'N/A';
                 })
-                ->editColumn('username',  function ($row) {
+                ->editColumn('username', function ($row) {
 
                     if ($row->username) {
 
@@ -93,11 +92,11 @@ class UserController extends Controller
                         return '...';
                     }
                 })
-                ->editColumn('name',  function ($row) {
+                ->editColumn('name', function ($row) {
 
-                    return  $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
+                    return $row->prefix.' '.$row->name.' '.$row->last_name;
                 })
-                ->editColumn('allow_login',  function ($row) {
+                ->editColumn('allow_login', function ($row) {
 
                     if ($row->allow_login == 1) {
 
@@ -112,13 +111,14 @@ class UserController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('users.index', compact('branches'));
     }
 
     // Create user view
     public function create()
     {
-        if (!auth()->user()->can('user_add')) {
+        if (! auth()->user()->can('user_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -178,18 +178,18 @@ class UserController extends Controller
             if ($role->name == 'superadmin') {
                 $addUser->role_type = 1;
                 $addUser->assignRole($role->name);
-            } else if ($role->name == 'admin') {
+            } elseif ($role->name == 'admin') {
                 $addUser->role_type = 2;
                 $addUser->assignRole($role->name);
                 // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
-                $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
+                $addUser->branch_id = $request->branch_id == 'head_office' ? null : $request->branch_id;
                 $addUser->role_type = 3;
                 $addUser->assignRole($role->name);
             }
         } else {
             $addUser->allow_login = 0;
-            $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
+            $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? null : $request->belonging_branch_id;
         }
 
         $addUser->sales_commission_percent = $request->sales_commission_percent ? $request->sales_commission_percent : 0;
@@ -219,20 +219,21 @@ class UserController extends Controller
         $addUser->salary = $request->salary ? $request->salary : 0;
         $addUser->salary_type = $request->pay_type;
 
-        if($request->hasFile('photo')) {
+        if ($request->hasFile('photo')) {
             $addUser->photo = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
         } else {
             $addUser->photo = 'default.png';
         }
 
         $addUser->save();
+
         return response()->json('User created successfully');
     }
 
     // User Edit view
     public function edit($userId)
     {
-        if (!auth()->user()->can('user_edit')) {
+        if (! auth()->user()->can('user_edit')) {
             abort(403, 'Access Forbidden.');
         }
         $user = User::with(['roles'])->where('id', $userId)->first();
@@ -255,6 +256,7 @@ class UserController extends Controller
         $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
         $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
+
         return view('users.edit', compact('user', 'roles', 'branches', 'departments', 'designations', 'shifts'));
     }
 
@@ -265,14 +267,14 @@ class UserController extends Controller
         // \Log::info($request->role_id);
         // dd();
 
-        if (!auth()->user()->can('user_edit')) {
+        if (! auth()->user()->can('user_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'unique:users,email,' . $userId,
+            'email' => 'unique:users,email,'.$userId,
             'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
@@ -285,7 +287,7 @@ class UserController extends Controller
                 'username' => 'required',
             ]);
 
-            if (!$updateUser->password) {
+            if (! $updateUser->password) {
 
                 $this->validate($request, [
                     'password' => 'required|confirmed',
@@ -321,15 +323,15 @@ class UserController extends Controller
 
                 case 'superadmin':
                     $updateUser->role_type = 1;
-                    $updateUser->branch_id = NULL;
+                    $updateUser->branch_id = null;
                     break;
                 case 'admin':
                     $updateUser->role_type = 2;
-                    $updateUser->branch_id = NULL;
+                    $updateUser->branch_id = null;
                     break;
                 default:
                     $updateUser->role_type = 3;
-                    $updateUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
+                    $updateUser->branch_id = $request->branch_id == 'head_office' ? null : $request->branch_id;
                     break;
             }
 
@@ -338,7 +340,7 @@ class UserController extends Controller
         } else {
 
             $updateUser->allow_login = 0;
-            $updateUser->branch_id = $request->belonging_branch_id == 'head_office' ? NULL : $request->belonging_branch_id;
+            $updateUser->branch_id = $request->belonging_branch_id == 'head_office' ? null : $request->belonging_branch_id;
         }
 
         $updateUser->sales_commission_percent = $request->sales_commission_percent ? $request->sales_commission_percent : 0;
@@ -367,15 +369,15 @@ class UserController extends Controller
         $updateUser->designation_id = $request->designation_id;
         $updateUser->salary = $request->salary ? $request->salary : 0;
         $updateUser->salary_type = $request->pay_type;
-        if($request->hasFile('photo')) {
+        if ($request->hasFile('photo')) {
             $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
             if (
                 isset($updateUser->photo) &&
-                file_exists(public_path('uploads/user_photo/' . $updateUser->photo)) &&
+                file_exists(public_path('uploads/user_photo/'.$updateUser->photo)) &&
                 $updateUser->photo != 'default.png'
             ) {
                 try {
-                    unlink(public_path('uploads/user_photo/' . $updateUser->photo));
+                    unlink(public_path('uploads/user_photo/'.$updateUser->photo));
                 } catch (Exception $e) {
                 }
             }
@@ -384,13 +386,14 @@ class UserController extends Controller
         $updateUser->save();
 
         session()->flash('successMsg', 'Successfully user updated');
+
         return response()->json('User updated successfully');
     }
 
     // Delete user
     public function delete($userId)
     {
-        if (!auth()->user()->can('user_delete')) {
+        if (! auth()->user()->can('user_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -402,7 +405,7 @@ class UserController extends Controller
             return response()->json('Super-admin can not be deleted');
         }
 
-        if (!is_null($deleteUser)) {
+        if (! is_null($deleteUser)) {
 
             $deleteUser->delete();
         }
@@ -412,10 +415,11 @@ class UserController extends Controller
 
     public function show($userId)
     {
-        if (!auth()->user()->can('user_view')) {
+        if (! auth()->user()->can('user_view')) {
             abort(403, 'Access Forbidden.');
         }
         $user = User::with(['roles'])->where('id', $userId)->firstOrFail();
+
         return view('users.show', compact('user'));
     }
 
@@ -423,6 +427,7 @@ class UserController extends Controller
     public function allRoles()
     {
         $roles = Role::all();
+
         return response()->json($roles);
     }
 }

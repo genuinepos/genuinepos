@@ -6,7 +6,7 @@ use App\Models\Account;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
 use Illuminate\Database\Seeder;
-use \Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AccountSeeder extends Seeder
@@ -77,9 +77,9 @@ class AccountSeeder extends Seeder
         //   );
 
         Schema::disableForeignKeyConstraints();
-        if(Account::count() == 0) {
+        if (Account::count() == 0) {
             Account::truncate();
-            DB::statement("ALTER TABLE accounts AUTO_INCREMENT=1");
+            DB::statement('ALTER TABLE accounts AUTO_INCREMENT=1');
         }
         foreach ($this->creatableDefaultAccount() as $account_type => $account_array) {
 
@@ -96,7 +96,7 @@ class AccountSeeder extends Seeder
 
                 AccountBranch::insert(
                     [
-                        'branch_id' => NULL,
+                        'branch_id' => null,
                         'account_id' => $addAccountGetId,
                     ]
                 );
@@ -119,21 +119,21 @@ class AccountSeeder extends Seeder
     public function creatableDefaultAccount()
     {
         return [
-            1 => ['Cash',],
-            3 => ['Purchase Ledger',],
-            4 => ['Purchase Return',],
-            5 => ['Sales',],
-            6 => ['Sales Return',],
-            7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods',],
-            8 => ['Advertisement Expenses', 'Rent Paid',],
+            1 => ['Cash'],
+            3 => ['Purchase Ledger'],
+            4 => ['Purchase Return'],
+            5 => ['Sales'],
+            6 => ['Sales Return'],
+            7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods'],
+            8 => ['Advertisement Expenses', 'Rent Paid'],
             9 => ['Current Asset'],
-            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable',],
-            13 => ['Loan Liabilities',],
-            14 => ['Loan&Advances', 'Advance Salary',],
-            15 => ['Furniture', 'Vehicle',],
-            22 => ['Stock Adjustment',],
+            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable'],
+            13 => ['Loan Liabilities'],
+            14 => ['Loan&Advances', 'Advance Salary'],
+            15 => ['Furniture', 'Vehicle'],
+            22 => ['Stock Adjustment'],
             23 => ['Production'],
-            24 => ['Income', 'Discount On Purchase', 'Discount Received',],
+            24 => ['Income', 'Discount On Purchase', 'Discount Received'],
             25 => ['Interest Received'],
             26 => ['Capital'],
             // 26 => 'Profit & Loss A/C',

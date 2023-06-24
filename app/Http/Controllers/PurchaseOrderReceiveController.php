@@ -2,30 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CashFlow;
+use App\Models\PaymentMethod;
 use App\Models\Purchase;
+use App\Models\PurchaseOrderProduct;
+use App\Models\PurchaseOrderProductReceive;
+use App\Models\PurchaseProduct;
 use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Models\SupplierLedger;
-use App\Models\PurchasePayment;
-use App\Models\PurchaseProduct;
-use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\PurchaseOrderProduct;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Models\PurchaseOrderProductReceive;
 
 class PurchaseOrderReceiveController extends Controller
 {
     protected $accountUtil;
+
     protected $invoiceVoucherRefIdUtil;
+
     protected $supplierUtil;
+
     protected $productStockUtil;
+
     protected $purchaseUtil;
+
     protected $userActivityLogUtil;
 
     public function __construct(
@@ -42,7 +44,7 @@ class PurchaseOrderReceiveController extends Controller
         $this->productStockUtil = $productStockUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        
+
     }
 
     public function processReceive($purchaseId)
@@ -82,27 +84,27 @@ class PurchaseOrderReceiveController extends Controller
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $purchase = Purchase::where('id', $purchaseId)->first();
-            $purchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $this->invoiceVoucherRefIdUtil->getLastId('purchases');
+            $purchase->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '').$this->invoiceVoucherRefIdUtil->getLastId('purchases');
             $purchase->po_pending_qty = $request->total_pending;
             $purchase->po_received_qty = $request->total_received;
             $purchase->is_purchased = $request->total_received > 0 ? 1 : $purchase->is_purchased;
             $purchase->date = $request->date;
-            $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
             $purchase->save();
 
             // Update Purchase order Product
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
                 $purchaseOrderProduct = PurchaseOrderProduct::where('purchase_id', $purchase->id)
                     ->where('product_id', $product_id)
                     ->where('product_variant_id', $variant_id)->first();
 
                 if ($purchaseOrderProduct) {
 
-                    $purchaseOrderProduct->pending_quantity = (float)$request->pending_quantities[$index];
-                    $purchaseOrderProduct->received_quantity = (float)$request->received_quantities[$index];
+                    $purchaseOrderProduct->pending_quantity = (float) $request->pending_quantities[$index];
+                    $purchaseOrderProduct->received_quantity = (float) $request->received_quantities[$index];
                     $purchaseOrderProduct->save();
                 }
 
@@ -123,7 +125,7 @@ class PurchaseOrderReceiveController extends Controller
                             $updateReceiveRow->purchase_challan = $challan;
                             $updateReceiveRow->lot_number = $value['lot_number'][$valueIndex];
                             $updateReceiveRow->received_date = $value['received_date'][$valueIndex];
-                            $updateReceiveRow->report_date = date('Y-m-d H:i:s', strtotime($value['received_date'][$valueIndex] . date(' H:i:s')));
+                            $updateReceiveRow->report_date = date('Y-m-d H:i:s', strtotime($value['received_date'][$valueIndex].date(' H:i:s')));
                             $updateReceiveRow->qty_received = $value['qty_received'][$valueIndex];
                             $updateReceiveRow->save();
                         } else {
@@ -135,7 +137,7 @@ class PurchaseOrderReceiveController extends Controller
                                 $addReceiveRow->purchase_challan = $challan;
                                 $addReceiveRow->lot_number = $value['lot_number'][$valueIndex];
                                 $addReceiveRow->received_date = $value['received_date'][$valueIndex];
-                                $addReceiveRow->report_date = date('Y-m-d H:i:s', strtotime($value['received_date'][$valueIndex] . date(' H:i:s')));
+                                $addReceiveRow->report_date = date('Y-m-d H:i:s', strtotime($value['received_date'][$valueIndex].date(' H:i:s')));
                                 $addReceiveRow->qty_received = $value['qty_received'][$valueIndex];
                                 $addReceiveRow->save();
                             }
@@ -189,7 +191,7 @@ class PurchaseOrderReceiveController extends Controller
                         $addPurchaseProduct->product_id = $purchase_order_product->product_id;
                         $addPurchaseProduct->product_variant_id = $purchase_order_product->product_variant_id;
                         $addPurchaseProduct->quantity = $purchase_order_product->received_quantity;
-                        $addPurchaseProduct->left_qty =  $purchase_order_product->received_quantity;
+                        $addPurchaseProduct->left_qty = $purchase_order_product->received_quantity;
                         $addPurchaseProduct->unit = $purchase_order_product->unit;
                         $addPurchaseProduct->unit_cost = $purchase_order_product->unit_cost;
                         $addPurchaseProduct->unit_discount = $purchase_order_product->unit_discount;
@@ -218,9 +220,9 @@ class PurchaseOrderReceiveController extends Controller
                     invoicePrefix: $paymentInvoicePrefix,
                     request: $request,
                     payingAmount: $request->paying_amount,
-                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
+                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT),
                     purchase: $purchase,
-                    supplier_payment_id: NULL,
+                    supplier_payment_id: null,
                     fixed_payment_date: $request->fixed_payment_date
                 );
 
@@ -286,7 +288,7 @@ class PurchaseOrderReceiveController extends Controller
             $this->supplierUtil->adjustSupplierForPurchasePaymentDue($purchase->supplier_id);
 
             $this->purchaseUtil->updatePoInvoiceQtyAndStatusPortion($purchase);
-            
+
             DB::commit();
         } catch (Exception $e) {
 
@@ -294,7 +296,7 @@ class PurchaseOrderReceiveController extends Controller
         }
 
         session()->flash('successMsg', ['Successfully order receiving is modified', 'uncompleted_orders']);
-       
+
         return response()->json('Successfully order receiving is modified.');
     }
 }

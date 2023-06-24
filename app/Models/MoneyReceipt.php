@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\Customer;
-use App\Models\BaseModel;
-
 class MoneyReceipt extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function customer()
@@ -21,4 +18,3 @@ class MoneyReceipt extends BaseModel
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 }
-

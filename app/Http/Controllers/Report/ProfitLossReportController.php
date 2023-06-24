@@ -3,16 +3,12 @@
 namespace App\Http\Controllers\Report;
 
 // use App\Models\Purchase;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 // use App\Models\ProductOpeningStock;
 use App\Models\Sale;
-use App\Models\Brand;
-use App\Models\Branch;
-use App\Models\Product;
-use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class ProfitLossReportController extends Controller
 {
@@ -25,6 +21,7 @@ class ProfitLossReportController extends Controller
     public function index()
     {
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.profit_loss_report.index', compact('branches'));
     }
 
@@ -140,8 +137,8 @@ class ProfitLossReportController extends Controller
             $transferStWarehouse = $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', auth()->user()->branch_id)->get();
         }
 
-        $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
-        $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
+        $totalStockAdjustmentAmount = $stock_adjustments->sum('total_adjustment');
+        $totalStockAdjustmentRecovered = $stock_adjustments->sum('total_recovered');
         $totalSale = $sales->sum('total_sale');
         $totalSaleReturn = $saleReturns->sum('total_sale_return');
         $totalOrderTax = $sales->sum('total_order_tax');
@@ -227,14 +224,14 @@ class ProfitLossReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $adjustmentQuery->where('branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL);
-                $saleReturnQuery->where('branch_id', NULL)->get();
-                $expenseQuery->where('expanses.branch_id', NULL);
-                $payrollQuery->where('users.branch_id', NULL);
-                $saleProductQuery->where('sales.branch_id', NULL);
-                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
-                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
+                $adjustmentQuery->where('branch_id', null);
+                $saleQuery->where('sales.branch_id', null);
+                $saleReturnQuery->where('branch_id', null)->get();
+                $expenseQuery->where('expanses.branch_id', null);
+                $payrollQuery->where('users.branch_id', null);
+                $saleProductQuery->where('sales.branch_id', null);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', null);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', null);
             } else {
 
                 $adjustmentQuery->where('branch_id', $request->branch_id);
@@ -286,8 +283,8 @@ class ProfitLossReportController extends Controller
             $transferStWarehouse = $transferStWarehouseQuery->where('users.branch_id', auth()->user()->branch_id)->get();
         }
 
-        $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
-        $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
+        $totalStockAdjustmentAmount = $stock_adjustments->sum('total_adjustment');
+        $totalStockAdjustmentRecovered = $stock_adjustments->sum('total_recovered');
         $totalSale = $sales->sum('total_sale');
         $totalSaleReturn = $saleReturns->sum('total_return');
         $totalOrderTax = $sales->sum('total_order_tax');
@@ -377,14 +374,14 @@ class ProfitLossReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $adjustmentQuery->where('branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL);
-                $saleReturnQuery->where('branch_id', NULL)->get();
-                $expenseQuery->where('expanses.branch_id', NULL);
-                $payrollQuery->where('users.branch_id', NULL);
-                $saleProductQuery->where('sales.branch_id', NULL);
-                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
-                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
+                $adjustmentQuery->where('branch_id', null);
+                $saleQuery->where('sales.branch_id', null);
+                $saleReturnQuery->where('branch_id', null)->get();
+                $expenseQuery->where('expanses.branch_id', null);
+                $payrollQuery->where('users.branch_id', null);
+                $saleProductQuery->where('sales.branch_id', null);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', null);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', null);
             } else {
 
                 $adjustmentQuery->where('branch_id', $request->branch_id);
@@ -436,8 +433,8 @@ class ProfitLossReportController extends Controller
             $transferStWarehouse = $transferStWarehouseQuery->where('users.branch_id', auth()->user()->branch_id)->get();
         }
 
-        $totalStockAdjustmentAmount =  $stock_adjustments->sum('total_adjustment');
-        $totalStockAdjustmentRecovered =  $stock_adjustments->sum('total_recovered');
+        $totalStockAdjustmentAmount = $stock_adjustments->sum('total_adjustment');
+        $totalStockAdjustmentRecovered = $stock_adjustments->sum('total_recovered');
         $totalSale = $sales->sum('total_sale');
         $totalSaleReturn = $saleReturns->sum('total_return');
         $totalOrderTax = $sales->sum('total_order_tax');

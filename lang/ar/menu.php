@@ -1,4 +1,5 @@
 <?php
+
 return [
     'e_commerce' => 'التجارة الإلكترونية',
     'inventory_app' => 'تطبيق الجرد',

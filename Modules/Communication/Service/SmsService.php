@@ -29,6 +29,7 @@ class SmsService implements SmsServiceInterface
         } else {
             $response = Http::post($url, $requestBody);
         }
+
         return $response;
     }
 

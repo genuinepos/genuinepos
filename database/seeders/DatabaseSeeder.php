@@ -3,21 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\UnitSeeder;
-use Database\Seeders\AccountSeeder;
-use Database\Seeders\ProductSeeder;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\UserRoleSeeder;
-use Database\Seeders\ShortMenusSeeder;
-use Database\Seeders\CashCounterSeeder;
-use Database\Seeders\DefaultUsersSeeder;
-use Database\Seeders\InvoiceLayoutSeeder;
-use Database\Seeders\InvoiceSchemaSeeder;
-use Database\Seeders\PaymentMethodSeeder;
-use Database\Seeders\PosShortMenusSeeder;
-use Database\Seeders\RolePermissionSeeder;
-use Database\Seeders\BarcodeSettingsSeeder;
-use Database\Seeders\GeneralSettingsSeeder;
 
 class DatabaseSeeder extends Seeder
 {

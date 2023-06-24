@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Hrm\Department;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //department showing page method
@@ -24,6 +23,7 @@ class DepartmentController extends Controller
     public function allDepartment()
     {
         $department = Department::orderBy('id', 'DESC')->get();
+
         return view('hrm.department.ajax.department_list', compact('department'));
     }
 
@@ -51,13 +51,14 @@ class DepartmentController extends Controller
             'department_name' => 'required',
             'department_id' => 'required',
         ]);
-        
+
         $updateDepartment = Department::where('id', $request->id)->first();
         $updateDepartment->update([
             'department_name' => $request->department_name,
             'department_id' => $request->department_id,
             'description' => $request->description,
         ]);
+
         return response()->json('Successfully Department Updated!');
     }
 
@@ -66,6 +67,7 @@ class DepartmentController extends Controller
     {
         $deleteDepartment = Department::find($departmentId);
         $deleteDepartment->delete();
+
         return response()->json('Successfully Department Deleted');
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Essentials;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Essential\Workspace;
 use App\Models\Essential\WorkspaceAttachment;
 use App\Models\Essential\WorkspaceUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class WorkSpaceController extends Controller
@@ -28,7 +28,7 @@ class WorkSpaceController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('workspaces.branch_id', NULL);
+                    $query->where('workspaces.branch_id', null);
                 } else {
                     $query->where('workspaces.branch_id', $request->branch_id);
                 }
@@ -45,8 +45,8 @@ class WorkSpaceController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('workspaces.created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
+                $to_date = date('Y-m-d', strtotime($date_range[1].' +1 days'));
+                $query->whereBetween('workspaces.created_at', [$form_date.' 00:00:00', $to_date.' 00:00:00']); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -80,21 +80,22 @@ class WorkSpaceController extends Controller
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
                     $html .= '<a class="dropdown-item" href="'.route('workspace.task.index', [$row->id]).'"><i class="fas fa-tasks text-primary"></i> Manage Tasks</a>';
-                    $html .= '<a class="dropdown-item" id="edit" href="' . route('workspace.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('workspace.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="edit" href="'.route('workspace.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('workspace.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->created_at));
                 })
                 ->editColumn('name', function ($row) {
-                    return $row->name . ' <a class="btn btn-sm btn-info text-white" id="docs" href="'.route('workspace.view.docs', [$row->id]).'">Docs</a>';
+                    return $row->name.' <a class="btn btn-sm btn-info text-white" id="docs" href="'.route('workspace.view.docs', [$row->id]).'">Docs</a>';
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from', function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
                         return '<b>Head Office</b>';
                     }
@@ -106,7 +107,7 @@ class WorkSpaceController extends Controller
                     return date('d/m/Y', strtotime($row->end_date));
                 })
                 ->editColumn('assigned_by', function ($row) {
-                    return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
+                    return $row->prefix.' '.$row->a_name.' '.$row->last_name;
                 })
                 ->rawColumns(['action', 'date', 'from', 'name', 'assigned_by'])
                 ->make(true);
@@ -115,6 +116,7 @@ class WorkSpaceController extends Controller
         $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
+
         return view('essentials.work_space.index', compact('branches', 'users'));
     }
 
@@ -158,7 +160,7 @@ class WorkSpaceController extends Controller
             foreach ($request->user_ids as $user_id) {
                 WorkspaceUsers::insert([
                     'workspace_id' => $addWorkspace,
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
                 ]);
             }
         }
@@ -167,7 +169,7 @@ class WorkSpaceController extends Controller
             if (count($request->file('documents')) > 0) {
                 foreach ($request->file('documents') as $document) {
                     $wpDocument = $document;
-                    $wpDocumentName = uniqid(). '.' . $wpDocument->getClientOriginalExtension();
+                    $wpDocumentName = uniqid().'.'.$wpDocument->getClientOriginalExtension();
                     $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
                     WorkspaceAttachment::insert([
                         'workspace_id' => $addWorkspace,
@@ -177,6 +179,7 @@ class WorkSpaceController extends Controller
                 }
             }
         }
+
         return response()->json('Workspace created successfully.');
     }
 
@@ -191,6 +194,7 @@ class WorkSpaceController extends Controller
         $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
+
         return view('essentials.work_space.ajax_view.edit', compact('ws', 'users'));
     }
 
@@ -226,10 +230,10 @@ class WorkSpaceController extends Controller
                 if ($existsUser) {
                     $existsUser->is_delete_in_update = 0;
                     $existsUser->save();
-                }else {
+                } else {
                     WorkspaceUsers::insert([
                         'workspace_id' => $id,
-                        'user_id' => $user_id
+                        'user_id' => $user_id,
                     ]);
                 }
             }
@@ -244,7 +248,7 @@ class WorkSpaceController extends Controller
             if (count($request->file('documents')) > 0) {
                 foreach ($request->file('documents') as $document) {
                     $wpDocument = $document;
-                    $wpDocumentName = uniqid(). '.' . $wpDocument->getClientOriginalExtension();
+                    $wpDocumentName = uniqid().'.'.$wpDocument->getClientOriginalExtension();
                     $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
                     WorkspaceAttachment::insert([
                         'workspace_id' => $id,
@@ -254,6 +258,7 @@ class WorkSpaceController extends Controller
                 }
             }
         }
+
         return response()->json('Workspace updated successfully.');
     }
 
@@ -265,9 +270,10 @@ class WorkSpaceController extends Controller
         }
 
         $deleteWorkspace = Workspace::where('id', $id)->first();
-        if (!is_null($deleteWorkspace)) {
+        if (! is_null($deleteWorkspace)) {
             $deleteWorkspace->delete();
         }
+
         return response()->json('Workspace deleted successfully.');
     }
 
@@ -279,6 +285,7 @@ class WorkSpaceController extends Controller
         }
 
         $docs = DB::table('workspace_attachments')->where('workspace_id', $id)->get(['id', 'attachment', 'extension']);
+
         return view('essentials.work_space.ajax_view.view_documents', compact('docs'));
     }
 
@@ -290,12 +297,13 @@ class WorkSpaceController extends Controller
         }
 
         $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
-        if (!is_null($deleteDoc)) {
+        if (! is_null($deleteDoc)) {
             if (file_exists(public_path('uploads/workspace_docs/'.$deleteDoc->attachment))) {
                 unlink(public_path('uploads/workspace_docs/'.$deleteDoc->attachment));
             }
             $deleteDoc->delete();
         }
+
         return response()->json('Document deleted successfully.');
     }
 }

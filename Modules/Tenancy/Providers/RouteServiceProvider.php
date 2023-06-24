@@ -2,8 +2,8 @@
 
 namespace Modules\Tenancy\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -37,14 +37,13 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes();
     }
 
-
     protected function mapWebRoutes()
     {
         foreach ($this->centralDomains() as $domain) {
             Route::middleware('web')
                 ->namespace($this->moduleNamespace)
                 ->domain($domain)
-                ->group(module_path('tenancy') . '/Routes/web.php');
+                ->group(module_path('tenancy').'/Routes/web.php');
         }
     }
 
@@ -55,7 +54,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->domain($domain)
                 ->middleware('api')
                 ->namespace($this->moduleNamespace)
-                ->group(module_path('tenancy') . '/Routes/api.php');
+                ->group(module_path('tenancy').'/Routes/api.php');
         }
     }
 

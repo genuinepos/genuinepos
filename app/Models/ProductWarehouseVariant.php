@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-
-use App\Models\ProductWarehouse;
-use App\Models\BaseModel;
-
 class ProductWarehouseVariant extends BaseModel
 {
     public function product_warehouse()
@@ -17,7 +13,7 @@ class ProductWarehouseVariant extends BaseModel
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
-    
+
     public function product_variant()
     {
         return $this->belongsTo(ProductVariant::class, 'product_variant_id');

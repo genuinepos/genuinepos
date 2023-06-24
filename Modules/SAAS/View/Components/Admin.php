@@ -23,6 +23,6 @@ class AdminLayout extends Component
      */
     public function render()
     {
-        return view('saas::layouts.admin');
+        return view('saas::componnents.admin');
     }
 }

@@ -94,7 +94,6 @@ $('.other_payment_method').on('click', function (e) {
 
 $(document).on('click', '#cancel_pay_mathod', function (e) {
     e.preventDefault();
-    console.log('cancel_pay_mathod');
     $('#payment_method').val('Cash');
     $('.payment_method').hide();
     $('#otherPaymentMethod').modal('hide');

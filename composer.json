@@ -27,15 +27,15 @@
         "yajra/laravel-datatables-buttons": "^9.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.8.1",
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
+        "kitloong/laravel-migrations-generator": "^6.8.0",
+        "laravel/pint": "^1.10",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.0",
         "spatie/laravel-ignition": "^2.1.0",
-        "barryvdh/laravel-debugbar": "^3.8.1",
-        "kitloong/laravel-migrations-generator": "^6.8.0",
         "thedoctor0/laravel-factory-generator": "^1.3.2"
     },
     "config": {

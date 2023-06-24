@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SAAS\Http\Controllers\SAAS;
+namespace Modules\SAAS\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

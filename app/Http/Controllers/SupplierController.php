@@ -74,6 +74,11 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('supplier_add')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -127,6 +132,10 @@ class SupplierController extends Controller
 
     public function edit($supplierId)
     {
+        if (!auth()->user()->can('supplier_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $supplier = DB::table('suppliers')->where('id', $supplierId)->select('suppliers.*')->first();
 
         $branchOpeningBalance = DB::table('supplier_opening_balances')->where('supplier_id', $supplierId)
@@ -137,6 +146,10 @@ class SupplierController extends Controller
 
     public function update(Request $request)
     {
+        if (!auth()->user()->can('supplier_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -216,7 +229,10 @@ class SupplierController extends Controller
 
     public function delete(Request $request, $supplierId)
     {
+        if (!auth()->user()->can('supplier_delete')) {
 
+            abort(403, 'Access Forbidden.');
+        }
         $deleteSupplier = Supplier::with(['supplier_ledgers'])->where('id', $supplierId)->first();
 
         if (count($deleteSupplier->supplier_ledgers) > 1){
@@ -254,6 +270,10 @@ class SupplierController extends Controller
     // Supplier view method
     public function view(Request $request, $supplierId)
     {
+        if (!auth()->user()->can('supplier_all')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $supplierId = $supplierId;
         if ($request->ajax()) {
 

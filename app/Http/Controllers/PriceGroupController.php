@@ -11,6 +11,11 @@ class PriceGroupController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('selling_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
             $price_groups = DB::table('price_groups')->get(['id', 'name', 'description', 'status']);
             return DataTables::of($price_groups)
@@ -54,6 +59,11 @@ class PriceGroupController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('selling_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'name' => 'required|unique:price_groups,name',
         ]);
@@ -68,12 +78,22 @@ class PriceGroupController extends Controller
 
     public function edit($id)
     {
+        if (!auth()->user()->can('selling_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $pg = DB::table('price_groups')->where('id', $id)->first();
         return view('product.price_group.ajax_view.edit', compact('pg'));
     }
 
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('selling_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'name' => 'required|unique:price_groups,name,'.$id,
         ]);
@@ -88,6 +108,11 @@ class PriceGroupController extends Controller
 
     public function delete(Request $request, $id)
     {
+        if (!auth()->user()->can('selling_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $delete = PriceGroup::find($id);
         if (!is_null($delete)) {
             $delete->delete();
@@ -97,6 +122,11 @@ class PriceGroupController extends Controller
 
     public function changeStatus($id)
     {
+        if (!auth()->user()->can('selling_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $statusChange = PriceGroup::where('id', $id)->first();
         if ($statusChange->status == 'Active') {
             $statusChange->status = 'Deactivate';

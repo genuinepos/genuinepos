@@ -47,13 +47,17 @@ class UnitController extends Controller
     }
     public function edit($id)
     {
+        if (!auth()->user()->can('unit_edit')) {
+
+            return response()->json('Access Denied');
+        }
         $units = Unit::where('id', $id)->first();
         return view('product.units.ajax_view.edit', compact('units'));
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('units')) {
+        if (!auth()->user()->can('unit_create')) {
 
             return response()->json('Access Denied');
         }
@@ -104,7 +108,7 @@ class UnitController extends Controller
 
     public function delete(Request $request, $unitId)
     {
-        if (!auth()->user()->can('units')) {
+        if (!auth()->user()->can('unit_delete')) {
 
             return response()->json('Access Denied');
         }

@@ -53,6 +53,10 @@ class BrandController extends Controller
     // Add Brand method
     public function store(Request $request)
     {
+        if (!auth()->user()->can('brand_create')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'sometimes|image|max:2048',
@@ -88,6 +92,11 @@ class BrandController extends Controller
     //edit method
     public function edit($id)
     {
+        if (!auth()->user()->can('brand_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $data = DB::table('brands')->where('id', $id)->first();
         return view('product.brands.ajax_view.edit', compact('data'));
     }
@@ -134,6 +143,11 @@ class BrandController extends Controller
     // Delete Brand method//
     public function delete(Request $request, $brandId)
     {
+        if (!auth()->user()->can('brand_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteBrand = Brand::find($brandId);
 
         if ($deleteBrand->photo !== 'default.png') {

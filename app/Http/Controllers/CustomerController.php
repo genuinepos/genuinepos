@@ -326,6 +326,10 @@ class CustomerController extends Controller
     // Customer view method
     public function view(Request $request, $customerId)
     {
+        if (!auth()->user()->can('customer_all')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $customerId = $customerId;
         if ($request->ajax()) {
 

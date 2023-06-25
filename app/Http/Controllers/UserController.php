@@ -412,6 +412,9 @@ class UserController extends Controller
 
     public function show($userId)
     {
+        if (!auth()->user()->can('user_view')) {
+            abort(403, 'Access Forbidden.');
+        }
         $user = User::with(['roles'])->where('id', $userId)->firstOrFail();
         return view('users.show', compact('user'));
     }

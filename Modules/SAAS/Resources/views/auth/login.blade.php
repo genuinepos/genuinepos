@@ -38,10 +38,15 @@
                         </div>
 
                         <div class="form-group  mb-2 row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                            <div class="">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Login') }}
+                                    </button>
+                                </div>
+                                <div class="col-md-6 offset-md-4 mt-2">
+                                    <p>{{ __('Don\'t have an account? ') }} <a href="{{ route('saas.register') }}">{{ __('Register here') }}</a></p>
+                                </div>
                             </div>
                         </div>
                     </form>

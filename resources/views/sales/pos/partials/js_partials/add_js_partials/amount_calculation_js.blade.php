@@ -27,7 +27,6 @@
 
         // Update Net total Amount
         var netTotalAmount = 0;
-
         subtotals.forEach(function (subtotal) {
 
             netTotalAmount += parseFloat(subtotal.value);
@@ -58,29 +57,32 @@
         var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
         var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
 
-        var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
+        var calcTotalInvoiceAmount = parseFloat(netTotalAmount)
+                                - parseFloat(orderDiscountAmount)
+                                + parseFloat(calcOrderTaxAmount)
+                                + parseFloat(shipmentCharge);
 
-        $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
+        $('#total_invoice_amount').val(parseFloat(calcTotalInvoiceAmount).toFixed(2));
 
         var ex_inv_payable_amount = $('#ex_inv_payable_amount').val() ? $('#ex_inv_payable_amount').val() : 0;
         var ex_inv_paid = $('#ex_inv_paid').val() ? $('#ex_inv_paid').val() : 0;
         var exchange_item_total_price = $('#exchange_item_total_price').val() ? $('#exchange_item_total_price').val() : 0;
 
-        var calcTotalPayableAmount = parseFloat(netTotalAmount) -
+        var calcTotalReceivableAmount = parseFloat(netTotalAmount) -
             parseFloat(orderDiscountAmount) +
             parseFloat(calcOrderTaxAmount) +
             parseFloat(shipmentCharge) +
             parseFloat(previousDue);
 
-        $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
+        $('#total_receivable_amount').val(parseFloat(calcTotalReceivableAmount).toFixed(2));
 
         //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
         // Update purchase due
 
-        var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-        var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
+        var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+        var changeAmount = parseFloat(receivedAmount) - parseFloat(calcTotalReceivableAmount);
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var calcTotalDue = parseFloat(calcTotalPayableAmount) - parseFloat(payingAmount);
+        var calcTotalDue = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
         $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
     }
 
@@ -96,7 +98,7 @@
     });
 
     // Input paying amount and calculate due amount
-    $(document).on('input', '#paying_amount', function () {
+    $(document).on('input', '#received_amount', function () {
 
         calculateTotalAmount();
     });
@@ -175,17 +177,17 @@
     });
 
     // Cash receive by modal input with change value
-    $('#modal_paying_amount').on('input', function () {
+    $('#modal_received_amount').on('input', function () {
 
-        var totalPayable = $('#total_payable_amount').val();
+        var totalReceivable = $('#total_receivable_amount').val();
         // Update purchase due
         var payingAmount = $(this).val() ? $(this).val() : 0;
-        var changeAmount = parseFloat(payingAmount) - parseFloat(totalPayable);
+        var changeAmount = parseFloat(payingAmount) - parseFloat(totalReceivable);
         $('#modal_change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var calcTotalDue = parseFloat(totalPayable) - parseFloat(payingAmount);
+        var calcTotalDue = parseFloat(totalReceivable) - parseFloat(payingAmount);
         $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
 
-        $('#paying_amount').val(parseFloat(payingAmount).toFixed(2));
+        $('#received_amount').val(parseFloat(payingAmount).toFixed(2));
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
         $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
     });

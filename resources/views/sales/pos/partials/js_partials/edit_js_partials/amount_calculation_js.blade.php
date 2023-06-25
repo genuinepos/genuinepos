@@ -51,20 +51,39 @@
         var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
         var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
 
-        var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
+        var calcInvoiceAmount = parseFloat(netTotalAmount)
+                        - parseFloat(orderDiscountAmount)
+                        + parseFloat(calcOrderTaxAmount)
+                        + parseFloat(shipmentCharge);
 
-        $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
+        $('#total_invoice_amount').val(parseFloat(calcInvoiceAmount).toFixed(2));
 
-        var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge) + parseFloat(previousDue);
-        $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-        $('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-        
+        var calcTotalReceivableAmount = parseFloat(netTotalAmount)
+                                    - parseFloat(orderDiscountAmount)
+                                    + parseFloat(calcOrderTaxAmount)
+                                    + parseFloat(shipmentCharge)
+                                    + parseFloat(previousDue);
+
+        $('#total_receivable_amount').val(parseFloat(calcTotalReceivableAmount).toFixed(2));
+        // $('#received_amount').val(parseFloat(calcTotalReceivableAmount).toFixed(2));
+
+        var previous_received = $('#previous_received').val() ? $('#previous_received').val() : 0;
+
+        var currentReceivable = parseFloat(calcTotalReceivableAmount) - parseFloat(previous_received);
+
         // Update purchase due
-        var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-        var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
+        $('#current_receivable').val(parseFloat(currentReceivable).toFixed(2));
+
+        var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+
+        var calcCurrentDue = parseFloat(currentReceivable) - parseFloat(receivedAmount);
+        $('#total_due').val(parseFloat(calcCurrentDue >= 0 ? calcCurrentDue : 0).toFixed(2));
+
+        // var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+        var changeAmount = parseFloat(receivedAmount) - parseFloat(currentReceivable);
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var calcTotalDue = parseFloat(calcTotalPayableAmount) - parseFloat(payingAmount);
-        $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
+        // var calcTotalDue = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
+        // $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
     }
 
     $(document).on('input', '#quantity', function(){
@@ -108,7 +127,7 @@
     });
 
     // Input paying amount and clculate due amount
-    $(document).on('input', '#paying_amount', function(){
+    $(document).on('input', '#received_amount', function(){
         calculateTotalAmount();
     });
 

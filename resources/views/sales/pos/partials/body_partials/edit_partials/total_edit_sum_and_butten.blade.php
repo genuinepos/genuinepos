@@ -6,7 +6,7 @@
       padding: 0px 3px 0px 0px!important;
       font-weight: 700!important;
     }
-    
+
     #net_total_amount[value] {
         font-weight: 700;
     }
@@ -179,7 +179,12 @@
                         <div class="row">
                             <label class="col-sm-5 col-form-label text-white text-end">{{ __('Vat/Tax') }}</label>
                             <div class="col-sm-7">
-                                <select name="order_tax" class="form-control" id="order_tax"></select>
+                                <select name="order_tax" class="form-control" id="order_tax">
+                                    <option value="0.00">@lang('menu.no_tax')</option>
+                                    @foreach ($taxes as $tax)
+                                        <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                    @endforeach
+                                </select>
                                 <input type="number" class="d-hide" name="order_tax_amount" id="order_tax_amount" value="0.00">
                             </div>
                         </div>
@@ -189,22 +194,30 @@
                     @endif
 
                     <div class="row">
-                        <label class="col-sm-5 col-form-label text-white text-end">{{ __('Previous Paid') }}</label>
+                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.invoice_amount')</label>
                         <div class="col-sm-7">
-                            <input readonly class="form-control fw-bold" type="number" step="any" name="previous_paid" id="previous_paid" value="{{ $sale->paid }}" autocomplete="off">
+                            <input readonly class="form-control fw-bold" name="total_invoice_amount" id="total_invoice_amount" value="0.00">
                         </div>
+                    </div>
 
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label text-white text-end">{{ __('Previous Received') }}</label>
+                        <div class="col-sm-7">
+                            <input readonly class="form-control fw-bold" type="number" step="any" name="previous_received" id="previous_received" value="{{ $sale->paid }}" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.curr_receivable')</label>
                         <div class="col-sm-7">
-                            <input readonly class="form-control sp-input fw-bold" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00">
-                            <input class="d-hide" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00">
+                            <input readonly class="form-control fw-bold" type="number" step="any" name="current_receivable" id="current_receivable" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="row">
                         <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.cash_receive')</label>
                         <div class="col-sm-7">
-                            <input type="number" step="any" name="paying_amount" id="paying_amount" value="0" class="form-control fw-bold" autocomplete="off">
+                            <input type="number" step="any" name="received_amount" id="received_amount" value="0" class="form-control fw-bold" autocomplete="off">
                         </div>
                     </div>
 

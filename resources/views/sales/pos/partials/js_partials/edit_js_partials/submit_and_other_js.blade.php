@@ -35,15 +35,18 @@
             data: request,
             success:function(data){
                 $('.loading_button').hide();
-                console.log(data);
+
                 if(!$.isEmptyObject(data.errorMsg)){
+
                     toastr.error(data.errorMsg,'ERROR');
                     $('.submit_preloader').hide();
                     return;
                 }else if(data.suspendMsg){
+
                     toastr.success(data.suspendMsg);
                     window.location = "{{route('sales.pos.create')}}";
                 }else if(data.holdInvoiceMsg){
+                    
                     toastr.success(data.holdInvoiceMsg);
                     window.location = "{{route('sales.pos.create')}}";
                 }else {

@@ -522,8 +522,8 @@
                     <div class="form-group row ">
                         <div class="col-md-6">
                             <div class="input-box-4 bg-dark">
-                                <label class="text-white big_label"><strong>@lang('menu.total_payable') </strong> </label>
-                                <input readonly type="text" class="form-control big_field" id="modal_total_payable" value="0">
+                                <label class="text-white big_label"><strong>@lang('menu.total_receivable') </strong> </label>
+                                <input readonly type="text" class="form-control big_field" id="modal_total_receivable" value="0">
                             </div>
                         </div>
 
@@ -539,7 +539,7 @@
                         <div class="col-md-6">
                             <div class="input-box bg-success">
                                 <label class="text-white big_label"><strong>@lang('menu.cash_receive') </strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="modal_paying_amount" class="form-control text-success big_field m-paying" id="modal_paying_amount" value="0" autofocus>
+                                <input type="text" name="modal_received_amount" class="form-control text-success big_field m-paying" id="modal_received_amount" value="0" autofocus>
                             </div>
                         </div>
 

@@ -824,42 +824,8 @@
         });
     }
 
-    // Get all unite for form field
-    var unites = [];
-    function getUnites(){
-        $.ajax({
-            async: false,
-            url:"{{ route('purchases.get.all.unites') }}",
-            success:function(units){
-                $.each(units, function(key, unit){
-
-                    unites.push(unit.name);
-                });
-            }
-        });
-    }
-    getUnites();
-
-    var taxArray;
-    function getTaxes(){
-        $.ajax({
-            async: false,
-            url:"{{ route('purchases.get.all.taxes') }}",
-            success:function(taxes){
-
-                taxArray = taxes;
-                $('#order_tax').append('<option value="">No Tax</option>');
-
-                $.each(taxes, function(key, val){
-
-                    $('#order_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
-                });
-
-                $('#order_tax').val("{{ $generalSettings['sale__default_tax_id'] != 'null' ? $generalSettings['sale__default_tax_id'] : '' }}");
-            }
-        });
-    }
-    getTaxes();
+    var unites = @json($units);
+    var taxArray = @json($taxes);
 
     $('body').keyup(function(e){
 

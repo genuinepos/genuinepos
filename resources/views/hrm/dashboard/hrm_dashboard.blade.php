@@ -90,7 +90,6 @@
                     </div>
                 </div>
             </div> --}}
-
             <div class="p-3">
                 <div class="card">
                     <div class="card-title mt-4 ps-4">
@@ -102,20 +101,23 @@
                     <div class="p-3 pt-2">
                         <div class="row g-3">
                             <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('users.index') }}" >
                                 <div class="card-counter alert-primary d-flex justify-content-around align-content-center">
                                     <div class="icon">
                                         <i class="fas fa-duotone fa-users"></i>
                                     </div>
                                     <div class="numbers px-1">
                                         <h3 class="sub-title">{{ __('Total Employees') }}</h3>
-                                        <h1 class="title">
+                                        <h1 class="title text-center">
                                             {{ $totalEmployee }}
                                         </h1>
                                     </div>
                                 </div>
+                                </a>
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.departments') }}">
                                 <div class="card-counter alert-success d-flex justify-content-around align-content-center">
                                     <div class="icon">
                                         <i class="fas fa-solid fa-user-check"></i>
@@ -129,9 +131,11 @@
                                         </h1>
                                     </div>
                                 </div>
+                                 </a>
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.leaves.index') }}">
                                 <div class="card-counter alert-info d-flex justify-content-around align-content-center">
                                     <div class="icon">
                                         <i class="fas fa-solid fa-puzzle-piece"></i>
@@ -145,9 +149,11 @@
                                         </h1>
                                     </div>
                                 </div>
+                                </a>
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.attendance') }}">
                                 <div class="card-counter alert-danger d-flex justify-content-around align-content-center">
                                     <div class="icon">
                                         <i class="fas fa-solid fa-paper-plane"></i>
@@ -161,61 +167,8 @@
                                         </h1>
                                     </div>
                                 </div>
+                                </a>
                             </div>
-
-                            {{-- <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card-counter alert-info d-flex justify-content-around align-content-center">
-                                    <div class="icon">
-                                        <i class="fas fa-file-invoice-dollar"></i>
-                                    </div>
-                                    <div class="numbers px-1">
-                                        <h3 class="sub-title">{{ __('Total Income')}}</h3>
-                                        <h1 class="title">
-                                            <strong>
-                                                {{ $total_amount }} Taka
-                                            </strong>
-                                        </h1>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card-counter alert-danger d-flex justify-content-around align-content-center">
-                                    <div class="icon">
-                                        <i class="fas fa-solid fa-chart-line-down"></i>
-                                    </div>
-                                    <div class="numbers px-1">
-                                        <h3 class="sub-title">{{ __('Total Expense') }}</h3>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card-counter alert-primary d-flex justify-content-around align-content-center">
-                                    <div class="icon">
-                                        <i class="fas fa-solid fa-recycle"></i>
-                                    </div>
-                                    <div class="numbers px-1">
-                                        <h3 class="sub-title">Asset Request</h3>
-                                        <h1 class="title text-center">
-                                            <strong>
-                                                {{ $request }}
-                                            </strong>
-                                        </h1>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="card-counter alert-success d-flex justify-content-around align-content-center">
-                                    <div class="icon">
-                                        <i class="fas fa-solid fa-briefcase"></i>
-                                    </div>
-                                    <div class="numbers px-1">
-                                        <h3 class="sub-title">@lang('menu.total_asset_in_service')</h3>
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
 

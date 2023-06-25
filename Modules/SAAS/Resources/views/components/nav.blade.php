@@ -1,14 +1,19 @@
 <nav class="navbar navbar-expand-lg @auth navbar-dark bg-secondary @else navbar-light bg-light @endauth">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">{{ config('app.name') }}</a>
+        <a class="navbar-brand" href="{{ config('app.url') }}">{{ config('app.name') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    @auth
+                    <a class="nav-link active" aria-current="page" href="{{ route('saas.dashboard') }}">Dashboard</a>
+                    @else
+                    <a class="nav-link active" aria-current="page" href="{{ route('saas.welcome-page') }}">Home</a>
+                    @endauth
                 </li>
+                @auth
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Shops</a>
                 </li>
@@ -24,6 +29,7 @@
                         <li  onclick="handleLogout()"><a class="dropdown-item" href="#" >Logout</a></li>
                     </ul>
                 </li>
+                @endauth
             </ul>
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

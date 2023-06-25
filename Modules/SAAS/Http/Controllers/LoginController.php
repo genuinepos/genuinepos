@@ -31,14 +31,14 @@ class LoginController extends Controller
         }
 
         Auth::guard()->login($user);
-        return redirect()->to(route('saas.dashboard'));
+        return redirect()->to(route('saas.dashboard'))->with('success', 'Logged in!');
     }
-    
+
     public function logout(Request $request)
     {
         Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->to(route('saas.welcome-page'));
+        return redirect()->to(route('saas.welcome-page'))->with('error', 'Logged out!');
     }
 }

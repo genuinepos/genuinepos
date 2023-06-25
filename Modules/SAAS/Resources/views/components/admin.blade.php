@@ -248,11 +248,17 @@
         });
 
     </script>
+
+    @auth
     <script>
         function handleLogout() {
-            document.getElementById('logout-form').submit();
+            if(confirm("Are you sure logging out?")) {
+                document.getElementById('logout-form').submit();
+            }
         }
     </script>
+    @endauth
+
     <script>
         @if(session('errors'))
         @foreach($errors->all() as $error)

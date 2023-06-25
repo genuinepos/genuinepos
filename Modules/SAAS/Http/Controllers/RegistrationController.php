@@ -26,6 +26,6 @@ class RegistrationController extends Controller
 
         Auth::guard()->login($user);
         // event(new TenantRegistered($user));
-        return redirect()->to(route('saas.dashboard'));
+        return redirect()->to(route('saas.dashboard'))->with('success', 'Successfully Registered!');
     }
 }

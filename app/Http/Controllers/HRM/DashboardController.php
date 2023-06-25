@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Http\Controllers\Controller;
+use App\Models\Hrm\Attendance;
+use App\Models\Hrm\Department;
+use App\Models\Hrm\Leave;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +15,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $totalEmployee = User::all()->count();
+        $totalDepartment = Department::all()->count();
+        $todayAttendance =  Attendance::whereDate('created_at', today())->count();
+        $todayLeave = leave::where('start_date', date('d-m-Y'))->count();
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        return view('hrm.dashboard.hrm_dashboard', compact('branches'));
+        return view('hrm.dashboard.hrm_dashboard', compact('branches', 'totalEmployee', 'totalDepartment', 'todayAttendance', 'todayLeave'));
     }
 
     public function userCountTable(Request $request)

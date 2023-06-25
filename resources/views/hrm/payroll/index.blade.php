@@ -151,7 +151,7 @@
                             <div class="col-md-6">
                                 <label class="text-navy-blue"><b>@lang('menu.department') </b></label>
                                 <select  class="form-control employee" required="" id="department_id">
-                                    <option> {{ __('Select Employee') }} </option>
+                                    <option> {{ __('Select Department') }} </option>
                                     @foreach($departments as $dep)
                                        <option value="{{ $dep->id }}">{{$dep->department_name }}</option>
                                     @endforeach

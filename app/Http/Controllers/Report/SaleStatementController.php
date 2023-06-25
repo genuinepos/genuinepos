@@ -24,9 +24,7 @@ class SaleStatementController extends Controller
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');
-
             $sales = '';
-
             $query = DB::table('sales')
                 ->whereIn('sales.status', [1, 3])
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')

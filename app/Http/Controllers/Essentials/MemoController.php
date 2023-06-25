@@ -12,7 +12,12 @@ use Yajra\DataTables\Facades\DataTables;
 class MemoController extends Controller
 {
     public function index(Request $request)
-    {
+    { 
+        if (!auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -71,6 +76,11 @@ class MemoController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -99,6 +109,11 @@ class MemoController extends Controller
 
     public function delete(Request $request, $id)
     {
+        if (!auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -113,6 +128,11 @@ class MemoController extends Controller
 
     public function edit($id)
     {
+        if (!auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -123,6 +143,11 @@ class MemoController extends Controller
 
     public function update(Request $request)
     {
+        if (!auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -144,6 +169,7 @@ class MemoController extends Controller
 
     public function addUserView($id)
     {
+
         $memo = Memo::with(['memo_users'])->where('id', $id)->first('id', 'admin_id');
         $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get();
         return view('essentials.memos.ajax_view.add_user_form', compact('memo', 'users'));
@@ -188,6 +214,11 @@ class MemoController extends Controller
 
     public function show($id)
     {
+        if (!auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');

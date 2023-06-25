@@ -14,6 +14,11 @@ class WorkSpaceController extends Controller
 {
     public function index(Request $request)
     {
+        if (!auth()->user()->can('work_space')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -120,6 +125,11 @@ class WorkSpaceController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('work_space')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -182,6 +192,11 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
+        if (!auth()->user()->can('work_space')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -196,6 +211,11 @@ class WorkSpaceController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('work_space')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'start_date' => 'required',
@@ -259,6 +279,11 @@ class WorkSpaceController extends Controller
 
     public function delete(Request $request, $id)
     {
+        if (!auth()->user()->can('work_space')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');

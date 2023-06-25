@@ -79,7 +79,7 @@ html {
 .card-counter .icon {
     font-size: 3.5em;
     padding: 10px;
-    opacity: 0.5;
+    /* opacity: 0.5; */
     color: white !important;
 }
 .card-counter .count-numbers {

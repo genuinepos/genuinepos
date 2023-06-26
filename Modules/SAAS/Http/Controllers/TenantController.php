@@ -13,6 +13,11 @@ use Modules\SAAS\Http\Requests\TenantStoreRequest;
 
 class TenantController extends Controller
 {
+    public function index()
+    {
+        $tenants = Tenant::all();
+        return view('saas::tenants.index',compact('tenants'));
+    }
     public function create()
     {
         return view('saas::tenants.create');
@@ -21,16 +26,13 @@ class TenantController extends Controller
     public function store(TenantStoreRequest $request)
     {
         $tenantRequest = $request->validated();
-        $tenantRequest['id'] = Str::uuid()->toString();
         $tenant = Tenant::create([
             'id' => $tenantRequest['domain'],
         ]);
         if ($tenant) {
             $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
-            return "Success";
-        } else {
-            dd('failed');
+            // return \redirect(route('saas.tenants.index'))->with('success', 'Tenant created successfully!');
+            return view('saas::tenants.response', compact('tenant'));
         }
-
     }
 }

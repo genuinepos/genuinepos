@@ -14,12 +14,13 @@
                     @endauth
                 </li>
                 @auth
-                
+
                 <li class="nav-item dropdown  float-end">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownShop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Shops
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownShop">
+                        <li><a class="dropdown-item" href="{{ route('saas.tenants.index') }}">All Shops</a></li>
                         <li><a class="dropdown-item" href="{{ route('saas.tenants.create') }}">Create New</a></li>
                     </ul>
                 </li>

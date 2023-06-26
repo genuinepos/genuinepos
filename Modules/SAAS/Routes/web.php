@@ -10,7 +10,7 @@ use Modules\SAAS\Http\Controllers\WelcomeController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 
-Route::get('/', WelcomeController::class)->name('welcome-page');
+Route::get('/welcome', WelcomeController::class)->name('welcome-page');
 
 Route::prefix('saas')->group(function () {
     Route::middleware('is_guest')->group(function () {

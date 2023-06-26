@@ -16,7 +16,6 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        echo '-: Role and Permission Sync :- '.PHP_EOL;
         $this->truncateRolePermissionDataButKeepOldData();
         \Artisan::call('optimize:clear');
 
@@ -25,33 +24,26 @@ class RolePermissionSeeder extends Seeder
 
         $this->syncRolesPermissions();
 
-        echo 'Assign Role to Super-admin and Admin...';
         $this->call(UserRoleSeeder::class);
-        echo ' DONE!'.PHP_EOL;
     }
 
     public function truncateRolePermissionDataButKeepOldData(): void
     {
         Schema::disableForeignKeyConstraints();
         if (Role::count() == 0) {
-            echo 'No role in DB. Making `roles` PK count from 1'.PHP_EOL;
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE `roles` AUTO_INCREMENT = 1');
         }
 
-        echo 'Erasing `permissions` table...';
         Permission::truncate();
         if (Permission::count() == 0) {
-            echo 'No permissions in DB. PK count from 1'.PHP_EOL;
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE `permissions` AUTO_INCREMENT = 1');
         }
 
-        echo 'Finished `roles` and `permissions` truncate operation!'.PHP_EOL;
         Schema::enableForeignKeyConstraints();
     }
 
     public function createRolePermission(): void
     {
-        echo 'Creating role and permissions...';
         $roles = $this->getRolesArray();
         foreach ($roles as $k => $role) {
             $roleAlreadyExists = Role::where('name', $role['name'])->exists();
@@ -68,19 +60,16 @@ class RolePermissionSeeder extends Seeder
                 'guard_name' => $permission['guard_name'] ?? 'web',
             ]);
         }
-        echo ' DONE!'.PHP_EOL;
     }
 
     public function syncRolesPermissions(): void
     {
-        echo 'Syncing permissions...';
         $permissions = Permission::all();
         $role = Role::first();
         $role->syncPermissions($permissions);
 
         $role = Role::skip(1)->first();
         $role->syncPermissions($permissions);
-        echo ' DONE!'.PHP_EOL;
     }
 
     public function getRolesArray(): array

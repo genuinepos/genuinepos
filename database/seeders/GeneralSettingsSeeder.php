@@ -165,7 +165,6 @@ class GeneralSettingsSeeder extends Seeder
         GeneralSetting::truncate();
         $settings = $this->getSettings();
         foreach ($settings as $setting) {
-            // echo $setting['key'] . ': ' . $setting['value'] . PHP_EOL;
             GeneralSetting::create([
                 'key' => $setting['key'],
                 'value' => $setting['value'],

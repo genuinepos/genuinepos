@@ -34,6 +34,7 @@ class TenancyServiceProvider extends ServiceProvider
 
                 ])->send(function (Events\TenantCreated $event) {
                     return $event->tenant;
+                // })->shouldBeQueued(true), // `false` by default, but you probably want to make this `true` for production.
                 })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
             ],
             Events\SavingTenant::class => [],
@@ -90,7 +91,8 @@ class TenancyServiceProvider extends ServiceProvider
             ],
 
             // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
-            Events\SyncedResourceChangedInForeignDatabase::class => [],
+            Events\SyncedResourceChangedInForeignDatabase::class => [
+            ],
         ];
     }
 

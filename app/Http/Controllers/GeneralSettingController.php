@@ -153,6 +153,11 @@ class GeneralSettingController extends Controller
             'email_settings__send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
             'email_settings__customer_due_reminder_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
             'email_settings__customer_due_reminder_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
+            'email_settings__user_forget_password_via_email' => isset($request->user_forget_password_via_email) ? 1 : 0,
+            'email_settings__coupon_offer_via_email' => isset($request->coupon_offer_via_email) ? 1 : 0,
+            'email_settings__discount_redeemed_via_email' => isset($request->discount_redeemed_via_email) ? 1 : 0,
+            'email_settings__new_product_arrived_via_email' => isset($request->new_product_arrived_via_email) ? 1 : 0,
+            'email_settings__weekly_news_letter_via_email' => isset($request->weekly_news_letter_via_email) ? 1 : 0,
         ];
         $this->generalSettingService->updateAndSync($settings);
         return response()->json('Send Email & SMS settings updated successfully');

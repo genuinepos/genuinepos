@@ -181,23 +181,14 @@
 
         var totalReceivable = $('#total_receivable_amount').val();
         // Update purchase due
-        var payingAmount = $(this).val() ? $(this).val() : 0;
-        var changeAmount = parseFloat(payingAmount) - parseFloat(totalReceivable);
+        var receivedAmount = $(this).val() ? $(this).val() : 0;
+        var changeAmount = parseFloat(receivedAmount) - parseFloat(totalReceivable);
         $('#modal_change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var calcTotalDue = parseFloat(totalReceivable) - parseFloat(payingAmount);
+        var calcTotalDue = parseFloat(totalReceivable) - parseFloat(receivedAmount);
         $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
 
-        $('#received_amount').val(parseFloat(payingAmount).toFixed(2));
+        $('#received_amount').val(parseFloat(receivedAmount).toFixed(2));
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
         $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
-    });
-
-    // Remove product form purchase product list (Table)
-    $(document).on('click', '#remove_product_btn',function(e){
-        e.preventDefault();
-
-        $(this).closest('tr').remove();
-        calculateTotalAmount();
-        activeSelectedItems();
     });
 </script>

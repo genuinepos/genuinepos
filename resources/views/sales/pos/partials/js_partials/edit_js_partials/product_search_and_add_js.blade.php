@@ -1,4 +1,6 @@
 <script>
+    var price_groups = @json($priceGroupProducts);
+
     var unique_index = 0;
     var delay = (function() {
         var timer = 0;
@@ -188,6 +190,9 @@
 
                                 $('#product_list').prepend(tr);
                                 calculateTotalAmount();
+
+                                activeSelectedItems();
+
                                 unique_index++;
                             }
                         } else {
@@ -358,6 +363,8 @@
 
                             $('#product_list').prepend(tr);
                             calculateTotalAmount();
+
+                            activeSelectedItems();
                             unique_index++;
                         }
                     } else if (!$.isEmptyObject(product.namedProducts)) {
@@ -618,6 +625,8 @@
                         $('#product_list').prepend(tr);
                         calculateTotalAmount();
 
+                        activeSelectedItems();
+
                         if (keyName == 9) {
 
                             $("#quantity").select();
@@ -803,6 +812,8 @@
                         tr += '</tr>';
                         $('#product_list').prepend(tr);
                         calculateTotalAmount();
+
+                        activeSelectedItems();
 
                         if (keyName == 9) {
 

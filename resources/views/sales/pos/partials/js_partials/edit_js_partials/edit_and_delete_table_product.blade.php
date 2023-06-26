@@ -17,8 +17,7 @@
         var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
         var product_unit = parentTableRow.find('#unit').val();
         // Set modal heading
-        var heading = product_name + ' - ' + (product_variant ? product_variant : '') + ' (' + product_code +
-            ')';
+        var heading = product_name + ' - ' + (product_variant ? product_variant : '') + ' (' + product_code + ')';
         $('#product_info').html(heading);
 
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
@@ -122,5 +121,6 @@
 
         $(this).closest('tr').remove();
         calculateTotalAmount();
+        activeSelectedItems();
     });
 </script>

@@ -1,4 +1,6 @@
 <script>
+    // Get all price group
+    var price_groups = @json($priceGroupProducts);
     var unique_index = 0;
     var delay = (function() {
 
@@ -838,6 +840,7 @@
     });
 
     $(document).on('mouseenter', '#list>li>a',function () {
+        
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
     });

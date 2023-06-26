@@ -65,7 +65,7 @@ class POSController extends Controller
 
             $customers = DB::table('customers')->where('status', 1)->get(['id', 'name', 'phone']);
 
-            $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+            $priceGroups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
 
             $accounts = DB::table('account_branches')
                 ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -84,13 +84,15 @@ class POSController extends Controller
 
             $units = DB::table('units')->select('name')->get()->pluck('name')->toArray();
             $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+            $priceGroupProducts = DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
 
             return view('sales.pos.create', compact(
                 'openedCashRegister',
                 'categories',
                 'brands',
                 'customers',
-                'price_groups',
+                'priceGroups',
+                'priceGroupProducts',
                 'accounts',
                 'methods',
                 'units',
@@ -534,7 +536,7 @@ class POSController extends Controller
         $sale = Sale::with('branch', 'sale_products', 'customer', 'admin')->where('id', $saleId)->first();
         $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
-        $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+        $priceGroups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -553,8 +555,9 @@ class POSController extends Controller
 
         $units = DB::table('units')->select('name')->get()->pluck('name')->toArray();
         $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+        $priceGroupProducts = DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
 
-        return view('sales.pos.edit', compact('sale', 'categories', 'brands', 'price_groups', 'accounts', 'methods', 'units', 'taxes'));
+        return view('sales.pos.edit', compact('sale', 'categories', 'brands', 'priceGroups', 'priceGroupProducts', 'accounts', 'methods', 'units', 'taxes'));
     }
 
     // Get invoice products **requested by ajax**

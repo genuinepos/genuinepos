@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
-use Modules\Tenancy\Entities\Tenant;
+use Modules\SAAS\Entities\Tenant;
 
 class TenancyDatabaseSeeder extends Seeder
 {

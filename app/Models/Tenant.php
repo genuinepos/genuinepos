@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Stancl\Tenancy\Contracts\TenantWithDatabase;
-use Stancl\Tenancy\Database\Concerns\HasDatabase;
-use Stancl\Tenancy\Database\Concerns\HasDomains;
-use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\SAAS\Entities\Tenant as EntitiesTenant;
 
-class Tenant extends BaseTenant implements TenantWithDatabase
+class Tenant extends EntitiesTenant
 {
-    use HasDatabase, HasDomains;
+    use HasFactory;
 }

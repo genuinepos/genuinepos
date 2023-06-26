@@ -178,6 +178,7 @@ return [
         App\Providers\TenancyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        App\Providers\GeneralSettingProvider::class,
         App\Providers\EmailSettingServiceProvider::class,
     ],
 

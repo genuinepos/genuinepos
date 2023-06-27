@@ -10,12 +10,6 @@ class GeneralSetting extends BaseModel
 
     public $timestamps = false;
 
-    public static function boot()
-    {
-        parent::boot();
-        \Log::info('GeneralSetting Called');
-    }
-
     public function scopeSms($query)
     {
         return $this->sms_setting ?? [];

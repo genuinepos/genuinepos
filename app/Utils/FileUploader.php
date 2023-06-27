@@ -19,7 +19,6 @@ class FileUploader
         $fullName = implode('.', $arr);
         $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
         $file->move($filePath, $fileName);
-        \Log::debug('uploaded');
 
         return $fileName;
     }
@@ -65,7 +64,6 @@ class FileUploader
         $fullName = implode('.', $arr);
         $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
         $file->move($filePath, $fileName);
-        \Log::debug('uploaded');
 
         return $fileName;
     }

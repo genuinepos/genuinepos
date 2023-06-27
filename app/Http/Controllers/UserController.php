@@ -263,12 +263,7 @@ class UserController extends Controller
     // Update user
     public function update(Request $request, $userId)
     {
-        // dd($request->all());
-        // \Log::info($request->role_id);
-        // dd();
-
         if (! auth()->user()->can('user_edit')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -302,7 +297,6 @@ class UserController extends Controller
 
         $generalSettings = config('generalSettings');
 
-        // \Log::info('validation passed');
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
         $updateUser->last_name = $request->last_name;

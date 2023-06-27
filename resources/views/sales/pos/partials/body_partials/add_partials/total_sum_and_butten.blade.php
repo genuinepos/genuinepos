@@ -266,7 +266,7 @@
                                             toastr.error('Full credit sale is disabled.');
                                         "
                                     @endif
-                                    tabindex="-1">@lang('menu.credit_sale')</a>
+                                    tabindex="-1">@lang('menu.credit_sale')<br>Ctrl+A</a>
                             </div>
 
                             <div class="btn-bg">

@@ -133,21 +133,22 @@
                             <div class="col-lg-6 input-value-sec">
                                 <div class="input-group mb-1">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">Point</span>
+                                        <span class="input-group-text valus">Reedem Point</span>
                                     </div>
-                                    <input readonly type="number" step="any" class="form-control" name="earned_point"
-                                        id="earned_point" tabindex="-1">
 
-                                    <div class="input-group-prepend ms-1">
+                                    <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point" tabindex="-1">
+
+                                    <div class="input-group-prepend">
                                         <span class="input-group-text valus"> = {{ $generalSettings['business__currency'] }}</span>
                                     </div>
+
                                     <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">
                                 </div>
 
 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">SQ</span>
+                                        <span class="input-group-text valus">Current Stock</span>
                                     </div>
                                     <input readonly type="text" class="form-control" id="stock_quantity" tabindex="-1">
 
@@ -175,6 +176,10 @@
                     </div>
 
                     <div class="btn-sec">
+                        <a href="#" class="pos-btn status" id="fullscreen" title="Full Screen" tabindex="-1">
+                            <i class="fas fa-expand"></i>
+                        </a>
+
                         <a href="#" class="pos-btn position-relative" id="readDocument" title="Shortcut button list" tabindex="-1">
                             <i class="fas fa-file-alt"></i>
                             <div class="position-absolute doc">

@@ -42,7 +42,8 @@ class POSController extends Controller
         private ProductStockUtil $productStockUtil,
         private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         private UserActivityLogUtil $userActivityLogUtil
-    ) {}
+    ) {
+    }
 
     // Create pos view
     public function create()
@@ -407,21 +408,12 @@ class POSController extends Controller
                     $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: [$addSale->id], receivedAmount: $receivedAmount, customerPayment: $customerPayment, customerId: $request->customer_id, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: date('Y-m-d'), invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil);
                 } else {
 
-                    // Add Bank/Cash-in-hand A/C Ledger
-                    $this->accountUtil->addAccountLedger(
-                        voucher_type_id: 18,
-                        date: date('Y-m-d'),
-                        account_id: $request->account_id,
-                        trans_id: $customerPayment->id,
-                        amount: $receivedAmount,
-                        balance_type: 'debit'
-                    );
-
-                    $this->saleUtil->addPaymentGetId(
+                    $addPaymentGetId = $this->saleUtil->addPaymentGetId(
                         receiptVoucherPrefix: $receiptVoucherPrefix,
                         receivedAmount: $receivedAmount,
                         saleId: $addSale->id,
                         customerPaymentId: null,
+                        paymentMethodId: $request->payment_method_id,
                         accountId: $request->account_id,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         date: date('Y-m-d'),
@@ -625,22 +617,11 @@ class POSController extends Controller
 
         if ($request->action == 1) {
 
-            if ($request->paying_amount < $request->total_payable_amount && !$updateSale->customer_id) {
+            if ($request->received_amount < $request->current_receivable && !$updateSale->customer_id) {
 
-                return response()->json(['errorMsg' => 'Listed Customer is required when sale is credit or partial payment.']);
+                return response()->json(['errorMsg' => 'Listed Customer is required when sale is credit or partial receive.']);
             }
         }
-
-        // foreach ($updateSale->sale_payments as $sale_payment) {
-
-        //     $storedAccountId = $sale_payment->account_id;
-        //     $sale_payment->delete();
-
-        //     if ($storedAccountId) {
-
-        //         $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
-        //     }
-        // }
 
         $updateSale->status = $request->action;
         $updateSale->sale_account_id = $request->sale_account_id;
@@ -1067,179 +1048,67 @@ class POSController extends Controller
 
     public function exchangeConfirm(Request $request)
     {
-        if ($request->action != 1) {
+        try {
 
-            return response()->json(['errorMsg' => 'Can not create another entry when item exchange in going on.']);
-        }
+            DB::beginTransaction();
+            // database queries here. Access any $var_N directly
 
-        $updateSale = Sale::with('customer')->where('id', $request->ex_sale_id)->first();
+            if ($request->action != 1) {
 
-        if (
-            $request->total_due > 0 &&
-            $updateSale->customer_id == NULL
-        ) {
-
-            return response()->json([
-                'errorMsg' => 'Listed Customer is required when exchange is due or partial.'
-            ]);
-        }
-
-        if (
-            $request->total_due > 0 &&
-            $request->button_type != 0 &&
-            $request->paying_amount == 0
-        ) {
-
-            return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
-        }
-
-        $change = $request->change_amount > 0 ? $request->change_amount : 0;
-        $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
-        $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_payable_amount;
-        // $updateSale->order_discount_type = 1;
-        // $updateSale->order_discount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
-        // $updateSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
-        // $updateSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0.00;
-        // $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
-        //$updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
-        //$updateSale->due = $updateSale->due + $request->total_due;
-        $updateSale->change_amount = $updateSale->change_amount + $change;
-        $updateSale->ex_status = 1;
-        $updateSale->save();
-
-        if ($updateSale->sale_account_id) {
-
-            // Update Sales A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 1,
-                date: $updateSale->date,
-                account_id: $updateSale->sale_account_id,
-                trans_id: $updateSale->id,
-                amount: $updateSale->total_payable_amount,
-                balance_type: 'credit'
-            );
-        }
-
-        if ($updateSale->customer_id) {
-
-            // Update customer ledger
-            $this->customerUtil->updateCustomerLedger(
-                voucher_type_id: 1,
-                customer_id: $updateSale->customer_id,
-                previous_branch_id: $updateSale->branch_id,
-                new_branch_id: $updateSale->branch_id,
-                date: $updateSale->date,
-                trans_id: $updateSale->id,
-                amount: $updateSale->total_payable_amount
-            );
-        }
-
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $descriptions = $request->descriptions;
-        $quantities = $request->quantities;
-        $unit_costs_inc_tax = $request->unit_costs_inc_tax;
-        $subtotals = $request->subtotals;
-        $unit_discount_types = $request->unit_discount_types;
-        $unit_discounts = $request->unit_discounts;
-        $unit_discount_amounts = $request->unit_discount_amounts;
-        $unit_tax_percents = $request->unit_tax_percents;
-        $unit_tax_amounts = $request->unit_tax_amounts;
-        $unit_prices_inc_tax = $request->unit_prices_inc_tax;
-        $units = $request->units;
-
-        $index = 0;
-        foreach ($product_ids as $product_id) {
-
-            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
-                ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
-
-            if ($saleProduct) {
-
-                if ($saleProduct->ex_status == 1) {
-
-                    //$saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
-                    $saleProduct->quantity = $quantities[$index];
-                    $saleProduct->ex_quantity = $quantities[$index];
-                    $saleProduct->description = $descriptions[$index];
-                    //$saleProduct->subtotal = $saleProduct->subtotal + $subtotals[$index];
-                    $saleProduct->subtotal = $subtotals[$index];
-                    $saleProduct->ex_status = 2;
-                    $saleProduct->save();
-                } else {
-
-                    $saleProduct->sale_id = $request->ex_sale_id;
-                    $saleProduct->product_id = $product_ids[$index];
-                    $saleProduct->product_variant_id = $variant_id;
-                    $saleProduct->quantity = $quantities[$index];
-                    $saleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                    $saleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
-                    $saleProduct->unit_discount_type = $unit_discount_types[$index];
-                    $saleProduct->unit_discount = $unit_discounts[$index];
-                    $saleProduct->unit_discount_amount = $unit_discount_amounts[$index];
-                    $saleProduct->unit_tax_percent = $unit_tax_percents[$index];
-                    $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-                    $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-                    $saleProduct->unit = $units[$index];
-                    $saleProduct->description = $descriptions[$index];
-                    $saleProduct->subtotal = $subtotals[$index];
-                    $saleProduct->save();
-                }
-            } else {
-
-                $addSaleProduct = new SaleProduct();
-                $addSaleProduct->sale_id = $request->ex_sale_id;
-                $addSaleProduct->product_id = $product_ids[$index];
-                $addSaleProduct->product_variant_id = $variant_id;
-                $addSaleProduct->quantity = $quantities[$index];
-                $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
-                $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
-                $addSaleProduct->unit_discount_type = $unit_discount_types[$index];
-                $addSaleProduct->unit_discount = $unit_discounts[$index];
-                $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$index];
-                $addSaleProduct->unit_tax_percent = $unit_tax_percents[$index];
-                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-                $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
-                $addSaleProduct->unit = $units[$index];
-                $addSaleProduct->description = $descriptions[$index];
-                $addSaleProduct->subtotal = $subtotals[$index];
-                $addSaleProduct->save();
+                return response()->json(['errorMsg' => 'Can not create another entry when item exchange in going on.']);
             }
 
-            $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-            $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
-            $index++;
-        }
+            $updateSale = Sale::with(['customer'])->where('id', $request->ex_sale_id)->first();
 
-        $generalSettings = config('generalSettings');
-        $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+            if (
+                $request->total_due > 0 &&
+                $updateSale->customer_id == NULL
+            ) {
 
-        // Add new payment
-        if ($request->paying_amount > 0) {
+                return response()->json([
+                    'errorMsg' => 'Listed Customer is required when exchange is due or partial.'
+                ]);
+            }
 
-            $__paymentInvoicePrefix = $paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPV';
+            if (
+                $request->total_due > 0 &&
+                $request->button_type != 0 &&
+                $request->received_amount == 0
+            ) {
 
-            $addPaymentGetId = $this->saleUtil->addPaymentGetId(
-                invoicePrefix: $__paymentInvoicePrefix,
-                request: $request,
-                payingAmount: $request->paying_amount,
-                invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
-                saleId: $updateSale->id,
-                customerPaymentId: NULL
-            );
+                return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
+            }
+
+            $change = $request->change_amount > 0 ? $request->change_amount : 0;
+            $updateSale->net_total_amount = $updateSale->net_total_amount + $request->net_total_amount;
+            $updateSale->total_payable_amount = $updateSale->total_payable_amount + $request->total_receivable_amount;
+            // $updateSale->order_discount_type = 1;
+            // $updateSale->order_discount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
+            // $updateSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
+            // $updateSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0.00;
+            // $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
+            // $updateSale->paid = $updateSale->paid + $request->paying_amount - $change;
+            // $updateSale->due = $updateSale->due + $request->total_due;
+            $updateSale->change_amount = $updateSale->change_amount + $change;
+            $updateSale->ex_status = 1;
+            $updateSale->save();
+
+            if ($updateSale->sale_account_id) {
+
+                // Update Sales A/C Ledger
+                $this->accountUtil->updateAccountLedger(
+                    voucher_type_id: 1,
+                    date: $updateSale->date,
+                    account_id: $updateSale->sale_account_id,
+                    trans_id: $updateSale->id,
+                    amount: $updateSale->total_payable_amount,
+                    balance_type: 'credit'
+                );
+            }
 
             if ($updateSale->customer_id) {
 
-                // add customer ledger
-                // $this->customerUtil->updateCustomerLedger(
-                //     voucher_type_id: 3,
-                //     customer_id: $updateSale->customer_id,
-                //     date: date('Y-m-d'),
-                //     trans_id: $addPaymentGetId,
-                //     amount: $request->paying_amount
-                // );
+                // Update customer ledger
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 1,
                     customer_id: $updateSale->customer_id,
@@ -1250,42 +1119,149 @@ class POSController extends Controller
                     amount: $updateSale->total_payable_amount
                 );
             }
-        } else {
 
-            if ($updateSale->customer_id) {
+            $product_ids = $request->product_ids;
+            $variant_ids = $request->variant_ids;
+            $descriptions = $request->descriptions;
+            $quantities = $request->quantities;
+            $unit_costs_inc_tax = $request->unit_costs_inc_tax;
+            $subtotals = $request->subtotals;
+            $unit_discount_types = $request->unit_discount_types;
+            $unit_discounts = $request->unit_discounts;
+            $unit_discount_amounts = $request->unit_discount_amounts;
+            $unit_tax_percents = $request->unit_tax_percents;
+            $unit_tax_amounts = $request->unit_tax_amounts;
+            $unit_prices_inc_tax = $request->unit_prices_inc_tax;
+            $units = $request->units;
 
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
+            $index = 0;
+            foreach ($product_ids as $product_id) {
+
+                $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
+                    ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
+
+                if ($saleProduct) {
+
+                    if ($saleProduct->ex_status == 1) {
+
+                        //$saleProduct->quantity = $saleProduct->quantity + $quantities[$index];
+                        $saleProduct->quantity = $quantities[$index];
+                        $saleProduct->ex_quantity = $quantities[$index];
+                        $saleProduct->description = $descriptions[$index];
+                        //$saleProduct->subtotal = $saleProduct->subtotal + $subtotals[$index];
+                        $saleProduct->subtotal = $subtotals[$index];
+                        $saleProduct->ex_status = 2;
+                        $saleProduct->save();
+                    } else {
+
+                        $saleProduct->sale_id = $request->ex_sale_id;
+                        $saleProduct->product_id = $product_ids[$index];
+                        $saleProduct->product_variant_id = $variant_id;
+                        $saleProduct->quantity = $quantities[$index];
+                        $saleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                        $saleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
+                        $saleProduct->unit_discount_type = $unit_discount_types[$index];
+                        $saleProduct->unit_discount = $unit_discounts[$index];
+                        $saleProduct->unit_discount_amount = $unit_discount_amounts[$index];
+                        $saleProduct->unit_tax_percent = $unit_tax_percents[$index];
+                        $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                        $saleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                        $saleProduct->unit = $units[$index];
+                        $saleProduct->description = $descriptions[$index];
+                        $saleProduct->subtotal = $subtotals[$index];
+                        $saleProduct->save();
+                    }
+                } else {
+
+                    $addSaleProduct = new SaleProduct();
+                    $addSaleProduct->sale_id = $request->ex_sale_id;
+                    $addSaleProduct->product_id = $product_ids[$index];
+                    $addSaleProduct->product_variant_id = $variant_id;
+                    $addSaleProduct->quantity = $quantities[$index];
+                    $addSaleProduct->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
+                    $addSaleProduct->unit_price_inc_tax = $unit_prices_inc_tax[$index];
+                    $addSaleProduct->unit_discount_type = $unit_discount_types[$index];
+                    $addSaleProduct->unit_discount = $unit_discounts[$index];
+                    $addSaleProduct->unit_discount_amount = $unit_discount_amounts[$index];
+                    $addSaleProduct->unit_tax_percent = $unit_tax_percents[$index];
+                    $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                    $addSaleProduct->unit_tax_amount = $unit_tax_amounts[$index];
+                    $addSaleProduct->unit = $units[$index];
+                    $addSaleProduct->description = $descriptions[$index];
+                    $addSaleProduct->subtotal = $subtotals[$index];
+                    $addSaleProduct->save();
+                }
+
+                $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+                $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
+                $index++;
             }
+
+            $generalSettings = config('generalSettings');
+            $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
+            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+
+            // Add new payment
+            if ($request->received_amount > 0) {
+
+                $receivedAmount = $request->received_amount - $request->change_amount;
+
+                $addPaymentGetId = $this->saleUtil->addPaymentGetId(
+                    receiptVoucherPrefix: $receiptVoucherPrefix,
+                    receivedAmount: $receivedAmount,
+                    saleId: $updateSale->id,
+                    customerPaymentId: NULL,
+                    paymentMethodId: $request->payment_method_id,
+                    accountId: $request->account_id,
+                    invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
+                    date: date('Y-m-d'),
+                    note: $request->payment_note,
+                    attachment: NULL,
+                );
+
+                if ($updateSale->customer_id) {
+
+                    $this->customerUtil->addCustomerLedger(
+                        voucher_type_id: 1,
+                        customer_id: $updateSale->customer_id,
+                        branch_id: $updateSale->branch_id,
+                        date: date('Y-m-d'),
+                        trans_id: $updateSale->id,
+                        amount: $receivedAmount
+                    );
+                }
+            }
+
+            $sale = Sale::with([
+                'customer',
+                'branch',
+                'sale_products',
+                'sale_products.product',
+                'sale_products.variant'
+            ])->where('id', $request->ex_sale_id)->first();
+
+            $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+
+            $previous_due = 0;
+            $total_receivable_amount = $sale->total_payable_amount;
+            $received_amount = $sale->paid;
+            $total_due = $sale->due;
+            $change_amount = $change;
+
+            $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
-
-        $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
-
-        $sale = Sale::with([
-            'customer',
-            'branch',
-            'sale_products',
-            'sale_products.product',
-            'sale_products.variant'
-        ])->where('id', $request->ex_sale_id)->first();
-
-        $previous_due = 0;
-        $total_payable_amount = $sale->total_payable_amount;
-        $paying_amount = $sale->paid;
-        $total_due = $sale->due;
-        $change_amount = $change;
-
-        if ($updateSale->customer_id) {
-
-            $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
-        }
-
-        $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
 
         return view('sales.save_and_print_template.pos_sale_print', compact(
             'sale',
             'previous_due',
-            'total_payable_amount',
-            'paying_amount',
+            'total_receivable_amount',
+            'received_amount',
             'total_due',
             'change_amount'
         ));

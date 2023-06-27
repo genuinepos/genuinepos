@@ -513,14 +513,16 @@ a.head-tbl-icon::before {
 }
 
 .btn-pos {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
     border-radius: 3px;
     color: #fff;
     font-size: 11px;
     height: 53px;
-    line-height: 53px;
+    line-height: 20px;
 }
 
 .check-out-wraper {
@@ -822,6 +824,7 @@ label.col-form-label {
     position: absolute;
     padding: 20px;
     bottom: 0;
+    width: 100%;
 }
 
 div#calculatorModal {
@@ -864,7 +867,7 @@ input#quantity {
 @media only screen and (min-width: 1200px) and (max-width: 1429px) {
     .btn-pos {
         height: 30px;
-        line-height: 30px;
+        line-height: 13px;
     }
     .function-sec {
         padding: 10px;

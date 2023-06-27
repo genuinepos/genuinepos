@@ -2,7 +2,9 @@
 
 namespace Modules\SAAS\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
+use Modules\SAAS\Console\BackupCommand;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 
@@ -29,6 +31,14 @@ class SAASServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+        $this->commands([
+            BackupCommand::class,
+        ]);
+
+        $this->app->booted(function() {
+            $schedule = $this->app->make(Schedule::class);
+            $schedule->command('inspire')->everyMinute();
+        });
     }
 
     /**

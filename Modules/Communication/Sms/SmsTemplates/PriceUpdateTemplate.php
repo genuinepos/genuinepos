@@ -19,7 +19,6 @@ class PriceUpdateTemplate
         $numbersFiltered = array_filter($numbersRaw, fn ($item) => ! is_null($item) && (strlen($item) >= 10));
         $numbers = array_unique($numbersFiltered);
 
-
         $max = DB::table('recent_prices')->max('created_at');
         $recentPrices = DB::table('recent_prices')->leftJoin('products', 'recent_prices.product_id', 'products.id')
             ->where('recent_prices.created_at', $max)

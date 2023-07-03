@@ -3,12 +3,12 @@
 namespace Modules\SAAS\Entities;
 
 use App\Models\User as ModelsUser;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\SAAS\Entities\Tenant;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends ModelsUser
 {
+    use HasRoles;
+
     public function tenants()
     {
         return $this->hasMany(Tenant::class);

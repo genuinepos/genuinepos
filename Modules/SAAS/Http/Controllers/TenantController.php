@@ -2,13 +2,8 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Modules\SAAS\Entities\Tenant;
 use Illuminate\Routing\Controller;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
+use Modules\SAAS\Entities\Tenant;
 use Modules\SAAS\Http\Requests\TenantStoreRequest;
 
 class TenantController extends Controller
@@ -16,8 +11,10 @@ class TenantController extends Controller
     public function index()
     {
         $tenants = Tenant::all();
-        return view('saas::tenants.index',compact('tenants'));
+
+        return view('saas::tenants.index', compact('tenants'));
     }
+
     public function create()
     {
         return view('saas::tenants.create');

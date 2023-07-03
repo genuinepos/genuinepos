@@ -4,5 +4,4 @@ namespace ServicesModules\SAAS;
 
 class TenantService
 {
-
 }

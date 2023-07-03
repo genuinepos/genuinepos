@@ -2,16 +2,13 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use Exception;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Modules\SAAS\Http\Requests\LoginRequest;
 use Illuminate\Validation\ValidationException;
+use Modules\SAAS\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
 {
@@ -31,6 +28,7 @@ class LoginController extends Controller
         }
 
         Auth::guard()->login($user);
+
         return redirect()->to(route('saas.dashboard'))->with('success', 'Logged in!');
     }
 
@@ -39,6 +37,7 @@ class LoginController extends Controller
         Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->to(route('saas.welcome-page'))->with('error', 'Logged out!');
     }
 }

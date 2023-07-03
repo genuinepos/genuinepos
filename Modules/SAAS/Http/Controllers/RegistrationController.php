@@ -2,12 +2,12 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Modules\SAAS\Events\TenantRegistered;
-use Modules\SAAS\Providers\RouteServiceProvider;
 use Modules\SAAS\Http\Requests\RegistrationRequest;
+
 class RegistrationController extends Controller
 {
     public function showForm()
@@ -21,7 +21,7 @@ class RegistrationController extends Controller
         $user = User::create([
             'name' => $userRequest['name'],
             'email' => $userRequest['email'],
-            'password' => bcrypt($userRequest['password'])
+            'password' => bcrypt($userRequest['password']),
         ]);
 
         Auth::guard()->login($user);

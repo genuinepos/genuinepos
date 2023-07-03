@@ -5,8 +5,6 @@ namespace Modules\SAAS\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Entities\Tenant;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 class BackupCommand extends Command
 {

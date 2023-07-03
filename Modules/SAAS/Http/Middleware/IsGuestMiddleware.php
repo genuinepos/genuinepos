@@ -11,8 +11,6 @@ class IsGuestMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -20,6 +18,7 @@ class IsGuestMiddleware
         if (Auth::check()) {
             return \redirect(\route('saas.dashboard'));
         }
+
         return $next($request);
     }
 }

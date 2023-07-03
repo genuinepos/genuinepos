@@ -2,7 +2,6 @@
 
 namespace Modules\SAAS\Database\Seeders;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class SAASDatabaseSeeder extends Seeder
@@ -14,6 +13,6 @@ class SAASDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
+        $this->call(RolePermissionTableSeeder::class);
     }
 }

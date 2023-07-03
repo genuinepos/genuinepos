@@ -35,7 +35,7 @@ class SAASServiceProvider extends ServiceProvider
             BackupCommand::class,
         ]);
 
-        $this->app->booted(function() {
+        $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
             $schedule->command('inspire')->everyMinute();
         });

@@ -1,14 +1,12 @@
 <?php
 
-use Illuminate\Support\Str;
-use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
+use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\ProfileController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\WelcomeController;
-use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\RegistrationController;
 
 Route::get('/welcome', WelcomeController::class)->name('welcome-page');
 
@@ -30,5 +28,7 @@ Route::prefix('saas')->group(function () {
             });
             Route::resource('tenants', TenantController::class);
         });
+        Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('profile/{user}/update', [ProfileController::class, 'update'])->name('profile.update');
     });
 });

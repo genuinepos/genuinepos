@@ -1,6 +1,3 @@
-<div>
-    <!-- Always remember that you are absolutely unique. Just like everyone else. - Margaret Mead -->
-</div>
 @props(['title' => null])
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +9,7 @@
     <title>{{ (isset($title) ? ($title . ' | ') : '') . config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
             margin: 0;
@@ -26,10 +24,12 @@
 <body>
     <div id="app">
         <x-saas::nav />
+        <x-saas::message />
         {{ $slot }}
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         $.ajaxSetup({
@@ -128,30 +128,7 @@
 
     </script>
 
-    <script>
-        @if(session('errors'))
-        @foreach($errors->all() as $error)
-        toastr.error("{{ $error }}");
-        @endforeach
-        @endif
 
-        @if(session('success'))
-        toastr.success("{{ session('success') }}");
-        @endif
-
-        @if(isset($success))
-        toastr.success("{{ $success }}");
-        @endif
-
-        @if(session('info'))
-        toastr.info("{{ session('info') }}");
-        @endif
-
-        @if(session('error'))
-        toastr.error("{{ session('error') }}");
-        @endif
-
-    </script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -252,37 +229,22 @@
     @auth
     <script>
         function handleLogout() {
-            if(confirm("Are you sure logging out?")) {
+            if (confirm("Are you sure logging out?")) {
                 document.getElementById('logout-form').submit();
             }
         }
+
     </script>
     @endauth
 
+    @if($errors->any())
+    @foreach($errors->all() as $error)
     <script>
-        @if(session('errors'))
-        @foreach($errors->all() as $error)
         toastr.error("{{ $error }}");
-        @endforeach
-        @endif
-
-        @if(session('success'))
-        toastr.success("{{ session('success') }}");
-        @endif
-
-        @if(isset($success))
-        toastr.success("{{ $success }}");
-        @endif
-
-        @if(session('info'))
-        toastr.info("{{ session('info') }}");
-        @endif
-
-        @if(session('error'))
-        toastr.error("{{ session('error') }}");
-        @endif
 
     </script>
+    @endforeach
+    @endif
 </body>
 
 </html>

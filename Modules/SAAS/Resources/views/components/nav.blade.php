@@ -20,8 +20,12 @@
                         Shops
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownShop">
+                        @can('tenants_index')
                         <li><a class="dropdown-item" href="{{ route('saas.tenants.index') }}">All Shops</a></li>
+                        @endcan
+                        @can('tenants_create')
                         <li><a class="dropdown-item" href="{{ route('saas.tenants.create') }}">Create New</a></li>
+                        @endcan
                     </ul>
                 </li>
                 <li class="nav-item dropdown  float-end">
@@ -29,10 +33,10 @@
                         Profile
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownSetting">
+                        @can('profile_edit')
                         <li><a class="dropdown-item" href="{{ route('saas.profile.edit', auth()->user()->id) }}">Edit Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        @endcan
+                        <li><hr class="dropdown-divider"></li>
                         <li  onclick="handleLogout()"><a class="dropdown-item" href="#" >Logout</a></li>
                     </ul>
                 </li>
@@ -42,6 +46,17 @@
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-success" type="submit">Search</button>
             </form>
+
+            <ul class="navbar-nav  mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ route('saas.dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ route('saas.dashboard') }}">
+                        {{ auth()->user()->name }}
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

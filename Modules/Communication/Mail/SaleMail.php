@@ -30,6 +30,6 @@ class SaleMail extends Mailable
     public function build()
     {
         $sale = $this->sale;
-        return $this->view('mail.sales.sale-created', compact('sale'));
+        return $this->view('communication::email.sales.sale-created', compact('sale'));
     }
 }

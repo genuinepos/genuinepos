@@ -21,13 +21,13 @@ class SaleMailJob implements ShouldQueue
      */
     public $to;
     public $sale;
-    
+
     public function __construct($to, $sale)
     {
         $this->to = $to;
         $this->sale = $sale;
-    }
 
+    }
     /**
      * Execute the job.
      *

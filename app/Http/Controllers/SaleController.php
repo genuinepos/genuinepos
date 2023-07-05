@@ -52,6 +52,7 @@ class SaleController extends Controller
         PurchaseUtil $purchaseUtil,
         UserActivityLogUtil $userActivityLogUtil,
         BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil,
+
     ) {
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
@@ -344,7 +345,6 @@ class SaleController extends Controller
             $invoicePrefix = '';
 
             if ($request->invoice_schema) {
-
                 $invoicePrefix = $request->invoice_schema;
             } else {
 
@@ -354,12 +354,12 @@ class SaleController extends Controller
                 } else {
 
                     $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-                    
+
                     if($defaultSchemas){
 
                         $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
                     }
-                    
+
                 }
             }
 
@@ -576,18 +576,15 @@ class SaleController extends Controller
                         ->delay(now()->addSeconds(5));
                 }
             }
-
             if (
                 env('SMS_ACTIVE') == 'true' &&
                 $generalSettings['email_settings__send_notice_via_sms'] == '1'
             ) {
-
                 if ($sale->customer && $sale->customer->phone) {
 
                     $this->smsUtil->singleSms($sale);
                 }
             }
-
             $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($sale->id);
 
             DB::commit();
@@ -595,7 +592,6 @@ class SaleController extends Controller
 
             DB::rollBack();
         }
-
         if ($request->action == 'save_and_print') {
 
             if ($request->status == 1 || $request->status == 3) {
@@ -1766,7 +1762,7 @@ class SaleController extends Controller
     public function settings()
     {
         if (!auth()->user()->can('add_sale_settings')) {
-            
+
             abort(403, 'Access Forbidden.');
         }
 

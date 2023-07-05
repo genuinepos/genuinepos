@@ -38,7 +38,7 @@ class CouponMail extends Mailable
     public function content(): Content
     {
         $coupon = $this->coupon;
-        return $this->view('email.coupon.coupon-discount', compact('coupon'));
+        return $this->view('mail.coupon.coupon-discount', compact('coupon'));
     }
 
     /**

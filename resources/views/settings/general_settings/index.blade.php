@@ -93,7 +93,10 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="es_settings_form" href="#">@lang('menu.send_email_sms_settings')</a>
+                                            <a class="menu_btn" data-form="e_settings_form" href="#">{{ __('Send Email Settings') }}</a>
+                                        </li>
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="s_settings_form" href="#">{{ __('Send SMS Settings') }}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -722,12 +725,12 @@
                                     </div>
                                 </form>
 
-                                <form id="es_settings_form" class="setting_form hide-all"
+                                <form id="e_settings_form" class="setting_form hide-all"
                                     action="{{ route('settings.send.email.sms.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">@lang('menu.send_email_sms_settings')</h6>
+                                            <h6 class="text-primary">{{ __('Send Email Settings') }}</h6>
                                         </div>
                                     </div>
 
@@ -808,6 +811,96 @@
                                                 </p>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form id="s_settings_form" class="setting_form hide-all"
+                                    action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">{{ __('Send SMS Setttings') }}</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        {{-- <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
+                                                </p>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings
+                                                    ['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.user_forget_password_via_email')</b>
+                                                </p>
+                                            </div>
+                                        </div> --}}
+                                        {{-- <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings
+                                                    ['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.coupon_offer_via_email')</b>
+                                                </p>
+                                            </div>
+                                        </div> --}}
+                                    </div>
+                                    <div class="form-group row">
+                                        {{-- <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset ($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.discount_redeemed_via_email')</b>
+                                                </p>
+                                            </div>
+                                        </div> --}}
+                                        {{-- <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset ($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.new_product_arrived_via_email')</b>
+                                                </p>
+                                            </div>
+                                        </div> --}}
+                                        {{-- <div class="col-md-4 mt-1">
+                                            <div class="row mt-4">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset ($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.weekly_news_letter_via_email')</b>
+                                                </p>
+                                            </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
@@ -1024,7 +1117,22 @@
             });
         });
 
-        $('#es_settings_form').on('submit', function(e) {
+        $('#e_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                }
+            });
+        });
+        $('#s_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');

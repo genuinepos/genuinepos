@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PurchaseCreated;
 use DB;
 use App\Utils\Util;
 use App\Models\Unit;
@@ -27,6 +28,7 @@ use App\Utils\UserActivityLogUtil;
 use App\Models\PurchaseOrderProduct;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Services\GeneralSettingServiceInterface;
+use Modules\Communication\Interface\EmailServiceInterface;
 
 class PurchaseController extends Controller
 {
@@ -40,7 +42,9 @@ class PurchaseController extends Controller
     protected $invoiceVoucherRefIdUtil;
     protected $purchaseReturnUtil;
     protected $userActivityLogUtil;
+    protected $emailService;
     public function __construct(
+        EmailServiceInterface  $emailService,
         NameSearchUtil $nameSearchUtil,
         PurchaseUtil $purchaseUtil,
         Util $util,
@@ -52,6 +56,7 @@ class PurchaseController extends Controller
         PurchaseReturnUtil $purchaseReturnUtil,
         UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->emailService = $emailService;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->util = $util;
@@ -238,7 +243,7 @@ class PurchaseController extends Controller
         try {
 
             DB::beginTransaction();
-            
+
             $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
             $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
@@ -500,6 +505,12 @@ class PurchaseController extends Controller
                     'purchase_products.variant',
                     'purchase_payments',
                 ])->where('id', $addPurchase->id)->first();
+                if($addPurchase){
+                    $supplier = Supplier::findOrFail($request->supplier_id);
+                    $purchase = Purchase::where('id', $addPurchase->id)->first();
+                    $this->emailService->send($supplier->email, new PurchaseCreated($purchase));
+
+                }
 
                 return view('purchases.save_and_print_template.print_purchase', compact('purchase'));
             }

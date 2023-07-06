@@ -36,7 +36,9 @@ class PurchaseReturnController extends Controller
     protected $converter;
     protected $accountUtil;
     protected $invoiceVoucherRefIdUtil;
+    protected $emailService;
     public function __construct(
+        EmailServiceInterface  $emailService,
         PurchaseReturnUtil $purchaseReturnUtil,
         NameSearchUtil $nameSearchUtil,
         ProductStockUtil $productStockUtil,
@@ -46,7 +48,7 @@ class PurchaseReturnController extends Controller
         AccountUtil $accountUtil,
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil
     ) {
-
+        $this->emailService = $emailService;
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->productStockUtil = $productStockUtil;

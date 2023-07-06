@@ -29,7 +29,7 @@ class Customer extends BaseModel
 
     public function receipts()
     {
-        return $this->hasMany(MoneyReceipt::class)->where('branch_id', auth()->user()->branch_id);
+        return $this->hasMany(MoneyReceipt::class)->where('branch_id', auth()?->user()?->branch_id);
     }
 
     public function customer_payments()

@@ -2,12 +2,13 @@
 
 namespace Modules\Communication\Mail;
 
+use App\Models\Sale;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SaleMail extends Mailable
+class SaleCreatedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,8 +17,8 @@ class SaleMail extends Mailable
      *
      * @return void
      */
-    public $sale;
-    public function __construct($sale)
+    public Sale $sale;
+    public function __construct(Sale $sale)
     {
         $this->sale = $sale;
     }
@@ -29,7 +30,6 @@ class SaleMail extends Mailable
      */
     public function build()
     {
-        $sale = $this->sale;
-        return $this->view('communication::email.sales.sale-created', compact('sale'));
+        return $this->view('communication::email.sales.sale-created');
     }
 }

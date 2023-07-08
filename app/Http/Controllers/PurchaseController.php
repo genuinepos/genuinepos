@@ -471,6 +471,27 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
+        $purchase = Purchase::with([
+            'warehouse:id,warehouse_name,warehouse_code',
+            'branch',
+            'supplier',
+            'admin:id,prefix,name,last_name',
+            'purchase_products',
+            'purchase_products.product',
+            'purchase_products.product.warranty',
+            'purchase_products.variant',
+            'purchase_order_products',
+            'purchase_order_products.product',
+            'purchase_order_products.product.warranty',
+            'purchase_order_products.variant',
+            'purchase_payments',
+        ])->where('id', $addPurchase->id)->first();
+            
+        if ($purchase?->supplier && $purchase?->supplier?->email) {
+ 
+            $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
+        }
+
         // $this->supplierUtil->adjustSupplierForPurchasePaymentDue($request->supplier_id);
         if ($request->action == 2) {
 
@@ -479,38 +500,8 @@ class PurchaseController extends Controller
 
             if ($request->purchase_status == 3) {
 
-                $purchase = Purchase::with([
-                    'warehouse:id,warehouse_name,warehouse_code',
-                    'branch',
-                    'supplier',
-                    'admin:id,prefix,name,last_name',
-                    'purchase_order_products',
-                    'purchase_products.product',
-                    'purchase_products.product.warranty',
-                    'purchase_products.variant',
-                    'purchase_payments',
-                ])->where('id', $addPurchase->id)->first();
-
                 return view('purchases.save_and_print_template.print_order', compact('purchase'));
             } else {
-
-                $purchase = Purchase::with([
-                    'warehouse:id,warehouse_name,warehouse_code',
-                    'branch',
-                    'supplier',
-                    'admin:id,prefix,name,last_name',
-                    'purchase_products',
-                    'purchase_products.product',
-                    'purchase_products.product.warranty',
-                    'purchase_products.variant',
-                    'purchase_payments',
-                ])->where('id', $addPurchase->id)->first();
-                if($addPurchase){
-                    $supplier = Supplier::findOrFail($request->supplier_id);
-                    $purchase = Purchase::where('id', $addPurchase->id)->first();
-                    $this->emailService->send($supplier->email, new PurchaseCreated($purchase));
-
-                }
 
                 return view('purchases.save_and_print_template.print_purchase', compact('purchase'));
             }

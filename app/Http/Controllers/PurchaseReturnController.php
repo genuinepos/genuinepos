@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PurchaseReturnCreated;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -24,6 +25,7 @@ use App\Models\PurchaseReturnProduct;
 use App\Models\ProductWarehouseVariant;
 use App\Utils\AccountUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use Modules\Communication\Interface\EmailServiceInterface;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnController extends Controller
@@ -307,7 +309,7 @@ class PurchaseReturnController extends Controller
                 'purchase_return_products.product',
                 'purchase_return_products.variant',
             ])->where('purchase_id', $purchaseId)->first();
-
+            
             if ($purchaseReturn) {
 
                 return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('return'));
@@ -593,7 +595,9 @@ class PurchaseReturnController extends Controller
                 'purchase_return_products.variant',
             ])
                 ->where('id', $addPurchaseReturn->id)->first();
-
+            if ($return?->supplier && $return?->supplier?->email) {
+                $this->emailService->send($return->supplier->email, new PurchaseReturnCreated($return));
+            }
             return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('return'));
         } else {
 

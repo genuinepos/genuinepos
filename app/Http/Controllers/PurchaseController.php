@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PurchaseCreated;
+use App\Mail\PurchaseOrderCreated;
 use DB;
 use App\Utils\Util;
 use App\Models\Unit;
@@ -486,12 +487,16 @@ class PurchaseController extends Controller
             'purchase_order_products.variant',
             'purchase_payments',
         ])->where('id', $addPurchase->id)->first();
-            
+            // dd($purchase['purchase_status']);
         if ($purchase?->supplier && $purchase?->supplier?->email) {
- 
-            $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
+            if ($purchase['purchase_status']=='1') 
+            {
+                $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
+            }elseif($purchase['purchase_status']=='3')
+            {
+                $this->emailService->send($purchase->supplier->email, new PurchaseOrderCreated($purchase));
+            }
         }
-
         // $this->supplierUtil->adjustSupplierForPurchasePaymentDue($request->supplier_id);
         if ($request->action == 2) {
 

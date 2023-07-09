@@ -17,6 +17,7 @@ class ProfileController extends Controller
     {
         $profileRequest = $request->validated();
         $user->update($profileRequest);
+
         return \redirect()->back()->with('success', 'Profile updated!');
     }
 }

@@ -21,9 +21,9 @@
                 @endif
             @endif
         </th>
-        <th colspan="3" style="font-size:14px;margin:0 0 6px 0;">
+        {{-- <th colspan="2" style="font-size:14px;margin:0 0 6px 0;">
         <strong>@lang('menu.purchases_status') : </strong>
-            {{-- <span class="purchase_status">
+            <span class="purchase_status">
                 @if ($return->purchase_status == 1)
                     {{ __('Purchased') }}
                 @elseif($return->purchase_status == 2){
@@ -31,12 +31,15 @@
                 @else
                 @lang('menu.purchased_by_order')
                 @endif
-            </span> --}}
-        </th>
-        <th colspan="3" style="text-align:right;font-weight:400;">{{ date($generalSettings['business__date_format'] ,strtotime($return['date'])) . ' ' . date($timeFormat, strtotime($return['time'])) }}</th>
+            </span>
+        </th> --}}
+        <th colspan="2" style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business__date_format'] ,strtotime($return->date)) }}</th>
       </tr>
       <tr>
-        <td colspan="9" style="border: solid 1px #ddd; padding:10px 20px;">
+        <td style="height:35px;"></td>
+      </tr>
+      <tr>
+        <td colspan="5" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.business_location') : </strong>
                 @if ($return->branch)
                     {!! $return->branch->name.' '.$return->branch->branch_code.' <b>(BL)</b>' !!}
@@ -56,7 +59,10 @@
         </td>
       </tr>
       <tr>
-        <td colspan="5" style="border: solid 1px #ddd; padding:10px 20px;">
+        <td style="height:35px;"></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.supplier') : - </strong></p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.name') : </strong> {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
             </p>
@@ -72,17 +78,17 @@
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.tax_number') : </strong> {{ $return->supplier->tax_number }}</p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.phone') : </strong> {{ $return->supplier->phone }}</p>
         </td>
-        <td colspan="4" style="border: solid 1px #ddd; padding:10px 20px;">
-            <p style="font-size:14px;margin:0 0 6px 0;"><strong>{{ __('PR. Invoice ID') }} : </strong> {{ $return->invoice_id }}</p>
-            <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.purchase_date') : </strong>
-                {{ date($generalSettings['business__date_format'], strtotime($return->date)) . ' ' . date($timeFormat, strtotime($return->time)) }}
+        <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
+            <p style="font-size:14px;margin:0 0 6px 0;"><strong>{{ __('PR. Invoice ID') }} : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</p>
+            <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.date') : </strong>
+                {{ $return->purchase ? $return->purchase->date : 'N/A' }}
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.delivery_date') : </strong>
                 {{ $return->delivery_date ? date($generalSettings['business__date_format'], strtotime($return->delivery_date)) : '' }}
             </p>
-            <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.created_by') : </strong>
+            {{-- <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.created_by') : </strong>
                 {{ $return->admin->prefix.' '.$return->admin->name.' '.$return->admin->last_name }}
-            </p>
+            </p> --}}
         </td>
       </tr>
     </thead>
@@ -91,13 +97,13 @@
         <td style="height:35px;"></td>
       </tr>
       <tr>
-        <td colspan="9" style="border: solid 1px #ddd; padding:10px 20px;">
+        <td colspan="5" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;"> {{ __('PR. Invoice ID :') }}{{ $return['invoice_id'] }}</p>
-            <p style="font-size:14px;margin:0 0 6px 0;"> {{ __('Total Item :') }}{{ $return['total_item'] }}</p>
-            <p style="font-size:14px;margin:0 0 6px 0;"> {{ __('Total return Amount :') }}{{ $return['total_purchase_amount'] }}</p>
+            {{-- <p style="font-size:14px;margin:0 0 6px 0;"> {{ __('Total Item :') }}{{ $return['total_return'] }}</p> --}}
+            <p style="font-size:14px;margin:0 0 6px 0;"> {{ __('Total return Amount :') }}{{ $return['total_return_amount'] }}</p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.payment_status') : </strong>
                 @php
-                    $payable = $return->total_purchase_amount - $return->total_return_amount;
+                    $payable = $return['total_return_due'];
                 @endphp
                 @if ($return->due <= 0)
                 @lang('menu.paid')
@@ -110,14 +116,17 @@
         </td>
       </tr>
       <tr>
-        <td colspan="9" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
+        <td colspan="5" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
+      </tr>
+      <tr>
+        <td style="height:15px;"></td>
       </tr>
         <tr>
             <th style="text-align:left; font-size:11px;">@lang('menu.sl')</th>
             <th scope="col" style="font-size:11px;">@lang('menu.product')</th>
             <th scope="col" style="font-size:11px;">@lang('menu.unit_cost')</th>
             <th scope="col" style="font-size:11px;">@lang('menu.return_quantity') </th>
-            <th scope="col" style="font-size:11px;">@lang('menu.sub_total')</th>
+            <th scope="col" style="font-size:11px; text-align:end">@lang('menu.sub_total')</th>
         </tr>
         @php $index = 0; @endphp
         @foreach ($return->purchase_return_products as $purchase_return_product)
@@ -141,21 +150,21 @@
                 <td style="font-size:11px;">
                     {{ $purchase_return_product->return_qty }} ({{ $purchase_return_product->unit }})
                 </td>
-                <td style="font-size:11px;">
+                <td style="font-size:11px; text-align:end">
                     {{ $purchase_return_product->return_subtotal }}
                  </td>
             </tr>
             @php $index++; @endphp
         @endforeach
         <tr>
-            <th colspan="4" class="text-end">@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" class="text-end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
+            <th colspan="4" style="font-size:14px; text-align:end">@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="1" style="font-size:14px; text-align:end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
         </tr>
 
         <tr>
-            <th colspan="4" class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
+            <th colspan="4" style="font-size:14px; text-align:end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
 
-            <td colspan="2" class="text-end">
+            <td colspan="1" style="font-size:14px; text-align:end">
 
                 @if ($return->purchase_id)
 
@@ -168,7 +177,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="9" style="font-size:14px;padding:50px 15px 0 15px;">
+        <td colspan="5" style="font-size:14px;padding:50px 15px 0 15px;">
           <strong style="display:block;margin:0 0 10px 0;">Regards</strong> <br>
             If you need any support, Feel free to contact us.
             <br><br>

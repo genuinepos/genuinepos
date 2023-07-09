@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Utils\SaleUtil;
 use App\Models\Customer;
 use App\Jobs\SaleMailJob;
+use App\Mail\FinalSaleCreated;
+use App\Mail\SaleQuotationCreated;
 use App\Utils\AccountUtil;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
@@ -26,6 +28,7 @@ use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\BranchWiseCustomerAmountUtil;
+use Modules\Communication\Interface\EmailServiceInterface;
 
 class SaleController extends Controller
 {
@@ -40,7 +43,9 @@ class SaleController extends Controller
     protected $purchaseUtil;
     protected $userActivityLogUtil;
     protected $branchWiseCustomerAmountUtil;
+    protected $emailService;
     public function __construct(
+        EmailServiceInterface $emailService,
         NameSearchUtil $nameSearchUtil,
         SaleUtil $saleUtil,
         SmsUtil $smsUtil,
@@ -54,6 +59,7 @@ class SaleController extends Controller
         BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil,
 
     ) {
+        $this->emailService = $emailService;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->saleUtil = $saleUtil;
         $this->smsUtil = $smsUtil;
@@ -565,15 +571,18 @@ class SaleController extends Controller
             $total_due = $request->total_due;
             $change_amount = $request->change_amount;
 
+            if ($sale->customer && $sale?->customer?->email) {
+                $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+            }
             if (
                 env('MAIL_ACTIVE') == 'true' &&
                 $generalSettings['email_settings__send_inv_via_email'] == '1'
             ) {
 
-                if ($sale->customer && $sale->customer->email) {
-
-                    SaleMailJob::dispatch($sale->customer->email, $sale)
-                        ->delay(now()->addSeconds(5));
+                if ($sale->customer && $sale?->customer?->email) {
+                    $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+                    // SaleMailJob::dispatch($sale->customer->email, $sale) n
+                    //     ->delay(now()->addSeconds(5));
                 }
             }
             if (
@@ -605,17 +614,22 @@ class SaleController extends Controller
                     'change_amount',
                     'customerCopySaleProducts'
                 ));
-            } elseif ($request->status == 2) {
+                
+            } elseif ($request->status == 1) {
+            }
+            elseif ($request->status == 2) {
 
                 return view('sales.save_and_print_template.draft_print', compact('sale', 'customerCopySaleProducts'));
             } elseif ($request->status == 4) {
-
+               
                 return view('sales.save_and_print_template.quotation_print', compact('sale', 'customerCopySaleProducts'));
             }
         } else {
 
             if ($request->status == 1) {
-
+                // if ($sale->customer && $sale?->customer?->email) {
+                //     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+                // }
                 session()->flash('successMsg', 'Sale created successfully');
                 return response()->json(['finalMsg' => 'Sale created successfully']);
             } elseif ($request->status == 2) {
@@ -623,7 +637,9 @@ class SaleController extends Controller
                 session()->flash('successMsg', 'Sale draft created successfully');
                 return response()->json(['draftMsg' => 'Sale draft created successfully']);
             } elseif ($request->status == 4) {
-
+                // if ($sale->customer && $sale?->customer?->email) {
+                //     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+                // }
                 session()->flash('successMsg', 'Sale quotation created successfully');
                 return response()->json(['quotationMsg' => 'Sale quotation created successfully']);
             }
@@ -800,7 +816,7 @@ class SaleController extends Controller
         $updateSale->save();
 
         if ($updateSale->status == 1 || $request->status == 3) {
-
+ 
             // Update Sales A/C Ledger
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 1,

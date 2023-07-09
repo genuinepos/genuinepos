@@ -23,9 +23,8 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                {{ $product->name }} is available now</p>
-                {{-- <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} </span> --}}
-                {{-- @php
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Payment Status') }} </span>
+                @php
                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                 @endphp
                 @if ($sale->due <= 0)
@@ -34,9 +33,9 @@
                     <b style="color:orange;font-weight:normal;margin:0">@lang('menu.partial')</b>
                 @elseif($payable==$sale->due)
                     <b style="color:red;font-weight:normal;margin:0">@lang('menu.due')</b>
-                @endif --}}
+                @endif
             </p>
-            {{-- <p style="font-size:14px;margin:0 0 6px 0;">
+            <p style="font-size:14px;margin:0 0 6px 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.invoice_id') </span>
                 {{ $sale->invoice_id }}
             </p>
@@ -51,7 +50,7 @@
             <p style="font-size:14px;margin:0 0 0 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.due') </span>
                 {{ $generalSettings['business__currency'] }} {{ $sale->due }}
-            </p> --}}
+            </p>
         </td>
       </tr>
       <tr>
@@ -59,7 +58,7 @@
       </tr>
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
-            {{-- <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.customer_name')</span>
                 {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
             </p>
@@ -68,10 +67,10 @@
                 {{ $sale->customer ? $sale->customer->address : '' }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $sale->customer ? $sale->customer->phone : '' }}
-            </p> --}}
+            </p>
         </td>
 
-        {{-- @if ($sale->branch)
+        @if ($sale->branch)
             <td style="width:50%;padding:20px;vertical-align:top">
                 <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__shop_name'] }}</span> </h6>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">
@@ -89,12 +88,12 @@
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__address'] }}</span> </p>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $generalSettings['business__phone'] }}</p>
             </td>
-        @endif --}}
+        @endif
       </tr>
       <tr>
         <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
       </tr>
-      {{-- @foreach ($sale->sale_products as $sale_product)
+      @foreach ($sale->sale_products as $sale_product)
         <tr>
             <td colspan="2" style="padding:15px;">
                 <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
@@ -108,7 +107,7 @@
                 </p>
             </td>
         </tr>
-      @endforeach --}}
+      @endforeach
     </tbody>
     <tfoot>
       <tr>

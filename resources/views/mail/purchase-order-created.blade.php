@@ -33,7 +33,10 @@
                 @endif
             </span>
         </th>
-        <th colspan="3" style="text-align:right;font-weight:400;">{{ date($generalSettings['business__date_format'] ,strtotime($purchase['date'])) . ' ' . date($timeFormat, strtotime($purchase['time'])) }}</th>
+        <th colspan="3" style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business__date_format'] ,strtotime($purchase->date)) }}</th>
+      </tr>
+      <tr>
+        <td style="height:35px;"></td>
       </tr>
       <tr>
         <td colspan="9" style="border: solid 1px #ddd; padding:10px 20px;">
@@ -54,6 +57,9 @@
                 @endif
             </p>
         </td>
+      </tr>
+      <tr>
+        <td style="height:35px;"></td>
       </tr>
       <tr>
         <td colspan="5" style="border: solid 1px #ddd; padding:10px 20px;">
@@ -102,6 +108,9 @@
       </tr>
       <tr>
         <td colspan="9" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
+      </tr>
+      <tr>
+        <td style="height:15px;"></td>
       </tr>
         <tr>
             <th style="text-align:left; font-size:11px;">@lang('menu.sl')</th>

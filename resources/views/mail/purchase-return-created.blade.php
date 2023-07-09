@@ -66,9 +66,8 @@
                 @elseif($return->branch)
                     {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
                 @else
-                {{ $generalSettings['business__shop_name'] }}<b>(@lang('menu.head_office'))</b>  
+                {{ $generalSettings['business__shop_name'] }}<b>(@lang('menu.head_office'))</b>
                 @endif
-               
                 </p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.tax_number') : </strong> {{ $return->supplier->tax_number }}</p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.phone') : </strong> {{ $return->supplier->phone }}</p>

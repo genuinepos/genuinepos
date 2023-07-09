@@ -110,7 +110,7 @@
         </td>
       </tr>
       <tr>
-        <td colspan="9" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
+        <td colspan="9" style="font-size:20px;padding:30px 14px 0 15px;">@lang('menu.description')</td>
       </tr>
         <tr>
             <th style="text-align:left; font-size:11px;">@lang('menu.sl')</th>
@@ -142,55 +142,55 @@
                 <td style="font-size:11px;">{{ $product->unit_tax.'('.$product->unit_tax_percent.'%)' }}</td>
                 <td style="font-size:11px;">{{ App\Utils\Converter::format_in_bdt($product->net_unit_cost) }}</td>
                 <td style="font-size:11px;">{{ $product->lot_no ? $product->lot_no : '' }}</td>
-                <td style="font-size:14px; text-align:end">{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
+                <td style="font-size:11px; text-align:end">{{ App\Utils\Converter::format_in_bdt($product->line_total) }}</td>
             </tr>
             @php $index++; @endphp
         @endforeach
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
             </td>
         </tr>
 
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">@lang('menu.purchase_discount') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.purchase_discount') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{$purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
             </td>
         </tr>
 
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">@lang('menu.purchase_tax') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.purchase_tax') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ $purchase->purchase_tax_amount.' ('.$purchase->purchase_tax_percent.'%)' }}
             </td>
         </tr>
 
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
             </td>
         </tr>
 
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">{{ __('Purchase Total') }} : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">{{ __('Purchase Total') }} : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
             </td>
         </tr>
 
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">@lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
             </td>
         </tr>
 
         <tr>
-            <th colspan="7" style="font-size:14px; text-align:end">@lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="2" style="font-size:14px; text-align:end">
+            <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="2" style="font-size:11px; text-align:end">
                 {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
             </td>
         </tr>

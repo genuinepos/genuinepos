@@ -116,7 +116,7 @@
         </td>
       </tr>
       <tr>
-        <td colspan="5" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
+        <td colspan="5" style="font-size:20px;padding:30px 15px 0 14px;">@lang('menu.description')</td>
       </tr>
       <tr>
         <td style="height:15px;"></td>
@@ -157,14 +157,14 @@
             @php $index++; @endphp
         @endforeach
         <tr>
-            <th colspan="4" style="font-size:14px; text-align:end">@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</th>
-            <td colspan="1" style="font-size:14px; text-align:end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
+            <th colspan="4" style="font-size:11px; text-align:end">@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</th>
+            <td colspan="1" style="font-size:11px; text-align:end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
         </tr>
 
         <tr>
-            <th colspan="4" style="font-size:14px; text-align:end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
+            <th colspan="4" style="font-size:11px; text-align:end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
 
-            <td colspan="1" style="font-size:14px; text-align:end">
+            <td colspan="1" style="font-size:11px; text-align:end">
 
                 @if ($return->purchase_id)
 

@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\Account;
-use App\Models\BaseModel;
-
 class Contra extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function branch()

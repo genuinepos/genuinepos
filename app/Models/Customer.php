@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\MoneyReceipt;
-use App\Models\CustomerGroup;
-use App\Models\CustomerLedger;
-use App\Models\CustomerPayment;
-use App\Models\BaseModel;
-
 class Customer extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
+
     public function customer_group()
     {
         return $this->belongsTo(CustomerGroup::class, 'customer_group_id');

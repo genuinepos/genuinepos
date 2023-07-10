@@ -2,15 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Branch;
-use App\Models\Customer;
-use App\Models\SaleReturn;
-use App\Models\SalePayment;
-use App\Models\SaleProduct;
-use App\Models\CustomerLedger;
-use App\Models\BaseModel;
-
 class Sale extends BaseModel
 {
     public function branch()

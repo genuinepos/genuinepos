@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Models\Branch;
+use App\Http\Controllers\Controller;
 use App\Models\Hrm\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 
 class HolidayController extends Controller
 {
@@ -25,6 +23,7 @@ class HolidayController extends Controller
         }
 
         $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
+
         return view('hrm.holiday.index', compact('branches'));
     }
 
@@ -71,9 +70,9 @@ class HolidayController extends Controller
         if (auth()->user()->role_type == 1) {
             if ($request->branch_id == 'All') {
                 $addHoliday->is_all = 1;
-                $addHoliday->branch_id = NULL;
+                $addHoliday->branch_id = null;
             } elseif ($request->branch_id == '') {
-                $addHoliday->branch_id = NULL;
+                $addHoliday->branch_id = null;
             } else {
                 $addHoliday->branch_id = $request->branch_id;
             }
@@ -97,6 +96,7 @@ class HolidayController extends Controller
 
         $holiday = Holiday::with('branch')->where('id', $id)->first();
         $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
+
         return view('hrm.holiday.ajax.edit', compact('holiday', 'branches'));
     }
 
@@ -121,12 +121,12 @@ class HolidayController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $updateHoliday->is_all = 0;
-            $updateHoliday->branch_id = NULL;
+            $updateHoliday->branch_id = null;
             if ($request->branch_id == 'All') {
                 $updateHoliday->is_all = 1;
-                $updateHoliday->branch_id = NULL;
-            } elseif (!$request->branch_id) {
-                $updateHoliday->branch_id = NULL;
+                $updateHoliday->branch_id = null;
+            } elseif (! $request->branch_id) {
+                $updateHoliday->branch_id = null;
             } elseif ($request->branch_id) {
                 $updateHoliday->branch_id = $request->branch_id;
             }
@@ -147,7 +147,7 @@ class HolidayController extends Controller
         }
 
         $holiday = Holiday::find($id);
-        if (!is_null($holiday)) {
+        if (! is_null($holiday)) {
             $holiday->delete();
         }
 

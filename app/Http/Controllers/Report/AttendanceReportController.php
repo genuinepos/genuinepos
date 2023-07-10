@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class AttendanceReportController extends Controller
@@ -28,7 +28,7 @@ class AttendanceReportController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('users.branch_id', NULL);
+                    $query->where('users.branch_id', null);
                 } else {
                     $query->where('users.branch_id', $request->branch_id);
                 }
@@ -50,7 +50,6 @@ class AttendanceReportController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $query;
             } else {
 
                 $query->where('branch_id', auth()->user()->branch_id)->orderBy('hrm_attendances.id', 'desc');
@@ -68,21 +67,23 @@ class AttendanceReportController extends Controller
 
             return DataTables::of($attendances)
                 ->editColumn('name', function ($row) {
-                    return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
+                    return $row->prefix.' '.$row->name.' '.$row->last_name;
                 })
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->at_date));
                 })
                 ->editColumn('clock_in_out', function ($row) {
-                    $clockOut = $row->clock_out_ts ? ' - ' . date('h:i a', strtotime($row->clock_out)) : '';
-                    return ' <b>' . date('h:i a', strtotime($row->clock_in)) . $clockOut . ' </b>';
+                    $clockOut = $row->clock_out_ts ? ' - '.date('h:i a', strtotime($row->clock_out)) : '';
+
+                    return ' <b>'.date('h:i a', strtotime($row->clock_in)).$clockOut.' </b>';
                 })
                 ->editColumn('work_duration', function ($row) {
                     if ($row->clock_out_ts) {
                         $startTime = Carbon::parse($row->clock_in);
                         $endTime = Carbon::parse($row->clock_out);
                         // $totalDuration = $startTime->diffForHumans($endTime);
-                        $totalDuration = $endTime->diff($startTime)->format("%H:%I:%S");
+                        $totalDuration = $endTime->diff($startTime)->format('%H:%I:%S');
+
                         return $totalDuration;
                     } else {
                         return 'Clock-Out-does-not-exists';
@@ -95,6 +96,7 @@ class AttendanceReportController extends Controller
         $employee = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.attendance_report.attendance_report', compact('employee', 'departments', 'branches'));
     }
 
@@ -120,7 +122,7 @@ class AttendanceReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('users.branch_id', NULL);
+                $query->where('users.branch_id', null);
             } else {
 
                 $query->where('users.branch_id', $request->branch_id);

@@ -22,7 +22,7 @@ class MessageController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        if (!auth()->user()->can('msg')) {
+        if (! auth()->user()->can('msg')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -42,7 +42,7 @@ class MessageController extends Controller
         }
 
         $this->validate($request, [
-            
+
             'description' => 'required',
         ]);
 
@@ -69,9 +69,10 @@ class MessageController extends Controller
         }
 
         $deleteMsg = Message::where('id', $id)->first();
-        if (!is_null($deleteMsg)) {
+        if (! is_null($deleteMsg)) {
             $deleteMsg->delete();
         }
+
         return response()->json('Message deleted successfully.');
     }
 
@@ -86,20 +87,21 @@ class MessageController extends Controller
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $messages = DB::table('messages')
-        ->leftJoin('users', 'messages.user_id', 'users.id')
-        ->where('messages.branch_id', auth()->user()->branch_id)
-        ->select(
-            'messages.id',
-            'messages.user_id',
-            'messages.description',
-            'messages.created_at',
-            'users.prefix as u_prefix',
-            'users.name as u_name',
-            'users.last_name as u_last_name',
-        )
-        ->get();
+            ->leftJoin('users', 'messages.user_id', 'users.id')
+            ->where('messages.branch_id', auth()->user()->branch_id)
+            ->select(
+                'messages.id',
+                'messages.user_id',
+                'messages.description',
+                'messages.created_at',
+                'users.prefix as u_prefix',
+                'users.name as u_name',
+                'users.last_name as u_last_name',
+            )
+            ->get();
+
         return view('essentials.messages.ajax_view.message_list', compact('messages'));
     }
 }

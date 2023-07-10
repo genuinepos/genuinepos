@@ -37,8 +37,8 @@ class DashboardController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $userCountQ->where('users.branch_id', NULL);
-                $usersQ->where('users.branch_id', NULL);
+                $userCountQ->where('users.branch_id', null);
+                $usersQ->where('users.branch_id', null);
             } else {
                 $userCountQ->where('users.branch_id', $request->branch_id);
                 $usersQ->where('users.branch_id', $request->branch_id);
@@ -57,6 +57,7 @@ class DashboardController extends Controller
                 ->where('users.branch_id', auth()->user()->branch_id)
                 ->get();
         }
+
         return view('hrm.dashboard.ajax_view.user_count_table', compact('userCount', 'users'));
     }
 
@@ -69,7 +70,7 @@ class DashboardController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $todayAttQ->where('users.branch_id', NULL);
+                $todayAttQ->where('users.branch_id', null);
             } else {
                 $todayAttQ->where('users.branch_id', $request->branch_id);
             }
@@ -103,7 +104,7 @@ class DashboardController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $leaveQuery->where('users.branch_id', NULL);
+                $leaveQuery->where('users.branch_id', null);
             } else {
                 $leaveQuery->where('users.branch_id', $request->branch_id);
             }

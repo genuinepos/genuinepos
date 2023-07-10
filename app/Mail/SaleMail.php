@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -17,6 +16,7 @@ class SaleMail extends Mailable
      * @return void
      */
     public $sale;
+
     public function __construct($sale)
     {
         $this->sale = $sale;
@@ -30,6 +30,7 @@ class SaleMail extends Mailable
     public function build()
     {
         $sale = $this->sale;
+
         return $this->view('mail.demo', compact('sale'));
     }
 }

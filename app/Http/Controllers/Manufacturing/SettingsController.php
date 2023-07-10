@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Illuminate\Http\Request;
-use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
 use App\Services\GeneralSettingServiceInterface;
+use Illuminate\Http\Request;
 
 class SettingsController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function index()
     {
-        if (!auth()->user()->can('manuf_settings')) {
+        if (! auth()->user()->can('manuf_settings')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -26,7 +25,7 @@ class SettingsController extends Controller
     // Add tax settings
     public function store(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        if (!auth()->user()->can('manuf_settings')) {
+        if (! auth()->user()->can('manuf_settings')) {
             return response()->json('Access Denied');
         }
 
@@ -36,6 +35,7 @@ class SettingsController extends Controller
             'mf_settings__enable_updating_product_price' => isset($request->enable_updating_product_price) ? 1 : 0,
         ];
         $generalSettingService->updateAndSync($settings);
+
         return response()->json('Manufacturing settings updated successfully');
     }
 }

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductPurchaseReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -43,7 +44,7 @@ class ProductPurchaseReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('purchases.branch_id', NULL);
+                    $query->where('purchases.branch_id', null);
                 } else {
                     $query->where('purchases.branch_id', $request->branch_id);
                 }
@@ -92,8 +93,9 @@ class ProductPurchaseReportController extends Controller
 
             return DataTables::of($purchaseProducts)
                 ->editColumn('product', function ($row) {
-                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return Str::limit($row->name, 25, '') . $variant;
+                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+
+                    return Str::limit($row->name, 25, '').$variant;
                 })
                 ->editColumn('product_code', function ($row) {
                     return $row->variant_code ? $row->variant_code : $row->product_code;
@@ -102,10 +104,10 @@ class ProductPurchaseReportController extends Controller
                     return date('d/m/Y', strtotime($row->date));
                 })
                 ->editColumn('quantity', function ($row) {
-                    return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
+                    return $row->quantity.' (<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>)';
                 })
-                ->editColumn('net_unit_cost',  fn ($row) => '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $this->converter->format_in_bdt($row->net_unit_cost) . '</span>')
-                ->editColumn('price',  function ($row) use ($converter) {
+                ->editColumn('net_unit_cost', fn ($row) => '<span class="net_unit_cost" data-value="'.$row->net_unit_cost.'">'.$this->converter->format_in_bdt($row->net_unit_cost).'</span>')
+                ->editColumn('price', function ($row) use ($converter) {
                     if ($row->selling_price > 0) {
                         return $converter->format_in_bdt($row->selling_price);
                     } else {
@@ -115,14 +117,16 @@ class ProductPurchaseReportController extends Controller
                             return $converter->format_in_bdt($row->product_price);
                         }
                     }
-                    return '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $converter->format_in_bdt($row->net_unit_cost) . '</span>';
+
+                    return '<span class="net_unit_cost" data-value="'.$row->net_unit_cost.'">'.$converter->format_in_bdt($row->net_unit_cost).'</span>';
                 })
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . $this->converter->format_in_bdt($row->line_total) . '</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->line_total.'">'.$this->converter->format_in_bdt($row->line_total).'</span>')
                 ->rawColumns(['product', 'product_code', 'date', 'quantity', 'branch', 'net_unit_cost', 'price', 'subtotal'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
+
         return view('reports.product_purchase_report.index', compact('branches', 'suppliers'));
     }
 
@@ -149,7 +153,7 @@ class ProductPurchaseReportController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('purchases.branch_id', NULL);
+                $query->where('purchases.branch_id', null);
             } else {
                 $query->where('purchases.branch_id', $request->branch_id);
             }

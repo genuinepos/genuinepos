@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
-
 class WarehouseBranch extends BaseModel
 {
     public function branch()

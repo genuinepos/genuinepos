@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
-
     protected $userActivityLogUtil;
 
     /*
@@ -54,7 +52,7 @@ class LoginController extends Controller
 
             return redirect()->back();
         }
-        
+
         return view('auth.login');
     }
 
@@ -89,15 +87,15 @@ class LoginController extends Controller
             } else {
 
                 session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
+
                 return redirect()->back();
             }
         } else {
             session()->flash('errorMsg', 'Login failed. Please try with correct username and password');
+
             return redirect()->back();
         }
     }
-
-
 
     public function logout(Request $request)
     {

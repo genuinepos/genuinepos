@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\GeneralSetting;
-use Illuminate\Database\Seeder;
 use App\Services\CacheServiceInterface;
+use Illuminate\Database\Seeder;
 
 class GeneralSettingsSeeder extends Seeder
 {
@@ -169,8 +169,7 @@ class GeneralSettingsSeeder extends Seeder
         $cacheService->removeGeneralSettings();
         GeneralSetting::truncate();
         $settings = $this->getSettings();
-        foreach($settings as $setting) {
-            // echo $setting['key'] . ': ' . $setting['value'] . PHP_EOL;
+        foreach ($settings as $setting) {
             GeneralSetting::create([
                 'key' => $setting['key'],
                 'value' => $setting['value'],

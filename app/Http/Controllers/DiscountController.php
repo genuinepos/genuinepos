@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Discount;
+use App\Models\DiscountProduct;
 use App\Utils\Converter;
 use Illuminate\Http\Request;
-use App\Models\DiscountProduct;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -16,7 +16,6 @@ class DiscountController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-
 
     }
 
@@ -42,33 +41,36 @@ class DiscountController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                    $html .= '<a class="dropdown-item" href="' . route('sales.discounts.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('sales.discounts.edit', [$row->id]).'" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
 
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.discounts.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.discounts.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
 
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
 
                 ->editColumn('start_at', function ($row) use ($generalSettings) {
 
                     $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                     return date($__date_format, strtotime($row->start_at));
                 })
                 ->editColumn('end_at', function ($row) use ($generalSettings) {
 
                     $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                     return date($__date_format, strtotime($row->end_at));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->b_name) {
 
-                        return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->b_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
                 ->editColumn('discount_type', function ($row) {
@@ -77,17 +79,19 @@ class DiscountController extends Controller
                 })
                 ->editColumn('status', function ($row) {
 
-                    if ($row->is_active == 1) :
+                    if ($row->is_active == 1) {
                         $html = '<div class="form-check form-switch">';
-                        $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('sales.discounts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                        $html .= '<input class="form-check-input"  id="change_status" data-url="'.route('sales.discounts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                         $html .= '</div>';
+
                         return $html;
-                    else :
+                    } else {
                         $html = '<div class="form-check form-switch">';
-                        $html .= '<input class="form-check-input" id="change_status" data-url="' . route('sales.discounts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                        $html .= '<input class="form-check-input" id="change_status" data-url="'.route('sales.discounts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                         $html .= '</div>';
+
                         return $html;
-                    endif;
+                    }
                 })
                 ->editColumn('products', function ($row) {
 
@@ -99,7 +103,7 @@ class DiscountController extends Controller
                     $list = '';
                     foreach ($products as $product) {
 
-                        $list .= $product->name . '(' . $product->product_code . '),<br/> ';
+                        $list .= $product->name.'('.$product->product_code.'),<br/> ';
                     }
 
                     return $list;
@@ -111,7 +115,7 @@ class DiscountController extends Controller
         }
 
         $brands = DB::table('brands')->select('id', 'name')->get();
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->select('id', 'name')->get();
+        $categories = DB::table('categories')->where('parent_category_id', null)->select('id', 'name')->get();
 
         $products = DB::table('product_branches')
             ->where('product_branches.branch_id', auth()->user()->branch_id)
@@ -129,14 +133,14 @@ class DiscountController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'priority' => 'required',
-            "start_at"    => "required",
-            "end_at"  => "required",
-            "discount_type"  => "required",
-            "discount_amount"  => "required",
+            'start_at' => 'required',
+            'end_at' => 'required',
+            'discount_type' => 'required',
+            'discount_amount' => 'required',
         ]);
 
         if (
-            !isset($request->product_ids) &&
+            ! isset($request->product_ids) &&
             $request->brand_id == '' &&
             $request->category_id == ''
         ) {
@@ -182,7 +186,7 @@ class DiscountController extends Controller
         $discount = DB::table('discounts')->where('id', $discountId)->first();
 
         $brands = DB::table('brands')->select('id', 'name')->get();
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->select('id', 'name')->get();
+        $categories = DB::table('categories')->where('parent_category_id', null)->select('id', 'name')->get();
 
         $products = DB::table('product_branches')
             ->where('product_branches.branch_id', auth()->user()->branch_id)
@@ -223,8 +227,8 @@ class DiscountController extends Controller
 
         if (isset($request->product_ids) && count($request->product_ids) > 0) {
 
-            $updateDiscount->brand_id = NULL;
-            $updateDiscount->category_id = NULL;
+            $updateDiscount->brand_id = null;
+            $updateDiscount->category_id = null;
 
             foreach ($request->product_ids as $product_id) {
 
@@ -270,7 +274,7 @@ class DiscountController extends Controller
     {
         $deleteDiscount = Discount::where('id', $discountId)->first();
 
-        if (!is_null($deleteDiscount)) {
+        if (! is_null($deleteDiscount)) {
 
             $deleteDiscount->delete();
         }

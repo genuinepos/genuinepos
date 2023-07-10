@@ -17,7 +17,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('warehouse')) {
+        if (! auth()->user()->can('warehouse')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -33,7 +33,7 @@ class WarehouseController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('warehouse_branches.branch_id', NULL)->orWhere('warehouse_branches.is_global', 1);
+                    $query->where('warehouse_branches.branch_id', null)->orWhere('warehouse_branches.is_global', 1);
                 } else {
 
                     $query->where('warehouse_branches.branch_id', $request->branch_id)->orWhere('warehouse_branches.is_global', 1);
@@ -67,12 +67,13 @@ class WarehouseController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('settings.warehouses.edit', [$row->warehouse_id]) . '" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('settings.warehouses.delete', [$row->warehouse_id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('settings.warehouses.edit', [$row->warehouse_id]).'" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('settings.warehouses.delete', [$row->warehouse_id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->is_global == 1) {
 
@@ -81,10 +82,10 @@ class WarehouseController extends Controller
 
                         if ($row->b_name) {
 
-                            return $row->b_name . '/' . $row->b_code . '(<b>B.L.</b>)';
+                            return $row->b_name.'/'.$row->b_code.'(<b>B.L.</b>)';
                         } else {
 
-                            return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                            return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                         }
                     }
                 })
@@ -93,6 +94,7 @@ class WarehouseController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('settings.warehouses.index', compact('branches'));
     }
 
@@ -113,12 +115,11 @@ class WarehouseController extends Controller
         $addWarehouse->address = $request->address;
         $addWarehouse->save();
 
-
         if (isset($request->branch_ids)) {
 
             foreach ($request->branch_ids as $branch_id) {
 
-                $__branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
+                $__branch_id = $branch_id == 'NULL' ? null : $branch_id;
                 $addWarehouseBranch = new WarehouseBranch();
                 $addWarehouseBranch->warehouse_id = $addWarehouse->id;
                 $addWarehouseBranch->branch_id = $__branch_id;
@@ -128,7 +129,7 @@ class WarehouseController extends Controller
 
             $addWarehouseBranch = new WarehouseBranch();
             $addWarehouseBranch->warehouse_id = $addWarehouse->id;
-            $addWarehouseBranch->branch_id = NULL;
+            $addWarehouseBranch->branch_id = null;
             $addWarehouseBranch->is_global = 1;
             $addWarehouseBranch->save();
         }
@@ -142,11 +143,12 @@ class WarehouseController extends Controller
 
         $isExistsHeadOffice = DB::table('warehouse_branches')
             ->where('warehouse_id', $id)
-            ->where('branch_id', NULL)
+            ->where('branch_id', null)
             ->where('is_global', 0)
             ->first();
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('settings.warehouses.ajax_view.edit', compact('w', 'branches', 'isExistsHeadOffice'));
     }
 
@@ -171,7 +173,7 @@ class WarehouseController extends Controller
 
             foreach ($request->branch_ids as $branch_id) {
 
-                $__branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
+                $__branch_id = $branch_id == 'NULL' ? null : $branch_id;
                 $addWarehouseBranch = new WarehouseBranch();
                 $addWarehouseBranch->warehouse_id = $updateWarehouse->id;
                 $addWarehouseBranch->branch_id = $__branch_id;
@@ -181,7 +183,7 @@ class WarehouseController extends Controller
 
             $addWarehouseBranch = new WarehouseBranch();
             $addWarehouseBranch->warehouse_id = $updateWarehouse->id;
-            $addWarehouseBranch->branch_id = NULL;
+            $addWarehouseBranch->branch_id = null;
             $addWarehouseBranch->is_global = 1;
             $addWarehouseBranch->save();
         }
@@ -193,25 +195,26 @@ class WarehouseController extends Controller
     {
         $deleteWarehouse = Warehouse::where('id', $warehouseId)->first();
 
-        if (count($deleteWarehouse->transfer_stock_branch_to_branch) > 0){
+        if (count($deleteWarehouse->transfer_stock_branch_to_branch) > 0) {
             return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transfer branch to branch.']);
         }
-        if (count($deleteWarehouse->transfer_stock_branch) > 0){
+        if (count($deleteWarehouse->transfer_stock_branch) > 0) {
             return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transfer warehouse to branch.']);
         }
-        if (count($deleteWarehouse->sale_product) > 0){
+        if (count($deleteWarehouse->sale_product) > 0) {
             return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in sale.']);
         }
-        if (count($deleteWarehouse->transfer_to_branch) > 0){
+        if (count($deleteWarehouse->transfer_to_branch) > 0) {
             return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transferred.']);
         }
         if (count($deleteWarehouse->purchase) > 0) {
             return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in purchase.']);
         }
-        if (!is_null($deleteWarehouse)) {
+        if (! is_null($deleteWarehouse)) {
 
             $deleteWarehouse->delete();
         }
+
         return response()->json('Successfully warehouse is deleted');
     }
 }

@@ -16,10 +16,8 @@ class PriceUpdateTemplate
     public function sendPriceUpdateSms()
     {
         $numbersRaw = User::permission('price_update_notification')->pluck('phone')->toArray() ?? [];
-        $numbersFiltered = array_filter($numbersRaw, fn ($item) => !is_null($item) && (strlen($item) >= 10));
+        $numbersFiltered = array_filter($numbersRaw, fn ($item) => ! is_null($item) && (strlen($item) >= 10));
         $numbers = array_unique($numbersFiltered);
-
-        \Log::info($numbers);
 
         $max = DB::table('recent_prices')->max('created_at');
         $recentPrices = DB::table('recent_prices')->leftJoin('products', 'recent_prices.product_id', 'products.id')
@@ -42,13 +40,13 @@ class PriceUpdateTemplate
 
         $prices = '';
         foreach ($recentPrices as $recentPrice) {
-            $prices .= $recentPrice->sub_cate_name . ':' . floatval($recentPrice->new_price);
+            $prices .= $recentPrice->sub_cate_name.':'.floatval($recentPrice->new_price);
             $prices .= "\n";
         }
 
-        $startEndTime = 'From: ' . $start_time;
+        $startEndTime = 'From: '.$start_time;
         $startEndTime .= "\n";
-        $startEndTime .= 'To: ' . $end_time;
+        $startEndTime .= 'To: '.$end_time;
 
         $sms = $startEndTime;
         $sms .= "\n";

@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Models\SaleReturn;
-use App\Models\SaleProduct;
-use App\Models\ProductVariant;
-use App\Models\BaseModel;
-
 class SaleReturnProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function sale_return()

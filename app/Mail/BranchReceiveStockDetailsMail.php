@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -17,6 +16,7 @@ class BranchReceiveStockDetailsMail extends Mailable
      * @return void
      */
     public $transfer;
+
     public $mail_note;
 
     public function __construct($mail_note, $transfer)
@@ -35,6 +35,7 @@ class BranchReceiveStockDetailsMail extends Mailable
     {
         $transfer = $this->transfer;
         $mail_note = $this->mail_note;
+
         return $this->view('mail.branch_stock_receive_mail', compact('mail_note', 'transfer'));
     }
 }

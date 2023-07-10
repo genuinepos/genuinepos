@@ -2,30 +2,26 @@
 
 namespace App\Models;
 
-use App\Models\SaleProduct;
-use App\Models\PurchaseProduct;
-use Illuminate\Support\Facades\DB;
-use App\Models\BaseModel;
-
 class ProductVariant extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at', 'delete_in_update'];
 
     public function product()
     {
         return $this->belongsTo(Product::class)->select([
-            'id', 
+            'id',
             'name',
             'type',
-            'tax_id', 
-            'brand_id', 
-            'category_id', 
-            'tax_type', 
-            'unit_id', 
+            'tax_id',
+            'brand_id',
+            'category_id',
+            'tax_type',
+            'unit_id',
             'product_code',
             'product_cost',
-            'product_cost_with_tax', 
+            'product_cost_with_tax',
             'profit',
             'product_price',
             'offer_price',
@@ -56,8 +52,8 @@ class ProductVariant extends BaseModel
         if ($stockAccountingMethod == 1) {
 
             $ordering = 'asc';
-        }else {
-            
+        } else {
+
             $ordering = 'desc';
         }
 

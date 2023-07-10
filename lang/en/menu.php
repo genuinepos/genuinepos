@@ -1,4 +1,5 @@
 <?php
+
 return [
   'e_commerce' => 'E-Commerce',
   'inventory_app' => 'Inventory App',

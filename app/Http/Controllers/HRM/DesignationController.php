@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Hrm\Designation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class DesignationController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //show designation page only
@@ -34,6 +34,7 @@ class DesignationController extends Controller
         }
 
         $designation = Designation::orderBy('id', 'DESC')->get();
+
         return view('hrm.designation.ajax.designation_list', compact('designation'));
     }
 
@@ -53,6 +54,7 @@ class DesignationController extends Controller
             'designation_name' => $request->designation_name,
             'description' => $request->description,
         ]);
+
         return response()->json('Successfully Designation Added!');
     }
 
@@ -89,6 +91,7 @@ class DesignationController extends Controller
         Cache::forget('all-categories');
         Cache::forget('all-main_categories');
         Cache::forget('all-products');
+
         return response()->json('Successfully Designation Deleted');
     }
 }

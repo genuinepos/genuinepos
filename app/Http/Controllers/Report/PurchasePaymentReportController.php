@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchasePaymentReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -34,7 +35,7 @@ class PurchasePaymentReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('purchases.branch_id', NULL);
+                    $query->where('purchases.branch_id', null);
                 } else {
                     $query->where('purchases.branch_id', $request->branch_id);
                 }
@@ -71,18 +72,18 @@ class PurchasePaymentReportController extends Controller
                     ->orderBy('purchase_payments.report_date', 'desc');
             }
 
-
             return DataTables::of($payments)
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('paid_amount',  fn ($row) => '<span class="paid_amount" data-value="' . $row->paid_amount . '">' . $this->converter->format_in_bdt($row->paid_amount) . '</span>')
+                ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount" data-value="'.$row->paid_amount.'">'.$this->converter->format_in_bdt($row->paid_amount).'</span>')
                 ->rawColumns(['date', 'paid_amount'])
                 ->make(true);
         }
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
+
         return view('reports.purchase_payment_report.index', compact('branches', 'suppliers'));
     }
 
@@ -102,7 +103,7 @@ class PurchasePaymentReportController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('purchases.branch_id', NULL);
+                $query->where('purchases.branch_id', null);
             } else {
                 $query->where('purchases.branch_id', $request->branch_id);
             }

@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Models;
-use App\Models\Product;
-use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
-    
+
     public function Subcategories()
     {
         return $this->hasMany(Category::class, 'parent_category_id');

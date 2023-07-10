@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
-use App\Models\CashRegister;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Utils\Converter;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class CashRegisterReportController extends Controller
@@ -18,7 +17,6 @@ class CashRegisterReportController extends Controller
     {
         $this->converter = $converter;
 
-        
     }
 
     // Index view of cash register report
@@ -38,7 +36,7 @@ class CashRegisterReportController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('cash_registers.branch_id', NULL);
+                    $query->where('cash_registers.branch_id', null);
                 } else {
 
                     $query->where('cash_registers.branch_id', $request->branch_id);
@@ -89,7 +87,7 @@ class CashRegisterReportController extends Controller
 
             return DataTables::of($cashRegisters)
                 ->addColumn('action', function ($row) {
-                    return '<a id="register_details_btn" href="' . route('sales.cash.register.details.for.report', [$row->id]) . '" class="btn btn-sm btn-primary">View</a>';
+                    return '<a id="register_details_btn" href="'.route('sales.cash.register.details.for.report', [$row->id]).'" class="btn btn-sm btn-primary">View</a>';
                 })
                 ->editColumn('created_at', function ($row) {
 
@@ -103,27 +101,27 @@ class CashRegisterReportController extends Controller
                         return Carbon::createFromFormat('Y-m-d H:i:s', $row->closed_at)->format('jS M, Y h:i A');
                     }
                 })
-                ->editColumn('branch',  function ($row) use ($settings) {
+                ->editColumn('branch', function ($row) {
 
                     if ($row->b_name) {
 
-                        return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
+                        return $row->b_name.'/'.$row->b_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('user',  function ($row) {
+                ->editColumn('user', function ($row) {
 
-                    return $row->u_prefix . ' ' . $row->u_first_name . ' ' . $row->u_last_name;
+                    return $row->u_prefix.' '.$row->u_first_name.' '.$row->u_last_name;
                 })
-                ->editColumn('status',  function ($row) {
+                ->editColumn('status', function ($row) {
 
                     return $row->status == 1 ? '<span class="badge bg-success">Open</span>' : '<span class="badge bg-danger">Closed</span>';
                 })
-                ->editColumn('closed_amount',  function ($row) {
+                ->editColumn('closed_amount', function ($row) {
 
-                    return '<span class="closed_amount" data-value="' . $row->closed_amount . '">' . $this->converter->format_in_bdt($row->closed_amount) . '</span>';
+                    return '<span class="closed_amount" data-value="'.$row->closed_amount.'">'.$this->converter->format_in_bdt($row->closed_amount).'</span>';
                 })
                 ->rawColumns(['action', 'created_at', 'closed_time', 'branch', 'user', 'status', 'closed_amount'])
                 ->make(true);
@@ -156,7 +154,7 @@ class CashRegisterReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('cash_registers.branch_id', NULL);
+                $query->where('cash_registers.branch_id', null);
             } else {
 
                 $query->where('cash_registers.branch_id', $request->branch_id);
@@ -201,9 +199,9 @@ class CashRegisterReportController extends Controller
             'cash_registers.status',
             'cash_registers.created_at',
             'cash_registers.closing_note',
-            DB::raw("SUM(sales.total_payable_amount) as total_sale"),
-            DB::raw("SUM(sales.paid) as total_paid"),
-            DB::raw("SUM(sales.due) as total_due"),
+            DB::raw('SUM(sales.total_payable_amount) as total_sale'),
+            DB::raw('SUM(sales.paid) as total_paid'),
+            DB::raw('SUM(sales.due) as total_due'),
             'branches.name as b_name',
             'branches.branch_code as b_code',
             'users.prefix as u_prefix',

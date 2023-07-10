@@ -58,7 +58,7 @@ class AccountUtil
 
         $expenseLoan = DB::table('account_ledgers')
             ->where('account_ledgers.account_id', $account_id)
-            ->where('account_ledgers.loan_id', '!=', NULL)
+            ->where('account_ledgers.loan_id', '!=', null)
             // ->where('debit', '!=', NULL)
             ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
             ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(credit) as t_credit'))
@@ -66,12 +66,12 @@ class AccountUtil
             ->get();
 
         $totalExpenseLoan = $expenseLoan->sum('t_credit') ? $expenseLoan->sum('t_credit') : 0;
-     
+
         $currentBalance = 0;
         if ($balanceType == 'debit') {
 
             $currentBalance = $ac_ledger->sum('t_debit') - ($ac_ledger->sum('t_credit') - $totalExpenseLoan);
-        } else if ($balanceType == 'credit') {
+        } elseif ($balanceType == 'credit') {
 
             $currentBalance = $ac_ledger->sum('t_credit') - $ac_ledger->sum('t_debit');
         }
@@ -81,27 +81,28 @@ class AccountUtil
         $account->credit = $ac_ledger->sum('t_credit');
         $account->balance = $currentBalance;
         $account->save();
+
         return $account->balance;
     }
 
     public static function creatableDefaultAccount()
     {
         return [
-            1 => ['Cash',],
-            3 => ['Purchase',],
-            4 => ['Purchase Return',],
-            5 => ['Sales',],
-            6 => ['Sales Return',],
-            7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods',],
-            8 => ['Advertisement Expenses', 'Rent Paid',],
+            1 => ['Cash'],
+            3 => ['Purchase'],
+            4 => ['Purchase Return'],
+            5 => ['Sales'],
+            6 => ['Sales Return'],
+            7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods'],
+            8 => ['Advertisement Expenses', 'Rent Paid'],
             9 => ['Current Asset'],
-            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable',],
-            13 => ['Loan Liabilities',],
-            14 => ['Loan&Advances', 'Advance Salary',],
-            15 => ['Furniture', 'Vehicle',],
-            22 => ['Stock Adjustment',],
+            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable'],
+            13 => ['Loan Liabilities'],
+            14 => ['Loan&Advances', 'Advance Salary'],
+            15 => ['Furniture', 'Vehicle'],
+            22 => ['Stock Adjustment'],
             23 => ['Production'],
-            24 => ['Income', 'Discount On Purchase', 'Discount Received',],
+            24 => ['Income', 'Discount On Purchase', 'Discount Received'],
             25 => ['Interest Received'],
             26 => ['Capital'],
             // 26 => 'Profit & Loss A/C',
@@ -183,7 +184,7 @@ class AccountUtil
     {
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
-        $add->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $add->date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $add->account_id = $account_id;
         $add->voucher_type = $voucher_type_id;
         $add->{$voucherType['id']} = $trans_id;
@@ -204,7 +205,7 @@ class AccountUtil
             $previousAccountId = $update->account_id;
 
             $previousTime = date('H:i:s', strtotime($update->date));
-            $update->date = date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $update->date = date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $update->account_id = $account_id;
             $update->{$voucherType['amt']} = $amount;
             $update->save();

@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\ExpanseCategory;
-use App\Models\BaseModel;
-
 class ExpenseDescription extends BaseModel
 {
     public function category()

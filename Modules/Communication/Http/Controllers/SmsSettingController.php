@@ -2,16 +2,14 @@
 
 namespace Modules\Communication\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\GeneralSetting;
-use Modules\Communication\Http\Controllers\Controller;
-
+use Illuminate\Http\Request;
 
 class SmsSettingController extends Controller
 {
     public function smsSettings(Request $request)
     {
-        if (!auth()->user()->can('sms_settings')) {
+        if (! auth()->user()->can('sms_settings')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -41,7 +39,7 @@ class SmsSettingController extends Controller
             $data['config']["$key"] = $request->value[$index];
             $pattern[] = "/$key/";
         }
-        $final_url =  preg_replace($pattern, $request->value, $request->url);
+        $final_url = preg_replace($pattern, $request->value, $request->url);
         $data['final_url'] = $final_url;
 
         $generalSetting = GeneralSetting::first();

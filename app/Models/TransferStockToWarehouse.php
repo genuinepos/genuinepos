@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Models;
-use App\Models\Branch;
-use App\Models\Warehouse;
+
 // use App\Models\User;
-use App\Models\BaseModel;
-use App\Models\TransferStockToWarehouseProduct;
 
 class TransferStockToWarehouse extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     // public function admin()

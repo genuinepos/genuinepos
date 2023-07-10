@@ -17,6 +17,7 @@ class SaleCreated extends Mailable
      * @return void
      */
     public $sale;
+
     public function __construct($sale)
     {
         $this->sale = $sale;

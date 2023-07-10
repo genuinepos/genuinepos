@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SaleQuotationCreated extends Mailable
+class SaleOrderCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -22,14 +22,13 @@ class SaleQuotationCreated extends Mailable
         $this->sale = $sale;
     }
 
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Sale Quotation Created',
+            subject: 'Sale Order Created',
         );
     }
 
@@ -39,7 +38,7 @@ class SaleQuotationCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.sale-quotation-created'
+            view: 'mail.sale-quotation-created',
         );
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Customer;
 use App\Utils\ProductUtil;
 use App\Models\BulkVariant;
 use Illuminate\Support\Str;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductBranch;
 use App\Models\GeneralSetting;
 use App\Models\ProductVariant;
+use App\Mail\NewProductArrived;
 use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
 use App\Utils\ProductStockUtil;
@@ -20,11 +22,11 @@ use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductOpeningStock;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
 use App\Models\ProductBranchVariant;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\GeneralSettingServiceInterface;
+use Modules\Communication\Interface\EmailServiceInterface;
 
 class ProductController extends Controller
 {
@@ -41,7 +43,7 @@ class ProductController extends Controller
         $this->productUtil = $productUtil;
         $this->productStockUtil = $productStockUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->emailService = $emailService; 
+        $this->emailService = $emailService;
     }
 
     // index view
@@ -280,9 +282,9 @@ class ProductController extends Controller
 
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
         if ($addProduct) {
+            // dd($addProduct);
             $customers = Customer::pluck('email', 'id')->toArray();
-            $product = Product::latest()->first();
-            $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $product));
+            $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
         }
         session()->flash('successMsg', 'Product created Successfully');
         return response()->json('Product created Successfully');

@@ -10,6 +10,7 @@ use App\Utils\SaleUtil;
 use App\Models\Customer;
 use App\Jobs\SaleMailJob;
 use App\Mail\FinalSaleCreated;
+use App\Mail\SaleOrderCreated;
 use App\Mail\SaleQuotationCreated;
 use App\Utils\AccountUtil;
 use App\Models\SalePayment;
@@ -570,21 +571,20 @@ class SaleController extends Controller
             $paying_amount = $request->paying_amount;
             $total_due = $request->total_due;
             $change_amount = $request->change_amount;
-
-            if ($sale->customer && $sale?->customer?->email) {
-                $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
-            }
-            if (
-                env('MAIL_ACTIVE') == 'true' &&
-                $generalSettings['email_settings__send_inv_via_email'] == '1'
-            ) {
-
+            if ($request->action == 'save') {
                 if ($sale->customer && $sale?->customer?->email) {
                     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
-                    // SaleMailJob::dispatch($sale->customer->email, $sale) n
-                    //     ->delay(now()->addSeconds(5));
                 }
             }
+            // if (
+            //     env('MAIL_ACTIVE') == 'true' &&
+            //     $generalSettings['email_settings__send_inv_via_email'] == '1'
+            // ) {
+
+            //     if ($sale->customer && $sale?->customer?->email) {
+            //         $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+            //     }
+            // }
             if (
                 env('SMS_ACTIVE') == 'true' &&
                 $generalSettings['email_settings__send_notice_via_sms'] == '1'
@@ -604,42 +604,46 @@ class SaleController extends Controller
         if ($request->action == 'save_and_print') {
 
             if ($request->status == 1 || $request->status == 3) {
-
-                return view('sales.save_and_print_template.sale_print', compact(
-                    'sale',
-                    'previous_due',
-                    'total_payable_amount',
-                    'paying_amount',
-                    'total_due',
-                    'change_amount',
-                    'customerCopySaleProducts'
-                ));
-                
-            } elseif ($request->status == 1) {
-            }
-            elseif ($request->status == 2) {
+                if ($request->status == 1) {
+                    if ( $sale->customer && $sale?->customer?->email) {
+                        $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+                    }
+                }elseif($request->status == 3){
+                    if ($sale->customer && $sale?->customer?->email) {
+                        $this->emailService->send($sale->customer->email, new SaleOrderCreated($sale));
+                    }
+                }else{
+                    return view('sales.save_and_print_template.sale_print', compact(
+                        'sale',
+                        'previous_due',
+                        'total_payable_amount',
+                        'paying_amount',
+                        'total_due',
+                        'change_amount',
+                        'customerCopySaleProducts'
+                    ));
+    
+                }
+            } elseif ($request->status == 2) {
 
                 return view('sales.save_and_print_template.draft_print', compact('sale', 'customerCopySaleProducts'));
             } elseif ($request->status == 4) {
-               
+                if ($sale->customer && $sale?->customer?->email) {
+                    $this->emailService->send($sale->customer->email, new SaleQuotationCreated($sale));
+                }
                 return view('sales.save_and_print_template.quotation_print', compact('sale', 'customerCopySaleProducts'));
             }
         } else {
 
             if ($request->status == 1) {
-                // if ($sale->customer && $sale?->customer?->email) {
-                //     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
-                // }
                 session()->flash('successMsg', 'Sale created successfully');
                 return response()->json(['finalMsg' => 'Sale created successfully']);
             } elseif ($request->status == 2) {
 
                 session()->flash('successMsg', 'Sale draft created successfully');
                 return response()->json(['draftMsg' => 'Sale draft created successfully']);
-            } elseif ($request->status == 4) {
-                // if ($sale->customer && $sale?->customer?->email) {
-                //     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
-                // }
+            } 
+            elseif ($request->status == 4) {
                 session()->flash('successMsg', 'Sale quotation created successfully');
                 return response()->json(['quotationMsg' => 'Sale quotation created successfully']);
             }
@@ -816,7 +820,7 @@ class SaleController extends Controller
         $updateSale->save();
 
         if ($updateSale->status == 1 || $request->status == 3) {
- 
+
             // Update Sales A/C Ledger
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 1,

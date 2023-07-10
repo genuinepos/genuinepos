@@ -5,15 +5,25 @@
 <body style="background-color:#e2e1e0;font-family: Open Sans, sans-serif;font-size:100%;font-weight:400;line-height:1.4;color:#000;">
   <table style="max-width:670px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px green;">
     <thead>
+        <tr>
+            <th></th>
+        </tr>
       <tr>
         <th style="text-align:left;">
-            @if ($addProduct->branch)
-                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $addProduct->branch->logo) }}">
+            {{-- @if ($sale->branch)
+                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
             @else
                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/'.$generalSettings['business__business_logo']) }}">
+            @endif --}}
+            @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
+                @if ($sale->branch->logo != 'default.png')
+                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
+                @else
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;font-weight: 600;">{{ $sale->branch->name }}</span>
+                @endif
             @endif
         </th>
-        <th style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business__date_format'] ,strtotime($addProduct->date)) }}</th>
+        <th style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) }}</th>
       </tr>
     </thead>
     <tbody>
@@ -23,35 +33,34 @@
       <tr>
         <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
             <p style="font-size:14px;margin:0 0 6px 0;">
-                {{ $addProduct->name }} is available now</p>
-                {{-- <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} </span> --}}
-                {{-- @php
-                    $payable = $addProduct->total_payable_amount - $addProduct->sale_return_amount;
+                <span style="font-weight:bold;display:inline-block;min-width:150px">{{ __('Paid Status') }} </span>
+                @php
+                    $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                 @endphp
-                @if ($addProduct->due <= 0)
+                @if ($sale->due <= 0)
                     <b style="color:green;font-weight:normal;margin:0">@lang('menu.paid')</b>
-                @elseif ($addProduct->due > 0 && $addProduct->due < $payable)
+                @elseif ($sale->due > 0 && $sale->due < $payable)
                     <b style="color:orange;font-weight:normal;margin:0">@lang('menu.partial')</b>
-                @elseif($payable==$addProduct->due)
+                @elseif($payable==$sale->due)
                     <b style="color:red;font-weight:normal;margin:0">@lang('menu.due')</b>
-                @endif --}}
+                @endif
             </p>
-            {{-- <p style="font-size:14px;margin:0 0 6px 0;">
+            <p style="font-size:14px;margin:0 0 6px 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.invoice_id') </span>
-                {{ $addProduct->invoice_id }}
+                {{ $sale->invoice_id }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_payable') </span>
-                {{ $generalSettings['business__currency'] }} {{ number_format($addProduct->total_payable_amount, 2) }}
+                {{ $generalSettings['business__currency'] }} {{ number_format($sale->total_payable_amount, 2) }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.total_paid') </span>
-                {{ $generalSettings['business__currency'] }} {{ $addProduct->paid }}
+                {{ $generalSettings['business__currency'] }} {{ $sale->paid }}
             </p>
             <p style="font-size:14px;margin:0 0 0 0;">
                 <span style="font-weight:bold;display:inline-block;min-width:146px">@lang('menu.due') </span>
-                {{ $generalSettings['business__currency'] }} {{ $addProduct->due }}
-            </p> --}}
+                {{ $generalSettings['business__currency'] }} {{ $sale->due }}
+            </p>
         </td>
       </tr>
       <tr>
@@ -59,29 +68,29 @@
       </tr>
       <tr>
         <td style="width:50%;padding:20px;vertical-align:top">
-            {{-- <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
+            <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px">@lang('menu.customer_name')</span>
-                {{ $addProduct->customer ? $addProduct->customer->name : 'Walk-In-Customer' }}
+                {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
                 <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.address') </span>
-                {{ $addProduct->customer ? $addProduct->customer->address : '' }}</p>
+                {{ $sale->customer ? $sale->customer->address : '' }}</p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
-                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $addProduct->customer ? $addProduct->customer->phone : '' }}
-            </p> --}}
+                <span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $sale->customer ? $sale->customer->phone : '' }}
+            </p>
         </td>
 
-        {{-- @if ($addProduct->branch)
+        @if ($sale->branch)
             <td style="width:50%;padding:20px;vertical-align:top">
                 <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__shop_name'] }}</span> </h6>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">
-                    {{ $addProduct->branch->name . '/' . $addProduct->branch->branch_code }},
-                    {{ $defaultLayout->branch_city == 1 ? $addProduct->branch->city : '' }},
-                    {{ $defaultLayout->branch_state == 1 ? $addProduct->branch->state : '' }},
-                    {{ $defaultLayout->branch_zipcode == 1 ? $addProduct->branch->zip_code : '' }},
-                    {{ $defaultLayout->branch_country == 1 ? $addProduct->branch->country : '' }}.</span>
+                    {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
+                    {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
+                    {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
+                    {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
+                    {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.</span>
                 </p>
-                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $addProduct->branch->phone }}</p>
+                <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $sale->branch->phone }}</p>
             </td>
         @else
             <td style="width:50%;padding:20px;vertical-align:top">
@@ -89,17 +98,17 @@
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__address'] }}</span> </p>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $generalSettings['business__phone'] }}</p>
             </td>
-        @endif --}}
+        @endif
       </tr>
       <tr>
         <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">@lang('menu.description')</td>
       </tr>
-      {{-- @foreach ($addProduct->sale_products as $sale_product)
+      @foreach ($sale->sale_products as $sale_product)
         <tr>
             <td colspan="2" style="padding:15px;">
                 <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
                 <span style="display:block;font-size:13px;font-weight:normal;">
-                    {{ $sale_product->addProduct->name }}
+                    {{ $sale_product->product->name }}
                     @if ($sale_product->variant)
                         -{{ $sale_product->variant->variant_name }}
                     @endif
@@ -108,7 +117,7 @@
                 </p>
             </td>
         </tr>
-      @endforeach --}}
+      @endforeach
     </tbody>
     <tfoot>
       <tr>

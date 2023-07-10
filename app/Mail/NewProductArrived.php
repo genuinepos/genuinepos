@@ -17,14 +17,14 @@ class NewProductArrived extends Mailable
      * Create a new message instance.
      */
     public $customers;
-    public $product;
-    public function __construct( 
-        $customers, 
-        $product
+    public $addProduct;
+    public function __construct(
+        $customers,
+        $addProduct
     )
     {
     $this->customers = $customers;
-    $this->product = $product;
+    $this->addProduct = $addProduct;
     }
 
     /**

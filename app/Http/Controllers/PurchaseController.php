@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\PurchaseCreated;
 use App\Mail\PurchaseOrderCreated;
+use App\Mail\SaleQuotationCreated;
 use DB;
 use App\Utils\Util;
 use App\Models\Unit;
@@ -489,9 +490,21 @@ class PurchaseController extends Controller
         ])->where('id', $addPurchase->id)->first();
             // dd($purchase['purchase_status']);
         if ($purchase?->supplier && $purchase?->supplier?->email) {
-            if ($purchase['purchase_status']=='1') 
+            if ($purchase['purchase_status']=='1')
             {
                 $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
+                // $checkboxData = $request->input('checkboxes', []);
+                // $resultArray = [];
+                // foreach ($checkboxData as $model => $ids) {
+                //     if ($model === 'users') {
+                //         $users = User::whereIn('id', $ids)->select('email')->get();
+                //         $resultArray['users'] = $users->toArray();
+                //     } elseif ($model === 'customers') {
+                //         $customers = Customer::whereIn('id', $ids)->select('email')->get();
+                //         $resultArray['customers'] = $customers->toArray();
+                //     }
+                // }
+                // $this->emailService->sendMultiple(array_values($resultArray, 'email'), new PurchaseCreated( $purchase));
             }elseif($purchase['purchase_status']=='3')
             {
                 $this->emailService->send($purchase->supplier->email, new PurchaseOrderCreated($purchase));
@@ -504,7 +517,7 @@ class PurchaseController extends Controller
         } else {
 
             if ($request->purchase_status == 3) {
-
+               
                 return view('purchases.save_and_print_template.print_order', compact('purchase'));
             } else {
 

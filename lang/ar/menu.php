@@ -112,7 +112,7 @@ return [
     'item' => 'بند',
     'item_weight_by_scale' => 'وزن السلعة بالمقياس',
     'add_item' => 'اضافة عنصر',
-    'dontinued_to_this_next_page' => 'تابع إلى هذه الصفحة التالية',
+    'continued_to_this_next_page' => 'تابع إلى هذه الصفحة التالية',
     'change_amount' => 'تغيير المبلغ',
     'item_list' => 'قائمة البند',
     'import_item' => 'عناصر الاستيراد',

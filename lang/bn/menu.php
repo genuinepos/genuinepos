@@ -112,7 +112,7 @@ return [
     'item' => 'আইটেম',
     'item_weight_by_scale' => 'স্কেল দ্বারা আইটেম ওজন',
     'add_item' => 'আইটেম যোগ করুন',
-    'dontinued_to_this_next_page' => 'এই পরবর্তী পৃষ্ঠায় অবিরত',
+    'continued_to_this_next_page' => 'এই পরবর্তী পৃষ্ঠায় অবিরত',
     'change_amount' => 'পরিমাণ পরিবর্তন করুন',
     'item_list' => 'উপকরণ তালিকা',
     'import_item' => 'আইটেম আমদানি করুন',

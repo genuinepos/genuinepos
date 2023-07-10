@@ -21,6 +21,7 @@ class SaleUtil
     protected $accountUtil;
 
     protected $converter;
+
     protected $purchaseUtil;
 
     protected $userActivityLogUtil;
@@ -366,13 +367,13 @@ class SaleUtil
         $__report_date = '';
         if (isset($date)) {
 
-            $__report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+            $__report_date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         } else {
 
             $__report_date = date('Y-m-d H:i:s');
         }
 
-        $voucherNo = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV') . str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 4, "0", STR_PAD_LEFT);
+        $voucherNo = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV').str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 4, '0', STR_PAD_LEFT);
 
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
 
@@ -380,7 +381,7 @@ class SaleUtil
         $addSalePayment->invoice_id = $voucherNo;
         $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_id = $saleId;
-        $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
+        $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : null;
         $addSalePayment->account_id = $accountId;
         $addSalePayment->payment_method_id = $paymentMethodId;
         $addSalePayment->customer_payment_id = $customerPaymentId;
@@ -396,7 +397,7 @@ class SaleUtil
         if ($attachment) {
 
             $salePaymentAttachment = $attachment;
-            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $addSalePayment->attachment = $salePaymentAttachmentName;
         }
@@ -409,7 +410,7 @@ class SaleUtil
     public function updatePayment($paymentId, $paymentMethodId, $accountId, $receivedAmount, $date, $note = null, $attachment = null)
     {
         $payment = SalePayment::with(['sale'])->where('id', $paymentId)->first();
-        $payment->account_id = $payment->customer_payment_id == NULL ? $accountId : $payment->account_id;
+        $payment->account_id = $payment->customer_payment_id == null ? $accountId : $payment->account_id;
         $payment->payment_method_id = $paymentMethodId;
         $payment->paid_amount = $receivedAmount;
         $payment->date = $date;
@@ -422,14 +423,14 @@ class SaleUtil
 
             if ($payment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                    unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
                 }
             }
 
             $salePaymentAttachment = $attachment;
-            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $payment->attachment = $salePaymentAttachmentName;
         }
@@ -1182,7 +1183,6 @@ class SaleUtil
     public function saleDraftTable($request)
     {
         $generalSettings = config('generalSettings');
-
 
         $drafts = '';
 

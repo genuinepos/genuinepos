@@ -2,35 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
-use App\Models\Sale;
-use App\Models\User;
-use App\Utils\SmsUtil;
-use App\Models\Product;
-use App\Utils\SaleUtil;
-use App\Models\Customer;
 use App\Jobs\SaleMailJob;
 use App\Models\Customer;
+use App\Models\Customer;
+use App\Models\PaymentMethod;
 use App\Models\PaymentMethod;
 use App\Models\Product;
+use App\Models\Product;
 use App\Models\ProductBranch;
+use App\Models\ProductBranch;
+use App\Models\Sale;
 use App\Models\Sale;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
-use App\Utils\CustomerUtil;
-use App\Utils\PurchaseUtil;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Models\ProductBranch;
-use App\Utils\NameSearchUtil;
-use App\Models\GeneralSetting;
-use App\Utils\ProductStockUtil;
-use App\Utils\CustomerPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Models\User;
 use App\Services\GeneralSettingServiceInterface;
+use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\NameSearchUtil;
+use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SaleUtil;
+use App\Utils\SmsUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -309,7 +308,7 @@ class SaleController extends Controller
 
             if (
                 $request->received_amount < $request->total_receivable_amount &&
-                !$request->customer_id &&
+                ! $request->customer_id &&
                 ($request->status == 1 || $request->status == 3)
             ) {
 
@@ -344,8 +343,6 @@ class SaleController extends Controller
                 } else {
 
                     $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
-
-                    if ($defaultSchemas) {
 
                     if ($defaultSchemas) {
 
@@ -520,7 +517,7 @@ class SaleController extends Controller
                         date: $request->date,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         lessAmount: $request->less_amount ? $request->less_amount : 0,
-                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
                         reference: $request->reference,
                         note: $request->note,
                     );
@@ -564,8 +561,9 @@ class SaleController extends Controller
                         saleId: $addSale->id,
                         customerPaymentId: null,
                         accountId: $request->account_id,
+                        paymentMethodId: $request->payment_method_id,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
-                        date: $request->date
+                        date: $request->date,
                     );
                 }
             }
@@ -1016,7 +1014,7 @@ class SaleController extends Controller
                     receiptVoucherPrefix: $receiptVoucherPrefix,
                     saleId: $sale->id,
                     receivedAmount: $request->paying_amount,
-                    customerPaymentId: NULL,
+                    customerPaymentId: null,
                     paymentMethodId: $request->payment_method_id,
                     accountId: $request->account_id,
                     invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
@@ -1079,7 +1077,7 @@ class SaleController extends Controller
     // Delete Sale
     public function delete(Request $request, $saleId)
     {
-        if (!auth()->user()->can('delete_add_sale')) {
+        if (! auth()->user()->can('delete_add_sale')) {
 
             return response()->json('Access Denied');
         }
@@ -1103,7 +1101,7 @@ class SaleController extends Controller
     // Shipments View
     public function shipments(Request $request)
     {
-        if (!auth()->user()->can('shipment_access')) {
+        if (! auth()->user()->can('shipment_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -1315,7 +1313,7 @@ class SaleController extends Controller
                 invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                 date: $request->date,
                 note: $request->note,
-                attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
             );
 
             // Add bank/cash-in-hand A/C ledger
@@ -1406,9 +1404,9 @@ class SaleController extends Controller
             'account_id' => 'required',
         ]);
 
-        $updatePayment = $this->saleUtil->updatePayment(paymentId: $paymentId, paymentMethodId: $request->account_id, accountId: $request->account_id, receivedAmount: $request->paying_amount, date: $request->date, note: $request->note, attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,);
+        $updatePayment = $this->saleUtil->updatePayment(paymentId: $paymentId, paymentMethodId: $request->account_id, accountId: $request->account_id, receivedAmount: $request->paying_amount, date: $request->date, note: $request->note, attachment: $request->hasFile('attachment') ? $request->file('attachment') : null);
 
-        if ($updatePayment->customer_payment_id == NULL) {
+        if ($updatePayment->customer_payment_id == null) {
 
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 10,
@@ -1842,7 +1840,7 @@ class SaleController extends Controller
     // Get notification form method
     public function settings()
     {
-        if (!auth()->user()->can('add_sale_settings')) {
+        if (! auth()->user()->can('add_sale_settings')) {
 
             abort(403, 'Access Forbidden.');
         }

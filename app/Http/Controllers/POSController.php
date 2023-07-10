@@ -8,26 +8,23 @@ use App\Models\CashRegisterTransaction;
 use App\Models\Customer;
 use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
-use App\Models\CustomerLedger;
-use App\Models\GeneralSetting;
-use App\Models\CustomerPayment;
-use App\Utils\ProductStockUtil;
-use App\Utils\CustomerPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\Sale;
 use App\Models\SaleProduct;
 use App\Services\GeneralSettingServiceInterface;
 use App\Utils\AccountUtil;
+use App\Utils\CustomerPaymentUtil;
 use App\Utils\CustomerUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\ProductStockUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\SaleUtil;
 use App\Utils\SmsUtil;
 use App\Utils\UserActivityLogUtil;
+use App\Utils\UserActivityLogUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\DB;
 
 class POSController extends Controller
@@ -42,7 +39,8 @@ class POSController extends Controller
         private ProductStockUtil $productStockUtil,
         private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         private UserActivityLogUtil $userActivityLogUtil
-    ) {}
+    ) {
+    }
 
     // Create pos view
     public function create()
@@ -169,7 +167,7 @@ class POSController extends Controller
 
             if ($request->action == 1) {
 
-                if ($request->received_amount < $request->total_receivable_amount && !$request->customer_id) {
+                if ($request->received_amount < $request->total_receivable_amount && ! $request->customer_id) {
 
                     return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
                 }
@@ -379,7 +377,7 @@ class POSController extends Controller
                         date: date('Y-m-d'),
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         lessAmount: $request->less_amount ? $request->less_amount : 0,
-                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
                         reference: $request->reference,
                         note: $request->note,
                     );
@@ -446,7 +444,7 @@ class POSController extends Controller
                 $__index = 0;
                 foreach ($request->product_ids as $product_id) {
 
-                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                     $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
                     $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
 
@@ -777,7 +775,7 @@ class POSController extends Controller
                 receiptVoucherPrefix: $receiptVoucherPrefix,
                 receivedAmount: $receivedAmount,
                 saleId: $updateSale->id,
-                customerPaymentId: NULL,
+                customerPaymentId: null,
                 accountId: $request->account_id,
                 paymentMethodId: $request->payment_method_id,
                 invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,

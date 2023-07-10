@@ -602,9 +602,10 @@ class CustomerController extends Controller
                 ->editColumn('particulars', function ($row) use ($customerUtil) {
 
                     $type = $customerUtil->voucherType($row->voucher_type);
-                    $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
-                    $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-danger">' . $row->less_amount . '</b>)' : '';
-                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp . $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                    $__agp = $row->ags_sale ? '/'.'AGS:<b>'.$row->ags_sale.'</b>' : '';
+                    $__less = $row->less_amount > 0 ? '/'.'Less:(<b class="text-danger">'.$row->less_amount.'</b>)' : '';
+
+                    return '<b>'.$type['name'].($row->sale_status == 3 ? '-Order' : '').'</b>'.$__agp.$__less.($row->{$type['par']} ? '/'.$row->{$type['par']} : '');
                 })
 
                 ->editColumn('b_name', function ($row) use ($generalSettings) {
@@ -774,7 +775,7 @@ class CustomerController extends Controller
                 paymentMethodId: $request->payment_method_id,
                 date: $request->date,
                 lessAmount: $request->less_amount ? $request->less_amount : 0,
-                attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
                 reference: $request->reference,
                 note: $request->note,
                 invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil

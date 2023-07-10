@@ -290,7 +290,6 @@ class ProductController extends Controller
 
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
         if ($addProduct) {
-            // dd($addProduct);
             $customers = Customer::pluck('email', 'id')->toArray();
             $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
         }

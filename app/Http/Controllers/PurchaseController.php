@@ -512,7 +512,7 @@ class PurchaseController extends Controller
             'purchase_order_products.variant',
             'purchase_payments',
         ])->where('id', $addPurchase->id)->first();
-            // dd($purchase['purchase_status']);
+
         if ($purchase?->supplier && $purchase?->supplier?->email) {
             if ($purchase['purchase_status']=='1')
             {

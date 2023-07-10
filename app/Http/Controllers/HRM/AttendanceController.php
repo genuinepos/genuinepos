@@ -257,18 +257,6 @@ class AttendanceController extends Controller
     // Get Employee/User attendance row **requested by ajax**
     public function getUserAttendanceRow($userId)
     {
-        // $startTime = Carbon::parse('2020-02-11 04:04:26');
-        // $endTime = Carbon::parse('2020-02-11 04:36:56');
-
-        // $totalDuration = $endTime->diffForHumans($startTime);
-        // dd($totalDuration);
-
-        // $startTime = Carbon::parse('2020-02-11 04:04:26');
-        // $endTime = Carbon::parse('2020-02-11 04:36:56');
-
-        // $totalDuration =  $startTime->diff($endTime)->format('%H:%I:%S')." Minutes";
-        // dd($totalDuration);
-
         $shifts = DB::table('hrm_shifts')->get();
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')

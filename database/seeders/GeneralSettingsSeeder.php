@@ -101,7 +101,7 @@ class GeneralSettingsSeeder extends Seeder
             array('id' => '88','key' => 'prefix__sale_invoice','value' => 'SI','branch_id' => NULL),
             array('id' => '89','key' => 'prefix__purchase_return','value' => 'PRI','branch_id' => NULL),
             array('id' => '90','key' => 'prefix__stock_transfer','value' => 'STI','branch_id' => NULL),
-            array('id' => '91','key' => 'prefix__stock_djustment','value' => 'SAR','branch_id' => NULL),
+            array('id' => '91','key' => 'prefix__stock_adjustment','value' => 'SAR','branch_id' => NULL),
             array('id' => '92','key' => 'prefix__sale_return','value' => 'SRI','branch_id' => NULL),
             array('id' => '93','key' => 'prefix__expenses','value' => 'EXI','branch_id' => NULL),
             array('id' => '94','key' => 'prefix__supplier_id','value' => 'SID','branch_id' => NULL),

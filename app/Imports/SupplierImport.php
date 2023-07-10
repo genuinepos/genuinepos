@@ -17,7 +17,6 @@ class SupplierImport implements ToCollection
     public function collection(Collection $collection)
     {
         $this->invoiceVoucherRefIdUtil = new InvoiceVoucherRefIdUtil;
-        //dd($collection);
 
         $index = 0;
         $generalSettings = config('generalSettings');

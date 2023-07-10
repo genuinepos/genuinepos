@@ -21,7 +21,6 @@ class TenantBootstrapped
      */
     public function handle(object $event): void
     {
-        // dd($event->tenancy->tenant);
         try {
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
                 Cache::rememberForever('generalSettings', function () {

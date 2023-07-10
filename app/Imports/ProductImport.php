@@ -19,7 +19,6 @@ class ProductImport implements ToCollection
 {
     public function collection(Collection $collection)
     {
-        //dd($collection);
         $index = 0;
         foreach ($collection as $c) {
             // Generate product code

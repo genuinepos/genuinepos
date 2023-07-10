@@ -27,11 +27,13 @@
             border-color: #86b7fe;
             outline: 0;
         }
+
         .btn-sale {
             width: calc(50% - 4px);
             padding-left: 0;
             padding-right: 0;
         }
+
         .sale-item-sec {
             height: 237px;
         }
@@ -367,14 +369,14 @@
                                         <div class="row gx-2">
                                             <label class="col-sm-5 col-form-label">@lang('menu.total_item') </label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control" value="0.00" tabindex="-1">
+                                                <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control fw-bold" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
                                             <label class="col-sm-5 col-form-label">@lang('menu.net_total') </label>
                                             <div class="col-sm-7">
-                                                <input readonly type="number" step="any" class="form-control" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
+                                                <input readonly type="number" step="any" class="form-control fw-bold" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -387,7 +389,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-4 col-6">
-                                                <input name="order_discount" type="number" step="any" class="form-control" id="order_discount" value="0.00">
+                                                <input name="order_discount" type="number" step="any" class="form-control fw-bold" id="order_discount" value="0.00">
                                                 <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
@@ -403,22 +405,22 @@
                                         <div class="row g-2">
                                             <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost')</label>
                                             <div class="col-sm-7">
-                                                <input name="shipment_charge" type="number" step="any" class="form-control" id="shipment_charge" value="0.00">
+                                                <input name="shipment_charge" type="number" step="any" class="form-control fw-bold" id="shipment_charge" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
                                             <label class="col-sm-5 col-form-label">@lang('menu.previous_due') </label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
+                                                <input readonly class="form-control fw-bold text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_payable')</label>
+                                            <label class="col-sm-5 col-form-label">@lang('menu.total_receivable')</label>
                                             <div class="col-sm-7">
-                                                <input readonly class="form-control" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
-                                                <input class="d-hide" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
+                                                <input readonly class="form-control fw-bold" type="number" step="any" name="total_receivable_amount" id="total_receivable_amount" value="0.00" tabindex="-1">
+                                                <input class="d-hide" type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -426,14 +428,14 @@
                                             <div class="row g-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.cash_receive') >></label>
                                                 <div class="col-sm-7">
-                                                    <input type="number" step="any" name="paying_amount" class="form-control" id="paying_amount" value="0.00" autocomplete="off">
+                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="row g-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.change') </label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" name="change_amount" class="form-control" id="change_amount" value="0.00" tabindex="-1">
+                                                    <input readonly type="number" step="any" name="change_amount" class="form-control fw-bold" id="change_amount" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
 
@@ -476,7 +478,7 @@
                                             <div class="row g-2">
                                                 <label class="col-sm-5 col-form-label">@lang('menu.due') </label>
                                                 <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" class="form-control text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -595,7 +597,7 @@
 
                         <div class="form-group">
                             <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
+                            <input type="number" step="any" readonly class="form-control edit_input fw-bold" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
@@ -617,7 +619,7 @@
 
                                 <div class="col-md-6">
                                     <label><strong>@lang('menu.discount')</strong> </label>
-                                    <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
+                                    <input type="number" step="any" class="form-control fw-bold" id="e_unit_discount" value="0.00"/>
                                     <input type="hidden" id="e_discount_amount"/>
                                 </div>
                             </div>

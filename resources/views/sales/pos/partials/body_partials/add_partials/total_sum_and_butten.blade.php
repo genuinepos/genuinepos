@@ -183,7 +183,12 @@
                             <div class="col-sm-7">
                                 <div class="row g-2">
                                     <div class="col-6">
-                                        <select name="order_tax" class="form-control pos-amounts" id="order_tax"></select>
+                                        <select name="order_tax" class="form-control pos-amounts" id="order_tax">
+                                            <option value="0.00">@lang('menu.no_tax')</option>
+                                            @foreach ($taxes as $tax)
+                                                <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="col-6">
@@ -206,10 +211,16 @@
                     </div>
 
                     <div class="row">
+                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.invoice_amount')</label>
+                        <div class="col-sm-7">
+                            <input class="form-control fw-bold" type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" value="0.00" tabindex="-1">
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.receivable')</label>
                         <div class="col-sm-7">
-                            <input readonly class="form-control pos-amounts fw-bold" type="number" step="any" name="total_payable_amount" id="total_payable_amount" value="0.00" tabindex="-1">
-                            <input class="d-hide" type="number" step="any" name="total_invoice_payable" id="total_invoice_payable" value="0.00" tabindex="-1">
+                            <input readonly class="form-control pos-amounts fw-bold" type="number" step="any" name="total_receivable_amount" id="total_receivable_amount" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
@@ -218,7 +229,7 @@
                         <div class="col-sm-7">
                             <div class="input-group">
                                 <span class="input-group-text cash_receive_input">>></span>
-                                <input type="number" step="any" name="paying_amount" id="paying_amount" value="0"
+                                <input type="number" step="any" name="received_amount" id="received_amount" value="0"
                                 class="form-control pos-amounts input_i fw-bold" autocomplete="off">
                             </div>
                         </div>

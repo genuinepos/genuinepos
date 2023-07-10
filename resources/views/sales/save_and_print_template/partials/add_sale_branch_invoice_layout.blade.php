@@ -1,77 +1,73 @@
 @if ($sale->branch->add_sale_invoice_layout->layout_design == 1)
     <div class="sale_print_template">
         <style>
-            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 4%;margin-right: 4%;}
+            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 10px;margin-right: 10px;}
             div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
         </style>
         <div class="details_area">
             @if ($sale->branch->add_sale_invoice_layout->is_header_less == 0)
-                <div class="heading_area">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="header_text text-center">
-                                <p>{{ $sale->branch->add_sale_invoice_layout->header_text }}</p>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}<p>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}<p>
-                                <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}<p>
-                            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="header_text text-center">
+                            <p>{{ $sale->branch->add_sale_invoice_layout->header_text }}</p>
+                            <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_1 }}<p>
+                            <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_2 }}<p>
+                            <p>{{ $sale->branch->add_sale_invoice_layout->sub_heading_3 }}<p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-4">
-                            @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
-                                @if ($sale->branch->logo != 'default.png')
-                                    <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                @else
-                                    <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
-                                @endif
+                </div>
+
+                <div class="row" style="border-bottom: 1px solid #000;">
+                    <div class="col-4">
+                        @if ($sale->branch->add_sale_invoice_layout->show_shop_logo == 1)
+                            @if ($sale->branch->logo != 'default.png')
+                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
+                            @else
+                                <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
                             @endif
-                        </div>
-
-                        <div class="col-8">
-                            <div class="heading text-end">
-                                <p class="company_name" style="text-transform: uppercase;"><strong>{{ $sale->branch->name }}</strong></p>
-
-                                <p class="company_address">
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                    {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                </p>
-
-                                @if ($sale->branch->add_sale_invoice_layout->branch_phone)
-                                    <p><strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}</p>
-                                @endif
-
-                                @if ($sale->branch->add_sale_invoice_layout->branch_email)
-                                    <p><strong>@lang('menu.email') : </strong> {{ $sale->branch->email }}</p>
-                                @endif
-                            </div>
-                        </div>
+                        @endif
                     </div>
 
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="middle_header_text text-center">
-                                <h5 style="text-transform: uppercase;">
-                                    {{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}
-                                </h5>
+                    <div class="col-8 text-end">
+                        <p class="company_name" style="text-transform: uppercase;"><strong>{{ $sale->branch->name }}</strong></p>
+                        <p class="company_address">
+                            {{ $sale->branch->add_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
+                            {{ $sale->branch->add_sale_invoice_layout->branch_state == 1 ? $sale->branch->state : '' }},
+                            {{ $sale->branch->add_sale_invoice_layout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
+                            {{ $sale->branch->add_sale_invoice_layout->branch_country == 1 ? $sale->branch->country : '' }}.
+                        </p>
 
-                                <h6>
-                                    @php
-                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                    @endphp
+                        <p>
+                            @if ($sale->branch->add_sale_invoice_layout->branch_email)
+                                <strong>@lang('menu.email') : </strong> {{ $sale->branch->email }},
+                            @endif
 
-                                    @if ($sale->due <= 0)
-                                    @lang('menu.paid')
-                                    @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    @lang('menu.partial')
-                                    @elseif($payable==$sale->due)
-                                    @lang('menu.due')
-                                    @endif
-                                </h6>
-                            </div>
-                        </div>
+                            @if ($sale->branch->add_sale_invoice_layout->branch_phone)
+                                <strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}
+                            @endif
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h5 style="text-transform: uppercase;">
+                            {{ $sale->status == 1 ? $sale->branch->add_sale_invoice_layout->invoice_heading : 'SALE ORDER' }}
+                        </h5>
+
+                        <h6>
+                            @php
+                                $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                            @endphp
+
+                            @if ($sale->due <= 0)
+                                @lang('menu.paid')
+                            @elseif ($sale->due > 0 && $sale->due < $payable)
+                                @lang('menu.partial')
+                            @elseif($payable==$sale->due)
+                                @lang('menu.due')
+                            @endif
+                        </h6>
                     </div>
                 </div>
             @endif
@@ -115,11 +111,11 @@
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                    @lang('menu.paid')
+                                        @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    @lang('menu.partial')
+                                        @lang('menu.partial')
                                     @elseif($payable==$sale->due)
-                                    @lang('menu.due')
+                                        @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -539,19 +535,19 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end"> @lang('menu.payable') : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end"> @lang('menu.total_receivable') : {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($total_receivable_amount) }}
                                     </span>
                                 </th>
                             </tr>
 
                             <tr>
-                                <th class="text-end"> @lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end"> @lang('menu.total_received') : {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($received_amount) }}
                                     </span>
                                 </th>
                             </tr>

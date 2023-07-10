@@ -124,7 +124,7 @@
                                     <div class="input-group-prepend ms-1">
                                         <select name="price_group_id" class="form-control" id="price_group_id">
                                             <option value="">@lang('menu.default_selling_price')</option>
-                                            @foreach ($price_groups as $pg)
+                                            @foreach ($priceGroups as $pg)
                                                 <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
                                         </select>

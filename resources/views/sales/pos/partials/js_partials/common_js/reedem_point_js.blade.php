@@ -9,6 +9,7 @@
 
     $(document).on('click', '#reedem_point_button', function (e) {
         e.preventDefault();
+
         if (rp_settings.enable_rp == '1') {
 
             if ($('#customer_id').val()) {

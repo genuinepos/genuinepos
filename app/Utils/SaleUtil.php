@@ -23,7 +23,6 @@ class SaleUtil
     protected $productStockUtil;
     protected $accountUtil;
     protected $converter;
-    protected $invoiceVoucherRefIdUtil;
     protected $purchaseUtil;
     protected $userActivityLogUtil;
 
@@ -32,7 +31,6 @@ class SaleUtil
         ProductStockUtil $productStockUtil,
         AccountUtil $accountUtil,
         Converter $converter,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         PurchaseUtil $purchaseUtil,
         UserActivityLogUtil $userActivityLogUtil
     ) {
@@ -40,7 +38,6 @@ class SaleUtil
         $this->productStockUtil = $productStockUtil;
         $this->accountUtil = $accountUtil;
         $this->converter = $converter;
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
     }
@@ -355,41 +352,51 @@ class SaleUtil
     }
 
     // Add sale add payment util method
-    public function addPaymentGetId($invoicePrefix, $request, $payingAmount, $invoiceId, $saleId, $customerPaymentId)
-    {
+    public function addPaymentGetId(
+        $receiptVoucherPrefix,
+        $receivedAmount,
+        $saleId,
+        $customerPaymentId,
+        $paymentMethodId,
+        $accountId,
+        $invoiceVoucherRefIdUtil,
+        $date = null,
+        $note = null,
+        $attachment = null,
+    ) {
         $__report_date = '';
-        if (isset($request->date)) {
+        if (isset($date)) {
 
-            $__report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $__report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         } else {
 
             $__report_date = date('Y-m-d H:i:s');
         }
 
-        $__invoiceId = str_pad($invoiceId, 5, "0", STR_PAD_LEFT);
+        $voucherNo = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV') . str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 4, "0", STR_PAD_LEFT);
 
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
 
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'SPV') . str_pad($__invoiceId, 5, "0", STR_PAD_LEFT);
+        $addSalePayment->invoice_id = $voucherNo;
         $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_id = $saleId;
         $addSalePayment->customer_id = $sale->customer_id ? $sale->customer_id : NULL;
-        $addSalePayment->account_id = $request->account_id;
-        $addSalePayment->payment_method_id = $request->payment_method_id;
+        $addSalePayment->account_id = $accountId;
+        $addSalePayment->payment_method_id = $paymentMethodId;
         $addSalePayment->customer_payment_id = $customerPaymentId;
-        $addSalePayment->paid_amount = $payingAmount;
-        $addSalePayment->date = $request->date ?? date('d-m-Y');
+        $addSalePayment->paid_amount = $receivedAmount;
+        $addSalePayment->date = $date ?? date('d-m-Y');
         $addSalePayment->time = date('h:i:s a');
         $addSalePayment->report_date = $__report_date;
         $addSalePayment->month = date('F');
         $addSalePayment->year = date('Y');
-        $addSalePayment->note = $request->payment_note;
+        $addSalePayment->note = $note;
         $addSalePayment->admin_id = auth()->user()->id;
 
-        if ($request->hasFile('attachment')) {
+        if ($attachment) {
 
-            $salePaymentAttachment = $request->file('attachment');
+            $salePaymentAttachment = $attachment;
             $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $addSalePayment->attachment = $salePaymentAttachmentName;
@@ -400,31 +407,37 @@ class SaleUtil
         return $addSalePayment->id;
     }
 
-    public function updatePayment($request, $payment)
+    public function updatePayment($paymentId, $paymentMethodId, $accountId, $receivedAmount, $date, $note = null, $attachment = null)
     {
-        // update sale payment
-        $payment->account_id = $payment->customer_payment_id == NULL ? $request->account_id : $payment->account_id;
-        $payment->payment_method_id = $request->payment_method_id;
-        $payment->paid_amount = $request->paying_amount;
-        $payment->date = $request->date;
-        $payment->report_date = date('Y-m-d', strtotime($request->date));
+        $payment = SalePayment::with(['sale'])->where('id', $paymentId)->first();
+        $payment->account_id = $payment->customer_payment_id == NULL ? $accountId : $payment->account_id;
+        $payment->payment_method_id = $paymentMethodId;
+        $payment->paid_amount = $receivedAmount;
+        $payment->date = $date;
+        $payment->report_date = date('Y-m-d', strtotime($date));
         $payment->month = date('F');
         $payment->year = date('Y');
-        $payment->note = $request->note;
+        $payment->note = $note;
 
-        if ($request->hasFile('attachment')) {
+        if ($attachment) {
+
             if ($payment->attachment != null) {
+
                 if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+
                     unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                 }
             }
-            $salePaymentAttachment = $request->file('attachment');
+
+            $salePaymentAttachment = $attachment;
             $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $payment->attachment = $salePaymentAttachmentName;
         }
 
         $payment->save();
+
+        return $payment;
     }
 
     public function saleReturnPaymentGetId($request, $sale, $customer_payment_id, $sale_return_id)
@@ -1164,7 +1177,7 @@ class SaleUtil
     {
         $generalSettings = config('generalSettings');
 
-        
+
         $drafts = '';
 
         $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -1816,7 +1829,6 @@ class SaleUtil
             ->groupBy('product_variants.variant_code')
             ->get();
     }
-
 
     public static function saleStatus()
     {

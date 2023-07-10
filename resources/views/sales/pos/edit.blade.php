@@ -20,6 +20,7 @@
 
                                         </ul>
                                     </div>
+
                                     <!-- Sale Product Table -->
                                     @include('sales.pos.partials.body_partials.edit_partials.sale_edit_product_table')
                                     <!-- Sale Product Table End -->
@@ -61,8 +62,15 @@
     @include('sales.pos.partials.js_partials.common_js.selectable_product_list_js')
     @include('sales.pos.partials.js_partials.common_js.reedem_point_js')
     @include('sales.pos.partials.js_partials.common_js.recent_transactions_js')
+    @include('sales.pos.partials.js_partials.common_js.active_selected_products_js')
+    @include('sales.pos.partials.js_partials.common_js.other_payment_method_js')
+    @include('sales.pos.partials.js_partials.common_js.pick_hold_invoice_js')
+    @include('sales.pos.partials.js_partials.common_js.show_stock_js')
+    @include('sales.pos.partials.js_partials.common_js.delete_hold_invoice_and_suspended_sale_js')
     @include('sales.pos.partials.js_partials.edit_js_partials.product_search_and_add_js')
     @include('sales.pos.partials.js_partials.edit_js_partials.amount_calculation_js')
     @include('sales.pos.partials.js_partials.edit_js_partials.edit_and_delete_table_product')
+    @include('sales.pos.partials.js_partials.edit_js_partials.cancel_sale_js')
     @include('sales.pos.partials.js_partials.edit_js_partials.submit_and_other_js')
+    @include('sales.pos.partials.js_partials.edit_js_partials.shortcut_key_js')
 @endpush

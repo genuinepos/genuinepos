@@ -56,7 +56,6 @@ class CustomerController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->customerPaymentUtil = $customerPaymentUtil;
         $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
-
     }
 
     public function index(Request $request)
@@ -595,7 +594,7 @@ class CustomerController extends Controller
                     $type = $customerUtil->voucherType($row->voucher_type);
                     $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
                     $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-danger">' . $row->less_amount . '</b>)' : '';
-                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp .$__less. ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp . $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                 })
 
                 ->editColumn('b_name', function ($row) use ($generalSettings) {
@@ -624,7 +623,7 @@ class CustomerController extends Controller
                     return '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>';
                 })
 
-                ->rawColumns(['date', 'particulars', 'b_name','voucher_no', 'debit', 'credit', 'running_balance'])
+                ->rawColumns(['date', 'particulars', 'b_name', 'voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
 
@@ -750,37 +749,26 @@ class CustomerController extends Controller
 
             DB::beginTransaction();
             // database queries here. Access any $var_N directly
+
             $generalSettings = config('generalSettings');
-            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
+            $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
             // Add Customer Payment Record
-            $customerPayment = new CustomerPayment();
-            $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
-            $customerPayment->reference = $request->reference;
-            $customerPayment->branch_id = auth()->user()->branch_id;
-            $customerPayment->customer_id = $customerId;
-            $customerPayment->account_id = $request->account_id;
-            $customerPayment->paid_amount = $request->paying_amount;
-            $customerPayment->less_amount = $request->less_amount ? $request->less_amount : 0;
-            $customerPayment->payment_method_id = $request->payment_method_id;
-            $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-            $customerPayment->date = $request->date;
-            $customerPayment->time = date('h:i:s a');
-            $customerPayment->month = date('F');
-            $customerPayment->year = date('Y');
+            $customerPayment = $this->customerPaymentUtil->addCustomerPayment(
+                voucherNo: $voucherNo,
+                customerId: $customerId,
+                accountId: $request->account_id,
+                receivedAmount: $request->paying_amount,
+                paymentMethodId: $request->payment_method_id,
+                date: $request->date,
+                lessAmount: $request->less_amount ? $request->less_amount : 0,
+                attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                reference: $request->reference,
+                note: $request->note,
+                invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil
+            );
 
-            if ($request->hasFile('attachment')) {
-
-                $PaymentAttachment = $request->file('attachment');
-                $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
-                $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
-                $customerPayment->attachment = $paymentAttachmentName;
-            }
-
-            $customerPayment->note = $request->note;
-            $customerPayment->save();
-
-            // Add supplier Ledger
+            // Add Customer Ledger
             $this->customerUtil->addCustomerLedger(
                 voucher_type_id: 5,
                 customer_id: $customerId,
@@ -802,10 +790,10 @@ class CustomerController extends Controller
 
             if (isset($request->sale_ids)) {
 
-                $this->customerPaymentUtil->specificInvoiceOrOrderByPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix);
+                $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: $request->sale_ids, receivedAmount: $request->paying_amount, customerPayment: $customerPayment, customerId: $customerId, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil);
             } else {
 
-                $this->customerPaymentUtil->randomInvoiceOrSalesOrderPayment($request, $customerPayment, $customerId, $paymentInvoicePrefix);
+                $this->customerPaymentUtil->randomInvoiceOrSalesOrderPayment(customerPayment: $customerPayment, customerId: $customerId, receivedAmount: $request->paying_amount, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil);
             }
 
             $receive = DB::table('customer_payments')

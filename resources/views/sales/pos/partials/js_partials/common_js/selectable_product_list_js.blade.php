@@ -6,9 +6,9 @@
         $.ajax({
             url: "{{ route('sales.pos.product.list') }}",
             type: 'get',
-            data: {category_id,brand_id,},
+            data: { category_id, brand_id },
             success: function(data) {
-                //console.log(data);
+
                 $('#select_product_list').html(data);
                 $('.select_product_preloader').hide();
                 activeSelectedItems();

@@ -1,16 +1,4 @@
 <script>
-    // Get all price group
-    var price_groups = '';
-    function getPriceGroupProducts(){
-        $.ajax({
-            url:"{{ route('sales.product.price.groups') }}",
-            success:function(data){
-                price_groups = data;
-            }
-        });
-    }
-    getPriceGroupProducts();
-
     $('#addCustomer').on('click', function () {
 
         $.get("{{ route('sales.pos.add.quick.customer.modal') }}", function(data) {
@@ -34,7 +22,6 @@
         $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
         $('#pre_redeemed_amount').val(0);
 
-        // var url = "{{ url('common/ajax/call/customer_info') }}"+'/'+customerId;
         var url = "{{ route('contacts.customer.amounts.branch.wise', ':customerId') }}";
         var route = url.replace(':customerId', customerId);
 

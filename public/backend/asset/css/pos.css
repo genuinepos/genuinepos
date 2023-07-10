@@ -870,7 +870,8 @@ input#quantity {
         padding: 10px;
     }
     .wrapper_input_btn {
-        padding: 10px;
+        /* padding: 10px; */
+         padding: 4px;
     }
     p.address-name {
         font-size: 10px;

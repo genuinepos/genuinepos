@@ -4,102 +4,78 @@
 @if ($defaultLayout->layout_design == 1)
     <div class="sale_print_template">
         <style>
-            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 4%;margin-right: 4%;}
+            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 10px;margin-right: 10px;}
             div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
         </style>
         <div class="details_area">
             @if ($defaultLayout->is_header_less == 0)
-                <div id="header">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="header_text text-center">
-                                <p>{{ $defaultLayout->header_text }}</p>
-                                <p>{{ $defaultLayout->sub_heading_1 }}</p>
-                                <p>{{ $defaultLayout->sub_heading_2 }}</p>
-                                <p>{{ $defaultLayout->sub_heading_3 }}</p>
-                            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="header_text text-center">
+                            <p>{{ $defaultLayout->header_text }}</p>
+                            <p>{{ $defaultLayout->sub_heading_1 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_2 }}</p>
+                            <p>{{ $defaultLayout->sub_heading_3 }}</p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-4">
-                            @if ($defaultLayout->show_shop_logo == 1)
-                                @if ($sale->branch)
-                                    @if ($sale->branch->logo != 'default.png')
-                                        <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                    @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
-                                    @endif
+                </div>
+
+                <div class="row" style="border-bottom: 1px solid #000;">
+                    <div class="col-4">
+                        @if ($defaultLayout->show_shop_logo == 1)
+                            @if ($sale->branch)
+                                @if ($sale->branch->logo != 'default.png')
+                                    <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                                 @else
-                                    @if ($generalSettings['business__business_logo'] != null)
-                                        <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                                    @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
-                                    @endif
+                                    <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
+                                @endif
+                            @else
+                                @if ($generalSettings['business__business_logo'] != null)
+                                    <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                @else
+                                    <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
                                 @endif
                             @endif
-                        </div>
-
-                        <div class="col-8">
-                            <div class="heading text-end">
-                                @if ($sale->branch)
-                                    <p class="company_name" style="text-transform: uppercase;">
-                                        <strong>{{ $sale->branch->name }}</strong>
-                                    </p>
-
-                                    <p class="company_address">
-                                        {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
-                                        {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
-                                        {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                        {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                    </p>
-
-                                    @if ($defaultLayout->branch_phone)
-                                        <p><b>@lang('menu.phone') : </b>  {{ $sale->branch->phone }}</p>
-                                    @endif
-
-                                    @if ($defaultLayout->branch_email)
-                                        <p><b>@lang('menu.email') : </b> {{ $sale->branch->email }}</p>
-                                    @endif
-                                @else
-                                    <p class="company_name" style="text-transform: uppercase;">
-                                        <strong>{{ $generalSettings['business__shop_name'] }}</strong>
-                                    </p>
-
-                                    <p class="company_address">
-                                        {{ $generalSettings['business__address'] }}
-                                    </p>
-
-                                    @if ($defaultLayout->branch_phone)
-                                        <p><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}</p>
-                                    @endif
-
-                                    @if ($defaultLayout->branch_email && $generalSettings['business__email'])
-                                        <p><strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }}</p>
-                                    @endif
-                                @endif
-                            </div>
-                        </div>
+                        @endif
                     </div>
 
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="middle_header_text text-center">
-                                <h5>{{ $defaultLayout->invoice_heading }}</h5>
-                                <h6>
-                                    @php
-                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                    @endphp
+                    <div class="col-8 text-end">
+                        <p class="company_name" style="text-transform: uppercase;">
+                            <strong>{{ $generalSettings['business__shop_name'] }}</strong>
+                        </p>
 
-                                    @if ($sale->due <= 0)
-                                    @lang('menu.paid')
-                                    @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    @lang('menu.partial')
-                                    @elseif($payable==$sale->due)
-                                    @lang('menu.due')
-                                    @endif
-                                </h6>
-                            </div>
-                        </div>
+                        <p class="company_address">
+                            {{ $generalSettings['business__address'] }}
+                        </p>
+
+                        <p>
+                            @if ($defaultLayout->branch_email && $generalSettings['business__email'])
+                                <p><strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }}
+                            @endif
+
+                            @if ($defaultLayout->branch_phone)
+                                <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }},
+                            @endif
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row mt-1">
+                    <div class="col-12 text-center">
+                        <h5>{{ $defaultLayout->invoice_heading }}</h5>
+                        <h6>
+                            @php
+                                $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                            @endphp
+
+                            @if ($sale->due <= 0)
+                                @lang('menu.paid')
+                            @elseif ($sale->due > 0 && $sale->due < $payable)
+                                @lang('menu.partial')
+                            @elseif($payable==$sale->due)
+                                @lang('menu.due')
+                            @endif
+                        </h6>
                     </div>
                 </div>
             @endif
@@ -328,16 +304,16 @@
                             @endif
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_payable') : {{ $generalSettings['business__currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_receivable') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="total_payable text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                    {{ App\Utils\Converter::format_in_bdt($total_receivable_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_received') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="total_paid text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                    {{ App\Utils\Converter::format_in_bdt($received_amount) }}
                                 </td>
                             </tr>
 
@@ -433,80 +409,35 @@
                                 <th class="text-center">
                                     @if ($defaultLayout->show_shop_logo == 1)
 
-                                        @if ($sale->branch)
+                                        @if ($generalSettings['business__business_logo'])
 
-                                            @if ($sale->branch->logo != 'default.png')
-
-                                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                            @else
-
-                                                <span style="font-family: 'Anton', sans-serif; font-size:12px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $sale->branch->name }}</span>
-                                            @endif
-                                        @else
-                                            @if ($generalSettings['business__shop_name'] != null)
-
-                                                <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                                            @else
-
-                                                <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $generalSettings['business__shop_name'] }}</span>
-                                            @endif
-                                        @endif
-                                    @else
-
-                                        @if ($sale->branch)
-
-                                            <span style="font-family: 'Anton', sans-serif; font-size:12px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $sale->branch->name }}</span>
+                                            <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                            <span style="font-size: 14px;">{{ $generalSettings['business__shop_name'] }}
                                         @else
 
-                                            <span style="font-family: 'Anton', sans-serif; font-size:12px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $generalSettings['business__shop_name'] }}</span>
+                                            <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $generalSettings['business__shop_name'] }}</span>
                                         @endif
                                     @endif
                                 </th>
                             </tr>
 
-                            @if ($sale->branch)
-                                <tr>
-                                    <th class="text-center">
-                                        <h6>{{$sale->branch->name . '/' . $sale->branch->branch_code }}</h6>
-                                    </th>
-                                </tr>
+                            <tr>
+                                <th class="text-center" style="font-size: 11px;">
+                                    <span>{{ $generalSettings['business__address'] }} </span>
+                                </th>
+                            </tr>
 
-                                <tr>
-                                    <th class="text-center">
-                                        <span>{{ $sale->branch->city . ', ' . $sale->branch->state . ', ' . $sale->branch->zip_code . ', ' . $sale->branch->country }}</span>
-                                    </th>
-                                </tr>
+                            <tr>
+                                <th class="text-center" style="font-size: 11px;">
+                                    <span>@lang('menu.email') : {{ $generalSettings['business__email'] }} </span>
+                                </th>
+                            </tr>
 
-                                <tr>
-                                    <th class="text-center">
-                                        <span>@lang('menu.phone') : {{ $sale->branch->phone }}</span>
-                                    </th>
-                                </tr>
-
-                                <tr>
-                                    <th class="text-center">
-                                        <span>@lang('menu.email') : {{ $sale->branch->email }}</span>
-                                    </th>
-                                </tr>
-                            @else
-                                <tr>
-                                    <th class="text-center">
-                                        <span>{{ $generalSettings['business__address'] }} </span>
-                                    </th>
-                                </tr>
-
-                                <tr>
-                                    <th class="text-center">
-                                        <span>@lang('menu.phone') : {{ $generalSettings['business__phone'] }} </span>
-                                    </th>
-                                </tr>
-
-                                <tr>
-                                    <th class="text-center">
-                                        <span>@lang('menu.email') : {{ $generalSettings['business__email'] }} </span>
-                                    </th>
-                                </tr>
-                            @endif
+                            <tr>
+                                <th class="text-center" style="font-size: 11px;">
+                                    <span>@lang('menu.phone') : {{ $generalSettings['business__phone'] }} </span>
+                                </th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -515,26 +446,26 @@
                     <table class="w-100">
                         <thead>
                             <tr>
-                                <th class="text-center">
+                                <th class="text-center" style="font-size: 11px;">
                                     @lang('menu.date') : <span> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
                                 </th>
                             </tr>
 
                             <tr>
-                                <th class="text-center">@lang('menu.inv_no') : <span>{{ $sale->invoice_id }}</span>
+                                <th class="text-center" style="font-size: 11px;">@lang('menu.inv_no') : <span>{{ $sale->invoice_id }}</span>
                                 </th>
                             </tr>
 
                             <tr>
-                                <th class="text-center">
+                                <th class="text-center" style="font-size: 11px;">
                                     @lang('menu.customer') : <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
                                 </th>
                             </tr>
 
                             @if ($generalSettings['reward_point_settings__enable_cus_point'] == 1)
                                 <tr>
-                                    <th class="text-center">
-                                        {{ $generalSettings['reward_point_settings__point_display_name'] }}
+                                    <th class="text-center" style="font-size: 11px;">
+                                        {{ $generalSettings['reward_point_settings__point_display_name'] }} :
                                         <span>{{ $sale->customer ? $sale->customer->point : 0 }}</span>
                                     </th>
                                 </tr>
@@ -576,8 +507,8 @@
                     <table class="w-100">
                         <thead>
                             <tr>
-                                <th class="text-end">@lang('menu.net_total') : {{ $generalSettings['business__currency'] }} </th>
-                                <th class="text-end">
+                                <th class="text-end" style="font-size: 11px;">@lang('menu.net_total') : {{ $generalSettings['business__currency'] }} </th>
+                                <th class="text-end" style="font-size: 11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </span>
@@ -585,8 +516,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.discount') : {{ $generalSettings['business__currency'] }} </th>
-                                <th class="text-end">
+                                <th class="text-end" style="font-size: 11px;">@lang('menu.discount') : {{ $generalSettings['business__currency'] }} </th>
+                                <th class="text-end" style="font-size: 11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
                                     </span>
@@ -594,8 +525,8 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end">@lang('menu.sale_tax') : {{ $generalSettings['business__currency'] }} </th>
-                                <th class="text-end">
+                                <th class="text-end" style="font-size: 11px;">@lang('menu.sale_tax') : {{ $generalSettings['business__currency'] }} </th>
+                                <th class="text-end" style="font-size: 11px;">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)
                                     </span>
@@ -604,8 +535,8 @@
 
                             @if ($previous_due > 0)
                                 <tr>
-                                    <th class="text-end">@lang('menu.previous_due') : {{ $generalSettings['business__currency'] }} </th>
-                                    <th class="text-end">
+                                    <th class="text-end" style="font-size: 11px;">@lang('menu.previous_due') : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end" style="font-size: 11px;">
                                         <span>
                                             {{ App\Utils\Converter::format_in_bdt($previous_due) }}
                                         </span>
@@ -614,19 +545,19 @@
                             @endif
 
                             <tr>
-                                <th class="text-end">@lang('menu.total_payable') : {{ $generalSettings['business__currency'] }}</th>
-                                <th class="text-end">
+                                <th class="text-end" style="font-size: 11px;">@lang('menu.total_receivable') : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end" style="font-size: 11px;">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($total_receivable_amount) }}
                                     </span>
                                 </th>
                             </tr>
 
                             <tr>
-                                <th class="text-end"> @lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
-                                <th class="text-end">
+                                <th class="text-end" style="font-size: 11px;"> @lang('menu.received') : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end" style="font-size: 11px;">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($received_amount) }}
                                     </span>
                                 </th>
                             </tr>
@@ -634,8 +565,8 @@
                             @if ($sale->ex_status == 0)
                                 @if ($change_amount > 0)
                                     <tr>
-                                        <th class="text-end"><strong> @lang('menu.change_amount') : {{ $generalSettings['business__currency'] }}</strong></th>
-                                        <th class="total_paid text-end">
+                                        <th class="text-end" style="font-size: 11px;"><strong> @lang('menu.change_amount') : {{ $generalSettings['business__currency'] }}</strong></th>
+                                        <th class="total_paid text-end" style="font-size: 11px;">
                                             <span>
                                                 {{ App\Utils\Converter::format_in_bdt($change_amount) }}
                                             </span>
@@ -645,8 +576,8 @@
                             @endif
 
                             <tr>
-                                <th class="text-end"> @lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
-                                <th class="text-end">
+                                <th class="text-end" style="font-size: 11px;"> @lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end" style="font-size: 11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($total_due) }}
                                     </span>

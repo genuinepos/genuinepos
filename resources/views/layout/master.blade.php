@@ -109,6 +109,21 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
                 footer: footer
             });
         });
+
+        $('.calculator-bg__main button').prop('type', 'button');
+
+        // POS read manual button
+        $('#readDocument').click(function () {
+
+            if ($('#readDocument div.doc').css('display', 'none')) {
+
+                $('#readDocument div.doc').toggleClass('d-block')
+            }
+        })
+
+        $(document).on('click', '#show_cost_button', function () {
+            $('#show_cost_section').toggle(500);
+        });
     </script>
     <!-- Logout form for global -->
     <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>

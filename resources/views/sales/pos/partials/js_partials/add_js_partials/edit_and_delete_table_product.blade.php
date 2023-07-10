@@ -130,4 +130,13 @@
         calculateTotalAmount();
         $('#editProductModal').modal('hide');
     });
+
+     // Remove product form purchase product list (Table)
+     $(document).on('click', '#remove_product_btn',function(e){
+        e.preventDefault();
+
+        $(this).closest('tr').remove();
+        calculateTotalAmount();
+        activeSelectedItems();
+    });
 </script>

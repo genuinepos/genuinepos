@@ -430,6 +430,7 @@ class UserActivityLogUtil
 
     public function addLog($action, $subject_type, $data_obj, $branch_id = null, $user_id = null)
     {
+        
         $generalSettings = config('generalSettings');
 
         $dateFormat = $generalSettings['business__date_format'];

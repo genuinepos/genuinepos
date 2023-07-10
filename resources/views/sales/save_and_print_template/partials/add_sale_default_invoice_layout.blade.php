@@ -4,7 +4,7 @@
 @if ($defaultLayout->layout_design == 1)
     <div class="sale_print_template">
         <style>
-            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 4%;margin-right: 4%;}
+            @page {size:a4;margin-top: 0.8cm;/* margin-bottom: 35px;  */margin-left: 10px;margin-right: 10px;}
             div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
         </style>
         <div class="details_area">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="border-bottom: 1px solid #000;">
                         <div class="col-4">
                             @if ($defaultLayout->show_shop_logo == 1)
                                 @if ($sale->branch)
@@ -40,70 +40,46 @@
                             @endif
                         </div>
 
-                        <div class="col-8">
-                            <div class="heading text-end">
-                                @if ($sale->branch)
-                                    <p class="company_name" style="text-transform: uppercase;">
-                                        <strong>{{ $sale->branch->name }}</strong>
-                                    </p>
+                        <div class="col-8 text-end">
+                            <p class="company_name" style="text-transform: uppercase;">
+                                <strong>{{ $generalSettings['business__shop_name'] }}</strong>
+                            </p>
 
-                                    <p class="company_address">
-                                        {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
-                                        {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
-                                        {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                        {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.
-                                    </p>
+                            <p class="company_address">
+                                {{ $generalSettings['business__address'] }}
+                            </p>
 
-                                    @if ($defaultLayout->branch_phone)
-                                        <p><strong>@lang('menu.phone') : </strong> {{ $sale->branch->phone }}</p>
-                                    @endif
-
-                                    @if ($defaultLayout->branch_email)
-                                        <p><strong>@lang('menu.email') : </strong> {{ $sale->branch->email }}</p>
-                                    @endif
-                                @else
-                                    <p class="company_name" style="text-transform: uppercase;">
-                                        <strong>{{ $generalSettings['business__shop_name'] }}</strong>
-                                    </p>
-
-                                    <p class="company_address">
-                                        {{ $generalSettings['business__address'] }}
-                                    </p>
-
-                                    @if ($defaultLayout->branch_phone)
-                                        <p><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}</p>
-                                    @endif
-
-                                    @if ($defaultLayout->branch_email && $generalSettings['business__email'])
-                                        <p><strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }}</p>
-                                    @endif
+                            <p>
+                                @if ($defaultLayout->branch_email && $generalSettings['business__email'])
+                                    <strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }},
                                 @endif
-                            </div>
+
+                                @if ($defaultLayout->branch_phone)
+                                    <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}
+                                @endif
+                            </p>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="middle_header_text text-center">
-                                <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}</h5>
+                    <div class="row mt-1">
+                        <div class="col-12 text-center">
+                            <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}</h5>
+                            <h6>
+                                @php
+                                    $payable = $sale->total_payable_amount - $sale->sale_return_amount;
+                                @endphp
 
-                                <h6>
-                                    @php
-                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                    @endphp
-
-                                    @if ($sale->due <= 0)
+                                @if ($sale->due <= 0)
 
                                     @lang('menu.paid')
-                                    @elseif ($sale->due > 0 && $sale->due < $payable)
+                                @elseif ($sale->due > 0 && $sale->due < $payable)
 
                                     @lang('menu.partial')
-                                    @elseif($payable==$sale->due)
+                                @elseif($payable==$sale->due)
 
                                     @lang('menu.due')
-                                    @endif
-                                </h6>
-                            </div>
+                                @endif
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -346,16 +322,16 @@
                             @endif
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_payable') : {{ $generalSettings['business__currency'] }} </strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_receivable') : {{ $generalSettings['business__currency'] }} </strong></td>
                                 <td class="total_payable text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                    {{ App\Utils\Converter::format_in_bdt($total_receivable_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong></td>
+                                <td class="text-end"><strong> @lang('menu.total_received') : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="total_paid text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                    {{ App\Utils\Converter::format_in_bdt($received_amount) }}
                                 </td>
                             </tr>
 
@@ -603,19 +579,19 @@
                             @endif
 
                             <tr>
-                                <th class="text-end">@lang('menu.payable') : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end">@lang('menu.total_receivable') : {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($total_payable_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($total_receivable_amount) }}
                                     </span>
                                 </th>
                             </tr>
 
                             <tr>
-                                <th class="text-end"> @lang('menu.paid') :  {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end"> @lang('menu.total_received') :  {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-end">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($paying_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($received_amount) }}
                                     </span>
                                 </th>
                             </tr>

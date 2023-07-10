@@ -8,6 +8,13 @@ use App\Models\CashRegisterTransaction;
 use App\Models\Customer;
 use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
+use App\Models\CustomerLedger;
+use App\Models\GeneralSetting;
+use App\Models\CustomerPayment;
+use App\Utils\ProductStockUtil;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
 use App\Models\Sale;
 use App\Models\SaleProduct;
@@ -25,41 +32,17 @@ use Illuminate\Support\Facades\DB;
 
 class POSController extends Controller
 {
-    protected $saleUtil;
-
-    protected $smsUtil;
-
-    protected $util;
-
-    protected $customerUtil;
-
-    protected $accountUtil;
-
-    protected $productStockUtil;
-
-    protected $invoiceVoucherRefIdUtil;
-
-    protected $userActivityLogUtil;
-
     public function __construct(
-        SaleUtil $saleUtil,
-        SmsUtil $smsUtil,
-        Util $util,
-        CustomerUtil $customerUtil,
-        AccountUtil $accountUtil,
-        ProductStockUtil $productStockUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        UserActivityLogUtil $userActivityLogUtil
-    ) {
-        $this->saleUtil = $saleUtil;
-        $this->smsUtil = $smsUtil;
-        $this->util = $util;
-        $this->customerUtil = $customerUtil;
-        $this->accountUtil = $accountUtil;
-        $this->productStockUtil = $productStockUtil;
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->userActivityLogUtil = $userActivityLogUtil;
-    }
+        private SaleUtil $saleUtil,
+        private SmsUtil $smsUtil,
+        private Util $util,
+        private CustomerUtil $customerUtil,
+        private CustomerPaymentUtil $customerPaymentUtil,
+        private AccountUtil $accountUtil,
+        private ProductStockUtil $productStockUtil,
+        private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        private UserActivityLogUtil $userActivityLogUtil
+    ) {}
 
     // Create pos view
     public function create()
@@ -82,7 +65,7 @@ class POSController extends Controller
 
             $customers = DB::table('customers')->where('status', 1)->get(['id', 'name', 'phone']);
 
-            $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+            $priceGroups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
 
             $accounts = DB::table('account_branches')
                 ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -99,14 +82,21 @@ class POSController extends Controller
 
             $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
+            $units = DB::table('units')->select('name')->get()->pluck('name')->toArray();
+            $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+            $priceGroupProducts = DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
+
             return view('sales.pos.create', compact(
                 'openedCashRegister',
                 'categories',
                 'brands',
                 'customers',
-                'price_groups',
+                'priceGroups',
+                'priceGroupProducts',
                 'accounts',
                 'methods',
+                'units',
+                'taxes',
             ));
         } else {
 
@@ -117,14 +107,13 @@ class POSController extends Controller
     // Store pos sale
     public function store(Request $request)
     {
-        //return $request->all();
         $this->validate($request, [
             'payment_method_id' => 'required',
             'account_id' => 'required',
             'sale_account_id' => 'required',
         ], [
-            'sale_account_id.required' => 'A Sale A/C is required sale',
-            'account_id.required' => 'A debit A/C is required for sale',
+            'sale_account_id.required' => 'A Sale A/c is required sale',
+            'account_id.required' => 'A debit A/c is required for sale',
             'payment_method_id.required' => 'A payment method is required for sale',
         ]);
 
@@ -137,7 +126,7 @@ class POSController extends Controller
 
             $invoicePrefix = $generalSettings['prefix__sale_invoice'];
 
-            $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
+            $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
             $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
@@ -180,13 +169,13 @@ class POSController extends Controller
 
             if ($request->action == 1) {
 
-                if ($request->paying_amount < $request->total_payable_amount && ! $request->customer_id) {
+                if ($request->received_amount < $request->total_receivable_amount && !$request->customer_id) {
 
                     return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
                 }
             }
 
-            if ($request->button_type == 1 && $request->paying_amount == 0) {
+            if ($request->button_type == 1 && $request->received_amount == 0) {
 
                 return response()->json(['errorMsg' => 'If you want to sale in full credit, so click credit sale button.']);
             }
@@ -233,7 +222,9 @@ class POSController extends Controller
 
             if ($request->action == 5) {
 
-                $holdInvoice = Sale::where('branch_id', auth()->user()->branch_id)->where('status', 5)->where('admin_id', auth()->user()->id)->get();
+                $holdInvoice = Sale::where('branch_id', auth()->user()->branch_id)
+                    ->where('status', 5)->where('admin_id', auth()->user()->id)
+                    ->get();
 
                 if ($holdInvoice->count() == 5) {
 
@@ -250,54 +241,64 @@ class POSController extends Controller
             $addSale->total_item = $request->total_item;
             $addSale->net_total_amount = $request->net_total_amount;
             $addSale->order_discount_type = $request->order_discount_type;
-            $addSale->order_discount = $request->order_discount ? $request->order_discount : 0.00;
-            $addSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0.00;
-            $addSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0.00;
-            $addSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
-            $addSale->shipment_charge = 0.00;
+            $addSale->order_discount = $request->order_discount ? $request->order_discount : 0;
+            $addSale->order_discount_amount = $request->order_discount_amount ? $request->order_discount_amount : 0;
+            $addSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0;
+            $addSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
+            $addSale->shipment_charge = 0;
             $addSale->created_by = 2;
+            $addSale->total_payable_amount = $request->total_invoice_amount;
+            $addSale->due = $request->total_invoice_amount;
+
+            $addSale->previous_due = $request->previous_due;
+            $addSale->gross_pay = $request->received_amount;
+            $addSale->all_total_payable = $request->total_receivable_amount;
+            $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0;
+
+            $addSale->save();
+
             //
-            $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
-            $paidAmount = $request->paying_amount - $changedAmount;
+            $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0;
+            $receivedAmount = $request->received_amount - $changedAmount;
             //
             $customer = Customer::where('id', $request->customer_id)->first();
 
             $invoicePayable = 0;
             if ($request->action == 1) {
 
-                $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
-                $paidAmount = $request->paying_amount - $changedAmount;
+                // $changedAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
+                // $paidAmount = $request->received_amount - $changedAmount;
 
-                if ($request->previous_due != 0) {
+                // if ($request->previous_due != 0) {
 
-                    $invoicePayable = $request->total_invoice_payable;
-                    $addSale->total_payable_amount = $request->total_invoice_payable;
-                    if ($paidAmount >= $request->total_invoice_payable) {
+                //     $invoicePayable = $request->total_invoice_payable;
+                //     $addSale->total_payable_amount = $request->total_invoice_payable;
+                //     if ($paidAmount >= $request->total_invoice_payable) {
 
-                        $addSale->paid = $request->total_invoice_payable;
-                        $addSale->due = 0.00;
-                    } elseif ($request->paying_amount == 0 && $request->total_payable_amount < 0) {
+                //         $addSale->paid = $request->total_invoice_payable;
+                //         $addSale->due = 0.00;
+                //     } elseif ($request->received_amount == 0 && $request->total_payable_amount < 0) {
 
-                        $addSale->paid = $request->paying_amount;
-                        $calcDue = $request->total_payable_amount;
-                        $addSale->due = $request->total_payable_amount;
-                    } elseif ($paidAmount < $request->total_invoice_payable) {
+                //         $addSale->paid = $request->received_amount;
+                //         $calcDue = $request->total_payable_amount;
+                //         $addSale->due = $request->total_payable_amount;
+                //     } elseif ($paidAmount < $request->total_invoice_payable) {
 
-                        $addSale->paid = $request->paying_amount;
-                        $calcDue = $request->total_invoice_payable - $request->paying_amount;
-                        $addSale->due = $calcDue;
-                    }
-                } else {
+                //         $addSale->paid = $request->received_amount;
+                //         $calcDue = $request->total_invoice_payable - $request->received_amount;
+                //         $addSale->due = $calcDue;
+                //     }
+                // } else {
 
-                    $invoicePayable = $request->total_payable_amount;
-                    $addSale->total_payable_amount = $request->total_payable_amount;
-                    // $addSale->paid = $request->paying_amount - $changedAmount;
-                    $addSale->paid = $paidAmount;
-                    $addSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
-                    $addSale->due = $request->total_due >= 0 ? $request->total_due : 0.00;
-                }
+                //     $invoicePayable = $request->total_payable_amount;
+                //     $addSale->total_payable_amount = $request->total_payable_amount;
+                //     // $addSale->paid = $request->received_amount - $changedAmount;
+                //     $addSale->paid = $paidAmount;
+                //     $addSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
+                //     $addSale->due = $request->total_due >= 0 ? $request->total_due : 0.00;
+                // }
 
-                $addSale->save();
+                // $addSale->save();
 
                 // Add sales A/C ledger
                 $this->accountUtil->addAccountLedger(
@@ -305,7 +306,7 @@ class POSController extends Controller
                     date: $request->date,
                     account_id: $request->sale_account_id,
                     trans_id: $addSale->id,
-                    amount: $invoicePayable,
+                    amount: $request->total_invoice_amount,
                     balance_type: 'credit'
                 );
 
@@ -325,15 +326,15 @@ class POSController extends Controller
                         branch_id: auth()->user()->branch_id,
                         date: date('Y-m-d'),
                         trans_id: $addSale->id,
-                        amount: $invoicePayable
+                        amount: $request->total_invoice_amount
                     );
                 }
             } else {
 
-                $addSale->total_payable_amount = $request->total_invoice_payable;
-                $addSale->save();
+                // $addSale->total_payable_amount = $request->total_invoice_payable;
+                // $addSale->save();
             }
-            $addSale->save();
+            // $addSale->save();
 
             // update product quantity and add sale product
             $branch_id = auth()->user()->branch_id;
@@ -363,15 +364,68 @@ class POSController extends Controller
                 $__index++;
             }
 
-            if ($request->action == 1) {
+            if ($request->action == 1 && $request->received_amount > 0) {
 
-                $__index = 0;
-                foreach ($request->product_ids as $product_id) {
+                $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
+                $receivedAmount = $request->received_amount - $changeAmount;
 
-                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
-                    $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
-                    $__index++;
+                if ($request->customer_id) {
+
+                    $customerPayment = $this->customerPaymentUtil->addCustomerPayment(
+                        customerId: $request->customer_id,
+                        accountId: $request->account_id,
+                        receivedAmount: $receivedAmount,
+                        paymentMethodId: $request->payment_method_id,
+                        date: date('Y-m-d'),
+                        invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
+                        lessAmount: $request->less_amount ? $request->less_amount : 0,
+                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                        reference: $request->reference,
+                        note: $request->note,
+                    );
+
+                    // Add Customer Ledger
+                    $this->customerUtil->addCustomerLedger(
+                        voucher_type_id: 5,
+                        customer_id: $request->customer_id,
+                        branch_id: auth()->user()->branch_id,
+                        date: date('Y-m-d'),
+                        trans_id: $customerPayment->id,
+                        amount: $receivedAmount
+                    );
+
+                    // Add Bank/Cash-in-hand A/C Ledger
+                    $this->accountUtil->addAccountLedger(
+                        voucher_type_id: 18,
+                        date: date('Y-m-d'),
+                        account_id: $request->account_id,
+                        trans_id: $customerPayment->id,
+                        amount: $receivedAmount,
+                        balance_type: 'debit'
+                    );
+
+                    $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: [$addSale->id], receivedAmount: $receivedAmount, customerPayment: $customerPayment, customerId: $request->customer_id, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: date('Y-m-d'), invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil);
+                } else {
+
+                    // Add Bank/Cash-in-hand A/C Ledger
+                    $this->accountUtil->addAccountLedger(
+                        voucher_type_id: 18,
+                        date: date('Y-m-d'),
+                        account_id: $request->account_id,
+                        trans_id: $customerPayment->id,
+                        amount: $receivedAmount,
+                        balance_type: 'debit'
+                    );
+
+                    $this->saleUtil->addPaymentGetId(
+                        receiptVoucherPrefix: $receiptVoucherPrefix,
+                        receivedAmount: $receivedAmount,
+                        saleId: $addSale->id,
+                        customerPaymentId: null,
+                        accountId: $request->account_id,
+                        invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
+                        date: date('Y-m-d'),
+                    );
                 }
             }
 
@@ -389,16 +443,19 @@ class POSController extends Controller
 
             if ($request->action == 1) {
 
-                if ($customer) {
+                $__index = 0;
+                foreach ($request->product_ids as $product_id) {
 
-                    $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customer->id);
+                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                    $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
+
+                    $__index++;
                 }
 
                 $this->saleUtil->addPurchaseSaleProductChain($sale, $stockAccountingMethod);
-
-                $this->saleUtil->__getSalePaymentForAddSaleStore($request, $sale, $paymentInvoicePrefix);
-
-                $this->userActivityLogUtil->addLog(action: 1, subject_type: 7, data_obj: $sale);
+                $adjustedSale = $this->saleUtil->adjustSaleInvoiceAmounts($sale);
+                $this->userActivityLogUtil->addLog(action: 1, subject_type: 7, data_obj: $adjustedSale);
             }
 
             // Add cash register transaction
@@ -409,8 +466,8 @@ class POSController extends Controller
             // Add cash register transaction end..
 
             $previous_due = $request->previous_due;
-            $total_payable_amount = $request->total_payable_amount;
-            $paying_amount = $request->paying_amount;
+            $total_receivable_amount = $request->total_receivable_amount;
+            $received_amount = $request->received_amount;
             $total_due = $request->total_due;
             $change_amount = $request->change_amount;
 
@@ -442,11 +499,12 @@ class POSController extends Controller
         }
 
         if ($request->action == 1) {
+
             return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
-                'total_payable_amount',
-                'paying_amount',
+                'total_receivable_amount',
+                'received_amount',
                 'total_due',
                 'change_amount'
             ));
@@ -479,7 +537,7 @@ class POSController extends Controller
         $sale = Sale::with('branch', 'sale_products', 'customer', 'admin')->where('id', $saleId)->first();
         $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
-        $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+        $priceGroups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -494,9 +552,13 @@ class POSController extends Controller
                 'accounts.balance',
             ]);
 
-        $methods = DB::table('payment_methods')->select('id', 'name')->get();
+        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        return view('sales.pos.edit', compact('sale', 'categories', 'brands', 'price_groups', 'accounts', 'methods'));
+        $units = DB::table('units')->select('name')->get()->pluck('name')->toArray();
+        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+        $priceGroupProducts = DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
+
+        return view('sales.pos.edit', compact('sale', 'categories', 'brands', 'priceGroups', 'priceGroupProducts', 'accounts', 'methods', 'units', 'taxes'));
     }
 
     // Get invoice products **requested by ajax**
@@ -541,7 +603,7 @@ class POSController extends Controller
     {
         $generalSettings = config('generalSettings');
 
-        $paymentInvoicePrefix = $generalSettings['prefix__sale_payment'];
+        $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
@@ -560,7 +622,7 @@ class POSController extends Controller
 
         if ($updateSale->status == 1 && $request->action != 1) {
 
-            return response()->json(['errorMsg' => 'Final sale you can not update to quotation, draft, hold invoice or Suspend.']);
+            return response()->json(['errorMsg' => 'Final sale can not be updated to quotation, draft, hold invoice or Suspend.']);
         }
 
         if ($request->action == 1) {
@@ -571,16 +633,16 @@ class POSController extends Controller
             }
         }
 
-        foreach ($updateSale->sale_payments as $sale_payment) {
+        // foreach ($updateSale->sale_payments as $sale_payment) {
 
-            $storedAccountId = $sale_payment->account_id;
-            $sale_payment->delete();
+        //     $storedAccountId = $sale_payment->account_id;
+        //     $sale_payment->delete();
 
-            if ($storedAccountId) {
+        //     if ($storedAccountId) {
 
-                $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
-            }
-        }
+        //         $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
+        //     }
+        // }
 
         $updateSale->status = $request->action;
         $updateSale->sale_account_id = $request->sale_account_id;
@@ -592,8 +654,11 @@ class POSController extends Controller
         $updateSale->order_tax_percent = $request->order_tax ? $request->order_tax : 0.00;
         $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0.00;
         $updateSale->shipment_charge = 0.00;
-        $updateSale->total_payable_amount = $request->total_payable_amount;
-        $updateSale->change_amount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
+        $updateSale->total_payable_amount = $request->total_invoice_amount;
+        $updateSale->due = $request->current_receivable;
+        $changeAmount = $request->change_amount >= 0 ? $request->change_amount : 0.00;
+        $updateSale->change_amount = $changeAmount;
+        $updateSale->gross_pay = $request->previous_received + $request->received_amount;
         $updateSale->save();
 
         if ($updateSale->status == 1) {
@@ -606,21 +671,12 @@ class POSController extends Controller
                     date: date('Y-m-d'),
                     account_id: $request->sale_account_id,
                     trans_id: $updateSale->id,
-                    amount: $request->total_payable_amount,
+                    amount: $request->total_invoice_amount,
                     balance_type: 'credit'
                 );
             }
 
             if ($updateSale->customer_id) {
-
-                // Update Customer Ledger
-                // $this->customerUtil->updateCustomerLedger(
-                //     voucher_type_id: 1,
-                //     customer_id: $updateSale->customer_id,
-                //     date: date('Y-m-d', strtotime($updateSale->date)),
-                //     trans_id: $updateSale->id,
-                //     amount: $request->total_payable_amount
-                // );
 
                 $this->customerUtil->updateCustomerLedger(
                     voucher_type_id: 1,
@@ -629,7 +685,7 @@ class POSController extends Controller
                     new_branch_id: $updateSale->branch_id,
                     date: $updateSale->date,
                     trans_id: $updateSale->id,
-                    amount: $updateSale->total_payable_amount
+                    amount: $request->total_invoice_amount,
                 );
             }
         }
@@ -712,18 +768,20 @@ class POSController extends Controller
             $this->productStockUtil->adjustBranchStock($saleProduct->product_id, $saleProduct->product_variant_id, auth()->user()->branch_id);
         }
 
-        // Add new payment
-        if ($request->paying_amount > 0) {
+        $receivedAmount = $request->received_amount - $changeAmount;
 
-            $__paymentInvoicePrefix = $paymentInvoicePrefix != null ? $paymentInvoicePrefix : 'SPV';
+        // Add new payment
+        if ($receivedAmount > 0) {
 
             $addPaymentGetId = $this->saleUtil->addPaymentGetId(
-                invoicePrefix: $__paymentInvoicePrefix,
-                request: $request,
-                payingAmount: $request->paying_amount,
-                invoiceId: $this->invoiceVoucherRefIdUtil->getLastId('sale_payments'),
+                receiptVoucherPrefix: $receiptVoucherPrefix,
+                receivedAmount: $receivedAmount,
                 saleId: $updateSale->id,
-                customerPaymentId: null
+                customerPaymentId: NULL,
+                accountId: $request->account_id,
+                paymentMethodId: $request->payment_method_id,
+                invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
+                date: date('Y-m-d'),
             );
 
             if ($request->account_id) {
@@ -731,10 +789,10 @@ class POSController extends Controller
                 // Add bank/cash-in-hand A/C ledger
                 $this->accountUtil->addAccountLedger(
                     voucher_type_id: 10,
-                    date: date('Y-m-d', strtotime($updateSale->date)),
+                    date: date('Y-m-d'),
                     account_id: $request->account_id,
                     trans_id: $addPaymentGetId,
-                    amount: $request->paying_amount,
+                    amount: $receivedAmount,
                     balance_type: 'debit'
                 );
             }
@@ -742,14 +800,13 @@ class POSController extends Controller
             if ($updateSale->customer_id) {
 
                 // add customer ledger
-                $this->customerUtil->updateCustomerLedger(
+                $this->customerUtil->addCustomerLedger(
                     voucher_type_id: 1,
-                    customer_id: $updateSale->customer_id,
-                    previous_branch_id: $updateSale->branch_id,
-                    new_branch_id: $updateSale->branch_id,
-                    date: $updateSale->date,
+                    customer_id: $request->customer_id,
+                    branch_id: auth()->user()->branch_id,
+                    date: date('Y-m-d'),
                     trans_id: $updateSale->id,
-                    amount: $updateSale->total_payable_amount
+                    amount: $receivedAmount
                 );
             }
         }
@@ -761,12 +818,12 @@ class POSController extends Controller
         // Update customer due
         if ($request->action == 1) {
 
-            $adjustedSale = $this->saleUtil->adjustSaleInvoiceAmounts($updateSale);
+            $adjustedSale = $this->saleUtil->adjustSaleInvoiceAmounts($sale);
 
-            if ($updateSale->customer_id) {
+            // if ($updateSale->customer_id) {
 
-                $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
-            }
+            //     $this->customerUtil->adjustCustomerAmountForSalePaymentDue($updateSale->customer_id);
+            // }
 
             $this->saleUtil->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
 
@@ -774,8 +831,8 @@ class POSController extends Controller
         }
 
         $previous_due = 0;
-        $total_payable_amount = $request->total_payable_amount;
-        $paying_amount = $request->paying_amount;
+        $total_receivable_amount = $request->total_invoice_amount;
+        $received_amount = $sale->paid;
         $total_due = $request->total_due;
         $change_amount = $request->change_amount;
 
@@ -784,8 +841,8 @@ class POSController extends Controller
             return view('sales.save_and_print_template.pos_sale_print', compact(
                 'sale',
                 'previous_due',
-                'total_payable_amount',
-                'paying_amount',
+                'total_receivable_amount',
+                'received_amount',
                 'total_due',
                 'change_amount'
             ));

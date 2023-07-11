@@ -38,8 +38,6 @@ class POSController extends Controller
         private UserActivityLogUtil $userActivityLogUtil
     ) {
     }
-    ) {
-    }
 
     // Create pos view
     public function create()
@@ -1236,8 +1234,6 @@ class POSController extends Controller
                 }
             }
 
-
-            $sale = Sale::with([
 
             $sale = Sale::with([
                 'customer',

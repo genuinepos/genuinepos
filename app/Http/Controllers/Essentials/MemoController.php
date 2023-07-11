@@ -12,8 +12,8 @@ use Yajra\DataTables\Facades\DataTables;
 class MemoController extends Controller
 {
     public function index(Request $request)
-    { 
-        if (!auth()->user()->can('memo')) {
+    {
+        if (! auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -79,7 +79,7 @@ class MemoController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('memo')) {
+        if (! auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -112,7 +112,7 @@ class MemoController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('memo')) {
+        if (! auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -132,7 +132,7 @@ class MemoController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('memo')) {
+        if (! auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -147,7 +147,7 @@ class MemoController extends Controller
 
     public function update(Request $request)
     {
-        if (!auth()->user()->can('memo')) {
+        if (! auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -219,7 +219,7 @@ class MemoController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('memo')) {
+        if (! auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }

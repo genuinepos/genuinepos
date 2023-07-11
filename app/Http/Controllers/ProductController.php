@@ -2,37 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Customer;
-use App\Utils\ProductUtil;
+use App\Mail\NewProductArrived;
 use App\Models\BulkVariant;
 use App\Models\ComboProduct;
-use App\Models\ProductImage;
-use Illuminate\Http\Request;
-use App\Models\ProductBranch;
-use App\Models\GeneralSetting;
-use App\Models\ProductVariant;
-use App\Mail\NewProductArrived;
-use App\Models\PurchaseProduct;
-use App\Models\SupplierProduct;
-use App\Utils\ProductStockUtil;
+use App\Models\Customer;
 use App\Models\PriceGroupProduct;
 use App\Models\Product;
+use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductImage;
 use App\Models\ProductOpeningStock;
 use App\Models\ProductVariant;
+use App\Models\ProductVariant;
+use App\Models\SupplierProduct;
 use App\Models\SupplierProduct;
 use App\Services\GeneralSettingServiceInterface;
+use App\Services\GeneralSettingServiceInterface;
+use App\Utils\ProductStockUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\ProductUtil;
+use App\Utils\ProductUtil;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use Yajra\DataTables\Facades\DataTables;
-use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -41,9 +38,11 @@ class ProductController extends Controller
     protected $productStockUtil;
 
     protected $userActivityLogUtil;
+
     protected $emailService;
+
     public function __construct(
-        EmailServiceInterface  $emailService,
+        EmailServiceInterface $emailService,
         ProductUtil $productUtil,
         ProductStockUtil $productStockUtil,
         UserActivityLogUtil $userActivityLogUtil

@@ -4,41 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Mail\PurchaseCreated;
 use App\Mail\PurchaseOrderCreated;
-use App\Mail\SaleQuotationCreated;
-use DB;
-use App\Utils\Util;
-use App\Models\Unit;
-use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Utils\AccountUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierUtil;
-use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use App\Models\Product;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Purchase;
+use App\Models\Purchase;
+use App\Models\PurchaseOrderProduct;
 use App\Models\PurchaseOrderProduct;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
 use App\Models\PurchaseReturn;
 use App\Models\Supplier;
+use App\Models\Supplier;
 use App\Models\SupplierProduct;
 use App\Models\Unit;
+use App\Models\Unit;
+use App\Services\GeneralSettingServiceInterface;
 use App\Services\GeneralSettingServiceInterface;
 use App\Utils\AccountUtil;
+use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
 use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseReturnUtil;
 use App\Utils\PurchaseUtil;
+use App\Utils\PurchaseUtil;
 use App\Utils\SupplierPaymentUtil;
 use App\Utils\SupplierUtil;
+use App\Utils\SupplierUtil;
 use App\Utils\UserActivityLogUtil;
-use App\Models\PurchaseOrderProduct;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Services\GeneralSettingServiceInterface;
+use App\Utils\Util;
+use DB;
+use Illuminate\Http\Request;
 use Modules\Communication\Interface\EmailServiceInterface;
 
 class PurchaseController extends Controller
@@ -62,9 +61,11 @@ class PurchaseController extends Controller
     protected $purchaseReturnUtil;
 
     protected $userActivityLogUtil;
+
     protected $emailService;
+
     public function __construct(
-        EmailServiceInterface  $emailService,
+        EmailServiceInterface $emailService,
         NameSearchUtil $nameSearchUtil,
         PurchaseUtil $purchaseUtil,
         Util $util,
@@ -514,8 +515,7 @@ class PurchaseController extends Controller
         ])->where('id', $addPurchase->id)->first();
 
         if ($purchase?->supplier && $purchase?->supplier?->email) {
-            if ($purchase['purchase_status']=='1')
-            {
+            if ($purchase['purchase_status'] == '1') {
                 $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
                 // $checkboxData = $request->input('checkboxes', []);
                 // $resultArray = [];
@@ -529,8 +529,7 @@ class PurchaseController extends Controller
                 //     }
                 // }
                 // $this->emailService->sendMultiple(array_values($resultArray, 'email'), new PurchaseCreated( $purchase));
-            }elseif($purchase['purchase_status']=='3')
-            {
+            } elseif ($purchase['purchase_status'] == '3') {
                 $this->emailService->send($purchase->supplier->email, new PurchaseOrderCreated($purchase));
             }
         }
@@ -541,7 +540,7 @@ class PurchaseController extends Controller
         } else {
 
             if ($request->purchase_status == 3) {
-               
+
                 return view('purchases.save_and_print_template.print_order', compact('purchase'));
             } else {
 

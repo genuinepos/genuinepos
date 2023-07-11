@@ -2,33 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
-use App\Models\Sale;
-use App\Models\User;
-use App\Utils\SmsUtil;
-use App\Models\Product;
-use App\Utils\SaleUtil;
-use App\Models\Customer;
-use App\Utils\AccountUtil;
-use App\Models\SalePayment;
-use App\Models\SaleProduct;
-use App\Utils\CustomerUtil;
-use App\Utils\PurchaseUtil;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Models\ProductBranch;
-use App\Utils\NameSearchUtil;
 use App\Mail\FinalSaleCreated;
 use App\Mail\SaleOrderCreated;
-use App\Utils\ProductStockUtil;
 use App\Mail\SaleQuotationCreated;
-use App\Utils\CustomerPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Models\Customer;
+use App\Models\PaymentMethod;
+use App\Models\Product;
+use App\Models\ProductBranch;
+use App\Models\Sale;
+use App\Models\SalePayment;
+use App\Models\SaleProduct;
+use App\Models\User;
 use App\Services\GeneralSettingServiceInterface;
+use App\Utils\AccountUtil;
+use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\NameSearchUtil;
+use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SaleUtil;
+use App\Utils\SmsUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\EmailServiceInterface;
 use Modules\Communication\Interface\SmsServiceInterface;
 
@@ -643,7 +642,7 @@ class SaleController extends Controller
             //         $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
             //     }
             // }
-            
+
             $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($sale->id);
 
             DB::commit();
@@ -655,14 +654,14 @@ class SaleController extends Controller
 
             if ($request->status == 1 || $request->status == 3) {
                 if ($request->status == 1) {
-                    if ( $sale->customer && $sale?->customer?->email) {
+                    if ($sale->customer && $sale?->customer?->email) {
                         $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
                     }
-                }elseif($request->status == 3){
+                } elseif ($request->status == 3) {
                     if ($sale->customer && $sale?->customer?->email) {
                         $this->emailService->send($sale->customer->email, new SaleOrderCreated($sale));
                     }
-                }else{
+                } else {
                     return view('sales.save_and_print_template.sale_print', compact(
                         'sale',
                         'previous_due',
@@ -672,7 +671,7 @@ class SaleController extends Controller
                         'change_amount',
                         'customerCopySaleProducts'
                     ));
-    
+
                 }
             } elseif ($request->status == 2) {
 
@@ -681,6 +680,7 @@ class SaleController extends Controller
                 if ($sale->customer && $sale?->customer?->email) {
                     $this->emailService->send($sale->customer->email, new SaleQuotationCreated($sale));
                 }
+
                 return view('sales.save_and_print_template.quotation_print', compact('sale', 'customerCopySaleProducts'));
             }
         } else {
@@ -694,8 +694,7 @@ class SaleController extends Controller
                 session()->flash('successMsg', 'Sale draft created successfully');
 
                 return response()->json(['draftMsg' => 'Sale draft created successfully']);
-            } 
-            elseif ($request->status == 4) {
+            } elseif ($request->status == 4) {
                 session()->flash('successMsg', 'Sale quotation created successfully');
 
                 return response()->json(['quotationMsg' => 'Sale quotation created successfully']);

@@ -29,6 +29,7 @@ class SaleMailJob implements ShouldQueue
         $this->sale = $sale;
 
     }
+
     /**
      * Execute the job.
      *

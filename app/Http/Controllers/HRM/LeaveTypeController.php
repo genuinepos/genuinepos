@@ -15,7 +15,7 @@ class LeaveTypeController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (! auth()->user()->can('leave_type')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -51,7 +51,7 @@ class LeaveTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (! auth()->user()->can('leave_type')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -72,7 +72,7 @@ class LeaveTypeController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (! auth()->user()->can('leave_type')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -84,7 +84,7 @@ class LeaveTypeController extends Controller
 
     public function update(Request $request)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (! auth()->user()->can('leave_type')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -105,7 +105,7 @@ class LeaveTypeController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (! auth()->user()->can('leave_type')) {
 
             abort(403, 'Access Forbidden.');
         }

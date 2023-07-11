@@ -79,7 +79,7 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
-       
+
         $this->validate($request, [
             'employee_id' => 'required',
             'leave_type_id' => 'required',

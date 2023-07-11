@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PurchaseReturnCreated;
-use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseReturn;
 use App\Models\PurchaseReturnProduct;
+use App\Models\PurchaseReturnProduct;
 use App\Models\Supplier;
 use App\Utils\AccountUtil;
+use App\Utils\AccountUtil;
 use App\Utils\Converter;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
 use App\Utils\ProductStockUtil;
@@ -18,13 +20,9 @@ use App\Utils\PurchaseReturnUtil;
 use App\Utils\PurchaseUtil;
 use App\Utils\SupplierUtil;
 use Carbon\Carbon;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\ProductBranchVariant;
-use App\Models\PurchaseReturnProduct;
-use App\Models\ProductWarehouseVariant;
-use App\Utils\AccountUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use Modules\Communication\Interface\EmailServiceInterface;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -45,9 +43,11 @@ class PurchaseReturnController extends Controller
     protected $accountUtil;
 
     protected $invoiceVoucherRefIdUtil;
+
     protected $emailService;
+
     public function __construct(
-        EmailServiceInterface  $emailService,
+        EmailServiceInterface $emailService,
         PurchaseReturnUtil $purchaseReturnUtil,
         NameSearchUtil $nameSearchUtil,
         ProductStockUtil $productStockUtil,
@@ -318,7 +318,7 @@ class PurchaseReturnController extends Controller
                 'purchase_return_products.product',
                 'purchase_return_products.variant',
             ])->where('purchase_id', $purchaseId)->first();
-            
+
             if ($purchaseReturn) {
 
                 return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('return'));
@@ -607,6 +607,7 @@ class PurchaseReturnController extends Controller
             if ($return?->supplier && $return?->supplier?->email) {
                 $this->emailService->send($return->supplier->email, new PurchaseReturnCreated($return));
             }
+
             return view('purchases.purchase_return.save_and_print_template.purchase_return_print_view', compact('return'));
         } else {
 

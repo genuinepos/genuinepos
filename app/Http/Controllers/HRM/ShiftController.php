@@ -18,7 +18,7 @@ class ShiftController extends Controller
     //shift page shown
     public function index(Request $request)
     {
-        if (!auth()->user()->can('shift')) {
+        if (! auth()->user()->can('shift')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -47,7 +47,7 @@ class ShiftController extends Controller
 
     public function shiftEdit($id)
     {
-        if (!auth()->user()->can('shift')) {
+        if (! auth()->user()->can('shift')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -66,7 +66,7 @@ class ShiftController extends Controller
     //shift store method
     public function storeShift(Request $request)
     {
-        if (!auth()->user()->can('shift')) {
+        if (! auth()->user()->can('shift')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -88,7 +88,7 @@ class ShiftController extends Controller
     //update shift
     public function updateShift(Request $request)
     {
-        if (!auth()->user()->can('shift')) {
+        if (! auth()->user()->can('shift')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -115,14 +115,14 @@ class ShiftController extends Controller
 
     public function deleteShift(Request $request, $id)
     {
-        if (!auth()->user()->can('shift')) {
+        if (! auth()->user()->can('shift')) {
 
             abort(403, 'Access Forbidden.');
         }
-               
-       $shift = Shift::find($id);
-       if (!is_null($shift)) {
-           $shift->delete();
+
+        $shift = Shift::find($id);
+        if (! is_null($shift)) {
+            $shift->delete();
         }
 
         return response()->json('Shift deleted successfully.');

@@ -38,7 +38,7 @@ class PayrollController extends Controller
     // Index view of payroll
     public function index(Request $request)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -152,7 +152,7 @@ class PayrollController extends Controller
     // Create payroll
     public function create(Request $request)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -194,7 +194,7 @@ class PayrollController extends Controller
     // Store payroll
     public function store(Request $request)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -269,7 +269,7 @@ class PayrollController extends Controller
     // Payroll Edit view
     public function edit($payrollId)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -282,7 +282,7 @@ class PayrollController extends Controller
     // salary Update
     public function update(Request $request, $salaryId)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -416,7 +416,7 @@ class PayrollController extends Controller
     // Show payroll method
     public function show($payrollId)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -429,7 +429,7 @@ class PayrollController extends Controller
     // Payroll delete method
     public function delete(Request $request, $payrollId)
     {
-        if (!auth()->user()->can('payroll')) {
+        if (! auth()->user()->can('payroll')) {
 
             abort(403, 'Access Forbidden.');
         }

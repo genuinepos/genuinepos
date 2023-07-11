@@ -17,9 +17,10 @@ class DashboardController extends Controller
     {
         $totalEmployee = User::all()->count();
         $totalDepartment = Department::all()->count();
-        $todayAttendance =  Attendance::whereDate('created_at', today())->count();
+        $todayAttendance = Attendance::whereDate('created_at', today())->count();
         $todayLeave = leave::where('start_date', date('d-m-Y'))->count();
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('hrm.dashboard.hrm_dashboard', compact('branches', 'totalEmployee', 'totalDepartment', 'todayAttendance', 'todayLeave'));
     }
 

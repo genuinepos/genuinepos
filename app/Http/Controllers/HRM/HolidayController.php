@@ -17,7 +17,7 @@ class HolidayController extends Controller
     //holiday page show methods
     public function index()
     {
-        if (!auth()->user()->can('holiday')) {
+        if (! auth()->user()->can('holiday')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -30,7 +30,7 @@ class HolidayController extends Controller
     //all holidays data get for holiday pages
     public function allHolidays()
     {
-        if (!auth()->user()->can('holiday')) {
+        if (! auth()->user()->can('holiday')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -51,7 +51,7 @@ class HolidayController extends Controller
     //store holidays methods
     public function storeHolidays(Request $request)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (! auth()->user()->can('holiday')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -89,7 +89,7 @@ class HolidayController extends Controller
     //Edit holid
     public function edit($id)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (! auth()->user()->can('holiday')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -103,7 +103,7 @@ class HolidayController extends Controller
     //update holiday
     public function updateHoliday(Request $request)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (! auth()->user()->can('holiday')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -141,7 +141,7 @@ class HolidayController extends Controller
     //destroy holidays
     public function deleteHolidays(Request $request, $id)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (! auth()->user()->can('holiday')) {
 
             abort(403, 'Access Forbidden.');
         }

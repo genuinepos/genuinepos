@@ -17,7 +17,7 @@ class DesignationController extends Controller
     //show designation page only
     public function index()
     {
-        if (!auth()->user()->can('designation')) {
+        if (! auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -28,7 +28,7 @@ class DesignationController extends Controller
     //ajax request for all designation
     public function allDesignation()
     {
-        if (!auth()->user()->can('designation')) {
+        if (! auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -41,7 +41,7 @@ class DesignationController extends Controller
     //designations store
     public function storeDesignation(Request $request)
     {
-        if (!auth()->user()->can('designation')) {
+        if (! auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -61,7 +61,7 @@ class DesignationController extends Controller
     //designations update
     public function updateDesignation(Request $request)
     {
-        if (!auth()->user()->can('designation')) {
+        if (! auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -81,11 +81,11 @@ class DesignationController extends Controller
     //destroy designation
     public function deleteDesignation(Request $request, $designationId)
     {
-        if (!auth()->user()->can('designation')) {
+        if (! auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         $deleteCategory = Designation::find($designationId);
         $deleteCategory->delete();
         Cache::forget('all-categories');

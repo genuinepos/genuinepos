@@ -12,7 +12,7 @@ class MessageController extends Controller
 {
     public function index()
     {
-        if (!auth()->user()->can('msg')) {
+        if (! auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -31,7 +31,7 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('msg')) {
+        if (! auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -58,7 +58,7 @@ class MessageController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('msg')) {
+        if (! auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,11 +78,11 @@ class MessageController extends Controller
 
     public function allMessage()
     {
-        if (!auth()->user()->can('msg')) {
+        if (! auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');

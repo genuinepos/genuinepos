@@ -148,6 +148,7 @@ class CustomEmailController extends Controller
         ];
 
         Mail::to('your_email@gmail.com')->send(new SendWeeklyPostsEmail($testMailData));
+
         return response()->json('Mail sent successfully');
     }
 

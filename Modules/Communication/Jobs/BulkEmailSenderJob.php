@@ -35,15 +35,15 @@ class BulkEmailSenderJob implements ShouldQueue
      */
     public function handle()
     {
-        if(is_array($this->addresses) && count($this->addresses) > 0) {
+        if (is_array($this->addresses) && count($this->addresses) > 0) {
             // \Log::info($this->addresses);
-            foreach($this->addresses as $address) {
+            foreach ($this->addresses as $address) {
                 // sleep(1);
                 Mail::to($address)->send($this->mailObject);
             }
         }
 
-        if(is_string($this->addresses)) {
+        if (is_string($this->addresses)) {
             // \Log::info($this->addresses);
             // sleep(1);
             Mail::to($this->addresses)->send($this->mailObject);

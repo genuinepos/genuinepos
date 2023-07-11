@@ -17,8 +17,9 @@ class SmsService implements SmsServiceInterface
 {
     public function send(string $message, string $toUser)
     {
-        if(config('app.debug')) {
-            Log::info('SMS sent to ' . $toUser);
+        if (config('app.debug')) {
+            Log::info('SMS sent to '.$toUser);
+
             return;
         }
         $setting = GeneralSetting::sms();
@@ -40,8 +41,9 @@ class SmsService implements SmsServiceInterface
 
     public function sendMultiple(string $message, array $numbers)
     {
-        if(config('app.debug')) {
-            Log::info('Multiple SMS sent to ' . \implode($numbers, ' ,'));
+        if (config('app.debug')) {
+            Log::info('Multiple SMS sent to '.\implode($numbers, ' ,'));
+
             return;
         }
 

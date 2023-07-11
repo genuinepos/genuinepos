@@ -5,7 +5,6 @@ namespace Modules\Communication\Emails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SaleCreated extends Mailable
 {

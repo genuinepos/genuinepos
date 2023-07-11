@@ -12,7 +12,7 @@ class AttendanceReportController extends Controller
 {
     public function attendanceReport(Request $request)
     {
-        if (!auth()->user()->can('attendance')) {
+        if (! auth()->user()->can('attendance')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -102,7 +102,7 @@ class AttendanceReportController extends Controller
 
     public function attendanceReportPrint(Request $request)
     {
-        if (!auth()->user()->can('attendance')) {
+        if (! auth()->user()->can('attendance')) {
 
             abort(403, 'Access Forbidden.');
         }

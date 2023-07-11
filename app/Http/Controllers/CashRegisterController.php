@@ -17,7 +17,7 @@ class CashRegisterController extends Controller
     // Create cash register
     public function create()
     {
-        if (!auth()->user()->can('cash_counters')) {
+        if (! auth()->user()->can('cash_counters')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -47,7 +47,7 @@ class CashRegisterController extends Controller
     // Store cash register
     public function store(Request $request)
     {
-        if (!auth()->user()->can('cash_counters')) {
+        if (! auth()->user()->can('cash_counters')) {
 
             abort(403, 'Access Forbidden.');
         }

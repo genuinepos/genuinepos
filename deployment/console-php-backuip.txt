@@ -123,11 +123,6 @@ Route::get('/test', function () {
         ->get();
 });
 
-// Route::get('dbal', function() {
-//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
-// });
-
-
 // enum VoucherType : int
 // {
 //     case Disabled = 'disabled';

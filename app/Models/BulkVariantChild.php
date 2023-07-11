@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\BulkVariant;
-use App\Models\BaseModel;
-
 class BulkVariantChild extends BaseModel
 {
     public function bulk_variant()

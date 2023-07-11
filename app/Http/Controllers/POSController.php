@@ -2,33 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
-use App\Models\Sale;
-use App\Utils\SmsUtil;
-use App\Models\Product;
-use App\Utils\SaleUtil;
-use App\Models\CashFlow;
-use App\Models\Customer;
 use App\Jobs\SaleMailJob;
-use App\Utils\AccountUtil;
-use App\Models\SalePayment;
-use App\Models\SaleProduct;
-use App\Utils\CustomerUtil;
 use App\Models\CashRegister;
-use Illuminate\Http\Request;
+use App\Models\CashRegisterTransaction;
+use App\Models\Customer;
 use App\Models\PaymentMethod;
 use App\Models\ProductBranch;
-use App\Models\CustomerLedger;
-use App\Models\GeneralSetting;
-use App\Models\CustomerPayment;
-use App\Utils\ProductStockUtil;
-use App\Utils\CustomerPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Models\ProductBranchVariant;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Models\CashRegisterTransaction;
+use App\Models\Sale;
+use App\Models\SaleProduct;
 use App\Services\GeneralSettingServiceInterface;
+use App\Utils\AccountUtil;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\ProductStockUtil;
+use App\Utils\SaleUtil;
+use App\Utils\SmsUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class POSController extends Controller
 {
@@ -44,11 +38,13 @@ class POSController extends Controller
         private UserActivityLogUtil $userActivityLogUtil
     ) {
     }
+    ) {
+    }
 
     // Create pos view
     public function create()
     {
-        if (!auth()->user()->can('pos_add')) {
+        if (! auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -60,7 +56,7 @@ class POSController extends Controller
 
         if ($openedCashRegister) {
 
-            $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+            $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
 
             $brands = DB::table('brands')->get(['id', 'name']);
 
@@ -78,7 +74,7 @@ class POSController extends Controller
                     'accounts.name',
                     'accounts.account_number',
                     'accounts.account_type',
-                    'accounts.balance'
+                    'accounts.balance',
                 ]);
 
             $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -145,13 +141,13 @@ class POSController extends Controller
             $invoicePrefix = '';
             if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
 
-                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
+                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y').$branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix.$branchInvoiceSchema->start_from;
             } else {
 
                 $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
                 if ($defaultSchemas) {
 
-                    $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
+                    $invoicePrefix = $defaultSchemas->format == 2 ? date('Y').$defaultSchemas->start_from : $defaultSchemas->prefix.$defaultSchemas->start_from;
                 }
             }
 
@@ -162,7 +158,7 @@ class POSController extends Controller
 
             if ($request->action == 2 || $request->action == 4) {
 
-                if (!$request->customer_id) {
+                if (! $request->customer_id) {
 
                     return response()->json(['errorMsg' => 'Listed customer is required for draft or quotation.']);
                 }
@@ -170,7 +166,7 @@ class POSController extends Controller
 
             if ($request->action == 1) {
 
-                if ($request->received_amount < $request->total_receivable_amount && !$request->customer_id) {
+                if ($request->received_amount < $request->total_receivable_amount && ! $request->customer_id) {
 
                     return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
                 }
@@ -205,15 +201,15 @@ class POSController extends Controller
             }
 
             // generate invoice ID
-            $invoiceId =  $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
+            $invoiceId = $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, '0', STR_PAD_LEFT);
 
             $addSale = new Sale();
-            $addSale->invoice_id = $invoicePrefix . $invoiceId;
+            $addSale->invoice_id = $invoicePrefix.$invoiceId;
             $addSale->admin_id = auth()->user()->id;
             $addSale->sale_account_id = $request->sale_account_id;
 
             $addSale->branch_id = auth()->user()->branch_id;
-            $addSale->customer_id = $request->customer_id != 0 ? $request->customer_id : NULL;
+            $addSale->customer_id = $request->customer_id != 0 ? $request->customer_id : null;
             $addSale->status = $request->action;
 
             if ($request->action == 1) {
@@ -343,7 +339,7 @@ class POSController extends Controller
             $__index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $addSaleProduct = new SaleProduct();
                 $addSaleProduct->sale_id = $addSale->id;
                 $addSaleProduct->product_id = $product_id;
@@ -358,7 +354,7 @@ class POSController extends Controller
                 $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
                 $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
                 $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$__index];
-                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
+                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : null;
                 $addSaleProduct->subtotal = $request->subtotals[$__index];
                 $addSaleProduct->stock_branch_id = $branch_id;
                 $addSaleProduct->save();
@@ -380,7 +376,7 @@ class POSController extends Controller
                         date: date('Y-m-d'),
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         lessAmount: $request->less_amount ? $request->less_amount : 0,
-                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
                         reference: $request->reference,
                         note: $request->note,
                     );
@@ -430,7 +426,7 @@ class POSController extends Controller
                 'sale_products.product',
                 'sale_products.product.warranty',
                 'sale_products.variant',
-                'admin'
+                'admin',
             ])->where('id', $addSale->id)->first();
 
             if ($request->action == 1) {
@@ -438,7 +434,7 @@ class POSController extends Controller
                 $__index = 0;
                 foreach ($request->product_ids as $product_id) {
 
-                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                     $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
                     $this->productStockUtil->adjustBranchStock($product_id, $variant_id, $branch_id);
 
@@ -519,6 +515,7 @@ class POSController extends Controller
     public function pickHoldInvoice()
     {
         $holdInvoices = Sale::where('branch_id', auth()->user()->branch_id)->where('status', 5)->where('admin_id', auth()->user()->id)->get();
+
         return view('sales.pos.ajax_view.hold_invoice_list', compact('holdInvoices'));
     }
 
@@ -526,7 +523,7 @@ class POSController extends Controller
     public function edit($saleId)
     {
         $sale = Sale::with('branch', 'sale_products', 'customer', 'admin')->where('id', $saleId)->first();
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $priceGroups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
 
@@ -540,7 +537,7 @@ class POSController extends Controller
                 'accounts.name',
                 'accounts.account_number',
                 'accounts.account_type',
-                'accounts.balance'
+                'accounts.balance',
             ]);
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -585,6 +582,7 @@ class POSController extends Controller
                 }
             }
         }
+
         return view('sales.pos.ajax_view.invoice_product_list', compact('invoiceProducts', 'qty_limits'));
     }
 
@@ -602,7 +600,7 @@ class POSController extends Controller
             'sale_products',
             'sale_products.product',
             'sale_products.variant',
-            'sale_products.product.comboProducts'
+            'sale_products.product.comboProducts',
         ])->where('id', $request->sale_id)->first();
 
         if ($request->product_ids == null) {
@@ -679,7 +677,7 @@ class POSController extends Controller
         $__index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
 
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
                 ->where('product_id', $product_id)
@@ -707,7 +705,7 @@ class POSController extends Controller
                 $addSaleProduct = new SaleProduct();
                 $addSaleProduct->sale_id = $updateSale->id;
                 $addSaleProduct->product_id = $product_id;
-                $addSaleProduct->product_variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                $addSaleProduct->product_variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $addSaleProduct->quantity = $request->quantities[$__index];
                 $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$__index];
                 $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
@@ -756,7 +754,7 @@ class POSController extends Controller
                 receiptVoucherPrefix: $receiptVoucherPrefix,
                 receivedAmount: $receivedAmount,
                 saleId: $updateSale->id,
-                customerPaymentId: NULL,
+                customerPaymentId: null,
                 accountId: $request->account_id,
                 paymentMethodId: $request->payment_method_id,
                 invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
@@ -828,10 +826,12 @@ class POSController extends Controller
         } elseif ($request->action == 2) {
 
             $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $updateSale->id)->first();
+
             return view('sales.save_and_print_template.draft_print', compact('sale'));
         } elseif ($request->action == 4) {
 
             $sale = Sale::with(['customer', 'branch', 'sale_products', 'sale_products.product', 'sale_products.variant'])->where('id', $updateSale->id)->first();
+
             return view('sales.save_and_print_template.quotation_print', compact('sale'));
         } elseif ($request->action == 5) {
 
@@ -851,6 +851,7 @@ class POSController extends Controller
             ->orderBy('id', 'desc')
             ->limit(20)
             ->get();
+
         return view('sales.pos.ajax_view.suspended_sale_list', compact('sales'));
     }
 
@@ -869,7 +870,7 @@ class POSController extends Controller
         } else {
 
             return response()->json([
-                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this Location/Shop.'
+                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock in this Location/Shop.',
             ]);
         }
     }
@@ -877,6 +878,7 @@ class POSController extends Controller
     public function addQuickCustomerModal()
     {
         $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
+
         return view('sales.ajax_view.quick_add_customer', compact('customerGroups'));
     }
 
@@ -904,7 +906,7 @@ class POSController extends Controller
             $query->where('products.brand_id', $request->brand_id);
         }
 
-        if (!$request->category_id  && !$request->brand_id) {
+        if (! $request->category_id && ! $request->brand_id) {
 
             $query->orderBy('products.id', 'DESC')->limit(90);
         }
@@ -962,6 +964,7 @@ class POSController extends Controller
                 'units.code_name as u_code',
             )
             ->where('branch_id', auth()->user()->branch_id)->get();
+
         return view('sales.pos.ajax_view.stock', compact('products'));
     }
 
@@ -1042,7 +1045,7 @@ class POSController extends Controller
         return response()->json([
             'sale' => $sale,
             'ex_items' => $ex_items,
-            'qty_limits' => $qty_limits
+            'qty_limits' => $qty_limits,
         ]);
     }
 
@@ -1233,6 +1236,9 @@ class POSController extends Controller
                 }
             }
 
+
+            $sale = Sale::with([
+
             $sale = Sale::with([
                 'customer',
                 'branch',
@@ -1271,11 +1277,11 @@ class POSController extends Controller
     {
         $enable_cus_point = $generalSettings['reward_point_settings__enable_cus_point'];
 
-        (int)$amount_for_unit_rp = $generalSettings['reward_point_settings__amount_for_unit_rp'];
+        (int) $amount_for_unit_rp = $generalSettings['reward_point_settings__amount_for_unit_rp'];
 
-        (int)$min_order_total_for_rp = $generalSettings['reward_point_settings__min_order_total_for_rp'];
+        (int) $min_order_total_for_rp = $generalSettings['reward_point_settings__min_order_total_for_rp'];
 
-        (int)$max_rp_per_order = $generalSettings['reward_point_settings__max_rp_per_order'];
+        (int) $max_rp_per_order = $generalSettings['reward_point_settings__max_rp_per_order'];
 
         if ($enable_cus_point == '1') {
 
@@ -1284,7 +1290,7 @@ class POSController extends Controller
                 if ($amount_for_unit_rp != 0) {
 
                     $calc_point = $total_amount / $amount_for_unit_rp;
-                    $__net_point = (int)$calc_point;
+                    $__net_point = (int) $calc_point;
 
                     if ($max_rp_per_order && $__net_point > $max_rp_per_order) {
 
@@ -1327,6 +1333,7 @@ class POSController extends Controller
         ];
 
         $generalSettingService->updateAndSync($settings);
+
         return response()->json('POS settings updated successfully');
     }
 }

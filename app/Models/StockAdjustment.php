@@ -1,17 +1,13 @@
 <?php
 
 namespace App\Models;
-use App\Models\Branch;
-use App\Models\User;
-use App\Models\StockAdjustmentProduct;
-use App\Models\StockAdjustmentRecover;
-use App\Models\BaseModel;
 
 class StockAdjustment extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
-    
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
@@ -26,7 +22,7 @@ class StockAdjustment extends BaseModel
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
-    
+
     public function adjustment_products()
     {
         return $this->hasMany(StockAdjustmentProduct::class);

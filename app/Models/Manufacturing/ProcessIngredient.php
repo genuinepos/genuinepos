@@ -2,15 +2,15 @@
 
 namespace App\Models\Manufacturing;
 
-use App\Models\Unit;
+use App\Models\BaseModel;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\Manufacturing\Process;
-use App\Models\BaseModel;
+use App\Models\Unit;
 
 class ProcessIngredient extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function process()

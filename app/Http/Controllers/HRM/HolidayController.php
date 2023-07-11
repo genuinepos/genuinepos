@@ -2,30 +2,39 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Models\Branch;
+use App\Http\Controllers\Controller;
 use App\Models\Hrm\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 
 class HolidayController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //holiday page show methods
     public function index()
     {
+        if (! auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
+
         return view('hrm.holiday.index', compact('branches'));
     }
 
     //all holidays data get for holiday pages
     public function allHolidays()
     {
+        if (! auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $holidays = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $holidays = Holiday::with('branch')->orderBy('id', 'DESC')->get();
@@ -42,6 +51,11 @@ class HolidayController extends Controller
     //store holidays methods
     public function storeHolidays(Request $request)
     {
+        if (! auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'holiday_name' => 'required',
             'start_date' => 'required',
@@ -56,9 +70,9 @@ class HolidayController extends Controller
         if (auth()->user()->role_type == 1) {
             if ($request->branch_id == 'All') {
                 $addHoliday->is_all = 1;
-                $addHoliday->branch_id = NULL;
+                $addHoliday->branch_id = null;
             } elseif ($request->branch_id == '') {
-                $addHoliday->branch_id = NULL;
+                $addHoliday->branch_id = null;
             } else {
                 $addHoliday->branch_id = $request->branch_id;
             }
@@ -75,14 +89,25 @@ class HolidayController extends Controller
     //Edit holid
     public function edit($id)
     {
+        if (! auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $holiday = Holiday::with('branch')->where('id', $id)->first();
         $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
+
         return view('hrm.holiday.ajax.edit', compact('holiday', 'branches'));
     }
 
     //update holiday
     public function updateHoliday(Request $request)
     {
+        if (! auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'holiday_name' => 'required',
             'start_date' => 'required',
@@ -96,12 +121,12 @@ class HolidayController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $updateHoliday->is_all = 0;
-            $updateHoliday->branch_id = NULL;
+            $updateHoliday->branch_id = null;
             if ($request->branch_id == 'All') {
                 $updateHoliday->is_all = 1;
-                $updateHoliday->branch_id = NULL;
-            } elseif (!$request->branch_id) {
-                $updateHoliday->branch_id = NULL;
+                $updateHoliday->branch_id = null;
+            } elseif (! $request->branch_id) {
+                $updateHoliday->branch_id = null;
             } elseif ($request->branch_id) {
                 $updateHoliday->branch_id = $request->branch_id;
             }
@@ -116,8 +141,13 @@ class HolidayController extends Controller
     //destroy holidays
     public function deleteHolidays(Request $request, $id)
     {
+        if (! auth()->user()->can('holiday')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $holiday = Holiday::find($id);
-        if (!is_null($holiday)) {
+        if (! is_null($holiday)) {
             $holiday->delete();
         }
 

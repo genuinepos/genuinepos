@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\BaseModel;
-use App\Models\PurchaseSaleProductChain;
-
 class PurchaseProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function purchase()
@@ -26,7 +22,7 @@ class PurchaseProduct extends BaseModel
     {
         return $this->belongsTo(ProductVariant::class, 'product_variant_id', 'id');
     }
-    
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');

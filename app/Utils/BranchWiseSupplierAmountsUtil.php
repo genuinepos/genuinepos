@@ -10,7 +10,7 @@ class BranchWiseSupplierAmountsUtil
     public function branchWiseSupplierAmount($supplierId, $branch_id = null, $from_date = null, $to_date = null)
     {
         $openingBalanceDetails = DB::table('supplier_opening_balances')->where('supplier_opening_balances.supplier_id', $supplierId)
-            ->where('supplier_opening_balances.branch_id', ($branch_id == 'NULL' ? NULL : $branch_id))
+            ->where('supplier_opening_balances.branch_id', ($branch_id == 'NULL' ? null : $branch_id))
             ->select('supplier_opening_balances.amount', 'supplier_opening_balances.is_show_again')
             ->first();
 
@@ -24,7 +24,7 @@ class BranchWiseSupplierAmountsUtil
 
             if ($branch_id == 'NULL') {
 
-                $query->where('supplier_ledgers.branch_id', NULL);
+                $query->where('supplier_ledgers.branch_id', null);
             } else {
 
                 $query->where('supplier_ledgers.branch_id', $branch_id);
@@ -130,9 +130,9 @@ class BranchWiseSupplierAmountsUtil
 
             if ($branch_id == 'NULL') {
 
-                $allPurchasesAndOrdersQuery->where('purchases.branch_id', NULL);
-                $purchasesQuery->where('purchases.branch_id', NULL);
-                $ordersQuery->where('purchases.branch_id', NULL);
+                $allPurchasesAndOrdersQuery->where('purchases.branch_id', null);
+                $purchasesQuery->where('purchases.branch_id', null);
+                $ordersQuery->where('purchases.branch_id', null);
             } else {
 
                 $allPurchasesAndOrdersQuery->where('purchases.branch_id', $branch_id);

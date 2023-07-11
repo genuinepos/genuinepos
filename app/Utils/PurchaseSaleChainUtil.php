@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use App\Utils\PurchaseUtil;
 use App\Models\PurchaseProduct;
 
 class PurchaseSaleChainUtil

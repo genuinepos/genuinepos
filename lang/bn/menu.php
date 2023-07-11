@@ -1,4 +1,5 @@
 <?php
+
 return [
     'e_commerce' => 'ই-কমার্স',
     'inventory_app' => 'ইনভেন্টরি অ্যাপ',
@@ -111,7 +112,7 @@ return [
     'item' => 'আইটেম',
     'item_weight_by_scale' => 'স্কেল দ্বারা আইটেম ওজন',
     'add_item' => 'আইটেম যোগ করুন',
-    'dontinued_to_this_next_page' => 'এই পরবর্তী পৃষ্ঠায় অবিরত',
+    'continued_to_this_next_page' => 'এই পরবর্তী পৃষ্ঠায় অবিরত',
     'change_amount' => 'পরিমাণ পরিবর্তন করুন',
     'item_list' => 'উপকরণ তালিকা',
     'import_item' => 'আইটেম আমদানি করুন',
@@ -1131,7 +1132,13 @@ return [
     'add_work_space' => 'কাজের স্থান যোগ করুন',
     'edit_work_space' => 'কাজের স্থান সম্পাদনা করুন',
     'uploaded' => 'আপলোড করা হয়েছে',
-    'no' => 'না.',
+    'yes' => 'হ্যাঁ',
+    'no' => 'না',
+    'user_forget_password_via_email' => 'পাসওয়ার্ড ভুলে গেছেন',
+    'coupon_offer_via_email' => 'ইমেলের মাধ্যমে কুপন/অফার পাঠান',
+    'discount_redeemed_via_email' => 'ইমেলের মাধ্যমে ডিসকাউন্ট খালাস পাঠান',
+    'new_product_arrived_via_email' => 'ইমেলের মাধ্যমে আগত নতুন পণ্যের তথ্য পাঠান',
+    'weekly_news_letter_via_email' => 'ইমেলের মাধ্যমে সাপ্তাহিক সংবাদ পত্র পাঠান',
     'expense_voucher' => 'ব্যয় ভাউচার',
     'expense_payment_voucher' => 'খরচ পেমেন্ট ভাউচার',
     'payment_voucher_no' => 'পেমেন্ট ভাউচার নং',
@@ -1732,7 +1739,7 @@ return [
     'customer_remainder_via_sms' => 'এসএমএসের মাধ্যমে গ্রাহকের অবশিষ্ট অবশিষ্ট',
     'enable_imei_or_serial' => 'IMEI বা SL NO সক্ষম করুন৷',
     'change_money_receipt_voucher_status' => 'টাকা রসিদ ভাউচার স্থিতি পরিবর্তন করুন',
-    'a/c'  => 'A/c',
+    'a/c' => 'A/c',
     'expense_pay_account' => 'খরচ বেতন অ্যাকাউন্ট',
     'receipt' => 'প্রাপ্তি',
     'receipt_list' => 'রসিদ তালিকা',

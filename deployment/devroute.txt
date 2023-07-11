@@ -181,7 +181,6 @@ Route::get('rp', function () {
 //     $values = array_values($values);
 //     $arr = \Arr::collapse($values);
 //     $arr = array_keys($arr);
-//     dd($arr);
 //     foreach($rp as $k => $v) {
 //         echo $k . '<br>' . $v;
 //     }
@@ -229,7 +228,3 @@ Route::get('/test', function () {
     //     $p->save();
     // }
 });
-
-// Route::get('dbal', function() {
-//     dd(\Doctrine\DBAL\Types\Type::getTypesMap());
-// });

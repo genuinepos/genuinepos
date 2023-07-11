@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class SalePaymentReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -30,7 +31,7 @@ class SalePaymentReportController extends Controller
 
             if ($request->customer_id) {
                 if ($request->customer_id == 'NULL') {
-                    $query->where('sales.customer_id', NULL);
+                    $query->where('sales.customer_id', null);
                 } else {
                     $query->where('sales.customer_id', $request->customer_id);
                 }
@@ -38,7 +39,7 @@ class SalePaymentReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('sales.branch_id', NULL);
+                    $query->where('sales.branch_id', null);
                 } else {
                     $query->where('sales.branch_id', $request->branch_id);
                 }
@@ -79,15 +80,16 @@ class SalePaymentReportController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('customer_name',  function ($row) {
+                ->editColumn('customer_name', function ($row) {
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount" data-value="' . $row->paid_amount . '">' . $this->converter->format_in_bdt($row->paid_amount) . '</span>')
+                ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount" data-value="'.$row->paid_amount.'">'.$this->converter->format_in_bdt($row->paid_amount).'</span>')
                 ->rawColumns(['date', 'customer_name', 'paid_amount'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
+
         return view('reports.sale_payment_report.index', compact('branches', 'customers'));
     }
 
@@ -103,7 +105,7 @@ class SalePaymentReportController extends Controller
 
         if ($request->customer_id) {
             if ($request->customer_id == 'NULL') {
-                $query->where('sales.customer_id', NULL);
+                $query->where('sales.customer_id', null);
             } else {
                 $query->where('sales.customer_id', $request->customer_id);
             }
@@ -111,7 +113,7 @@ class SalePaymentReportController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('sales.branch_id', NULL);
+                $query->where('sales.branch_id', null);
             } else {
                 $query->where('sales.branch_id', $request->branch_id);
             }

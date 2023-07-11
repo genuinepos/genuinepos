@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tax;
-use App\Models\Unit;
-use App\Utils\TimeZone;
 use App\Models\Currency;
-use Illuminate\Http\Request;
-use App\Models\GeneralSetting;
+use App\Models\Unit;
 use App\Services\GeneralSettingServiceInterface;
+use App\Utils\TimeZone;
+use Illuminate\Http\Request;
 
 class GeneralSettingController extends Controller
 {
@@ -19,13 +17,14 @@ class GeneralSettingController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('g_settings')) {
+        if (! auth()->user()->can('g_settings')) {
             abort(403, 'Access Forbidden.');
         }
         $generalSettings = config('generalSettings');
         $currencies = Currency::all();
         $units = Unit::all();
         $timezones = TimeZone::all();
+
         return view('settings.general_settings.index', compact(
             'generalSettings',
             'currencies',
@@ -41,12 +40,12 @@ class GeneralSettingController extends Controller
         if ($request->hasFile('business_logo')) {
             if ($generalSettings['business__business_logo'] != null) {
                 $bLogo = $generalSettings['business__business_logo'];
-                if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
-                    unlink(public_path('uploads/business_logo/' . $bLogo));
+                if (file_exists(public_path('uploads/business_logo/'.$bLogo))) {
+                    unlink(public_path('uploads/business_logo/'.$bLogo));
                 }
             }
             $logo = $request->file('business_logo');
-            $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
+            $logoName = uniqid().'-'.'.'.$logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
@@ -69,7 +68,8 @@ class GeneralSettingController extends Controller
             'business__timezone' => $request->timezone,
         ];
 
-       $this->generalSettingService->updateAndSync($settings);
+        $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Business settings updated successfully');
     }
 
@@ -84,6 +84,7 @@ class GeneralSettingController extends Controller
             'tax__is_tax_en_purchase_sale' => isset($request->is_tax_en_purchase_sale) ? 1 : 0,
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Tax settings updated successfully');
     }
 
@@ -93,6 +94,7 @@ class GeneralSettingController extends Controller
             'dashboard__view_stock_expiry_alert_for' => $request->view_stock_expiry_alert_for,
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Dashboard settings updated successfully.');
     }
 
@@ -113,6 +115,7 @@ class GeneralSettingController extends Controller
             'prefix__expanse_payment' => $request->expanse_payment,
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Prefix settings updated Successfully');
     }
 
@@ -123,6 +126,7 @@ class GeneralSettingController extends Controller
             'system__datatables_page_entry' => $request->datatable_page_entry,
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('System settings updated Successfully.');
     }
 
@@ -143,6 +147,7 @@ class GeneralSettingController extends Controller
             'modules__service' => isset($request->service) ? 1 : 0,
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Modules settings updated successfully');
     }
 
@@ -153,8 +158,14 @@ class GeneralSettingController extends Controller
             'email_settings__send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
             'email_settings__customer_due_reminder_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
             'email_settings__customer_due_reminder_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
+            'email_settings__user_forget_password_via_email' => isset($request->user_forget_password_via_email) ? 1 : 0,
+            'email_settings__coupon_offer_via_email' => isset($request->coupon_offer_via_email) ? 1 : 0,
+            'email_settings__discount_redeemed_via_email' => isset($request->discount_redeemed_via_email) ? 1 : 0,
+            'email_settings__new_product_arrived_via_email' => isset($request->new_product_arrived_via_email) ? 1 : 0,
+            'email_settings__weekly_news_letter_via_email' => isset($request->weekly_news_letter_via_email) ? 1 : 0,
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Send Email & SMS settings updated successfully');
     }
 
@@ -172,6 +183,7 @@ class GeneralSettingController extends Controller
             'reward_point_settings__max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
         $this->generalSettingService->updateAndSync($settings);
+
         return response()->json('Reward point settings updated Successfully');
     }
 }

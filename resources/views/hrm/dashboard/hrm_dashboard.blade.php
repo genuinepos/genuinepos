@@ -1,11 +1,24 @@
 @extends('layout.master')
 @section('title', 'HRM Dashboard - ')
     @push('stylesheets')
-        <style>
-            #small-badge {font-size: 12px !important;padding: 0px !important;}
-            .leave_application table.display thead th {padding: 0px 10px 0px 10px;border-top: none;border-bottom: none;}
-            .leave_application .dataTables_wrapper {border-bottom: none;border-top: none;-webkit-box-shadow: none;}
+    <style>
+        #small-badge {font-size: 12px !important;padding: 0px !important;}
+        .leave_application table.display thead th {padding: 0px 10px 0px 10px;border-top: none;border-bottom: none;}
+        .leave_application .dataTables_wrapper {border-bottom: none;border-top: none;-webkit-box-shadow: none;}
+        .card-counter .title, .card-counter .sub-title {
+                color: #727272 !important;
+            }
+        .card-counter .icon i {
+            color: #3b3d58;
+        }
+        .card-counter .icon {
+            font-size: 3.5em;
+            padding: 10px;
+            opacity: 1;
+            color: white !important;
+        }
         </style>
+        <link href="{{ asset('backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
     @endpush
 @section('content')
     <section>
@@ -77,7 +90,6 @@
                     </div>
                 </div>
             </div> --}}
-
             <div class="p-3">
                 <div class="card">
                     <div class="card-title mt-4 ps-4">
@@ -85,6 +97,79 @@
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="">HRM</span> @lang('menu.dashboard')
                         </h1>
+                    </div>
+                    <div class="p-3 pt-2">
+                        <div class="row g-3">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('users.index') }}" >
+                                <div class="card-counter alert-primary d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-duotone fa-users"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Total Employees') }}</h3>
+                                        <h1 class="title text-center">
+                                            {{ $totalEmployee }}
+                                        </h1>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.departments') }}">
+                                <div class="card-counter alert-success d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-solid fa-user-check"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Total Departtments') }}</h3>
+                                        <h1 class="title text-center">
+                                            <strong>
+                                                {{ $totalDepartment }}
+                                            </strong>
+                                        </h1>
+                                    </div>
+                                </div>
+                                 </a>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.leaves.index') }}">
+                                <div class="card-counter alert-info d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-solid fa-puzzle-piece"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Today Leave') }}</h3>
+                                        <h1 class="title text-center">
+                                            <strong>
+                                                {{ $todayLeave }}
+                                            </strong>
+                                        </h1>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <a href="{{ route('hrm.attendance') }}">
+                                <div class="card-counter alert-danger d-flex justify-content-around align-content-center">
+                                    <div class="icon">
+                                        <i class="fas fa-solid fa-paper-plane"></i>
+                                    </div>
+                                    <div class="numbers px-1">
+                                        <h3 class="sub-title">{{ __('Todays Attendance')}}</h3>
+                                        <h1 class="title text-center">
+                                            <strong>
+                                                {{ $todayAttendance }}
+                                            </strong>
+                                        </h1>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
                     @if ($generalSettings['addons__branches'] == 1)

@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\Purchase;
-use App\Models\Warehouse;
-use App\Models\PurchaseReturnProduct;
-use App\Models\BaseModel;
-
 class PurchaseReturn extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function purchase()

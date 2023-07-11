@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Essentials;
 
-use Illuminate\Http\Request;
-use App\Models\Essential\Workspace;
 use App\Http\Controllers\Controller;
+use App\Models\Essential\Workspace;
 use App\Models\Essential\WorkspaceTask;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class WorkSpaceTaskController extends Controller
@@ -18,6 +18,7 @@ class WorkSpaceTaskController extends Controller
         }
 
         $ws = Workspace::with(['admin', 'ws_users', 'ws_users.user'])->where('id', $workspaceId)->first();
+
         return view('essentials.work_space.tasks.index', compact('ws'));
     }
 
@@ -80,8 +81,9 @@ class WorkSpaceTaskController extends Controller
 
         $updateTask = WorkspaceTask::where('id', $request->id)->first();
         $updateTask->update([
-            'task_name' => $request->value
+            'task_name' => $request->value,
         ]);
+
         return response()->json('Task updated successfully.');
     }
 
@@ -93,9 +95,10 @@ class WorkSpaceTaskController extends Controller
         }
 
         $deleteWorkspaceTask = WorkspaceTask::where('id', $id)->first();
-        if (!is_null($deleteWorkspaceTask)) {
+        if (! is_null($deleteWorkspaceTask)) {
             $deleteWorkspaceTask->delete();
         }
+
         return response()->json('Task deleted successfully.');
     }
 
@@ -108,7 +111,7 @@ class WorkSpaceTaskController extends Controller
 
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
-            'user_id' => $request->user_id
+            'user_id' => $request->user_id,
         ]);
 
         return response()->json('Successfully.');
@@ -123,8 +126,9 @@ class WorkSpaceTaskController extends Controller
 
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
-            'status' => $request->status
+            'status' => $request->status,
         ]);
+
         return response()->json('Successfully.');
     }
 
@@ -137,8 +141,9 @@ class WorkSpaceTaskController extends Controller
 
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
-            'priority' => $request->priority
+            'priority' => $request->priority,
         ]);
+
         return response()->json('Successfully.');
     }
 }

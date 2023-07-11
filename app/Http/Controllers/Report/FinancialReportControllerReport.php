@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
+use App\Utils\FinancialAmountsUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Utils\FinancialAmountsUtil;
-use App\Http\Controllers\Controller;
-
 
 class FinancialReportControllerReport extends Controller
 {
     protected $financialAmountsUtil;
- 
+
     public function __construct(
         FinancialAmountsUtil $financialAmountsUtil
     ) {
@@ -21,9 +20,9 @@ class FinancialReportControllerReport extends Controller
 
     public function index()
     {
-     
+
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        
+
         return view(
             'reports.financial_report.index_v2',
             compact(
@@ -34,9 +33,10 @@ class FinancialReportControllerReport extends Controller
 
     public function financialAmounts(Request $request)
     {
-     
+
         $allFinancialAmounts = $this->financialAmountsUtil->allFinancialAmounts($request);
         $from_date = $request->from_date;
+
         return view(
             'reports.financial_report.ajax_view.financial_amounts',
             compact(
@@ -67,7 +67,7 @@ class FinancialReportControllerReport extends Controller
         //     DB::raw("sum(IF(type = '2', total_paid, 0)) as total_receive_loan_paid"),
         //     DB::raw("sum(IF(type = '2', due, 0)) as total_receive_loan_due"),
         // )->get();
-        
+
         return view(
             'reports.financial_report.ajax_view.print',
             compact(

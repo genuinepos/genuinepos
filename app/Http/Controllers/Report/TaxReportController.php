@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class TaxReportController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     // Index view of cash register report
     public function index()
     {
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.tax_report.index', compact('branches'));
     }
 
@@ -37,12 +38,12 @@ class TaxReportController extends Controller
 
         $expense_query = DB::table('expanses')
             ->where('expanses.tax_percent', '>', 0);
-            
+
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $purchase_query->where('purchases.branch_id', NULL);
-                $sale_query->where('sales.branch_id', NULL);
-                $expense_query->where('expanses.branch_id', NULL);
+                $purchase_query->where('purchases.branch_id', null);
+                $sale_query->where('sales.branch_id', null);
+                $expense_query->where('expanses.branch_id', null);
             } else {
                 $purchase_query->where('purchases.branch_id', $request->branch_id);
                 $sale_query->where('sales.branch_id', $request->branch_id);
@@ -54,10 +55,10 @@ class TaxReportController extends Controller
             $date_range = explode('-', $request->date_range);
             //$form_date = date('Y-m-d', strtotime($date_range[0] . ' -1 days'));
             $form_date = date('Y-m-d', strtotime($date_range[0]));
-            $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-            $purchase_query->whereBetween('purchases.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $sale_query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
-            $expense_query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+            $to_date = date('Y-m-d', strtotime($date_range[1].' +1 days'));
+            $purchase_query->whereBetween('purchases.report_date', [$form_date.' 00:00:00', $to_date.' 00:00:00']);
+            $sale_query->whereBetween('sales.report_date', [$form_date.' 00:00:00', $to_date.' 00:00:00']);
+            $expense_query->whereBetween('expanses.report_date', [$form_date.' 00:00:00', $to_date.' 00:00:00']);
         }
 
         $purchases = $purchase_query->select(
@@ -73,7 +74,7 @@ class TaxReportController extends Controller
             'suppliers.tax_number',
         )->get();
 
-         $sales = $sale_query->select(
+        $sales = $sale_query->select(
             'sales.date',
             'sales.branch_id',
             'sales.customer_id',
@@ -86,7 +87,7 @@ class TaxReportController extends Controller
             'customers.name as customer_name',
             'customers.tax_number',
         )->get();
-        
+
         $expenses = $expense_query->select(
             'expanses.date',
             'expanses.invoice_id',

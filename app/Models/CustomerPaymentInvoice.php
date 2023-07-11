@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Sale;
-use App\Models\SaleReturn;
-use App\Models\BaseModel;
-
 class CustomerPaymentInvoice extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function sale()

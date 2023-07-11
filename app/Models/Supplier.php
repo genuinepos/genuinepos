@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\PurchaseReturn;
-use App\Models\SupplierPayment;
-use App\Models\SupplierProduct;
-use App\Models\BaseModel;
-
 class Supplier extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function supplier_products()
     {
-        return $this->hasMany(SupplierProduct::class)->where('label_qty' , '>', 0);
+        return $this->hasMany(SupplierProduct::class)->where('label_qty', '>', 0);
     }
 
     public function purchase_returns()
@@ -26,6 +22,7 @@ class Supplier extends BaseModel
     {
         return $this->hasMany(SupplierPayment::class);
     }
+
     public function supplier_ledgers()
     {
         return $this->hasMany(SupplierLedger::class);

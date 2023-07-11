@@ -1,14 +1,13 @@
 <?php
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Manufacturing\ReportController;
-use App\Http\Controllers\Manufacturing\ProcessController;
-use App\Http\Controllers\Manufacturing\SettingsController;
-use App\Http\Controllers\Manufacturing\ProductionController;
 
-Route::group(['prefix' => 'manufacturing'], function ()
-{
-    Route::group(['prefix' => 'process'], function ()
-    {
+use App\Http\Controllers\Manufacturing\ProcessController;
+use App\Http\Controllers\Manufacturing\ProductionController;
+use App\Http\Controllers\Manufacturing\ReportController;
+use App\Http\Controllers\Manufacturing\SettingsController;
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => 'manufacturing'], function () {
+    Route::group(['prefix' => 'process'], function () {
         Route::get('/', [ProcessController::class, 'index'])->name('manufacturing.process.index');
         Route::get('show/{processId}', [ProcessController::class, 'show'])->name('manufacturing.process.show');
         Route::get('create', [ProcessController::class, 'create'])->name('manufacturing.process.create');
@@ -18,8 +17,7 @@ Route::group(['prefix' => 'manufacturing'], function ()
         Route::delete('delete/{processId}', [ProcessController::class, 'delete'])->name('manufacturing.process.delete');
     });
 
-    Route::group(['prefix' => 'productions'], function ()
-    {
+    Route::group(['prefix' => 'productions'], function () {
         Route::get('/', [ProductionController::class, 'index'])->name('manufacturing.productions.index');
         Route::get('show/{productionId}', [ProductionController::class, 'show'])->name('manufacturing.productions.show');
         Route::get('create', [ProductionController::class, 'create'])->name('manufacturing.productions.create');
@@ -31,14 +29,12 @@ Route::group(['prefix' => 'manufacturing'], function ()
         Route::get('get/ingredients/{processId}/{warehouseId}', [ProductionController::class, 'getIngredients']);
     });
 
-    Route::group(['prefix' => 'settings'], function ()
-    {
+    Route::group(['prefix' => 'settings'], function () {
         Route::get('/', [SettingsController::class, 'index'])->name('manufacturing.settings.index');
         Route::post('store', [SettingsController::class, 'store'])->name('manufacturing.settings.store');
     });
 
-    Route::group(['prefix' => 'report'], function ()
-    {
+    Route::group(['prefix' => 'report'], function () {
         Route::get('/', [ReportController::class, 'index'])->name('manufacturing.report.index');
     });
 });

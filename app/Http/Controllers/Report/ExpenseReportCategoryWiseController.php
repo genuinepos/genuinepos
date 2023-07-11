@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseReportCategoryWiseController extends Controller
 {
     public function index(Request $request)
     {
-        if (!auth()->user()->can('category_wise_expense')) {
-
+        if (! auth()->user()->can('category_wise_expense')) {
             abort(403, 'Access Forbidden.');
         }
-
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');
@@ -31,7 +29,7 @@ class ExpenseReportCategoryWiseController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('expanses.branch_id', NULL);
+                    $query->where('expanses.branch_id', null);
                 } else {
 
                     $query->where('expanses.branch_id', $request->branch_id);
@@ -71,7 +69,6 @@ class ExpenseReportCategoryWiseController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $query;
             } else {
 
                 $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id);
@@ -83,28 +80,28 @@ class ExpenseReportCategoryWiseController extends Controller
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
                     return date($generalSettings['business__date_format'], strtotime($row->date));
-                })->editColumn('from',  function ($row) use ($generalSettings) {
+                })->editColumn('from', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>B.L.</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>B.L.</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })->editColumn('category_name', function ($row) {
 
-                    return $row->name . ' (' . $row->code . ')';
-                })->editColumn('user_name',  function ($row) {
+                    return $row->name.' ('.$row->code.')';
+                })->editColumn('user_name', function ($row) {
 
                     if ($row->cr_name) {
 
-                        return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
+                        return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
                     } else {
 
                         return '---';
                     }
-                })->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . \App\Utils\Converter::format_in_bdt($row->amount) . '</span>')
+                })->editColumn('amount', fn ($row) => '<span class="amount" data-value="'.$row->amount.'">'.\App\Utils\Converter::format_in_bdt($row->amount).'</span>')
                 ->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
                 ->make(true);
         }
@@ -133,7 +130,7 @@ class ExpenseReportCategoryWiseController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('expanses.branch_id', NULL);
+                $query->where('expanses.branch_id', null);
             } else {
 
                 $query->where('expanses.branch_id', $request->branch_id);
@@ -175,7 +172,6 @@ class ExpenseReportCategoryWiseController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query;
         } else {
 
             $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id);

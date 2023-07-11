@@ -2,32 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sale;
 use App\Models\Product;
-use App\Utils\SaleUtil;
+use App\Models\Sale;
 use App\Models\SaleReturn;
+use App\Models\SaleReturnProduct;
 use App\Utils\AccountUtil;
 use App\Utils\CustomerUtil;
-use App\Utils\PurchaseUtil;
-use Illuminate\Http\Request;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
 use App\Utils\ProductStockUtil;
-use App\Models\SaleReturnProduct;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Utils\PurchaseSaleChainUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SaleUtil;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RandomSaleReturnController extends Controller
 {
     protected $productStockUtil;
+
     protected $saleUtil;
+
     protected $nameSearchUtil;
+
     protected $accountUtil;
+
     protected $customerUtil;
+
     protected $invoiceVoucherRefIdUtil;
+
     protected $purchaseUtil;
+
     protected $userActivityLogUtil;
+
     protected $purchaseSaleChainUtil;
 
     public function __construct(
@@ -51,7 +59,7 @@ class RandomSaleReturnController extends Controller
         $this->purchaseUtil = $purchaseUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
-        
+
     }
 
     public function create()
@@ -85,7 +93,7 @@ class RandomSaleReturnController extends Controller
     // Search product by code
     public function searchProduct($product_code)
     {
-        $product_code = (string)$product_code;
+        $product_code = (string) $product_code;
         $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
 
@@ -134,13 +142,13 @@ class RandomSaleReturnController extends Controller
 
             $sale = Sale::where('id', $request->sale_id)->first();
 
-            $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
+            $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, '0', STR_PAD_LEFT);
 
             $addSaleReturn = new SaleReturn();
             $addSaleReturn->total_item = $request->total_item;
             $addSaleReturn->total_qty = $request->total_qty;
             $addSaleReturn->sale_id = $request->sale_id;
-            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+            $addSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '').$invoiceId;
             $addSaleReturn->customer_id = $request->customer_id;
             $addSaleReturn->branch_id = $sale ? $sale->branch_id : auth()->user()->branch_id;
             $addSaleReturn->sale_return_account_id = $request->sale_return_account_id;
@@ -155,7 +163,7 @@ class RandomSaleReturnController extends Controller
             $addSaleReturn->total_return_due_pay = $request->paying_amount;
             $addSaleReturn->total_return_due = $request->total_return_amount - $request->paying_amount;
             $addSaleReturn->date = $request->date;
-            $addSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $addSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
             $addSaleReturn->month = date('F');
             $addSaleReturn->year = date('Y');
             $addSaleReturn->save();
@@ -164,7 +172,7 @@ class RandomSaleReturnController extends Controller
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
                 $addReturnProduct = new SaleReturnProduct();
                 $addReturnProduct->sale_return_id = $addSaleReturn->id;
                 $addReturnProduct->sale_product_id = $request->sale_product_ids[$index];
@@ -194,7 +202,7 @@ class RandomSaleReturnController extends Controller
                     unitCostIncTax: $request->unit_costs_inc_tax[$index],
                     sellingPrice: $request->unit_prices_exc_tax[$index],
                     subTotal: $request->subtotals[$index],
-                    createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                    createdAt: date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
                 );
 
                 $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
@@ -230,7 +238,7 @@ class RandomSaleReturnController extends Controller
                 $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
                     request: $request,
                     sale: $sale,
-                    customer_payment_id: NULL,
+                    customer_payment_id: null,
                     sale_return_id: $addSaleReturn->id
                 );
 
@@ -278,7 +286,6 @@ class RandomSaleReturnController extends Controller
                 subject_type: 9,
                 data_obj: $saleReturn
             );
-
 
             DB::commit();
         } catch (Exception $e) {
@@ -353,7 +360,7 @@ class RandomSaleReturnController extends Controller
 
         $sale = Sale::where('id', $request->sale_id)->first();
 
-        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, "0", STR_PAD_LEFT);
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sale_returns'), 4, '0', STR_PAD_LEFT);
 
         $updateSaleReturn = SaleReturn::with(['sale', 'sale_return_products'])->where('id', $returnId)->first();
 
@@ -366,7 +373,7 @@ class RandomSaleReturnController extends Controller
         $updateSaleReturn->total_item = $request->total_item;
         $updateSaleReturn->total_qty = $request->total_qty;
         $updateSaleReturn->sale_id = $request->sale_id;
-        $updateSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+        $updateSaleReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '').$invoiceId;
         $updateSaleReturn->customer_id = $request->customer_id;
         $updateSaleReturn->branch_id = $sale ? $sale->branch_id : auth()->user()->branch_id;
         $updateSaleReturn->sale_return_account_id = $request->sale_return_account_id;
@@ -380,7 +387,7 @@ class RandomSaleReturnController extends Controller
         $updateSaleReturn->total_return_amount = $request->total_return_amount;
         $updateSaleReturn->total_return_due_pay = $request->paying_amount;
         $updateSaleReturn->date = $request->date;
-        $updateSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $updateSaleReturn->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updateSaleReturn->month = date('F');
         $updateSaleReturn->year = date('Y');
         $updateSaleReturn->save();
@@ -389,7 +396,7 @@ class RandomSaleReturnController extends Controller
         $index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
 
             $saleReturnProduct = SaleReturnProduct::with('purchaseProduct')
                 ->where('sale_return_id', $returnId)
@@ -423,7 +430,7 @@ class RandomSaleReturnController extends Controller
                     unitCostIncTax: $request->unit_costs_inc_tax[$index],
                     sellingPrice: $request->unit_prices_exc_tax[$index],
                     subTotal: $request->subtotals[$index],
-                    createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                    createdAt: date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
                 );
             } else {
 
@@ -456,7 +463,7 @@ class RandomSaleReturnController extends Controller
                     unitCostIncTax: $request->unit_costs_inc_tax[$index],
                     sellingPrice: $request->unit_prices_exc_tax[$index],
                     subTotal: $request->subtotals[$index],
-                    createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                    createdAt: date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
                 );
             }
 
@@ -507,7 +514,7 @@ class RandomSaleReturnController extends Controller
             $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
                 request: $request,
                 sale: $sale,
-                customer_payment_id: NULL,
+                customer_payment_id: null,
                 sale_return_id: $updateSaleReturn->id
             );
 

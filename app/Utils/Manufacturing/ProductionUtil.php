@@ -2,22 +2,25 @@
 
 namespace App\Utils\Manufacturing;
 
-use Carbon\Carbon;
-use App\Models\Product;
-use App\Utils\Converter;
-use Illuminate\Support\Str;
-use App\Models\ProductVariant;
-use App\Utils\ProductStockUtil;
-use Illuminate\Support\Facades\DB;
 use App\Models\Manufacturing\Production;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Utils\AccountUtil;
+use App\Utils\Converter;
+use App\Utils\ProductStockUtil;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionUtil
 {
     protected $converter;
+
     protected $productStockUtil;
+
     protected $accountUtil;
+
     public function __construct(
         Converter $converter,
         ProductStockUtil $productStockUtil,
@@ -66,39 +69,40 @@ class ProductionUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('manufacturing.productions.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item details_button" href="'.route('manufacturing.productions.show', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) :
-                    if (auth()->user()->can('production_edit')) :
-                        $html .= '<a class="dropdown-item" href="' . route('manufacturing.productions.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    endif;
+                if (auth()->user()->branch_id == $row->branch_id) {
+                    if (auth()->user()->can('production_edit')) {
+                        $html .= '<a class="dropdown-item" href="'.route('manufacturing.productions.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
 
-                    if (auth()->user()->can('production_delete')) :
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('manufacturing.productions.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    endif;
-                endif;
+                    if (auth()->user()->can('production_delete')) {
+                        $html .= '<a class="dropdown-item" id="delete" href="'.route('manufacturing.productions.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    }
+                }
 
                 // $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                 $html .= '</div>';
                 $html .= '</div>';
+
                 return $html;
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
                 return date($generalSettings['business__date_format'], strtotime($row->date));
             })
-            ->editColumn('from',  function ($row) use ($generalSettings) {
+            ->editColumn('from', function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                 }
-            })->editColumn('product',  fn ($row) => Str::limit($row->p_name, 25, '') . ' ' . $row->v_name)
+            })->editColumn('product', fn ($row) => Str::limit($row->p_name, 25, '').' '.$row->v_name)
             ->editColumn('unit_cost_inc_tax', fn ($row) => $this->converter->format_in_bdt($row->unit_cost_inc_tax))
             ->editColumn('price_exc_tax', fn ($row) => $this->converter->format_in_bdt($row->price_exc_tax))
-            ->editColumn('total_final_quantity', fn ($row) => '<span class="total_final_quantity" data-value="' . $row->total_final_quantity . '">' . $row->total_final_quantity . '/' . $row->u_name . '</span>')
-            ->editColumn('total_ingredient_cost', fn ($row) =>  '<span class="total_ingredient_cost" data-value="' . $row->total_ingredient_cost . '">' . $this->converter->format_in_bdt($row->total_ingredient_cost) . '</span>')
-            ->editColumn('production_cost', fn ($row) => '<span class="production_cost" data-value="' . $row->production_cost . '">' . $this->converter->format_in_bdt($row->production_cost) . '</span>')
-            ->editColumn('total_cost', fn ($row) => '<span class="total_cost" data-value="' . $row->total_cost . '">' . $this->converter->format_in_bdt($row->total_cost) . '</span>')
+            ->editColumn('total_final_quantity', fn ($row) => '<span class="total_final_quantity" data-value="'.$row->total_final_quantity.'">'.$row->total_final_quantity.'/'.$row->u_name.'</span>')
+            ->editColumn('total_ingredient_cost', fn ($row) => '<span class="total_ingredient_cost" data-value="'.$row->total_ingredient_cost.'">'.$this->converter->format_in_bdt($row->total_ingredient_cost).'</span>')
+            ->editColumn('production_cost', fn ($row) => '<span class="production_cost" data-value="'.$row->production_cost.'">'.$this->converter->format_in_bdt($row->production_cost).'</span>')
+            ->editColumn('total_cost', fn ($row) => '<span class="total_cost" data-value="'.$row->total_cost.'">'.$this->converter->format_in_bdt($row->total_cost).'</span>')
             ->editColumn('status', function ($row) {
                 if ($row->is_final == 1) {
                     return '<span class="text-success"><b>Final</b></span>';
@@ -124,7 +128,7 @@ class ProductionUtil
 
         $storedProductionAccountId = $production->production_account_id;
 
-        if (!is_null($production)) {
+        if (! is_null($production)) {
             $production->delete();
         }
 
@@ -174,19 +178,19 @@ class ProductionUtil
 
         if ($updateProduct->is_variant == 0) {
 
-            $updateProduct->product_cost =  $unit_cost_exc_tax;
+            $updateProduct->product_cost = $unit_cost_exc_tax;
             $updateProduct->product_cost_with_tax = $unit_cost_inc_tax;
             $updateProduct->profit = $x_margin;
             $updateProduct->product_price = $selling_price;
         }
         $updateProduct->save();
 
-        if ($variant_id != NULL) {
+        if ($variant_id != null) {
 
             $updateVariant = ProductVariant::where('id', $variant_id)
                 ->where('product_id', $productId)
                 ->first();
-                
+
             $updateVariant->variant_cost = $unit_cost_exc_tax;
             $updateVariant->variant_cost_with_tax = $unit_cost_inc_tax;
             $updateVariant->variant_profit = $x_margin;
@@ -202,7 +206,7 @@ class ProductionUtil
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('productions.branch_id', NULL);
+                $query->where('productions.branch_id', null);
             } else {
 
                 $query->where('productions.branch_id', $request->branch_id);

@@ -3,10 +3,9 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-use Modules\Communication\Entities\ContactGroup;
 use Modules\Communication\Entities\Contact;
-use Modules\Communication\Http\Controllers\Controller;
+use Modules\Communication\Entities\ContactGroup;
+use Yajra\DataTables\Facades\DataTables;
 
 class NumberController extends Controller
 {
@@ -19,8 +18,9 @@ class NumberController extends Controller
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="javascript:;" class="action-btn c-edit" id="edit_number" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('communication.contacts.number.destroy', $row->id) . '" class="action-btn c-delete" id="delete_number" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('communication.contacts.number.destroy', $row->id).'" class="action-btn c-delete" id="delete_number" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('group', function ($row) {
@@ -29,13 +29,14 @@ class NumberController extends Controller
                 ->setRowAttr([
                     'data-href' => function ($row) {
                         return route('communication.contacts.number.edit', $row->id);
-                    }
+                    },
                 ])
                 ->rawColumns(['action', 'group'])
                 ->smart(true)
                 ->make(true);
         }
         $groups = ContactGroup::all();
+
         return view('communication::contacts.list.index', [
             'groups' => $groups,
         ]);
@@ -49,7 +50,7 @@ class NumberController extends Controller
             'mailing_address' => 'required',
             'whatsapp_number' => 'required',
             'name' => 'required',
-            'group_name' => 'required'
+            'group_name' => 'required',
         ]);
 
         $number = new Contact();
@@ -69,7 +70,8 @@ class NumberController extends Controller
     {
         $groups = ContactGroup::all();
         $number = Contact::find($request->id);
-        return view('communication::contacts.list.ajax_view_unit.edit_modal_body', compact('number','groups'));
+
+        return view('communication::contacts.list.ajax_view_unit.edit_modal_body', compact('number', 'groups'));
     }
 
     public function update(Request $request)
@@ -80,7 +82,7 @@ class NumberController extends Controller
             'mailing_address' => 'required',
             'whatsapp_number' => 'required',
             'name' => 'required',
-            'group_name' => 'required'
+            'group_name' => 'required',
         ]);
 
         $number = Contact::find($request->id);
@@ -100,7 +102,7 @@ class NumberController extends Controller
 
         $number = Contact::find($request->id);
         $number->delete();
+
         return response()->json('Contacts delete successfully');
     }
-
 }

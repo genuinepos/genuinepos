@@ -12,20 +12,22 @@ class ShortMenuController extends Controller
     {
         $shortMenus = DB::table('short_menus')
             ->get();
+
         return view('dashboard.ajax_view.short-menu-modal-form', compact('shortMenus'));
     }
 
     public function show()
     {
         $shortMenus = DB::table('short_menu_users')
-        ->where('user_id', auth()->user()->id)
-        ->leftJoin('short_menus', 'short_menu_users.short_menu_id', 'short_menus.id')
-        ->select(
-            'short_menus.url',
-            'short_menus.name',
-            'short_menus.icon',
-        )->orderBy('short_menu_users.id', 'desc')
-        ->get();
+            ->where('user_id', auth()->user()->id)
+            ->leftJoin('short_menus', 'short_menu_users.short_menu_id', 'short_menus.id')
+            ->select(
+                'short_menus.url',
+                'short_menus.name',
+                'short_menus.icon',
+            )->orderBy('short_menu_users.id', 'desc')
+            ->get();
+
         return view('dashboard.ajax_view.switch_bar_cards', compact('shortMenus'));
     }
 
@@ -40,13 +42,13 @@ class ShortMenuController extends Controller
         if (isset($request->menu_ids)) {
             foreach ($request->menu_ids as $menu_id) {
                 $shortMenuUser = ShortMenuUser::where('short_menu_id', $menu_id)
-                ->where('user_id', auth()->user()->id)
-                ->first();
+                    ->where('user_id', auth()->user()->id)
+                    ->first();
 
                 if ($shortMenuUser) {
                     $shortMenuUser->is_delete_in_update = 0;
                     $shortMenuUser->save();
-                }else {
+                } else {
                     $addShortMenuUser = new ShortMenuUser();
                     $addShortMenuUser->short_menu_id = $menu_id;
                     $addShortMenuUser->user_id = auth()->user()->id;

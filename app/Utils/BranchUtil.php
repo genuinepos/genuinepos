@@ -2,21 +2,21 @@
 
 namespace App\Utils;
 
-use App\Utils\Util;
-use App\Models\User;
 use App\Models\Account;
-use App\Utils\Converter;
-use App\Utils\AccountUtil;
-use App\Models\CashCounter;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
+use App\Models\CashCounter;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class BranchUtil
 {
     protected $accountUtil;
+
     protected $util;
+
     protected $converter;
+
     public function __construct(AccountUtil $accountUtil, Util $util, Converter $converter)
     {
         $this->accountUtil = $accountUtil;

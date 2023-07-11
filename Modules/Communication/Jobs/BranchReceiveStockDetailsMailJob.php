@@ -3,12 +3,12 @@
 namespace Modules\Communication\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Modules\Communication\Mail\BranchReceiveStockDetailsMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
+use Modules\Communication\Mail\BranchReceiveStockDetailsMail;
 
 class BranchReceiveStockDetailsMailJob implements ShouldQueue
 {
@@ -20,8 +20,11 @@ class BranchReceiveStockDetailsMailJob implements ShouldQueue
      * @return void
      */
     public $transfer;
+
     public $to;
+
     public $mail_note;
+
     public function __construct($to, $mail_note, $transfer)
     {
         $this->to = $to;

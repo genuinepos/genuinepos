@@ -211,7 +211,7 @@
                 <br/>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
-                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
+                        <h6><em>@lang('menu.continued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
             @endif

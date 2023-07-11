@@ -11,6 +11,7 @@ class FeedbackController extends Controller
     {
         return view('feedback.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -24,6 +25,7 @@ class FeedbackController extends Controller
         $feedback->message = $request->message;
         $feedback->rating = $request->rating;
         $feedback->save();
+
         return response()->json(['Feedback created successfully']);
     }
 }

@@ -1,15 +1,11 @@
 <?php
 
 namespace App\Models;
-use App\Models\Sale;
-use App\Models\Warehouse;
-use App\Models\InvoiceLayout;
-use App\Models\InvoiceSchema;
-use App\Models\BaseModel;
 
 class Branch extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function invoice_schema()
@@ -47,4 +43,3 @@ class Branch extends BaseModel
         return $this->hasMany(Warehouse::class);
     }
 }
-

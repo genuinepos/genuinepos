@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Intervention\Image\Facades\Image;
 
 class UserProfileController extends Controller
 {
@@ -25,12 +23,12 @@ class UserProfileController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'required|unique:users,email,' . auth()->user()->id,
+            'email' => 'required|unique:users,email,'.auth()->user()->id,
             'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
         //return $request->all();
-        $updateProfile =  User::where('id', auth()->user()->id)->first();
+        $updateProfile = User::where('id', auth()->user()->id)->first();
         $updateProfile->prefix = $request->prefix;
         $updateProfile->name = $request->first_name;
         $updateProfile->last_name = $request->last_name;
@@ -58,11 +56,11 @@ class UserProfileController extends Controller
             $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
             if (
                 isset($updateProfile->photo) &&
-                file_exists(public_path('uploads/user_photo/' . $updateProfile->photo)) &&
+                file_exists(public_path('uploads/user_photo/'.$updateProfile->photo)) &&
                 $updateProfile->photo != 'default.png'
             ) {
                 try {
-                    unlink(public_path('uploads/user_photo/' . $updateProfile->photo));
+                    unlink(public_path('uploads/user_photo/'.$updateProfile->photo));
                 } catch (Exception $e) {
                 }
             }
@@ -71,6 +69,7 @@ class UserProfileController extends Controller
         $updateProfile->save();
         session(['lang' => $updateProfile->language]);
         session()->flash('successMsg', 'Successfully user updated');
+
         return response()->json('Successfully user profile is updated');
     }
 

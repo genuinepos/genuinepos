@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Essentials;
 
-use Illuminate\Http\Request;
-use App\Models\Essential\Todo;
-use Illuminate\Support\Facades\DB;
-use App\Models\Essential\TodoUsers;
 use App\Http\Controllers\Controller;
+use App\Models\Essential\Todo;
+use App\Models\Essential\TodoUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class TodoController extends Controller
 {
     public function index(Request $request)
     {
+        if (! auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -27,7 +31,7 @@ class TodoController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('todos.branch_id', NULL);
+                    $query->where('todos.branch_id', null);
                 } else {
                     $query->where('todos.branch_id', $request->branch_id);
                 }
@@ -44,7 +48,7 @@ class TodoController extends Controller
             if ($request->from_date) {
                 $from_date = date('Y-m-d', strtotime($request->from_date));
                 $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+                $date_range = [$from_date.' 00:00:00', $to_date.' 00:00:00'];
                 $query->whereBetween('todos.due_date', $date_range);
             }
 
@@ -71,15 +75,16 @@ class TodoController extends Controller
                         Action
                     </button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" id="show" href="' . route('todo.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" id="show" href="'.route('todo.show', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
-                    $html .= '<a class="dropdown-item" id="edit" href="' . route('todo.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="edit" href="'.route('todo.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('todo.status.modal', [$row->id]) . '"><i class="fas fa-pen-nib text-primary"></i> Change Status</a>';
+                    $html .= '<a class="dropdown-item" id="change_status" href="'.route('todo.status.modal', [$row->id]).'"><i class="fas fa-pen-nib text-primary"></i> Change Status</a>';
 
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('todo.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('todo.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('due_date', function ($row) {
@@ -87,35 +92,35 @@ class TodoController extends Controller
                 })
                 ->editColumn('priority', function ($row) {
                     if ($row->priority == 'High') {
-                        return '<span class="badge bg-danger">' . $row->priority . '</span>';
+                        return '<span class="badge bg-danger">'.$row->priority.'</span>';
                     } elseif ($row->priority == 'Low') {
-                        return '<span class="badge bg-warning">' . $row->priority . '</span>';
+                        return '<span class="badge bg-warning">'.$row->priority.'</span>';
                     } elseif ($row->priority == 'Medium') {
-                        return '<span class="badge bg-secondary">' . $row->priority . '</span>';
+                        return '<span class="badge bg-secondary">'.$row->priority.'</span>';
                     } else {
-                        return '<span class="badge bg-1">' . $row->priority . '</span>';
+                        return '<span class="badge bg-1">'.$row->priority.'</span>';
                     }
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'New') {
-                        return '<span class="badge bg-primary">' . $row->status . '</span>';
+                        return '<span class="badge bg-primary">'.$row->status.'</span>';
                     } elseif ($row->status == 'In-Progress') {
-                        return '<span class="badge bg-secondary">' . $row->status . '</span>';
+                        return '<span class="badge bg-secondary">'.$row->status.'</span>';
                     } elseif ($row->status == 'On-Hold') {
-                        return '<span class="badge bg-warning">' . $row->status . '</span>';
+                        return '<span class="badge bg-warning">'.$row->status.'</span>';
                     } else {
-                        return '<span class="badge bg-info">' . $row->status . '</span>';
+                        return '<span class="badge bg-info">'.$row->status.'</span>';
                     }
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from', function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
                         return '<b>Head Office</b>';
                     }
                 })
                 ->editColumn('assigned_by', function ($row) {
-                    return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
+                    return $row->prefix.' '.$row->a_name.' '.$row->last_name;
                 })
                 ->rawColumns(['action', 'date', 'from', 'name', 'assigned_by', 'priority', 'status'])
                 ->make(true);
@@ -125,17 +130,24 @@ class TodoController extends Controller
         $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
+
         return view('essentials.todo.index', compact('branches', 'users'));
     }
 
     public function store(Request $request)
     {
+
+        if (! auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
-        if (!auth()->user()->can('assign_todo')) {
+        if (! auth()->user()->can('assign_todo')) {
 
             return response()->json(['errorMsg' => 'You do\'t have any permission to assign the todo.']);
         }
@@ -156,7 +168,7 @@ class TodoController extends Controller
         }
 
         $addTodo = Todo::insertGetId([
-            'todo_id' => date('my') . $IdNo,
+            'todo_id' => date('my').$IdNo,
             'branch_id' => auth()->user()->branch_id,
             'task' => $request->task,
             'priority' => $request->priority,
@@ -171,7 +183,7 @@ class TodoController extends Controller
             foreach ($request->user_ids as $user_id) {
                 TodoUsers::insert([
                     'todo_id' => $addTodo,
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
                 ]);
             }
         }
@@ -181,6 +193,12 @@ class TodoController extends Controller
 
     public function edit($id)
     {
+
+        if (! auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -190,11 +208,16 @@ class TodoController extends Controller
         $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
+
         return view('essentials.todo.ajax_view.edit', compact('todo', 'users'));
     }
 
     public function update(Request $request, $id)
     {
+        if (! auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
@@ -232,7 +255,7 @@ class TodoController extends Controller
                 } else {
                     TodoUsers::insert([
                         'todo_id' => $id,
-                        'user_id' => $user_id
+                        'user_id' => $user_id,
                     ]);
                 }
             }
@@ -254,6 +277,7 @@ class TodoController extends Controller
         }
 
         $todo = Todo::with('todo_users')->where('id', $id)->first(['id', 'status']);
+
         return view('essentials.todo.ajax_view.change_status', compact('todo'));
     }
 
@@ -266,7 +290,7 @@ class TodoController extends Controller
 
         $todo = Todo::where('id', $id)->first();
         $todo->update([
-            'status' => $request->status
+            'status' => $request->status,
         ]);
 
         return response()->json('Todo status changed successfully.');
@@ -274,26 +298,38 @@ class TodoController extends Controller
 
     public function show($id)
     {
+        if (! auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $todo = Todo::with(['admin', 'todo_users', 'todo_users.user'])->where('id', $id)->first();
+
         return view('essentials.todo.ajax_view.show', compact('todo'));
     }
 
     public function delete(Request $request, $id)
     {
+        if (! auth()->user()->can('assign_todo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $generalSettings = config('generalSettings');
         if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteTodo = Todo::where('id', $id)->first();
-        if (!is_null($deleteTodo)) {
+        if (! is_null($deleteTodo)) {
             $deleteTodo->delete();
         }
+
         return response()->json('Todo deleted successfully.');
     }
 }

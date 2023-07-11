@@ -2,9 +2,14 @@
 
 Developed with ❤ by SpeedDigit
 
-## Developer Check List
+## Installation (Developer Guide)
 
-- [ ] Test whole app CRUD (Form front+backend validation, file uploads, optional field, data table, edit modal, delete confirmation, ajax behavior, console errors)
-- [x] Check role-permission page. Add missing permissions and create rp:sync command ass ERP
-- [x] File uploads  using Utils file. Do related refactoring.
-- [x] Replace 'default.png' with null and  fallback image
+- [ ] Make a new .env file and add required credentials.
+- [ ] Run `php artisan key:generate`
+- [ ] Run `php artisan migrate --seed`
+
+## Other Commands (May use frequently)
+
+- [ ] Run `php artisan rp:sync` to sync between role,permission and super-admin user
+- [ ] Run `php artisan migrate:fresh --seed` to refresh the application databases and related files.
+- [ ] Run `backup:tenants` to get all tenant (user) databases.

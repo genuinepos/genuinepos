@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class SalePurchaseReportController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     // Index view of sale & purchase report
     public function index()
     {
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.sale_purchase_report.index', compact('branches'));
     }
 
@@ -34,6 +35,7 @@ class SalePurchaseReportController extends Controller
                 ->where('sales.branch_id', auth()->user()->branch_id)->get();
             $purchases = DB::table('purchases')->where('purchases.branch_id', auth()->user()->branch_id)->get();
         }
+
         return view('reports.sale_purchase_report.ajax_view.sale_and_purchase_amount', compact('sales', 'purchases'));
     }
 
@@ -54,8 +56,8 @@ class SalePurchaseReportController extends Controller
         $purchase_query = DB::table('purchases');
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $sale_query->where('branch_id', NULL);
-                $purchase_query->where('branch_id', NULL);
+                $sale_query->where('branch_id', null);
+                $purchase_query->where('branch_id', null);
             } else {
                 $sale_query->where('branch_id', $request->branch_id);
                 $purchase_query->where('branch_id', $request->branch_id);
@@ -73,10 +75,10 @@ class SalePurchaseReportController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $sales = $sale_query->where('sales.status', 1)->get();
-            $purchases =  $purchase_query->get();
+            $purchases = $purchase_query->get();
         } else {
             $sales = $sale_query->where('sales.status', 1)->where('sales.branch_id', auth()->user()->branch_id)->get();
-            $purchases =  $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
+            $purchases = $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
         }
 
         return view('reports.sale_purchase_report.ajax_view.filtered_sale_and_purchase_amount', compact('sales', 'purchases'));
@@ -101,8 +103,8 @@ class SalePurchaseReportController extends Controller
         $purchase_query = DB::table('purchases');
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $sale_query->where('branch_id', NULL);
-                $purchase_query->where('branch_id', NULL);
+                $sale_query->where('branch_id', null);
+                $purchase_query->where('branch_id', null);
             } else {
                 $sale_query->where('branch_id', $request->branch_id);
                 $purchase_query->where('branch_id', $request->branch_id);
@@ -120,11 +122,12 @@ class SalePurchaseReportController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
             $sales = $sale_query->where('sales.status', 1)->get();
-            $purchases =  $purchase_query->get();
-        }else {
+            $purchases = $purchase_query->get();
+        } else {
             $sales = $sale_query->where('sales.status', 1)->where('sales.branch_id', auth()->user()->branch_id)->get();
-            $purchases =  $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
+            $purchases = $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
         }
+
         return view('reports.sale_purchase_report.ajax_view.printSalePurchase', compact('sales', 'purchases', 'fromDate', 'toDate', 'branch_id'));
     }
 }

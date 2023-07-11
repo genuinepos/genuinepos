@@ -21,7 +21,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownShop">
                         @can('tenants_index')
-                        <li><a class="dropdown-item" href="{{ route('saas.tenants.index') }}">{{ __('All Shops') }}/a></li>
+                        <li><a class="dropdown-item" href="{{ route('saas.tenants.index') }}">{{ __('All Shops') }}</a></li>
                         @endcan
                         @can('tenants_create')
                         <li><a class="dropdown-item" href="{{ route('saas.tenants.create') }}">{{ __('Create New') }}</a></li>

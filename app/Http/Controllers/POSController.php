@@ -17,14 +17,11 @@ use App\Utils\CustomerPaymentUtil;
 use App\Utils\CustomerUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;
-use App\Utils\ProductStockUtil;
 use App\Utils\SaleUtil;
 use App\Utils\SmsUtil;
 use App\Utils\UserActivityLogUtil;
-use App\Utils\UserActivityLogUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\DB;
 
 class POSController extends Controller

@@ -4,6 +4,7 @@ namespace Modules\Communication\Service;
 
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Modules\Communication\Interface\SmsServiceInterface;
 
 /**
@@ -16,6 +17,10 @@ class SmsService implements SmsServiceInterface
 {
     public function send(string $message, string $toUser)
     {
+        if(config('app.debug')) {
+            Log::info('SMS sent to ' . $toUser);
+            return;
+        }
         $setting = GeneralSetting::sms();
         $url = trim($setting['final_url']);
         $isGET = strtolower(trim($setting['type'])) == 'get' ?? false;
@@ -35,6 +40,11 @@ class SmsService implements SmsServiceInterface
 
     public function sendMultiple(string $message, array $numbers)
     {
+        if(config('app.debug')) {
+            Log::info('Multiple SMS sent to ' . \implode($numbers, ' ,'));
+            return;
+        }
+
         $setting = GeneralSetting::sms();
         $url = trim($setting['final_url']);
         $isGET = strtolower(trim($setting['type'])) == 'get' ?? false;

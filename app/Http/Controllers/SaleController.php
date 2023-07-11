@@ -30,6 +30,7 @@ use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\BranchWiseCustomerAmountUtil;
 use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
+use Modules\Communication\Interface\SmsServiceInterface;
 
 class SaleController extends Controller
 {
@@ -47,6 +48,7 @@ class SaleController extends Controller
         private UserActivityLogUtil $userActivityLogUtil,
         private BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil,
         private EmailServiceInterface $emailService,
+        private SmsServiceInterface $smsService,
     ) {
     }
 
@@ -619,6 +621,18 @@ class SaleController extends Controller
                 if ($sale->customer && $sale?->customer?->email) {
                     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
                 }
+
+                if (
+                    env('SMS_ACTIVE') == 'true' &&
+                    $generalSettings['email_settings__send_notice_via_sms'] == '1'
+                ) {
+                    if ($sale->customer && $sale->customer->phone) {
+                        // Todo:: Made this text and checks dynamic
+                        $smsText = "Hello {$sale->customer->name}, You have purchased ... . Total: 400Tk";
+                        $this->smsService->send($smsText, $sale->customer->phone);
+                    }
+                }
+                // check if sending sms is on
             }
             // if (
             //     env('MAIL_ACTIVE') == 'true' &&
@@ -629,15 +643,7 @@ class SaleController extends Controller
             //         $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
             //     }
             // }
-            if (
-                env('SMS_ACTIVE') == 'true' &&
-                $generalSettings['email_settings__send_notice_via_sms'] == '1'
-            ) {
-                if ($sale->customer && $sale->customer->phone) {
-
-                    $this->smsUtil->singleSms($sale);
-                }
-            }
+            
             $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($sale->id);
 
             DB::commit();

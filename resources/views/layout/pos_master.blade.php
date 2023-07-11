@@ -722,7 +722,7 @@
         function toggleFullscreen(elem) {
 
             elem = elem || document.documentElement;
-            
+
             if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
                     if (elem.requestFullscreen) {
 
@@ -737,7 +737,6 @@
 
                         elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                     }
-
             } else {
 
                 if (document.exitFullscreen) {

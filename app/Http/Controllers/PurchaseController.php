@@ -238,7 +238,7 @@ class PurchaseController extends Controller
         try {
 
             DB::beginTransaction();
-            
+
             $generalSettings = config('generalSettings');
             $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
             $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
@@ -352,7 +352,7 @@ class PurchaseController extends Controller
                 $this->purchaseUtil->addPurchaseOrderProduct($request, $isEditProductPrice, $addPurchase->id);
             }
 
-            // Add Purchase A/C Ledger
+            // Add Purchase A/c Ledger
             $this->accountUtil->addAccountLedger(
                 voucher_type_id: 3,
                 date: $request->date,

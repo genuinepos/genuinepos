@@ -49,5 +49,7 @@ Artisan::command('purchaseCreated', function(EmailServiceInterface  $emailServic
     // $purchase = Purchase::where('id', $addPurchase->id)->first();
     $purchase = Purchase::find(1);
     $emailService->send($supplier->email, new PurchaseCreated($purchase));
-
 });
+
+
+// Just merged this line of text.

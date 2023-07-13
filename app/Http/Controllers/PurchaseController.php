@@ -376,7 +376,7 @@ class PurchaseController extends Controller
                 $this->purchaseUtil->addPurchaseOrderProduct($request, $isEditProductPrice, $addPurchase->id);
             }
 
-            // Add Purchase A/C Ledger
+            // Add Purchase A/c Ledger
             $this->accountUtil->addAccountLedger(
                 voucher_type_id: 3,
                 date: $request->date,

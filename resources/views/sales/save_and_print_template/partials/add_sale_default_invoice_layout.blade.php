@@ -127,11 +127,11 @@
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                    @lang('menu.paid')
+                                        @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    @lang('menu.partial')
-                                    @elseif($payable==$sale->due)
-                                    @lang('menu.due')
+                                        @lang('menu.partial')
+                                    @elseif($payable == $sale->due)
+                                        @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>

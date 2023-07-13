@@ -237,6 +237,7 @@
                         }
                     }
                 }
+                
                 document.getElementById('btnFullscreen').addEventListener('click', function() {
                     toggleFullscreen();
                 });

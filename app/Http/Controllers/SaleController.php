@@ -546,17 +546,7 @@ class SaleController extends Controller
                     $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: [$addSale->id], receivedAmount: $receivedAmount, customerPayment: $customerPayment, customerId: $request->customer_id, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil);
                 } else {
 
-                    // Add Bank/Cash-in-hand A/C Ledger
-                    $this->accountUtil->addAccountLedger(
-                        voucher_type_id: 18,
-                        date: $request->date,
-                        account_id: $request->account_id,
-                        trans_id: $customerPayment->id,
-                        amount: $receivedAmount,
-                        balance_type: 'debit'
-                    );
-
-                    $this->saleUtil->addPaymentGetId(
+                    $addPaymentGetId = $this->saleUtil->addPaymentGetId(
                         receiptVoucherPrefix: $receiptVoucherPrefix,
                         receivedAmount: $receivedAmount,
                         saleId: $addSale->id,
@@ -565,6 +555,16 @@ class SaleController extends Controller
                         paymentMethodId: $request->payment_method_id,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         date: $request->date,
+                    );
+
+                    // Add Bank/Cash-in-hand A/C Ledger
+                    $this->accountUtil->addAccountLedger(
+                        voucher_type_id: 10,
+                        date: $request->date,
+                        account_id: $request->account_id,
+                        trans_id: $addPaymentGetId,
+                        amount: $receivedAmount,
+                        balance_type: 'debit'
                     );
                 }
             }
@@ -616,8 +616,11 @@ class SaleController extends Controller
             $received_amount = $request->received_amount;
             $total_due = $request->total_due;
             $change_amount = $request->change_amount;
-            if ($request->action == 'save') {
+
+            if ($request->status == 1) {
+
                 if ($sale->customer && $sale?->customer?->email) {
+
                     $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
                 }
 
@@ -626,6 +629,7 @@ class SaleController extends Controller
                     $generalSettings['email_settings__send_notice_via_sms'] == '1'
                 ) {
                     if ($sale->customer && $sale->customer->phone) {
+
                         // Todo:: Made this text and checks dynamic
                         $smsText = "Hello {$sale->customer->name}, You have purchased ... . Total: 400Tk";
                         $this->smsService->send($smsText, $sale->customer->phone);
@@ -650,34 +654,42 @@ class SaleController extends Controller
 
             DB::rollBack();
         }
+
         if ($request->action == 'save_and_print') {
 
             if ($request->status == 1 || $request->status == 3) {
+
                 if ($request->status == 1) {
+
                     if ($sale->customer && $sale?->customer?->email) {
+
                         $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
                     }
                 } elseif ($request->status == 3) {
+
                     if ($sale->customer && $sale?->customer?->email) {
+
                         $this->emailService->send($sale->customer->email, new SaleOrderCreated($sale));
                     }
                 } else {
+
                     return view('sales.save_and_print_template.sale_print', compact(
                         'sale',
                         'previous_due',
-                        'total_payable_amount',
+                        'total_receivable_amount',
                         'paying_amount',
                         'total_due',
                         'change_amount',
                         'customerCopySaleProducts'
                     ));
-
                 }
             } elseif ($request->status == 2) {
 
                 return view('sales.save_and_print_template.draft_print', compact('sale', 'customerCopySaleProducts'));
             } elseif ($request->status == 4) {
+
                 if ($sale->customer && $sale?->customer?->email) {
+
                     $this->emailService->send($sale->customer->email, new SaleQuotationCreated($sale));
                 }
 

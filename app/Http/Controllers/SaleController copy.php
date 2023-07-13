@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\FinalSaleCreated;
-use App\Mail\SaleOrderCreated;
-use App\Mail\SaleQuotationCreated;
-use App\Models\Customer;
-use App\Models\PaymentMethod;
-use App\Models\Product;
-use App\Models\ProductBranch;
+use App\Utils\Util;
 use App\Models\Sale;
+use App\Models\User;
+use App\Utils\SmsUtil;
+use App\Models\Product;
+use App\Utils\SaleUtil;
+use App\Models\Customer;
+use App\Utils\AccountUtil;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
-use App\Models\User;
-use App\Services\GeneralSettingServiceInterface;
-use App\Utils\AccountUtil;
-use App\Utils\BranchWiseCustomerAmountUtil;
-use App\Utils\CustomerPaymentUtil;
 use App\Utils\CustomerUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\NameSearchUtil;
-use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseUtil;
-use App\Utils\SaleUtil;
-use App\Utils\SmsUtil;
-use App\Utils\UserActivityLogUtil;
-use App\Utils\Util;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
+use App\Models\ProductBranch;
+use App\Utils\NameSearchUtil;
+use App\Mail\FinalSaleCreated;
+use App\Mail\SaleOrderCreated;
+use App\Utils\ProductStockUtil;
+use App\Mail\SaleQuotationCreated;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
-use Modules\Communication\Interface\SmsServiceInterface;
 
 class SaleController extends Controller
 {
@@ -47,7 +47,6 @@ class SaleController extends Controller
         private UserActivityLogUtil $userActivityLogUtil,
         private BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil,
         private EmailServiceInterface $emailService,
-        private SmsServiceInterface $smsService,
     ) {
     }
 
@@ -64,7 +63,6 @@ class SaleController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
-
         return view('sales.index2', compact('branches', 'customers'));
     }
 
@@ -81,7 +79,6 @@ class SaleController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
-
         return view('sales.pos.index', compact('branches', 'customers'));
     }
 
@@ -105,10 +102,9 @@ class SaleController extends Controller
             return $this->saleUtil->soldProductListTable($request);
         }
 
-        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
-
         return view('sales.sold_product_list', compact('branches', 'categories', 'customers'));
     }
 
@@ -146,7 +142,6 @@ class SaleController extends Controller
             'sale_payments',
             'sale_payments.paymentMethod:id,name',
         ])->where('id', $saleId)->first();
-
         return view('sales.pos.ajax_view.show', compact('sale'));
     }
 
@@ -159,7 +154,6 @@ class SaleController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-
         return view('sales.drafts', compact('branches'));
     }
 
@@ -172,7 +166,6 @@ class SaleController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-
         return view('sales.quotations', compact('branches'));
     }
 
@@ -357,7 +350,7 @@ class SaleController extends Controller
                 return response()->json(['errorMsg' => 'product table is empty']);
             }
 
-            $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, '0', STR_PAD_LEFT);
+            $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
 
             $addSale = new Sale();
             $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $invoiceId;
@@ -478,8 +471,8 @@ class SaleController extends Controller
             $__index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
-                $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? null : $request->warehouse_ids[$__index];
+                $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? NULL : $request->warehouse_ids[$__index];
                 $addSaleProduct = new SaleProduct();
                 $addSaleProduct->sale_id = $addSale->id;
                 $addSaleProduct->stock_warehouse_id = $warehouse_id;
@@ -497,7 +490,7 @@ class SaleController extends Controller
                 $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
                 $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
                 $addSaleProduct->subtotal = $request->subtotals[$__index];
-                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : null;
+                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
                 $addSaleProduct->save();
                 $__index++;
             }
@@ -518,7 +511,7 @@ class SaleController extends Controller
                         date: $request->date,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         lessAmount: $request->less_amount ? $request->less_amount : 0,
-                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
+                        attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
                         reference: $request->reference,
                         note: $request->note,
                     );
@@ -552,9 +545,8 @@ class SaleController extends Controller
                         saleId: $addSale->id,
                         customerPaymentId: null,
                         accountId: $request->account_id,
-                        paymentMethodId: $request->payment_method_id,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
-                        date: $request->date,
+                        date: $request->date
                     );
 
                     // Add Bank/Cash-in-hand A/C Ledger
@@ -562,7 +554,7 @@ class SaleController extends Controller
                         voucher_type_id: 10,
                         date: $request->date,
                         account_id: $request->account_id,
-                        trans_id: $addPaymentGetId->id,
+                        trans_id: $addPaymentGetId,
                         amount: $receivedAmount,
                         balance_type: 'debit'
                     );
@@ -578,7 +570,7 @@ class SaleController extends Controller
                 'sale_products.variant:id,variant_name,variant_code',
                 'sale_products.branch',
                 'sale_products.warehouse',
-                'admin:id,prefix,name,last_name',
+                'admin:id,prefix,name,last_name'
             ])->where('id', $addSale->id)->first();
 
             if ($request->status == 1) {
@@ -586,8 +578,8 @@ class SaleController extends Controller
                 $__index = 0;
                 foreach ($request->product_ids as $product_id) {
 
-                    $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? null : $request->warehouse_ids[$__index];
-                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+                    $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? NULL : $request->warehouse_ids[$__index];
+                    $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
 
                     $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
 
@@ -616,7 +608,29 @@ class SaleController extends Controller
             $received_amount = $request->received_amount;
             $total_due = $request->total_due;
             $change_amount = $request->change_amount;
+            if ($request->action == 'save') {
+                if ($sale->customer && $sale?->customer?->email) {
+                    $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+                }
+            }
+            // if (
+            //     env('MAIL_ACTIVE') == 'true' &&
+            //     $generalSettings['email_settings__send_inv_via_email'] == '1'
+            // ) {
 
+            //     if ($sale->customer && $sale?->customer?->email) {
+            //         $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+            //     }
+            // }
+            if (
+                env('SMS_ACTIVE') == 'true' &&
+                $generalSettings['email_settings__send_notice_via_sms'] == '1'
+            ) {
+                if ($sale->customer && $sale->customer->phone) {
+
+                    $this->smsUtil->singleSms($sale);
+                }
+            }
             $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($sale->id);
 
             DB::commit();
@@ -625,46 +639,22 @@ class SaleController extends Controller
             DB::rollBack();
         }
 
+        if ($request->status == 1) {
+
+            if ( $sale->customer && $sale?->customer?->email) {
+
+                $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
+            }
+
+            if ($sale->customer && $sale?->customer?->email) {
+
+                $this->emailService->send($sale->customer->email, new SaleOrderCreated($sale));
+            }
+        }
+
         if ($request->action == 'save_and_print') {
 
             if ($request->status == 1 || $request->status == 3) {
-
-                if ($request->status == 1) {
-
-                    if (env('EMAIL_ACTIVE') == 'true' && $sale->customer && $sale?->customer?->email) {
-
-                        $this->emailService->send($sale->customer->email, new FinalSaleCreated($sale));
-                    }
-
-                    if (
-                        env('SMS_ACTIVE') == 'true' &&
-                        $generalSettings['email_settings__send_notice_via_sms'] == '1'
-                    ) {
-                        if ($sale->customer && $sale->customer->phone) {
-
-                            // Todo:: Made this text and checks dynamic
-                            $smsText = "Hello {$sale->customer->name}, You have purchased ... . Total: 400Tk";
-                            $this->smsService->send($smsText, $sale->customer->phone);
-                        }
-                    }
-                } elseif ($request->status == 3) {
-
-                    if ( env('EMAIL_ACTIVE') == 'true' && $sale->customer && $sale?->customer?->email) {
-
-                        $this->emailService->send($sale->customer->email, new SaleOrderCreated($sale));
-                    }
-
-                    if (
-                        env('SMS_ACTIVE') == 'true' &&
-                        $generalSettings['email_settings__send_notice_via_sms'] == '1'
-                    ) {
-                        if ($sale->customer && $sale->customer->phone) {
-                            // Todo:: Made this text and checks dynamic
-                            $smsText = "Hello {$sale->customer->name}, You have purchased ... . Total: 400Tk";
-                            $this->smsService->send($smsText, $sale->customer->phone);
-                        }
-                    }
-                }
 
                 return view('sales.save_and_print_template.sale_print', compact(
                     'sale',
@@ -675,27 +665,15 @@ class SaleController extends Controller
                     'change_amount',
                     'customerCopySaleProducts'
                 ));
+                
             } elseif ($request->status == 2) {
 
                 return view('sales.save_and_print_template.draft_print', compact('sale', 'customerCopySaleProducts'));
             } elseif ($request->status == 4) {
 
-                if (env('EMAIL_ACTIVE') == 'true' && $sale->customer && $sale?->customer?->email) {
+                if ($sale->customer && $sale?->customer?->email) {
 
                     $this->emailService->send($sale->customer->email, new SaleQuotationCreated($sale));
-                }
-
-                if (
-                    env('SMS_ACTIVE') == 'true' &&
-                    $generalSettings['email_settings__send_notice_via_sms'] == '1'
-                ) {
-
-                    if ($sale->customer && $sale->customer->phone) {
-
-                        // Todo:: Made this text and checks dynamic
-                        $smsText = "Hello {$sale->customer->name}, You have purchased ... . Total: 400Tk";
-                        $this->smsService->send($smsText, $sale->customer->phone);
-                    }
                 }
 
                 return view('sales.save_and_print_template.quotation_print', compact('sale', 'customerCopySaleProducts'));
@@ -703,17 +681,17 @@ class SaleController extends Controller
         } else {
 
             if ($request->status == 1) {
-                session()->flash('successMsg', 'Sale created successfully');
 
+                session()->flash('successMsg', 'Sale created successfully');
                 return response()->json(['finalMsg' => 'Sale created successfully']);
             } elseif ($request->status == 2) {
 
                 session()->flash('successMsg', 'Sale draft created successfully');
-
                 return response()->json(['draftMsg' => 'Sale draft created successfully']);
-            } elseif ($request->status == 4) {
-                session()->flash('successMsg', 'Sale quotation created successfully');
+            }
+            elseif ($request->status == 4) {
 
+                session()->flash('successMsg', 'Sale quotation created successfully');
                 return response()->json(['quotationMsg' => 'Sale quotation created successfully']);
             }
         }
@@ -810,7 +788,7 @@ class SaleController extends Controller
             'sale_products',
             'sale_products.product',
             'sale_products.variant',
-            'sale_products.product.comboProducts',
+            'sale_products.product.comboProducts'
         ])->where('id', $saleId)->first();
 
         if ($updateSale->customer_id && ($request->status == 1 || $request->status == 3)) {
@@ -823,7 +801,7 @@ class SaleController extends Controller
                     ->select('credit_limit')
                     ->first();
 
-                $customerAmounts = $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($updateSale->customer_id, auth()->user()->branch_id);
+                $customerAmounts =  $this->branchWiseCustomerAmountUtil->branchWiseCustomerAmount($updateSale->customer_id, auth()->user()->branch_id);
 
                 $newInvoiceDue = $request->total_due - $updateSale->due;
                 $presentDue = $customerAmounts['total_sale_due'] + $newInvoiceDue;
@@ -862,7 +840,7 @@ class SaleController extends Controller
             $sale_product->save();
         }
 
-        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, '0', STR_PAD_LEFT);
+        $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, "0", STR_PAD_LEFT);
 
         $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
         $updateSale->status = $request->status;
@@ -920,8 +898,8 @@ class SaleController extends Controller
         $__index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
-            $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? null : $request->warehouse_ids[$__index];
+            $variant_id = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+            $warehouse_id = $request->warehouse_ids[$__index] == 'NULL' ? NULL : $request->warehouse_ids[$__index];
 
             $saleProduct = SaleProduct::where('sale_id', $updateSale->id)
                 ->where('product_id', $product_id)
@@ -943,7 +921,7 @@ class SaleController extends Controller
                 $saleProduct->unit_tax_amount = $request->unit_tax_amounts[$__index];
                 $saleProduct->unit = $request->units[$__index];
                 $saleProduct->subtotal = $request->subtotals[$__index];
-                $saleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : null;
+                $saleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
                 $saleProduct->delete_in_update = 0;
                 $saleProduct->save();
             } else {
@@ -965,7 +943,7 @@ class SaleController extends Controller
                 $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$__index];
                 $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$__index];
                 $addSaleProduct->subtotal = $request->subtotals[$__index];
-                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : null;
+                $addSaleProduct->description = $request->descriptions[$__index] ? $request->descriptions[$__index] : NULL;
                 $addSaleProduct->save();
             }
 
@@ -979,7 +957,7 @@ class SaleController extends Controller
         foreach ($deleteNotFoundSaleProducts as $deleteNotFoundSaleProduct) {
 
             $storedProductId = $deleteNotFoundSaleProduct->product_id;
-            $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : null;
+            $storedVariantId = $deleteNotFoundSaleProduct->product_variant_id ? $deleteNotFoundSaleProduct->product_variant_id : NULL;
             $storedStockBranchId = $deleteNotFoundSaleProduct->stock_branch_id;
             $storedStockWarehouseId = $deleteNotFoundSaleProduct->stock_warehouse_id;
 
@@ -1009,7 +987,7 @@ class SaleController extends Controller
 
             foreach ($saleProducts as $saleProduct) {
 
-                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : null;
+                $variant_id = $saleProduct->product_variant_id ? $saleProduct->product_variant_id : NULL;
 
                 $this->productStockUtil->adjustMainProductAndVariantStock($saleProduct->product_id, $variant_id);
 
@@ -1045,7 +1023,7 @@ class SaleController extends Controller
                     receiptVoucherPrefix: $receiptVoucherPrefix,
                     saleId: $sale->id,
                     receivedAmount: $request->paying_amount,
-                    customerPaymentId: null,
+                    customerPaymentId: NULL,
                     paymentMethodId: $request->payment_method_id,
                     accountId: $request->account_id,
                     invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
@@ -1085,22 +1063,18 @@ class SaleController extends Controller
         if ($request->status == 1) {
 
             session()->flash('successMsg', 'Sale updated successfully');
-
             return response()->json(['successMsg' => 'Sale updated successfully']);
         } elseif ($request->status == 2) {
 
             session()->flash('successMsg', 'Sale draft updated successfully');
-
             return response()->json(['successMsg' => 'Sale draft updated successfully']);
         } elseif ($request->status == 3) {
 
             session()->flash('successMsg', 'Sale order updated successfully');
-
             return response()->json(['successMsg' => 'Sale order updated successfully']);
         } elseif ($request->status == 4) {
 
             session()->flash('successMsg', 'Sale quotation updated successfully');
-
             return response()->json(['successMsg' => 'Sale quotation updated successfully']);
         }
     }
@@ -1143,7 +1117,6 @@ class SaleController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-
         return view('sales.shipments', compact('branches'));
     }
 
@@ -1173,7 +1146,7 @@ class SaleController extends Controller
     // Get all customers requested by ajax
     public function getAllCustomer()
     {
-        $customers = Customer::select('id', 'name', 'pay_term', 'pay_term_number', 'phone', 'total_sale_due')
+        $customers = Customer::select('id', 'name',  'pay_term', 'pay_term_number', 'phone', 'total_sale_due')
             ->where('is_walk_in_customer', 0)
             ->orderBy('id', 'desc')
             ->get();
@@ -1204,11 +1177,11 @@ class SaleController extends Controller
     // Search product by code
     public function searchProduct($status, $product_code, $price_group_id, $warehouse_id)
     {
-        $__warehouse_id = $warehouse_id == 'NULL' ? null : $warehouse_id;
-        $product_code = (string) $product_code;
+        $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
+        $product_code = (string)$product_code;
         $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
-        $__price_group_id = $price_group_id == 'no_id' ? null : $price_group_id;
+        $__price_group_id = $price_group_id == 'no_id' ? NULL : $price_group_id;
         $is_allowed_discount = true;
 
         $product = Product::with([
@@ -1216,7 +1189,7 @@ class SaleController extends Controller
             'product_variants.updateVariantCost',
             'tax:id,tax_percent',
             'unit:id,name',
-            'updateProductCost',
+            'updateProductCost'
         ])->where('product_code', $__product_code)
             ->select([
                 'id',
@@ -1248,7 +1221,7 @@ class SaleController extends Controller
     // Check Single product Stock
     public function checkSingleProductStock($status, $product_id, $price_group_id, $warehouse_id)
     {
-        $__warehouse_id = $warehouse_id == 'NULL' ? null : $warehouse_id;
+        $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
         $is_allowed_discount = true;
 
         if ($__warehouse_id) {
@@ -1263,7 +1236,7 @@ class SaleController extends Controller
     // Check Branch variant product Stock
     public function checkVariantProductStock($status, $product_id, $variant_id, $price_group_id, $warehouse_id)
     {
-        $__warehouse_id = $warehouse_id == 'NULL' ? null : $warehouse_id;
+        $__warehouse_id = $warehouse_id == 'NULL' ? NULL : $warehouse_id;
         $is_allowed_discount = true;
 
         if ($__warehouse_id) {
@@ -1278,7 +1251,6 @@ class SaleController extends Controller
     public function editShipment($saleId)
     {
         $sale = Sale::where('id', $saleId)->first();
-
         return view('sales.ajax_view.edit_shipment', compact('sale'));
     }
 
@@ -1286,7 +1258,6 @@ class SaleController extends Controller
     {
         $sale = Sale::with(['customer', 'branch', 'sale_payments', 'sale_payments.paymentMethod'])
             ->where('id', $saleId)->first();
-
         return view('sales.ajax_view.payment_view', compact('sale'));
     }
 
@@ -1310,7 +1281,6 @@ class SaleController extends Controller
 
         $sale = Sale::with('branch', 'customer')->where('id', $saleId)->first();
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
-
         return view('sales.ajax_view.add_payment', compact('sale', 'accounts', 'methods'));
     }
 
@@ -1344,7 +1314,7 @@ class SaleController extends Controller
                 invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                 date: $request->date,
                 note: $request->note,
-                attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
+                attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
             );
 
             // Add bank/cash-in-hand A/C ledger
@@ -1417,7 +1387,6 @@ class SaleController extends Controller
 
         $payment = SalePayment::with('sale', 'sale.customer', 'sale.branch')->where('id', $paymentId)->first();
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
-
         return view('sales.ajax_view.edit_payment', compact('payment', 'accounts', 'methods'));
     }
 
@@ -1435,9 +1404,9 @@ class SaleController extends Controller
             'account_id' => 'required',
         ]);
 
-        $updatePayment = $this->saleUtil->updatePayment(paymentId: $paymentId, paymentMethodId: $request->account_id, accountId: $request->account_id, receivedAmount: $request->paying_amount, date: $request->date, note: $request->note, attachment: $request->hasFile('attachment') ? $request->file('attachment') : null);
+        $updatePayment = $this->saleUtil->updatePayment(paymentId: $paymentId, paymentMethodId: $request->account_id, accountId: $request->account_id, receivedAmount: $request->paying_amount, date: $request->date, note: $request->note, attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,);
 
-        if ($updatePayment->customer_payment_id == null) {
+        if ($updatePayment->customer_payment_id == NULL) {
 
             $this->accountUtil->updateAccountLedger(
                 voucher_type_id: 10,
@@ -1517,8 +1486,8 @@ class SaleController extends Controller
             $saleReturnPaymentGetId = $this->saleUtil->saleReturnPaymentGetId(
                 request: $request,
                 sale: $sale,
-                customer_payment_id: null,
-                sale_return_id: $sale->sale_return ? $sale->sale_return->id : null
+                customer_payment_id: NULL,
+                sale_return_id: $sale->sale_return ? $sale->sale_return->id : NULL
             );
 
             // Add bank A/C ledger
@@ -1566,7 +1535,7 @@ class SaleController extends Controller
             'sale.branch',
             'sale_return',
             'sale_return.branch',
-            'customer',
+            'customer'
         ])->where('id', $paymentId)->first();
 
         $accounts = DB::table('account_branches')
@@ -1577,7 +1546,6 @@ class SaleController extends Controller
             ->get(['accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.account_type', 'accounts.balance']);
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
-
         return view('sales.ajax_view.edit_return_payment', compact('payment', 'accounts', 'methods'));
     }
 
@@ -1605,7 +1573,7 @@ class SaleController extends Controller
             $this->saleUtil->adjustSaleReturnAmounts($updateSalePayment->sale_return);
         }
 
-        if ($updateSalePayment->customer_payment_id == null) {
+        if ($updateSalePayment->customer_payment_id == NULL) {
 
             // Update Bank/Cash-in-Hand A/C ledger
             $this->accountUtil->updateAccountLedger(
@@ -1648,7 +1616,6 @@ class SaleController extends Controller
         }
 
         $payment = SalePayment::with('sale', 'sale.branch', 'sale.customer', 'paymentMethod')->where('id', $paymentId)->first();
-
         return view('sales.ajax_view.payment_details', compact('payment'));
     }
 
@@ -1761,18 +1728,16 @@ class SaleController extends Controller
     public function addProductModalView()
     {
         $units = DB::table('units')->select('id', 'name')->get();
-        $warranties = DB::table('warranties')->select('id', 'name', 'type')->get();
+        $warranties =  DB::table('warranties')->select('id', 'name', 'type')->get();
         $taxes = DB::table('taxes')->select(['id', 'tax_name', 'tax_percent'])->get();
-        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'DESC')->get();
+        $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
         $brands = DB::table('brands')->select('id', 'name')->get();
-
         return view('sales.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 
     public function getAllSubCategory($categoryId)
     {
         $sub_categories = DB::table('categories')->where('sub_category_id', $categoryId)->get();
-
         return response()->json($sub_categories);
     }
 
@@ -1796,7 +1761,7 @@ class SaleController extends Controller
         } else {
 
             return response()->json([
-                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock.',
+                'errorMsg' => 'Product is not added in the sale table, cause you did not add any number of opening stock.'
             ]);
         }
     }
@@ -1813,7 +1778,7 @@ class SaleController extends Controller
             'sale_products.product',
             'sale_products.product.warranty',
             'sale_products.variant',
-            'admin',
+            'admin'
         ])->where('id', $saleId)->first();
 
         $previous_due = 0;
@@ -1895,7 +1860,6 @@ class SaleController extends Controller
             'sale__default_price_group_id' => $request->default_price_group_id,
         ];
         $generalSettingService->updateAndSync($settings);
-
         return response()->json('Sale settings updated successfully');
     }
 }

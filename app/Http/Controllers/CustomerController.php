@@ -538,7 +538,7 @@ class CustomerController extends Controller
                     'customer_payments.less_amount',
                     'customer_payments.note as customer_payment_par',
                     'ags_sale.invoice_id as ags_sale',
-                )->orderBy('customer_ledgers.report_date', 'asc');
+                )->orderBy('customer_ledgers.id', 'asc')->orderBy('customer_ledgers.report_date', 'asc');
 
             if ($request->branch_id) {
 

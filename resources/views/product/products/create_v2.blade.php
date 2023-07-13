@@ -230,27 +230,13 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="input-group mt-1">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <p class="checkbox_input_wrap">
-                                                                <input checked type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>@lang('menu.manage_stock')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="input-group mt-1">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <p class="checkbox_input_wrap">
-                                                                <input type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> @lang('menu.service')/ @lang('menu.product')</b> </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="input-group">
+                                                <label class="col-5"> <b>@lang('menu.stock_type') <i data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('menu.stock_type_msg')" class="fas fa-info-circle tp"></i> </b> </label>
+                                                <div class="col-7">
+                                                    <select class="form-control" name="is_manage_stock" id="is_manage_stock">
+                                                        <option value="1">@lang('menu.manageable_stock')</option>
+                                                        <option value="0">@lang('menu.service_digital_item')</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +271,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.unit_cost') (Inc. Tax) </b> </label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost_exc_tax')</b> </label>
                                                     <div class="col-7">
                                                         <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')%" value="0.00">
                                                     </div>
@@ -452,7 +438,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-5"><b>Custom Field1 </b> </label>
                                                 <div class="col-7">
@@ -477,9 +463,9 @@
                                                     <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="input-group">
                                                 <div class="col-12">
                                                     <div class="row">
@@ -488,9 +474,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-5"> <b>@lang('menu.displayed_in_ecom')</b></label>
+                                                <div class="col-7">
+                                                    <select name="is_show_in_ecom" class="form-control" id="is_show_in_ecom" data-next="weight">
+                                                        <option value="0">@lang('menu.no')</option>
+                                                        <option value="1">@lang('menu.yes')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- <div class="col-md-6">
                                             <div class="input-group">
                                                 <div class="col-12">
                                                     <div class="row">
@@ -499,15 +497,51 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-5"> <b>@lang('menu.enable_imei_or_sl_no')</b></label>
+                                                <div class="col-7">
+                                                    <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_not_for_sale">
+                                                        <option value="0">@lang('menu.no')</option>
+                                                        <option value="1">@lang('menu.yes')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- <div class="col-md-6">
                                             <div class="input-group">
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
                                                         <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-5"> <b>@lang('menu.show_not_for_sale')</b></label>
+                                                <div class="col-7">
+                                                    <select name="is_not_for_sale" class="form-control" id="is_not_for_sale">
+                                                        <option value="0">@lang('menu.no')</option>
+                                                        <option value="1">@lang('menu.yes')</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <label class="col-5"> <b>@lang('menu.batch_no_expire_date') </b> </label>
+                                                <div class="col-7">
+                                                    <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date">
+                                                        <option value="0">@lang('menu.no')</option>
+                                                        <option value="1">@lang('menu.yes')</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

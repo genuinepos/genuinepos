@@ -30,20 +30,13 @@ use Modules\Communication\Interface\EmailServiceInterface;
 
 class ProductController extends Controller
 {
-    protected $productUtil;
-    protected $productStockUtil;
-    protected $userActivityLogUtil;
-    protected $emailService;
+
     public function __construct(
-        EmailServiceInterface  $emailService,
-        ProductUtil $productUtil,
-        ProductStockUtil $productStockUtil,
-        UserActivityLogUtil $userActivityLogUtil
+        private EmailServiceInterface  $emailService,
+        private ProductUtil $productUtil,
+        private ProductStockUtil $productStockUtil,
+        private UserActivityLogUtil $userActivityLogUtil
     ) {
-        $this->productUtil = $productUtil;
-        $this->productStockUtil = $productStockUtil;
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->emailService = $emailService;
     }
 
     // index view
@@ -158,9 +151,8 @@ class ProductController extends Controller
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = $request->weight;
-        $addProduct->custom_field_1 = $request->custom_field_1;
-        $addProduct->custom_field_2 = $request->custom_field_2;
-        $addProduct->custom_field_3 = $request->custom_field_3;
+        $addProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
+
 
         if ($request->file('image')) {
 
@@ -656,9 +648,7 @@ class ProductController extends Controller
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;
         $updateProduct->weight = $request->weight;
-        $updateProduct->custom_field_1 = $request->custom_field_1;
-        $updateProduct->custom_field_2 = $request->custom_field_2;
-        $updateProduct->custom_field_3 = $request->custom_field_3;
+        $updateProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
 
         if ($request->file('image')) {
 

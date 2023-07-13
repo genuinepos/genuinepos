@@ -489,9 +489,11 @@ class PurchaseController extends Controller
             'purchase_payments',
         ])->where('id', $addPurchase->id)->first();
             // dd($purchase['purchase_status']);
+
         if ($purchase?->supplier && $purchase?->supplier?->email) {
-            if ($purchase['purchase_status']=='1')
-            {
+
+            if ($purchase['purchase_status']=='1'){
+
                 $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
                 // $checkboxData = $request->input('checkboxes', []);
                 // $resultArray = [];
@@ -505,11 +507,12 @@ class PurchaseController extends Controller
                 //     }
                 // }
                 // $this->emailService->sendMultiple(array_values($resultArray, 'email'), new PurchaseCreated( $purchase));
-            }elseif($purchase['purchase_status']=='3')
-            {
+            }elseif($purchase['purchase_status']=='3'){
+                
                 $this->emailService->send($purchase->supplier->email, new PurchaseOrderCreated($purchase));
             }
         }
+
         // $this->supplierUtil->adjustSupplierForPurchasePaymentDue($request->supplier_id);
         if ($request->action == 2) {
 
@@ -517,7 +520,7 @@ class PurchaseController extends Controller
         } else {
 
             if ($request->purchase_status == 3) {
-               
+
                 return view('purchases.save_and_print_template.print_order', compact('purchase'));
             } else {
 

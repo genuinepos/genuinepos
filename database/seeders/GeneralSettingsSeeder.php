@@ -148,7 +148,7 @@ class GeneralSettingsSeeder extends Seeder
             array('id' => '135','key' => 'manufacturing','value' => '0','branch_id' => NULL),
             array('id' => '136','key' => 'projects','value' => '0','branch_id' => NULL),
             array('id' => '137','key' => 'essentials','value' => '0','branch_id' => NULL),
-            array('id' => '138','key' => 'e_commerce','value' => '0','branch_id' => NULL)
+            array('id' => '138','key' => 'e_commerce','value' => '0','branch_id' => NULL),
             array('id' => '139','key' => 'email_settings__user_forget_password_via_email','value' => NULL,'branch_id' => NULL),
             array('id' => '140','key' => 'email_settings__coupon_offer_via_email','value' => NULL,'branch_id' => NULL),
             array('id' => '141','key' => 'email_settings__discount_redeemed_via_email','value' => NULL,'branch_id' => NULL),

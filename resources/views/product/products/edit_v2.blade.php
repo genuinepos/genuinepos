@@ -3,23 +3,14 @@
     <style>
         .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
-        #myEditor{
-            height: 100px;
-        }
-        .cleditorMain{
-            height: 196px !important;
-        }
+        #myEditor{ height: 100px; }
+        .cleditorMain{ height: 196px !important;}
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 {
-            text-align: right;
-            padding-right: 10px;
-        }
-        .checkbox_input_wrap {
-            text-align: right;
-        }
+        label.col-6 {text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
@@ -37,11 +28,10 @@
             </div>
         </div>
         <div class="p-lg-3 p-1">
-            <form id="edit_product_form" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data"
-                method="POST">
+            <form id="edit_product_form" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="row g-3">
-                    <div class="col-md-7">
+                    <div class="col-md-9">
                         <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                             <div class="element-body">
                                 <div class="row gx-2 gy-1">
@@ -250,33 +240,20 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group mt-1">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap">
-                                                            <input {{ $product->is_manage_stock == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_manage_stock" id="is_manage_stock"> &nbsp; <b>@lang('menu.manage_stock')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Stock Management should be disable mostly for services/Digital Products. Example: Hair-Cutting, Repairing, PDF Books etc." class="fas fa-info-circle tp"></i></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="input-group mt-1">
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            <p class="checkbox_input_wrap">
-                                                            <input {{ $product->is_manage_stock == 0 ? 'CHECKED' : '' }} type="checkbox" name="digital_product" id="digital_product"> &nbsp; <b> @lang('menu.service')/ @lang('menu.product')</b> </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="input-group">
+                                            <label class="col-5"> <b>@lang('menu.stock_type') <i data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('menu.stock_type_msg')" class="fas fa-info-circle tp"></i> </b> </label>
+                                            <div class="col-7">
+                                                <select class="form-control" name="is_manage_stock" id="is_manage_stock">
+                                                    <option value="1">@lang('menu.manageable_stock')</option>
+                                                    <option {{ $product->is_manage_stock == 0 ? 'SELECTED' : '' }} value="0">@lang('menu.service_digital_item')</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                             <div class="element-body">
                                 <div class="form_part">
@@ -284,28 +261,28 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label  class="col-5"><b>@lang('menu.unit_cost') </b> </label>
+                                                    <label  class="col-5"><b>@lang('menu.unit_cost')</b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="product_cost" class="form-control"
-                                                        autocomplete="off" id="product_cost" placeholder="0.00" value="{{ $product->product_cost }}">
+                                                        <input type="number" step="any" name="product_cost" class="form-control fw-bold"
+                                                        id="product_cost" value="{{ $product->product_cost }}" autocomplete="off" placeholder="0.00">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label  class="col-5"><b>@lang('menu.price_exc_tax') </b> </label>
+                                                    <label  class="col-5"><b>@lang('menu.selling_price_exc_tax')</b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')" value="{{ $product->product_price }}" placeholder="0.00">
+                                                        <input type="number" step="any" name="product_price" class="form-control fw-bold" id="product_price" autocomplete="off" placeholder="0.00" value="{{ $product->product_price }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label  class="col-5"><b>@lang('menu.unit_cost')(Inc.Tax) </b> </label>
+                                                    <label  class="col-5"><b>@lang('menu.unit_cost_inc_tax')</b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="{{ $product->product_cost_with_tax }}" placeholder="0.00">
+                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control fw-bold" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')" value="{{ $product->product_cost_with_tax }}" placeholder="0.00">
                                                     </div>
                                                 </div>
                                             </div>
@@ -314,7 +291,7 @@
                                                 <div class="input-group">
                                                     <label  class="col-5"><b>@lang('menu.profit_margin')(%) </b> </label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $product->profit }}" placeholder="0.00">
+                                                        <input type="number" step="any" name="profit" class="form-control fw-bold" autocomplete="off" id="profit" value="{{ $product->profit }}" placeholder="0.00">
                                                     </div>
                                                 </div>
                                             </div>
@@ -519,8 +496,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-5">
+
                         <div class="form_element rounded mt-0 mb-lg-3 mb-1">
                             <div class="element-body">
                                 <div class="row gx-2 g-1">
@@ -535,7 +511,7 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-5"> <b>Weight </b> </label>
+                                            <label class="col-5"> <b>@lang('menu.weight') </b> </label>
                                             <div class="col-7">
                                                 <input type="text" name="weight" class="form-control" id="weight" placeholder="Weight" value="{{ $product->weight }}">
                                             </div>
@@ -544,67 +520,56 @@
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-5"><b>Custom Field1 </b> </label>
+                                            <label class="col-5"> <b>@lang('menu.displayed_in_ecom')</b></label>
                                             <div class="col-7">
-                                                <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1" value="{{ $product->custom_field_1 }}">
+                                                <select name="is_show_in_ecom" class="form-control" id="is_show_in_ecom" data-next="weight">
+                                                    <option value="0">@lang('menu.no')</option>
+                                                    <option {{ $product->is_show_in_ecom == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.yes')</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-5"><b>Custom Field2 </b> </label>
+                                            <label class="col-5"> <b>@lang('menu.enable_imei_or_sl_no')</b></label>
                                             <div class="col-7">
-                                                <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2" value="{{ $product->custom_field_2 }}">
+                                                <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_not_for_sale">
+                                                    <option value="0">@lang('menu.no')</option>
+                                                    <option {{ $product->is_show_emi_on_pos == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.yes')</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <label class="col-5"><b>Custom Field3 </b> </label>
+                                            <label class="col-5"> <b>@lang('menu.show_not_for_sale')</b></label>
                                             <div class="col-7">
-                                                <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3" value="{{ $product->custom_field_3 }}">
+                                                <select name="is_not_for_sale" class="form-control" id="is_not_for_sale">
+                                                    <option value="0">@lang('menu.no')</option>
+                                                    <option {{ $product->is_for_sale == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.yes')</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_show_in_ecom == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_in_ecom"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_show_emi_on_pos == 1 ? 'CHECKED' : '' }} type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>{{ __('Enable Product IMEI or Serial Number') }}</b> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                    <input {{ $product->is_for_sale == 0 ? 'CHECKED' : '' }} type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
-                                                </div>
+                                            <label class="col-5"> <b>@lang('menu.batch_no_expire_date') </b> </label>
+                                            <div class="col-7">
+                                                <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date">
+                                                    <option value="0">@lang('menu.no')</option>
+                                                    <option {{ $product->has_batch_no_expire_date == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.yes')</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form_element rounded mt-0 mb-3">
+
+                        <div class="form_element rounded mt-0 mb-2">
                             <div class="element-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -630,13 +595,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="d-flex justify-content-end">
-                    <div class="btn-loading">
-                        <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner text-primary"></i> <strong>@lang('menu.loading')</strong> </button>
-                        <button type="submit" class="btn btn-success submit_button btn-sm">@lang('menu.save_changes')</button>
+                        <div class="d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button btn-sm d-hide"><i class="fas fa-spinner text-primary"></i> <strong>@lang('menu.loading')</strong> </button>
+                                <button type="submit" class="btn btn-success submit_button btn-sm">@lang('menu.save_changes')</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -861,7 +826,6 @@
 <script src="{{asset('backend/asset/js/jquery.cleditor.js')}}"></script>
 <script src="{{asset('backend/asset/js/select2.min.js')}}"></script>
 <script>
-
     $('.select2').select2();
 
     // Set parent category in parent category form field
@@ -869,12 +833,17 @@
     $('.combo_pro_table_field').hide();
 
     var tax_percent = "{{ $product->tax_percent ? $product->tax_percent : 0 }}";
+
     $('#tax_id').on('change', function() {
+
         var tax = $(this).val();
+
         if (tax) {
+
             var split = tax.split('-');
             tax_percent = split[1];
         }else{
+
             tax_percent = 0;
         }
     });
@@ -1749,7 +1718,7 @@
                         variant.variant_price + '">';
                         html += '</td>';
                         html += '<td>';
-                        
+
                         html += '<input type="file" name="variant_image[]" class="form-control" id="variant_image">';
                         html += '</td>';
                         html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';

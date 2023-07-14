@@ -15,17 +15,17 @@ class ProductVariant extends BaseModel
     public function product()
     {
         return $this->belongsTo(Product::class)->select([
-            'id', 
+            'id',
             'name',
             'type',
-            'tax_id', 
-            'brand_id', 
-            'category_id', 
-            'tax_type', 
-            'unit_id', 
+            'tax_id',
+            'brand_id',
+            'category_id',
+            'tax_type',
+            'unit_id',
             'product_code',
             'product_cost',
-            'product_cost_with_tax', 
+            'product_cost_with_tax',
             'profit',
             'product_price',
             'offer_price',
@@ -35,6 +35,7 @@ class ProductVariant extends BaseModel
             'is_variant',
             'is_show_emi_on_pos',
             'is_manage_stock',
+            'has_batch_no_expire_date',
         ]);
     }
 
@@ -57,7 +58,7 @@ class ProductVariant extends BaseModel
 
             $ordering = 'asc';
         }else {
-            
+
             $ordering = 'desc';
         }
 

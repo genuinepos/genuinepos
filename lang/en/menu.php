@@ -701,7 +701,7 @@ return [
   'adjustment_location' => 'Adjustment Location',
   'stock_adjustment_details' => 'Stock Adjustment Details',
   'reference_no' => 'Reference No',
-  'unit_cost_inc_tax' => 'Unit Cost Inc.Tax',
+  'unit_cost_inc_tax' => 'Unit Cost (Inc.Tax)',
   'description' => 'Description',
   'recovered_amount' => 'Recovered Amount',
   'method' => 'Method',
@@ -1868,7 +1868,6 @@ return [
   'create_add_sale' => 'Create add sale',
   'view_all_sale_return' => 'View all sale return',
   'edit_terms_condition' => 'Edit Terms Condition',
-  'unit_cost_inc_tax' => 'Unit Cost.Inc.Tax',
   'from_warehouse' => 'From Warehouse',
   'add_stock_adjustment' => 'Add Stock Adjustment',
   'all_warehouse' => 'All Warehouse',
@@ -1957,4 +1956,5 @@ return [
   'displayed_in_ecom' => 'Displayed In E-Com.?',
   'enable_imei_or_sl_no' => 'Enable IMEI/Serial No.',
   'batch_no_expire_date' => 'Batch No And Expire Date',
+  'search_product' => 'Search Product',
 ];

@@ -252,9 +252,9 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.unit_cost') </b> </label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost_exc_tax') </b> </label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="product_cost" class="form-control"
+                                                        <input type="number" step="any" name="product_cost" class="form-control fw-bold"
                                                         autocomplete="off" id="product_cost" placeholder="0.00">
                                                     </div>
                                                 </div>
@@ -262,18 +262,18 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.price_exc_tax') </b></label>
+                                                    <label class="col-5"><b>@lang('menu.selling_price_exc_tax') </b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')">
+                                                        <input type="number" step="any" name="product_price" class="form-control fw-bold" autocomplete="off" id="product_price" placeholder="@lang('menu.selling_price_exc_tax')">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-5"><b>@lang('menu.unit_cost_exc_tax')</b> </label>
+                                                    <label class="col-5"><b>@lang('menu.unit_cost_inc_tax')</b> </label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')%" value="0.00">
+                                                        <input readonly type="number" step="any" name="product_cost_with_tax" class="form-control fw-bold" value="0.00" autocomplete="off" id="product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')%" tabindex="-1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,7 +282,7 @@
                                                 <div class="input-group">
                                                     <label class="col-5"><b>@lang('menu.profit_margin')(%) </b></label>
                                                     <div class="col-7">
-                                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
+                                                        <input type="number" step="any" name="profit" class="form-control fw-bold" autocomplete="off" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -438,44 +438,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-5"><b>Custom Field1 </b> </label>
-                                                <div class="col-7">
-                                                    <input type="text" name="custom_field_1" class="form-control" placeholder="Custom field1">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-5"><b>Custom Field2 </b> </label>
-                                                <div class="col-7">
-                                                    <input type="text" name="custom_field_2" class="form-control" placeholder="Custom field2">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label class="col-5"><b>Custom Field3 </b> </label>
-                                                <div class="col-7">
-                                                    <input type="text" name="custom_field_3" class="form-control" placeholder="Custom field3">
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
-                                        {{-- <div class="col-md-6">
-                                            <div class="input-group">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" name="is_show_in_ecom"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-5"> <b>@lang('menu.displayed_in_ecom')</b></label>
@@ -488,17 +450,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- <div class="col-md-6">
-                                            <div class="input-group">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" name="is_show_emi_on_pos"> &nbsp; <b>{{ __('Enable Product IMEI or Serial Number') }}</b> </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
                                         <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-5"> <b>@lang('menu.enable_imei_or_sl_no')</b></label>
@@ -510,17 +461,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {{-- <div class="col-md-6">
-                                            <div class="input-group">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" name="is_not_for_sale"> &nbsp; <b>@lang('menu.show_not_for_sale')</b> </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
 
                                         <div class="col-md-6">
                                             <div class="input-group">

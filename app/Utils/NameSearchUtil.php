@@ -24,14 +24,13 @@ class NameSearchUtil
                 'products.product_code',
                 'products.is_combo',
                 'products.is_manage_stock',
-                // 'products.is_purchased',
                 'products.is_show_emi_on_pos',
+                'products.has_batch_no_expire_date',
                 'products.is_variant',
                 'products.product_cost',
                 'products.product_cost_with_tax',
                 'products.product_price',
                 'products.profit',
-                // 'products.quantity',
                 'products.tax_id',
                 'products.tax_type',
                 'products.thumbnail_photo',
@@ -48,9 +47,9 @@ class NameSearchUtil
                 'product_variants.variant_price',
                 'units.name as unit_name',
             )
-            ->where('products.is_for_sale', 1)
+            // ->where('products.is_for_sale', 1)
             ->where('products.status', 1)
-            ->where('product_branches.status', 1)
+            // ->where('product_branches.status', 1)
             ->where('product_branches.branch_id', auth()->user()->branch_id)
             // ->where('products.name', 'LIKE',  $keyword . '%')
             ->where('products.name', 'LIKE', '%'. $keyword . '%')
@@ -586,7 +585,7 @@ class NameSearchUtil
         }
     }
 
-    // Check warehouse product variant qty 
+    // Check warehouse product variant qty
     public function checkWarehouseProductVariant($product_id, $variant_id, $warehouse_id)
     {
         $productWarehouse = DB::table('product_warehouses')
@@ -793,7 +792,7 @@ class NameSearchUtil
         //     if ($discountBrandCategoryWise->brand_id == $__brand_id && $discountBrandCategoryWise->category_id == $__category_id) {
 
         //         return $this->setDiscount($discountBrandCategoryWise);
-        //     } 
+        //     }
         // } elseif (!$discountBrandCategoryWise->brand_id && $discountBrandCategoryWise->category_id) {
 
         //     if ($discountBrandCategoryWise->category_id == $__category_id) {

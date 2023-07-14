@@ -149,6 +149,7 @@ Route::group(['prefix' => 'product'], function () {
 
     // Products route group
     Route::group(['prefix' => '/'], function () {
+
         Route::get('all', [ProductController::class, 'allProduct'])->name('products.all.product');
         Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
         Route::get('get/all/product', [ProductController::class, 'getAllProduct'])->name('products.get.all.product');
@@ -179,12 +180,14 @@ Route::group(['prefix' => 'product'], function () {
         Route::post('settings/store', [ProductController::class, 'settingsStore'])->name('products.settings.store');
 
         Route::group(['prefix' => 'import/price/group/products'], function () {
+
             Route::get('export', [ImportPriceGroupProductController::class, 'export'])->name('products.export.price.group.products');
         });
     });
 
     // Selling price group route group
     Route::group(['prefix' => 'selling/price/groups'], function () {
+
         Route::get('/', [PriceGroupController::class, 'index'])->name('product.selling.price.groups.index');
         Route::post('store', [PriceGroupController::class, 'store'])->name('product.selling.price.groups.store');
         Route::get('edit/{id}', [PriceGroupController::class, 'edit'])->name('product.selling.price.groups.edit');
@@ -195,6 +198,7 @@ Route::group(['prefix' => 'product'], function () {
 
     // Variants route group
     Route::group(['prefix' => 'variants'], function () {
+
         Route::get('/', [BulkVariantController::class, 'index'])->name('product.variants.index');
         Route::get('all', [BulkVariantController::class, 'getAllVariant'])->name('product.variants.all.variant');
         Route::post('store', [BulkVariantController::class, 'store'])->name('product.variants.store');
@@ -204,6 +208,7 @@ Route::group(['prefix' => 'product'], function () {
 
     // Barcode route group
     Route::group(['prefix' => 'barcode'], function () {
+
         Route::get('/', [BarcodeController::class, 'index'])->name('barcode.index');
         Route::post('preview', [BarcodeController::class, 'preview'])->name('barcode.preview');
         Route::get('supplier/products', [BarcodeController::class, 'supplierProduct'])->name('barcode.supplier.get.products');
@@ -221,6 +226,7 @@ Route::group(['prefix' => 'product'], function () {
 
     // Import product route group
     Route::group(['prefix' => 'imports'], function () {
+
         Route::get('create', [ProductImportController::class, 'create'])->name('product.import.create');
         Route::post('store', [ProductImportController::class, 'store'])->name('product.import.store');
     });

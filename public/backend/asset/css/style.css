@@ -26,6 +26,32 @@ body {
     opacity: 1;
   } */
 
+  .select2-selection:focus {
+    box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%)!important;
+    color: #212529;
+    background-color: #fff!important;
+    border-color: #86b7fe!important;
+    outline: 0;
+}
+
+.btn-success:focus {
+    color: #fff;
+    background-color: #157347;
+    border-color: #146c43;
+    box-shadow: 0 0 0 0.25rem rgba(60,153,110,.5)!important;
+}
+
+.btn-danger:focus {
+    color: #fff;
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+    box-shadow: 0 0 0 0.25rem rgba(225,83,97,.5)!important;
+}
+
+.fw-bold {
+    font-weight: 600!important;
+}
+
 body::-webkit-scrollbar {
   display: none;
 }

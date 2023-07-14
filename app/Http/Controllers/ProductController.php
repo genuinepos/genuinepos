@@ -65,10 +65,12 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         if (!auth()->user()->can('product_add')) {
+            
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             $products = DB::table('product_branches')
                 ->leftJoin('products', 'product_branches.product_id', 'products.id')
                 ->select('products.id', 'products.name', 'products.product_cost', 'products.product_price')
@@ -82,15 +84,10 @@ class ProductController extends Controller
         }
 
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
-
         $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
-
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
-
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
-
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
-
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
         return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes', 'branches'));
@@ -273,11 +270,16 @@ class ProductController extends Controller
         }
 
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
+
         if ($addProduct) {
-            // dd($addProduct);
-            $customers = Customer::pluck('email', 'id')->toArray();
-            $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
+
+            if(env('EMAIL_ACTIVE') == 'true'){
+
+                $customers = Customer::pluck('email', 'id')->toArray();
+                $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
+            }
         }
+
         session()->flash('successMsg', 'Product created Successfully');
         return response()->json('Product created Successfully');
     }

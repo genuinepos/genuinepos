@@ -69,7 +69,6 @@ class PurchaseController extends Controller
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->purchaseReturnUtil = $purchaseReturnUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-
     }
 
     public function index_v2(Request $request)
@@ -209,7 +208,12 @@ class PurchaseController extends Controller
                 'warehouses.warehouse_code',
             )->get();
 
-        return view('purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts'));
+        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
+        $units = DB::table('units')->select('id', 'name')->get();
+
+        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone', 'pay_term', 'pay_term_number')->get();
+
+        return view('purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxes', 'units', 'suppliers'));
     }
 
     // add purchase method
@@ -490,9 +494,9 @@ class PurchaseController extends Controller
         ])->where('id', $addPurchase->id)->first();
             // dd($purchase['purchase_status']);
 
-        if ($purchase?->supplier && $purchase?->supplier?->email) {
+        if (env('EMAIL_ACTIVE') == 'true' && $purchase?->supplier && $purchase?->supplier?->email) {
 
-            if ($purchase['purchase_status']=='1'){
+            if ($purchase['purchase_status']=='1') {
 
                 $this->emailService->send($purchase->supplier->email, new PurchaseCreated($purchase));
                 // $checkboxData = $request->input('checkboxes', []);
@@ -508,7 +512,7 @@ class PurchaseController extends Controller
                 // }
                 // $this->emailService->sendMultiple(array_values($resultArray, 'email'), new PurchaseCreated( $purchase));
             }elseif($purchase['purchase_status']=='3'){
-                
+
                 $this->emailService->send($purchase->supplier->email, new PurchaseOrderCreated($purchase));
             }
         }

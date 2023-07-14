@@ -158,7 +158,9 @@ class Util
         $addProductBranch->product_id = $addProduct->id;
         $addProductBranch->save();
 
-        return response()->json($addProduct);
+        $product = Product::with('tax')->where('id', $addProduct->id)->first();
+
+        return response()->json($product);
     }
 
     public function addQuickExpenseCategory($request)
@@ -269,7 +271,7 @@ class Util
                 }, ARRAY_FILTER_USE_BOTH);
             }
         } else {
-            
+
             return $data;
         }
     }

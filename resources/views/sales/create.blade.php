@@ -65,7 +65,6 @@
                         <div class="row g-3">
                             <div class="col-md-9">
                                 <div class="form_element rounded mt-0 mb-3">
-
                                     <div class="element-body p-1">
                                         <div class="row g-1">
                                             <div class="col-md-4">
@@ -233,6 +232,7 @@
                                                                 <i class="fas fa-barcode text-dark input_f"></i>
                                                             </span>
                                                         </div>
+
                                                         <input type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
                                                         @if(auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
@@ -388,6 +388,7 @@
                                                     <option value="2">@lang('menu.percentage')</option>
                                                 </select>
                                             </div>
+
                                             <div class="col-sm-4 col-6">
                                                 <input name="order_discount" type="number" step="any" class="form-control fw-bold" id="order_discount" value="0.00">
                                                 <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">

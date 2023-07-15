@@ -57,17 +57,6 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.purchases_status') </strong></label>
-                                                    <select name="status" id="status"
-                                                        class="form-control  submit_able select2">
-                                                        <option value="">@lang('menu.all')</option>
-                                                        <option value="1">@lang('menu.purchased')</option>
-                                                        <option value="2">@lang('menu.pending')</option>
-                                                        <option value="3">@lang('menu.purchased_by_order')</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
                                                     <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -135,11 +124,11 @@
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>@lang('menu.purchases_status')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>@lang('menu.grand_total')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.paid')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.payment_due')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.return_amount')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.return_due')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.grand_total')</th>
+                                                <th>@lang('menu.paid')</th>
+                                                <th>@lang('menu.payment_due')</th>
+                                                <th>@lang('menu.return_amount')</th>
+                                                <th>@lang('menu.return_due')</th>
                                                 <th>@lang('menu.created_by')</th>
                                             </tr>
                                         </thead>
@@ -171,19 +160,6 @@
     </div>
 
     <div id="purchase_details"></div>
-
-    <!-- Change purchase status modal-->
-    {{-- <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Update Purchase Status</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="change_status_modal_body"></div>
-            </div>
-        </div>
-    </div> --}}
 
     @if(auth()->user()->can('purchase_payment'))
         <!--Payment list modal-->
@@ -267,7 +243,6 @@
                     d.warehouse_id = $('#warehouse_id').val();
                     d.branch_id = $('#branch_id').val();
                     d.supplier_id = $('#supplier_id').val();
-                    d.status = $('#status').val();
                     d.from_date = $('.from_date').val();
                     d.to_date = $('.to_date').val();
                 }

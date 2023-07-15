@@ -15,12 +15,12 @@
                 <div class="form-group row">
                     <div class="col-md-3">
                         <label><b>@lang('menu.product_name') : </b> <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" id="add_name" placeholder="@lang('menu.product_name')"/>
+                        <input required type="text" name="name" class="form-control" id="add_name" placeholder="@lang('menu.product_name')"/>
                         <span class="error error_add_name"></span>
                     </div>
 
                     <div class="col-md-3">
-                        <label><b>@lang('menu.product_code') (SKU) : </b> <span class="text-danger">*</span></label>
+                        <label><b>@lang('menu.product_code') (SKU) : </b></label>
                         <input type="text" name="product_code" class="form-control" placeholder="@lang('menu.product_code')"/>
                         <span class="error error_add_product_code"></span>
                     </div>
@@ -37,7 +37,7 @@
 
                     <div class="col-md-3 ">
                         <label><b> @lang('menu.unit') : </b> <span class="text-danger">*</span></label>
-                        <select class="form-control product_unit" name="unit_id" id="add_unit_id">
+                        <select required class="form-control product_unit" name="unit_id" id="add_unit_id">
                             <option value="">@lang('menu.select_unit')</option>
                             @foreach ($units as $unit)
                                 <option value="{{ $unit->id }}">{{ $unit->name }}({{ $unit->code_name }})</option>
@@ -97,17 +97,28 @@
                 </div>
 
                 <div class="form-group row mt-1">
-                    <div class="col-md-8">
-                        <label><b>@lang('menu.description') : </b> </label>
-                        <textarea  name="product_details" class="form-control" cols="10" rows="3">
-                        </textarea>
+                    <div class="col-md-3">
+                        <label><b>@lang('menu.displayed_in_ecom')</b></label>
+                        <select name="is_show_in_ecom" class="form-control" id="is_show_in_ecom" data-next="weight">
+                            <option value="0">@lang('menu.no')</option>
+                            <option value="1">@lang('menu.yes')</option>
+                        </select>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="row mt-5">
-                            <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; {{ __('Product wil be displayed in E-Commerce') }}. &nbsp; </p>
-                            <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; @lang('menu.enable_imei_or_serial') &nbsp;</p>
-                        </div>
+                    <div class="col-md-3">
+                        <label> <b>@lang('menu.enable_imei_or_sl_no')</b></label>
+                        <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_not_for_sale">
+                            <option value="0">@lang('menu.no')</option>
+                            <option value="1">@lang('menu.yes')</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label><b>@lang('menu.batch_no_expire_date') </b> </label>
+                        <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date">
+                            <option value="0">@lang('menu.no')</option>
+                            <option value="1">@lang('menu.yes')</option>
+                        </select>
                     </div>
                 </div>
 
@@ -146,14 +157,13 @@
                                     <td>
                                         <div class="row">
                                             <div class="col-md-6 text-start">
-                                                <label><b>@lang('menu.unit_cost_exc_tax') : </b> <span class="text-danger">*</span></label>
+                                                <label><b>@lang('menu.unit_cost_exc_tax') : </b></label>
                                                 <input type="number" step="any" name="product_cost" id="add_product_cost" class="form-control" autocomplete="off" placeholder="@lang('menu.unit_cost_exc_tax')">
                                                 <span class="error error_add_product_cost"></span>
                                             </div>
                                             <div class="col-md-6 text-start">
-                                                <label><b>@lang('menu.unit_cost_inc_tax') : </b> <span class="text-danger">*</span></label>
-                                                <input type="number" step="any" name="product_cost_with_tax"
-                                                class="form-control" autocomplete="off"
+                                                <label><b>@lang('menu.unit_cost_inc_tax') : </b></label>
+                                                <input type="number" step="any" name="product_cost_with_tax" class="form-control" autocomplete="off"
                                                 id="add_product_cost_with_tax" placeholder="@lang('menu.unit_cost_inc_tax')">
                                                 <span class="error error_add_product_cost_with_tax"></span>
                                             </div>
@@ -162,14 +172,12 @@
 
                                     <td>
                                         <label></label>
-                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="add_profit" value="{{ $generalSettings['business__default_profit'] }}"
-                                        placeholder="Profix Margin">
+                                        <input type="number" step="any" name="profit" class="form-control" autocomplete="off" id="add_profit" value="{{ $generalSettings['business__default_profit'] }}" placeholder="Profix Margin">
                                     </td>
 
                                     <td class="text-start">
-                                        <label><b>@lang('menu.price_exc_tax') : </b> <span class="text-danger">*</span></label>
-                                            <input type="number" step="any" name="product_price" class="form-control"
-                                                autocomplete="off" id="add_product_price" placeholder="@lang('menu.price_exc_tax')">
+                                        <label><b>@lang('menu.price_exc_tax') : </b></label>
+                                        <input type="number" step="any" name="product_price" class="form-control" autocomplete="off" id="add_product_price" placeholder="@lang('menu.price_exc_tax')">
                                         <span class="error error_add_product_price"></span>
                                     </td>
                                 </tr>

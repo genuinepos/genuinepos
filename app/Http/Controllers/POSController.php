@@ -407,24 +407,25 @@ class POSController extends Controller
                     $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: [$addSale->id], receivedAmount: $receivedAmount, customerPayment: $customerPayment, customerId: $request->customer_id, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: date('Y-m-d'), invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil);
                 } else {
 
-                    // Add Bank/Cash-in-hand A/C Ledger
-                    $this->accountUtil->addAccountLedger(
-                        voucher_type_id: 18,
-                        date: date('Y-m-d'),
-                        account_id: $request->account_id,
-                        trans_id: $customerPayment->id,
-                        amount: $receivedAmount,
-                        balance_type: 'debit'
-                    );
-
-                    $this->saleUtil->addPaymentGetId(
+                    $addPaymentGetId = $this->saleUtil->addPaymentGetId(
                         receiptVoucherPrefix: $receiptVoucherPrefix,
                         receivedAmount: $receivedAmount,
                         saleId: $addSale->id,
                         customerPaymentId: null,
+                        paymentMethodId: $request->payment_method_id,
                         accountId: $request->account_id,
                         invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                         date: date('Y-m-d'),
+                    );
+
+                    // Add Bank/Cash-in-hand A/C Ledger
+                    $this->accountUtil->addAccountLedger(
+                        voucher_type_id: 10,
+                        date: date('Y-m-d'),
+                        account_id: $request->account_id,
+                        trans_id: $addPaymentGetId,
+                        amount: $receivedAmount,
+                        balance_type: 'debit'
                     );
                 }
             }
@@ -909,7 +910,7 @@ class POSController extends Controller
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('product_variants', 'product_branch_variants.product_variant_id', 'product_variants.id')
-            ->where('products.is_for_sale', 1)
+            // ->where('products.is_for_sale', 1)
             ->where('products.status', 1)
             ->where('product_branches.branch_id', auth()->user()->branch_id);
 

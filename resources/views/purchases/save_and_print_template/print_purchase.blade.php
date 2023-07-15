@@ -13,6 +13,7 @@
     }
 
     @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
+    div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
  <!-- Purchase print templete-->
 <div class="purchase_print_template">
@@ -46,7 +47,7 @@
                             {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                         @else
 
-                            {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
+                            {{ $generalSettings['business__shop_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -128,7 +129,7 @@
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.description')</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.quantity')</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_cost')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_cost')</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_discount')</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.tax')(%)</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Net Unit Cost') }}</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.lot_number')</th>
@@ -146,7 +147,7 @@
                                 <p>{{ Str::limit($purchaseProduct->product->name, 25).' '. $variant }}</p>
                                 <small class="d-block text-muted">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) }}</small>
+                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -254,17 +255,17 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">
-                    @if (config('company.print_on_sale'))
-                        <small class="d-block">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
+                    @if (config('company.print_on_company'))
+                        <small class="d-block" style="font-size: 9px!important;">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
                     @endif
                 </div>
 
                 <div class="col-4 text-end">
-                    <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
+                    <small style="font-size: 9px!important;">@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

@@ -1931,7 +1931,7 @@ return [
   'customer_due' => 'Customer Due',
   'fixed_asset' => 'Fixed Asset',
   'vehicles' => 'Vehicles',
-  'purchase_ac' => 'Purchase A/C',
+  'purchase_ac' => 'Purchase A/c',
   'sale_ac' => 'Sale A/C',
   'version' => 'Version',
   'receive' => 'Receive',
@@ -1959,4 +1959,8 @@ return [
   'batch_no' => 'Batch No',
   'expire_date' => 'Expire Date',
   'purchase_invoice' => 'Purchase Invoice',
+  'lot_no' => 'Lot No.',
+  'batch_no_expire_date' => 'Batch No/Expire Date',
+  'expired_date' => 'Expired Date',
+  'batch_number' => 'Batch Number',
 ];

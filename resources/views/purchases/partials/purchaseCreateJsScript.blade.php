@@ -32,41 +32,6 @@
         });
     });
 
-    // Get all unite for form field
-    var unites = [];
-    function getUnites(){
-        $.ajax({
-            url:"{{route('purchases.get.all.unites')}}",
-            async : false,
-            success:function(units){
-
-                $.each(units, function(key, unit){
-
-                    unites.push(unit.name);
-                });
-            }
-        });
-    }
-    getUnites();
-
-    var taxArray;
-    function getTaxes(){
-        $.ajax({
-            url:"{{route('purchases.get.all.taxes')}}",
-            async:false,
-            success:function(taxes){
-
-                taxArray = taxes;
-                $.each(taxes, function(key, val){
-
-                    $('#purchase_tax').append('<option value="'+val.tax_percent+'">'+val.tax_name+'</option>');
-                });
-
-            }
-        });
-    }
-    getTaxes();
-
     function calculateTotalAmount(){
 
         var quantities = document.querySelectorAll('#quantity');
@@ -696,16 +661,18 @@
         $('#e_batch_number').val('');
         $('#e_expire_date').val('');
         $('#e_lot_number').val('');
-        $('#e_has_batch_no_expire_date').val(parseFloat(has_batch_no_expire_date).toFixed(2));
+        $('#e_has_batch_no_expire_date').val(has_batch_no_expire_date);
 
         if (has_batch_no_expire_date == 1) {
 
             $('#e_batch_number').prop('readonly', false);
             $('#e_expire_date').prop('readonly', false);
+            $('.batch_no_expire_date_fields').removeClass('d-none');
         }else {
 
             $('#e_batch_number').prop('readonly', true);
             $('#e_expire_date').prop('readonly', true);
+            $('.batch_no_expire_date_fields').addClass('d-none');
         }
 
         calculateEditOrAddAmount();
@@ -769,7 +736,7 @@
         var e_product_id = $('#e_product_id').val();
         var e_variant_id = $('#e_variant_id').val();
         var e_quantity = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
-        var e_unit_name = $('#e_unit').val();
+        var e_unit = $('#e_unit').val();
         var e_unit_cost_exc_tax = $('#e_unit_cost_exc_tax').val() ? $('#e_unit_cost_exc_tax').val() : 0;
         var e_discount = $('#e_discount').val() ? $('#e_discount').val() : 0;
         var e_discount_type = $('#e_discount_type').val();
@@ -819,7 +786,7 @@
             tr += '</td>';
 
             tr += '<td>';
-            tr += '<span id="span_quantity_unit" class="fw-bold">'+parseFloat(e_quantity).toFixed(2)+'/'+e_unit_name+'</span>';
+            tr += '<span id="span_quantity_unit" class="fw-bold">'+parseFloat(e_quantity).toFixed(2)+'/'+e_unit+'</span>';
             tr += '<input type="hidden" name="quantities[]" id="quantity" value="'+e_quantity+'">';
             tr += '<input type="hidden" name="units[]" step="any" id="unit" value="'+e_unit+'">';
 
@@ -900,7 +867,7 @@
             tr.find('#lot_number').val(e_lot_number);
             tr.find('#span_lot_number').html(e_lot_number);
             tr.find('#quantity').val(parseFloat(e_quantity).toFixed(2));
-            tr.find('#span_quantity_unit').html(parseFloat(e_quantity).toFixed(2)+'/'+e_unit_name);
+            tr.find('#span_quantity_unit').html(parseFloat(e_quantity).toFixed(2)+'/'+e_unit);
             tr.find('#unit_cost_exc_tax').val(parseFloat(e_unit_cost_exc_tax).toFixed(2));
             tr.find('#span_unit_cost_exc_tax').html(parseFloat(e_unit_cost_exc_tax).toFixed(2));
             tr.find('#unit_discount_type').val(e_discount_type);
@@ -939,7 +906,7 @@
         var product_id = tr.find('#product_id').val();
         var variant_id = tr.find('#variant_id').val();
         var quantity = tr.find('#quantity').val();
-        var unit_id = tr.find('#unit_id').val();
+        var unit = tr.find('#unit').val();
         var unit_cost_exc_tax = tr.find('#unit_cost_exc_tax').val();
         var unit_discount_type = tr.find('#unit_discount_type').val();
         var unit_discount = tr.find('#unit_discount').val();
@@ -958,6 +925,7 @@
         $('#e_item_name').val(item_name);
         $('#e_product_id').val(product_id);
         $('#e_variant_id').val(variant_id);
+        $('#e_unit').val(unit);
         $('#e_quantity').val(parseFloat(quantity).toFixed(2));
         $('#e_unit_cost_exc_tax').val(parseFloat(unit_cost_exc_tax).toFixed(2));
         $('#e_discount_type').val(unit_discount_type);
@@ -976,15 +944,18 @@
         $('#e_batch_number').val(batch_number);
         $('#e_expire_date').val(expire_date);
         $('#e_description').val(description);
+        $('#e_has_batch_no_expire_date').val(has_batch_no_expire_date);
 
         if (has_batch_no_expire_date == 1) {
 
             $('#e_batch_number').prop('readonly', false);
             $('#e_expire_date').prop('readonly', false);
+            $('.batch_no_expire_date_fields').removeClass('d-none');
         }else {
 
             $('#e_batch_number').prop('readonly', true);
             $('#e_expire_date').prop('readonly', true);
+            $('.batch_no_expire_date_fields').addClass('d-none');
         }
 
         $('#e_quantity').focus().select();
@@ -1136,7 +1107,6 @@
             }
         }
     });
-
 
     $('#e_batch_number').on('input keypress', function(e) {
 
@@ -1448,6 +1418,7 @@
                 $('#e_item_name').val(name);
                 $('#e_product_id').val(product.id);
                 $('#e_variant_id').val('noid');
+                $('#e_unit').val(product.unit.name);
                 $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
                 $('#e_unit_cost_exc_tax').val(parseFloat(product.product_cost).toFixed(2));
                 $('#e_discount').val(parseFloat(0).toFixed(2));
@@ -1456,7 +1427,6 @@
                 $('#e_tax_percent').val(taxPercent)
                 $('#e_tax_type').val(product.tax_type);
                 $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
-                $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
                 $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
                 $('#e_description').val('');
                 $('#e_lot_number').val('');
@@ -1467,10 +1437,12 @@
 
                     $('#e_batch_number').prop('readonly', false);
                     $('#e_expire_date').prop('readonly', false);
+                    $('.batch_no_expire_date_fields').removeClass('d-none');
                 }else {
 
                     $('#e_batch_number').prop('readonly', true);
                     $('#e_expire_date').prop('readonly', true);
+                    $('.batch_no_expire_date_fields').addClass('d-none');
                 }
 
                 calculateEditOrAddAmount();
@@ -1512,31 +1484,6 @@
         }
     });
 
-    // var lastSelectedTr = '';
-    // var is_prevent_default = 1;
-    // $(document).on('click', '#select_product', function (e) {
-
-    //     e.preventDefault();
-    //     is_prevent_default = 0;
-    //     var tr = $(this).closest('tr');
-    //     lastSelectedTr = tr;
-    //     var product_name = tr.find('.product_name').html();
-    //     $('#product_name').html('('+product_name+')');
-    //     var value = tr.find('#description').val();
-    //     $('#product_description').val(value);
-    //     $('#addDescriptionModal').modal('show');
-    //     //document.getElementById('product_description').focus();
-    // });
-
-    // $(document).on('click', '#add_description', function () {
-
-    //     var value = $('#product_description').val();
-    //     lastSelectedTr.find('#description').val(value);
-    //     $('#product_description').val('');
-    //     $('#addDescriptionModal').modal('hide');
-    //     is_prevent_default = 1;
-    // });
-
     $('body').keyup(function(e) {
 
         if (e.keyCode == 13 || e.keyCode == 9){
@@ -1573,7 +1520,7 @@
 
     new Litepicker({
         singleMode: true,
-        element: document.getElementById('delivery_date'),
+        element: document.getElementById('e_expire_date'),
         dropdowns: {
             minYear: new Date().getFullYear() - 50,
             maxYear: new Date().getFullYear() + 100,
@@ -1589,7 +1536,6 @@
         },
         format: _expectedDateFormat,
     });
-
 
     $('#payment_method_id').on('change', function () {
 

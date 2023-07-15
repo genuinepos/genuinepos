@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use Carbon\Carbon;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Utils\Converter;
 use Illuminate\Support\Str;
 use App\Models\ProductVariant;
@@ -21,6 +22,92 @@ class PurchaseUtil
     {
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
+    }
+
+    public function addPurchase($request, $invoiceVoucherRefIdUtil, $invoicePrefix)
+    {
+        $addPurchase = new Purchase();
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
+        $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : NULL;
+        $addPurchase->branch_id = auth()->user()->branch_id;
+        $addPurchase->supplier_id = $request->supplier_id;
+        $addPurchase->purchase_account_id = $request->purchase_account_id;
+        $addPurchase->pay_term = $request->pay_term;
+        $addPurchase->pay_term_number = $request->pay_term_number;
+        $addPurchase->admin_id = auth()->user()->id;
+        $addPurchase->total_item = $request->total_item;
+        $addPurchase->order_discount = $request->order_discount ? $request->order_discount : 0.00;
+        $addPurchase->order_discount_type = $request->order_discount_type;
+        $addPurchase->order_discount_amount = $request->order_discount_amount;
+        $addPurchase->purchase_tax_percent = $request->purchase_tax_percent ? $request->purchase_tax_percent : 0.00;
+        $addPurchase->purchase_tax_amount = $request->purchase_tax_amount ? $request->purchase_tax_amount : 0.00;
+        $addPurchase->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0.00;
+        $addPurchase->net_total_amount = $request->net_total_amount;
+        $addPurchase->total_purchase_amount = $request->total_purchase_amount;
+        $addPurchase->paid = $request->paying_amount;
+        $addPurchase->due = $request->purchase_due;
+        $addPurchase->shipment_details = $request->shipment_details;
+        $addPurchase->purchase_note = $request->purchase_note;
+        $addPurchase->purchase_status = 1;
+        $addPurchase->is_purchased = 1;
+        $addPurchase->date = $request->date;
+        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchase->is_last_created = 1;
+
+        if ($request->hasFile('attachment')) {
+
+            $purchaseAttachment = $request->file('attachment');
+            $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
+            $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
+            $addPurchase->attachment = $purchaseAttachmentName;
+        }
+
+        $addPurchase->save();
+
+        return $addPurchase;
+    }
+
+    public function updatePurchase($request, $purchase){
+
+        $purchase->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
+        $purchase->pay_term = $request->pay_term;
+        $purchase->pay_term_number = $request->pay_term_number;
+        $purchase->purchase_account_id = $request->purchase_account_id;
+        $purchase->total_item = $request->total_item;
+        $purchase->total_qty = $request->total_qty;
+        $purchase->order_discount = $request->order_discount ? $request->order_discount : 0.00;
+        $purchase->order_discount_type = $request->order_discount_type;
+        $purchase->order_discount_amount = $request->order_discount_amount;
+        $purchase->purchase_tax_percent = $request->purchase_tax ? $request->purchase_tax : 0.00;
+        $purchase->purchase_tax_amount = $request->purchase_tax_amount ? $request->purchase_tax_amount : 0.00;
+        $purchase->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0.00;
+        $purchase->net_total_amount = $request->net_total_amount;
+        $purchase->total_purchase_amount = $request->total_purchase_amount;
+        $purchase->shipment_details = $request->shipment_details;
+        $purchase->purchase_note = $request->purchase_note;
+        $purchase->purchase_status = 1;
+        $purchase->date = $request->date;
+        $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+
+        if ($request->hasFile('attachment')) {
+
+            if ($purchase->attachment != null) {
+
+                if (file_exists(public_path('uploads/purchase_attachment/' . $purchase->attachment))) {
+
+                    unlink(public_path('uploads/purchase_attachment/' . $purchase->attachment));
+                }
+            }
+
+            $purchaseAttachment = $request->file('attachment');
+            $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
+            $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
+            $purchase->attachment = $purchaseAttachmentName;
+        }
+
+        $purchase->save();
+
+        return $purchase;
     }
 
     public function purchaseListTable($request)
@@ -63,7 +150,6 @@ class PurchaseUtil
 
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('purchases.report_date', $date_range); // Final
         }
@@ -122,7 +208,7 @@ class PurchaseUtil
                     return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__shop_name'] . ' (<b>HO</b>)';
+                    return $generalSettings['business__shop_name'];
                 }
             })
             ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
@@ -444,54 +530,6 @@ class PurchaseUtil
             ->make(true);
     }
 
-    public function addPurchaseProduct($request, $isEditProductPrice, $purchaseId)
-    {
-        $warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
-
-        $index = 0;
-        foreach ($request->product_ids as $productId) {
-
-            $addPurchaseProduct = new PurchaseProduct();
-            $addPurchaseProduct->purchase_id = $purchaseId;
-            $addPurchaseProduct->product_id = $productId;
-            $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
-            $addPurchaseProduct->description = $request->descriptions[$index];
-            $addPurchaseProduct->quantity = $request->quantities[$index];
-            $addPurchaseProduct->left_qty = $request->quantities[$index];
-            $addPurchaseProduct->unit = $request->units[$index];
-            $addPurchaseProduct->unit_cost = $request->unit_costs_exc_tax[$index];
-            $addPurchaseProduct->unit_discount = $request->unit_discounts[$index];
-            $addPurchaseProduct->unit_cost_with_discount = $request->unit_costs_with_discount[$index];
-            $addPurchaseProduct->subtotal = $request->subtotals[$index];
-            $addPurchaseProduct->unit_tax_percent = $request->unit_tax_percents[$index];
-            $addPurchaseProduct->tax_type = $request->tax_types[$index];
-            $addPurchaseProduct->unit_tax = $request->unit_tax_amounts[$index];
-            $addPurchaseProduct->net_unit_cost = $request->net_unit_costs[$index];
-            $addPurchaseProduct->line_total = $request->linetotals[$index];
-            $addPurchaseProduct->branch_id = auth()->user()->branch_id;
-
-            if ($isEditProductPrice == '1') {
-
-                $addPurchaseProduct->profit_margin = $request->profits[$index];
-                $addPurchaseProduct->selling_price = $request->selling_prices[$index];
-            }
-
-            if (isset($request->lot_numbers)) {
-
-                $addPurchaseProduct->lot_no = $request->lot_numbers[$index];
-            }
-
-            $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
-            $addPurchaseProduct->expire_date = $request->expire_dates[$index];
-
-            $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-
-            $addPurchaseProduct->save();
-
-            $index++;
-        }
-    }
-
     public function addPurchaseOrderProduct($request, $isEditProductPrice, $purchaseId)
     {
         $warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
@@ -544,101 +582,6 @@ class PurchaseUtil
             }
 
             $addPurchaseProduct->save();
-            $index++;
-        }
-    }
-
-    public function updatePurchaseProduct($request, $isEditProductPrice, $purchaseId)
-    {
-        $product_ids = $request->product_ids;
-        $variant_ids = $request->variant_ids;
-        $descriptions = $request->descriptions;
-        $quantities = $request->quantities;
-        $unit_names = $request->unit_names;
-        $discounts = $request->unit_discounts;
-        $unit_costs = $request->unit_costs;
-        $unit_costs_with_discount = $request->unit_costs_with_discount;
-        $subtotal = $request->subtotals;
-        $tax_percents = $request->tax_percents;
-        $unit_taxes = $request->unit_taxes;
-        $net_unit_costs = $request->net_unit_costs;
-        $linetotals = $request->linetotals;
-        $profits = $request->profits;
-        $selling_prices = $request->selling_prices;
-
-        $index = 0;
-        foreach ($product_ids as $productId) {
-
-            $filterVariantId = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-            $updatePurchaseProduct = PurchaseProduct::where('purchase_id', $purchaseId)
-                ->where('product_id', $productId)
-                ->where('product_variant_id', $filterVariantId)->first();
-
-            if ($updatePurchaseProduct) {
-
-                $updatePurchaseProduct->product_id = $productId;
-                $updatePurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $updatePurchaseProduct->quantity = $quantities[$index];
-                $updatePurchaseProduct->description = $descriptions[$index];
-                $updatePurchaseProduct->unit = $unit_names[$index];
-                $updatePurchaseProduct->unit_cost = $unit_costs[$index];
-                $updatePurchaseProduct->unit_discount = $discounts[$index];
-                $updatePurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-                $updatePurchaseProduct->subtotal = $subtotal[$index];
-                $updatePurchaseProduct->unit_tax_percent = $tax_percents[$index];
-                $updatePurchaseProduct->unit_tax = $unit_taxes[$index];
-                $updatePurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-                $updatePurchaseProduct->line_total = $linetotals[$index];
-
-                if ($isEditProductPrice == '1') {
-
-                    $updatePurchaseProduct->profit_margin = $profits[$index];
-                    $updatePurchaseProduct->selling_price = $selling_prices[$index];
-                }
-
-                if (isset($request->lot_number)) {
-
-                    $updatePurchaseProduct->lot_no = $request->lot_number[$index];
-                }
-                $updatePurchaseProduct->delete_in_update = 0;
-                $updatePurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $updatePurchaseProduct->save();
-
-                $this->adjustPurchaseLeftQty($updatePurchaseProduct);
-            } else {
-
-                $addPurchaseProduct = new PurchaseProduct();
-                $addPurchaseProduct->purchase_id = $purchaseId;
-                $addPurchaseProduct->product_id = $productId;
-                $addPurchaseProduct->product_variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
-                $addPurchaseProduct->description = $descriptions[$index];
-                $addPurchaseProduct->quantity = $quantities[$index];
-                $addPurchaseProduct->left_qty = $quantities[$index];
-                $addPurchaseProduct->unit = $unit_names[$index];
-                $addPurchaseProduct->unit_cost = $unit_costs[$index];
-                $addPurchaseProduct->unit_discount = $discounts[$index];
-                $addPurchaseProduct->unit_cost_with_discount = $unit_costs_with_discount[$index];
-                $addPurchaseProduct->subtotal = $subtotal[$index];
-                $addPurchaseProduct->unit_tax_percent = $tax_percents[$index];
-                $addPurchaseProduct->unit_tax = $unit_taxes[$index];
-                $addPurchaseProduct->net_unit_cost = $net_unit_costs[$index];
-                $addPurchaseProduct->line_total = $linetotals[$index];
-
-                if ($isEditProductPrice == '1') {
-
-                    $addPurchaseProduct->profit_margin = $profits[$index];
-                    $addPurchaseProduct->selling_price = $selling_prices[$index];
-                }
-
-                if (isset($request->lot_number)) {
-
-                    $addPurchaseProduct->lot_no = $request->lot_number[$index];
-                }
-
-                $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-                $addPurchaseProduct->save();
-            }
-
             $index++;
         }
     }
@@ -859,59 +802,6 @@ class PurchaseUtil
         $html .= '</div>';
         $html .= '</div>';
         return $html;
-    }
-
-    public function updateProductAndVariantPrice(
-        $productId,
-        $variant_id,
-        $unit_cost_with_discount,
-        $net_unit_cost,
-        $profit,
-        $selling_price,
-        $isEditProductPrice,
-        $isLastEntry
-    ) {
-        $updateProduct = Product::where('id', $productId)->first();
-        $updateProduct->is_purchased = 1;
-
-        if ($updateProduct->is_variant == 0) {
-
-            if ($isLastEntry == 1) {
-
-                $updateProduct->product_cost = $unit_cost_with_discount;
-                $updateProduct->product_cost_with_tax = $net_unit_cost;
-            }
-
-            if ($isEditProductPrice == '1') {
-
-                $updateProduct->profit = $profit;
-                $updateProduct->product_price = $selling_price;
-            }
-        }
-
-        $updateProduct->save();
-
-        if ($variant_id != NULL) {
-
-            $updateVariant = ProductVariant::where('id', $variant_id)
-                ->where('product_id', $productId)
-                ->first();
-
-            if ($isLastEntry == 1) {
-
-                $updateVariant->variant_cost = $unit_cost_with_discount;
-                $updateVariant->variant_cost_with_tax = $net_unit_cost;
-            }
-
-            if ($isEditProductPrice == '1') {
-
-                $updateVariant->variant_profit = $profit;
-                $updateVariant->variant_price = $selling_price;
-            }
-
-            $updateVariant->is_purchased = 1;
-            $updateVariant->save();
-        }
     }
 
     public function adjustPurchaseInvoiceAmounts($purchase)

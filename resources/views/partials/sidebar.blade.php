@@ -425,6 +425,19 @@
                                         </a>
                                     </div>
                                 @endif
+
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('products.expired.products') }}" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span>
+                                                    <i class="fas fa-sitemap"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">@lang('menu.expired_product_list')</p>
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="sub-menu-row">

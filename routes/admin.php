@@ -179,6 +179,8 @@ Route::group(['prefix' => 'product'], function () {
         Route::get('settings', [ProductController::class, 'settings'])->name('products.settings');
         Route::post('settings/store', [ProductController::class, 'settingsStore'])->name('products.settings.store');
 
+        Route::get('expired/products', [ProductController::class, 'expiredProducts'])->name('products.expired.products');
+
         Route::group(['prefix' => 'import/price/group/products'], function () {
 
             Route::get('export', [ImportPriceGroupProductController::class, 'export'])->name('products.export.price.group.products');
@@ -373,9 +375,9 @@ Route::group(['prefix' => 'purchases'], function () {
     Route::get('order/print/supplier/copy/{purchaseId}', [PurchaseController::class, 'printSupplierCopy'])->name('purchases.order.supplier.copy.print');
     Route::get('create', [PurchaseController::class, 'create'])->name('purchases.create');
     Route::post('store', [PurchaseController::class, 'store'])->name('purchases.store');
-    Route::get('edit/{purchaseId}/{editType}', [PurchaseController::class, 'edit'])->name('purchases.edit');
+    Route::get('edit/{purchaseId}', [PurchaseController::class, 'edit'])->name('purchases.edit');
     Route::get('editable/purchase/{purchaseId}/{editType}', [PurchaseController::class, 'editablePurchase'])->name('purchases.get.editable.purchase');
-    Route::post('update/{editType}', [PurchaseController::class, 'update'])->name('purchases.update');
+    Route::post('update/{purchaseId}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::get('get/all/supplier', [PurchaseController::class, 'getAllSupplier'])->name('purchases.get.all.supplier');
     Route::get('get/all/unit', [PurchaseController::class, 'getAllUnit'])->name('purchases.get.all.unites');
     Route::get('get/all/tax', [PurchaseController::class, 'getAllTax'])->name('purchases.get.all.taxes');

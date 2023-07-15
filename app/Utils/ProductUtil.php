@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Warranty;
 use App\Utils\PurchaseUtil;
 use App\Models\ProductBranch;
+use App\Models\ProductVariant;
 use App\Models\PurchaseProduct;
 use App\Utils\ProductStockUtil;
 use Yajra\DataTables\DataTables;
@@ -236,7 +237,7 @@ class ProductUtil
                 if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
                     $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
-                }else {
+                } else {
 
                     $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
                 }
@@ -244,7 +245,7 @@ class ProductUtil
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 
-                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__shop_name']).',</p>';
+                    $text .= '<p class="m-0 p-0">' . ($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__shop_name']) . ',</p>';
                 }
 
                 return $text;
@@ -257,6 +258,80 @@ class ProductUtil
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')
             ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_locations'])
+            ->smart(true)->make(true);
+    }
+
+    public function expiredProductTable($request)
+    {
+        $generalSettings = config('generalSettings');
+
+        $expiredProducts = '';
+        $query = DB::table('purchase_products')
+            ->leftJoin('products', 'purchase_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
+            ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+            ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            // ->where('products.has_batch_no_expire_date', 1)
+            // ->where('purchase_products.expire_date', '!=', 'NULL')
+            ->whereDate('purchase_products.expire_date', '<', date('Y-m-d'));
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+            $query;
+        } else {
+
+            $query->where('purchases.branch_id', auth()->user()->branch_id);
+        }
+
+        $expiredProducts = $query->select(
+            [
+                'products.id',
+                'products.name',
+                'products.status',
+                'products.is_variant',
+                'products.type',
+                'products.product_cost',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_cost',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'warehouses.warehouse_name as w_name',
+                'warehouses.warehouse_code as w_code',
+                'branches.name as b_name',
+                'branches.branch_code as b_code',
+                'purchase_products.batch_number',
+                'purchase_products.expire_date',
+            ]
+        )->orderBy('purchase_products.expire_date', 'asc');
+
+        return DataTables::of($expiredProducts)
+            ->addColumn('multiple_check', function ($row) {
+
+                return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="product_ids[]" value="' . $row->id . '"/>';
+            })
+            ->addColumn('action', function ($row) {
+
+                $html = '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                $html .= '<a class="dropdown-item" href="#"><i class="far fa-edit text-primary"></i> Add Return</a>';
+                $html .= '<a class="dropdown-item" href="#"><i class="fas fa-database text-primary"></i>Add Stock Adjustment</a>';
+                $html .= '<a class="dropdown-item" href="#"><i class="fas fa-database text-primary"></i>Add Replacement</a>';
+
+                $html .= ' </div>';
+                $html .= '</div>';
+                return $html;
+            })->editColumn('name', function ($row) {
+
+                return $row->name . ($row->variant_name ? ' - ' . $row->variant_name : '');
+            })->editColumn('expire_date', function ($row) use ($generalSettings) {
+
+                return date($generalSettings['business__date_format'], strtotime($row->expire_date));
+            })
+            ->rawColumns(['name', 'multiple_check', 'action'])
             ->smart(true)->make(true);
     }
 
@@ -473,6 +548,59 @@ class ProductUtil
             }
 
             $deleteProduct->delete();
+        }
+    }
+
+    public function updateProductAndVariantPrice(
+        $productId,
+        $variantId,
+        $unitCostWithDiscount,
+        $unitCostIncTax,
+        $profit,
+        $sellingPrice,
+        $isEditProductPrice,
+        $isLastEntry
+    ) {
+        $updateProduct = Product::where('id', $productId)->first();
+        $updateProduct->is_purchased = 1;
+
+        if ($updateProduct->is_variant == 0) {
+
+            if ($isLastEntry == 1) {
+
+                $updateProduct->product_cost = $unitCostWithDiscount;
+                $updateProduct->product_cost_with_tax = $unitCostIncTax;
+            }
+
+            if ($isEditProductPrice == '1') {
+
+                $updateProduct->profit = $profit;
+                $updateProduct->product_price = $sellingPrice;
+            }
+        }
+
+        $updateProduct->save();
+
+        if ($variantId) {
+
+            $updateVariant = ProductVariant::where('id', $variantId)
+                ->where('product_id', $productId)
+                ->first();
+
+            if ($isLastEntry == 1) {
+
+                $updateVariant->variant_cost = $unitCostWithDiscount;
+                $updateVariant->variant_cost_with_tax = $unitCostIncTax;
+            }
+
+            if ($isEditProductPrice == '1') {
+
+                $updateVariant->variant_profit = $profit;
+                $updateVariant->variant_price = $sellingPrice;
+            }
+
+            $updateVariant->is_purchased = 1;
+            $updateVariant->save();
         }
     }
 }

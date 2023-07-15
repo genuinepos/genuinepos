@@ -83,15 +83,28 @@
     </div>
 
     <div class="form-group row mt-1">
-        <div class="col-md-8">
-            <label><b>@lang('menu.description') : </b> </label>
-            <textarea  name="product_details" class="form-control" cols="10" rows="3"></textarea>
+        <div class="col-md-3">
+            <label><b>@lang('menu.displayed_in_ecom')</b></label>
+            <select name="is_show_in_ecom" class="form-control" id="is_show_in_ecom" data-next="weight">
+                <option value="0">@lang('menu.no')</option>
+                <option value="1">@lang('menu.yes')</option>
+            </select>
         </div>
-        <div class="col-md-4">
-            <div class="row">
-                &nbsp;&nbsp;&nbsp;&nbsp; <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; <b>{{ __('Product wil be displayed in E-Commerce') }}.</b>  &nbsp; </p>
-                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; <b>@lang('menu.enable_imei_or_serial')</b>  &nbsp;</p>
-            </div>
+
+        <div class="col-md-3">
+            <label> <b>@lang('menu.enable_imei_or_sl_no')</b></label>
+            <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_not_for_sale">
+                <option value="0">@lang('menu.no')</option>
+                <option value="1">@lang('menu.yes')</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label><b>@lang('menu.batch_no_expire_date') </b> </label>
+            <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date">
+                <option value="0">@lang('menu.no')</option>
+                <option value="1">@lang('menu.yes')</option>
+            </select>
         </div>
     </div>
 
@@ -130,12 +143,12 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6 text-start">
-                                    <label><b>@lang('menu.item_cost_exc_tax') : </b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_exc_tax') : </b></label>
                                     <input type="text" name="product_cost" class="form-control" autocomplete="off" id="sale_product_cost" placeholder="Unit Cost Exc. Tax">
                                     <span class="error error_sale_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
-                                    <label><b>@lang('menu.item_cost') (Inc.Tax) : </b><span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_inc_tax') : </b></label>
                                     <input type="text" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
                                     id="sale_product_cost_with_tax" placeholder="Unit Cost Inc. Tax">
@@ -150,7 +163,7 @@
                         <td class="text-start">
                             <div class="row">
                                 <div class="col-md-12 text-start">
-                                <label><b>@lang('menu.price_exc_tax') : </b><span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.price_exc_tax') : </b></label>
                                     <input type="text" name="product_price" class="form-control" autocomplete="off" id="sale_product_price">
                                     <span class="error error_sale_product_price"></span>
                                 </div>

@@ -42,7 +42,7 @@
                                         <label class="col-4"> <b>@lang('menu.supplier')</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
-                                                <select name="supplier_id" class="form-control select2" id="supplier_id" data-next="warehouse_id" autofocus>
+                                                <select required name="supplier_id" class="form-control select2" id="supplier_id" data-next="invoice_id">
                                                     <option value="">@lang('menu.select_supplier')</option>
                                                     @foreach ($suppliers as $supplier)
                                                         <option data-pay_term="{{ $supplier->pay_term }}" data-pay_term_number="{{ $supplier->pay_term_number }}" value="{{ $supplier->id }}">{{ $supplier->name.'/'.$supplier->phone }}</option>
@@ -56,6 +56,23 @@
                                         </div>
                                     </div>
 
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>@lang('menu.curr_balance') </b></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" id="current_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.invoice_id') </b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" data-next="warehouse_id" placeholder="@lang('menu.purchase_invoice_id')" autocomplete="off">
+                                            <span class="error error_invoice_id"></span>
+                                        </div>
+                                    </div>
+
                                     @if (count($warehouses) > 0)
 
                                         <input name="warehouse_count" value="YES" type="hidden"/>
@@ -63,7 +80,7 @@
                                             <label class="col-4"> <b>@lang('menu.warehouse') </b><span
                                                 class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="invoice_id">
+                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">@lang('menu.select_warehouse')</option>
                                                     @foreach ($warehouses as $w)
                                                         <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
@@ -77,7 +94,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>@lang('menu.store_location') </b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}"/>
+                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'] }}"/>
                                             </div>
                                         </div>
                                     @endif
@@ -85,41 +102,9 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.invoice_id') </b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Purchase Invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                        <label class="col-4"><b>{{ __('menu.date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" data-next="purchase_status" placeholder="@lang('menu.purchase_invoice_id')" autocomplete="off">
-                                            <span class="error error_invoice_id"></span>
-                                        </div>
-                                    </div>
-
-                                    @if ($generalSettings['purchase__is_enable_status'] == '1')
-                                        <div class="input-group mt-1">
-                                            <label class=" col-4"><b>@lang('menu.status') </b></label>
-                                            <div class="col-8">
-                                                <select class="form-control changeable" name="purchase_status" id="purchase_status" data-next="date">
-                                                    <option value="1">@lang('menu.purchase')</option>
-                                                    {{-- <option value="2">@lang('menu.pending')</option> --}}
-                                                    <option value="3">@lang('menu.ordered')</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div class="input-group mt-1">
-                                            <label class=" col-4"><span
-                                                class="text-danger">*</span> <b>@lang('menu.status')</b> </label>
-                                            <div class="col-8">
-                                                <input readonly type="text" class="form-control" value="Purchase">
-                                                <input type="hidden" name="purchase_status" id="purchase_status" value="1">
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="col-lg-3 col-md-6">
-                                    <div class="input-group">
-                                        <label class="col-4"><b>{{ __('PUR./PO. Date') }}</b></label>
-                                        <div class="col-8">
-                                            <input type="text" name="date" class="form-control"
+                                            <input required type="text" name="date" class="form-control"
                                              id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="pay_term_number" placeholder="dd-mm-yyyy" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
@@ -131,7 +116,7 @@
                                             <div class="input-group">
                                                 <input type="text" name="pay_term_number" class="form-control"
                                                 id="pay_term_number" data-next="pay_term" placeholder="Number">
-                                                <select name="pay_term" class="form-control" id="pay_term" data-next="delivery_date">
+                                                <select name="pay_term" class="form-control" id="pay_term" data-next="purchase_account_id">
                                                     <option value="">@lang('menu.pay_term')</option>
                                                     <option value="1">@lang('menu.days')</option>
                                                     <option value="2">@lang('menu.months')</option>
@@ -143,13 +128,6 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>@lang('menu.delivery_date') </b></label>
-                                        <div class="col-8">
-                                            <input type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="purchase_account_id" placeholder="DD-MM-YYYY" autocomplete="off">
-                                        </div>
-                                    </div>
-
-                                    <div class="input-group mt-1">
                                         <label class="col-4"><b>@lang('menu.purchase_ac') <span
                                             class="text-danger">*</span></b></label>
                                         <div class="col-8">
@@ -171,30 +149,6 @@
 
                 <section>
                     <div class="card ps-1 pb-1 pe-1">
-                        {{-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="searching_area" style="position: relative;">
-                                    <label class="col-form-label">@lang('menu.item_search')</label>
-
-                                    <div class="input-group ">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-barcode text-dark input_f"></i></span>
-                                        </div>
-                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                        @if(auth()->user()->can('product_add'))
-                                            <div class="input-group-prepend">
-                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <div class="select_area">
-                                        <ul id="list" class="variant_list_area"></ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-
                         <div class="row mb-1">
                             <div class="col-md-12">
                                 <div class="row align-items-end">
@@ -212,7 +166,7 @@
                                         <div class="searching_area" style="position: relative;">
                                             <label class="fw-bold">@lang('menu.search_product')</label>
                                             <div class="input-group">
-                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="@lang('menu.search_product')">
+                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="@lang('menu.search_product')" autofocus>
 
                                                 @if (auth()->user()->can('product_add'))
                                                     <div class="input-group-prepend">
@@ -232,7 +186,6 @@
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
                                             <select id="e_unit" class="form-control w-40">
-                                                <option value="">@lang('menu.unit')</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->name }}">{{ $unit->name }}</option>
                                                 @endforeach
@@ -276,7 +229,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-2 col-md-4">
+                                    <div class="col-xl-2 col-md-4 batch_no_expire_date_fields d-none">
                                         <label class="fw-bold">{{ __('Batch No & Expire Date') }}</label>
                                         <div class="input-group">
                                             <input readonly type="text" step="any" class="form-control fw-bold" id="e_batch_number" placeholder="Batch No" autocomplete="off">
@@ -402,6 +355,9 @@
                                                         <div class="col-8">
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax" data-next="shipment_charge">
                                                                 <option value="0.00">@lang('menu.no_tax')</option>
+                                                                @foreach ($taxes as $tax)
+                                                                    <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                                @endforeach
                                                             </select>
                                                             <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
@@ -565,32 +521,6 @@
     @if (auth()->user()->can('product_add'))
         <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
-
-     <!--Add Product Modal-->
-     <div class="modal fade" id="addDescriptionModal" tabindex="-1" role="dialog" data-bs-backdrop="static" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-lg description_modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Description') }} <span id="product_name"></span></h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label><strong>@lang('menu.description') </strong></label>
-                            <textarea name="product_description" id="product_description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group text-end mt-3">
-                        <button type="submit" id="add_description" class="btn btn-sm btn-success float-end">@lang('menu.add')</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Add Product Modal End-->
 @endsection
 @push('scripts')
     @include('purchases.partials.purchaseCreateJsScript')
@@ -603,12 +533,6 @@
             var nextId = $(this).data('next');
 
             setTimeout(function () {
-
-                if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
-
-                    $('#invoice_id').focus().select();
-                    return;
-                }
 
                 $('#'+nextId).focus();
             }, 100);
@@ -630,6 +554,12 @@
 
             if (e.which == 13) {
 
+                if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
+
+                    $('#date').focus().select();
+                    return;
+                }
+
                 if ($(this).attr('id') == 'paying_amount' && ($('#paying_amount').val() == 0 ||  $('#paying_amount').val() == '' )) {
 
                     $('#save_and_print').focus().select();
@@ -639,7 +569,5 @@
                 $('#'+nextId).focus().select();
             }
         });
-
-        document.getElementById('supplier_id').focus();
     </script>
 @endpush

@@ -40,6 +40,21 @@ class ProductController extends Controller
     }
 
     // index view
+    public function expiredProducts(Request $request)
+    {
+        if (!auth()->user()->can('product_all')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
+
+            return $this->productUtil->expiredProductTable($request);
+        }
+
+        return view('product.products.expired_products');
+    }
+
     public function allProduct(Request $request)
     {
         if (!auth()->user()->can('product_all')) {
@@ -65,7 +80,7 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         if (!auth()->user()->can('product_add')) {
-            
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -139,10 +154,10 @@ class ProductController extends Controller
         $addProduct->tax_type = isset($request->tax_type) ? $request->tax_type : 1;
         $addProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
         $addProduct->product_condition = $request->product_condition;
-        $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
-        $addProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
-        $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
-        $addProduct->is_manage_stock = isset($request->is_manage_stock) ? 1 : 0;
+        $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $addProduct->is_for_sale = $request->is_for_sale;
+        $addProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $addProduct->is_manage_stock = $request->is_manage_stock;
         $addProduct->product_details = $request->product_details;
         $addProduct->is_purchased = 0;
         $addProduct->barcode_type = $request->barcode_type;
@@ -642,10 +657,10 @@ class ProductController extends Controller
         $updateProduct->tax_type = $request->tax_type;
         $updateProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
         $updateProduct->product_condition = $request->product_condition;
-        $updateProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
-        $updateProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
-        $updateProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
-        $updateProduct->is_manage_stock = isset($request->is_manage_stock) ? 1 : 0;
+        $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $updateProduct->is_for_sale = $request->is_for_sale;
+        $updateProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $updateProduct->is_manage_stock = $request->is_manage_stock;
         $updateProduct->product_details = $request->product_details;
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;

@@ -93,7 +93,7 @@
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.product')</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.quantity')</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.unit_cost')(@lang('menu.before_discount'))</th>
-                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.unit_cost')</th>
+                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.unit_discount')</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.unit_cost')(@lang('menu.before_tax'))</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.sub_total') (@lang('menu.before_tax'))</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">@lang('menu.tax')(%)</th>
@@ -113,7 +113,7 @@
                                             <td class="text-start fw-bold" style="font-size:11px!important;">
                                                 {{ $purchaseProduct->product->name.' '.$variant }}
                                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) }}</small>
+                                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                                 @endif
                                             </td>
                                             <td class="text-start fw-bold" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -254,13 +254,13 @@
                  <div class="row">
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p style="font-size:11px!important;">@lang('menu.shipping_details') </p>
+                             <p style="font-size:11px!important;"><strong>@lang('menu.shipping_details')</strong></p>
                              <p class="shipping_details" style="font-size:11px!important;">{{ $purchase->shipment_details }}</p>
                          </div>
                      </div>
                      <div class="col-md-6">
                          <div class="details_area">
-                             <p style="font-size:11px!important;">@lang('menu.purchase_not') </p>
+                             <p style="font-size:11px!important;"><strong>@lang('menu.purchase_not')</strong></p>
                              <p class="purchase_note" style="font-size:11px!important;">{{ $purchase->purchase_note }}</p>
                          </div>
                      </div>
@@ -271,7 +271,7 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <a href="{{ route('purchases.edit', [$purchase->id, 'purchased']) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
+                            <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
                             <button type="submit" class="footer_btn btn btn-sm btn-success print_btn">@lang('menu.print')</button>
                         </div>
@@ -331,7 +331,7 @@
                             {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' (BL)' !!}
                         @else
 
-                            {{ $generalSettings['business__shop_name'] }} (HO)
+                            {{ $generalSettings['business__shop_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -413,7 +413,7 @@
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.description')</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.quantity')</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_cost')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_cost')</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_discount')</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.tax')(%)</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Net Unit Cost') }}</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.lot_number')</th>
@@ -432,7 +432,7 @@
                                 <small class="d-block text-muted">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
 
                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) }}</small>
+                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -540,17 +540,17 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">
-                    @if (config('company.PRINT_SD_COMPANY_NAME'))
-                        <small class="d-block">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
+                    @if (config('company.print_on_company'))
+                        <small style="font-size: 9px!important;" class="d-block">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
                     @endif
                 </div>
 
                 <div class="col-4 text-end">
-                    <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
+                    <small style="font-size: 9px!important;">@lang('menu.print_time') : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

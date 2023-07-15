@@ -240,7 +240,7 @@
             }
         },
         columns: [
-            {data: 'multiple_delete', name: 'products.name'},
+            {data: 'multiple_delete', name: 'products.name', orderable: false},
             {data: 'photo', name: 'products.name'},
             {data: 'action', name: 'products.name'},
             {data: 'name', name: 'products.name'},

@@ -464,11 +464,11 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"> <b>@lang('menu.show_not_for_sale')</b></label>
+                                                <label class="col-5"> <b>@lang('menu.is_for_sale')</b></label>
                                                 <div class="col-7">
-                                                    <select name="is_not_for_sale" class="form-control" id="is_not_for_sale">
-                                                        <option value="0">@lang('menu.no')</option>
+                                                    <select name="is_for_sale" class="form-control" id="is_for_sale">
                                                         <option value="1">@lang('menu.yes')</option>
+                                                        <option value="0">@lang('menu.no')</option>
                                                     </select>
                                                 </div>
                                             </div>

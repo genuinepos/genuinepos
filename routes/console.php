@@ -43,7 +43,7 @@ use Modules\Communication\Interface\EmailServiceInterface;
 //     $emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $product));
 
 // });
-Artisan::command('purchaseCreated', function(EmailServiceInterface  $emailService) {
+Artisan::command('purchaseCreated', function (EmailServiceInterface  $emailService) {
     // $supplier = Supplier::findOrFail($request->supplier_id);
     $supplier = Supplier::find(3);
     // $purchase = Purchase::where('id', $addPurchase->id)->first();
@@ -51,5 +51,16 @@ Artisan::command('purchaseCreated', function(EmailServiceInterface  $emailServic
     $emailService->send($supplier->email, new PurchaseCreated($purchase));
 });
 
+
+Artisan::command('test', function () {
+
+    $key = "";
+    $keyLength = 8;
+    for ($x = 1; $x <= $keyLength; $x++) {
+        // Set each digit
+        $key .= random_int(0, 9);
+    }
+    echo $key;
+});
 
 // Just merged this line of text.

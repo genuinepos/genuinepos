@@ -210,7 +210,7 @@
 
                                     <div class="col-xl-4 col-md-4">
                                         <div class="searching_area" style="position: relative;">
-                                            <label class="fw-bold">@lang('menu.search_item')</label>
+                                            <label class="fw-bold">@lang('menu.search_product')</label>
                                             <div class="input-group">
                                                 <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="@lang('menu.search_product')">
 
@@ -597,7 +597,7 @@
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         $('.select2').select2();
-        
+
         $('select').on('select2:close', function (e) {
 
             var nextId = $(this).data('next');

@@ -44,10 +44,10 @@
                                         <h6 class="company_name" style="text-transform: uppercase;">{{ $sale->branch->name }}</h6>
 
                                         <p class="company_address">
-                                                {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
-                                                {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
-                                                {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                                                {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.
+                                            {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
+                                            {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
+                                            {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
+                                            {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.
                                         </p>
 
                                         @if ($defaultLayout->branch_phone)

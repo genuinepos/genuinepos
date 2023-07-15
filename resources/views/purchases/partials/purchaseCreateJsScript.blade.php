@@ -844,14 +844,12 @@
             tr += '<input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="'+e_discount_type+'">';
             tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="'+parseFloat(e_discount).toFixed(2)+'">';
             tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="'+parseFloat(e_discount_amount).toFixed(2)+'">';
-
             tr += '<input type="hidden" value="'+parseFloat(e_subtotal).toFixed(2)+'" name="subtotals[]" id="subtotal">';
             tr += '<input type="hidden" name="unit_costs_with_discount[]" id="unit_cost_with_discount" value="'+parseFloat(e_unit_cost_with_discount).toFixed(2)+'">';
             tr += '</td>';
 
             tr += '<td>';
             tr += '<span id="span_tax_percent" class="fw-bold">'+e_tax_percent+'%'+'</span>';
-            tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="'+e_tax_ac_id+'">';
             tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="'+e_tax_type+'">';
             tr += '<input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="'+e_tax_percent+'">';
             tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="'+parseFloat(e_tax_amount).toFixed(2)+'">';

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('purchase_products', function (Blueprint $table) {
             $table->string('batch_number')->after('lot_no')->nullable();
             $table->timestamp('expire_date')->after('batch_number')->nullable();
+            $table->tinyInteger('tax_type')->after('unit_tax_percent')->nullable();
         });
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('purchase_products', function (Blueprint $table) {
             $table->dropColumn('batch_number');
             $table->dropColumn('expire_date');
+            $table->dropColumn('tax_type');
         });
     }
 };

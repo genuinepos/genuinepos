@@ -456,15 +456,16 @@ class PurchaseUtil
             $addPurchaseProduct->product_id = $productId;
             $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
             $addPurchaseProduct->description = $request->descriptions[$index];
-            $addPurchaseProduct->quantity =  $request->quantities[$index];
-            $addPurchaseProduct->left_qty =  $request->quantities[$index];
-            $addPurchaseProduct->unit = $request->unit_names[$index];
-            $addPurchaseProduct->unit_cost = $request->unit_costs[$index];
+            $addPurchaseProduct->quantity = $request->quantities[$index];
+            $addPurchaseProduct->left_qty = $request->quantities[$index];
+            $addPurchaseProduct->unit = $request->units[$index];
+            $addPurchaseProduct->unit_cost = $request->unit_costs_exc_tax[$index];
             $addPurchaseProduct->unit_discount = $request->unit_discounts[$index];
             $addPurchaseProduct->unit_cost_with_discount = $request->unit_costs_with_discount[$index];
             $addPurchaseProduct->subtotal = $request->subtotals[$index];
-            $addPurchaseProduct->unit_tax_percent = $request->tax_percents[$index];
-            $addPurchaseProduct->unit_tax = $request->unit_taxes[$index];
+            $addPurchaseProduct->unit_tax_percent = $request->unit_tax_percents[$index];
+            $addPurchaseProduct->tax_type = $request->tax_types[$index];
+            $addPurchaseProduct->unit_tax = $request->unit_tax_amounts[$index];
             $addPurchaseProduct->net_unit_cost = $request->net_unit_costs[$index];
             $addPurchaseProduct->line_total = $request->linetotals[$index];
             $addPurchaseProduct->branch_id = auth()->user()->branch_id;
@@ -475,10 +476,13 @@ class PurchaseUtil
                 $addPurchaseProduct->selling_price = $request->selling_prices[$index];
             }
 
-            if (isset($request->lot_number)) {
+            if (isset($request->lot_numbers)) {
 
-                $addPurchaseProduct->lot_no = $request->lot_number[$index];
+                $addPurchaseProduct->lot_no = $request->lot_numbers[$index];
             }
+
+            $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
+            $addPurchaseProduct->expire_date = $request->expire_dates[$index];
 
             $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 

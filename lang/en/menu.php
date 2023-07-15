@@ -1686,7 +1686,6 @@ return [
   'deliver_qty' => 'Deliver Qty',
   'comment' => 'Comment',
   'do_no' => 'DO NO',
-  'paid' => 'PAID',
   'customers_signature' => 'Customers signature',
   'price_adjustment_note' => 'Price Adjustment Note',
   'receiver_phone' => 'Receiver Phone',
@@ -1957,4 +1956,7 @@ return [
   'enable_imei_or_sl_no' => 'Enable IMEI/Serial No.',
   'batch_no_expire_date' => 'Batch No And Expire Date',
   'search_product' => 'Search Product',
+  'batch_no' => 'Batch No',
+  'expire_date' => 'Expire Date',
+  'purchase_invoice' => 'Purchase Invoice',
 ];

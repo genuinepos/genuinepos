@@ -54,7 +54,11 @@ class Product extends BaseModel
 
     public function purchase_products()
     {
-        return $this->hasMany(PurchaseProduct::class, 'product_id');
+        return $this->hasMany(PurchaseProduct::class, 'product_id')
+        ->where('product_id', NULL)
+        ->where('opening_stock_id', NULL)
+        ->where('sale_return_product_id', NULL)
+        ->where('transfer_branch_to_branch_product_id', NULL);
     }
 
     public function sale_products()
@@ -84,7 +88,7 @@ class Product extends BaseModel
 
     public function order_products()
     {
-        return $this->hasMany(PurchaseProduct::class);
+        return $this->hasMany(PurchaseOrderProduct::class);
     }
 
     public function transfer_to_branch_products()

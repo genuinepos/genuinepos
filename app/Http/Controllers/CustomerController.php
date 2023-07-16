@@ -29,33 +29,16 @@ use App\Utils\BranchWiseCustomerAmountUtil;
 
 class CustomerController extends Controller
 {
-    public $customerUtil;
-    public $accountUtil;
-    public $converter;
-    public $invoiceVoucherRefIdUtil;
-    public $userActivityLogUtil;
-    public $saleUtil;
-    public $customerPaymentUtil;
-    public $branchWiseCustomerAmountUtil;
-
     public function __construct(
-        CustomerUtil $customerUtil,
-        AccountUtil $accountUtil,
-        Converter $converter,
-        SaleUtil $saleUtil,
-        InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        UserActivityLogUtil $userActivityLogUtil,
-        CustomerPaymentUtil $customerPaymentUtil,
-        BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil
+        private CustomerUtil $customerUtil,
+        private AccountUtil $accountUtil,
+        private Converter $converter,
+        private SaleUtil $saleUtil,
+        private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
+        private UserActivityLogUtil $userActivityLogUtil,
+        private CustomerPaymentUtil $customerPaymentUtil,
+        private BranchWiseCustomerAmountUtil $branchWiseCustomerAmountUtil
     ) {
-        $this->customerUtil = $customerUtil;
-        $this->accountUtil = $accountUtil;
-        $this->converter = $converter;
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->saleUtil = $saleUtil;
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->customerPaymentUtil = $customerPaymentUtil;
-        $this->branchWiseCustomerAmountUtil = $branchWiseCustomerAmountUtil;
     }
 
     public function index(Request $request)
@@ -755,7 +738,6 @@ class CustomerController extends Controller
 
             // Add Customer Payment Record
             $customerPayment = $this->customerPaymentUtil->addCustomerPayment(
-                voucherNo: $voucherNo,
                 customerId: $customerId,
                 accountId: $request->account_id,
                 receivedAmount: $request->paying_amount,
@@ -765,7 +747,7 @@ class CustomerController extends Controller
                 attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
                 reference: $request->reference,
                 note: $request->note,
-                invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil
+                invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil
             );
 
             // Add Customer Ledger
@@ -790,10 +772,10 @@ class CustomerController extends Controller
 
             if (isset($request->sale_ids)) {
 
-                $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: $request->sale_ids, receivedAmount: $request->paying_amount, customerPayment: $customerPayment, customerId: $customerId, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil);
+                $this->customerPaymentUtil->specificInvoiceOrOrderByPayment(saleIds: $request->sale_ids, receivedAmount: $request->paying_amount, customerPayment: $customerPayment, customerId: $customerId, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil);
             } else {
 
-                $this->customerPaymentUtil->randomInvoiceOrSalesOrderPayment(customerPayment: $customerPayment, customerId: $customerId, receivedAmount: $request->paying_amount, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil : $invoiceVoucherRefIdUtil);
+                $this->customerPaymentUtil->randomInvoiceOrSalesOrderPayment(customerPayment: $customerPayment, customerId: $customerId, receivedAmount: $request->paying_amount, receiptVoucherPrefix: $receiptVoucherPrefix, paymentMethodId: $request->payment_method_id, accountId: $request->account_id, date: $request->date, invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil);
             }
 
             $receive = DB::table('customer_payments')

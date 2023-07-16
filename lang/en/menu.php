@@ -1965,4 +1965,6 @@ return [
   'batch_number' => 'Batch Number',
   'expired_products' => 'Expired Products',
   'expired_product_list' => 'Expired Product List',
+  'purchase_order_id' => 'Purchase Order ID.',
+  'po_id' => 'P/o ID.',
 ];

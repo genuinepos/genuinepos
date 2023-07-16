@@ -871,17 +871,6 @@
                                                     <p class="switch_text">@lang('menu.purchase_product_list')</p>
                                                 </a>
                                             </div>
-
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.po.list') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-list"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.po_list')</p>
-                                                </a>
-                                            </div>
                                         @endif
 
                                         @if (
@@ -900,7 +889,39 @@
                                             </div>
                                         @endif
                                     </div>
+                                </div>
 
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Purchase Order Management') }}</p>
+                                    @if (auth()->user()->can('purchase_return'))
+                                        <div class="sub-menu-row">
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('purchases.order.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text"> {{ __('Add Purchase Order') }}</p>
+                                                </a>
+                                            </div>
+
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('purchases.po.list') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">@lang('menu.po_list')</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Purchase Return Management') }}</p>
                                     @if (auth()->user()->can('purchase_return'))
                                         <div class="sub-menu-row">
                                             <div class="sub-menu-col">

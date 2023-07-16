@@ -102,6 +102,7 @@ class Util
         $addProductBranch->branch_id = $request->branch_id;
         $addProductBranch->product_id = $addProduct->id;
         $addProductBranch->product_quantity = $request->quantity ? $request->quantity : 0;
+        $addProductBranch->status = 1;
         $addProductBranch->save();
 
         return response()->json($addProduct);
@@ -162,6 +163,7 @@ class Util
         $addProductBranch = new ProductBranch();
         $addProductBranch->branch_id = auth()->user()->branch_id;
         $addProductBranch->product_id = $addProduct->id;
+        $addProductBranch->status = 1;
         $addProductBranch->save();
 
         $product = Product::with('tax', 'unit')->where('id', $addProduct->id)->first();

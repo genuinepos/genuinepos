@@ -349,9 +349,8 @@
         var e_discount = $('#e_discount').val() ? $('#e_discount').val() : 0;
         var e_discount_type = $('#e_discount_type').val();
         var e_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0;
-        var e_tax_ac_id = $('#e_tax_ac_id').val();
         var e_tax_type = $('#e_tax_type').val();
-        var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0;
+        var e_tax_percent = $('#e_tax_percent').val() ? $('#e_tax_percent').val() : 0;
         var e_tax_amount = $('#e_tax_amount').val() ? $('#e_tax_amount').val() : 0;
         var e_unit_cost_with_discount = $('#e_unit_cost_with_discount').val() ? $('#e_unit_cost_with_discount').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
@@ -503,7 +502,7 @@
         }
     });
 
-     $(document).on('click', '#select_item',function (e) {
+    $(document).on('click', '#select_item',function (e) {
 
         var tr = $(this);
         var item_name = tr.find('#item_name').val();
@@ -522,7 +521,7 @@
         var unit_discount_amount = tr.find('#unit_discount_amount').val();
         var unit_cost_with_discount = tr.find('#unit_cost_with_discount').val();
         var subtotal = tr.find('#subtotal').val();
-        var tax_precent = tr.find('#tax_precent').val();
+        var tax_precent = tr.find('#unit_tax_precent').val();
         var tax_type = tr.find('#tax_type').val();
         var unit_tax_amount = tr.find('#unit_tax_amount').val();
         var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();

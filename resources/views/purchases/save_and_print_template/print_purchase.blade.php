@@ -55,10 +55,7 @@
                 <p>
                     @if ($purchase?->branch)
 
-                        {{  $sale->branch->city . ', ' . $sale->branch->state. ', ' . $sale->branch->zip_code. ', ' . $sale->branch->country }},
-                        {{ $defaultLayout->branch_state == 1 ? $sale->branch->state : '' }},
-                        {{ $defaultLayout->branch_zipcode == 1 ? $sale->branch->zip_code : '' }},
-                        {{ $defaultLayout->branch_country == 1 ? $sale->branch->country : '' }}.
+                        {{  $sale->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
                     @else
 
                         {{ $generalSettings['business__address'] }}

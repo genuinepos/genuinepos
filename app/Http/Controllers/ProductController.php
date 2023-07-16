@@ -878,6 +878,7 @@ class ProductController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
+        
         $deleteProduct = Product::with(
             [
                 'product_images',

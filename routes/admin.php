@@ -46,6 +46,7 @@ use App\Http\Controllers\InvoiceLayoutController;
 use App\Http\Controllers\InvoiceSchemaController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProductImportController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\BarcodeSettingController;
 use App\Http\Controllers\CommonAjaxCallController;
 use App\Http\Controllers\CustomerImportController;
@@ -405,6 +406,14 @@ Route::group(['prefix' => 'purchases'], function () {
     Route::group(['prefix' => '/'], function () {
         Route::get('po/process/receive/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceive'])->name('purchases.po.receive.process');
         Route::post('po/process/receive/store/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceiveStore'])->name('purchases.po.receive.process.store');
+    });
+
+    // Purchase Order route
+    Route::group(['prefix' => 'order'], function () {
+        Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchases.order.index');
+        Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchases.order.create');
+        Route::post('store', [PurchaseOrderController::class, 'store'])->name('purchases.order.store');
+        Route::get('show/{id}', [PurchaseOrderController::class, 'show'])->name('purchases.order.show');
     });
 
     // Purchase Return route

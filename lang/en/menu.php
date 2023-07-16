@@ -1963,4 +1963,6 @@ return [
   'batch_no_expire_date' => 'Batch No/Expire Date',
   'expired_date' => 'Expired Date',
   'batch_number' => 'Batch Number',
+  'expired_products' => 'Expired Products',
+  'expired_product_list' => 'Expired Product List',
 ];

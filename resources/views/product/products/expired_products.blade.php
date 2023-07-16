@@ -14,7 +14,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h6>@lang('menu.products')</h6>
+                                <h6>@lang('menu.expired_products')</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -40,6 +40,8 @@
                                                 <th>@lang('menu.product')</th>
                                                 <th>@lang('menu.unit_cost_inc_tax')</th>
                                                 <th>@lang('menu.selling_price_exc_tax')</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>@lang('menu.purchase_invoice_id')</th>
                                                 <th>@lang('menu.batch_number')</th>
                                                 <th>@lang('menu.expired_date')</th>
                                             </tr>
@@ -103,6 +105,8 @@
             {data: 'name', name: 'products.name'},
             {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
             {data: 'product_price', name: 'products.product_price'},
+            {data: 'supplier_name', name: 'suppliers.name'},
+            {data: 'p_invoice_id', name: 'purchases.invoice_id'},
             {data: 'batch_number', name: 'purchase_products.batch_number'},
             {data: 'expire_date', name: 'purchase_products.expire_date', className: 'fw-bold text-danger'},
         ],

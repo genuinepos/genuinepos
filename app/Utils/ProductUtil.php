@@ -272,8 +272,9 @@ class ProductUtil
             ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
             ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
             ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
-            // ->where('products.has_batch_no_expire_date', 1)
-            // ->where('purchase_products.expire_date', '!=', 'NULL')
+            ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+            ->where('products.has_batch_no_expire_date', 1)
+            ->where('purchase_products.expire_date', '!=', 'NULL')
             ->whereDate('purchase_products.expire_date', '<', date('Y-m-d'));
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -300,6 +301,8 @@ class ProductUtil
                 'product_variants.variant_price',
                 'warehouses.warehouse_name as w_name',
                 'warehouses.warehouse_code as w_code',
+                'purchases.invoice_id as p_invoice_id',
+                'suppliers.name as supplier_name',
                 'branches.name as b_name',
                 'branches.branch_code as b_code',
                 'purchase_products.batch_number',

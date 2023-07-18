@@ -78,7 +78,7 @@ class SupplierController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -511,8 +511,6 @@ class SupplierController extends Controller
 
             DB::rollBack();
         }
-
-        return response()->json('Payment added successfully.');
 
         return response()->json('Payment added successfully.');
     }

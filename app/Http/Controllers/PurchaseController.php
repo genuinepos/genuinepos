@@ -191,7 +191,6 @@ class PurchaseController extends Controller
             $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
-            // Add supplier product
             $i = 0;
             foreach ($request->product_ids as $product_id) {
 

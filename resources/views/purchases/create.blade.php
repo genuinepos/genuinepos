@@ -455,9 +455,9 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>{{ __('Curr. Balance') }}</b></label>
+                                                        <label class=" col-4"><b>{{ __('Due (On Invoice)') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
+                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="purchase_due" id="purchase_due" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>

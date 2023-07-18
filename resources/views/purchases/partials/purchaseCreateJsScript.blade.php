@@ -101,13 +101,11 @@
                                     + parseFloat(purchaseTaxAmount)
                                     + parseFloat(shipment_charge);
 
-
         $('#total_purchase_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
 
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-        var closingBalance = $('#closing_balance').val()
-        var currentBalance = parseFloat(calcTotalPurchaseAmount) + parseFloat(closingBalance) - parseFloat(payingAmount);
-        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
+        var purchaseDue = parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
+        $('#purchase_due').val(parseFloat(purchaseDue).toFixed(2));
     }
 
     var delay = (function() {

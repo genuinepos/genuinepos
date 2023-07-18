@@ -36,13 +36,13 @@
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
                                                 <input required type="text" name="username" class="form-control form-st"
-                                                    value="{{ old('username') }}" placeholder="@lang('menu.username')" />
+                                                    value="{{ old('username') }}" placeholder="{{ __('Username') }}" />
                                             </div>
 
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>
                                                 <input required name="password" type="Password"
-                                                    class="form-control form-st rounded-bottom" placeholder="Password" />
+                                                    class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
                                             </div>
 
                                             @if (Session::has('errorMsg'))
@@ -53,7 +53,7 @@
                                                 </div>
                                             @endif
 
-                                            <button type="submit" class="submit-button">Login</button>
+                                            <button type="submit" class="submit-button">{{ __('Login') }}</button>
                                             <div class="login_opt_link">
                                                 @if (Route::has('password.request'))
                                                     <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp;
@@ -61,7 +61,7 @@
                                                 @endif
                                                 <div class="form-group cx-box">
                                                     <input type="checkbox" id="remembar" class="form-control">
-                                                    <label for="remembar">@lang('menu.remember_me')</label>
+                                                    <label for="remembar">{{ __('Remember Me') }}</label>
                                                 </div>
                                             </div>
                                         </form>
@@ -77,10 +77,8 @@
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo"
-                                                    alt="{{ config('speeddigit.app_logo_alt') }}">
-                                            <p class="version"><span>@lang('menu.version')
-                                                    :</span>{{ config('speeddigit.version') }}</p>
+                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
+                                                <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
                                             </p>
                                             <table class="text-white">
                                                 <tbody>

@@ -613,5 +613,10 @@
     "Loan & Advance Due Receive": "ঋণ এবং অগ্রিম বকেয়া প্রাপ্তি",
     "All Cash Flow Statements": "সমস্ত নগদ প্রবাহ বিবৃতি",
     "Genuine POS, Point of Sale software by SpeedDigit": "জেনুইন POS, স্পিডডিজিটের মাধ্যমে পয়েন্ট অফ সেল সফটওয়্যার",
-    "If not found new sub-category with the given name under the parent Category will be created": "না পাওয়া গেলে প্যারেন্ট ক্যাটাগরির অধীনে প্রদত্ত নামের সাথে নতুন সাব ক্যাটাগরি তৈরি করা হবে"
+    "If not found new sub-category with the given name under the parent Category will be created": "না পাওয়া গেলে প্যারেন্ট ক্যাটাগরির অধীনে প্রদত্ত নামের সাথে নতুন সাব ক্যাটাগরি তৈরি করা হবে",
+    "Add Receive Stock" : "রিসিভ স্টক যোগ করুন",
+    "Add Payment" : "অর্থপ্রদান যোগ করুন",
+    "View Payments" : "অর্থপ্রদান দেখুন",
+    "Edit" : "সম্পাদনা",
+    "Delete" : "মুছে ফেলুন"
 }

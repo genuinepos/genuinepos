@@ -41,7 +41,7 @@ class SupplierPaymentUtil
 
                         $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $request->paying_amount);
 
-                        //$dueAmounts -= $dueAmounts; 
+                        //$dueAmounts -= $dueAmounts;
                         $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
@@ -94,7 +94,7 @@ class SupplierPaymentUtil
 
                             $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $request->paying_amount);
 
-                            //$dueAmounts -= $dueAmounts; 
+                            //$dueAmounts -= $dueAmounts;
                             $request->paying_amount -= $request->paying_amount;
                             $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                         }
@@ -133,6 +133,7 @@ class SupplierPaymentUtil
     {
         $dueInvoices = Purchase::where('supplier_id', $supplierId)
             ->where('branch_id', auth()->user()->branch_id)
+            ->where('purchase_status', '>', 1)
             ->where('due', '>', 0)
             ->orderBy('report_date', 'asc')
             ->get();
@@ -149,7 +150,7 @@ class SupplierPaymentUtil
                         $this->purchaseDueFillupBySupplierPayment($request, $supplierPayment, $paymentInvoicePrefix, $dueInvoice, $request->paying_amount);
 
                         $this->supplierPaymentInvoice($supplierPayment, $dueInvoice, $request->paying_amount);
-                        //$dueAmounts -= $dueAmounts; 
+                        //$dueAmounts -= $dueAmounts;
                         $request->paying_amount -= $request->paying_amount;
                         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($dueInvoice);
                     }
@@ -253,7 +254,7 @@ class SupplierPaymentUtil
 
                     $this->supplierPaymentInvoice($supplierPayment, $purchase, $supplierPayment->left_amount);
 
-                    //$dueAmounts -= $dueAmounts; 
+                    //$dueAmounts -= $dueAmounts;
                     $purchase->due -= $supplierPayment->left_amount;
                     $this->purchaseUtil->adjustPurchaseInvoiceAmounts($purchase);
                 } else {

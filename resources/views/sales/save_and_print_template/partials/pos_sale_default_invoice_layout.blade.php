@@ -412,7 +412,6 @@
                                         @if ($generalSettings['business__business_logo'])
 
                                             <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                                            <span style="font-size: 14px;">{{ $generalSettings['business__shop_name'] }}
                                         @else
 
                                             <span style="font-family: 'Anton', sans-serif; font-size:15px;color:black; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">{{ $generalSettings['business__shop_name'] }}</span>

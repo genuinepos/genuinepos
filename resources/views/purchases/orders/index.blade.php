@@ -4,7 +4,7 @@
         href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endpush
-@section('title', 'Purchase List - ')
+@section('title', 'P/o List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -16,8 +16,7 @@
                                 <span class="fas fa-shopping-basket"></span>
                                 <h5>@lang('menu.purchase_orders')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
@@ -49,9 +48,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.supplier') </strong></label>
-                                                    <select name="supplier_id"
-                                                        class="form-control submit_able select2"
-                                                        id="supplier_id" autofocus>
+                                                    <select name="supplier_id" class="form-control select2" id="supplier_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
                                                         @foreach ($suppliers as $row)
                                                             <option value="{{ $row->id }}">{{ $row->name.' ('.$row->phone.')' }}</option>
@@ -61,8 +58,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>@lang('menu.purchases_status') </strong></label>
-                                                    <select name="status" id="status"
-                                                        class="form-control  submit_able select2">
+                                                    <select name="status" id="status" class="form-control select2">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="1">@lang('menu.receive')</option>
                                                         <option value="2">@lang('menu.pending')</option>
@@ -74,12 +70,9 @@
                                                     <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date"
-                                                            autocomplete="off">
+                                                        <input type="text" name="from_date" id="from_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -87,10 +80,9 @@
                                                     <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
+                                                        <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -112,11 +104,10 @@
                                 <div class="col-6 col-6">
                                     <h6>@lang('menu.po_list')</h6>
                                 </div>
-                                @if(auth()->user()->can('purchase_add'))
-                                    <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
-                                    </div>
-                                @endif
+
+                                <div class="col-6 d-flex justify-content-end">
+                                    <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                                </div>
                             </div>
 
                             <div class="widget_content">
@@ -129,15 +120,15 @@
                                             <tr>
                                                 <th>@lang('menu.action')</th>
                                                 <th>@lang('menu.date')</th>
-                                                <th>{{ __('P.Invoice ID') }}</th>
+                                                <th>{{ __('P/o ID') }}</th>
                                                 <th>@lang('menu.purchase_from')</th>
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>@lang('menu.created_by')</th>
                                                 <th>@lang('menu.receiving_status')</th>
                                                 <th>@lang('menu.payment_status')</th>
-                                                <th>@lang('menu.grand_total')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.paid')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.payment_due')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.grand_total')</th>
+                                                <th>@lang('menu.paid')</th>
+                                                <th>@lang('menu.payment_due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -164,7 +155,9 @@
         </div>
     </div>
 
-    <div id="purchase_details"></div>
+    <div id="details"></div>
+    <div id="extra_details"></div>
+
     @if(auth()->user()->can('purchase_payment'))
         <!--Payment list modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
@@ -194,8 +187,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content payment_details_contant">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
-                                class="payment_invoice"></span>)</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span class="payment_invoice"></span>)</h6>
                             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
@@ -243,14 +235,14 @@
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('purchases.po.list') }}",
+                "url": "{{ route('purchases.order.index') }}",
                 "data": function(d) {
                     d.warehouse_id = $('#warehouse_id').val();
                     d.branch_id = $('#branch_id').val();
                     d.supplier_id = $('#supplier_id').val();
                     d.status = $('#status').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
+                    d.from_date = $('#from_date').val();
+                    d.to_date = $('#to_date').val();
                 }
             },
             columnDefs: [{"targets": [0, 5, 6, 7],"orderable": false,"searchable": false}],
@@ -267,6 +259,7 @@
                 {data: 'paid',name: 'purchases.paid', className: 'text-end'},
                 {data: 'due',name: 'purchases.due', className: 'text-end'},
             ],fnDrawCallback: function() {
+
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
                 $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
                 var paid = sum_table_col($('.data_tbl'), 'paid');
@@ -290,19 +283,21 @@
         }
 
         // Show details modal with data
-        $(document).on('click', '.details_button', function(e) {
+        $(document).on('click', '#detailsBtn', function(e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.get(url,  function(data) {
-                $('#purchase_details').html(data);
+
+                $('#details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
             })
         });
 
         // Print Packing slip
-        $(document).on('click', '#print_supplier_copy', function (e) {
+        $(document).on('click', '#printSupplierCopy', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $.ajax({
@@ -320,18 +315,6 @@
                     });
                 }
             });
-        });
-
-        // Show change status modal and pass actual link in the change status form
-        $(document).on('click', '#change_status', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $("#change_status_modal_body").html(data);
-                $('#changeStatusModal').modal('show');
-                $('.data_preloader').hide();
-            })
         });
 
         $(document).on('click', '#delete',function(e){
@@ -364,25 +347,6 @@
             });
         });
 
-        //change purchase status requested by ajax
-        $(document).on('submit', '#change_purchase_status_form', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $('.loading_button').show();
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    purchase_table.ajax.reload();
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('#changeStatusModal').modal('hide');
-                }
-            });
-        });
-
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
@@ -391,10 +355,9 @@
         });
 
         // Make print
-        $(document).on('click', '.print_btn', function(e) {
+        $(document).on('click', '#printModalDetails', function(e) {
             e.preventDefault();
-            var body = $('.purchase_print_template').html();
-            var header = $('.heading_area').html();
+            var body = $('.print_modal_details').html();
             $(body).printThis({
                 debug: false,
                 importCSS: true,
@@ -423,34 +386,11 @@
             });
         });
 
-        $(document).on('click', '#add_return_payment', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url,  function(data) {
-                $('#paymentModal').html(data);
-                $('#paymentModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
         // show payment edit modal with data
         $(document).on('click', '#edit_payment', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            $.get(url,  function(data) {
-                $('#paymentModal').html(data);
-                $('#paymentModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
-        // show payment edit modal with data
-        $(document).on('click', '#edit_return_payment', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('.data_preloader').show();
             $.get(url,  function(data) {
                 $('#paymentModal').html(data);
                 $('#paymentModal').modal('show');
@@ -487,14 +427,16 @@
         //data delete by ajax
         $(document).on('submit', '#payment_deleted_form', function(e) {
             e.preventDefault();
+
             var url = $(this).attr('action');
-            console.log(url);
             var request = $(this).serialize();
+            
             $.ajax({
                 url: url,
                 type: 'post',
                 data: request,
                 success: function(data) {
+
                     purchase_table.ajax.reload();
                     $('#paymentViewModal').modal('hide');
                     toastr.success(data);
@@ -505,8 +447,10 @@
         //Show payment view modal with data
         $(document).on('click', '#payment_details', function(e) {
             e.preventDefault();
+
             var url = $(this).attr('href');
             $.get(url,  function(data) {
+
                 $('.payment_details_area').html(data);
                 $('#paymentDetailsModal').modal('show');
             });
@@ -514,6 +458,7 @@
 
         $(document).on('click', '#print_payment', function(e) {
             e.preventDefault();
+
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
@@ -533,7 +478,7 @@
     <script type="text/javascript">
          new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker'),
+            element: document.getElementById('from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -552,7 +497,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker2'),
+            element: document.getElementById('to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

@@ -521,7 +521,7 @@
         var unit_discount_amount = tr.find('#unit_discount_amount').val();
         var unit_cost_with_discount = tr.find('#unit_cost_with_discount').val();
         var subtotal = tr.find('#subtotal').val();
-        var tax_precent = tr.find('#unit_tax_precent').val();
+        var tax_percent = tr.find('#unit_tax_percent').val();
         var tax_type = tr.find('#tax_type').val();
         var unit_tax_amount = tr.find('#unit_tax_amount').val();
         var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();
@@ -539,7 +539,7 @@
         $('#e_discount_type').val(unit_discount_type);
         $('#e_discount').val(parseFloat(unit_discount).toFixed(2));
         $('#e_discount_amount').val(parseFloat(unit_discount_amount).toFixed(2));
-        $('#e_tax_percent').val(tax_precent);
+        $('#e_tax_percent').val(tax_percent);
         $('#e_tax_type').val(tax_type);
         $('#e_tax_amount').val(parseFloat(unit_tax_amount).toFixed(2));
         $('#e_unit_cost_with_discount').val(parseFloat(unit_cost_with_discount).toFixed(2));

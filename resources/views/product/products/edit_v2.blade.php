@@ -542,8 +542,6 @@
                                         </div>
                                     </div>
 
-                                    
-
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <label class="col-5"> <b>@lang('menu.is_for_sale')</b></label>

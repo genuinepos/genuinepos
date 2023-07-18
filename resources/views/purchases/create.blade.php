@@ -57,9 +57,9 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.curr_balance') </b></label>
+                                        <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" id="current_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
+                                            <input readonly type="text" id="closing_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -214,11 +214,9 @@
                                         <label class="fw-bold">@lang('menu.tax')</label>
                                         <div class="input-group">
                                             <select id="e_tax_percent" class="form-control w-50">
-                                                <option value="">@lang('menu.no_tax')</option>
+                                                <option value="0">@lang('menu.no_tax')</option>
                                                 @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->tax_percent }}">
-                                                        {{ $tax->tax_name }}
-                                                    </option>
+                                                    <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                 @endforeach
                                             </select>
 
@@ -330,6 +328,13 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="input-group mt-1">
+                                                    <label class=" col-4"><b>@lang('menu.net_total_amount') </b>  {{ $generalSettings['business__currency'] }}</label>
+                                                    <div class="col-8">
+                                                        <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>@lang('menu.order_discount') </b></label>
@@ -368,7 +373,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>@lang('menu.shipment_cost') </b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00" data-next="shipment_details">
+                                                            <input name="shipment_charge" type="number" class="form-control fw-bold" id="shipment_charge" value="0.00" data-next="shipment_details">
                                                         </div>
                                                     </div>
 
@@ -376,15 +381,6 @@
                                                         <label class="col-4"><b>@lang('menu.shipment_details') </b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="purchase_note" placeholder="@lang('menu.shipment_details')">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.purchase') /@lang('menu.order_note') </b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="paying_amount" placeholder="@lang('menu.order_note').">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -403,14 +399,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.net_total_amount') </b>  {{ $generalSettings['business__currency'] }}</label>
-                                                        <div class="col-8">
-                                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.total_payable') </b>  {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>{{ __('Total Invoice Amount') }}</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
                                                         </div>
@@ -445,8 +434,8 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.credit') A/C <span
-                                                            class="text-danger">*</span></b> </label>
+                                                        <label class="col-4"><b>{{ __('Credit A/c') }} <span
+                                                            class="text-danger">*</span></b></label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
                                                                 @foreach ($accounts as $account)
@@ -466,9 +455,9 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.total_due') </b></label>
+                                                        <label class=" col-4"><b>{{ __('Curr. Balance') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="purchase_due" id="purchase_due" value="0.00" tabindex="-1">
+                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -478,6 +467,15 @@
                                                         <label class=" col-4"><b>@lang('menu.payment_note') </b> </label>
                                                         <div class="col-8">
                                                             <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="save_and_print" placeholder="@lang('menu.payment_note')" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>{{ __('Purchase Note') }}</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="save_and_print" placeholder="{{ __('Purchase Note') }}">
                                                         </div>
                                                     </div>
                                                 </div>

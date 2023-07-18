@@ -87,22 +87,6 @@ class PurchaseController extends Controller
         return view('purchases.purchase_product_list', compact('branches', 'suppliers', 'categories'));
     }
 
-    public function poList(Request $request)
-    {
-        if (!auth()->user()->can('purchase_all')) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        if ($request->ajax()) {
-
-            return $this->purchaseUtil->poListTable($request);
-        }
-
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
-        return view('purchases.po_list', compact('branches', 'suppliers'));
-    }
-
     // show purchase details
     public function show($purchaseId)
     {
@@ -118,36 +102,6 @@ class PurchaseController extends Controller
             'purchase_payments',
         ])->where('id', $purchaseId)->first();
         return view('purchases.ajax_view.purchase_details_modal', compact('purchase'));
-    }
-
-    public function showOrder($purchaseId)
-    {
-        $purchase = Purchase::with([
-            'warehouse',
-            'branch',
-            'supplier',
-            'admin',
-            'purchase_order_products',
-            'purchase_order_products.receives',
-            'purchase_products.product',
-            'purchase_products.product.warranty',
-            'purchase_products.variant',
-            'purchase_payments',
-        ])->where('id', $purchaseId)->first();
-        return view('purchases.ajax_view.order_details', compact('purchase'));
-    }
-
-    public function printSupplierCopy($purchaseId)
-    {
-        $purchase = Purchase::with([
-            'branch',
-            'supplier',
-            'admin',
-            'purchase_order_products',
-            'purchase_products.product',
-            'purchase_products.variant',
-        ])->where('id', $purchaseId)->first();
-        return view('purchases.ajax_view.print_supplier_copy', compact('purchase'));
     }
 
     public function create()

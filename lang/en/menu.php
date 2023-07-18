@@ -511,7 +511,7 @@ return [
   'add_stock_adjustment_from_warehouse' => 'Add Adjustment <br/>(<small>From Warehouse</small>)',
   'sub_categories' => 'SubCategories',
   'add_product' => 'Add Product',
-  'po_list' => 'PO List',
+  'po_list' => 'P/o List',
   'purchase_product_list' => 'Purchased Product List',
   'add_return' => 'Add Return',
   'sales_order_list' => 'Sales Order List',

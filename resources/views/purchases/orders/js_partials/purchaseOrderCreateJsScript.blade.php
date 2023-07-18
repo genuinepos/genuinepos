@@ -492,7 +492,7 @@
         var unit_discount_amount = tr.find('#unit_discount_amount').val();
         var unit_cost_with_discount = tr.find('#unit_cost_with_discount').val();
         var subtotal = tr.find('#subtotal').val();
-        var tax_precent = tr.find('#unit_tax_percent').val();
+        var tax_percent = tr.find('#unit_tax_percent').val();
         var tax_type = tr.find('#tax_type').val();
         var unit_tax_amount = tr.find('#unit_tax_amount').val();
         var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();
@@ -505,12 +505,12 @@
         $('#e_product_id').val(product_id);
         $('#e_variant_id').val(variant_id);
         $('#e_unit').val(unit);
-        $('#e_quantity').val(parseFloat(quantity).toFixed(2));
+        $('#e_quantity').val(parseFloat(quantity).toFixed(2)).focus().select();
         $('#e_unit_cost_exc_tax').val(parseFloat(unit_cost_exc_tax).toFixed(2));
         $('#e_discount_type').val(unit_discount_type);
         $('#e_discount').val(parseFloat(unit_discount).toFixed(2));
         $('#e_discount_amount').val(parseFloat(unit_discount_amount).toFixed(2));
-        $('#e_tax_percent').val(tax_precent);
+        $('#e_tax_percent').val(tax_percent);
         $('#e_tax_type').val(tax_type);
         $('#e_tax_amount').val(parseFloat(unit_tax_amount).toFixed(2));
         $('#e_unit_cost_with_discount').val(parseFloat(unit_cost_with_discount).toFixed(2));
@@ -712,7 +712,7 @@
     });
 
     // // chane purchase tax and clculate total amount
-    $(document).on('change', '#purchase_tax', function(){
+    $(document).on('change', '#order_tax_percent', function(){
         calculateTotalAmount();
     });
 

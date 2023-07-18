@@ -907,7 +907,7 @@
                                             </div>
 
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.po.list') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchases.order.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-list"></i></span>

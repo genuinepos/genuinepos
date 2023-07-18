@@ -631,7 +631,10 @@
     "Print Barcode" : "Print Barcode",
     "Generate Settings" : "Generate Settings",
     "Reset Form" : "Reset Form",
-
-
-    "Processes Ingredients Details" : "Processes Ingredients Details"
+    "Processes Ingredients Details" : "Processes Ingredients Details",
+    "Add Receive Stock" : "Add Receive Stock",
+    "Add Payment" : "Add Payment",
+    "View Payments" : "View Payments",
+    "Edit" : "Edit",
+    "Delete" : "Delete"
 }

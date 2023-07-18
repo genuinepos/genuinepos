@@ -115,7 +115,7 @@
                                         <div class="col-8">
                                             <select name="purchase_account_id" class="form-control" id="purchase_account_id" data-next="search_product">
                                                 @foreach ($purchaseAccounts as $purchaseAccount)
-                                                    <option value="{{ $purchaseAccount->id }}">
+                                                    <option {{ $purchaseAccount->id == $purchase->purchase_account_id ? 'SELECTED' : '' }} value="{{ $purchaseAccount->id }}">
                                                         {{ $purchaseAccount->name }}
                                                     </option>
                                                 @endforeach
@@ -197,7 +197,7 @@
                                             <label class="fw-bold">@lang('menu.tax')</label>
                                             <div class="input-group">
                                                 <select id="e_tax_percent" class="form-control w-50">
-                                                    <option value="">@lang('menu.no_tax')</option>
+                                                    <option value="0.00">@lang('menu.no_tax')</option>
                                                     @foreach ($taxes as $tax)
                                                         <option value="{{ $tax->tax_percent }}">
                                                             {{ $tax->tax_name }}
@@ -446,7 +446,7 @@
                                                         <label class="col-4"><b>@lang('menu.purchase_tax') </b></label>
                                                         <div class="col-8">
                                                             <select name="purchase_tax" class="form-control" id="purchase_tax" data-next="shipment_details">
-                                                                <option value="0.00">@lang('menu.no_tax')</option>
+                                                                <option value="0">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
                                                                     <option {{ $tax->tax_percent == $purchase->purchase_tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach

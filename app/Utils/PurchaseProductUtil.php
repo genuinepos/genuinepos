@@ -41,7 +41,7 @@ class PurchaseProductUtil
         }
 
         $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
-        $addPurchaseProduct->expire_date = $request->expire_dates[$index] ? date('Y-m-d', strtotime($request->expire_dates[$index])) : '';
+        $addPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : NULL;
         $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchaseProduct->save();
 
@@ -94,7 +94,7 @@ class PurchaseProductUtil
         }
 
         $updateOrAddPurchaseProduct->batch_number = $request->batch_numbers[$index];
-        $updateOrAddPurchaseProduct->expire_date = $request->expire_dates[$index] ? date('Y-m-d', strtotime($request->expire_dates[$index])) : '';
+        $updateOrAddPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : NULL;
         $updateOrAddPurchaseProduct->delete_in_update = 0;
         $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateOrAddPurchaseProduct->save();

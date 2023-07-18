@@ -83,7 +83,7 @@
         </div>
 
         <div class="row mt-2">
-            <div class="col-6">
+            <div class="col-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>@lang('menu.supplier') : </strong><b>{{ $order->supplier->name }}</b></li>
                     <li style="font-size:11px!important;"><strong>@lang('menu.address') : </strong><b>{{ $order->supplier->address }}</b></li>
@@ -91,10 +91,19 @@
                 </ul>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>@lang('menu.po_id') : </strong> {{ $order->invoice_id }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __('P/o Date') }} </strong>{{ date($generalSettings['business__date_format'], strtotime($order->date)) . ' ' . date($timeFormat, strtotime($order->time)) }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('P/o Date') }} : </strong>{{ date($generalSettings['business__date_format'], strtotime($order->date)) . ' ' . date($timeFormat, strtotime($order->time)) }}</li>
+                    <li style="font-size:11px!important;"><strong>@lang('menu.created_by') : </strong>
+                        {{ $order->admin->prefix.' '.$order->admin->name.' '.$order->admin->last_name }}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-4">
+                <ul class="list-unstyled">
+
                     <li style="font-size:11px!important;"><strong>@lang('menu.delivery_date') : </strong>{{ $order->delivery_date ? date($generalSettings['business__date_format'], strtotime($order->delivery_date)) : '' }}</li>
                     <li style="font-size:11px!important;"><strong>@lang('menu.receiving_status') : </strong>{{ $order->po_receiving_status }}</li>
                     <li style="font-size:11px!important;"><strong>@lang('menu.payment_status') : </strong>
@@ -109,15 +118,11 @@
                             @lang('menu.due')
                         @endif
                     </li>
-
-                    <li style="font-size:11px!important;"><strong>@lang('menu.created_by') : </strong>
-                        {{ $order->admin->prefix.' '.$order->admin->name.' '.$order->admin->last_name }}
-                    </li>
                 </ul>
             </div>
         </div>
 
-        <div class="purchase_product_table pt-3 pb-3">
+        <div class="purchase_product_table pt-1 pb-1">
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>

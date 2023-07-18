@@ -257,6 +257,7 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
         });
     });
+    
     Route::group(['prefix' => 'units'], function () {
         Route::get('/', [UnitController::class, 'index'])->name('product.units.index');
         Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('product.units.get.all.unit');
@@ -370,9 +371,7 @@ Route::group(['prefix' => 'purchases'], function () {
 
     Route::get('v2', [PurchaseController::class, 'index_v2'])->name('purchases.index_v2');
     Route::get('product/list', [PurchaseController::class, 'purchaseProductList'])->name('purchases.product.list');
-    Route::get('po/list', [PurchaseController::class, 'poList'])->name('purchases.po.list');
     Route::get('show/{purchaseId}', [PurchaseController::class, 'show'])->name('purchases.show');
-    Route::get('order/show/{purchaseId}', [PurchaseController::class, 'showOrder'])->name('purchases.show.order');
     Route::get('order/print/supplier/copy/{purchaseId}', [PurchaseController::class, 'printSupplierCopy'])->name('purchases.order.supplier.copy.print');
     Route::get('create', [PurchaseController::class, 'create'])->name('purchases.create');
     Route::post('store', [PurchaseController::class, 'store'])->name('purchases.store');
@@ -414,6 +413,8 @@ Route::group(['prefix' => 'purchases'], function () {
         Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchases.order.create');
         Route::post('store', [PurchaseOrderController::class, 'store'])->name('purchases.order.store');
         Route::get('show/{id}', [PurchaseOrderController::class, 'show'])->name('purchases.order.show');
+        Route::get('edit/{id}', [PurchaseOrderController::class, 'edit'])->name('purchases.order.edit');
+        Route::post('update/{id}', [PurchaseOrderController::class, 'update'])->name('purchases.order.update');
     });
 
     // Purchase Return route

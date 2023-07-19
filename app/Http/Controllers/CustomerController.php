@@ -71,9 +71,7 @@ class CustomerController extends Controller
         ]);
 
         $generalSettings = config('generalSettings');
-
         $cusIdPrefix = $generalSettings['prefix__customer_id'];
-
         $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
 
         $addCustomer = Customer::create([

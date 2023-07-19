@@ -28,5 +28,10 @@ class ContactController extends Controller
         $addContact = $this->contactService->addContact(type: $type, phone: $request->phone, businessName: $request->business_name, email: $request->email, alternativePhone: $request->alternative_phone, landLine: $request->land_line, dateOfBirth: $request->date_of_birth, taxNumber: $request->tax_number, customerGroupId: $request->customer_group_id, address: $request->address, city: $request->city, state: $request->state, country: $request->county, zipCode: $request->zip_code, shippingAddress: $request->shipping_address);
 
         $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+
+        if ($type == Contact::Customer->value) {
+
+            // ContractCreditLimit::class
+        }
     }
 }

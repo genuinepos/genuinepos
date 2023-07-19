@@ -5,15 +5,14 @@
         /* Search Product area style */
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .search_area{position: relative;}
-        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
-            margin-top: 1px;}
+        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px; margin-top: 1px;}
         .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
         .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
         .search_result ul li a:hover {color: white;background-color: #ab1c59;}
         /* Search Product area style end */
     </style>
 @endpush
-@section('title', 'Purchase List - ')
+@section('title', 'Purchase Product List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -224,7 +223,7 @@
             columns: [
                 {data: 'date', name: 'purchases.date'},
                 {data: 'product', name: 'products.name'},
-                {data: 'product_code', name: 'products.name'},
+                {data: 'product_code', name: 'products.product_code'},
                 {data: 'supplier_name', name: 'suppliers.name as supplier_name'},
                 {data: 'invoice_id', name: 'purchases.invoice_id'},
                 {data: 'quantity', name: 'quantity', className: 'text-end'},

@@ -162,8 +162,8 @@
                                                 <th>@lang('menu.supplier')</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
                                                 <th>@lang('menu.quantity')</th>
-                                                <th>@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
-                                                <th>@lang('menu.subtotal')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.unit_cost')</th>
+                                                <th>@lang('menu.subtotal')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

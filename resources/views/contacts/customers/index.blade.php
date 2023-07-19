@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
-                        <a href="{{ route('contacts.create', 1) }}" id="addContact" class="btn btn-sm btn-primary">
+                        <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary">
                             <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
                         <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
@@ -119,20 +119,6 @@
 
     <!-- Add Modal -->
     <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_customer')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit-modal-form-body"></div>
-            </div>
-        </div>
     </div>
 
     <!-- Money Receipt list Modal-->
@@ -272,6 +258,12 @@
 
                         $('#addOrEditContactModal').html(data);
                         $('#addOrEditContactModal').modal('show');
+
+                        setTimeout(function(){
+
+                            $('#contact_name').focus();
+                        }, 500);
+
                     }, error: function(err) {
 
                         if (err.status == 0) {

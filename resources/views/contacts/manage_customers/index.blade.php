@@ -10,7 +10,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-people-arrows"></span>
-                    <h5>@lang('menu.customers')</h5>
+                    <h5>{{ __('Customers') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -24,13 +24,11 @@
                             <div class="form_element rounded mt-0 mb-3">
                                 <div class="element-body">
                                     <form id="filter_form" class="p-2">
-                                        <div class="form-group row">
+                                        <div class="form-group row align-items-end">
                                             <div class="col-xl-2 col-lg-3 col-md-4">
-                                                <label><strong>@lang('menu.business_location') </strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control submit_able select2" id="branch_id" autofocus>
+                                                <label><strong>{{ __("Shop") }}</strong></label>
+                                                <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -40,10 +38,7 @@
                                             </div>
 
                                             <div class="col-xl-2 col-lg-3 col-md-4">
-                                                <label><strong></strong></label>
-                                                <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
-                                                </div>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                             </div>
                                         </div>
                                     </form>
@@ -77,39 +72,38 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="text-start">
-                                    <th>@lang('menu.action')</th>
-                                    <th>@lang('menu.customer_id')</th>
-                                    <th>@lang('menu.name')</th>
-                                    <th>@lang('menu.business')</th>
-                                    <th>@lang('menu.phone')</th>
-                                    <th>@lang('menu.group')</th>
-                                    <th>@lang('menu.credit_limit')</th>
-                                    <th>@lang('menu.opening_balance')</th>
-                                    <th>@lang('menu.total_sale')</th>
-                                    <th>@lang('menu.total_paid')</th>
-                                    <th>{{ __('Sale Due') }}</th>
-                                    <th>@lang('menu.total_return')</th>
-                                    <th>@lang('menu.return_due')</th>
-                                    <th>@lang('menu.status')</th>
+                                    <th>{{ __("Action") }}</th>
+                                    <th>{{ __("Customer ID") }}</th>
+                                    <th>{{ __("Name") }}</th>
+                                    <th>{{ __("Phone") }}</th>
+                                    <th>{{ __("Group") }}</th>
+                                    <th>{{ __("Credit Limit") }}</th>
+                                    <th>{{ __("Opening Balance") }}</th>
+                                    <th>{{ __("Total Sale") }}</th>
+                                    <th>{{ __("Total Return") }}</th>
+                                    <th>{{ __("Total Received") }}</th>
+                                    <th>{{ __("Total Paid") }}</th>
+                                    <th>{{ __("Curr. Balance") }}</th>
+                                    <th>{{ __("Status") }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="7" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
+                                    <th colspan="6" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
-                                    <th id="total_paid" class="text-white text-end"></th>
-                                    <th id="total_sale_due" class="text-white text-end"></th>
                                     <th id="total_return" class="text-white text-end"></th>
-                                    <th id="total_sale_return_due" class="text-white text-end"></th>
-                                    <th id="total_sale_return_due" class="text-white text-start">---</th>
+                                    <th id="total_received" class="text-white text-end"></th>
+                                    <th id="total_paid" class="text-white text-end"></th>
+                                    <th id="current_balance" class="text-white text-end"></th>
+                                    <th class="text-white text-start">---</th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
-                <form id="deleted_form" action="" method="post">
+                <form id="delete_contact_form" action="" method="post">
                     @method('DELETE')
                     @csrf
                 </form>
@@ -128,8 +122,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_receipt_voucher')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="receipt_voucher_list_modal_body"></div>
             </div>
@@ -163,7 +156,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        var table = $('.data_tbl').DataTable({
+        var contactTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -175,42 +168,45 @@
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('contacts.customer.index') }}",
+                "url": "{{ route('contacts.manage.customer.index', \App\Enums\ContactType::Customer->value) }}",
                 "data": function(d) {
 
                     d.branch_id = $('#branch_id').val();
                 }
             },
-            columnDefs: [{"targets": [0, 7],"orderable": false,"searchable": false}],
             columns: [
                 {data: 'action',name: 'action'},
-                {data: 'contact_id',name: 'contact_id'},
-                {data: 'name',name: 'name'},
-                {data: 'business_name',name: 'business_name'},
-                {data: 'phone',name: 'phone'},
+                {data: 'contact_id',name: 'contacts.contact_id'},
+                {data: 'name',name: 'contacts.name'},
+                {data: 'phone',name: 'contacts.phone'},
                 {data: 'group_name', name: 'customer_groups.group_name'},
-                {data: 'credit_limit', name: 'credit_limit'},
-                {data: 'opening_balance',name: 'opening_balance', className: 'text-end'},
-                {data: 'total_sale',name: 'total_sale', className: 'text-end'},
-                {data: 'total_paid',name: 'total_paid', className: 'text-end'},
-                {data: 'total_sale_due',name: 'total_sale_due', className: 'text-end'},
-                {data: 'total_return',name: 'total_return', className: 'text-end'},
-                {data: 'total_sale_return_due',name: 'total_sale_return_due', className: 'text-end'},
-                {data: 'status',name: 'status'},
-            ],fnDrawCallback: function() {
+                {data: 'credit_limit', name: 'contacts.credit_limit'},
+                {data: 'opening_balance', name: 'opening_balance', className: 'text-end fw-bold'},
+                {data: 'total_sale', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'total_return', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'total_received', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'total_paid', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'current_balance', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'status',name: 'status', name: 'contacts.business_name',},
+            ], fnDrawCallback: function() {
 
                 var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
                 $('#opening_balance').text(bdFormat(opening_balance));
+
                 var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
                 $('#total_sale').text(bdFormat(total_sale));
-                var total_sale_due = sum_table_col($('.data_tbl'), 'total_sale_due');
-                $('#total_sale_due').text(bdFormat(total_sale_due));
-                var total_paid = sum_table_col($('.data_tbl'), 'total_paid');
-                $('#total_paid').text(bdFormat(total_paid));
+
                 var total_return = sum_table_col($('.data_tbl'), 'total_return');
                 $('#total_return').text(bdFormat(total_return));
-                var total_sale_return_due = sum_table_col($('.data_tbl'), 'total_sale_return_due');
-                $('#total_sale_return_due').text(bdFormat(total_sale_return_due));
+
+                var total_received = sum_table_col($('.data_tbl'), 'total_received');
+                $('#total_received').text(bdFormat(total_received));
+
+                var total_paid = sum_table_col($('.data_tbl'), 'total_paid');
+                $('#total_paid').text(bdFormat(total_paid));
+
+                var current_balance = sum_table_col($('.data_tbl'), 'current_balance');
+                $('#current_balance').text(bdFormat(current_balance));
 
                 $('.data_preloader').hide();
             }
@@ -236,7 +232,7 @@
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
-            table.ajax.reload();
+            contactTable.ajax.reload();
         });
 
         // Setup ajax for csrf token.
@@ -279,24 +275,44 @@
                 });
             });
 
-            // Pass editable data to edit modal fields
-            $(document).on('click', '#edit', function(e) {
+            $(document).on('click', '#editContact', function(e) {
+
                 e.preventDefault();
-                $('.data_preloader').show();
+
                 var url = $(this).attr('href');
 
-                $.get(url, function(data) {
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
 
-                    $('#edit-modal-form-body').html(data);
-                    $('#editModal').modal('show');
-                    $('.data_preloader').hide();
+                        $('#addOrEditContactModal').html(data);
+                        $('#addOrEditContactModal').modal('show');
+
+                        setTimeout(function(){
+
+                            $('#contact_name').focus().select();
+                        }, 500);
+
+                    }, error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        }else if (err.status == 500) {
+
+                            toastr.error('Server Error. Please contact to the support team.');
+                            return;
+                        }
+                    }
                 });
             });
 
-            $(document).on('click', '#delete',function(e){
+            $(document).on('click', '#deleteContact',function(e){
                 e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);
+                $('#delete_contact_form').attr('action', url);
                 $.confirm({
                     'title': 'Confirmation',
                     'message': 'Are you sure?',
@@ -308,7 +324,7 @@
             });
 
             //data delete by ajax
-            $(document).on('submit', '#deleted_form', function(e) {
+            $(document).on('submit', '#delete_contact_form', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
@@ -319,12 +335,14 @@
                     data: request,
                     success: function(data) {
                         if (!$.isEmptyObject(data.errorMsg)) {
+
                             toastr.error(data.errorMsg, 'Attention');
                             return;
                         }
-                        table.ajax.reload();
+
+                        contactTable.ajax.reload();
                         toastr.error(data);
-                        $('#deleted_form')[0].reset();
+                        $('#delete_contact_form')[0].reset();
                     }
                 });
             });
@@ -340,14 +358,15 @@
                         'Yes': {
                             'class': 'yes btn-danger', 'action': function() {
                                 $.ajax({
-                                    url: url,type: 'get',
+                                    url: url,type: 'post',
                                     success: function(data) {
                                         toastr.success(data);
-                                        table.ajax.reload();
+                                        contactTable.ajax.reload();
                                     }
                                 });
                             }
                         },
+
                         'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
                     }
                 });
@@ -521,7 +540,6 @@
                     'title': 'Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
-
                         'Yes': {'class': 'yes btn-danger', 'action': function() {$('#receipt_deleted_form').submit();tr.remove();}},
                         'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
@@ -557,24 +575,6 @@
                     $('.gap-from-top-add').hide();
                 }
             });
-
-            // Print single payment details
-            $('#print_payment').on('click', function (e) {
-                e.preventDefault();
-                var body = $('.sale_payment_print_area').html();
-                var header = $('.header_area').html();
-                var footer = $('.signature_area').html();
-                $(body).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
-                    removeInline: true,
-                    printDelay: 500,
-                    header: header,
-                    footer: footer
-                });
-            });
         });
 
         //Print supplier report
@@ -602,25 +602,6 @@
                     });
                 }
             });
-        });
-
-        new Litepicker({
-            singleMode: true,
-            element: document.getElementById('date_of_birth'),
-            dropdowns: {
-                minYear: new Date().getFullYear() - 50,
-                maxYear: new Date().getFullYear() + 100,
-                months: true,
-                years: true
-            },
-            tooltipText: {
-                one: 'night',
-                other: 'nights'
-            },
-            tooltipNumber: (totalDays) => {
-                return totalDays - 1;
-            },
-            format: 'YYYY-MM-DD',
         });
 
         document.onkeyup = function () {

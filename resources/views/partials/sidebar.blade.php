@@ -678,7 +678,7 @@
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('supplier_all'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('contacts.supplier.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('contacts.manage.supplier.index', \App\Enums\ContactType::Supplier->value) }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-address-card"></i></span>
@@ -706,7 +706,7 @@
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('customer_all'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('contacts.customer.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('contacts.manage.customer.index', \App\Enums\ContactType::Customer->value) }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="far fa-address-card"></i></span>

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
-use App\Interface\CodeGenerationServiceInterface;
+use App\Interfaces\CodeGenerationServiceInterface;
 use DB;
 
 class CodeGenerationService implements CodeGenerationServiceInterface
@@ -106,6 +106,48 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsNextValue = 1;
 
         if (isset($entryRaw)) {
+            $entry = trim($entryRaw->{$column});
+            $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
+            $serial = $splitterSplittedArray[2];
+            $previousMonthDigits = substr($splitterSplittedArray[1], -2);
+            $currentMonthDigit = date('m');
+
+            if (intval($currentMonthDigit) === intval($previousMonthDigits)) {
+                $lastDigitsNextValue = intval($serial) + 1;
+            }
+        }
+
+        $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
+        $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
+        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
+        $finalStr = $prefix.$splitter.$finalSuffix;
+        // dd($finalStr);
+        return $finalStr;
+    }
+
+    public function generateAndTypeWiseNoBreak(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
+    {
+        $entryRaw = DB::table($table)
+            ->whereNotNull($column)
+            ->where($typeColName, $typeValue)
+            ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+            // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
+            ->first(["$column"]);
+
+        // dd($entryRaw);
+
+        $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
+        $dateTimeStrPrefix = date('ym');
+        $prefixLength = strlen($prefix);
+        $splitterLength = strlen($splitter);
+        $dateTimeStrPrefixLength = strlen($dateTimeStrPrefix);
+        $suffixSeparatorLength = strlen($suffixSeparator);
+        $minSize = $prefixLength + $splitterLength + $dateTimeStrPrefixLength + $digits;
+        $size = $minSize;
+        $lastDigitsNextValue = 1;
+
+        if (isset($entryRaw)) {
+
             $entry = trim($entryRaw->{$column});
             $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
             $serial = $splitterSplittedArray[2];

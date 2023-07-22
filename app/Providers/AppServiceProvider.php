@@ -7,12 +7,12 @@ use App\Models\GeneralSetting;
 use App\Services\CacheService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use App\Service\CodeGenerationService;
+use App\Services\CodeGenerationService;
 use App\Services\CacheServiceInterface;
 use App\Services\GeneralSettingService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\GeneralSettingServiceInterface;
-use App\Interface\CodeGenerationServiceInterface;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {

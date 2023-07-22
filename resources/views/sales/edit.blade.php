@@ -524,6 +524,8 @@
         </div>
     </div>
 
+    {{ __('Hello') }}
+
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">

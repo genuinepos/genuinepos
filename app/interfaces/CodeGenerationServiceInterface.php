@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interface;
+namespace App\Interfaces;
 
 interface CodeGenerationServiceInterface
 {
@@ -27,6 +27,19 @@ interface CodeGenerationServiceInterface
     ): string;
 
     public function generateMonthAndTypeWise(
+        string $table,
+        string $column,
+        string $typeColName,
+        string $typeValue = null,
+        string $prefix = '',
+        int $digits = 4,
+        int $size = 13,
+        string $splitter = '-',
+        string $suffixSeparator = '',
+        ?string $connection = 'mysql'
+    ): string;
+
+    public function generateAndTypeWiseNoBreak(
         string $table,
         string $column,
         string $typeColName,

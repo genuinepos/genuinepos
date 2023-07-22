@@ -59,7 +59,8 @@
                 </div>
 
                 <div class="col-md-6 d-flex justify-content-end gap-2">
-                    <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
+                    <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary"> <i class="fas fa-plus-square"></i> @lang('menu.add')
+                    </a>
 
                     <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_suppliers')</a>
                 </div>
@@ -114,173 +115,27 @@
     </div>
 </div>
 
-    <!-- Add Modal ---->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_supplier')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_supplier_form" action="{{ route('contacts.supplier.store') }}">
+<div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
+</div>
 
-                        <div class="form-group row mt-1">
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.name') </b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="@lang('menu.supplier_name')"/>
-                                <span class="error error_name" style="color: red;"></span>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.phone') </b> <span class="text-danger">*</span>
-                                <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="@lang('menu.phone_number')"/>
-                                <span class="error error_phone"></span>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                              <b>@lang('menu.supplier_id') </b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
-                                <input type="text" name="contact_id" class="form-control" placeholder="{{ __('Contact ID') }}" readonly/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.business_name') </b>
-                                <input type="text" name="business_name" class="form-control" placeholder="@lang('menu.business_name')"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-lg-3 col-md-6">
-                               <b>@lang('menu.alternative_number') </b>
-                                <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                               <b>@lang('menu.landline') </b>
-                                <input type="text" name="landline" class="form-control " placeholder="landline number"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.email') </b>
-                                <input type="text" name="email" class="form-control " placeholder="Email address"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.date_of_birth')</b>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
-                                    </div>
-                                    <input type="text" name="date_of_birth" id="datepicker" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="YYYY-MM-DD">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.tax_number') </b>
-                                <input type="text" name="tax_number" class="form-control " placeholder="@lang('menu.tax_number')"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.opening_balance') </b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
-                                <input type="number" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <label><b>@lang('menu.pay_term')</b> </label>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <input type="number" step="any" name="pay_term_number" class="form-control"
-                                        id="pay_term_number" placeholder="Number"/>
-                                    </div>
-
-                                    <div class="col-md-7">
-                                        <select name="pay_term" class="form-control">
-                                            <option value="">@lang('menu.days')/@lang('menu.months')</option>
-                                            <option value="1">@lang('menu.days')</option>
-                                            <option value="2">@lang('menu.months')</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-9">
-                                <b>@lang('menu.address') </b>
-                                <input type="text" name="address" class="form-control "  placeholder="Address">
-                            </div>
-                            <div class="col-md-3">
-                               <b>@lang('menu.prefix') <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> </b>
-                                <input type="text" name="prefix" class="form-control " placeholder="prefix"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.city') </b>
-                                <input type="text" name="city" class="form-control " placeholder="City"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                               <b>@lang('menu.state') </b>
-                                <input type="text" name="state" class="form-control " placeholder="@lang('menu.state')"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.country') </b>
-                                <input type="text" name="country" class="form-control " placeholder="@lang('menu.country')"/>
-                            </div>
-
-                            <div class="col-lg-3 col-md-6">
-                                <b>@lang('menu.zip_code') </b>
-                                <input type="text" name="zip_code" class="form-control " placeholder="zip_code"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-5">
-                               <b>@lang('menu.shipping_address') </b>
-                                <input type="text" name="shipping_address" class="form-control " placeholder="@lang('menu.shipping_address')"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_supplier')</h6>
+                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
+            <div class="modal-body" id="edit_modal_body"></div>
         </div>
     </div>
-    <!-- Add Modal End---->
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_supplier')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit_modal_body"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit Modal End-->
+</div>
+<!-- Edit Modal End-->
 @endsection
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    var table = $('.data_tbl').DataTable({
+    var contactTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -313,7 +168,7 @@
             {data: 'total_return', name: 'total_return', className: 'text-end'},
             {data: 'total_purchase_return_due', name: 'total_purchase_return_due', className: 'text-end'},
             {data: 'status', name: 'status'},
-        ],fnDrawCallback: function() {
+        ], fnDrawCallback: function() {
 
             var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
             $('#opening_balance').text(bdFormat(opening_balance));
@@ -359,102 +214,35 @@
     // call jquery method
     $(document).ready(function(){
         // Add Supplier by ajax
-        $('#add_supplier_form').on('submit', function(e) {
+        $('#addContact').on('click', function(e) {
+
             e.preventDefault();
-
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.add_input');
-                $('.error').html('');
-                var countErrorField = 0;
-
-            $.each(inputs, function(key, val){
-
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-
-                if(idValue == ''){
-
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-
-                $('.loading_button').hide();
-                return;
-            }
-
-            $('.submit_button').prop('type', 'button');
-            $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data) {
-
-                    toastr.success('Supplier added successfully.');
-                    $('#add_supplier_form')[0].reset();
-                    $('.loading_button').hide();
-                    $('#addModal').modal('hide');
-                    $('.submit_button').prop('type', 'submit');
-                    table.ajax.reload();
-                },error: function () {
-
-                    $('.loading_button').hide();
-                    $('.submit_button').prop('type', 'submit');
-                }
-            });
-        });
-
-        // pass editable data to edit modal fields
-        $(document).on('click', '#edit', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
             var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#edit_modal_body').html(data);
-                $('#editModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
-        // edit category by ajax
-        $(document).on('submit', '#edit_supplier_form', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.edit_input');
-                $('.error').html('');
-                var countErrorField = 0;
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
 
             $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data){
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('#edit_supplier_form')[0].reset();
-                    table.ajax.reload();
-                    $('#editModal').modal('hide');
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#addOrEditContactModal').html(data);
+                    $('#addOrEditContactModal').modal('show');
+
+                    setTimeout(function(){
+
+                        $('#contact_name').focus();
+                    }, 500);
+
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
+                        return;
+                    }else if (err.status == 500) {
+
+                        toastr.error('Server Error. Please contact to the support team.');
+                        return;
+                    }
                 }
             });
         });
@@ -484,12 +272,13 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    table.ajax.reload();
 
                     if(!$.isEmptyObject(data.errorMsg)){
                         toastr.error(data.errorMsg);
                         return;
                     }
+
+                    contactTable.ajax.reload();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }
@@ -531,47 +320,7 @@
                     }
                 }
             });
-
-            // var url = $(this).attr('href');
-            // $.ajax({
-            //     url:url,
-            //     type:'get',
-            //     success:function(data){
-            //         toastr.success(data);
-            //         table.ajax.reload();
-            //     }
-            // });
         });
-    });
-
-    document.onkeyup = function () {
-        var e = e || window.event; // for IE to cover IEs window event-object
-        //console.log(e);
-        if(e.ctrlKey && e.which == 13) {
-            $('#addModal').modal('show');
-            setTimeout(function () {
-                $('#name').focus();
-            }, 500);
-            //return false;
-        }
-    }
-
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
     });
 </script>
  @endpush

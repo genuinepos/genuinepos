@@ -1,33 +1,51 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contacts;
 
-use App\Models\Sale;
-use App\Models\Account;
-use App\Models\CashFlow;
-use App\Models\Customer;
-use App\Models\SalePayment;
-use App\Models\MoneyReceipt;
 use Illuminate\Http\Request;
-use App\Models\CustomerLedger;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Contacts\ContactService;
+use App\Services\Contacts\MoneyReceiptService;
+use App\Interfaces\CodeGenerationServiceInterface;
 
 class MoneyReceiptController extends Controller
 {
-    protected $invoiceVoucherRefIdUtil;
-    public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
-    {
-        $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        
+
+    public function __construct(
+        private MoneyReceiptService $moneyReceiptService,
+        private ContactService $contactService,
+    ) {
     }
 
-    public function moneyReceiptList($customerId)
+    public function index($contactId)
     {
-        $customer = Customer::with('receipts', 'receipts.branch')
-            ->where('id', $customerId)
-            ->first();
-        return view('contacts.customers.ajax_view.money_receipt_list', compact('customer'));
+        $contact = $this->contactService->singleContact(id: $contactId, with: ['moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch']);
+        return view('contacts.money_receipts.index', compact('contact'));
+    }
+
+    public function create($contactId)
+    {
+        $contact = $this->contactService->singleContact(id: $contactId);
+        return view('contacts.money_receipts.create', compact('contact'));
+    }
+
+    public function store(Request $request, $contactId, CodeGenerationServiceInterface $codeGenerator)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $addMoneyReceipt = $this->moneyReceiptService->addMoneyReceipt(contactId: $contactId, request: $request, codeGenerator: $codeGenerator);
+            $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $addMoneyReceipt->id, with: ['contact', 'branch']);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 
     public function moneyReceiptPrint($receiptId)
@@ -48,54 +66,7 @@ class MoneyReceiptController extends Controller
                 'branches.country',
                 'branches.logo',
             )->where('money_receipts.id', $receiptId)->first();
-        return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
-    }
 
-    public function moneyReceiptCreate($customerId)
-    {
-        $customer = DB::table('customers')->where('id', $customerId)->first();
-        $branches = DB::table('branches')->get();
-        return view('contacts.customers.ajax_view.money_receipt_add_modal', compact('customer', 'branches'));
-    }
-
-    public function store(Request $request, $customerId)
-    {
-        $addReceipt = new MoneyReceipt();
-        $addReceipt->invoice_id = 'MR'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('money_receipts'), 4, "0", STR_PAD_LEFT);
-        $addReceipt->customer_id = $customerId;
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $addReceipt->branch_id = NULL;
-        } else {
-            $addReceipt->branch_id = auth()->user()->branch_id;
-        }
-
-        $addReceipt->amount = $request->amount;
-        $addReceipt->note = $request->note;
-        $addReceipt->receiver = $request->receiver;
-        $addReceipt->ac_details = $request->ac_details;
-        $addReceipt->is_date = isset($request->is_date) ? 1 : 0;
-        $addReceipt->is_customer_name = isset($request->is_customer_name) ? 1 : 0;
-        $addReceipt->is_header_less = isset($request->is_header_less) ? 1 : 0;
-        $addReceipt->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL;
-        $addReceipt->date = date('d-m-Y');
-        $addReceipt->save();
-
-        $receipt = DB::table('money_receipts')
-            ->leftJoin('customers', 'money_receipts.customer_id', 'customers.id')
-            ->leftJoin('branches', 'money_receipts.branch_id', 'branches.id')
-            ->select(
-                'money_receipts.*',
-                'customers.name as cus_name',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'branches.city',
-                'branches.state',
-                'branches.zip_code',
-                'branches.email',
-                'branches.phone',
-                'branches.country',
-                'branches.logo',
-            )->where('money_receipts.id', $addReceipt->id)->first();
         return view('contacts.customers.ajax_view.print_receipt', compact('receipt'));
     }
 
@@ -173,7 +144,10 @@ class MoneyReceiptController extends Controller
         $i = 6;
         $a = 0;
         $invoiceId = '';
-        while ($a < $i) { $invoiceId .= rand(1, 9);$a++; }
+        while ($a < $i) {
+            $invoiceId .= rand(1, 9);
+            $a++;
+        }
 
         $dueInvoices = Sale::where('customer_id', $receipt->customer_id)->where('due', '>', 0)->get();
         if (count($dueInvoices) > 0) {
@@ -230,7 +204,7 @@ class MoneyReceiptController extends Controller
                         $addCustomerLedger->save();
                     }
 
-                    //$dueAmounts -= $dueAmounts; 
+                    //$dueAmounts -= $dueAmounts;
                     if ($index == 1) {
                         $request->amount = 0;
                         break;

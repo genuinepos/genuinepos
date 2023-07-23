@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Contacts;
 
 use App\Models\Branch;
-use App\Models\Customer;
 use App\Models\BaseModel;
+use App\Models\Contacts\Contact;
 
 class MoneyReceipt extends BaseModel
 {
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function customer()
+    public function contact()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(Contact::class, 'customer_id');
     }
 
     public function branch()

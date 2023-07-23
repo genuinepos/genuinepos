@@ -4,6 +4,7 @@ namespace App\Models\Contacts;
 
 use App\Enums\ContactType;
 use App\Models\CustomerGroup;
+use App\Models\Contacts\MoneyReceipt;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contacts\ContactOpeningBalance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,5 +29,15 @@ class Contact extends Model
     public function customerGroup()
     {
         return $this->belongsTo(CustomerGroup::class, 'contact_id');
+    }
+
+    public function moneyReceipts()
+    {
+        return $this->hasMany(MoneyReceipt::class, 'contact_id');
+    }
+
+    public function moneyReceiptsOfOwnBranch()
+    {
+        return $this->hasMany(MoneyReceipt::class, 'contact_id')->where('branch_id', auth()->user()->branch_id);
     }
 }

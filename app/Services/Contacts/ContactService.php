@@ -9,12 +9,10 @@ class ContactService
 {
     function addContact($type, $codeGenerator, $contactIdPrefix, $name, $phone, $businessName, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType)
     {
-        $__contactIdPrefix = $contactIdPrefix != null ? $contactIdPrefix : 'CO';
-
-        $contactId = $codeGenerator->generateAndTypeWiseNoBreak(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $__contactIdPrefix, splitter: '', suffixSeparator: '');
+        $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4);
 
         $addContact = new Contact();
-        $addContact->contact_id = '0001';
+        $addContact->contact_id = $contactId;
         $addContact->type = $type;
         $addContact->name = $name;
         $addContact->phone = $phone;
@@ -96,8 +94,15 @@ class ContactService
         }
     }
 
-    public function singleContact($id) {
+    public function singleContact(int $id, array $with = null) {
 
-        return Contact::with(['openingBalance', 'openingBalances', 'customerGroup'])->where('id', $id)->first();
+        $query = Contact::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
     }
 }

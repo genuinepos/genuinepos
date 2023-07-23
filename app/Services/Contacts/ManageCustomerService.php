@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Enums\ContactType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,7 +21,7 @@ class ManageCustomerService
                 'contacts.phone',
                 'contacts.credit_limit',
                 'customer_groups.group_name',
-            )->where('contacts.type', \App\Enums\ContactType::Customer->value);
+            )->where('contacts.type', ContactType::Customer->value);
 
         return DataTables::of($customers)
             ->addColumn('action', function ($row) {
@@ -30,11 +31,11 @@ class ManageCustomerService
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
 
-                $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '">' . __('Generate Receipt Voucher') . '</a>';
+                $html .= '<a class="dropdown-item" id="money_receipts" href="' . route('contacts.money.receipts.index', [$row->id]) . '">' . __('Money Receipt Vouchers') . '</a>';
 
                 if (auth()->user()->can('customer_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('contacts.edit', [$row->id, \App\Enums\ContactType::Customer->value]) . '" id="editContact">' . __('Edit') . '</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('contacts.edit', [$row->id, ContactType::Customer->value]) . '" id="editContact">' . __('Edit') . '</a>';
                 }
 
                 if (auth()->user()->can('customer_delete')) {

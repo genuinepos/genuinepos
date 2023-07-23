@@ -41,16 +41,15 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthWise(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
+    public function generateMonthWise(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null,?string $connection = 'mysql'): string
     {
         $entryRaw = DB::connection($connection)
             ->table($table)
+            ->where('branch_id', $branchId)
             ->whereNotNull($column)
             ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
-
-        // dd($entryRaw);
 
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
         $dateTimeStrPrefix = date('ym');
@@ -64,6 +63,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsNextValue = 1;
 
         if (isset($entryRaw)) {
+
             $entry = trim($entryRaw->$column);
             $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
             // dd($splitterSplittedArray);
@@ -84,10 +84,11 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
+    public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null, ?string $connection = 'mysql'): string
     {
         $entryRaw = DB::table($table)
             ->whereNotNull($column)
+            ->where('branch_id', $branchId)
             ->where($typeColName, $typeValue)
             ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
@@ -125,7 +126,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateAndTypeWiseNoBreak(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
+    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
     {
         $entryRaw = DB::table($table)
             ->whereNotNull($column)
@@ -137,12 +138,13 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         // dd($entryRaw);
 
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
-        $dateTimeStrPrefix = date('ym');
+        //$dateTimeStrPrefix = date('ym');
         $prefixLength = strlen($prefix);
         $splitterLength = strlen($splitter);
-        $dateTimeStrPrefixLength = strlen($dateTimeStrPrefix);
+        //$dateTimeStrPrefixLength = strlen($dateTimeStrPrefix);
         $suffixSeparatorLength = strlen($suffixSeparator);
-        $minSize = $prefixLength + $splitterLength + $dateTimeStrPrefixLength + $digits;
+        $minSize = $prefixLength + $splitterLength + $digits;
+        // $minSize = $prefixLength + $splitterLength + $dateTimeStrPrefixLength + $digits;
         $size = $minSize;
         $lastDigitsNextValue = 1;
 
@@ -150,18 +152,15 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
             $entry = trim($entryRaw->{$column});
             $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
-            $serial = $splitterSplittedArray[2];
-            $previousMonthDigits = substr($splitterSplittedArray[1], -2);
-            $currentMonthDigit = date('m');
-
-            if (intval($currentMonthDigit) === intval($previousMonthDigits)) {
-                $lastDigitsNextValue = intval($serial) + 1;
-            }
+            $serial = $splitterSplittedArray[1];
+            $lastDigitsNextValue = intval($serial) + 1;
         }
 
-        $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
+        $lastDigitsLength = ($size - ($prefixLength)) - 1;
+        // $lastDigitsLength = ($size - ($prefixLength + $dateTimeStrPrefixLength)) - 1;
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
-        $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
+        $finalSuffix = $suffixSeparator.$lastDigitsFinal;
+        // $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
         $finalStr = $prefix.$splitter.$finalSuffix;
         // dd($finalStr);
         return $finalStr;

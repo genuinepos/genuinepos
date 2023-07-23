@@ -35,8 +35,8 @@ class ContactController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $cusIdPrefix = $generalSettings['prefix__customer_id'];
-            $supIdPrefix = $generalSettings['prefix__supplier_id'];
+            $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
+            $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
 
             $contactIdPrefix = $type == ContactType::Customer->value ? $cusIdPrefix : $supIdPrefix;
 
@@ -63,9 +63,8 @@ class ContactController extends Controller
 
     public function edit($contactId, $type)
     {
-
         $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
-        $contact = $this->contactService->singleContact($contactId);
+        $contact = $this->contactService->singleContact(id: $contactId, with: ['openingBalance', 'openingBalances', 'customerGroup']);
         return view('contacts.ajax_view.edit', compact('type', 'contact', 'customerGroups'));
     }
 

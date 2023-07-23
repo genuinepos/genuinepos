@@ -1,17 +1,18 @@
 <?php
 
 use App\Models\Sale;
-use App\Jobs\SaleMailJob;
-use App\Mail\CustomerRegistered;
-use App\Mail\NewProductArrived;
-use App\Mail\PurchaseCreated;
-use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Customer;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Jobs\SaleMailJob;
+use App\Mail\PurchaseCreated;
+use App\Mail\NewProductArrived;
+use App\Mail\CustomerRegistered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Schema;
+use App\Services\CodeGenerationService;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Communication\Interface\EmailServiceInterface;
 
@@ -52,15 +53,11 @@ Artisan::command('purchaseCreated', function (EmailServiceInterface  $emailServi
 });
 
 
-Artisan::command('test', function () {
+Artisan::command('a', function (CodeGenerationService $s) {
 
-    $key = "";
-    $keyLength = 8;
-    for ($x = 1; $x <= $keyLength; $x++) {
-        // Set each digit
-        $key .= random_int(0, 9);
-    }
-    echo $key;
+    $res1 = $s->generateAndTypeWiseWithoutYearMonth('contacts', 'contact_id', 'type', '1', 'C');
+    $res2 = $s->generateAndTypeWiseWithoutYearMonth('contacts', 'contact_id', 'type', '2', 'S');
+    dd($res1, $res2, PHP_INT_MAX);
 });
 
 // Just merged this line of text.

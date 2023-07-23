@@ -116,34 +116,11 @@
     </div>
 
     <!-- Money Receipt list Modal-->
-    <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_receipt_voucher')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="receipt_voucher_list_modal_body"></div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Money Receipt list Modal End-->
 
     <!--add money receipt Modal-->
-    <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.generate_money_receipt')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="money_receipt_modal"></div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="moneyReciptAddOrEditModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!--add money receipt Modal End-->
 
     <!--add money receipt Modal-->
@@ -347,8 +324,69 @@
                 });
             });
 
-            // Show sweet alert for delete
-            $(document).on('click', '#change_status', function(e) {
+            $(document).on('click', '#money_receipts', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('.data_preloader').show();
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+
+                        $('#moneyReceiptListModal').html(data);
+                        $('#moneyReceiptListModal').modal('show');
+                        $('.data_preloader').hide();
+                    }, error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        }else if (err.status == 500) {
+
+                            toastr.error('Server Error. Please contact to the support team.');
+                            return;
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '#add_monery_receipt', function(e) {
+                e.preventDefault();
+
+                var url = $(this).attr('href');
+
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
+
+                        $('#moneyReciptAddOrEditModal').html(data);
+                        $('#moneyReciptAddOrEditModal').modal('show');
+
+                        setTimeout(function(){
+
+                            $('#mr_amount').focus();
+                        }, 500);
+                    }, error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        }else if (err.status == 500) {
+
+                            toastr.error('Server Error. Please contact to the support team.');
+                            return;
+                        }
+                    }
+                });
+            });
+
+             // Show sweet alert for delete
+             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
                  $.confirm({
@@ -368,36 +406,6 @@
                         },
 
                         'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
-                    }
-                });
-            });
-
-            $(document).on('click', '#generate_receipt', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#money_receipt_modal').html(data);
-                        $('#MoneyReciptModal').modal('show');
-                    }
-                });
-            });
-
-            $(document).on('click', '#money_receipt_list', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $('.data_preloader').show();
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#receipt_voucher_list_modal_body').html(data);
-                        $('#moneyReceiptListModal').modal('show');
-                        $('.data_preloader').hide();
                     }
                 });
             });
@@ -563,17 +571,6 @@
                         $('#receipt_deleted_form')[0].reset();
                     }
                 });
-            });
-
-            $(document).on('change', '#is_header_less', function() {
-
-                if ($(this).is(':CHECKED', true)) {
-
-                    $('.gap-from-top-add').show();
-                } else {
-
-                    $('.gap-from-top-add').hide();
-                }
             });
         });
 

@@ -39,7 +39,7 @@ use App\Http\Controllers\ReleaseNoteController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\CashRegisterController;
-use App\Http\Controllers\MoneyReceiptController;
+// use App\Http\Controllers\MoneyReceiptController;
 use App\Http\Controllers\PosShortMenuController;
 use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\InvoiceLayoutController;
@@ -257,7 +257,7 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
         });
     });
-    
+
     Route::group(['prefix' => 'units'], function () {
         Route::get('/', [UnitController::class, 'index'])->name('product.units.index');
         Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('product.units.get.all.unit');
@@ -326,17 +326,17 @@ Route::group(['prefix' => 'contacts'], function () {
         Route::delete('payment/delete/{paymentId}', [CustomerController::class, 'paymentDelete'])->name('customers.payment.delete');
         Route::get('amountsBranchWise/{customerId}', [CustomerController::class, 'customerAmountsBranchWise'])->name('contacts.customer.amounts.branch.wise');
 
-        Route::group(['prefix' => 'money/receipt'], function () {
-            Route::get('/voucher/list/{customerId}', [MoneyReceiptController::class, 'moneyReceiptList'])->name('money.receipt.voucher.list');
-            Route::get('create/{customerId}', [MoneyReceiptController::class, 'moneyReceiptCreate'])->name('money.receipt.voucher.create');
-            Route::post('store/{customerId}', [MoneyReceiptController::class, 'store'])->name('money.receipt.voucher.store');
-            Route::get('edit/{receiptId}', [MoneyReceiptController::class, 'edit'])->name('money.receipt.voucher.edit');
-            Route::post('update/{receiptId}', [MoneyReceiptController::class, 'update'])->name('money.receipt.voucher.update');
-            Route::get('voucher/print/{receiptId}', [MoneyReceiptController::class, 'moneyReceiptPrint'])->name('money.receipt.voucher.print');
-            Route::get('voucher/status/change/modal/{receiptId}', [MoneyReceiptController::class, 'changeStatusModal'])->name('money.receipt.voucher.status.change.modal');
-            Route::post('voucher/status/change/{receiptId}', [MoneyReceiptController::class, 'changeStatus'])->name('money.receipt.voucher.status.change');
-            Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
-        });
+        // Route::group(['prefix' => 'money/receipt'], function () {
+        //     Route::get('/voucher/list/{customerId}', [MoneyReceiptController::class, 'moneyReceiptList'])->name('money.receipt.voucher.list');
+        //     Route::get('create/{customerId}', [MoneyReceiptController::class, 'moneyReceiptCreate'])->name('money.receipt.voucher.create');
+        //     Route::post('store/{customerId}', [MoneyReceiptController::class, 'store'])->name('money.receipt.voucher.store');
+        //     Route::get('edit/{receiptId}', [MoneyReceiptController::class, 'edit'])->name('money.receipt.voucher.edit');
+        //     Route::post('update/{receiptId}', [MoneyReceiptController::class, 'update'])->name('money.receipt.voucher.update');
+        //     Route::get('voucher/print/{receiptId}', [MoneyReceiptController::class, 'moneyReceiptPrint'])->name('money.receipt.voucher.print');
+        //     Route::get('voucher/status/change/modal/{receiptId}', [MoneyReceiptController::class, 'changeStatusModal'])->name('money.receipt.voucher.status.change.modal');
+        //     Route::post('voucher/status/change/{receiptId}', [MoneyReceiptController::class, 'changeStatus'])->name('money.receipt.voucher.status.change');
+        //     Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
+        // });
 
         Route::group(['prefix' => 'groups'], function () {
             Route::get('/', [CustomerGroupController::class, 'index'])->name('contacts.customers.groups.index');

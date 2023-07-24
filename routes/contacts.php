@@ -32,12 +32,10 @@ Route::group(['prefix' => 'contacts'], function () {
 
         Route::get('index/{type}', [MoneyReceiptController::class, 'index'])->name('contacts.money.receipts.index');
         Route::get('create/{contactId}', [MoneyReceiptController::class, 'create'])->name('contacts.money.receipts.create');
-        Route::post('store/{contactId}', [MoneyReceiptController::class, 'store'])->name('money.receipt.voucher.store');
-        Route::get('edit/{receiptId}', [MoneyReceiptController::class, 'edit'])->name('money.receipt.voucher.edit');
-        Route::post('update/{receiptId}', [MoneyReceiptController::class, 'update'])->name('money.receipt.voucher.update');
-        Route::get('voucher/print/{receiptId}', [MoneyReceiptController::class, 'moneyReceiptPrint'])->name('money.receipt.voucher.print');
-        Route::get('voucher/status/change/modal/{receiptId}', [MoneyReceiptController::class, 'changeStatusModal'])->name('money.receipt.voucher.status.change.modal');
-        Route::post('voucher/status/change/{receiptId}', [MoneyReceiptController::class, 'changeStatus'])->name('money.receipt.voucher.status.change');
-        Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
+        Route::post('store/{contactId}', [MoneyReceiptController::class, 'store'])->name('contacts.money.receipts.store');
+        Route::get('edit/{receiptId}', [MoneyReceiptController::class, 'edit'])->name('contacts.money.receipts.edit');
+        Route::post('update/{receiptId}', [MoneyReceiptController::class, 'update'])->name('contacts.money.receipts.update');
+        Route::get('print/{receiptId}', [MoneyReceiptController::class, 'print'])->name('contacts.money.receipts.print');
+        Route::delete('delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('contacts.money.receipts.delete');
     });
 });

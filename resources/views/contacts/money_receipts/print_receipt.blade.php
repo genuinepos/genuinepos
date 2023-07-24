@@ -18,7 +18,7 @@
     div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
  <!--Money Receipt design-->
- <div class="print_area">
+ <div class="money_receipt_print_area">
     <div class="print_content">
         @if ($moneyReceipt->is_header_less == 0)
 
@@ -199,6 +199,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <img style="width: 170px; height:30px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($moneyReceipt->voucher_no, $generator::TYPE_CODE_128)) }}">
+                <small class="d-block p-0 m-0" style="font-size: 9px!important;"><strong>{{ $moneyReceipt->voucher_no }}</strong></small>
             </div>
         </div>
 

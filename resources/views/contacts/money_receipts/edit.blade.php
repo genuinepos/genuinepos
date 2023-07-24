@@ -5,103 +5,279 @@
     .payment_top_card ul {padding: 6px;border: 1px solid #dcd1d1;}
     .payment_list_table {position: relative;}
     .payment_details_contant{background: azure!important;}
-    h6.checkbox_input_wrap {border: 1px solid #495677; padding: 0px 7px;}
+    h6.checkbox_input_wrap {border: 1px solid #495677;padding: 0px 7px;}
 </style>
-<div class="info_area mb-2">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="payment_top_card">
-                <ul class="list-unstyled">
-                    <li><strong>@lang('menu.customer') </strong>
-                        <span class="card_text customer_name">
-                            {{ $receipt->cus_name }}
-                        </span>
-                    </li>
-                    <li><strong>@lang('menu.phone') </strong>
-                        <span class="card_text customer_name">
-                            {{ $receipt->cus_phone }}
-                        </span>
-                    </li>
-                    <li>
-                        <strong>@lang('menu.business') </strong>
-                        <span class="card_text customer_business">{{ $receipt->cus_business }}</span>
-                    </li>
-                </ul>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Money Receipt Voucher") }}</h6>
+            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <strong>{{ __("Shop") }}: </strong> {{ $moneyReceipt?->branch ? $moneyReceipt?->branch->name : $generalSettings['business__shop_name'] }}
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="payment_top_card">
+                        <table class="table table-sm display modal-table">
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Customer") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : {{ $moneyReceipt?->contact?->name }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Phone") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : {{ $moneyReceipt?->contact?->phone }}</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Business") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : {{ $moneyReceipt?->contact->business_name }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="payment_top_card">
+                        <table class="table table-sm display modal-table">
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Total Sale") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Total Purchase") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Total Return") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Total Received") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Total Paid") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Curr. Balance") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <form id="edit_money_receipt_form" action="{{ route('contacts.money.receipts.update', $moneyReceipt->id) }}" method="POST">
+                @csrf
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label><b>{{ __("Receiving Amount") }}</b> </label>
+                        <input type="text" name="amount" class="form-control fw-bold" id="mr_amount" data-next="mr_date" value="{{ $moneyReceipt->amount }}" placeholder="@lang('menu.receiving_amount')" autocomplete="off"/>
+                        <span class="error error_mr_amount"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
+                            </div>
+                            <input required type="text" name="date" class="form-control" id="mr_date" value="{{ $moneyReceipt->date_ts ? date($generalSettings['business__date_format'], strtotime($moneyReceipt->date_ts)) : '' }}" data-next="mr_account_details" autocomplete="off">
+                            <span class="error error_mr_date"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label><b>{{ __('Account Details') }}</b></label>
+                        <input type="text" name="account_details" class="form-control" id="mr_account_details" value="{{ $moneyReceipt->ac_details }}" data-next="mr_receiver" placeholder="{{ __('Account Details ') }}"/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label><b>{{ __("Receiver") }}</b></label>
+                        <input type="text" name="receiver" class="form-control" id="mr_receiver" value="{{ $moneyReceipt->receiver }}" data-next="mr_note" placeholder="{{ __("Receiver Name") }}"/>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-2">
+                    <div class="col-md-12">
+                        <label><b>{{ __("Footer Note") }}</b></label>
+                        <input type="text" name="note" class="form-control" id="mr_note" value="{{ $moneyReceipt->note }}" data-next="mr_is_customer_name" placeholder="{{ __("Footer Note") }}">
+                    </div>
+                </div>
+
+                <div class="extra_label">
+                    <div class="form-group row mt-2">
+                        <div class="col-md-3">
+                            <label><b>{{ __("Show Customer Name") }}</b></label>
+                            <select name="is_customer_name" class="form-control" id="mr_is_customer_name" data-next="mr_is_date">
+                                <option value="1">{{ __("Yes") }}</option>
+                                <option {{ $moneyReceipt->is_customer_name == 0 ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label><b>{{ __("Show Date") }}</b></label>
+                            <select name="is_date" class="form-control" id="mr_is_date" data-next="mr_is_header_less">
+                                <option value="1">{{ __("Yes") }}</option>
+                                <option {{ $moneyReceipt->is_date == 0 ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label><b>{{ __("Is Headerless For Pad Print") }}</b></label>
+                            <select name="is_header_less" class="form-control" id="mr_is_header_less" data-next="money_receipt_save_changes">
+                                <option value="0">{{ __("No") }}</option>
+                                <option {{ $moneyReceipt->is_date == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 gap-from-top-add {{ $moneyReceipt->is_header_less == 0 ? 'd-hide' : '' }}">
+                            <label><b>{{ __('Gap From Top (Inches)') }}</b></label>
+                            <input type="text" name="gap_from_top" id="mr_gap_from_top" class="form-control" value="{{ $moneyReceipt->gap_from_top }}" data-next="money_receipt_save_changes" placeholder="{{ __('Gap From Top') }}"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button mr_loading_button d-hide"><i class="fas fa-spinner"></i><span>{{ __("Loading") }} ...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="money_receipt_save_changes" class="btn btn-sm btn-success monery_receipt_submit_button">{{ __("Save Changes") }}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<form id="money_receipt_form" action="{{ route('money.receipt.voucher.update', $receipt->id) }}" method="POST">
-    @csrf
-    <div class="form-group row">
-        <div class="col-md-3">
-            <label><b>@lang('menu.receiving_amount') </b> </label>
-            <input type="text" name="amount" class="form-control" placeholder="@lang('menu.receiving_amount')" value="{{ $receipt->amount }}"/>
-        </div>
-
-        <div class="col-md-3">
-            <label for="p_date"><strong>@lang('menu.date') </strong></label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1"><i
-                            class="fas fa-calendar-week input_i"></i></span>
-                </div>
-                <input type="text" name="date" class="form-control" id="mr_date"
-                    autocomplete="off" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <label><b>{{ __('Account Details ') }} </b> </label>
-            <input type="text" name="ac_details" class="form-control" placeholder="Account Details" value="{{ $receipt->ac_details }}"/>
-        </div>
-
-        <div class="col-md-3">
-            <label><b>@lang('menu.receiver') </b> </label>
-            <input type="text" name="receiver" class="form-control" placeholder="@lang('menu.receiver')" value="{{ $receipt->receiver }}"/>
-        </div>
-    </div>
-
-    <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <label><strong>@lang('menu.paper_note') </strong></label>
-            <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                placeholder="@lang('menu.paper_note')">{{ $receipt->note }}</textarea>
-        </div>
-    </div>
-
-    <div class="extra_label">
-        <div class="form-group row mt-2">
-            <div class="col-md-3">
-                <p> <input type="checkbox" {{ $receipt->is_customer_name ? 'CHECKED' : '' }} name="is_customer_name" id="is_customer_name" value="1"> &nbsp; <b>@lang('menu.show_customer_name')</b> </p>
-            </div>
-
-            <div class="col-md-2">
-                <p> <input type="checkbox" {{ $receipt->is_date ? 'CHECKED' : '' }} name="is_date" value="1"> &nbsp; <b>@lang('menu.show_date')</b></p>
-            </div>
-
-            <div class="col-md-3 mt-2">
-                <p> <input type="checkbox" {{ $receipt->is_header_less ? 'CHECKED' : '' }} name="is_header_less" id="is_header_less" value="1"> &nbsp; <b>@lang('menu.is_header_less_for_pad_print')?</b> </p>
-            </div>
-
-            <div class="col-md-4 gap-from-top-add {{ $receipt->is_header_less == 1 ? '' : 'd-hide' }}">
-                <label><b>@lang('menu.gap_from_top') </b> </label>
-                <input type="text" name="gap_from_top" class="form-control" placeholder="@lang('menu.gap_from_top')" value="{{ $receipt->gap_from_top}}"/>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group row mt-3">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-            <button type="submit" class="c-btn button-success float-end">@lang('menu.save')</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
-        </div>
-    </div>
-</form>
-
 <script>
+       $(document).on('click keypress focus blur change', '.form-control', function(event) {
+
+        $('.monery_receipt_submit_button').prop('type', 'button');
+    });
+
+    var isAllowSubmit = true;
+    $(document).on('click', '.monery_receipt_submit_button',function () {
+
+        if (isAllowSubmit) {
+
+            $(this).prop('type', 'submit');
+        }else {
+
+            $(this).prop('type', 'button');
+        }
+    });
+
+    $('#edit_money_receipt_form').on('submit',function(e) {
+        e.preventDefault();
+
+        $('.mr_loading_button').show();
+        var url = $(this).attr('action');
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+
+                $('.error').html('');
+                toastr.success("{{ __('Monery receipt update successfully.') }}");
+                $('.mr_loading_button').hide();
+                $('#moneyReceiptListModal').modal('hide');
+                $('#moneyReciptAddOrEditModal').modal('hide');
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                });
+            },error : function(err) {
+
+                $('.mr_loading_button').hide();
+                $('.error').html('');
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                }else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+
+                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
+
+                $.each(err.responseJSON.errors, function(key, error) {
+
+                    $('.error_mr_' + key + '').html(error[0]);
+                });
+            }
+        });
+    });
+
+    $(document).on('change keypress click', 'select', function(e){
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 0) {
+
+            if ($(this).attr('id') == 'mr_is_header_less' && $(this).val() == 1) {
+
+                $('#mr_gap_from_top').focus().select();
+                return;
+            }
+
+            $('#'+nextId).focus().select();
+        }
+    });
+
+    $(document).on('change keypress', 'input', function(e){
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 13) {
+
+            $('#'+nextId).focus().select();
+        }
+    });
+
+    $(document).on('change', '#mr_is_header_less', function() {
+
+        if ($(this).val() == 1) {
+
+            $('.gap-from-top-add').show();
+        } else {
+
+            $('.gap-from-top-add').hide();
+        }
+    });
+
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');

@@ -124,10 +124,9 @@
                                                 <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('menu.action')</button>
 
                                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                    <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}">@lang('menu.print')</a>
-                                                    <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}">@lang('menu.edit')</a>
-                                                    <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}">@lang('menu.change_status')</a>
-                                                    <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}">@lang('menu.delete')</a>
+                                                    <a class="dropdown-item" id="print_money_receipt" href="{{ route('contacts.money.receipts.print', $receipt->id) }}">@lang('menu.print')</a>
+                                                    <a class="dropdown-item" id="edit_money_receipt" href="{{ route('contacts.money.receipts.edit', $receipt->id) }}">@lang('menu.edit')</a>
+                                                    <a class="dropdown-item" id="delete_money_receipt" href="{{ route('contacts.money.receipts.delete', $receipt->id) }}">@lang('menu.delete')</a>
                                                 </div>
                                             </div>
                                         </td>

@@ -83,34 +83,34 @@
 
             <hr>
 
-            <form id="add_money_receipt_form" action="{{ route('money.receipt.voucher.store', $contact->id) }}" method="POST">
+            <form id="add_money_receipt_form" action="{{ route('contacts.money.receipts.store', $contact->id) }}" method="POST">
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <label><b>@lang('menu.receiving_amount') </b> </label>
-                        <input type="text" name="amount" class="form-control fw-bold" id="mr_amount" data-next="mr_date" placeholder="@lang('menu.receiving_amount')" autocomplete="off"/>
+                        <label><b>{{ __("Receiving Amount") }}</b></label>
+                        <input type="text" name="amount" class="form-control fw-bold" id="mr_amount" data-next="mr_date" placeholder="{{ __("Receiving Amount") }}" autocomplete="off"/>
                         <span class="error error_mr_amount"></span>
                     </div>
 
                     <div class="col-md-3">
-                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>{{ __("Date") }}</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control" id="mr_date" value="{{ date($generalSettings['business__date_format']) }}" data-next="mr_account_details" autocomplete="off">
+                            <input required type="text" name="date" class="form-control" id="mr_date" value="{{ date($generalSettings['business__date_format']) }}" data-next="mr_account_details" autocomplete="off">
                             <span class="error error_mr_date"></span>
                         </div>
                     </div>
 
                     <div class="col-md-3">
-                        <label><b>{{ __('Account Details ') }}</b></label>
-                        <input type="text" name="account_details" class="form-control" id="mr_account_details" data-next="mr_receiver" placeholder="Account Details"/>
+                        <label><b>{{ __('Account Details') }}</b></label>
+                        <input type="text" name="account_details" class="form-control" id="mr_account_details" data-next="mr_receiver" placeholder="{{ __('Account Details') }}"/>
                     </div>
 
                     <div class="col-md-3">
                         <label><b>{{ __("Receiver") }}</b></label>
-                        <input type="text" name="receiver" class="form-control" id="mr_receiver" data-next="mr_note" placeholder="Receiver Name"/>
+                        <input type="text" name="receiver" class="form-control" id="mr_receiver" data-next="mr_note" placeholder="{{ __("Receiver Name") }}"/>
                     </div>
                 </div>
 
@@ -148,8 +148,8 @@
                         </div>
 
                         <div class="col-md-3 gap-from-top-add d-hide">
-                            <label><b>@lang('menu.gap_from_top') </b> </label>
-                            <input type="text" name="gap_from_top" id="mr_gap_from_top" class="form-control" data-next="money_receipt_save" placeholder="@lang('menu.gap_from_top')"/>
+                            <label><b>{{ __("Gap From Top (Inches)") }}</b></label>
+                            <input type="text" name="gap_from_top" id="mr_gap_from_top" class="form-control" data-next="money_receipt_save" placeholder="{{ __("Gap From Top") }}"/>
                         </div>
                     </div>
                 </div>
@@ -157,9 +157,9 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button mr_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" id="money_receipt_save" class="btn btn-sm btn-success monery_receipt_submit_button">@lang('menu.save')</button>
+                            <button type="button" class="btn loading_button mr_loading_button d-hide"><i class="fas fa-spinner"></i><span>{{ __('Loading') }} ...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
+                            <button type="submit" id="money_receipt_save" class="btn btn-sm btn-success monery_receipt_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -210,8 +210,9 @@
                 isAjaxIn = true;
                 isAllowSubmit = true;
                 $('.error').html('');
-                toastr.success('Customer added successfully.');
+                toastr.success("{{ __('Monery receipt created successfully.') }}");
                 $('.mr_loading_button').hide();
+                $('#moneyReceiptListModal').modal('hide');
                 $('#moneyReciptAddOrEditModal').modal('hide');
 
                 $(data).printThis({
@@ -232,15 +233,15 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error('Net Connetion Error.');
                     return;
                 }else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong') }}");
 
                 $.each(err.responseJSON.errors, function(key, error) {
 

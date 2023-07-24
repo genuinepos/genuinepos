@@ -122,12 +122,6 @@
     <!--add money receipt Modal-->
     <div class="modal fade" id="moneyReciptAddOrEditModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!--add money receipt Modal End-->
-
-    <!--add money receipt Modal-->
-    <div class="modal fade" id="changeReciptStatusModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-    </div>
-    <!--add money receipt Modal End-->
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -385,153 +379,35 @@
                 });
             });
 
-             // Show sweet alert for delete
-             $(document).on('click', '#change_status', function(e) {
+            $(document).on('click', '#edit_money_receipt', function(e) {
                 e.preventDefault();
-                var url = $(this).data('url');
-                 $.confirm({
-                    'title': 'Changes Status Confirmation',
-                    'message': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {
-                            'class': 'yes btn-danger', 'action': function() {
-                                $.ajax({
-                                    url: url,type: 'post',
-                                    success: function(data) {
-                                        toastr.success(data);
-                                        contactTable.ajax.reload();
-                                    }
-                                });
-                            }
-                        },
 
-                        'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
-                    }
-                });
-            });
-
-            $(document).on('submit', '#money_receipt_form', function(e) {
-                e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: request,
-                    success: function(data) {
-
-                        toastr.success('Successfully money receipt voucher is generated.');
-                        $('#MoneyReciptModal').modal('hide');
-                        $('#moneyReceiptListModal').modal('hide');
-                        $('.loading_button').hide();
-
-                        $(data).printThis({
-                            debug: false,
-                            importCSS: true,
-                            importStyle: true,
-                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                            removeInline: false,
-                            printDelay: 500,
-                            header: null,
-                        });
-                    }
-                });
-            });
-
-            // Pass editable data to edit modal fields
-            $(document).on('click', '#edit_receipt', function(e) {
-                e.preventDefault();
                 var url = $(this).attr('href');
-                $.get(url, function(data) {
-
-                    $('#money_receipt_modal').html(data);
-                    $('#MoneyReciptModal').modal('show');
-                });
-            });
-
-            $(document).on('click', '#print_receipt', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    dataType: 'html',
-                    success: function(data) {
-
-                        $(data).printThis({
-                            debug: false,
-                            importCSS: true,
-                            importStyle: true,
-                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                            removeInline: false,
-                            printDelay: 500,
-                            header: null,
-                        });
-                        $('.print_area').remove();
-                        return;
-                    }
-                });
-            });
-
-            // Show sweet alert for delete
-            $(document).on('click', '#change_receipt_status', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $('.receipt_preloader').show();
 
                 $.ajax({
                     url: url,
                     type: 'get',
                     success: function(data) {
 
-                        $('#changeReciptStatusModal').html(data);
-                        $('#changeReciptStatusModal').modal('show');
-                        $('.receipt_preloader').hide();
-                    }
-                });
-            });
+                        $('#moneyReciptAddOrEditModal').html(data);
+                        $('#moneyReciptAddOrEditModal').modal('show');
 
-            $(document).on('submit', '#change_voucher_status_form', function(e) {
-                e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.vcs_input');
-                $('.error').html('');
+                        setTimeout(function(){
 
-                var countErrorField = 0;
+                            $('#mr_amount').focus().select();
+                        }, 500);
+                    }, error: function(err) {
 
-                $.each(inputs, function(key, val) {
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
 
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        }else if (err.status == 500) {
 
-                    if (idValue == '') {
-
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_vcs_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-
-                    $('.loading_button').hide();
-                    return;
-                }
-
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: request,
-                    success: function(data) {
-
-                        toastr.success(data);
-                        $('#changeReciptStatusModal').modal('hide');
-                        $('#moneyReceiptListModal').modal('hide');
-                        table.ajax.reload();
+                            toastr.error('Server Error. Please contact to the support team.');
+                            return;
+                        }
                     }
                 });
             });
@@ -569,6 +445,54 @@
 
                         toastr.error(data);
                         $('#receipt_deleted_form')[0].reset();
+                    }
+                });
+            });
+
+             // Show sweet alert for delete
+            $(document).on('click', '#change_status', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                 $.confirm({
+                    'title': 'Changes Status Confirmation',
+                    'message': 'Are you sure?',
+                    'buttons': {
+                        'Yes': {
+                            'class': 'yes btn-danger', 'action': function() {
+                                $.ajax({
+                                    url: url,type: 'post',
+                                    success: function(data) {
+                                        toastr.success(data);
+                                        contactTable.ajax.reload();
+                                    }
+                                });
+                            }
+                        },
+
+                        'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
+                    }
+                });
+            });
+
+            $(document).on('click', '#print_money_receipt', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: 'html',
+                    success: function(data) {
+
+                        $(data).printThis({
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                            removeInline: false,
+                            printDelay: 500,
+                            header: null,
+                        });
+                        return;
                     }
                 });
             });

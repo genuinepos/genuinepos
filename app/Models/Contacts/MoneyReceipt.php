@@ -13,7 +13,7 @@ class MoneyReceipt extends BaseModel
 
     public function contact()
     {
-        return $this->belongsTo(Contact::class, 'customer_id');
+        return $this->belongsTo(Contact::class, 'contact_id');
     }
 
     public function branch()

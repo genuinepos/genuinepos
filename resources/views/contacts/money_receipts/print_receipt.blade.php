@@ -1,6 +1,7 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business__date_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 
 <style>
@@ -81,7 +82,7 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h4 style="text-transform: uppercase;"><strong>{{ __("Money Receipt Voucher") }}</strong></h4>
+                    <h4 class="text-uppercase"><strong>{{ __("Money Receipt Voucher") }}</strong></h4>
                 </div>
             </div>
         @endif
@@ -99,12 +100,12 @@
 
             <div class="col-4 text-center">
                 @if ($moneyReceipt->is_header_less == 1)
-                    <h4>{{ __("Monery Receipt Voucher") }}</h4>
+                    <h6 class="text-uppercase"><strong>{{ __("Monery Receipt Voucher") }}</strong></h6>
                 @endif
             </div>
 
             <div class="col-4 text-end">
-                <p style="font-size:11px!important"><b>{{ __("Date") }}</b> : {{ $moneyReceipt->is_date ? date($generalSettings['business__date_format'] ,strtotime($moneyReceipt->date)) : '.......................................' }}</p>
+                <p style="font-size:11px!important"><b>{{ __("Date") }}</b> : {{ $moneyReceipt->is_date ? date($generalSettings['business__date_format'] ,strtotime($moneyReceipt->date_ts)) : '.......................................' }}</p>
             </div>
         </div><br>
 
@@ -185,12 +186,12 @@
         <div class="row">
             <div class="col-6">
                 <div class="details_area">
-                    <h6 class="borderTop text-uppercase">@lang('menu.customers_signature') </h6>
+                    <p class="borderTop text-uppercase"><strong>{{ __("Customer's Signature") }}</strong></p>
                 </div>
             </div>
             <div class="col-6">
                 <div class="details_area text-end">
-                    <h6 class="borderTop text-uppercase"> @lang('menu.signature_of_authority') </h6>
+                    <p class="borderTop text-uppercase"><strong>{{ __("Signature Of Authority") }}</strong></p>
                 </div>
             </div>
         </div>

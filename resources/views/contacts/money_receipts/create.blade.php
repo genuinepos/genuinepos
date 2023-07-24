@@ -88,7 +88,7 @@
                 <div class="form-group row">
                     <div class="col-md-3">
                         <label><b>@lang('menu.receiving_amount') </b> </label>
-                        <input type="text" name="amount" class="form-control mr_input" id="mr_amount" data-next="mr_date" placeholder="@lang('menu.receiving_amount')" autocomplete="off"/>
+                        <input type="text" name="amount" class="form-control fw-bold" id="mr_amount" data-next="mr_date" placeholder="@lang('menu.receiving_amount')" autocomplete="off"/>
                         <span class="error error_mr_amount"></span>
                     </div>
 
@@ -105,12 +105,12 @@
 
                     <div class="col-md-3">
                         <label><b>{{ __('Account Details ') }}</b></label>
-                        <input type="text" name="account_details" class="form-control mr_input" id="mr_account_details" data-next="mr_receiver" placeholder="Account Details"/>
+                        <input type="text" name="account_details" class="form-control" id="mr_account_details" data-next="mr_receiver" placeholder="Account Details"/>
                     </div>
 
                     <div class="col-md-3">
                         <label><b>{{ __("Receiver") }}</b></label>
-                        <input type="text" name="receiver" class="form-control mr_input" id="mr_receiver" data-next="mr_note" placeholder="Receiver Name"/>
+                        <input type="text" name="receiver" class="form-control" id="mr_receiver" data-next="mr_note" placeholder="Receiver Name"/>
                     </div>
                 </div>
 
@@ -218,7 +218,7 @@
                     debug: false,
                     importCSS: true,
                     importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                     removeInline: false,
                     printDelay: 1000,
                     header: null,

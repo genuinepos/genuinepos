@@ -109,9 +109,9 @@
                                             @endif
                                         </td>
 
-                                        <td>{{ $receipt->invoice_id }}</td>
+                                        <td>{{ $receipt->voucher_no }}</td>
 
-                                        <td>
+                                        <td class="fw-bold">
                                             {{ App\Utils\Converter::format_in_bdt($receipt->amount) }}
                                         </td>
 
@@ -124,10 +124,10 @@
                                                 <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('menu.action')</button>
 
                                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                    <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}"><i class="fas fa-print text-primary"></i>@lang('menu.print')</a>
-                                                    <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}"><i class="fas fa-edit text-primary"></i>@lang('menu.edit')</a>
-                                                    <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}"><i class="far fa-file-alt text-primary"></i>@lang('menu.change_status')</a>
-                                                    <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}"><i class="far fa-trash-alt text-primary"></i> @lang('menu.delete')</a>
+                                                    <a class="dropdown-item" id="print_receipt" href="{{ route('money.receipt.voucher.print', $receipt->id) }}">@lang('menu.print')</a>
+                                                    <a class="dropdown-item" id="edit_receipt" href="{{ route('money.receipt.voucher.edit', $receipt->id) }}">@lang('menu.edit')</a>
+                                                    <a class="dropdown-item" id="change_receipt_status" href="{{ route('money.receipt.voucher.status.change.modal', $receipt->id) }}">@lang('menu.change_status')</a>
+                                                    <a class="dropdown-item" id="delete_receipt" href="{{ route('money.receipt.voucher.delete', $receipt->id) }}">@lang('menu.delete')</a>
                                                 </div>
                                             </div>
                                         </td>

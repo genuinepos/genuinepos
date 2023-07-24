@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
+                        <label><strong>{{ __('Date') }}</strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
@@ -169,7 +169,7 @@
 </div>
 
 <script>
-       $(document).on('click keypress focus blur change', '.form-control', function(event) {
+    $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
         $('.monery_receipt_submit_button').prop('type', 'button');
     });

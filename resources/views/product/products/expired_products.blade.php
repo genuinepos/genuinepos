@@ -1,8 +1,5 @@
 @extends('layout.master')
 @push('stylesheets')
-    <style>
-
-    </style>
 @endpush
 @section('title', 'Expired Products List - ')
 @section('content')

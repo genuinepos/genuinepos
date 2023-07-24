@@ -1791,6 +1791,17 @@
                                         </div>
 
                                         <div class="sub-menu-col">
+                                            <a href="{{ route('account.groups.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-money-check-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __('Account Groups') }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
                                             <a href="{{ route('accounting.accounts.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">

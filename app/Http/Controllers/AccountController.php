@@ -34,10 +34,8 @@ class AccountController extends Controller
         $this->util = $util;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-
     }
-
-    // Bank main page/index page
+    
     public function index(Request $request)
     {
         if (!auth()->user()->can('ac_access')) {

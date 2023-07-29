@@ -1780,13 +1780,13 @@
                                     <p class="sub-menu-group-title">{{ __("Account Management") }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.banks.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('banks.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-university"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.bank')</p>
+                                                <p class="switch_text">{{ __("Banks") }}</p>
                                             </a>
                                         </div>
 

@@ -789,13 +789,13 @@ Route::group(['prefix' => 'expenses'], function () {
 
 Route::group(['prefix' => 'accounting'], function () {
 
-    Route::group(['prefix' => 'banks'], function () {
-        Route::get('/', [BankController::class, 'index'])->name('accounting.banks.index');
-        Route::post('store', [BankController::class, 'store'])->name('accounting.banks.store');
-        Route::get('edit/{id}', [BankController::class, 'edit'])->name('accounting.banks.edit');
-        Route::post('update/{id}', [BankController::class, 'update'])->name('accounting.banks.update');
-        Route::delete('delete/{id}', [BankController::class, 'delete'])->name('accounting.banks.delete');
-    });
+    // Route::group(['prefix' => 'banks'], function () {
+    //     Route::get('/', [BankController::class, 'index'])->name('accounting.banks.index');
+    //     Route::post('store', [BankController::class, 'store'])->name('accounting.banks.store');
+    //     Route::get('edit/{id}', [BankController::class, 'edit'])->name('accounting.banks.edit');
+    //     Route::post('update/{id}', [BankController::class, 'update'])->name('accounting.banks.update');
+    //     Route::delete('delete/{id}', [BankController::class, 'delete'])->name('accounting.banks.delete');
+    // });
 
     Route::group(['prefix' => 'accounts'], function () {
 

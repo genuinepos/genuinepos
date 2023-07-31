@@ -531,12 +531,14 @@
                             $('#e_discount').val(parseFloat(0).toFixed(2));
                             $('#e_discount_type').val(1);
                             $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-                            $('#e_tax_type').val(parseFloat(product.tax_type).toFixed(2));
+                            $('#e_tax_type').val(product.tax_type);
                             $('#e_tax_percent').val(tax_percent);
                             $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
                             $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
                             $('#e_lot_number').val('');
                             $('#e_has_batch_no_expire_date').val(product.has_batch_no_expire_date);
+
+                            console.log(product.tax_type);
 
                             if (product.has_batch_no_expire_date == 1) {
 
@@ -616,7 +618,7 @@
                         $('#e_discount_type').val(1);
                         $('#e_showing_discount').val(parseFloat(0).toFixed(2));
                         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-                        $('#e_tax_type').val(parseFloat(variant.product.tax_type).toFixed(2));
+                        $('#e_tax_type').val(variant.product.tax_type);
                         $('#e_tax_percent').val(tax_percent);
                         $('#e_profit_margin').val(parseFloat(variant.variant_profit).toFixed(2));
                         $('#e_selling_price').val(parseFloat(variant.variant_price).toFixed(2));
@@ -1009,7 +1011,6 @@
         $('#e_description').val('');
         $('#add_item').html('Add');
         $('.batch_no_expire_date_fields').addClass('d-none');
-
     }
 
     // Quantity increase or dicrease and clculate row amount

@@ -121,7 +121,7 @@
                             $('#e_discount').val(parseFloat(0).toFixed(2));
                             $('#e_discount_type').val(1);
                             $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-                            $('#e_tax_type').val(parseFloat(product.tax_type).toFixed(2));
+                            $('#e_tax_type').val(product.tax_type);
                             $('#e_tax_percent').val(product.tax_percent);
                             $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
                             $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
@@ -205,7 +205,7 @@
                         $('#e_discount_type').val(1);
                         $('#e_showing_discount').val(parseFloat(0).toFixed(2));
                         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-                        $('#e_tax_type').val(parseFloat(variant.product.tax_type).toFixed(2));
+                        $('#e_tax_type').val(variant.product.tax_type);
                         $('#e_tax_percent').val(variant.product.tax_percent);
                         $('#e_profit_margin').val(parseFloat(variant.variant_profit).toFixed(2));
                         $('#e_selling_price').val(parseFloat(variant.variant_price).toFixed(2));

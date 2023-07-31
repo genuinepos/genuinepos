@@ -110,6 +110,8 @@
                             var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
                             var unique_id = product.id+'noid';
 
+                            var tax_percent = product.tax != null ? product.tax.tax_percent : parseFloat(0).toFixed(2);
+
                             $('#search_product').val(name);
                             $('#e_unique_id').val(unique_id);
                             $('#e_item_name').val(name);
@@ -122,7 +124,7 @@
                             $('#e_discount_type').val(1);
                             $('#e_discount_amount').val(parseFloat(0).toFixed(2));
                             $('#e_tax_type').val(product.tax_type);
-                            $('#e_tax_percent').val(product.tax_percent);
+                            $('#e_tax_percent').val(tax_percent);
                             $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
                             $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
                             $('#e_lot_number').val('');
@@ -150,7 +152,7 @@
                             $.each(product.product_variants, function(key, variant){
 
                                 li += '<li>';
-                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-v_name="'+variant.variant_name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-unit_name="'+product.unit_name+'" data-tax_percent="'+(product.tex_percent != null ? product.tex_percent : '')+'" data-tax_type="'+product.tax_type+'" data-p_code="'+variant.variant_code+'" data-p_cost_exc_tax="'+variant.variant_cost+'" data-p_profit="'+variant.variant_profit+'" data-p_price="'+variant.variant_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+ product.name +'</a>';
+                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-v_name="'+variant.variant_name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-unit_name="'+product.unit_name+'" data-tax_percent="'+(product.tax.tax_percent != null ? product.tax.tax_percent : parseFloat(0).toFixed(2))+'" data-tax_type="'+product.tax_type+'" data-p_code="'+variant.variant_code+'" data-p_cost_exc_tax="'+variant.variant_cost+'" data-p_profit="'+variant.variant_profit+'" data-p_price="'+variant.variant_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+ product.name +'</a>';
                                 li +='</li>';
                             });
 
@@ -171,12 +173,12 @@
                                 if (product.is_variant == 1) {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-v_name="'+product.variant_name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-unit_name="'+product.unit_name+'" data-tax_percent="'+(product.tax_percent != null ? product.tax_percent : '')+'" data-tax_type="'+product.tax_type+'" data-v_code="'+product.variant_code+'" data-p_cost_exc_tax="'+product.variant_cost+'" data-p_profit="'+product.variant_profit+'" data-p_price="'+product.variant_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+'</a>';
+                                    li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-v_name="'+product.variant_name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-unit_name="'+product.unit_name+'" data-tax_percent="'+(product.tax_percent != null ? product.tax_percent : parseFloat(0).toFixed(2))+'" data-tax_type="'+product.tax_type+'" data-v_code="'+product.variant_code+'" data-p_cost_exc_tax="'+product.variant_cost+'" data-p_profit="'+product.variant_profit+'" data-p_price="'+product.variant_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+'</a>';
                                     li +='</li>';
                                 } else {
 
                                     li += '<li class="mt-1">';
-                                    li += '<a class="select_single_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-unit_name="'+product.unit_name+'" data-tax_percent="'+(product.tax_percent != null ? product.tax_percent : '')+'" data-tax_type="'+product.tax_type+'" data-p_code="'+product.product_code+'" data-p_cost_exc_tax="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> ' + product.name + '</a>';
+                                    li += '<a class="select_single_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-p_name="'+product.name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-unit_name="'+product.unit_name+'" data-tax_percent="'+(product.tax_percent != null ? product.tax_percent : parseFloat(0).toFixed(2))+'" data-tax_type="'+product.tax_type+'" data-p_code="'+product.product_code+'" data-p_cost_exc_tax="'+product.product_cost+'" data-p_profit="'+product.profit+'" data-p_price="'+product.product_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> ' + product.name + '</a>';
                                     li +='</li>';
                                 }
                             });
@@ -191,6 +193,7 @@
                         var variant = product.variant_product;
 
                         var name = variant.product.name.length > 35 ? product.name.substring(0, 35) + '...' : variant.product.name;
+                        var tax_percent = product.tax != null ? product.tax.tax_percent : parseFloat(0).toFixed(2);
 
                         var unique_id = variant.product.id+variant.id;
 
@@ -206,7 +209,7 @@
                         $('#e_showing_discount').val(parseFloat(0).toFixed(2));
                         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
                         $('#e_tax_type').val(variant.product.tax_type);
-                        $('#e_tax_percent').val(variant.product.tax_percent);
+                        $('#e_tax_percent').val(tax_percent);
                         $('#e_profit_margin').val(parseFloat(variant.variant_profit).toFixed(2));
                         $('#e_selling_price').val(parseFloat(variant.variant_price).toFixed(2));
                         $('#e_lot_number').val('');
@@ -492,6 +495,7 @@
             tr.find('#span_tax_percent').html(parseFloat(e_tax_percent).toFixed(2)+'%');
             tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
             tr.find('#unit_tax_amount').val(parseFloat(e_tax_amount).toFixed(2));
+            tr.find('#span_unit_cost_inc_tax').html(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#unit_cost_inc_tax').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#net_unit_cost').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#linetotal').val(parseFloat(e_linetotal).toFixed(2));
@@ -585,7 +589,7 @@
         $('#e_discount').val(parseFloat(0).toFixed(2));
         $('#e_discount_type').val(1);
         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-        $('#e_tax_percent').val(0);
+        $('#e_tax_percent').val(parseFloat(0).toFixed(2));
         $('#e_tax_type').val(1);
         $('#e_tax_amount').val(0);
         $('#e_unit_cost_with_discount').val(parseFloat(0).toFixed(2));

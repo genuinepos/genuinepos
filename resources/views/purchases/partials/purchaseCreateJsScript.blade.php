@@ -542,10 +542,12 @@
 
                                 $('#e_batch_number').prop('readonly', false);
                                 $('#e_expire_date').prop('readonly', false);
+                                $('.batch_no_expire_date_fields').removeClass('d-none');
                             }else {
 
                                 $('#e_batch_number').prop('readonly', true);
                                 $('#e_expire_date').prop('readonly', true);
+                                $('.batch_no_expire_date_fields').addClass('d-none');
                             }
 
                             calculateEditOrAddAmount();
@@ -624,10 +626,12 @@
 
                             $('#e_batch_number').prop('readonly', false);
                             $('#e_expire_date').prop('readonly', false);
+                            $('.batch_no_expire_date_fields').removeClass('d-none');
                         }else {
 
                             $('#e_batch_number').prop('readonly', true);
                             $('#e_expire_date').prop('readonly', true);
+                            $('.batch_no_expire_date_fields').addClass('d-none');
                         }
 
                         calculateEditOrAddAmount();
@@ -1004,6 +1008,8 @@
         $('#e_expire_date').val('');
         $('#e_description').val('');
         $('#add_item').html('Add');
+        $('.batch_no_expire_date_fields').addClass('d-none');
+
     }
 
     // Quantity increase or dicrease and clculate row amount

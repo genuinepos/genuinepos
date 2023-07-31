@@ -132,10 +132,12 @@
 
                                 $('#e_batch_number').prop('readonly', false);
                                 $('#e_expire_date').prop('readonly', false);
+                                $('.batch_no_expire_date_fields').remove('d-none');
                             }else {
 
                                 $('#e_batch_number').prop('readonly', true);
                                 $('#e_expire_date').prop('readonly', true);
+                                $('.batch_no_expire_date_fields').addClass('d-none');
                             }
 
                             calculateEditOrAddAmount();
@@ -213,10 +215,12 @@
 
                             $('#e_batch_number').prop('readonly', false);
                             $('#e_expire_date').prop('readonly', false);
+                            $('.batch_no_expire_date_fields').addClass('d-none');
                         }else {
 
                             $('#e_batch_number').prop('readonly', true);
                             $('#e_expire_date').prop('readonly', true);
+                            $('.batch_no_expire_date_fields').addClass('d-none');
                         }
 
                         calculateEditOrAddAmount();

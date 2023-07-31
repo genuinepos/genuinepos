@@ -994,7 +994,7 @@
         $('#e_discount').val(parseFloat(0).toFixed(2));
         $('#e_discount_type').val(1);
         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-        $('#e_tax_percent').val('');
+        $('#e_tax_percent').val(0);
         $('#e_tax_type').val(1);
         $('#e_tax_amount').val(0);
         $('#e_unit_cost_with_discount').val(parseFloat(0).toFixed(2));

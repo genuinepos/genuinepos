@@ -488,7 +488,6 @@
             tr.find('#span_discount_amount').html(parseFloat(e_discount_amount).toFixed(2));
             tr.find('#unit_cost_with_discount').val(parseFloat(e_unit_cost_with_discount).toFixed(2));
             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
-            tr.find('#tax_ac_id').val(e_tax_ac_id);
             tr.find('#tax_type').val(e_tax_type);
             tr.find('#span_tax_percent').html(parseFloat(e_tax_percent).toFixed(2)+'%');
             tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
@@ -586,7 +585,7 @@
         $('#e_discount').val(parseFloat(0).toFixed(2));
         $('#e_discount_type').val(1);
         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-        $('#e_tax_percent').val('');
+        $('#e_tax_percent').val(0);
         $('#e_tax_type').val(1);
         $('#e_tax_amount').val(0);
         $('#e_unit_cost_with_discount').val(parseFloat(0).toFixed(2));

@@ -613,7 +613,7 @@ class POSController extends Controller
 
         if ($request->action == 1) {
 
-            if ($request->received_amount < $request->current_receivable && !$updateSale->customer_id) {
+            if ($request->received_amount < $request->current_receivable && ! $updateSale->customer_id) {
 
                 return response()->json(['errorMsg' => 'Listed Customer is required when sale is credit or partial receive.']);
             }
@@ -1063,11 +1063,11 @@ class POSController extends Controller
 
             if (
                 $request->total_due > 0 &&
-                $updateSale->customer_id == NULL
+                $updateSale->customer_id == null
             ) {
 
                 return response()->json([
-                    'errorMsg' => 'Listed Customer is required when exchange is due or partial.'
+                    'errorMsg' => 'Listed Customer is required when exchange is due or partial.',
                 ]);
             }
 
@@ -1138,7 +1138,7 @@ class POSController extends Controller
             $index = 0;
             foreach ($product_ids as $product_id) {
 
-                $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
                 $saleProduct = SaleProduct::where('sale_id', $request->ex_sale_id)
                     ->where('product_id', $product_id)->where('product_variant_id', $variant_id)->first();
 
@@ -1212,13 +1212,13 @@ class POSController extends Controller
                     receiptVoucherPrefix: $receiptVoucherPrefix,
                     receivedAmount: $receivedAmount,
                     saleId: $updateSale->id,
-                    customerPaymentId: NULL,
+                    customerPaymentId: null,
                     paymentMethodId: $request->payment_method_id,
                     accountId: $request->account_id,
                     invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil,
                     date: date('Y-m-d'),
                     note: $request->payment_note,
-                    attachment: NULL,
+                    attachment: null,
                 );
 
                 if ($updateSale->customer_id) {
@@ -1234,13 +1234,12 @@ class POSController extends Controller
                 }
             }
 
-
             $sale = Sale::with([
                 'customer',
                 'branch',
                 'sale_products',
                 'sale_products.product',
-                'sale_products.variant'
+                'sale_products.variant',
             ])->where('id', $request->ex_sale_id)->first();
 
             $this->saleUtil->adjustSaleInvoiceAmounts($sale);

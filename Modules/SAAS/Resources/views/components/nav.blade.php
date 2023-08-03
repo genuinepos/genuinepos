@@ -20,13 +20,13 @@
                 @auth
 
                     <li class="nav-item dropdown  float-end">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownShop" role="button"
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBusiness" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ __('Shops') }}
+                            {{ __('Businesss') }}
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownShop">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownBusiness">
                             {{-- @can('tenants_index') --}}
-                            <li><a class="dropdown-item" href="{{ route('saas.tenants.index') }}">{{ __('All Shops') }}</a>
+                            <li><a class="dropdown-item" href="{{ route('saas.tenants.index') }}">{{ __('All Businesss') }}</a>
                             </li>
                             {{-- @endcan --}}
                             {{-- @can('tenants_create') --}}
@@ -37,6 +37,7 @@
                     </li>
                 @endauth
             </ul>
+            <form class="d-flex">
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="{{ __('Search') }}" aria-label="Search">
                 <button class="btn btn-success" type="submit">{{ __('Search') }}</button>

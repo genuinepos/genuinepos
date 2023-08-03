@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'domain' => (string) env('APP_DOMAIN', 'pos.test'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

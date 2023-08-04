@@ -35,7 +35,7 @@ class AccountController extends Controller
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
     }
-    
+
     public function index(Request $request)
     {
         if (!auth()->user()->can('ac_access')) {
@@ -95,8 +95,7 @@ class AccountController extends Controller
 
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a id="edit" class="dropdown-item" href="' . route('accounting.accounts.edit', [$row->id]) . '" ><i class="far fa-edit text-primary"></i> Edit</a>';
                     $html .= '<a class="dropdown-item" href="' . route('accounting.accounts.book', [$row->id]) . '"><i class="fas fa-book text-primary"></i> Account Book</a>';
@@ -107,19 +106,12 @@ class AccountController extends Controller
                 })
 
                 ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
-
-                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
-
+                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'Not Applicable')
                 ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
-
                 ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__shop_name']) . '</b>')
-
                 ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
-
                 ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
-
                 ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])
-
                 ->make(true);
         }
 
@@ -293,7 +285,7 @@ class AccountController extends Controller
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
-                "business_location"    => "required|array",
+                "business_location" => "required|array",
                 "business_location.*"  => "required",
             ]);
         }
@@ -314,7 +306,7 @@ class AccountController extends Controller
 
         if ($request->account_type == 2) {
 
-            foreach($request->business_location as $branch_id) {
+            foreach ($request->business_location as $branch_id) {
 
                 AccountBranch::insert(
                     [

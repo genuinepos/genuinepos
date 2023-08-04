@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Accounts\BankController;
+use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AccountGroupController;
 
 Route::group(['prefix' => 'accounting'], function () {
@@ -24,16 +25,18 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('edit/{id}', 'edit')->name('account.groups.edit');
         Route::post('update/{id}', 'update')->name('account.groups.update');
         Route::delete('delete/{id}', 'delete')->name('account.groups.delete');
+        Route::get('account/groups/branch/wise', 'accountGroupBranchWise')->name('account.groups.branch.wise');
     });
 
-    Route::controller(AccountGroupController::class)->prefix('accounts')->group(function () {
+    Route::controller(AccountController::class)->prefix('accounts')->group(function () {
 
         Route::get('/', 'index')->name('accounts.index');
-        Route::get('account/book/{accountId}', [AccountController::class, 'ledger'])->name('accounts.ledger');
-        Route::get('account/ledger/print/{accountId}', [AccountController::class, 'ledgerPrint'])->name('accounts.ledger.print');
-        Route::post('store', [AccountController::class, 'store'])->name('accounts.store');
-        Route::get('edit/{id}', [AccountController::class, 'edit'])->name('accounts.edit');
-        Route::post('update/{id}', [AccountController::class, 'update'])->name('accounts.update');
-        Route::delete('delete/{accountId}', [AccountController::class, 'delete'])->name('accounts.delete');
+        Route::get('create', 'create')->name('accounts.create');
+        Route::get('ledger/{accountId}', 'ledger')->name('accounts.ledger');
+        Route::get('ledger/print/{accountId}', 'ledgerPrint')->name('accounts.ledger.print');
+        Route::post('store', 'store')->name('accounts.store');
+        Route::get('edit/{id}','edit')->name('accounts.edit');
+        Route::post('update/{id}', 'update')->name('accounts.update');
+        Route::delete('delete/{accountId}', 'delete')->name('accounts.delete');
     });
 });

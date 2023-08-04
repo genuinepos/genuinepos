@@ -80,6 +80,9 @@
 
     $(document).on('select2:open', () => {
 
-        document.querySelector('.select2-search__field').focus();
+        if ($('.select2-search--dropdown .select2-search__field').length > 0) {
+            
+            document.querySelector('.select2-search--dropdown .select2-search__field').focus();
+        }
     });
 </script>

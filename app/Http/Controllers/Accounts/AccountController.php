@@ -2,11 +2,34 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use App\Http\Controllers\Controller;
+use App\Enums\ContactType;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\BankService;
+use App\Services\CodeGenerationService;
+use App\Services\Accounts\AccountService;
+use App\Services\Contacts\ContactService;
+use App\Services\Accounts\AccountGroupService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Accounts\BankAccessBranchService;
+use App\Services\Contacts\ContactOpeningBalanceService;
 
 class AccountController extends Controller
 {
+    public function __construct(
+        private AccountService $accountService,
+        private BankService $bankService,
+        private AccountGroupService $accountGroupService,
+        private ContactService $contactService,
+        private ContactOpeningBalanceService $contactOpeningBalanceService,
+        private AccountLedgerService $accountLedgerService,
+        private BankAccessBranchService $bankAccessBranchService,
+        private UserActivityLogUtil $userActivityLogUtil
+    ) {
+    }
+
     public function index(Request $request)
     {
         if (!auth()->user()->can('ac_access')) {
@@ -16,86 +39,152 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
+            return $this->accountService->accountListTable($request);
+        }
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
+        return view('accounting.accounts.index', compact('branches'));
+    }
+
+    public function create()
+    {
+        if (!auth()->user()->can('ac_access')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $groups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->orWhere('is_global', 1)->get();
+        $banks = $this->bankService->banks()->get();
+
+        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
+        return view('accounting.accounts.ajax_view.create', compact('groups', 'banks', 'branches'));
+    }
+
+    public function store(Request $request, CodeGenerationService $codeGenerator)
+    {
+        if (!auth()->user()->can('ac_access')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $this->validate($request, [
+            'name' => 'required',
+            'account_group_id' => 'required',
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
             $generalSettings = config('generalSettings');
-            $accounts = '';
-            $query = DB::table('account_branches')
-                ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-                ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
-                ->leftJoin('branches', 'account_branches.branch_id', 'branches.id');
+            $accountStartDate = $generalSettings['business__start_date'];
+            $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
+            $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
 
-            if ($request->branch_id) {
+            $accountGroup = $this->accountGroupService->singleAccountGroup(id: $request->account_group_id);
 
-                if ($request->branch_id == 'NULL') {
+            $addAccount = $this->accountService->addAccount(
+                name: $request->name,
+                accountGroupId: $request->account_group_id,
+                accountNumber: $request->account_number,
+                bankId: $request->bank_id,
+                bankAddress: $request->bank_address,
+                bankCode: $request->bank_code,
+                swiftCode: $request->swift_code,
+                bankBranch: $request->bank_branch,
+                taxPercent: $request->tax_percent,
+                openingBalance: $request->opening_balance,
+                openingBalanceType: $request->opening_balance_type,
+                remarks: $request->remarks,
+            );
 
-                    $query->where('account_branches.branch_id', NULL);
-                } else {
+            if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 11) {
 
-                    $query->where('account_branches.branch_id', $request->branch_id);
+                if (isset($request->branch_count) && count($request->branch_ids) > 0) {
+
+                    $this->bankAccessBranchService->addBankAccessBranch(bankAccountId: $addAccount->id, branchIds: $request->branch_ids);
                 }
             }
 
-            if ($request->account_type) {
+            if ($accountGroup->sub_sub_group_number == 6) {
 
-                $query = $query->where('accounts.account_type', $request->account_type);
+                $addAccount->phone = $request->customer_phone_no;
+                $addAccount->address = $request->customer_address;
+
+                $addContact = $this->contactService->addContact(type: ContactType::Customer->value, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $request->name, phone: $request->customer_phone_no, address: $request->customer_address, creditLimit: $request->credit_limit);
+
+                $addAccount->contact_id = $addContact->id;
+                $addAccount->save();
             }
 
-            $query->select(
-                'accounts.id',
-                'accounts.name',
-                'accounts.account_number',
-                'accounts.opening_balance',
-                'accounts.balance',
-                'accounts.account_type',
-                'banks.name as b_name',
-                'banks.branch_name as b_branch',
-                'branches.name as branch_name',
-                'branches.branch_code',
+            if ($accountGroup->sub_sub_group_number == 10) {
+
+                $addAccount->phone = $request->supplier_phone_no;
+                $addAccount->address = $request->supplier_address;
+
+                $addContact = $this->contactService->addContact(type: ContactType::Supplier->value, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $request->name, phone: $request->supplier_phone_no, address: $request->supplier_address);
+                $addAccount->contact_id = $addContact->id;
+                $addAccount->save();
+
+                $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+            }
+
+            $this->accountLedgerService->addAccountLedgerEntry(
+                voucher_type_id: 0,
+                date: $accountStartDate,
+                account_id: $addAccount->id,
+                trans_id: $addAccount->id,
+                amount: $request->opening_balance ? $request->opening_balance : 0,
+                amount_type: $request->opening_balance_type == 'dr' ? 'debit' : 'credit',
             );
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+            DB::commit();
+        } catch (Exception $e) {
 
-                $accounts = $query->orderBy('accounts.account_type', 'asc');
-            } else {
-
-                $accounts = $query->where('account_branches.branch_id', auth()->user()->branch_id)
-                    ->orderBy('accounts.account_type', 'asc');
-            }
-
-            return DataTables::of($accounts)
-                ->addIndexColumn()
-
-                ->addColumn('action', function ($row) {
-                    $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a id="editAccount" class="dropdown-item" href="' . route('accounts.edit', [$row->id]) . '" > '. __("Edit") .'</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('accounts.ledgers', [$row->id]) . '">'.__('Ledger').'</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('accounts.delete', [$row->id]) . '" id="delete">' . __("Delete") . '</a>';
-                    $html .= '</div>';
-                    $html .= '</div>';
-                    return $html;
-                })
-
-                ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
-
-                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
-
-                ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
-
-                ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__shop_name']) . '</b>')
-
-                ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
-
-                ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
-
-                ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])
-
-                ->make(true);
+            DB::rollBack();
         }
 
-        $banks = DB::table('banks')->get();
+        return $addAccount;
+    }
+
+    public function edit($accountId)
+    {
+        $account = $this->accountService->singleAccountById(id: $accountId, with: ['group', 'bankAccessBranches', 'openingBalance']);
+        $groups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->orWhere('is_global', 1)->get();
+        $banks = $this->bankService->banks()->get();
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        return view('accounting.accounts.index', compact('banks', 'branches'));
+
+        return view('accounting.accounts.ajax_view.edit', compact('account', 'groups', 'banks', 'branches'));
+    }
+
+    public function delete(Request $request, $accountId)
+    {
+        if (!auth()->user()->can('ac_access')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $deleteAccount = $this->accountService->deleteAccount($accountId);
+
+            if ($deleteAccount['success'] == false) {
+
+                return response()->json(['errorMsg' => $deleteAccount['msg']]);
+            }
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 17, data_obj: $deleteAccount);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json($deleteAccount['msg']);
     }
 }

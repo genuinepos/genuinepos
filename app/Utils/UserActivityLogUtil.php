@@ -286,13 +286,14 @@ class UserActivityLogUtil
                     'name',
                     'account_number',
                     'opening_balance',
-                    'balance',
+                    'opening_balance_type',
+
                 ],
                 'texts' => [
                     'Account Name : ',
                     'Account Number : ',
                     'Opening Balance : ',
-                    'Balance : ',
+                    'Opening Balance Type : ',
                 ]
             ],
             18 => [ // User login
@@ -432,11 +433,8 @@ class UserActivityLogUtil
 
     public function addLog($action, $subject_type, $data_obj, $branch_id = NULL, $user_id = NULL)
     {
-
         $generalSettings = config('generalSettings');
-
         $dateFormat = $generalSettings['business__date_format'];
-
         $__dateFormat = str_replace('y', 'Y', $dateFormat);
 
         $descriptionModel = $this->descriptionModel();

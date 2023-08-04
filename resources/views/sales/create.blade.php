@@ -466,9 +466,8 @@
                                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
                                                                     $bank = $account->bank ? ', BK : '.$account->bank : '';
                                                                     $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                                                    $balance = ', BL : '.$account->balance;
                                                                 @endphp
-                                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                                                {{ $account->name.$accountType.$bank.$ac_no }}
                                                             </option>
                                                         @endforeach
                                                     </select>

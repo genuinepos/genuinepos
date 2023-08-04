@@ -19,12 +19,12 @@ class ContactOpeningBalanceService
         $addCustomerOpeningBalance->save();
     }
 
-    function updateContactOpeningBalance($contact, $openingBalance, $openingBalanceType) {
+    function updateContactOpeningBalance($contactOpeningBalance, $openingBalance, $openingBalanceType) {
 
-        $contact->amount = $openingBalance ? $openingBalance : 0;
-        $contact->amount_type = $openingBalanceType;
-        $contact->save();
+        $contactOpeningBalance->amount = $openingBalance ? $openingBalance : 0;
+        $contactOpeningBalance->amount_type = $openingBalanceType;
+        $contactOpeningBalance->save();
 
-        return $contact;
+        return $contactOpeningBalance;
     }
 }

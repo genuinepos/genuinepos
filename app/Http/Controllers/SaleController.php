@@ -227,7 +227,6 @@ class SaleController extends Controller
                 'accounts.name',
                 'accounts.account_number',
                 'accounts.account_type',
-                'accounts.balance',
                 'banks.name as bank'
             )->get();
 
@@ -269,14 +268,13 @@ class SaleController extends Controller
             'sale_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'sale_account_id.required' => 'Sale A/C is required',
-            'account_id.required' => 'Debit A/C is required',
+            'sale_account_id.required' => 'Sale A/c is required',
+            'account_id.required' => 'Debit A/c is required',
         ]);
 
         try {
 
             DB::beginTransaction();
-            // database queries here. Access any $var_N directly
 
             $generalSettings = config('generalSettings');
 
@@ -318,7 +316,6 @@ class SaleController extends Controller
             }
 
             $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
-
             $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
             $branchInvoiceSchema = DB::table('branches')

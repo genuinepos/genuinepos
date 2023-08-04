@@ -84,6 +84,11 @@ class AccountGroupController extends Controller
         return response()->json(__('Account Group Updated Successfully'));
     }
 
+    public function accountGroupBranchWise(Request $request) {
+
+        return $this->accountGroupService->accountGroups($request)->select('id', 'name')->where('is_main_group', 0)->orWhere('is_global', 1)->get();
+    }
+
     public function delete(Request $request, $id)
     {
         try {

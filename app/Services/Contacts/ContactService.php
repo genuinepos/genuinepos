@@ -7,7 +7,7 @@ use App\Models\Contacts\Contact;
 
 class ContactService
 {
-    function addContact($type, $codeGenerator, $contactIdPrefix, $name, $phone, $businessName, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType)
+    function addContact($type, $codeGenerator, $contactIdPrefix, $name, $phone, $businessName = null, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType = 'dr')
     {
         $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4);
 
@@ -44,7 +44,7 @@ class ContactService
         return $addContact;
     }
 
-    function updateContact($contactId, $type, $name, $phone, $businessName, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType)
+    function updateContact($contactId, $type, $name, $phone, $businessName = null, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType = 'dr')
     {
         $updateContact = Contact::with('openingBalance')->where('id', $contactId)->first();
         $updateContact->type = $type;

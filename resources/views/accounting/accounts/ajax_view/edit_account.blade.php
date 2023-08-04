@@ -1,16 +1,14 @@
-<form id="edit_account_form" action="{{ route('accounting.accounts.update', $account->id) }}" method="POST">
+span<form id="edit_account_form" action="{{ route('accounting.accounts.update', $account->id) }}" method="POST">
     @csrf
     <div class="form-group">
         <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
-        <input type="text" name="name" class="form-control edit_input" data-name="Type name" id="e_name"
-            placeholder="@lang('menu.account_name')" value="{{ $account->name }}"/>
+        <input type="text" name="name" class="form-control edit_input" data-name="Type name" id="e_name" placeholder="@lang('menu.account_name')" value="{{ $account->name }}" />
         <span class="error error_e_name"></span>
     </div>
 
     <div class="form-group mt-1">
         <label><strong>@lang('menu.account_types') <span class="text-danger">*</span></strong></label>
-        <select name="account_type" class="form-control edit_input" data-name="Account Type"
-            id="e_account_type">
+        <select name="account_type" class="form-control edit_input" data-name="Account Type" id="e_account_type">
             <option value="">@lang('menu.select_account_type')</option>
             @foreach (App\Utils\Util::allAccountTypes() as $key => $accountType)
                 <option {{ $key == $account->account_type ? 'SELECTED' : '' }} value="{{ $key }}">
@@ -39,8 +37,7 @@
 
             <div class="col-md-12">
                 <label><strong>@lang('menu.account_number') </strong><span class="text-danger">*</span></label>
-                <input type="text" name="account_number" class="form-control edit_input"
-                    data-name="Account Number" id="e_account_number" placeholder="@lang('menu.account_number')" value="{{ $account->account_number }}"/>
+                <input type="text" name="account_number" class="form-control edit_input" data-name="Account Number" id="e_account_number" placeholder="@lang('menu.account_number')" value="{{ $account->account_number }}" />
                 <span class="error error_e_account_number"></span>
             </div>
 
@@ -52,13 +49,9 @@
                     </option>
 
                     @foreach ($branches as $branch)
-                        <option
-                            @foreach ($account->accountBranches as $acBranch)
-                                {{ $acBranch->branch_id == $branch->id ? 'SELECTED' : '' }}
-                            @endforeach
-                            value="{{ $branch->id }}"
-                        >
-                            {{ $branch->name.'/'.$branch->branch_code }}
+                        <option @foreach ($account->accountBranches as $acBranch)
+                                {{ $acBranch->branch_id == $branch->id ? 'SELECTED' : '' }} @endforeach value="{{ $branch->id }}">
+                            {{ $branch->name . '/' . $branch->branch_code }}
                         </option>
                     @endforeach
                 </select>
@@ -69,19 +62,17 @@
 
     <div class="form-group mt-1">
         <label><strong>@lang('menu.opening_balance') </strong></label>
-        <input type="number" step="any" name="opening_balance" class="form-control"
-            id="e_opening_balance" value="{{ $account->opening_balance }}"/>
+        <input type="number" step="any" name="opening_balance" class="form-control" id="e_opening_balance" value="{{ $account->opening_balance }}" />
     </div>
 
     <div class="form-group mt-1">
         <label><strong>@lang('menu.remarks') </strong></label>
-        <input type="text" name="remark" class="form-control" data-name="Remark" id="e_remarks" value="{{ $account->remark }}"/>
+        <input type="text" name="remark" class="form-control" data-name="Remark" id="e_remarks" value="{{ $account->remark }}" />
     </div>
 
     <div class="form-group d-flex justify-content-end text-right py-2">
         <div class="btn-loading">
-            <button type="button" class="btn loading_button d-hide"><i
-                    class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+            <button type="button" class="btn loading_button account_loading_btn d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
             <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
         </div>
@@ -98,7 +89,7 @@
         var account_type = $(this).val();
         if (account_type == 2) {
             $('.e_bank_account_field').show();
-        }else {
+        } else {
             $('.e_bank_account_field').hide();
         }
     });
@@ -106,7 +97,7 @@
     // edit account type by ajax
     $('#edit_account_form').on('submit', function(e) {
         e.preventDefault();
-        $('.loading_button').show();
+        $('.account_loading_btn').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
@@ -116,10 +107,11 @@
             data: request,
             success: function(data) {
                 toastr.success(data);
-                $('.loading_button').hide();
+                $('.account_loading_btn').hide();
                 accounts_table.ajax.reload();
                 $('#editModal').modal('hide');
-            },error: function(err) {
+            },
+            error: function(err) {
                 $('.loading_button').hide();
                 $('.error').html('');
 

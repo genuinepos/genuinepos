@@ -145,15 +145,19 @@
                                 <div class="col-md-12 mt-1">
                                     <label><strong>@lang('menu.opening_balance') </strong></label>
                                     <div class="input-group">
-                                        <input type="number" step="any" name="opening_balance" class="form-control fw-bold" id="contact_opening_balance" value="{{ $contact?->openingBalance?->amount }}" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')"/>
+                                        @php
+                                            $openingBalanceAmount = $contact?->openingBalance ? $contact?->openingBalance?->amount : $contact?->opening_balance;
+                                            $openingBalanceType = $contact?->openingBalance ? $contact?->openingBalance?->amount_type : $contact?->opening_balance_type;
+                                        @endphp
+                                        <input type="number" step="any" name="opening_balance" class="form-control fw-bold" id="contact_opening_balance" value="{{ $openingBalanceAmount }}" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')"/>
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_changes_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}
                                                 </option>
-                                                <option {{ $contact?->openingBalance?->amount_type == 'cr' ? 'SELECTED' : '' }} value="cr">{{ __('(-) Credit') }}</option>
+                                                <option {{ $openingBalanceType == 'cr' ? 'SELECTED' : '' }} value="cr">{{ __('(-) Credit') }}</option>
                                             @else
                                                 <option value="cr">{{ __('(+) Credit') }}</option>
-                                                <option {{ $contact?->openingBalance?->amount_type == 'dr' ? 'SELECTED' : '' }} value="dr">{{ __('(-) Debit') }}</option>
+                                                <option {{ $openingBalanceType == 'dr' ? 'SELECTED' : '' }} value="dr">{{ __('(-) Debit') }}</option>
                                             @endif
                                         </select>
                                     </div>

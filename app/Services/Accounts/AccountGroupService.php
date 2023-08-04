@@ -44,7 +44,7 @@ class AccountGroupService
 
         $addGroup = new AccountGroup();
         $addGroup->name = $request->name;
-        $addGroup->branch_id = auth()->user()->branch_id;
+        $addGroup->branch_id = $parentGroup->is_global == 0 ? auth()->user()->branch_id : null;
         $addGroup->parent_group_id = $request->parent_group_id;
         $addGroup->is_default_tax_calculator = $request->is_default_tax_calculator;
         $addGroup->is_allowed_bank_details = $request->is_allowed_bank_details;
@@ -84,6 +84,7 @@ class AccountGroupService
             $updateGroup->sub_group_name = $parentGroup->sub_group_name;
             $updateGroup->sub_sub_group_name = $parentGroup->sub_sub_group_name;
             $updateGroup->default_balance_type = $parentGroup->default_balance_type;
+            $updateGroup->is_global = $parentGroup->is_global;
         }
 
         $updateGroup->save();
@@ -111,7 +112,6 @@ class AccountGroupService
 
     public function singleAccountGroup(int $id, array $with = null)
     {
-
         $query = AccountGroup::query();
 
         if (isset($with)) {
@@ -120,5 +120,17 @@ class AccountGroupService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function singleAccountGroupByAnyCondition(array $with = null)
+    {
+        $query = AccountGroup::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 }

@@ -3,8 +3,8 @@
 namespace Modules\SAAS\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Modules\SAAS\Entities\Tenant;
+use Illuminate\Support\Facades\Artisan;
 
 class BackupCommand extends Command
 {

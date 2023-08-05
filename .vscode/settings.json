@@ -5,6 +5,7 @@
         "Dispatchable",
         "Queueable",
         "Spatie",
+        "Stancl",
         "superadmin"
     ],
     "files.exclude": {

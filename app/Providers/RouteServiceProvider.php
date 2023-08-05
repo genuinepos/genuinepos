@@ -6,7 +6,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -42,28 +41,12 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapWebRoutes()
     {
-        foreach ($this->centralDomains() as $domain) {
-            Route::middleware('web')
-                ->domain($domain)
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-        }
+        // Use "routes/web.php" file to register new web route files.
     }
 
     protected function mapApiRoutes()
     {
-        foreach ($this->centralDomains() as $domain) {
-            Route::prefix('api')
-                ->domain($domain)
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
-        }
-    }
-
-    protected function centralDomains(): array
-    {
-        return config('tenancy.central_domains');
+        // Use "routes/api.php" file to register new api route files.
     }
 
     /**

@@ -105,7 +105,6 @@ class TenancyServiceProvider extends ServiceProvider
     {
         $this->bootEvents();
         $this->mapRoutes();
-
         $this->makeTenancyMiddlewareHighestPriority();
 
     }
@@ -117,7 +116,6 @@ class TenancyServiceProvider extends ServiceProvider
                 if ($listener instanceof JobPipeline) {
                     $listener = $listener->toListener();
                 }
-
                 Event::listen($event, $listener);
             }
         }
@@ -125,10 +123,7 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function mapRoutes()
     {
-        if (file_exists(base_path('routes/tenant.php'))) {
-            Route::namespace(static::$controllerNamespace)
-                ->group(base_path('routes/tenant.php'));
-        }
+        Route::namespace(static::$controllerNamespace)->group(base_path('routes/web.php'));
     }
 
     protected function makeTenancyMiddlewareHighestPriority()

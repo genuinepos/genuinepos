@@ -99,4 +99,25 @@
 
     var windowHeight = $(window).height();
     $('.set-height').height(windowHeight - 304 + 'px');
+
+    $(document).on('click', function(e) {
+
+        if ($(e.target).closest(".select_area").length === 0) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+        }
+    });
+
+    document.onkeyup = function() {
+
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if (e.which == 27) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+            return false;
+        }
+    }
 </script>

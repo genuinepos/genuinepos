@@ -119,6 +119,7 @@ class ProductUtil
             [
                 'products.id',
                 'products.name',
+                'products.product_code',
                 'products.status',
                 'products.is_variant',
                 'products.type',

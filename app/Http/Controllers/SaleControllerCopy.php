@@ -31,7 +31,7 @@ use App\Utils\BranchWiseCustomerAmountUtil;
 use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
 
-class SaleController extends Controller
+class SaleControllerCopy extends Controller
 {
     public function __construct(
         private NameSearchUtil $nameSearchUtil,

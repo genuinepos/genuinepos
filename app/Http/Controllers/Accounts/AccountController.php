@@ -108,27 +108,26 @@ class AccountController extends Controller
                 }
             }
 
-            if ($accountGroup->sub_sub_group_number == 6) {
+            if ($accountGroup->sub_sub_group_number == 6 || $accountGroup->sub_sub_group_number == 10) {
 
-                $addAccount->phone = $request->customer_phone_no;
-                $addAccount->address = $request->customer_address;
+                $contactIdPrefix = $accountGroup->sub_sub_group_number == 6 ? $cusIdPrefix : $supIdPrefix;
+                $contactPhoneNo = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
+                $contactAddress = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
 
-                $addContact = $this->contactService->addContact(type: ContactType::Customer->value, codeGenerator: $codeGenerator, contactIdPrefix: $cusIdPrefix, name: $request->name, phone: $request->customer_phone_no, address: $request->customer_address, creditLimit: $request->credit_limit);
+                $addAccount->phone = $contactPhoneNo;
+                $addAccount->address = $contactAddress;
+
+                $contactType = $accountGroup->sub_sub_group_number == 6 ? ContactType::Customer->value : ContactType::Supplier->value;
+
+                $addContact = $this->contactService->addContact(type: $contactType, codeGenerator: $codeGenerator, contactIdPrefix: $contactIdPrefix, name: $request->name, phone: $contactPhoneNo, address: $contactAddress, creditLimit: $request->credit_limit, openingBalance: ($request->opening_balance ? $request->opening_balance : 0), openingBalanceType: $request->opening_balance_type);
 
                 $addAccount->contact_id = $addContact->id;
                 $addAccount->save();
-            }
 
-            if ($accountGroup->sub_sub_group_number == 10) {
+                if ($contactType == ContactType::Supplier->value) {
 
-                $addAccount->phone = $request->supplier_phone_no;
-                $addAccount->address = $request->supplier_address;
-
-                $addContact = $this->contactService->addContact(type: ContactType::Supplier->value, codeGenerator: $codeGenerator, contactIdPrefix: $supIdPrefix, name: $request->name, phone: $request->supplier_phone_no, address: $request->supplier_address);
-                $addAccount->contact_id = $addContact->id;
-                $addAccount->save();
-
-                $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+                    $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+                }
             }
 
             $this->accountLedgerService->addAccountLedgerEntry(
@@ -157,6 +156,85 @@ class AccountController extends Controller
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
 
         return view('accounting.accounts.ajax_view.edit', compact('account', 'groups', 'banks', 'branches'));
+    }
+
+    public function update(Request $request, $accountId)
+    {
+        if (!auth()->user()->can('ac_access')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $this->validate($request, [
+            'name' => 'required',
+            'account_group_id' => 'required',
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
+            $generalSettings = config('generalSettings');
+            $accountStartDate = $generalSettings['business__start_date'];
+
+            $accountGroup = $this->accountGroupService->singleAccountGroup(id: $request->account_group_id);
+
+            $updateAccount = $this->accountService->updateAccount(
+                accountId: $accountId,
+                name: $request->name,
+                accountGroupId: $request->account_group_id,
+                accountNumber: $request->account_number,
+                bankId: $request->bank_id,
+                bankAddress: $request->bank_address,
+                bankCode: $request->bank_code,
+                swiftCode: $request->swift_code,
+                bankBranch: $request->bank_branch,
+                taxPercent: $request->tax_percent,
+                openingBalance: $request->opening_balance,
+                openingBalanceType: $request->opening_balance_type,
+                remarks: $request->remarks,
+            );
+
+            if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 11) {
+
+                $this->bankAccessBranchService->updateBankAccessBranch(bankAccount: $updateAccount, branchIds: $request->branch_ids);
+            }
+
+            if ($accountGroup->sub_sub_group_number == 6 || $accountGroup->sub_sub_group_number == 10) {
+
+                $contactPhoneNo = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
+                $contactAddress = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
+
+                $updateAccount->phone = $contactPhoneNo;
+                $updateAccount->address = $contactAddress;
+                $updateAccount->save();
+
+                $contactType = $accountGroup->sub_sub_group_number == 6 ? ContactType::Customer->value : ContactType::Supplier->value;
+
+                $updateContact = $this->contactService->updateContact(contactId: $updateAccount->id, type: $contactType, name: $request->name, phone: $contactPhoneNo, address: $contactAddress, creditLimit: $request->credit_limit, openingBalance: ($request->opening_balance ? $request->opening_balance : 0), openingBalanceType: $request->opening_balance_type);
+
+                if ($contactType == ContactType::Supplier->value) {
+
+                    $addContactOpeningBalance = $this->contactOpeningBalanceService->updateContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+                }
+            }
+
+            $this->accountLedgerService->addAccountLedgerEntry(
+                voucher_type_id: 0,
+                date: $accountStartDate,
+                account_id: $addAccount->id,
+                trans_id: $addAccount->id,
+                amount: $request->opening_balance ? $request->opening_balance : 0,
+                amount_type: $request->opening_balance_type == 'dr' ? 'debit' : 'credit',
+            );
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return $addAccount;
     }
 
     public function delete(Request $request, $accountId)

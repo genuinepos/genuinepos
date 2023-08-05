@@ -6,8 +6,8 @@ use App\Interface\FileUploaderServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Modules\Communication\Emails\SendWeeklyPostsEmail;
-use Modules\Communication\Entities\Contact;
-use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\CommunicationContact;
+use Modules\Communication\Entities\CommunicationContactGroup;
 use Modules\Communication\Entities\Email;
 use Modules\Communication\Interface\EmailServiceInterface;
 use Yajra\DataTables\Facades\DataTables;
@@ -82,8 +82,8 @@ class CustomEmailController extends Controller
         }
 
         $mails = Email::all();
-        $groupIds = ContactGroup::pluck('id');
-        $filtered_contact_email = Contact::whereNotNull('email')->whereIn('group_id', $groupIds)->get();
+        $groupIds = CommunicationContactGroup::pluck('id');
+        $filtered_contact_email = CommunicationContact::whereNotNull('email')->whereIn('group_id', $groupIds)->get();
 
         return view('communication::email.index', [
             'mails' => $mails,
@@ -113,7 +113,7 @@ class CustomEmailController extends Controller
 
             foreach ($request->group_id as $ids) {
 
-                $email = Contact::where('contact_group_id', $ids)->get();
+                $email = CommunicationContact::where('contact_group_id', $ids)->get();
                 foreach ($email as $email) {
                     array_push($emailArray, $email->email);
                 }

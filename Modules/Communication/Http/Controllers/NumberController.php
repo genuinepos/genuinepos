@@ -3,15 +3,15 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Communication\Entities\Contact;
-use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\CommunicationContact;
+use Modules\Communication\Entities\CommunicationContactGroup;
 use Yajra\DataTables\Facades\DataTables;
 
 class NumberController extends Controller
 {
     public function index(Request $request)
     {
-        $numbers = Contact::all();
+        $numbers = CommunicationContact::all();
         if ($request->ajax()) {
             return DataTables::of($numbers)
                 ->addIndexColumn()
@@ -35,7 +35,7 @@ class NumberController extends Controller
                 ->smart(true)
                 ->make(true);
         }
-        $groups = ContactGroup::all();
+        $groups = CommunicationContactGroup::all();
 
         return view('communication::contacts.list.index', [
             'groups' => $groups,
@@ -53,7 +53,7 @@ class NumberController extends Controller
             'group_name' => 'required',
         ]);
 
-        $number = new Contact();
+        $number = new CommunicationContact();
 
         $number->phone_number = $request->phone_number;
         $number->email = $request->email;
@@ -68,8 +68,8 @@ class NumberController extends Controller
 
     public function edit(Request $request)
     {
-        $groups = ContactGroup::all();
-        $number = Contact::find($request->id);
+        $groups = CommunicationContactGroup::all();
+        $number = CommunicationContact::find($request->id);
 
         return view('communication::contacts.list.ajax_view_unit.edit_modal_body', compact('number', 'groups'));
     }
@@ -85,7 +85,7 @@ class NumberController extends Controller
             'group_name' => 'required',
         ]);
 
-        $number = Contact::find($request->id);
+        $number = CommunicationContact::find($request->id);
         $number->group_id = $request->group_name;
         $number->name = $request->name;
         $number->phone_number = $request->phone_number;
@@ -100,7 +100,7 @@ class NumberController extends Controller
     public function destroy(Request $request)
     {
 
-        $number = Contact::find($request->id);
+        $number = CommunicationContact::find($request->id);
         $number->delete();
 
         return response()->json('Contacts delete successfully');

@@ -5,9 +5,8 @@ namespace Modules\Communication\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContactGroup extends Model
+class CommunicationContactGroup extends Model
 {
     use HasFactory;
-
-    protected $table = 'contact_groups';
+    protected $table = 'communication_contact_groups';
 }

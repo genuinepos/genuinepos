@@ -3,8 +3,8 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Communication\Entities\Contact;
-use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\CommunicationContact;
+use Modules\Communication\Entities\CommunicationContactGroup;
 use Modules\Communication\Entities\Sms;
 use Modules\Communication\Interface\SmsServiceInterface;
 use Yajra\DataTables\Facades\DataTables;
@@ -65,8 +65,8 @@ class SmsController extends Controller
         }
 
         $sms = Sms::all();
-        $groupIds = ContactGroup::pluck('id');
-        $filtered_contact_numbers = Contact::whereNotNull('phone_number')->whereIn('group_id', $groupIds)->get();
+        $groupIds = CommunicationContactGroup::pluck('id');
+        $filtered_contact_numbers = CommunicationContact::whereNotNull('phone_number')->whereIn('group_id', $groupIds)->get();
 
         return view('communication::sms.index', [
             'sms' => $sms,
@@ -95,7 +95,7 @@ class SmsController extends Controller
 
             foreach ($request->group_id as $ids) {
 
-                $numbers = Contact::where('contact_group_id', $ids)->get();
+                $numbers = CommunicationContact::where('contact_group_id', $ids)->get();
                 foreach ($numbers as $number) {
                     array_push($numbersArray, $number->phone_number);
                 }

@@ -3,15 +3,15 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Communication\Entities\Contact;
-use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\CommunicationContact;
+use Modules\Communication\Entities\CommunicationContactGroup;
 
 class ContactController extends Controller
 {
     public function index(Request $request)
     {
-        $groups = ContactGroup::all();
-        $numbers = Contact::all();
+        $groups = CommunicationContactGroup::all();
+        $numbers = CommunicationContact::all();
 
         return view('communication::contacts.index', compact('groups', 'numbers'));
     }

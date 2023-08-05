@@ -3,14 +3,14 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\CommunicationContactGroup;
 use Yajra\DataTables\Facades\DataTables;
 
 class ContactGroupController extends Controller
 {
     public function index(Request $request)
     {
-        $groups = ContactGroup::all();
+        $groups = CommunicationContactGroup::all();
         if ($request->ajax()) {
             return DataTables::of($groups)
                 ->addIndexColumn()
@@ -43,7 +43,7 @@ class ContactGroupController extends Controller
             'name' => 'required',
         ]);
 
-        $groups = new ContactGroup();
+        $groups = new CommunicationContactGroup();
         $groups->name = $request->name;
         $groups->save();
 
@@ -52,7 +52,7 @@ class ContactGroupController extends Controller
 
     public function edit(Request $request)
     {
-        $groups = ContactGroup::find($request->id);
+        $groups = CommunicationContactGroup::find($request->id);
 
         return view('communication::contacts.type.ajax_view_unit.edit_modal_body', compact('groups'));
     }
@@ -63,7 +63,7 @@ class ContactGroupController extends Controller
             'name' => 'required',
         ]);
 
-        $groups = ContactGroup::find($request->id);
+        $groups = CommunicationContactGroup::find($request->id);
         $groups->name = $request->name;
         $groups->save();
 
@@ -73,7 +73,7 @@ class ContactGroupController extends Controller
     public function destroy(Request $request)
     {
 
-        $groups = ContactGroup::find($request->id);
+        $groups = CommunicationContactGroup::find($request->id);
 
         $groups->delete();
 

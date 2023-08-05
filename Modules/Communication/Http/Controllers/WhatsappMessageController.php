@@ -3,8 +3,8 @@
 namespace Modules\Communication\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Communication\Entities\Contact;
-use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\CommunicationContact;
+use Modules\Communication\Entities\CommunicationContactGroup;
 use Modules\Communication\Entities\WhatsappMessage;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -60,8 +60,8 @@ class WhatsappMessageController extends Controller
 
         $whatsapp = WhatsappMessage::all();
 
-        $groupIds = ContactGroup::pluck('id');
-        $filtered_contact_whatsapp = Contact::whereNotNull('whatsapp_number')->whereIn('group_id', $groupIds)->get();
+        $groupIds = CommunicationContactGroup::pluck('id');
+        $filtered_contact_whatsapp = CommunicationContact::whereNotNull('whatsapp_number')->whereIn('group_id', $groupIds)->get();
 
         return view('communication::whatsapp.index', [
             'whatsapp' => $whatsapp,
@@ -89,7 +89,7 @@ class WhatsappMessageController extends Controller
         if (! empty($request->group_id)) {
 
             foreach ($request->group_id as $id) {
-                $numbers = Contact::where('contact_group_id', $id)->get();
+                $numbers = CommunicationContact::where('contact_group_id', $id)->get();
                 foreach ($numbers as $number) {
                     array_push($numbersArray, $number->phone_number);
                 }

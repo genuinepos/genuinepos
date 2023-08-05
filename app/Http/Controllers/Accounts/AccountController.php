@@ -211,19 +211,19 @@ class AccountController extends Controller
 
                 $contactType = $accountGroup->sub_sub_group_number == 6 ? ContactType::Customer->value : ContactType::Supplier->value;
 
-                $updateContact = $this->contactService->updateContact(contactId: $updateAccount->id, type: $contactType, name: $request->name, phone: $contactPhoneNo, address: $contactAddress, creditLimit: $request->credit_limit, openingBalance: ($request->opening_balance ? $request->opening_balance : 0), openingBalanceType: $request->opening_balance_type);
+                $updateContact = $this->contactService->updateContact(contactId: $updateAccount->contact_id, type: $contactType, name: $request->name, phone: $contactPhoneNo, address: $contactAddress, creditLimit: $request->credit_limit, openingBalance: ($request->opening_balance ? $request->opening_balance : 0), openingBalanceType: $request->opening_balance_type);
 
                 if ($contactType == ContactType::Supplier->value) {
 
-                    $addContactOpeningBalance = $this->contactOpeningBalanceService->updateContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+                    $addContactOpeningBalance = $this->contactOpeningBalanceService->updateContactOpeningBalance(contactOpeningBalance: $updateAccount?->contact->openingBalance, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
                 }
             }
 
-            $this->accountLedgerService->addAccountLedgerEntry(
+            $this->accountLedgerService->updateAccountLedgerEntry(
                 voucher_type_id: 0,
                 date: $accountStartDate,
-                account_id: $addAccount->id,
-                trans_id: $addAccount->id,
+                account_id: $updateAccount->id,
+                trans_id: $updateAccount->id,
                 amount: $request->opening_balance ? $request->opening_balance : 0,
                 amount_type: $request->opening_balance_type == 'dr' ? 'debit' : 'credit',
             );
@@ -234,7 +234,7 @@ class AccountController extends Controller
             DB::rollBack();
         }
 
-        return $addAccount;
+        return response()->json(__('Account updated successfully'));
     }
 
     public function delete(Request $request, $accountId)

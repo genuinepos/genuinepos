@@ -86,7 +86,7 @@ class AccountLedgerService
             $update->account_id = $account_id;
             $update->{$amount_type} = $amount;
             $update->amount_type = $amount_type;
-            $update->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
+            // $update->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
             $update->save();
         } else {
 

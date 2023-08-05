@@ -220,13 +220,7 @@
             success: function(data) {
 
                 $('.account_loading_button').hide();
-                if (!$.isEmptyObject(data.errorMsg)) {
-
-                    toastr.error(data.errorMsg, 'ERROR');
-                    return;
-                }
-
-                toastr.success(data.successMsg);
+                toastr.success(data);
                 $('#accountAddOrEditModal').modal('hide');
                 $('#accountAddOrEditModal').empty();
                 if (typeof lastChartListClass === 'undefined') {

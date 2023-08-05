@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\CashCounter;
-use App\Models\User;
-use App\Models\CashRegisterTransaction;
-use App\Models\BaseModel;
-
 class CashRegister extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function cash_register_transactions()

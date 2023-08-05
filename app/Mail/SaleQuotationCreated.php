@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,11 +16,11 @@ class SaleQuotationCreated extends Mailable
      * Create a new message instance.
      */
     public $sale;
-    public function __construct( $sale )
+
+    public function __construct($sale)
     {
         $this->sale = $sale;
     }
-
 
     /**
      * Get the message envelope.

@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Utils\Converter;
-use Illuminate\Http\Request;
-use App\Utils\ProductStockUtil;
-use Illuminate\Support\Facades\DB;
-use App\Utils\PurchaseSaleChainUtil;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockBranchToBranch;
 use App\Models\TransferStockBranchToBranchProducts;
+use App\Utils\Converter;
+use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseSaleChainUtil;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class ReceiveTransferBranchToBranchController extends Controller
 {
     protected $converter;
+
     protected $productStockUtil;
+
     protected $purchaseSaleChainUtil;
+
     public function __construct(
         Converter $converter,
         ProductStockUtil $productStockUtil,
@@ -25,7 +28,7 @@ class ReceiveTransferBranchToBranchController extends Controller
         $this->converter = $converter;
         $this->productStockUtil = $productStockUtil;
         $this->purchaseSaleChainUtil = $purchaseSaleChainUtil;
-        
+
     }
 
     public function receivableList(Request $request)
@@ -43,7 +46,7 @@ class ReceiveTransferBranchToBranchController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('transfer_stock_branch_to_branches.sender_branch_id', NULL);
+                    $query->where('transfer_stock_branch_to_branches.sender_branch_id', null);
                 } else {
 
                     $query->where('transfer_stock_branch_to_branches.sender_branch_id', $request->branch_id);
@@ -80,11 +83,12 @@ class ReceiveTransferBranchToBranchController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stock.branch.to.branch.receivable.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('transfer.stock.branch.to.branch.ProcessToReceive', [$row->id]) . '"><i class="far fa-eye text-primary"></i> Process To Receive</a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stock.branch.to.branch.receivable.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('transfer.stock.branch.to.branch.ProcessToReceive', [$row->id]).'"><i class="far fa-eye text-primary"></i> Process To Receive</a>';
                     $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
@@ -93,36 +97,36 @@ class ReceiveTransferBranchToBranchController extends Controller
 
                     return date($__date_format, strtotime($row->date));
                 })
-                ->editColumn('sender_branch',  function ($row) use ($generalSettings) {
+                ->editColumn('sender_branch', function ($row) use ($generalSettings) {
 
                     if ($row->sender_branch_name) {
 
-                        return $row->sender_branch_name . '/' . $row->sender_branch_code . '(<b>BL</b>)';
+                        return $row->sender_branch_name.'/'.$row->sender_branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
 
-                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . $this->converter->format_in_bdt($row->total_item) . '</span>')
+                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.$this->converter->format_in_bdt($row->total_item).'</span>')
 
-                ->editColumn('total_send_qty', fn ($row) => '<span class="total_send_qty" data-value="' . $row->total_send_qty . '">' . $this->converter->format_in_bdt($row->total_send_qty) . '</span>')
+                ->editColumn('total_send_qty', fn ($row) => '<span class="total_send_qty" data-value="'.$row->total_send_qty.'">'.$this->converter->format_in_bdt($row->total_send_qty).'</span>')
 
-                ->editColumn('total_received_qty', fn ($row) => '<span class="total_received_qty text-success" data-value="' . $row->total_received_qty . '">' . $this->converter->format_in_bdt($row->total_received_qty) . '</span>')
+                ->editColumn('total_received_qty', fn ($row) => '<span class="total_received_qty text-success" data-value="'.$row->total_received_qty.'">'.$this->converter->format_in_bdt($row->total_received_qty).'</span>')
 
-                ->editColumn('total_pending_qty', fn ($row) =>  '<span class="total_pending_qty text-danger" data-value="' . $row->total_pending_qty . '">' . $this->converter->format_in_bdt($row->total_pending_qty) . '</span>')
+                ->editColumn('total_pending_qty', fn ($row) => '<span class="total_pending_qty text-danger" data-value="'.$row->total_pending_qty.'">'.$this->converter->format_in_bdt($row->total_pending_qty).'</span>')
 
-                ->editColumn('total_stock_value', fn ($row) => '<span class="total_stock_value" data-value="' . $row->total_stock_value . '">' . $this->converter->format_in_bdt($row->total_stock_value) . '</span>')
+                ->editColumn('total_stock_value', fn ($row) => '<span class="total_stock_value" data-value="'.$row->total_stock_value.'">'.$this->converter->format_in_bdt($row->total_stock_value).'</span>')
 
                 ->editColumn('receive_status', function ($row) {
 
                     if ($row->receive_status == 1) {
 
                         return '<span class="badge bg-danger">Pending</span>';
-                    } else if ($row->receive_status == 2) {
+                    } elseif ($row->receive_status == 2) {
 
                         return '<span class="badge bg-warning text-white">Partial</span>';
-                    } else if ($row->receive_status == 3) {
+                    } elseif ($row->receive_status == 3) {
 
                         return '<span class="badge bg-success">Completed</span>';
                     }
@@ -153,7 +157,7 @@ class ReceiveTransferBranchToBranchController extends Controller
                 'Transfer_products',
                 'Transfer_products.product',
                 'Transfer_products.variant',
-                'Transfer_products.product.unit'
+                'Transfer_products.product.unit',
             ]
         )->where('id', $transferId)->first();
 
@@ -230,7 +234,7 @@ class ReceiveTransferBranchToBranchController extends Controller
         $index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$index] != 'no_id' ?  $request->variant_ids[$index] : NULL;
+            $variant_id = $request->variant_ids[$index] != 'no_id' ? $request->variant_ids[$index] : null;
 
             $this->productStockUtil->addBranchProduct(
                 product_id: $product_id,
@@ -281,13 +285,14 @@ class ReceiveTransferBranchToBranchController extends Controller
                 unitCostIncTax : $updateTransferProduct->unit_cost_inc_tax,
                 sellingPrice : $updateTransferProduct->unit_price_inc_tax,
                 subTotal : $updateTransferProduct->subtotal,
-                createdAt : date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+                createdAt : date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
             );
 
             $index++;
         }
 
         session()->flash('successMsg', 'Successfully receiving has been processed');
+
         return response()->json(['successMsg' => 'Successfully receiving has been processed']);
     }
 }

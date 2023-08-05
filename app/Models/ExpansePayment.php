@@ -2,12 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Account;
-use App\Models\Expanse;
-use App\Models\CashFlow;
-use App\Models\PaymentMethod;
-use App\Models\BaseModel;
-
 class ExpansePayment extends BaseModel
 {
     //protected $guarded = [];
@@ -32,5 +26,4 @@ class ExpansePayment extends BaseModel
     {
         return $this->belongsTo(PaymentMethod::class);
     }
-
 }

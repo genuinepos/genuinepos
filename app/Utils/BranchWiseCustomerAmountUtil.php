@@ -10,7 +10,7 @@ class BranchWiseCustomerAmountUtil
     public function branchWiseCustomerAmount($customerId, $branch_id = null, $from_date = null, $to_date = null)
     {
         $openingBalanceDetails = DB::table('customer_opening_balances')->where('customer_opening_balances.customer_id', $customerId)
-            ->where('customer_opening_balances.branch_id', ($branch_id == 'NULL' ? NULL : $branch_id))
+            ->where('customer_opening_balances.branch_id', ($branch_id == 'NULL' ? null : $branch_id))
             ->select('customer_opening_balances.amount', 'customer_opening_balances.is_show_again')
             ->first();
 
@@ -26,7 +26,7 @@ class BranchWiseCustomerAmountUtil
 
             if ($branch_id == 'NULL') {
 
-                $query->where('customer_ledgers.branch_id', NULL);
+                $query->where('customer_ledgers.branch_id', null);
             } else {
 
                 $query->where('customer_ledgers.branch_id', $branch_id);
@@ -93,7 +93,7 @@ class BranchWiseCustomerAmountUtil
                 $totalRefund += $amount->amt;
             }
         }
-        
+
         $totalDue = ($totalSaleAndOrder + $openingBalance + $totalRefund) - $totalPaid - $totalReturn - $totalLess;
         $totalReturnDue = $totalReturn - ($totalSaleAndOrder + $openingBalance - $totalPaid) - $totalRefund;
 
@@ -132,9 +132,9 @@ class BranchWiseCustomerAmountUtil
 
             if ($branch_id == 'NULL') {
 
-                $allSalesAndOrdersQuery->where('sales.branch_id', NULL);
-                $invoicesQuery->where('sales.branch_id', NULL);
-                $ordersQuery->where('sales.branch_id', NULL);
+                $allSalesAndOrdersQuery->where('sales.branch_id', null);
+                $invoicesQuery->where('sales.branch_id', null);
+                $ordersQuery->where('sales.branch_id', null);
             } else {
 
                 $allSalesAndOrdersQuery->where('sales.branch_id', $branch_id)->where('sales.due', '>', 0);

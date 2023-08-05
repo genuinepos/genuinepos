@@ -2,23 +2,19 @@
 
 namespace App\Utils;
 
-use App\Models\Product;
 use App\Models\Customer;
-use App\Models\Supplier;
-use App\Models\ProductBranch;
-use App\Models\CustomerLedger;
-use App\Models\SupplierLedger;
 use App\Models\ExpanseCategory;
-use App\Models\PurchaseProduct;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductOpeningStock;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Models\Product;
+use App\Models\ProductBranch;
 
 class Util
 {
     protected $invoiceVoucherRefIdUtil;
+
     protected $supplierUtil;
+
     protected $customerUtil;
+
     protected $productUtil;
 
     public function __construct(
@@ -36,7 +32,7 @@ class Util
     public function addQuickProductFromAddSale($request)
     {
         $addProduct = new Product();
-        $tax_id = NULL;
+        $tax_id = null;
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
         }
@@ -91,7 +87,7 @@ class Util
         $this->productUtil->addOpeningStock(
             branch_id: $request->branch_id,
             product_id: $addProduct->id,
-            variant_id: NULL,
+            variant_id: null,
             unit_cost_inc_tax: $request->product_cost_with_tax ? $request->product_cost_with_tax : 0,
             quantity: $request->quantity,
             subtotal: $request->subtotal
@@ -111,7 +107,7 @@ class Util
     public function addQuickProductFromPurchase($request)
     {
         $addProduct = new Product();
-        $tax_id = NULL;
+        $tax_id = null;
 
         if ($request->tax_id) {
 
@@ -181,7 +177,7 @@ class Util
 
         $addExpenseCategory = ExpanseCategory::create([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, "0", STR_PAD_LEFT),
+            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, '0', STR_PAD_LEFT),
         ]);
 
         return response()->json($addExpenseCategory);
@@ -273,7 +269,7 @@ class Util
                 return $data;
             } else {
 
-                return $filteredType =  array_filter($data, function ($val, $key) {
+                return $filteredType = array_filter($data, function ($val, $key) {
 
                     return $key != 2;
                 }, ARRAY_FILTER_USE_BOTH);

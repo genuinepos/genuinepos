@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Loan;
-use App\Models\LoanPayment;
-use App\Models\BaseModel;
-
 class LoanCompany extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function loans()

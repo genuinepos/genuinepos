@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\SaleProduct;
-use App\Models\PurchaseProduct;
-use Illuminate\Support\Facades\DB;
-use App\Models\BaseModel;
-
 class ProductVariant extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at', 'delete_in_update'];
 
     public function product()
@@ -53,15 +49,11 @@ class ProductVariant extends BaseModel
     {
         $generalSettings = config('generalSettings');
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
-
         if ($stockAccountingMethod == 1) {
-
             $ordering = 'asc';
-        }else {
-
+        } else {
             $ordering = 'desc';
         }
-
         return $this->hasOne(PurchaseProduct::class, 'product_variant_id')->where('left_qty', '>', '0')
             ->orderBy('created_at', $ordering)->select('product_variant_id', 'net_unit_cost');
     }

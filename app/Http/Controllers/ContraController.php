@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Utils\Util;
 use App\Models\Contra;
-use App\Utils\Converter;
 use App\Utils\AccountUtil;
+use App\Utils\Converter;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\Util;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class ContraController extends Controller
 {
     protected $accountUtil;
+
     protected $util;
+
     protected $converter;
+
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(
         AccountUtil $accountUtil,
         Util $util,
@@ -28,7 +32,7 @@ class ContraController extends Controller
         $this->util = $util;
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        
+
     }
 
     public function index(Request $request)
@@ -48,7 +52,7 @@ class ContraController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('contras.branch_id', NULL);
+                    $query->where('contras.branch_id', null);
                 } else {
 
                     $query->where('contras.branch_id', $request->branch_id);
@@ -94,40 +98,44 @@ class ContraController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.contras.show', [$row->id]) . '" id="show"><i class="far fa-eye me-1 text-primary"></i> Show</a>';
-                    $html .= '<a class="dropdown-item" id="edit" href="' . route('accounting.contras.edit', [$row->id]) . '"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('accounting.contras.delete', [$row->id]) . '"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('accounting.contras.show', [$row->id]).'" id="show"><i class="far fa-eye me-1 text-primary"></i> Show</a>';
+                    $html .= '<a class="dropdown-item" id="edit" href="'.route('accounting.contras.edit', [$row->id]).'"><i class="far fa-edit me-1 text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('accounting.contras.delete', [$row->id]).'"><i class="far fa-trash-alt me-1 text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
                     $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
+
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('receiver_account', function ($row) {
 
-                    $__ac = $row->receiver_account_type == 2 ? '(A/C:' . $row->receiver_account_no . ')' : '(Cash-In-Hand)';
-                    return $row->receiver_account_name . $__ac;
+                    $__ac = $row->receiver_account_type == 2 ? '(A/C:'.$row->receiver_account_no.')' : '(Cash-In-Hand)';
+
+                    return $row->receiver_account_name.$__ac;
                 })
                 ->editColumn('sender_account', function ($row) {
 
-                    $__ac = $row->sender_account_type == 2 ? '(A/C:' . $row->sender_account_no . ')' : '(Cash-In-Hand)';
-                    return $row->sender_account_name . $__ac;
+                    $__ac = $row->sender_account_type == 2 ? '(A/C:'.$row->sender_account_no.')' : '(Cash-In-Hand)';
+
+                    return $row->sender_account_name.$__ac;
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
+                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="'.$row->amount.'">'.$this->converter->format_in_bdt($row->amount).'</span>')
                 ->rawColumns(['action', 'date', 'receiver_account', 'sender_account', 'branch', 'amount'])
                 ->make(true);
         }
@@ -175,16 +183,16 @@ class ContraController extends Controller
             'user_id' => auth()->user()->id,
             'voucher_no' => $request->voucher_no
                 ? $request->voucher_no
-                : 'CO' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('contras'), 5, "0", STR_PAD_LEFT),
+                : 'CO'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('contras'), 5, '0', STR_PAD_LEFT),
             'date' => $request->date,
-            'report_date' => date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+            'report_date' => date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
             'sender_account_id' => $request->sender_account_id,
             'receiver_account_id' => $request->receiver_account_id,
             'amount' => $request->amount,
             'remarks' => $request->remarks,
         ]);
 
-        // Add Sender A/C ledger 
+        // Add Sender A/C ledger
         $this->accountUtil->addAccountLedger(
             voucher_type_id: 27,
             date: $request->date,
@@ -194,7 +202,7 @@ class ContraController extends Controller
             balance_type: 'debit'
         );
 
-        // Add Receiver A/C ledger 
+        // Add Receiver A/C ledger
         $this->accountUtil->addAccountLedger(
             voucher_type_id: 26,
             date: $request->date,
@@ -244,16 +252,16 @@ class ContraController extends Controller
         Contra::where('id', $contraId)->update([
             'voucher_no' => $request->voucher_no
                 ? $request->voucher_no
-                : 'CO' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('contras'), 5, "0", STR_PAD_LEFT),
+                : 'CO'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('contras'), 5, '0', STR_PAD_LEFT),
             'date' => $request->date,
-            'report_date' => date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
+            'report_date' => date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))),
             'sender_account_id' => $request->sender_account_id,
             'receiver_account_id' => $request->receiver_account_id,
             'amount' => $request->amount,
             'remarks' => $request->remarks,
         ]);
 
-        // Update Sender A/C ledger 
+        // Update Sender A/C ledger
         $this->accountUtil->updateAccountLedger(
             voucher_type_id: 27,
             date: $request->date,
@@ -263,7 +271,7 @@ class ContraController extends Controller
             balance_type: 'debit'
         );
 
-        // Update Receiver A/C ledger 
+        // Update Receiver A/C ledger
         $this->accountUtil->updateAccountLedger(
             voucher_type_id: 26,
             date: $request->date,
@@ -279,14 +287,14 @@ class ContraController extends Controller
     public function show($contraId)
     {
         $contra = Contra::with(
-          [
-              'branch', 
-              'user', 
-              'senderAccount', 
-              'senderAccount.bank',
-              'receiverAccount', 
-              'receiverAccount.bank'
-          ] 
+            [
+                'branch',
+                'user',
+                'senderAccount',
+                'senderAccount.bank',
+                'receiverAccount',
+                'receiverAccount.bank',
+            ]
         )->where('id', $contraId)->first();
 
         return view('accounting.contra.ajax_view.show', compact('contra'));
@@ -299,7 +307,7 @@ class ContraController extends Controller
         $storedSenderAccountId = $deleteContra->sender_account_id;
         $storedReceiverAccountId = $deleteContra->receiver_account_id;
 
-        if (!is_null($deleteContra)) {
+        if (! is_null($deleteContra)) {
             $deleteContra->delete();
 
             if ($storedSenderAccountId) {

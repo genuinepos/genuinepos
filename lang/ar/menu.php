@@ -1,4 +1,5 @@
 <?php
+
 return [
     'e_commerce' => 'التجارة الإلكترونية',
     'inventory_app' => 'تطبيق الجرد',
@@ -111,7 +112,7 @@ return [
     'item' => 'بند',
     'item_weight_by_scale' => 'وزن السلعة بالمقياس',
     'add_item' => 'اضافة عنصر',
-    'dontinued_to_this_next_page' => 'تابع إلى هذه الصفحة التالية',
+    'continued_to_this_next_page' => 'تابع إلى هذه الصفحة التالية',
     'change_amount' => 'تغيير المبلغ',
     'item_list' => 'قائمة البند',
     'import_item' => 'عناصر الاستيراد',
@@ -1135,8 +1136,8 @@ return [
     'user_forget_password_via_email' => 'نسيت كلمة المرور',
     'coupon_offer_via_email' => 'إرسال قسيمة / عرض عبر البريد الإلكتروني',
     'discount_redeemed_via_email' => 'إرسال الخصم المراد استرداده عبر البريد الإلكتروني',
-    'new_product_arrived_via_email' =>'إرسال معلومات المنتج الجديد وصلت عبر البريد الإلكتروني',
-    'weekly_news_letter_via_email' =>'إرسال رسالة إخبارية أسبوعية عبر البريد الإلكتروني',
+    'new_product_arrived_via_email' => 'إرسال معلومات المنتج الجديد وصلت عبر البريد الإلكتروني',
+    'weekly_news_letter_via_email' => 'إرسال رسالة إخبارية أسبوعية عبر البريد الإلكتروني',
     'expense_voucher' => 'قسيمة المصروفات',
     'expense_payment_voucher' => 'قسيمة دفع المصروفات',
     'payment_voucher_no' => 'رقم قسيمة الدفع',

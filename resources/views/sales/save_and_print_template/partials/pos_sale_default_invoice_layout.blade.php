@@ -221,7 +221,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
-                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
+                        <h6><em>@lang('menu.continued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
                 @if ($defaultLayout->is_header_less == 1)
@@ -561,17 +561,15 @@
                                 </th>
                             </tr>
 
-                            @if ($sale->ex_status == 0)
-                                @if ($change_amount > 0)
-                                    <tr>
-                                        <th class="text-end" style="font-size: 11px;"><strong> @lang('menu.change_amount') : {{ $generalSettings['business__currency'] }}</strong></th>
-                                        <th class="total_paid text-end" style="font-size: 11px;">
-                                            <span>
-                                                {{ App\Utils\Converter::format_in_bdt($change_amount) }}
-                                            </span>
-                                        </th>
-                                    </tr>
-                                @endif
+                            @if ($change_amount > 0)
+                                <tr>
+                                    <th class="text-end" style="font-size: 11px;"><strong> @lang('menu.change_amount') : {{ $generalSettings['business__currency'] }}</strong></th>
+                                    <th class="total_paid text-end" style="font-size: 11px;">
+                                        <span>
+                                            {{ App\Utils\Converter::format_in_bdt($change_amount) }}
+                                        </span>
+                                    </th>
+                                </tr>
                             @endif
 
                             <tr>

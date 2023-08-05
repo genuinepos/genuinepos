@@ -39,7 +39,7 @@ use App\Http\Controllers\ReleaseNoteController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\CashRegisterController;
-// use App\Http\Controllers\MoneyReceiptController;
+use App\Http\Controllers\MoneyReceiptController;
 use App\Http\Controllers\PosShortMenuController;
 use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\InvoiceLayoutController;
@@ -1087,7 +1087,7 @@ Route::group(['prefix' => 'pos-short-menus'], function () {
 
 Route::group(['prefix' => 'communication'], function () {
 
-    Route::group(['prefix' => 'email',], function () {
+    Route::group(['prefix' => 'email'], function () {
 
         Route::get('settings', [EmailController::class, 'emailSettings'])->name('communication.email.settings');
 
@@ -1096,7 +1096,7 @@ Route::group(['prefix' => 'communication'], function () {
         Route::get('settings/server/setup/design/pages', [EmailController::class, 'emailServerSetupDesignPages'])->name('communication.email.settings.server.setup.design.pages');
     });
 
-    Route::group(['prefix' => 'sms',], function () {
+    Route::group(['prefix' => 'sms'], function () {
 
         Route::get('settings', [SmsController::class, 'smsSettings'])->name('communication.sms.settings');
         Route::post('settings/store', [SmsController::class, 'smsSettingsStore'])->name('communication.sms.settings.store');
@@ -1104,8 +1104,8 @@ Route::group(['prefix' => 'communication'], function () {
         Route::get('settings/server/setup/design/pages', [SmsController::class, 'smsServerSetupDesignPages'])->name('communication.sms.settings.server.setup.design.pages');
     });
 });
-Route::controller(FeedbackController::class)->group(function() {
-    Route::group(['prefix' => 'feedback'], function() {
+Route::controller(FeedbackController::class)->group(function () {
+    Route::group(['prefix' => 'feedback'], function () {
         Route::get('/', 'index')->name('feedback.index');
         Route::post('/store', 'store')->name('feedback.store');
     });

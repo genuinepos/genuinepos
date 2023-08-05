@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Models;
-use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\BaseModel;
 
 class TransferStockToWarehouseProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function product()

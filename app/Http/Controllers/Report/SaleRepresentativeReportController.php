@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleRepresentativeReportController extends Controller
@@ -31,7 +31,7 @@ class SaleRepresentativeReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $sale_query->where('sales.branch_id', NULL);
+                    $sale_query->where('sales.branch_id', null);
                 } else {
                     $sale_query->where('sales.branch_id', $request->branch_id);
                 }
@@ -41,7 +41,7 @@ class SaleRepresentativeReportController extends Controller
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
                 $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $sale_query->whereBetween('sales.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+                $sale_query->whereBetween('sales.report_date', [$form_date.' 00:00:00', $to_date.' 00:00:00']);
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -80,14 +80,14 @@ class SaleRepresentativeReportController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('customer',  function ($row) {
+                ->editColumn('customer', function ($row) {
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
                 ->editColumn('payment_status', function ($row) {
@@ -100,24 +100,26 @@ class SaleRepresentativeReportController extends Controller
                     } elseif ($payable == $row->due) {
                         $html .= '<span class="text-danger"><b>Due</b></span>';
                     }
+
                     return $html;
                 })
-                ->editColumn('total_amount',  function ($row) use ($generalSettings) {
-                    return '<b><span class="total_amount" data-value="' . $row->total_payable_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->total_payable_amount . '</span></b>';
+                ->editColumn('total_amount', function ($row) use ($generalSettings) {
+                    return '<b><span class="total_amount" data-value="'.$row->total_payable_amount.'">'.$generalSettings['business__currency'].' '.$row->total_payable_amount.'</span></b>';
                 })
-                ->editColumn('paid',  function ($row) use ($generalSettings) {
-                    return '<b><span class="paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span></b>';
+                ->editColumn('paid', function ($row) use ($generalSettings) {
+                    return '<b><span class="paid" data-value="'.$row->paid.'">'.$generalSettings['business__currency'].' '.$row->paid.'</span></b>';
                 })
                 ->editColumn('total_return', function ($row) use ($generalSettings) {
-                    return '<b><span class="total_return" data-value="' . $row->sale_return_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->sale_return_amount . '</span></b>';
+                    return '<b><span class="total_return" data-value="'.$row->sale_return_amount.'">'.$generalSettings['business__currency'].' '.$row->sale_return_amount.'</span></b>';
                 })
-                ->editColumn('due',  function ($row) use ($generalSettings) {
-                    return '<b><span class="due" data-value="' . $row->due . '">' . $generalSettings['business__currency'] . ' ' . $row->due . '</span></b>';
+                ->editColumn('due', function ($row) use ($generalSettings) {
+                    return '<b><span class="due" data-value="'.$row->due.'">'.$generalSettings['business__currency'].' '.$row->due.'</span></b>';
                 })
                 ->rawColumns(['date', 'branch', 'customer', 'payment_status', 'total_amount', 'paid', 'total_return', 'due'])
                 ->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.sale_representative_report.index', compact('branches'));
     }
 
@@ -136,7 +138,7 @@ class SaleRepresentativeReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $expense_query->where('expanses.branch_id', NULL);
+                    $expense_query->where('expanses.branch_id', null);
                 } else {
                     $expense_query->where('expanses.branch_id', $request->branch_id);
                 }
@@ -146,7 +148,7 @@ class SaleRepresentativeReportController extends Controller
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
                 $to_date = date('Y-m-d', strtotime($date_range[1]));
-                $expense_query->whereBetween('expanses.report_date', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']);
+                $expense_query->whereBetween('expanses.report_date', [$form_date.' 00:00:00', $to_date.' 00:00:00']);
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -185,14 +187,14 @@ class SaleRepresentativeReportController extends Controller
                 ->editColumn('date', function ($row) {
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('user',  function ($row) {
+                ->editColumn('user', function ($row) {
                     return $row->prefix.' '.$row->user_name.' '.$row->user_last_name;
                 })
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
                 ->editColumn('payment_status', function ($row) {
@@ -205,20 +207,22 @@ class SaleRepresentativeReportController extends Controller
                     } elseif ($payable == $row->due) {
                         $html .= '<span class="text-danger"><b>Due</b></span>';
                     }
+
                     return $html;
                 })
-                ->editColumn('total_amount',  function ($row) use ($generalSettings) {
-                    return '<b><span class="ex_total" data-value="' . $row->net_total_amount . '">' . $generalSettings['business__currency'] . ' ' . $row->net_total_amount . '</span></b>';
+                ->editColumn('total_amount', function ($row) use ($generalSettings) {
+                    return '<b><span class="ex_total" data-value="'.$row->net_total_amount.'">'.$generalSettings['business__currency'].' '.$row->net_total_amount.'</span></b>';
                 })
-                ->editColumn('paid',  function ($row) use ($generalSettings) {
-                    return '<b><span class="ex_paid" data-value="' . $row->paid . '">' . $generalSettings['business__currency'] . ' ' . $row->paid . '</span></b>';
+                ->editColumn('paid', function ($row) use ($generalSettings) {
+                    return '<b><span class="ex_paid" data-value="'.$row->paid.'">'.$generalSettings['business__currency'].' '.$row->paid.'</span></b>';
                 })
-                ->editColumn('due',  function ($row) use ($generalSettings) {
-                    return '<b><span class="ex_due" data-value="' . $row->due . '">' . $generalSettings['business__currency'] . ' ' . $row->due . '</span></b>';
+                ->editColumn('due', function ($row) use ($generalSettings) {
+                    return '<b><span class="ex_due" data-value="'.$row->due.'">'.$generalSettings['business__currency'].' '.$row->due.'</span></b>';
                 })
-                ->rawColumns(['date', 'branch', 'user' ,'payment_status', 'total_amount', 'paid', 'due'])
+                ->rawColumns(['date', 'branch', 'user', 'payment_status', 'total_amount', 'paid', 'due'])
                 ->make(true);
         }
+
         return view('reports.sale_representative_report.ajax_view.representative_reports', compact('sales', 'expenses'));
     }
 }

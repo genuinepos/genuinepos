@@ -4,7 +4,6 @@ namespace Modules\Communication\Mail;
 
 use App\Models\Sale;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -18,6 +17,7 @@ class SaleCreatedMail extends Mailable
      * @return void
      */
     public Sale $sale;
+
     public function __construct(Sale $sale)
     {
         $this->sale = $sale;

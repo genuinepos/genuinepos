@@ -2,35 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Customer;
-use App\Utils\ProductUtil;
-use App\Models\BulkVariant;
-use Illuminate\Support\Str;
-use App\Models\ComboProduct;
-use App\Models\ProductImage;
-use Illuminate\Http\Request;
-use App\Models\ProductBranch;
-use App\Models\GeneralSetting;
-use App\Models\ProductVariant;
 use App\Mail\NewProductArrived;
-use App\Models\PurchaseProduct;
-use App\Models\SupplierProduct;
-use App\Utils\ProductStockUtil;
+use App\Models\BulkVariant;
+use App\Models\ComboProduct;
+use App\Models\Customer;
 use App\Models\PriceGroupProduct;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductOpeningStock;
-use App\Http\Controllers\Controller;
-use App\Models\ProductBranchVariant;
-use Intervention\Image\Facades\Image;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\ProductVariant;
+use App\Models\SupplierProduct;
 use App\Services\GeneralSettingServiceInterface;
+use App\Utils\ProductStockUtil;
+use App\Utils\ProductUtil;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Modules\Communication\Interface\EmailServiceInterface;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
-
     public function __construct(
         private EmailServiceInterface  $emailService,
         private ProductUtil $productUtil,
@@ -43,31 +37,26 @@ class ProductController extends Controller
     public function expiredProducts(Request $request)
     {
         if (!auth()->user()->can('product_all')) {
-
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
-
             return $this->productUtil->expiredProductTable($request);
         }
-
         return view('product.products.expired_products');
     }
 
     public function allProduct(Request $request)
     {
-        if (!auth()->user()->can('product_all')) {
-
+        if (! auth()->user()->can('product_all')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
-
             return $this->productUtil->productListTable($request);
         }
 
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
@@ -93,7 +82,7 @@ class ProductController extends Controller
                 ->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
-                ->addColumn('action', fn ($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
+                ->addColumn('action', fn ($row) => '<a href="'.route('products.edit', [$row->id]).'" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
                 ->editColumn('name', fn ($row) => Str::limit($row->name, 17))
                 ->rawColumns(['action'])->make(true);
         }
@@ -135,7 +124,7 @@ class ProductController extends Controller
 
         $addProduct = new Product();
 
-        $tax_id = NULL;
+        $tax_id = null;
 
         if ($request->tax_id) {
 
@@ -152,7 +141,7 @@ class ProductController extends Controller
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_id = $tax_id;
         $addProduct->tax_type = isset($request->tax_type) ? $request->tax_type : 1;
-        $addProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
+        $addProduct->expire_date = $request->expired_date ? $request->expired_date : null;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $addProduct->is_for_sale = $request->is_for_sale;
@@ -181,8 +170,8 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
 
                     $productImage = $image;
-                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(600, 600)->save('uploads/product/' . $productImageName);
+                    $productImageName = uniqid().'.'.$productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(600, 600)->save('uploads/product/'.$productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $addProduct->id;
                     $addProductImage->image = $productImageName;
@@ -201,8 +190,8 @@ class ProductController extends Controller
             if ($request->file('photo')) {
 
                 $productThumbnailPhoto = $request->file('photo');
-                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(600, 600)->save('uploads/product/thumbnail/' . $productThumbnailName);
+                $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(600, 600)->save('uploads/product/thumbnail/'.$productThumbnailName);
                 $addProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -215,7 +204,7 @@ class ProductController extends Controller
                     return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
                 }
 
-                $this->validate($request, ['variant_image.*' => 'sometimes|image|max:2048',],);
+                $this->validate($request, ['variant_image.*' => 'sometimes|image|max:2048']);
 
                 $addProduct->save();
 
@@ -234,8 +223,8 @@ class ProductController extends Controller
                     if (isset($request->variant_image[$index])) {
 
                         $variantImage = $request->variant_image[$index];
-                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                        Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
+                        $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                        Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
                         $addVariant->variant_image = $variantImageName;
                     }
 
@@ -273,7 +262,7 @@ class ProductController extends Controller
                 $addComboProducts->product_id = $addProduct->id;
                 $addComboProducts->combo_product_id = $id;
                 $addComboProducts->quantity = $combo_quantities[$index];
-                $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
+                $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : null;
                 $addComboProducts->save();
                 $index++;
             }
@@ -296,6 +285,7 @@ class ProductController extends Controller
         }
 
         session()->flash('successMsg', 'Product created Successfully');
+
         return response()->json('Product created Successfully');
     }
 
@@ -430,6 +420,7 @@ class ProductController extends Controller
             )->get();
 
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+
         return view('product.products.ajax_view.product_details_view', compact(
             'product',
             'price_groups',
@@ -449,7 +440,7 @@ class ProductController extends Controller
         $index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
 
             $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
@@ -487,7 +478,7 @@ class ProductController extends Controller
     // Get opening stock
     public function openingStock($productId)
     {
-        if (!auth()->user()->can('openingStock_add')) {
+        if (! auth()->user()->can('openingStock_add')) {
             abort(403, 'Access Forbidden.');
         }
         $products = DB::table('products')->where('products.id', $productId)
@@ -538,13 +529,13 @@ class ProductController extends Controller
 
             foreach ($request->group_prices as $key => $group_price) {
 
-                (float)$__group_price = $group_price[$product_id][$variant_ids[$index]];
-                $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                (float) $__group_price = $group_price[$product_id][$variant_ids[$index]];
+                $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
                 $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)->where('product_id', $product_id)->where('variant_id', $__variant_id)->first();
 
                 if ($updatePriceGroup) {
 
-                    $updatePriceGroup->price = $__group_price != null ? $__group_price : NULL;
+                    $updatePriceGroup->price = $__group_price != null ? $__group_price : null;
                     $updatePriceGroup->save();
                 } else {
 
@@ -552,7 +543,7 @@ class ProductController extends Controller
                     $addPriceGroup->price_group_id = $key;
                     $addPriceGroup->product_id = $product_id;
                     $addPriceGroup->variant_id = $__variant_id;
-                    $addPriceGroup->price = $__group_price != null ? $__group_price : NULL;
+                    $addPriceGroup->price = $__group_price != null ? $__group_price : null;
                     $addPriceGroup->save();
                 }
             }
@@ -561,17 +552,17 @@ class ProductController extends Controller
 
         if ($request->action_type == 'save') {
 
-            return response()->json(['saveMessage' =>  'Product price group updated Successfully']);
+            return response()->json(['saveMessage' => 'Product price group updated Successfully']);
         } else {
 
-            return response()->json(['saveAndAnotherMsg' =>  'Product price group updated Successfully']);
+            return response()->json(['saveAndAnotherMsg' => 'Product price group updated Successfully']);
         }
     }
 
     // edit view of product
     public function edit($productId)
     {
-        if (!auth()->user()->can('product_edit')) {
+        if (! auth()->user()->can('product_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -603,12 +594,14 @@ class ProductController extends Controller
     public function getProductVariants($productId)
     {
         $variants = DB::table('product_variants')->where('product_id', $productId)->get();
+
         return response()->json($variants);
     }
 
     public function getComboProducts($productId)
     {
         $comboProducts = ComboProduct::with(['parentProduct', 'parentProduct.tax', 'product_variant'])->where('product_id', $productId)->get();
+
         return response()->json($comboProducts);
     }
 
@@ -616,7 +609,7 @@ class ProductController extends Controller
     public function update(Request $request, $productId)
     {
         $updateProduct = Product::with(['product_variants', 'ComboProducts'])->where('id', $productId)->first();
-        $tax_id = NULL;
+        $tax_id = null;
 
         if ($request->tax_id) {
 
@@ -655,7 +648,7 @@ class ProductController extends Controller
         $updateProduct->alert_quantity = $request->alert_quantity;
         $updateProduct->tax_id = $tax_id;
         $updateProduct->tax_type = $request->tax_type;
-        $updateProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
+        $updateProduct->expire_date = $request->expired_date ? $request->expired_date : null;
         $updateProduct->product_condition = $request->product_condition;
         $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $updateProduct->is_for_sale = $request->is_for_sale;
@@ -674,8 +667,8 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
 
                     $productImage = $image;
-                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(250, 250)->save('uploads/product/' . $productImageName);
+                    $productImageName = uniqid().'.'.$productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(250, 250)->save('uploads/product/'.$productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $updateProduct->id;
                     $addProductImage->image = $productImageName;
@@ -696,15 +689,15 @@ class ProductController extends Controller
 
                 if ($updateProduct->thumbnail_photo != 'default.png') {
 
-                    if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+                    if (file_exists(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo))) {
 
-                        unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                        unlink(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo));
                     }
                 }
 
                 $productThumbnailPhoto = $request->file('photo');
-                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(250, 250)->save('uploads/product/thumbnail/' . $productThumbnailName);
+                $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(250, 250)->save('uploads/product/thumbnail/'.$productThumbnailName);
                 $updateProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -749,15 +742,15 @@ class ProductController extends Controller
 
                             if ($updateVariant->variant_image != null) {
 
-                                if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                                if (file_exists(public_path('uploads/product/variant_image/'.$updateVariant->variant_image))) {
 
-                                    unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
+                                    unlink(public_path('uploads/product/thumbnail/'.$updateVariant->variant_image));
                                 }
                             }
 
                             $variantImage = $request->variant_image[$index];
-                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
+                            $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
                             $updateVariant->variant_image = $variantImageName;
                         }
 
@@ -776,8 +769,8 @@ class ProductController extends Controller
                         if (isset($request->variant_image[$index])) {
 
                             $variantImage = $request->variant_image[$index];
-                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
+                            $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
                             $addVariant->variant_image = $variantImageName;
                         }
 
@@ -793,9 +786,9 @@ class ProductController extends Controller
 
                     if ($deleteNotFoundVariant->variant_image != null) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                        if (file_exists(public_path('uploads/product/variant_image/'.$updateVariant->variant_image))) {
 
-                            unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
+                            unlink(public_path('uploads/product/thumbnail/'.$updateVariant->variant_image));
                         }
                     }
 
@@ -845,7 +838,7 @@ class ProductController extends Controller
                     $addComboProducts->product_id = $updateProduct->id;
                     $addComboProducts->combo_product_id = $id;
                     $addComboProducts->quantity = $combo_quantities[$index];
-                    $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
+                    $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : null;
                     $addComboProducts->save();
                 }
 
@@ -868,13 +861,14 @@ class ProductController extends Controller
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $updateProduct->id);
 
         session()->flash('successMsg', 'Successfully product is updated');
+
         return response()->json('Successfully product is updated');
     }
 
     // delete product
     public function delete(Request $request, $productId)
     {
-        if (!auth()->user()->can('product_delete')) {
+        if (! auth()->user()->can('product_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -965,7 +959,7 @@ class ProductController extends Controller
     // multiple delete method
     public function multipleDelete(Request $request)
     {
-        if (!auth()->user()->can('product_delete')) {
+        if (! auth()->user()->can('product_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -1014,6 +1008,7 @@ class ProductController extends Controller
                 $product->status = 0;
                 $product->save();
             }
+
             return response()->json('Successfully all selected product status deactivated');
         }
     }
@@ -1026,11 +1021,13 @@ class ProductController extends Controller
 
             $statusChange->status = 0;
             $statusChange->save();
+
             return response()->json('Successfully Product is deactivated');
         } else {
 
             $statusChange->status = 1;
             $statusChange->save();
+
             return response()->json('Successfully Product is activated');
         }
     }
@@ -1039,6 +1036,7 @@ class ProductController extends Controller
     public function getAllFormVariants()
     {
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
+
         return response()->json($variants);
     }
 
@@ -1051,6 +1049,7 @@ class ProductController extends Controller
         } else {
 
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $productCode)->first();
+
             return response()->json(['variant_product' => $variant_product]);
         }
     }
@@ -1097,12 +1096,14 @@ class ProductController extends Controller
         $type = $type;
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
+
         return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
     }
 
     public function settings()
     {
         $units = DB::table('units')->select('id', 'name', 'code_name')->get();
+
         return view('product.settings.index', compact('units'));
     }
 
@@ -1118,6 +1119,7 @@ class ProductController extends Controller
             'product__is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
         ];
         $generalSettingService->updateAndSync($settings);
+
         return response()->json('Product settings updated successfully');
     }
 }

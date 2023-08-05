@@ -31,6 +31,7 @@ class PatchHorizontalGeneralSettingsToVertical extends Command
     {
         // Artisan::call('db:seed --class="HorizontalToVerticalConversionSeeder"');
         Artisan::call('db:seed --class="GeneralSettingsSeeder"');
+
         return Command::SUCCESS;
     }
 }

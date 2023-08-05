@@ -127,11 +127,11 @@
                                     @endphp
 
                                     @if ($sale->due <= 0)
-                                    @lang('menu.paid')
+                                        @lang('menu.paid')
                                     @elseif ($sale->due > 0 && $sale->due < $payable)
-                                    @lang('menu.partial')
-                                    @elseif($payable==$sale->due)
-                                    @lang('menu.due')
+                                        @lang('menu.partial')
+                                    @elseif($payable == $sale->due)
+                                        @lang('menu.due')
                                     @endif
                                 </h6>
                             </div>
@@ -238,7 +238,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-md-12 text-end">
-                        <h6><em>@lang('menu.dontinued_to_this_next_page')....</em></h6>
+                        <h6><em>@lang('menu.continued_to_this_next_page')....</em></h6>
                     </div>
                 </div>
                 @if ($defaultLayout->is_header_less == 1)

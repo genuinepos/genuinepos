@@ -3,7 +3,6 @@
 namespace Modules\Communication\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,6 +16,7 @@ class CouponMail extends Mailable
      * Create a new message instance.
      */
     public $coupon;
+
     public function __construct($coupon)
     {
         $this->coupon = $coupon;
@@ -38,6 +38,7 @@ class CouponMail extends Mailable
     public function content(): Content
     {
         $coupon = $this->coupon;
+
         return $this->view('communication::email.coupon.coupon-discount', compact('coupon'));
     }
 

@@ -2,28 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
 use App\Models\Expanse;
-use App\Models\CashFlow;
+use App\Models\ExpanseCategory;
+use App\Models\ExpansePayment;
+use App\Models\ExpenseDescription;
+use App\Models\PaymentMethod;
 use App\Utils\AccountUtil;
 use App\Utils\ExpenseUtil;
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Models\ExpansePayment;
-use App\Models\ExpanseCategory;
-use App\Models\ExpenseDescription;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExpanseController extends Controller
 {
     protected $expenseUtil;
+
     protected $accountUtil;
+
     protected $invoiceVoucherRefIdUtil;
+
     protected $userActivityLogUtil;
+
     protected $util;
+
     public function __construct(
         ExpenseUtil $expenseUtil,
         AccountUtil $accountUtil,
@@ -42,7 +45,7 @@ class ExpanseController extends Controller
     // Expanse index view
     public function index(Request $request)
     {
-        if (!auth()->user()->can('view_expense')) {
+        if (! auth()->user()->can('view_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -55,12 +58,13 @@ class ExpanseController extends Controller
         $ex_cates = DB::table('expanse_categories')->get();
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('expanses.index', compact('branches', 'ex_cates'));
     }
 
     public function categoryWiseExpense(Request $request)
     {
-        if (!auth()->user()->can('category_wise_expense')) {
+        if (! auth()->user()->can('category_wise_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -71,13 +75,14 @@ class ExpanseController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('expanses.category_wise_expense_list', compact('branches'));
     }
 
     // Create expanse view
     public function create()
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -117,7 +122,7 @@ class ExpanseController extends Controller
     // Store Expanse
     public function store(Request $request)
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             return response()->json('Access Denied');
         }
@@ -136,7 +141,7 @@ class ExpanseController extends Controller
 
         // Add expanse
         $addExpanse = new Expanse();
-        $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanses'), 5, "0", STR_PAD_LEFT);
+        $addExpanse->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '').str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanses'), 5, '0', STR_PAD_LEFT);
         $addExpanse->expense_account_id = $request->ex_account_id;
         $addExpanse->branch_id = auth()->user()->branch_id;
         $addExpanse->tax_percent = $request->tax ? $request->tax : 0;
@@ -153,7 +158,7 @@ class ExpanseController extends Controller
 
         foreach ($request->category_ids as $category_id) {
 
-            $category_ids .= $category_id . ', ';
+            $category_ids .= $category_id.', ';
         }
 
         $addExpanse->category_ids = $category_ids;
@@ -161,7 +166,7 @@ class ExpanseController extends Controller
         if ($request->hasFile('attachment')) {
 
             $expanseAttachment = $request->file('attachment');
-            $expanseAttachmentName = uniqid() . '-' . '.' . $expanseAttachment->getClientOriginalExtension();
+            $expanseAttachmentName = uniqid().'-'.'.'.$expanseAttachment->getClientOriginalExtension();
             $expanseAttachment->move(public_path('uploads/expanse_attachment/'), $expanseAttachmentName);
             $addExpanse->attachment = $expanseAttachmentName;
         }
@@ -223,7 +228,7 @@ class ExpanseController extends Controller
     //Delete Expanse
     public function delete(Request $request, $expanseId)
     {
-        if (!auth()->user()->can('delete_expense')) {
+        if (! auth()->user()->can('delete_expense')) {
 
             return response()->json('Access Denied');
         }
@@ -249,7 +254,7 @@ class ExpanseController extends Controller
     // Edit view
     public function edit($expenseId)
     {
-        if (!auth()->user()->can('edit_expense')) {
+        if (! auth()->user()->can('edit_expense')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -282,7 +287,7 @@ class ExpanseController extends Controller
     // Update expanse
     public function update(Request $request, $expenseId)
     {
-        if (!auth()->user()->can('edit_expense')) {
+        if (! auth()->user()->can('edit_expense')) {
 
             return response()->json('Access Denied');
         }
@@ -310,14 +315,14 @@ class ExpanseController extends Controller
 
             if ($updateExpanse->attachment != null) {
 
-                if (file_exists(public_path('uploads/expanse_attachment/' . $updateExpanse->attachment))) {
+                if (file_exists(public_path('uploads/expanse_attachment/'.$updateExpanse->attachment))) {
 
-                    unlink(public_path('uploads/expanse_attachment/' . $updateExpanse->attachment));
+                    unlink(public_path('uploads/expanse_attachment/'.$updateExpanse->attachment));
                 }
             }
 
             $expanseAttachment = $request->file('attachment');
-            $expanseAttachmentName = uniqid() . '-' . '.' . $expanseAttachment->getClientOriginalExtension();
+            $expanseAttachmentName = uniqid().'-'.'.'.$expanseAttachment->getClientOriginalExtension();
             $expanseAttachment->move(public_path('uploads/expanse_attachment/'), $expanseAttachmentName);
             $updateExpanse->attachment = $expanseAttachmentName;
         }
@@ -325,7 +330,7 @@ class ExpanseController extends Controller
         $category_ids = '';
         foreach ($request->category_ids as $category_id) {
 
-            $category_ids .= $category_id . ', ';
+            $category_ids .= $category_id.', ';
         }
 
         $updateExpanse->category_ids = $category_ids;
@@ -370,7 +375,7 @@ class ExpanseController extends Controller
         $deleteAbleExDescriptions = ExpenseDescription::where('expense_id', $updateExpanse->id)
             ->where('is_delete_in_update', 1)->get();
 
-        foreach ($deleteAbleExDescriptions as  $exDescription) {
+        foreach ($deleteAbleExDescriptions as $exDescription) {
 
             $exDescription->delete();
         }
@@ -392,6 +397,7 @@ class ExpanseController extends Controller
     public function allCategories()
     {
         $categories = ExpanseCategory::orderBy('code', 'asc')->get();
+
         return response()->json($categories);
     }
 
@@ -399,6 +405,7 @@ class ExpanseController extends Controller
     public function paymentView($expanseId)
     {
         $expense = Expanse::with(['branch',  'expense_payments', 'expense_payments.payment_method'])->where('id', $expanseId)->first();
+
         return view('expanses.ajax_view.payment_view', compact('expense'));
     }
 
@@ -406,6 +413,7 @@ class ExpanseController extends Controller
     public function paymentDetails($paymentId)
     {
         $payment = ExpansePayment::with(['expense', 'payment_method', 'expense.expense_descriptions', 'expense.expense_descriptions.category', 'expense.admin'])->where('id', $paymentId)->first();
+
         return view('expanses.ajax_view.payment_details', compact('payment'));
     }
 
@@ -430,6 +438,7 @@ class ExpanseController extends Controller
             )->get();
 
         $methods = DB::table('payment_methods')->select('id', 'name')->get();
+
         return view('expanses.ajax_view.add_payment', compact('expense', 'accounts', 'methods'));
     }
 
@@ -521,13 +530,13 @@ class ExpanseController extends Controller
         $storedAccountId = $deleteExpensePayment->account_id;
         $storedExpenseId = $deleteExpensePayment->expanse_id;
 
-        if (!is_null($deleteExpensePayment)) {
+        if (! is_null($deleteExpensePayment)) {
             // Update expanse
             if ($deleteExpensePayment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/' . $deleteExpansePayment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/'.$deleteExpansePayment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/' . $deleteExpansePayment->attachment));
+                    unlink(public_path('uploads/payment_attachment/'.$deleteExpansePayment->attachment));
                 }
             }
 

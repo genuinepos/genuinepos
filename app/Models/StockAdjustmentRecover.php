@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\PaymentMethod;
-use App\Models\StockAdjustment;
-use App\Models\BaseModel;
-
 class StockAdjustmentRecover extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
-    
+
     public function adjustment()
     {
         return $this->belongsTo(StockAdjustment::class, 'stock_adjustment_id');

@@ -2,30 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Sale;
-use App\Models\Account;
-use App\Utils\SaleUtil;
-use App\Models\CashFlow;
 use App\Models\Customer;
-use App\Utils\Converter;
-use App\Models\SaleReturn;
-use App\Utils\AccountUtil;
-use App\Models\SalePayment;
-use App\Utils\CustomerUtil;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Models\CustomerLedger;
-use App\Models\CustomerPayment;
-use App\Utils\CustomerPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Models\CustomerCreditLimit;
 use App\Models\CustomerOpeningBalance;
+use App\Models\CustomerPayment;
 use App\Models\CustomerPaymentInvoice;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\PaymentMethod;
+use App\Models\Sale;
+use App\Models\SaleReturn;
+use App\Utils\AccountUtil;
 use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Utils\Converter;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\SaleUtil;
+use App\Utils\UserActivityLogUtil;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class CustomerController extends Controller
 {
@@ -43,7 +39,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('customer_all')) {
+        if (! auth()->user()->can('customer_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -55,12 +51,13 @@ class CustomerController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $groups = DB::table('customer_groups')->get();
+
         return view('contacts.customers.index', compact('groups', 'branches'));
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('customer_add')) {
+        if (! auth()->user()->can('customer_add')) {
 
             return response()->json('Access Denied');
         }
@@ -75,7 +72,7 @@ class CustomerController extends Controller
         $creditLimit = $request->credit_limit ? $request->credit_limit : 0;
 
         $addCustomer = Customer::create([
-            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, "0", STR_PAD_LEFT),
+            'contact_id' => $request->contact_id ? $request->contact_id : $cusIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('customers'), 4, '0', STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -113,7 +110,7 @@ class CustomerController extends Controller
             customer_id: $addCustomer->id,
             branch_id: auth()->user()->branch_id,
             date: date('Y-m-d'),
-            trans_id: NULL,
+            trans_id: null,
             amount: $request->opening_balance ? $request->opening_balance : 0.00
         );
 
@@ -131,7 +128,7 @@ class CustomerController extends Controller
 
     public function edit($customerId)
     {
-        if (!auth()->user()->can('customer_edit')) {
+        if (! auth()->user()->can('customer_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -153,7 +150,7 @@ class CustomerController extends Controller
 
     public function update(Request $request)
     {
-        if (!auth()->user()->can('customer_edit')) {
+        if (! auth()->user()->can('customer_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -242,7 +239,7 @@ class CustomerController extends Controller
             previous_branch_id: auth()->user()->branch_id,
             new_branch_id: auth()->user()->branch_id,
             date: $updateCustomer->created_at,
-            trans_id: NULL,
+            trans_id: null,
             amount: $request->opening_balance ? $request->opening_balance : 0.00,
             fixed_date: $updateCustomer->created_at,
         );
@@ -258,7 +255,7 @@ class CustomerController extends Controller
 
     public function delete(Request $request, $customerId)
     {
-        if (!auth()->user()->can('customer_delete')) {
+        if (! auth()->user()->can('customer_delete')) {
 
             return response()->json('Access Denied');
         }
@@ -272,7 +269,7 @@ class CustomerController extends Controller
 
         // $deleteCustomer = Customer::find($customerId);
 
-        if (!is_null($deleteCustomer)) {
+        if (! is_null($deleteCustomer)) {
 
             $this->userActivityLogUtil->addLog(action: 3, subject_type: 1, data_obj: $deleteCustomer);
 
@@ -294,12 +291,14 @@ class CustomerController extends Controller
             $this->userActivityLogUtil->addLog(action: 2, subject_type: 1, data_obj: $statusChange);
             $statusChange->status = 0;
             $statusChange->save();
+
             return response()->json('Customer deactivated successfully');
         } else {
 
             $this->userActivityLogUtil->addLog(action: 2, subject_type: 1, data_obj: $statusChange);
             $statusChange->status = 1;
             $statusChange->save();
+
             return response()->json('Customer activated successfully');
         }
     }
@@ -307,7 +306,7 @@ class CustomerController extends Controller
     // Customer view method
     public function view(Request $request, $customerId)
     {
-        if (!auth()->user()->can('customer_all')) {
+        if (! auth()->user()->can('customer_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -326,7 +325,7 @@ class CustomerController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('sales.branch_id', NULL);
+                    $query->where('sales.branch_id', null);
                 } else {
 
                     $query->where('sales.branch_id', $request->branch_id);
@@ -368,15 +367,15 @@ class CustomerController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i
+                    $html .= '<a class="dropdown-item details_button" href="'.route('sales.show', [$row->id]).'"><i
                                     class="far fa-eye text-primary"></i> View</a>';
 
-                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Packing Slip</a>';
+                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="'.route('sales.packing.slip', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Packing Slip</a>';
 
                     if (auth()->user()->can('shipment_access')) {
 
                         $html .= '<a class="dropdown-item" id="edit_shipment"
-                            href="' . route('sales.shipment.edit', [$row->id]) . '"><i
+                            href="'.route('sales.shipment.edit', [$row->id]).'"><i
                             class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                     }
 
@@ -386,33 +385,33 @@ class CustomerController extends Controller
 
                             if (auth()->user()->can('sale_payment')) {
 
-                                $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                                $html .= '<a class="dropdown-item" id="add_payment" href="'.route('sales.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                             }
                         }
 
                         if (auth()->user()->can('sale_payment')) {
 
                             $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                            data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
+                            data-target="#paymentListModal" href="'.route('sales.payment.view', [$row->id]).'"><i
                             class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                         }
 
                         if ($row->created_by == 1) {
 
-                            $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                            $html .= '<a class="dropdown-item" href="'.route('sales.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
                         } else {
 
-                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                            $html .= '<a class="dropdown-item" href="'.route('sales.pos.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
                         }
 
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i
+                        $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.delete', [$row->id]).'"><i
                         class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     if ($row->sale_return_due > 0) {
 
                         if (auth()->user()->can('sale_payment')) {
-                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '" ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                            $html .= '<a class="dropdown-item" id="add_return_payment" href="'.route('sales.return.payment.modal', [$row->id]).'" ><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                         }
                     }
 
@@ -420,6 +419,7 @@ class CustomerController extends Controller
                     //                 class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
 
@@ -433,32 +433,33 @@ class CustomerController extends Controller
                     $html = '';
                     $html .= $row->invoice_id;
                     $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
+
                     return $html;
                 })
 
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('customer',  function ($row) {
+                ->editColumn('customer', function ($row) {
 
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('total_payable_amount', fn ($row) => '<span class="text-success total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
+                ->editColumn('total_payable_amount', fn ($row) => '<span class="text-success total_payable_amount" data-value="'.$row->total_payable_amount.'">'.$this->converter->format_in_bdt($row->total_payable_amount).'</span>')
 
-                ->editColumn('paid', fn ($row) => '<span class="text-success paid" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                ->editColumn('paid', fn ($row) => '<span class="text-success paid" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
 
-                ->editColumn('due', fn ($row) =>  '<span class="text-danger due" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger due" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
 
-                ->editColumn('sale_return_amount', fn ($row) => '<span class="text-danger sale_return_amount" data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
+                ->editColumn('sale_return_amount', fn ($row) => '<span class="text-danger sale_return_amount" data-value="'.$row->sale_return_amount.'">'.$this->converter->format_in_bdt($row->sale_return_amount).'</span>')
 
-                ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger sale_return_due" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
+                ->editColumn('sale_return_due', fn ($row) => '<span class="text-danger sale_return_due" data-value="'.$row->sale_return_due.'">'.$this->converter->format_in_bdt($row->sale_return_due).'</span>')
 
                 ->editColumn('paid_status', function ($row) {
 
@@ -480,6 +481,7 @@ class CustomerController extends Controller
 
         $customer = DB::table('customers')->where('id', $customerId)->first();
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('contacts.customers.view', compact('customerId', 'customer', 'branches'));
     }
 
@@ -525,7 +527,7 @@ class CustomerController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('customer_ledgers.branch_id', NULL);
+                    $query->where('customer_ledgers.branch_id', null);
                 } else {
 
                     $query->where('customer_ledgers.branch_id', $request->branch_id);
@@ -558,7 +560,7 @@ class CustomerController extends Controller
             $tempRunning = 0;
             foreach ($customerLedgers as $customerLedger) {
 
-                $customerLedger->running_balance =  $tempRunning + ($customerLedger->debit - ($customerLedger->credit + $customerLedger->less_amount));
+                $customerLedger->running_balance = $tempRunning + ($customerLedger->debit - ($customerLedger->credit + $customerLedger->less_amount));
                 $tempRunning = $customerLedger->running_balance;
             }
 
@@ -567,15 +569,17 @@ class CustomerController extends Controller
 
                     $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
+
                     return date($__date_format, strtotime($row->report_date));
                 })
 
                 ->editColumn('particulars', function ($row) use ($customerUtil) {
 
                     $type = $customerUtil->voucherType($row->voucher_type);
-                    $__agp = $row->ags_sale ? '/' . 'AGS:<b>' . $row->ags_sale . '</b>' : '';
-                    $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-danger">' . $row->less_amount . '</b>)' : '';
-                    return '<b>' . $type['name'] . ($row->sale_status == 3 ? '-Order' : '') . '</b>' . $__agp . $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                    $__agp = $row->ags_sale ? '/'.'AGS:<b>'.$row->ags_sale.'</b>' : '';
+                    $__less = $row->less_amount > 0 ? '/'.'Less:(<b class="text-danger">'.$row->less_amount.'</b>)' : '';
+
+                    return '<b>'.$type['name'].($row->sale_status == 3 ? '-Order' : '').'</b>'.$__agp.$__less.($row->{$type['par']} ? '/'.$row->{$type['par']} : '');
                 })
 
                 ->editColumn('b_name', function ($row) use ($generalSettings) {
@@ -592,16 +596,17 @@ class CustomerController extends Controller
                 ->editColumn('voucher_no', function ($row) use ($customerUtil) {
 
                     $type = $customerUtil->voucherType($row->voucher_type);
+
                     return $row->{$type['voucher_no']};
                 })
 
-                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
+                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="'.$row->debit.'">'.$this->converter->format_in_bdt($row->debit).'</span>')
 
-                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
+                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="'.$row->credit.'">'.$this->converter->format_in_bdt($row->credit).'</span>')
 
                 ->editColumn('running_balance', function ($row) {
 
-                    return '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>';
+                    return '<span class="running_balance">'.$this->converter->format_in_bdt($row->running_balance).'</span>';
                 })
 
                 ->rawColumns(['date', 'particulars', 'b_name', 'voucher_no', 'debit', 'credit', 'running_balance'])
@@ -609,6 +614,7 @@ class CustomerController extends Controller
         }
 
         $customer = DB::table('customers')->where('id', $customerId)->select('id', 'contact_id', 'name')->first();
+
         return view('contacts.customers.ajax_view.ledger_list', compact('ledgers', 'customer'));
     }
 
@@ -632,7 +638,7 @@ class CustomerController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('customer_ledgers.branch_id', NULL);
+                $query->where('customer_ledgers.branch_id', null);
             } else {
 
                 $query->where('customer_ledgers.branch_id', $request->branch_id);
@@ -684,7 +690,7 @@ class CustomerController extends Controller
         }
 
         $customer = DB::table('customers')->where('id', $customerId)
-            ->select('id', 'contact_id', 'name', 'phone', 'address',)->first();
+            ->select('id', 'contact_id', 'name', 'phone', 'address')->first();
 
         return view('contacts.customers.ajax_view.print_ledger', compact('branch_id', 'ledgers', 'customer', 'customerUtil', 'fromDate', 'toDate'));
     }
@@ -705,7 +711,7 @@ class CustomerController extends Controller
                 'accounts.name',
                 'accounts.account_number',
                 'accounts.account_type',
-                'accounts.balance'
+                'accounts.balance',
             ]);
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -742,7 +748,7 @@ class CustomerController extends Controller
                 paymentMethodId: $request->payment_method_id,
                 date: $request->date,
                 lessAmount: $request->less_amount ? $request->less_amount : 0,
-                attachment: $request->hasFile('attachment') ? $request->file('attachment') : NULL,
+                attachment: $request->hasFile('attachment') ? $request->file('attachment') : null,
                 reference: $request->reference,
                 note: $request->note,
                 invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil
@@ -814,7 +820,7 @@ class CustomerController extends Controller
                 'accounts.name',
                 'accounts.account_number',
                 'accounts.account_type',
-                'accounts.balance'
+                'accounts.balance',
             ]);
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
@@ -830,7 +836,7 @@ class CustomerController extends Controller
     {
         // Add Customer Payment Record
         $customerPayment = new CustomerPayment();
-        $customerPayment->voucher_no = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
+        $customerPayment->voucher_no = 'RPV'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, '0', STR_PAD_LEFT);
         $customerPayment->branch_id = auth()->user()->branch_id;
         $customerPayment->customer_id = $customerId;
         $customerPayment->account_id = $request->account_id;
@@ -838,7 +844,7 @@ class CustomerController extends Controller
         $customerPayment->type = 2;
         $customerPayment->payment_method_id = $request->payment_method_id;
         $customerPayment->date = $request->date;
-        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');
         $customerPayment->year = date('Y');
@@ -846,7 +852,7 @@ class CustomerController extends Controller
         if ($request->hasFile('attachment')) {
 
             $PaymentAttachment = $request->file('attachment');
-            $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
+            $paymentAttachmentName = uniqid().'-'.'.'.$PaymentAttachment->getClientOriginalExtension();
             $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
             $customerPayment->attachment = $paymentAttachmentName;
         }
@@ -982,6 +988,7 @@ class CustomerController extends Controller
         }
 
         $this->customerUtil->adjustCustomerAmountForSalePaymentDue($customerId);
+
         return response()->json('Return amount paid successfully.');
     }
 
@@ -1030,9 +1037,9 @@ class CustomerController extends Controller
 
             if ($deleteCustomerPayment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/'.$deleteCustomerPayment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/' . $deleteCustomerPayment->attachment));
+                    unlink(public_path('uploads/payment_attachment/'.$deleteCustomerPayment->attachment));
                 }
             }
 
@@ -1132,7 +1139,7 @@ class CustomerController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $paymentsQuery->where('customer_ledgers.branch_id', NULL);
+                    $paymentsQuery->where('customer_ledgers.branch_id', null);
                 } else {
 
                     $paymentsQuery->where('customer_ledgers.branch_id', $request->branch_id);
@@ -1187,18 +1194,19 @@ class CustomerController extends Controller
 
                     if ($row->customer_payment_id) {
 
-                        $html .= '<a href="' . route('customers.view.details', $row->customer_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+                        $html .= '<a href="'.route('customers.view.details', $row->customer_payment_id).'" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
 
-                        $html .= '<a href="' . route('customers.payment.delete', $row->customer_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                        $html .= '<a href="'.route('customers.payment.delete', $row->customer_payment_id).'" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
                     } else {
 
-                        $html .= '<a href="' . route('sales.payment.details', $row->sale_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+                        $html .= '<a href="'.route('sales.payment.details', $row->sale_payment_id).'" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
 
-                        $html .= '<a href="' . route('sales.payment.delete', $row->sale_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                        $html .= '<a href="'.route('sales.payment.delete', $row->sale_payment_id).'" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
                     }
 
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
@@ -1207,7 +1215,7 @@ class CustomerController extends Controller
                 })
                 ->editColumn('voucher_no', function ($row) {
 
-                    return $row->customer_payment_voucher . $row->sale_payment_voucher;
+                    return $row->customer_payment_voucher.$row->sale_payment_voucher;
                 })
                 ->editColumn('against_invoice', function ($row) {
 
@@ -1215,19 +1223,19 @@ class CustomerController extends Controller
 
                         if ($row->sale_inv) {
 
-                            return 'Sale : ' . $row->sale_inv;
+                            return 'Sale : '.$row->sale_inv;
                         } else {
 
-                            return 'Sale Return : ' . $row->return_inv;
+                            return 'Sale Return : '.$row->return_inv;
                         }
                     } else {
 
                         if ($row->customer_payment_id) {
 
-                            return '<a href="' . route('customers.view.details', $row->customer_payment_id) . '" class="btn btn-sm text-info" id="payment_details"> Details</a>';
+                            return '<a href="'.route('customers.view.details', $row->customer_payment_id).'" class="btn btn-sm text-info" id="payment_details"> Details</a>';
                         } else {
 
-                            return '<a href="' . route('sales.payment.details', $row->sale_payment_id) . '" class="btn btn-sm text-info" id="payment_details"> Details</a>';
+                            return '<a href="'.route('sales.payment.details', $row->sale_payment_id).'" class="btn btn-sm text-info" id="payment_details"> Details</a>';
                         }
                     }
                 })
@@ -1243,22 +1251,22 @@ class CustomerController extends Controller
                 })
                 ->editColumn('method', function ($row) {
 
-                    return $row->cp_pay_mode . $row->cp_payment_method . $row->sp_pay_mode . $row->sp_payment_method;
+                    return $row->cp_pay_mode.$row->cp_payment_method.$row->sp_pay_mode.$row->sp_payment_method;
                 })
                 ->editColumn('account', function ($row) {
 
                     if ($row->cp_account) {
 
-                        return $row->cp_account . '(A/C:' . $row->cp_account_number . ')';
+                        return $row->cp_account.'(A/C:'.$row->cp_account_number.')';
                     } else {
 
-                        return $row->sp_account . '(A/C:' . $row->sp_account_number . ')';
+                        return $row->sp_account.'(A/C:'.$row->sp_account_number.')';
                     }
                 })
 
-                ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="' . $row->less_amount . '">' . $this->converter->format_in_bdt($row->less_amount) . '</span>')
+                ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="'.$row->less_amount.'">'.$this->converter->format_in_bdt($row->less_amount).'</span>')
 
-                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
+                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="'.$row->amount.'">'.$this->converter->format_in_bdt($row->amount).'</span>')
 
                 ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'less_amount', 'amount', 'action'])
                 ->make(true);
@@ -1269,7 +1277,7 @@ class CustomerController extends Controller
     {
         $branch_id = $request->branch_id ? $request->branch_id : auth()->user()->branch_id;
         $payments = '';
-        $fromDate  = '';
+        $fromDate = '';
         $toDate = '';
         $customer = DB::table('customers')->where('id', $customerId)->first();
 
@@ -1283,9 +1291,8 @@ class CustomerController extends Controller
             ->leftJoin('payment_methods as sp_pay_method', 'sale_payments.payment_method_id', 'sp_pay_method.id')
             ->leftJoin('accounts as sp_account', 'sale_payments.account_id', 'sp_account.id')
             ->leftJoin('sales', 'sale_payments.sale_id', 'sales.id')
-            ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id')
-            // ->leftJoin('users', 'customer_ledgers.user_id', 'users.id')
-        ;
+            ->leftJoin('sale_returns', 'sale_payments.sale_return_id', 'sale_returns.id');
+        // ->leftJoin('users', 'customer_ledgers.user_id', 'users.id')
 
         if ($request->type) {
 
@@ -1305,7 +1312,7 @@ class CustomerController extends Controller
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $paymentsQuery->whereBetween('customer_ledgers.report_date', $date_range); // Final
 
-            $fromDate  = $request->p_from_date;
+            $fromDate = $request->p_from_date;
             $toDate = $request->p_to_date ? $request->p_to_date : $request->p_from_date;
         }
 
@@ -1350,7 +1357,7 @@ class CustomerController extends Controller
 
     public function addOpeningBalance(Request $request)
     {
-        $branch_id = $request->branch_id == 'NULL' ? NULL : $request->branch_id;
+        $branch_id = $request->branch_id == 'NULL' ? null : $request->branch_id;
         $updateCustomer = Customer::where('id', $request->customer_id)->first();
 
         $branchOpeningBalance = CustomerOpeningBalance::where('customer_id', $request->customer_id)->where('branch_id', $branch_id)->first();
@@ -1385,7 +1392,7 @@ class CustomerController extends Controller
             previous_branch_id: $branch_id,
             new_branch_id: $branch_id,
             date: $updateCustomer->created_at,
-            trans_id: NULL,
+            trans_id: null,
             amount: $request->opening_balance ? $request->opening_balance : 0.00,
             fixed_date: $updateCustomer->created_at,
         );

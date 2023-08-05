@@ -58,7 +58,7 @@ class AccountUtil
 
         $expenseLoan = DB::table('account_ledgers')
             ->where('account_ledgers.account_id', $account_id)
-            ->where('account_ledgers.loan_id', '!=', NULL)
+            ->where('account_ledgers.loan_id', '!=', null)
             // ->where('debit', '!=', NULL)
             ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
             ->where('loans.loan_by', 'Expense')->select(DB::raw('sum(credit) as t_credit'))
@@ -66,12 +66,12 @@ class AccountUtil
             ->get();
 
         $totalExpenseLoan = $expenseLoan->sum('t_credit') ? $expenseLoan->sum('t_credit') : 0;
-     
+
         $currentBalance = 0;
         if ($balanceType == 'debit') {
 
             $currentBalance = $ac_ledger->sum('t_debit') - ($ac_ledger->sum('t_credit') - $totalExpenseLoan);
-        } else if ($balanceType == 'credit') {
+        } elseif ($balanceType == 'credit') {
 
             $currentBalance = $ac_ledger->sum('t_credit') - $ac_ledger->sum('t_debit');
         }
@@ -81,27 +81,28 @@ class AccountUtil
         $account->credit = $ac_ledger->sum('t_credit');
         $account->balance = $currentBalance;
         $account->save();
+
         return $account->balance;
     }
 
     public static function creatableDefaultAccount()
     {
         return [
-            1 => ['Cash',],
-            3 => ['Purchase',],
-            4 => ['Purchase Return',],
-            5 => ['Sales',],
-            6 => ['Sales Return',],
-            7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods',],
-            8 => ['Advertisement Expenses', 'Rent Paid',],
+            1 => ['Cash'],
+            3 => ['Purchase'],
+            4 => ['Purchase Return'],
+            5 => ['Sales'],
+            6 => ['Sales Return'],
+            7 => ['Expense', 'Office Expense', 'Cartage', 'Buy Goods'],
+            8 => ['Advertisement Expenses', 'Rent Paid'],
             9 => ['Current Asset'],
-            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable',],
-            13 => ['Loan Liabilities',],
-            14 => ['Loan&Advances', 'Advance Salary',],
-            15 => ['Furniture', 'Vehicle',],
-            22 => ['Stock Adjustment',],
+            10 => ['Current Liability', 'Salary Payable', 'Tax Deducted Payable'],
+            13 => ['Loan Liabilities'],
+            14 => ['Loan&Advances', 'Advance Salary'],
+            15 => ['Furniture', 'Vehicle'],
+            22 => ['Stock Adjustment'],
             23 => ['Production'],
-            24 => ['Income', 'Discount On Purchase', 'Discount Received',],
+            24 => ['Income', 'Discount On Purchase', 'Discount Received'],
             25 => ['Interest Received'],
             26 => ['Capital'],
             // 26 => 'Profit & Loss A/C',
@@ -156,18 +157,18 @@ class AccountUtil
             7 => ['name' => 'Stock Adjustment', 'voucher_no' => 'sa_voucher', 'id' => 'adjustment_id', 'amt' => 'credit', 'pur' => 'adjustment_pur'],
             8 => ['name' => 'Adjustment Recovered', 'voucher_no' => 'sar_amt_voucher', 'id' => 'stock_adjustment_recover_id', 'amt' => 'debit', 'pur' => 'sar_pur'],
             9 => ['name' => 'Expense Payment', 'voucher_no' => 'exp_payment_voucher', 'id' => 'expense_payment_id', 'amt' => 'credit', 'pur' => 'expense_payment_pur'],
-            10 => ['name' => 'Receive Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'debit', 'pur' => 'sale_payment_pur'],
-            11 => ['name' => 'Purchase Payment', 'voucher_no' => 'pur_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'credit', 'pur' => 'purchase_payment_pur'],
-            12 => ['name' => 'Sale Return Payment', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit', 'pur' => 'sale_payment_pur'],
+            10 => ['name' => 'Receipt', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'debit', 'pur' => 'sale_payment_pur'],
+            11 => ['name' => 'Payment', 'voucher_no' => 'pur_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'credit', 'pur' => 'purchase_payment_pur'],
+            12 => ['name' => 'Refund To Customer', 'voucher_no' => 'sale_payment_voucher', 'id' => 'sale_payment_id', 'amt' => 'credit', 'pur' => 'sale_payment_pur'],
             13 => ['name' => 'Loan&Liabilities', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'credit', 'pur' => 'loan_pur'],
             14 => ['name' => 'Loan&Advance', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit', 'pur' => 'loan_pur'],
             15 => ['name' => 'Loan Liability Payment', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'credit', 'pur' => 'loan_pay_pur'],
             16 => ['name' => 'Loan&Advance Receive', 'voucher_no' => 'loan_payment_voucher', 'id' => 'loan_payment_id', 'amt' => 'debit', 'pur' => 'loan_pay_pur'],
-            17 => ['name' => 'Receive Return Amt.', 'voucher_no' => 'pur_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit', 'pur' => 'purchase_payment_pur'],
-            18 => ['name' => 'Received From Customer', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'debit', 'pur' => 'customer_payment_pur'],
-            19 => ['name' => 'Paid To Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'credit', 'pur' => 'supplier_payment_pur'],
-            20 => ['name' => 'Paid To Customer', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'credit', 'pur' => 'customer_payment_pur'],
-            21 => ['name' => 'Received From Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit', 'pur' => 'supplier_payment_pur'],
+            17 => ['name' => 'Refund From Supplier', 'voucher_no' => 'pur_payment_voucher', 'id' => 'purchase_payment_id', 'amt' => 'debit', 'pur' => 'purchase_payment_pur'],
+            18 => ['name' => 'Receipt', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'debit', 'pur' => 'customer_payment_pur'],
+            19 => ['name' => 'Payment', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'credit', 'pur' => 'supplier_payment_pur'],
+            20 => ['name' => 'Refund To Customer', 'voucher_no' => 'customer_payment_voucher', 'id' => 'customer_payment_id', 'amt' => 'credit', 'pur' => 'customer_payment_pur'],
+            21 => ['name' => 'Refund From Supplier', 'voucher_no' => 'supplier_payment_voucher', 'id' => 'supplier_payment_id', 'amt' => 'debit', 'pur' => 'supplier_payment_pur'],
             22 => ['name' => 'Production', 'voucher_no' => 'production_voucher', 'id' => 'production_id', 'amt' => 'debit', 'pur' => 'production_pur'],
             23 => ['name' => 'Payroll Payment', 'voucher_no' => 'payroll_pay_voucher', 'id' => 'payroll_payment_id', 'amt' => 'credit', 'pur' => 'payroll_payment_pur'],
             24 => ['name' => 'Loan&Liabilities-money-trans', 'voucher_no' => 'loan_voucher_no', 'id' => 'loan_id', 'amt' => 'debit', 'pur' => 'loan_pur'],
@@ -183,7 +184,7 @@ class AccountUtil
     {
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
-        $add->date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $add->date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $add->account_id = $account_id;
         $add->voucher_type = $voucher_type_id;
         $add->{$voucherType['id']} = $trans_id;
@@ -204,7 +205,7 @@ class AccountUtil
             $previousAccountId = $update->account_id;
 
             $previousTime = date('H:i:s', strtotime($update->date));
-            $update->date = date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $update->date = date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $update->account_id = $account_id;
             $update->{$voucherType['amt']} = $amount;
             $update->save();

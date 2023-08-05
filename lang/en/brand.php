@@ -1,17 +1,18 @@
-<?php 
+<?php
+
 return [
     // Brand page text
-    'brands'=> 'Brands',
-    'add_brand'=> 'Add Brand',
-    'edit'=> 'Edit',
-    'edit_brand'=> 'Edit Brand',
-    'brand_delete'=> 'Delete',
-    'all_brands'=> 'All Brands',
-    'back'=> 'Back',
-    't_brand'=> 'Brand',
-    't_photo'=> 'Image',
-    't_action'=> 'Action',
-    // Brand Form field 
+    'brands' => 'Brands',
+    'add_brand' => 'Add Brand',
+    'edit' => 'Edit',
+    'edit_brand' => 'Edit Brand',
+    'brand_delete' => 'Delete',
+    'all_brands' => 'All Brands',
+    'back' => 'Back',
+    't_brand' => 'Brand',
+    't_photo' => 'Image',
+    't_action' => 'Action',
+    // Brand Form field
     'name' => 'Name',
     'brand_photo' => 'Photo',
     'save' => 'Save',
@@ -25,4 +26,3 @@ return [
     'update_success' => 'Brand updated successfully.',
     'delete_success' => 'Brand deleted successfully.',
 ];
-

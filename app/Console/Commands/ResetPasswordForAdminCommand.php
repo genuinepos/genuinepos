@@ -27,7 +27,7 @@ class ResetPasswordForAdminCommand extends Command
      */
     public function handle()
     {
-        if(! config('app.debug')) {
+        if (! config('app.debug')) {
             $this->error('This command is not available on production environment');
             exit(1);
         }
@@ -35,11 +35,11 @@ class ResetPasswordForAdminCommand extends Command
         $newPassword = 'password';
 
         $firstAdmin = \App\Models\User::role('superadmin')->first();
-        if(isset($firstAdmin)) {
+        if (isset($firstAdmin)) {
             $firstAdmin->password = bcrypt($newPassword);
             $firstAdmin->save();
             echo "Username: {$firstAdmin->username}\nPassword: {$newPassword}\n";
-            $this->info("Reset succeed!");
+            $this->info('Reset succeed!');
         }
 
         return Command::SUCCESS;

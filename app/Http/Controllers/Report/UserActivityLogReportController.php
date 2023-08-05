@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
+use App\Utils\UserActivityLogUtil;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 // use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserActivityLogReportController extends Controller
 {
     public $userActivityLogUtil;
+
     public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
         $this->userActivityLogUtil = $userActivityLogUtil;
@@ -57,32 +58,33 @@ class UserActivityLogReportController extends Controller
             return DataTables::of($logs)
                 ->editColumn('date', function ($row) use ($generalSettings) {
                     $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                     return date($__date_format.' h:i:s a', strtotime($row->report_date));
                 })
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('action_by', fn ($row) => $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name)
+                ->editColumn('action_by', fn ($row) => $row->u_prefix.' '.$row->u_name.' '.$row->u_last_name)
 
                 ->editColumn('action', function ($row) use ($actions) {
 
                     if ($actions[$row->action] == 'Deleted') {
 
                         return '<strong class="text-danger">'.$actions[$row->action].'</strong>';
-                    }elseif ($actions[$row->action] == 'Added') {
+                    } elseif ($actions[$row->action] == 'Added') {
 
                         return '<strong class="text-success">'.$actions[$row->action].'</strong>';
-                    }elseif ($actions[$row->action] == 'Updated') {
+                    } elseif ($actions[$row->action] == 'Updated') {
 
                         return '<strong class="text_color_updated">'.$actions[$row->action].'</strong>';
-                    }elseif ($actions[$row->action] == 'User Login') {
+                    } elseif ($actions[$row->action] == 'User Login') {
 
                         return '<strong class="text-success">'.$actions[$row->action].'</strong>';
-                    }elseif ($actions[$row->action] == 'User Logout') {
+                    } elseif ($actions[$row->action] == 'User Logout') {
 
                         return '<strong class="text-danger">'.$actions[$row->action].'</strong>';
                     }
@@ -97,7 +99,7 @@ class UserActivityLogReportController extends Controller
 
                 ->editColumn('descriptions', function ($row) {
 
-                    return  $row->descriptions;
+                    return $row->descriptions;
                 })
 
                 ->rawColumns(['date', 'branch', 'action_by', 'action', 'subject_type', 'descriptions'])
@@ -105,6 +107,7 @@ class UserActivityLogReportController extends Controller
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('reports.user_activity_log.index', compact('branches'));
     }
 
@@ -114,7 +117,7 @@ class UserActivityLogReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('user_activity_logs.branch_id', NULL);
+                $query->where('user_activity_logs.branch_id', null);
             } else {
 
                 $query->where('user_activity_logs.branch_id', $request->branch_id);

@@ -1,16 +1,47 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {
+        position: fixed;
+        bottom: 24px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 </style>
 @php
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
@@ -21,16 +52,13 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-
-            <h5>{{ $generalSettings['business__shop_name'] }}                                                                                            </h5>
+            <h5>{{ $generalSettings['business__shop_name'] }} </h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-
             <h5>{{ $generalSettings['business__shop_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
-
             @php
                 $branch = DB::table('branches')
                     ->where('id', $branch_id)
@@ -38,13 +66,12 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         <h6 style="margin-top: 10px;"><b>@lang('menu.stock_in_out_report') </b></h6>
 
         @if ($fromDate && $toDate)
-
             <p style="margin-top: 10px;"><b>@lang('menu.from') </b>
                 {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
                 <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
@@ -63,12 +90,12 @@
                     <th class="text-start">@lang('menu.sale_date')</th>
                     <th class="text-start">{{ __('B. Location') }}</th>
                     <th class="text-end">{{ __('Sold/Out Qty') }}</th>
-                    <th class="text-end">{{ __('Sold Price') }}({{$generalSettings['business__currency']}})</th>
+                    <th class="text-end">{{ __('Sold Price') }}({{ $generalSettings['business__currency'] }})</th>
 
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">{{ __('Stock In By') }}</th>
                     <th class="text-start">{{ __('Stock In Date') }}</th>
-                    <th class="text-end">@lang('menu.unit_cost')({{$generalSettings['business__currency']}})</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -102,23 +129,18 @@
                             {{ App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) }}
                         </td>
 
-                        <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer'; }}</td>
+                        <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer' }}</td>
 
                         <td class="text-start">
                             @if ($row->purchase_inv)
-
-                                {{ 'Purchase:'. $row->purchase_inv }}
+                                {{ 'Purchase:' . $row->purchase_inv }}
                             @elseif ($row->production_voucher_no)
-
                                 {{ 'Production:' . $row->production_voucher_no }}
                             @elseif ($row->pos_id)
-
                                 {{ 'Opening Stock' }}
                             @elseif ($row->sale_return_id)
-
-                                {{ 'Sale Returned Stock:'  . $row->sale_return_invoice }}
+                                {{ 'Sale Returned Stock:' . $row->sale_return_invoice }}
                             @else
-
                                 {{ __('Non-Manageable-Stock') }}
                             @endif
                         </td>

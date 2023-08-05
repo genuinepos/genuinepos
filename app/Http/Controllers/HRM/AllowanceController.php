@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Http\Controllers\Controller;
+use App\Models\Hrm\Allowance;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Hrm\Allowance;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\Hrm\AllowanceEmployee;
 
 class AllowanceController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     //index methods allwoance get page
     public function index()
     {
         $employee = User::where('status', 1)->get();
+
         return view('hrm.allowance.index', compact('employee'));
     }
 
@@ -27,6 +27,7 @@ class AllowanceController extends Controller
     public function allallowance()
     {
         $allowance = Allowance::with(['allowance_employees', 'allowance_employees.employee'])->orderBy('id', 'DESC')->get();
+
         return view('hrm.allowance.ajax.list', compact('allowance'));
     }
 
@@ -54,6 +55,7 @@ class AllowanceController extends Controller
     {
         $employees = DB::table('users')->where('status', 1)->get();
         $allowance = Allowance::with('allowance_employees')->where('id', $alowanceId)->first();
+
         return view('hrm.allowance.ajax.edit_modal_form', compact('allowance', 'employees'));
     }
 
@@ -61,6 +63,7 @@ class AllowanceController extends Controller
     public function GetEmployee()
     {
         $admins = DB::table('users')->where('status', 1)->get();
+
         return response()->json($admins);
     }
 
@@ -89,6 +92,7 @@ class AllowanceController extends Controller
     {
         $deleteAllowance = Allowance::find($id);
         $deleteAllowance->delete();
+
         return response()->json('Successfully Allowance is Deleted');
     }
 }

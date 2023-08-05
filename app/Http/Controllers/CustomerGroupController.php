@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\CustomerGroup;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,18 +19,21 @@ class CustomerGroupController extends Controller
     {
         if ($request->ajax()) {
             $customerGroup = DB::table('customer_groups')->orderBy('group_name', 'asc')->get();
+
             return DataTables::of($customerGroup)
                 ->addIndexColumn()
-                ->addColumn('action', function($row) {
+                ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                        $html .= '<a href="' . route('contacts.customers.groups.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                        $html .= '<a href="' . route('customers.groups.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="'.route('contacts.customers.groups.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('customers.groups.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         return view('contacts.customer_group.index');
     }
 
@@ -38,6 +41,7 @@ class CustomerGroupController extends Controller
     public function edit($id)
     {
         $groups = CustomerGroup::find($id);
+
         return view('contacts.customer_group.ajax_view.edit', compact('groups'));
     }
 
@@ -58,6 +62,7 @@ class CustomerGroupController extends Controller
             'group_name' => $request->name,
             'calc_percentage' => $request->calculation_percent ? $request->calculation_percent : 0.00,
         ]);
+
         return response()->json('Customer group created successfully');
     }
 
@@ -74,6 +79,7 @@ class CustomerGroupController extends Controller
             'group_name' => $request->name,
             'calc_percentage' => $request->calculation_percent ? $request->calculation_percent : 0.00,
         ]);
+
         return response()->json('Customer group updated successfully');
     }
 
@@ -81,9 +87,10 @@ class CustomerGroupController extends Controller
     public function delete(Request $request, $id)
     {
         $deleteCustomerGroup = CustomerGroup::find($id);
-        if (!is_null($deleteCustomerGroup)) {
+        if (! is_null($deleteCustomerGroup)) {
             $deleteCustomerGroup->delete();
         }
+
         return response()->json('Customer group deleted successfully');
     }
 }

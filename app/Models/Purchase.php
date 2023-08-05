@@ -2,21 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Branch;
-use App\Models\Supplier;
-use App\Models\BaseModel;
-use App\Models\Warehouse;
-use App\Models\PurchaseReturn;
-use App\Models\SupplierLedger;
-use App\Models\PurchaseProduct;
-use App\Models\PurchaseOrderProduct;
-use App\Models\TransferStockToWarehouse;
-
 class Purchase extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
+
     protected $table = 'purchases';
 
     public function warehouse()
@@ -41,7 +32,7 @@ class Purchase extends BaseModel
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id','name', 'business_name', 'phone', 'email', 'address', 'prefix']);
+        return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id', 'name', 'business_name', 'phone', 'email', 'address', 'prefix']);
     }
 
     public function admin()
@@ -68,6 +59,7 @@ class Purchase extends BaseModel
     {
         return $this->hasMany(TransferStockToWarehouse::class);
     }
+
     public function transfer_to_branch()
     {
         return $this->hasMany(TransferStockToBranch::class);

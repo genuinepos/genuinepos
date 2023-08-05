@@ -39,7 +39,6 @@ $(document).on('input', '#ex_quantity',function () {
     var ex_qty = $(this).val();
     var closestTr = $(this).closest('tr');
     var soldQty = closestTr.find('#sold_quantity').val();
-    console.log(soldQty);
 
     if (parseFloat(ex_qty) < 0) {
 
@@ -142,7 +141,6 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 $('#order_discount').val(data.sale.order_discount);
             }
 
-            
             $('#order_discount_amount').val('-'+data.sale.order_discount_amount);
 
             //$('#previous_due').val(data.sale.due);

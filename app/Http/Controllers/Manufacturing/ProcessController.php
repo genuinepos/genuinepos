@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Manufacturing\Process;
 use App\Models\Manufacturing\ProcessIngredient;
 use App\Utils\Manufacturing\ProcessUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProcessController extends Controller
 {
     public $processUtil;
+
     public function __construct(ProcessUtil $processUtil)
     {
         $this->processUtil = $processUtil;
-        
+
     }
 
     // Process index view method
     public function index(Request $request)
     {
-        if (!auth()->user()->can('process_view') ) {
+        if (! auth()->user()->can('process_view')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -50,7 +51,7 @@ class ProcessController extends Controller
 
     public function show($processId)
     {
-        if (!auth()->user()->can('process_view') ) {
+        if (! auth()->user()->can('process_view')) {
             return response()->json('Access Denied');
         }
 
@@ -70,13 +71,13 @@ class ProcessController extends Controller
     // Process index view method
     public function create(Request $request)
     {
-        if (!auth()->user()->can('process_add') ) {
+        if (! auth()->user()->can('process_add')) {
             abort(403, 'Access Forbidden.');
         }
 
         $productAndVariantId = explode('-', $request->product_id);
         $product_id = $productAndVariantId[0];
-        $variant_id = $productAndVariantId[1] != 'NULL' ? $productAndVariantId[1] : NULL;
+        $variant_id = $productAndVariantId[1] != 'NULL' ? $productAndVariantId[1] : null;
 
         $checkSameItemProcess = Process::where('product_id', $product_id)->where('variant_id', $variant_id)->first();
 
@@ -85,13 +86,14 @@ class ProcessController extends Controller
         }
 
         $product = $this->processUtil->getProcessableProductForCreate($request);
+
         return view('manufacturing.process.create', compact('product'));
     }
 
     // Store process
     public function store(Request $request)
     {
-        if (!auth()->user()->can('process_add') ) {
+        if (! auth()->user()->can('process_add')) {
             return response()->json('Access Denied.');
         }
 
@@ -104,7 +106,7 @@ class ProcessController extends Controller
         $addProcess = new Process();
         $addProcess->branch_id = auth()->user()->branch_id;
         $addProcess->product_id = $request->product_id;
-        $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
+        $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : null;
         $addProcess->total_ingredient_cost = $request->total_ingredient_cost;
         $addProcess->total_output_qty = $request->total_output_qty;
         $addProcess->unit_id = $request->unit_id;
@@ -120,7 +122,7 @@ class ProcessController extends Controller
                 $addProcessIngredient = new ProcessIngredient();
                 $addProcessIngredient->process_id = $addProcess->id;
                 $addProcessIngredient->product_id = $product_id;
-                $addProcessIngredient->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $addProcessIngredient->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
                 $addProcessIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
                 $addProcessIngredient->final_qty = $request->final_quantities[$index];
                 $addProcessIngredient->unit_id = $request->unit_ids[$index];
@@ -136,7 +138,7 @@ class ProcessController extends Controller
     // Edit process view with data
     public function edit($processId)
     {
-        if (!auth()->user()->can('process_edit') ) {
+        if (! auth()->user()->can('process_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -168,12 +170,13 @@ class ProcessController extends Controller
                 'product_variants.variant_name as v_name',
                 'product_variants.variant_code as v_code',
             )->get();
+
         return view('manufacturing.process.edit', compact('process', 'units', 'processIngredients'));
     }
 
     public function update(Request $request, $processId)
     {
-        if (!auth()->user()->can('process_edit') ) {
+        if (! auth()->user()->can('process_edit')) {
             return response()->json('Access Denied');
         }
 
@@ -185,7 +188,7 @@ class ProcessController extends Controller
 
         $updateProcess = Process::where('id', $processId)->first();
         $updateProcess->product_id = $request->product_id;
-        $updateProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : NULL;
+        $updateProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : null;
         $updateProcess->total_ingredient_cost = $request->total_ingredient_cost;
         $updateProcess->total_output_qty = $request->total_output_qty;
         $updateProcess->unit_id = $request->unit_id;
@@ -212,7 +215,7 @@ class ProcessController extends Controller
             $index = 0;
             foreach ($product_ids as $product_id) {
 
-                $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
                 $updateIngredient = ProcessIngredient::where('process_id', $updateProcess->id)
                     ->where('product_id', $product_id)
                     ->where('variant_id', $variant_id)->first();
@@ -230,7 +233,7 @@ class ProcessController extends Controller
                     $addProcessIngredient = new ProcessIngredient();
                     $addProcessIngredient->process_id = $updateProcess->id;
                     $addProcessIngredient->product_id = $product_id;
-                    $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                    $addProcessIngredient->variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
                     $addProcessIngredient->unit_cost_inc_tax = $unit_costs_inc_tax[$index];
                     $addProcessIngredient->final_qty = $final_quantities[$index];
                     $addProcessIngredient->unit_id = $unit_ids[$index];
@@ -255,13 +258,14 @@ class ProcessController extends Controller
 
     public function delete($processId)
     {
-        if (!auth()->user()->can('process_delete') ) {
+        if (! auth()->user()->can('process_delete')) {
             return response()->json('Access Denied');
         }
 
         $process = Process::where('id', $processId)->first();
-        if (!is_null($process)) {
+        if (! is_null($process)) {
             $process->delete();
+
             return response()->json('Manufacturing Process deleted successfully');
         }
     }

@@ -2,27 +2,23 @@
 
 namespace App\Imports;
 
-use App\Models\Tax;
-use App\Models\Unit;
 use App\Models\Branch;
 use App\Models\Brand;
-use App\Models\Product;
 use App\Models\Category;
-use App\Models\Warranty;
+use App\Models\Product;
 use App\Models\ProductBranch;
-use Illuminate\Support\Collection;
 use App\Models\ProductOpeningStock;
+use App\Models\Tax;
+use App\Models\Unit;
+use App\Models\Warranty;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ProductImport implements ToCollection
 {
-    /**
-     * @param Collection $collection
-     */
     public function collection(Collection $collection)
     {
-        //dd($collection);
         $index = 0;
         foreach ($collection as $c) {
             // Generate product code
@@ -37,7 +33,7 @@ class ProductImport implements ToCollection
             if ($index != 0) {
                 $addProduct = new Product();
                 $addProduct->type = 1;
-                $addProduct->name = $c[0] ? $c[0] : 'Undefined-' . $index;
+                $addProduct->name = $c[0] ? $c[0] : 'Undefined-'.$index;
                 $addProduct->product_code = $c[1] ? $c[1] : $g_productCode;
                 $unit = Unit::where('name', $c[2])->first();
 
@@ -46,12 +42,12 @@ class ProductImport implements ToCollection
                 } else {
                     $addUnit = new Unit();
                     $addUnit->name = $c[2];
-                    $addUnit->code_name =  $c[2];
+                    $addUnit->code_name = $c[2];
                     $addUnit->save();
                     $addProduct->unit_id = $addUnit->id;
                 }
 
-                if (!empty($c[3])) {
+                if (! empty($c[3])) {
                     $category = Category::where('name', $c[3])->first();
                     $childCategoryId = '';
                     if ($category) {
@@ -68,7 +64,7 @@ class ProductImport implements ToCollection
                     }
                 }
 
-                if (!empty($c[4])) {
+                if (! empty($c[4])) {
                     $childCategory = Category::where('name', $c[4])->first();
                     if ($childCategory) {
                         $addProduct->sub_category_id = $childCategory->id;
@@ -83,7 +79,6 @@ class ProductImport implements ToCollection
                     }
                 }
 
-
                 $brand = Brand::where('name', $c[5])->first();
                 if ($brand) {
                     $addProduct->brand_id = $brand->id;
@@ -97,14 +92,14 @@ class ProductImport implements ToCollection
 
                 $addProduct->barcode_type = $c[6] ? $c[6] : 'CODE128';
                 $addProduct->alert_quantity = $c[7] ? $c[7] : 0;
-                $addProduct->expire_date = $c[8] ? $c[8] : NULL;
+                $addProduct->expire_date = $c[8] ? $c[8] : null;
 
                 $warranty = Warranty::where('name', $c[9])->first();
                 if ($warranty) {
                     $addProduct->warranty_id = $warranty->id;
                 }
 
-                $addProduct->product_details = $c[10] ? $c[10] : NULL;
+                $addProduct->product_details = $c[10] ? $c[10] : null;
 
                 if ($c[11]) {
                     $tax = Tax::where('tax_percent', $c[11])->first();
@@ -112,7 +107,7 @@ class ProductImport implements ToCollection
                         $addProduct->tax_id = $tax->id;
                     } else {
                         $addTax = new Tax();
-                        $addTax->tax_name = 'Tax@' . $c[11] . '%';
+                        $addTax->tax_name = 'Tax@'.$c[11].'%';
                         $addTax->tax_percent = $c[11];
                         $addTax->save();
                         $addProduct->tax_id = $addTax->id;

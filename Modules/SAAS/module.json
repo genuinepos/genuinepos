@@ -1,0 +1,11 @@
+{
+    "name": "SAAS",
+    "alias": "saas",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SAAS\\Providers\\SAASServiceProvider"
+    ],
+    "files": []
+}

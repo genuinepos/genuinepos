@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -21,7 +22,7 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('manuf_report')) {
+        if (! auth()->user()->can('manuf_report')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -58,21 +59,21 @@ class ReportController extends Controller
                 ->editColumn('date', function ($row) use ($generalSettings) {
                     return date($generalSettings['business__date_format'], strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
-                })->editColumn('product',  fn ($row) => Str::limit($row->p_name, 25, '') . ' ' . $row->v_name)
+                })->editColumn('product', fn ($row) => Str::limit($row->p_name, 25, '').' '.$row->v_name)
                 ->editColumn('unit_cost_inc_tax', fn ($row) => $this->converter->format_in_bdt($row->unit_cost_inc_tax))
                 ->editColumn('price_exc_tax', fn ($row) => $this->converter->format_in_bdt($row->price_exc_tax))
-                ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="' . $row->quantity . '">' . $row->quantity . '/' . $row->u_name . '</span>')
-                ->editColumn('wasted_quantity', fn ($row) => '<span class="wasted_quantity" data-value="' . $row->wasted_quantity . '">' . $row->wasted_quantity . '/' . $row->u_name . '</span>')
-                ->editColumn('total_final_quantity', fn ($row) => '<span class="total_final_quantity" data-value="' . $row->total_final_quantity . '">' . $row->total_final_quantity . '/' . $row->u_name . '</span>')
-                ->editColumn('total_ingredient_cost', fn ($row) =>  '<span class="total_ingredient_cost" data-value="' . $row->total_ingredient_cost . '">' . $this->converter->format_in_bdt($row->total_ingredient_cost) . '</span>')
-                ->editColumn('production_cost', fn ($row) => '<span class="production_cost" data-value="' . $row->production_cost . '">' . $this->converter->format_in_bdt($row->production_cost) . '</span>')
-                ->editColumn('total_cost', fn ($row) => '<span class="total_cost" data-value="' . $row->total_cost . '">' . $this->converter->format_in_bdt($row->total_cost) . '</span>')
+                ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="'.$row->quantity.'">'.$row->quantity.'/'.$row->u_name.'</span>')
+                ->editColumn('wasted_quantity', fn ($row) => '<span class="wasted_quantity" data-value="'.$row->wasted_quantity.'">'.$row->wasted_quantity.'/'.$row->u_name.'</span>')
+                ->editColumn('total_final_quantity', fn ($row) => '<span class="total_final_quantity" data-value="'.$row->total_final_quantity.'">'.$row->total_final_quantity.'/'.$row->u_name.'</span>')
+                ->editColumn('total_ingredient_cost', fn ($row) => '<span class="total_ingredient_cost" data-value="'.$row->total_ingredient_cost.'">'.$this->converter->format_in_bdt($row->total_ingredient_cost).'</span>')
+                ->editColumn('production_cost', fn ($row) => '<span class="production_cost" data-value="'.$row->production_cost.'">'.$this->converter->format_in_bdt($row->production_cost).'</span>')
+                ->editColumn('total_cost', fn ($row) => '<span class="total_cost" data-value="'.$row->total_cost.'">'.$this->converter->format_in_bdt($row->total_cost).'</span>')
                 ->editColumn('status', function ($row) {
                     if ($row->is_final == 1) {
                         return '<span class="text-success"><b>Final</b></span>';
@@ -86,6 +87,7 @@ class ReportController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $categories = DB::table('categories')->select('id', 'name')->get();
+
         return view('manufacturing.report.index', compact('branches', 'categories'));
     }
 
@@ -101,7 +103,7 @@ class ReportController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('productions.branch_id', NULL);
+                $query->where('productions.branch_id', null);
             } else {
                 $query->where('productions.branch_id', $request->branch_id);
             }
@@ -130,6 +132,7 @@ class ReportController extends Controller
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('productions.report_date', $date_range); // Final
         }
+
         return $query;
     }
 }

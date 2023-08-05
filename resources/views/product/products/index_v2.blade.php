@@ -244,7 +244,7 @@
             {data: 'photo', name: 'products.name'},
             {data: 'action', name: 'products.name'},
             {data: 'name', name: 'products.name'},
-            {data: 'access_locations', name: 'products.name'},
+            {data: 'access_locations', name: 'products.product_code'},
             {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
             {data: 'product_price', name: 'products.product_price'},
             {data: 'quantity', name: 'products.product_price'},

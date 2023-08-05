@@ -2,9 +2,7 @@
 
 namespace App\Utils;
 
-use App\Utils\Converter;
 use App\Models\UserActivityLog;
-use Illuminate\Support\Facades\DB;
 
 class UserActivityLogUtil
 {
@@ -69,7 +67,7 @@ class UserActivityLogUtil
                     'Phone : ',
                     'Customer ID : ',
                     'Balance Due : ',
-                ]
+                ],
             ],
             2 => [ // Suppliers
                 'fields' => [
@@ -83,7 +81,7 @@ class UserActivityLogUtil
                     'Phone : ',
                     'Supplier ID : ',
                     'Balance Due : ',
-                ]
+                ],
             ],
             3 => [ // Users
                 'fields' => [
@@ -97,7 +95,7 @@ class UserActivityLogUtil
                     'Name : ',
                     'Last Lame : ',
                     'Username',
-                ]
+                ],
             ],
             4 => [ // Purchase
                 'fields' => [
@@ -113,7 +111,7 @@ class UserActivityLogUtil
                     'Total Purchase Amount : ',
                     'Paid : ',
                     'Due : ',
-                ]
+                ],
             ],
             5 => [ // Purchase Order
                 'fields' => [
@@ -129,7 +127,7 @@ class UserActivityLogUtil
                     'Total Ordered Amt : ',
                     'Paid : ',
                     'Due : ',
-                ]
+                ],
             ],
             6 => [ // Purchase Return
                 'fields' => [
@@ -143,7 +141,7 @@ class UserActivityLogUtil
                     'Return Invoice ID : ',
                     'Total Returned Amt : ',
                     'Refunded Amt : ',
-                ]
+                ],
             ],
             7 => [ // Sales
                 'fields' => [
@@ -159,7 +157,7 @@ class UserActivityLogUtil
                     'Total Payable Amount : ',
                     'Paid : ',
                     'Due : ',
-                ]
+                ],
             ],
             8 => [ // Sales Order
                 'fields' => [
@@ -175,7 +173,7 @@ class UserActivityLogUtil
                     'Total Payable Amt',
                     'Paid',
                     'Due',
-                ]
+                ],
             ],
             9 => [ // Sales Return
                 'fields' => [
@@ -189,7 +187,7 @@ class UserActivityLogUtil
                     'Return Invoice ID : ',
                     'Total Returned Amt. : ',
                     'Refunded Amt. : ',
-                ]
+                ],
             ],
             10 => [ // Transfer B.Location To Warehouse
                 'fields' => [
@@ -203,7 +201,7 @@ class UserActivityLogUtil
                     'Reference ID : ',
                     'Total Send Quantity : ',
                     'Total Received Quantity : ',
-                ]
+                ],
             ],
             11 => [ // Transfer Warehouse To B.Location
                 'fields' => [
@@ -217,7 +215,7 @@ class UserActivityLogUtil
                     'Reference ID : ',
                     'Total Send Quantity : ',
                     'Total Received Quantity : ',
-                ]
+                ],
             ],
             12 => [ // Transfer B.Location To Warehouse
                 'fields' => [
@@ -231,7 +229,7 @@ class UserActivityLogUtil
                     'Reference ID : ',
                     'Total Send Quantity : ',
                     'Total Received Quantity : ',
-                ]
+                ],
             ],
             13 => [ // Stock Adjustment From B.Location
                 'fields' => [
@@ -245,7 +243,7 @@ class UserActivityLogUtil
                     'Reference ID : ',
                     'Total Adjusted Amt. : ',
                     'Total Recovered Amount : ',
-                ]
+                ],
             ],
             14 => [ // Stock Adjustment From Warehouse
                 'fields' => [
@@ -259,19 +257,19 @@ class UserActivityLogUtil
                     'Reference ID : ',
                     'Total Adjusted Amt. : ',
                     'Total Recovered Amount : ',
-                ]
+                ],
             ],
             15 => [ // Expenses
                 'fields' => [
                     'date',
                     'invoice_id',
-                    'net_total_amount'
+                    'net_total_amount',
                 ],
                 'texts' => [
                     'Date : ',
                     'Expense Voucher No : ',
                     'Net Total Amt. : ',
-                ]
+                ],
             ],
             16 => [ // Bank
                 'fields' => [
@@ -279,7 +277,7 @@ class UserActivityLogUtil
                 ],
                 'texts' => [
                     'Bank Name : ',
-                ]
+                ],
             ],
             17 => [ // Accounts
                 'fields' => [
@@ -293,24 +291,24 @@ class UserActivityLogUtil
                     'Account Name : ',
                     'Account Number : ',
                     'Opening Balance : ',
-                    'Opening Balance Type : ',
-                ]
+                    'Balance : ',
+                ],
             ],
             18 => [ // User login
                 'fields' => [
                     'username',
                 ],
                 'texts' => [
-                    'Username : '
-                ]
+                    'Username : ',
+                ],
             ],
             19 => [ // User Logout
                 'fields' => [
                     'username',
                 ],
                 'texts' => [
-                    'Username : '
-                ]
+                    'Username : ',
+                ],
             ],
             20 => [ // Categories
                 'fields' => [
@@ -320,7 +318,7 @@ class UserActivityLogUtil
                 'texts' => [
                     'Category ID : ',
                     'Category Name : ',
-                ]
+                ],
             ],
             21 => [ // Sub-Categories
                 'fields' => [
@@ -330,7 +328,7 @@ class UserActivityLogUtil
                 'texts' => [
                     'Sub-Category ID : ',
                     'Sub-Category Name : ',
-                ]
+                ],
             ],
             22 => [ // Brands
                 'fields' => [
@@ -340,7 +338,7 @@ class UserActivityLogUtil
                 'texts' => [
                     'Brand ID: ',
                     'Brand Name : ',
-                ]
+                ],
             ],
             23 => [ // UNITS
                 'fields' => [
@@ -350,7 +348,7 @@ class UserActivityLogUtil
                 'texts' => [
                     'Unit Name : ',
                     'Short Name : ',
-                ]
+                ],
             ],
             24 => [ // Variants
                 'fields' => [
@@ -360,7 +358,7 @@ class UserActivityLogUtil
                 'texts' => [
                     'ID : ',
                     'Variant Name : ',
-                ]
+                ],
             ],
             25 => [ // Warranties
                 'fields' => [
@@ -372,7 +370,7 @@ class UserActivityLogUtil
                     'Warranty Name : ',
                     'Duration : ',
                     'Duration Type : ',
-                ]
+                ],
             ],
             26 => [ // Product
                 'fields' => [
@@ -386,7 +384,7 @@ class UserActivityLogUtil
                     'P.Code(SKU) : ',
                     'Cost.inc Tax : ',
                     'Price.Exc Tax : ',
-                ]
+                ],
             ],
             27 => [ // Receive Payment
                 'fields' => [
@@ -406,7 +404,7 @@ class UserActivityLogUtil
                     'Phn No : ',
                     'Type : ',
                     'Paid : ',
-                ]
+                ],
             ],
             28 => [ // Payment
                 'fields' => [
@@ -426,12 +424,12 @@ class UserActivityLogUtil
                     'Phn No : ',
                     'Type : ',
                     'Paid : ',
-                ]
+                ],
             ],
         ];
     }
 
-    public function addLog($action, $subject_type, $data_obj, $branch_id = NULL, $user_id = NULL)
+    public function addLog($action, $subject_type, $data_obj, $branch_id = null, $user_id = null)
     {
         $generalSettings = config('generalSettings');
         $dateFormat = $generalSettings['business__date_format'];
@@ -452,7 +450,7 @@ class UserActivityLogUtil
         $index = 0;
         foreach ($descriptionModel[$subject_type]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subject_type]['texts'][$index] . (isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A' ) . ', ';
+            $description .= $descriptionModel[$subject_type]['texts'][$index].(isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A').', ';
             $index++;
         }
 

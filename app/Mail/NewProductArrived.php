@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,14 +16,15 @@ class NewProductArrived extends Mailable
      * Create a new message instance.
      */
     public $customers;
+
     public $addProduct;
+
     public function __construct(
         $customers,
         $addProduct
-    )
-    {
-    $this->customers = $customers;
-    $this->addProduct = $addProduct;
+    ) {
+        $this->customers = $customers;
+        $this->addProduct = $addProduct;
     }
 
     /**

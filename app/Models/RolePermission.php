@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
-
 class RolePermission extends BaseModel
 {
     protected $casts = [
@@ -28,6 +26,8 @@ class RolePermission extends BaseModel
         'e_commerce' => 'array',
         'others' => 'array',
     ];
+
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 }

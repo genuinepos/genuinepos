@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
-use App\Models\Payment;
-use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
+use App\Utils\Util;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentMethodController extends Controller
 {
     protected $util;
+
     public function __construct(Util $util)
     {
         $this->util = $util;
-        
+
     }
 
     public function index(Request $request)
@@ -33,9 +33,10 @@ class PaymentMethodController extends Controller
                     if ($row->is_fixed == 0) {
 
                         $html = '<div class="dropdown table-dropdown">';
-                        $html .= '<a href="' . route('settings.payment.method.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                        $html .= '<a href="' . route('settings.payment.method.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="'.route('settings.payment.method.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                        $html .= '<a href="'.route('settings.payment.method.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                         $html .= '</div>';
+
                         return $html;
                     }
                 })
@@ -74,9 +75,9 @@ class PaymentMethodController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:payment_methods,name,' . $id,
+                'name' => 'required|unique:payment_methods,name,'.$id,
             ],
-            
+
         );
 
         $updatePayment = PaymentMethod::where('id', $id)->first();
@@ -92,7 +93,7 @@ class PaymentMethodController extends Controller
     {
         $deletePaymentMethod = PaymentMethod::where('id', $id)->first();
 
-        if (!is_null($deletePaymentMethod)) {
+        if (! is_null($deletePaymentMethod)) {
 
             if ($deletePaymentMethod->is_fixed == 1) {
 

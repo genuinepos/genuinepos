@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Utils;
 
 class TimeZone
 {
-    public static function all() : array
+    public static function all(): array
     {
-        $timezones = array(
+        $timezones = [
             'America/Adak' => '(GMT-10:00) America/Adak (Hawaii-Aleutian Standard Time)',
             'America/Atka' => '(GMT-10:00) America/Atka (Hawaii-Aleutian Standard Time)',
             'America/Anchorage' => '(GMT-9:00) America/Anchorage (Alaska Standard Time)',
@@ -405,10 +406,9 @@ class TimeZone
             'Antarctica/McMurdo' => '(GMT+12:00) Antarctica/McMurdo (New Zealand Standard Time)',
             'Antarctica/South_Pole' => '(GMT+12:00) Antarctica/South_Pole (New Zealand Standard Time)',
             'Asia/Anadyr' => '(GMT+12:00) Asia/Anadyr (Anadyr Time)',
-            'Asia/Kamchatka' => '(GMT+12:00) Asia/Kamchatka (Petropavlovsk-Kamchatski Time)'
-        );
+            'Asia/Kamchatka' => '(GMT+12:00) Asia/Kamchatka (Petropavlovsk-Kamchatski Time)',
+        ];
 
         return $timezones;
     }
 }
-

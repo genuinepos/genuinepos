@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB;
+use Exception;
 use App\Utils\Util;
 use App\Models\Unit;
 use App\Models\Product;
@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use App\Mail\PurchaseCreated;
 use App\Models\PaymentMethod;
 use App\Utils\NameSearchUtil;
-use App\Models\GeneralSetting;
 use App\Models\ProductVariant;
 use App\Models\PurchaseReturn;
 use App\Models\PurchasePayment;
@@ -24,12 +23,10 @@ use App\Models\PurchaseProduct;
 use App\Models\SupplierProduct;
 use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseReturnUtil;
-use App\Mail\PurchaseOrderCreated;
-use App\Mail\SaleQuotationCreated;
 use App\Utils\PurchaseProductUtil;
 use App\Utils\SupplierPaymentUtil;
 use App\Utils\UserActivityLogUtil;
-use App\Models\PurchaseOrderProduct;
+use Illuminate\Support\Facades\DB;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
@@ -55,7 +52,7 @@ class PurchaseController extends Controller
 
     public function index_v2(Request $request)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -66,12 +63,13 @@ class PurchaseController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
+
         return view('purchases.index_v2', compact('branches', 'suppliers'));
     }
 
     public function purchaseProductList(Request $request)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -83,7 +81,8 @@ class PurchaseController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
+
         return view('purchases.purchase_product_list', compact('branches', 'suppliers', 'categories'));
     }
 
@@ -101,12 +100,13 @@ class PurchaseController extends Controller
             'purchase_products.variant',
             'purchase_payments',
         ])->where('id', $purchaseId)->first();
+
         return view('purchases.ajax_view.purchase_details_modal', compact('purchase'));
     }
 
     public function create()
     {
-        if (!auth()->user()->can('purchase_add')) {
+        if (! auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -174,7 +174,7 @@ class PurchaseController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Product table is empty.']);
         } elseif (count($request->product_ids) > 60) {
@@ -200,7 +200,7 @@ class PurchaseController extends Controller
                     ->where('product_variant_id', $variant_id)
                     ->first();
 
-                if (!$SupplierProduct) {
+                if (! $SupplierProduct) {
 
                     $addSupplierProduct = new SupplierProduct();
                     $addSupplierProduct->supplier_id = $request->supplier_id;
@@ -238,7 +238,7 @@ class PurchaseController extends Controller
                 $index++;
             }
 
-            // Add Purchase A/C Ledger
+            // Add Purchase A/c Ledger
             $this->accountUtil->addAccountLedger(
                 voucher_type_id: 3,
                 date: $request->date,
@@ -265,9 +265,9 @@ class PurchaseController extends Controller
                     invoicePrefix: $paymentInvoicePrefix,
                     request: $request,
                     payingAmount: $request->paying_amount,
-                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
+                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT),
                     purchase: $addPurchase,
-                    supplier_payment_id: NULL
+                    supplier_payment_id: null
                 );
 
                 // Add Bank/Cash-In-Hand A/C Ledger
@@ -438,7 +438,7 @@ class PurchaseController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Product table is empty.']);
         }
@@ -490,7 +490,7 @@ class PurchaseController extends Controller
                     ->where('product_variant_id', $variantId)
                     ->first();
 
-                if (!$SupplierProduct) {
+                if (! $SupplierProduct) {
 
                     $addSupplierProduct = new SupplierProduct();
                     $addSupplierProduct->supplier_id = $purchase->supplier_id;
@@ -643,10 +643,12 @@ class PurchaseController extends Controller
         if ($editType == 'purchased') {
 
             $purchase = Purchase::with(['warehouse', 'supplier', 'purchase_products', 'purchase_products.product', 'purchase_products.variant'])->where('id', $purchaseId)->first();
+
             return response()->json($purchase);
         } else {
 
             $purchase = Purchase::with(['warehouse', 'supplier', 'purchase_order_products', 'purchase_order_products.product', 'purchase_order_products.variant'])->where('id', $purchaseId)->first();
+
             return response()->json($purchase);
         }
     }
@@ -654,7 +656,8 @@ class PurchaseController extends Controller
     // Get all supplier requested by ajax
     public function getAllSupplier()
     {
-        $suppliers = Supplier::select('id',  'name',  'pay_term', 'pay_term_number', 'phone')->get();
+        $suppliers = Supplier::select('id', 'name', 'pay_term', 'pay_term_number', 'phone')->get();
+
         return response()->json($suppliers);
     }
 
@@ -684,7 +687,7 @@ class PurchaseController extends Controller
 
             $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)->where('product_id', $product->id)->first();
 
-            if (!$productBranch) {
+            if (! $productBranch) {
 
                 return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
             }
@@ -701,7 +704,7 @@ class PurchaseController extends Controller
                 $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
                     ->where('product_id', $variant_product->product_id)->first();
 
-                if (!$productBranch) {
+                if (! $productBranch) {
 
                     return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
                 }
@@ -722,13 +725,13 @@ class PurchaseController extends Controller
             'purchase_products',
             'purchase_products.product',
             'purchase_products.variant',
-            'purchase_products.purchaseSaleChains'
+            'purchase_products.purchaseSaleChains',
         ])->where('id', $purchaseId)->first();
 
         $supplier = DB::table('suppliers')->where('id', $deletePurchase->supplier_id)->first();
         //purchase payments
         $storedWarehouseId = $deletePurchase->warehouse_id;
-        $storedPurchaseReturnAccountId = $deletePurchase->purchase_return ? $deletePurchase->purchase_return->purchase_return_account_id : NULL;
+        $storedPurchaseReturnAccountId = $deletePurchase->purchase_return ? $deletePurchase->purchase_return->purchase_return_account_id : null;
         $storedBranchId = $deletePurchase->branch_id;
         $storedPayments = $deletePurchase->purchase_payments;
         $storedPurchaseAccountId = $deletePurchase->purchase_account_id;
@@ -738,8 +741,9 @@ class PurchaseController extends Controller
 
             if (count($purchase_product->purchaseSaleChains) > 0) {
 
-                $variant = $purchase_product->variant ? ' - ' . $purchase_product->variant->name : '';
-                $product = $purchase_product->product->name . $variant;
+                $variant = $purchase_product->variant ? ' - '.$purchase_product->variant->name : '';
+                $product = $purchase_product->product->name.$variant;
+
                 return response()->json("Can not delete is purchase. Mismatch between sold and purchase stock account method. Product: ${product}");
             }
         }
@@ -779,7 +783,7 @@ class PurchaseController extends Controller
 
         foreach ($storePurchaseProducts as $purchase_product) {
 
-            $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : NULL;
+            $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : null;
 
             $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);
 
@@ -813,15 +817,16 @@ class PurchaseController extends Controller
     // Add product modal view with data
     public function addProductModalView()
     {
-        $units =  DB::table('units')->select('id', 'name', 'code_name')->get();
+        $units = DB::table('units')->select('id', 'name', 'code_name')->get();
 
         $warranties = DB::table('warranties')->select('id', 'name', 'type')->get();
 
         $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
 
-        $categories =  DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'DESC')->get();
+        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'DESC')->get();
 
         $brands = DB::table('brands')->get();
+
         return view('purchases.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 
@@ -836,6 +841,7 @@ class PurchaseController extends Controller
     {
         $product = Product::with(['tax', 'unit'])->where('id', $product_id)->first();
         $units = DB::table('units')->select('id', 'name')->get();
+
         return view('purchases.ajax_view.recent_product_view', compact('product', 'units'));
     }
 
@@ -902,9 +908,9 @@ class PurchaseController extends Controller
                 invoicePrefix: $paymentInvoicePrefix,
                 request: $request,
                 payingAmount: $request->paying_amount,
-                invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
+                invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT),
                 purchase: $purchase,
-                supplier_payment_id: NULL
+                supplier_payment_id: null
             );
 
             // Add Bank/Cash-In-Hand A/C Ledger
@@ -995,7 +1001,7 @@ class PurchaseController extends Controller
 
             $this->purchaseUtil->updatePurchasePayment($request, $updatePurchasePayment);
 
-            if ($updatePurchasePayment->supplier_payment_id == NULL) {
+            if ($updatePurchasePayment->supplier_payment_id == null) {
 
                 // Update Bank/Cash-in-hand A/C Ledger
                 $this->accountUtil->updateAccountLedger(
@@ -1082,7 +1088,7 @@ class PurchaseController extends Controller
             $purchaseReturnPaymentGetId = $this->purchaseUtil->purchaseReturnPaymentGetId(
                 request: $request,
                 purchase: $purchase,
-                supplier_payment_id: NULL
+                supplier_payment_id: null
             );
 
             // Add Bank/Cash-In-Hand A/C Ledger
@@ -1138,6 +1144,7 @@ class PurchaseController extends Controller
 
         $payment = PurchasePayment::with(['purchase', 'purchase.branch', 'purchase.warehouse', 'purchase.supplier'])
             ->where('id', $paymentId)->first();
+
         return view('purchases.ajax_view.purchase_return_payment_edit', compact('payment', 'accounts', 'methods'));
     }
 
@@ -1159,7 +1166,7 @@ class PurchaseController extends Controller
 
             $this->purchaseUtil->updatePurchaseReturnPayment($request, $updatePurchasePayment);
 
-            if ($updatePurchasePayment->supplier_payment_id == NULL) {
+            if ($updatePurchasePayment->supplier_payment_id == null) {
 
                 // Update Bank/Cash-in-hand A/C Ledger
                 $this->accountUtil->updateAccountLedger(
@@ -1202,7 +1209,7 @@ class PurchaseController extends Controller
             'supplier',
             'purchase_payments',
             'purchase_payments.account',
-            'purchase_payments.paymentMethod'
+            'purchase_payments.paymentMethod',
         ])->where('id', $purchaseId)->first();
 
         return view('purchases.ajax_view.view_payment_list', compact('purchase'));
@@ -1228,14 +1235,14 @@ class PurchaseController extends Controller
             ->where('id', $paymentId)
             ->first();
 
-        if (!is_null($deletePurchasePayment)) {
+        if (! is_null($deletePurchasePayment)) {
 
             $storedAccountId = $deletePurchasePayment->account_id;
             if ($deletePurchasePayment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/'.$deletePurchasePayment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment));
+                    unlink(public_path('uploads/payment_attachment/'.$deletePurchasePayment->attachment));
                 }
             }
 
@@ -1323,6 +1330,7 @@ class PurchaseController extends Controller
             'purchase__is_enable_lot_no' => isset($request->is_enable_lot_no) ? 1 : 0,
         ];
         $generalSettingService->updateAndSync($settings);
+
         return response()->json('Purchase settings updated successfully.');
     }
 }

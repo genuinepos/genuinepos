@@ -105,7 +105,7 @@
 
                                                         <td>
                                                             <select required name="category_ids[]" class="form-control category_id" id="category_id">
-                                                                <option value="">Select Expense Category</option>
+                                                                <option value="">{{ __("Select Expense Category") }}</option>
                                                             </select>
                                                         </td>
 

@@ -15,7 +15,7 @@ class PayrollUtil
             ->get();
 
         $due = $payroll->gross_amount - $totalPayrollPaid->sum('total_paid');
-      
+
         $payroll->paid = $totalPayrollPaid->sum('total_paid');
         $payroll->due = $due;
         $payroll->save();

@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,7 +16,8 @@ class PurchaseReturnCreated extends Mailable
      * Create a new message instance.
      */
     public $return;
-    public function __construct( $return )
+
+    public function __construct($return)
     {
         $this->return = $return;
     }

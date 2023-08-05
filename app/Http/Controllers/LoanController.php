@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Loan;
-use App\Utils\LoanUtil;
-use App\Models\CashFlow;
-use App\Utils\Converter;
 use App\Utils\AccountUtil;
+use App\Utils\Converter;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\LoanUtil;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use Yajra\DataTables\Facades\DataTables;
 
 class LoanController extends Controller
 {
     protected $accountUtil;
+
     protected $loanUtil;
+
     protected $converter;
+
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(
         AccountUtil $accountUtil,
         LoanUtil $loanUtil,
@@ -72,21 +75,22 @@ class LoanController extends Controller
                     $html .= '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" id="view" href="'.route('accounting.loan.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
 
                     // $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
 
-                    $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete_loan" href="'.route('accounting.loan.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })->editColumn('report_date', function ($row) use ($generalSettings) {
                     return date($generalSettings['business__date_format'], strtotime($row->report_date));
                 })->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->b_name) {
-                        return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
+                        return $row->b_name.'/'.$row->b_code.'(<b>BL</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })->editColumn('type', function ($row) {
                     if ($row->type == 1) {
@@ -147,7 +151,7 @@ class LoanController extends Controller
             'loan_amount' => 'required',
             'loan_account_id' => 'required',
             'account_id' => 'required',
-            'date' => 'required'
+            'date' => 'required',
         ], [
             'company_id.required' => 'Company field is required.',
             'loan_account_id.required' => 'Loan A/C field is required.',
@@ -155,11 +159,11 @@ class LoanController extends Controller
         ]);
 
         // generate reference no
-        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('loans'), 4, "0", STR_PAD_LEFT);
+        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('loans'), 4, '0', STR_PAD_LEFT);
 
         $prefix = $request->type == 1 ? 'LA' : 'LL';
         $addLoan = new Loan();
-        $addLoan->reference_no = $prefix . $refId;
+        $addLoan->reference_no = $prefix.$refId;
         $addLoan->loan_account_id = $request->loan_account_id;
         $addLoan->branch_id = auth()->user()->branch_id;
         $addLoan->loan_company_id = $request->company_id;
@@ -267,7 +271,7 @@ class LoanController extends Controller
             'loan_amount' => 'required',
             'loan_account_id' => 'required',
             'account_id' => 'required',
-            'date' => 'required'
+            'date' => 'required',
         ], [
             'company_id.required' => 'Company field is required.',
             'loan_account_id.required' => 'Loan A/C field is required.',
@@ -378,6 +382,7 @@ class LoanController extends Controller
     public function show($loanId)
     {
         $loan = Loan::with(['company', 'account'])->where('id', $loanId)->first();
+
         return view('accounting.loans.ajax_view.loanDetails', compact('loan'));
     }
 

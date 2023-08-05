@@ -2,19 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Account;
 use App\Models\Hrm\Payroll;
-use App\Models\SalePayment;
-use App\Models\User;
-use App\Models\MoneyReceipt;
-use App\Models\ExpansePayment;
-use App\Models\PurchasePayment;
 use App\Models\Hrm\PayrollPayment;
-use App\Models\BaseModel;
 
 class CashFlow extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function account()

@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\FinalSaleCreated;
-use App\Mail\SaleOrderCreated;
-use App\Mail\SaleQuotationCreated;
-use App\Models\Customer;
-use App\Models\PaymentMethod;
-use App\Models\Product;
-use App\Models\ProductBranch;
+use App\Utils\Util;
 use App\Models\Sale;
+use App\Models\User;
+use App\Utils\SmsUtil;
+use App\Models\Product;
+use App\Utils\SaleUtil;
+use App\Models\Customer;
+use App\Utils\AccountUtil;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
-use App\Models\User;
-use App\Services\GeneralSettingServiceInterface;
-use App\Utils\AccountUtil;
-use App\Utils\BranchWiseCustomerAmountUtil;
-use App\Utils\CustomerPaymentUtil;
 use App\Utils\CustomerUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\NameSearchUtil;
-use App\Utils\ProductStockUtil;
 use App\Utils\PurchaseUtil;
-use App\Utils\SaleUtil;
-use App\Utils\SmsUtil;
-use App\Utils\UserActivityLogUtil;
-use App\Utils\Util;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
+use App\Models\ProductBranch;
+use App\Utils\NameSearchUtil;
+use App\Mail\FinalSaleCreated;
+use App\Mail\SaleOrderCreated;
+use App\Utils\ProductStockUtil;
+use App\Mail\SaleQuotationCreated;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
-use Modules\Communication\Interface\EmailServiceInterface;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\SmsServiceInterface;
+use Modules\Communication\Interface\EmailServiceInterface;
 
 class SaleController extends Controller
 {
@@ -613,7 +613,6 @@ class SaleController extends Controller
             $received_amount = $request->received_amount;
             $total_due = $request->total_due;
             $change_amount = $request->change_amount;
-
             $customerCopySaleProducts = $this->saleUtil->customerCopySaleProductsQuery($sale->id);
 
             DB::commit();
@@ -646,7 +645,7 @@ class SaleController extends Controller
                     }
                 } elseif ($request->status == 3) {
 
-                    if ( env('EMAIL_ACTIVE') == 'true' && $sale->customer && $sale?->customer?->email) {
+                    if (env('EMAIL_ACTIVE') == 'true' && $sale->customer && $sale?->customer?->email) {
 
                         $this->emailService->send($sale->customer->email, new SaleOrderCreated($sale));
                     }

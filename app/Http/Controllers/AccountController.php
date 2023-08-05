@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Utils\Util;
-use App\Models\Bank;
 use App\Models\Account;
-use App\Models\CashFlow;
 use App\Utils\Converter;
 use App\Utils\AccountUtil;
-use App\Models\AccountType;
 use Illuminate\Http\Request;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
@@ -19,27 +16,17 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AccountController extends Controller
 {
-    protected $accountUtil;
-    protected $util;
-    protected $converter;
-    protected $userActivityLogUtil;
-
     public function __construct(
-        AccountUtil $accountUtil,
-        Util $util,
-        Converter $converter,
-        UserActivityLogUtil $userActivityLogUtil
+        private AccountUtil $accountUtil,
+        private Util $util,
+        private Converter $converter,
+        private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->accountUtil = $accountUtil;
-        $this->util = $util;
-        $this->converter = $converter;
-        $this->userActivityLogUtil = $userActivityLogUtil;
     }
 
     public function index(Request $request)
     {
         if (!auth()->user()->can('ac_access')) {
-
             abort(403, 'Access Forbidden.');
         }
 
@@ -56,7 +43,7 @@ class AccountController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('account_branches.branch_id', NULL);
+                    $query->where('account_branches.branch_id', null);
                 } else {
 
                     $query->where('account_branches.branch_id', $request->branch_id);
@@ -102,6 +89,7 @@ class AccountController extends Controller
                     $html .= '<a class="dropdown-item" href="' . route('accounting.accounts.delete', [$row->id]) . '" id="delete"><i class="fas fa-trash text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
 
@@ -117,6 +105,7 @@ class AccountController extends Controller
 
         $banks = DB::table('banks')->get();
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('accounting.accounts.index', compact('banks', 'branches'));
     }
 
@@ -232,11 +221,11 @@ class AccountController extends Controller
 
                 if ($balanceType == 'debit') {
 
-                    $ledger->running_balance =  $tempRunning + ($ledger->debit - $ledger->credit);
+                    $ledger->running_balance = $tempRunning + ($ledger->debit - $ledger->credit);
                     $tempRunning = $ledger->running_balance;
                 } elseif ($balanceType == 'credit') {
 
-                    $ledger->running_balance =  $tempRunning + ($ledger->credit - $ledger->debit);
+                    $ledger->running_balance = $tempRunning + ($ledger->credit - $ledger->debit);
                     $tempRunning = $ledger->running_balance;
                 }
             }
@@ -246,6 +235,7 @@ class AccountController extends Controller
 
                     $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
+
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('particulars', function ($row) use ($accountUtil) {
@@ -254,12 +244,14 @@ class AccountController extends Controller
                     $des = $row->{$type['pur']} ? '/' . $row->{$type['pur']} : '';
                     $receiver_ac = $row->receiver_acn ? '/To:<b>' . $row->receiver_acn . '</b>' : '';
                     $sender_ac = $row->sender_acn ? '/From:<b>' . $row->sender_acn . '</b>' : '';
+
                     return '<b>' . $type['name'] . '</b>' . $receiver_ac . $sender_ac . $des;
                     //return '<b>' . $type['name'].'</b>';
                 })
-                ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
+                ->editColumn('voucher_no', function ($row) use ($accountUtil) {
 
                     $type = $accountUtil->voucherType($row->voucher_type);
+
                     return $row->{$type['voucher_no']};
                 })
                 ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
@@ -310,7 +302,7 @@ class AccountController extends Controller
 
                 AccountBranch::insert(
                     [
-                        'branch_id' => $branch_id != 'NULL' ? $branch_id : NULL,
+                        'branch_id' => $branch_id != 'NULL' ? $branch_id : null,
                         'account_id' => $addAccountGetId,
                     ]
                 );
@@ -351,9 +343,10 @@ class AccountController extends Controller
     public function edit($id)
     {
         $account = Account::with('accountBranches')->where('id', $id)->first();
-        $isExistsHeadOffice = DB::table('account_branches')->where('account_id', $id)->where('branch_id', NULL)->first();
+        $isExistsHeadOffice = DB::table('account_branches')->where('account_id', $id)->where('branch_id', null)->first();
         $banks = DB::table('banks')->get();
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('accounting.accounts.ajax_view.edit_account', compact('account', 'isExistsHeadOffice', 'banks', 'branches'));
     }
 
@@ -369,8 +362,8 @@ class AccountController extends Controller
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
-                "business_location"    => "required|array",
-                "business_location.*"  => "required",
+                'business_location' => 'required|array',
+                'business_location.*' => 'required',
             ]);
         }
 
@@ -401,7 +394,7 @@ class AccountController extends Controller
 
             foreach ($request->business_location as $branch) {
 
-                $branch_id = $branch != 'NULL' ? $branch : NULL;
+                $branch_id = $branch != 'NULL' ? $branch : null;
                 $accountBranch = AccountBranch::where('account_id', $updateAccount->id)->where('branch_id', $branch_id)->first();
 
                 if ($accountBranch) {

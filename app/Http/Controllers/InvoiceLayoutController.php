@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\InvoiceLayout;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -11,46 +11,48 @@ class InvoiceLayoutController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('inv_lay')) {
+        if (! auth()->user()->can('inv_lay')) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         if ($request->ajax()) {
             $layouts = DB::table('invoice_layouts')->orderBy('id', 'DESC')->select('id', 'name', 'is_default', 'is_header_less')->get();
+
             return DataTables::of($layouts)
                 ->addIndexColumn()
                 ->editColumn('name', function ($row) {
-                    return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
+                    return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
                 })
-                ->editColumn('is_header_less', function ($row)
-                {
-                    return $row->is_header_less == 1 ? '<span class="badge bg-info">Yes</span>' :  '<span class="badge bg-secondary">None</span>';
+                ->editColumn('is_header_less', function ($row) {
+                    return $row->is_header_less == 1 ? '<span class="badge bg-info">Yes</span>' : '<span class="badge bg-secondary">None</span>';
                 })
                 ->addColumn('action', function ($row) {
                     // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
 
-                    $html .= '<a href="' . route('invoices.layouts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('invoices.layouts.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
 
                     if ($row->is_default == 0) {
-                        $html .= '<a href="' . route('invoices.layouts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="'.route('invoices.layouts.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
 
-                        $html .= '<a href="' . route('invoices.layouts.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
+                        $html .= '<a href="'.route('invoices.layouts.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn">
                         Set Default
                         </a>';
                     }
                     $html .= '</div>';
+
                     return $html;
                 })
-                
+
                 ->rawColumns(['action', 'name', 'is_header_less'])
                 ->make(true);
         }
+
         return view('settings.invoices.layouts.index');
     }
 
@@ -74,15 +76,15 @@ class InvoiceLayoutController extends Controller
                 'gap_from_top' => 'required',
             ]);
         }
-        
+
         $addLayout = new InvoiceLayout();
         $addLayout->name = $request->name;
         $addLayout->layout_design = $request->design;
         $addLayout->show_shop_logo = isset($request->show_shop_logo) ? 1 : 0;
         $addLayout->show_seller_info = isset($request->show_seller_info) ? 1 : 0;
-        $addLayout->show_total_in_word = isset($request->show_total_in_word) ? 1 : 0; 
-        $addLayout->is_header_less = isset($request->is_header_less) ? 1 : 0; 
-        $addLayout->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL; 
+        $addLayout->show_total_in_word = isset($request->show_total_in_word) ? 1 : 0;
+        $addLayout->is_header_less = isset($request->is_header_less) ? 1 : 0;
+        $addLayout->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : null;
         $addLayout->header_text = $request->header_text;
         $addLayout->sub_heading_1 = $request->sub_heading_1;
         $addLayout->sub_heading_2 = $request->sub_heading_2;
@@ -134,6 +136,7 @@ class InvoiceLayoutController extends Controller
     public function edit($layoutId)
     {
         $layout = DB::table('invoice_layouts')->where('id', $layoutId)->first();
+
         return view('settings.invoices.layouts.edit', compact('layout'));
     }
 
@@ -148,15 +151,15 @@ class InvoiceLayoutController extends Controller
                 'gap_from_top' => 'required',
             ]);
         }
-        
+
         $updateLayout = InvoiceLayout::where('id', $layoutId)->first();
         $updateLayout->name = $request->name;
         $updateLayout->layout_design = $request->design;
         $updateLayout->show_shop_logo = isset($request->show_shop_logo) ? 1 : 0;
         $updateLayout->show_seller_info = isset($request->show_seller_info) ? 1 : 0;
-        $updateLayout->show_total_in_word = isset($request->show_total_in_word) ? 1 : 0; 
-        $updateLayout->is_header_less = isset($request->is_header_less) ? 1 : 0; 
-        $updateLayout->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : NULL; 
+        $updateLayout->show_total_in_word = isset($request->show_total_in_word) ? 1 : 0;
+        $updateLayout->is_header_less = isset($request->is_header_less) ? 1 : 0;
+        $updateLayout->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : null;
         $updateLayout->header_text = $request->header_text;
         $updateLayout->sub_heading_1 = $request->sub_heading_1;
         $updateLayout->sub_heading_2 = $request->sub_heading_2;
@@ -201,7 +204,7 @@ class InvoiceLayoutController extends Controller
     public function delete(Request $request, $schemaId)
     {
         $deleteInvoice = InvoiceLayout::find($schemaId);
-        if (!is_null($deleteInvoice)) {
+        if (! is_null($deleteInvoice)) {
             $deleteInvoice->delete();
         }
 
@@ -219,7 +222,7 @@ class InvoiceLayoutController extends Controller
         $updateLayout = InvoiceLayout::where('id', $schemaId)->first();
         $updateLayout->is_default = 1;
         $updateLayout->save();
+
         return response()->json('Default set successfully');
     }
-
 }

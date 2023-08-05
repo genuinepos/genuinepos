@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
 {
@@ -35,21 +35,22 @@ class ResetPasswordController extends Controller
     {
         return response()->json('Feature is disabled in this demo');
         $this->validate($request,
-        [
-            'current_password' => 'required',
-            'password' => 'required|confirmed',
-        ]);
+            [
+                'current_password' => 'required',
+                'password' => 'required|confirmed',
+            ]);
 
         $adminUserHashtedPassword = auth()->user()->password;
         $checkHashtedPasswordWithOldPassword = Hash::check($request->current_password, $adminUserHashtedPassword);
         if ($checkHashtedPasswordWithOldPassword) {
-            if (!Hash::check($request->password, $adminUserHashtedPassword)) {
+            if (! Hash::check($request->password, $adminUserHashtedPassword)) {
                 $user = User::find(Auth::user()->id);
                 $user->password = Hash::make($request->password);
                 $user->save();
                 Auth::logout();
+
                 return response()->json(['successMsg' => 'Successfully password has been changed.']);
-            }else{
+            } else {
                 return response()->json(['errorMsg' => 'Current password and new password is same.
                 If you want to change your current password please enter a new password']);
             }
@@ -58,4 +59,3 @@ class ResetPasswordController extends Controller
         }
     }
 }
-

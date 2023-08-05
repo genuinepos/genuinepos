@@ -94,11 +94,10 @@ class CustomerUtil
     //             return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
     //         })
 
-    //         ->editColumn('total_sale_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+    //     $totalSaleDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
 
-    //             $totalSaleDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
-    //             return '<span class="total_sale_due" data-value="' . $totalSaleDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleDue) . '</span>';
-    //         })
+    //     return '<span class="total_sale_due" data-value="'.$totalSaleDue.'">'.\App\Utils\Converter::format_in_bdt($totalSaleDue).'</span>';
+    // })
 
     //         ->editColumn('total_return', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
@@ -265,8 +264,7 @@ class CustomerUtil
             0 => [
                 'name' => 'Opening Balance',
                 'id' => 'sale_id',
-                'voucher_no' =>
-                'sale_inv_id',
+                'voucher_no' => 'sale_inv_id',
                 'amt' => 'debit',
                 'par' => 'sale_par',
             ],

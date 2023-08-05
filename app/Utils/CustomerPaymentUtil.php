@@ -2,19 +2,17 @@
 
 namespace App\Utils;
 
-use App\Models\Sale;
-use App\Utils\SaleUtil;
-use App\Models\SalePayment;
 use App\Models\CustomerPayment;
-use Illuminate\Support\Facades\Log;
 use App\Models\CustomerPaymentInvoice;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Models\Sale;
+use App\Models\SalePayment;
+use Illuminate\Support\Facades\Log;
 
 class CustomerPaymentUtil
 {
     public $saleUtil;
 
-    public function __construct(SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,)
+    public function __construct(SaleUtil $saleUtil, InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->saleUtil = $saleUtil;
     }
@@ -32,7 +30,7 @@ class CustomerPaymentUtil
         $note = null,
 
     ) {
-        $voucherNo = 'CRV' . str_pad($invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, "0", STR_PAD_LEFT);
+        $voucherNo = 'CRV'.str_pad($invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, '0', STR_PAD_LEFT);
         $customerPayment = new CustomerPayment();
         $customerPayment->voucher_no = $voucherNo;
         $customerPayment->reference = $reference;
@@ -42,7 +40,7 @@ class CustomerPaymentUtil
         $customerPayment->paid_amount = $receivedAmount;
         $customerPayment->less_amount = $lessAmount;
         $customerPayment->payment_method_id = $paymentMethodId;
-        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $customerPayment->report_date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $customerPayment->date = $date;
         $customerPayment->time = date('h:i:s a');
         $customerPayment->month = date('F');
@@ -51,7 +49,7 @@ class CustomerPaymentUtil
         if ($attachment) {
 
             $paymentAttachment = $attachment;
-            $paymentAttachmentName = uniqid() . '-' . '.' . $paymentAttachment->getClientOriginalExtension();
+            $paymentAttachmentName = uniqid().'-'.'.'.$paymentAttachment->getClientOriginalExtension();
             $paymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
             $customerPayment->attachment = $paymentAttachmentName;
         }
@@ -98,7 +96,7 @@ class CustomerPaymentUtil
                         $receivedAmount -= $receivedAmount;
                         $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
-                } elseif ($dueInvoice->due ==  $receivedAmount) {
+                } elseif ($dueInvoice->due == $receivedAmount) {
 
                     if ($receivedAmount > 0) {
 
@@ -117,7 +115,7 @@ class CustomerPaymentUtil
                         // Add Customer Payment invoice
                         $this->customerPaymentInvoice($customerPayment, $dueInvoice, $receivedAmount);
 
-                        $receivedAmount -=  $receivedAmount;
+                        $receivedAmount -= $receivedAmount;
                         $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                     }
                 } elseif ($dueInvoice->due < $receivedAmount) {
@@ -180,7 +178,7 @@ class CustomerPaymentUtil
                             // Add Customer Payment invoice
                             $this->customerPaymentInvoice($customerPayment, $dueInvoice, $receivedAmount);
 
-                            $receivedAmount -=  $receivedAmount;
+                            $receivedAmount -= $receivedAmount;
                             $this->saleUtil->adjustSaleInvoiceAmounts($dueInvoice);
                         }
                     } elseif ($dueInvoice->due == $receivedAmount) {
@@ -324,7 +322,7 @@ class CustomerPaymentUtil
     public function saleOrSalesOrderFillUpByPayment($customerPayment, $customerId, $receiptVoucherPrefix, $dueInvoice, $receivedAmount, $paymentMethodId, $accountId, $date, $invoiceVoucherRefIdUtil)
     {
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV') . str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, "0", STR_PAD_LEFT);
+        $addSalePayment->invoice_id = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV').str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 5, '0', STR_PAD_LEFT);
         $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_id = $dueInvoice->id;
         $addSalePayment->customer_id = $customerId;
@@ -333,7 +331,7 @@ class CustomerPaymentUtil
         $addSalePayment->paid_amount = $receivedAmount;
         $addSalePayment->date = date('d-m-Y', strtotime($date));
         $addSalePayment->time = date('h:i:s a');
-        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addSalePayment->report_date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $addSalePayment->month = date('F');
         $addSalePayment->year = date('Y');
         $addSalePayment->payment_method_id = $paymentMethodId;

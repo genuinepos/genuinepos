@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductSaleReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -43,7 +44,7 @@ class ProductSaleReportController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('sales.branch_id', NULL);
+                    $query->where('sales.branch_id', null);
                 } else {
                     $query->where('sales.branch_id', $request->branch_id);
                 }
@@ -51,7 +52,7 @@ class ProductSaleReportController extends Controller
 
             if ($request->customer_id) {
                 if ($request->customer_id == 'NULL') {
-                    $query->where('sales.customer_id', NULL);
+                    $query->where('sales.customer_id', null);
                 } else {
                     $query->where('sales.customer_id', $request->customer_id);
                 }
@@ -91,8 +92,9 @@ class ProductSaleReportController extends Controller
 
             return DataTables::of($saleProducts)
                 ->editColumn('product', function ($row) {
-                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return Str::limit($row->name, 25, '') . $variant;
+                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+
+                    return Str::limit($row->name, 25, '').$variant;
                 })->editColumn('sku', function ($row) {
                     return $row->variant_code ? $row->variant_code : $row->product_code;
                 })->editColumn('date', function ($row) {
@@ -100,12 +102,13 @@ class ProductSaleReportController extends Controller
                 })->editColumn('customer', function ($row) {
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })->editColumn('quantity', function ($row) {
-                    return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
-                })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
+                    return $row->quantity.' (<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>)';
+                })->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="'.$row->unit_price_inc_tax.'">'.$this->converter->format_in_bdt($row->unit_price_inc_tax).'</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.$this->converter->format_in_bdt($row->subtotal).'</span>')
                 ->rawColumns(['product', 'sku', 'date', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])->make(true);
         }
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.product_sale_report.index', compact('branches'));
     }
 
@@ -134,7 +137,7 @@ class ProductSaleReportController extends Controller
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('sales.branch_id', NULL);
+                $query->where('sales.branch_id', null);
             } else {
                 $query->where('sales.branch_id', $request->branch_id);
             }
@@ -142,7 +145,7 @@ class ProductSaleReportController extends Controller
 
         if ($request->customer_id) {
             if ($request->customer_id == 'NULL') {
-                $query->where('sales.customer_id', NULL);
+                $query->where('sales.customer_id', null);
             } else {
                 $query->where('sales.customer_id', $request->customer_id);
             }

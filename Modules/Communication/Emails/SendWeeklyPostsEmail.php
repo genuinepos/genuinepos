@@ -5,14 +5,12 @@ namespace Modules\Communication\Emails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendWeeklyPostsEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $data;
-
 
     public function __construct($data)
     {

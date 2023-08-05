@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,7 +16,8 @@ class PurchaseOrderCreated extends Mailable
      * Create a new message instance.
      */
     public $purchase;
-    public function __construct( $purchase )
+
+    public function __construct($purchase)
     {
         $this->purchase = $purchase;
     }

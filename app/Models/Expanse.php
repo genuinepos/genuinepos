@@ -2,11 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\User;
-use App\Models\ExpenseDescription;
-use App\Models\BaseModel;
-
 class Expanse extends BaseModel
 {
     //protected $guarded = [];

@@ -3,7 +3,6 @@
 namespace Modules\Communication\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -12,6 +11,7 @@ class DebugMail extends Mailable
     use Queueable, SerializesModels;
 
     public $data;
+
     /**
      * Create a new message instance.
      *

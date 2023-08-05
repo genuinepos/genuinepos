@@ -214,7 +214,7 @@
                                         <label class="fw-bold">@lang('menu.tax')</label>
                                         <div class="input-group">
                                             <select id="e_tax_percent" class="form-control w-50">
-                                                <option value="0">@lang('menu.no_tax')</option>
+                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                 @foreach ($taxes as $tax)
                                                     <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                 @endforeach

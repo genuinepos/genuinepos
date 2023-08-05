@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Models\BaseModel;
-
 class Brand extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function products()

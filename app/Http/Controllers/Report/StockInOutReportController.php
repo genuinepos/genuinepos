@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Report;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockInOutReportController extends Controller
 {
     public $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -54,7 +55,7 @@ class StockInOutReportController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('sales.branch_id', NULL);
+                    $query->where('sales.branch_id', null);
                 } else {
 
                     $query->where('sales.branch_id', $request->branch_id);
@@ -65,7 +66,7 @@ class StockInOutReportController extends Controller
 
                 if ($request->customer_id == 'NULL') {
 
-                    $query->where('sales.customer_id', NULL);
+                    $query->where('sales.customer_id', null);
                 } else {
 
                     $query->where('sales.customer_id', $request->customer_id);
@@ -120,18 +121,19 @@ class StockInOutReportController extends Controller
             return DataTables::of($stockInOuts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return Str::limit($row->name, 20, '') . $variant;
+                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+
+                    return Str::limit($row->name, 20, '').$variant;
                 })
 
-                ->editColumn('sale', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details" class="text-hover" title="view" >' . $row->invoice_id . '</a>')
+                ->editColumn('sale', fn ($row) => '<a href="'.route('sales.show', [$row->sale_id]).'" id="details" class="text-hover" title="view" >'.$row->invoice_id.'</a>')
 
                 ->editColumn('date', function ($row) {
 
                     return date('d/m/Y', strtotime($row->date));
                 })
 
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
@@ -142,11 +144,11 @@ class StockInOutReportController extends Controller
                     }
                 })
 
-                ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
+                ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="'.$row->unit_price_inc_tax.'">'.$this->converter->format_in_bdt($row->unit_price_inc_tax).'</span>')
 
                 ->editColumn('sold_qty', function ($row) {
 
-                    return '<span class="sold_qty" data-value="' . $row->sold_qty . '">' . $row->sold_qty . '/' . $row->unit . '</span>';
+                    return '<span class="sold_qty" data-value="'.$row->sold_qty.'">'.$row->sold_qty.'/'.$row->unit.'</span>';
                 })
 
                 ->editColumn('customer_name', function ($row) {
@@ -158,19 +160,19 @@ class StockInOutReportController extends Controller
 
                     if ($row->purchase_inv) {
 
-                        return 'Purchase: ' . '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details" title="view" >' . $row->purchase_inv . '</a>';
-                    } else if ($row->production_voucher_no) {
+                        return 'Purchase: '.'<a href="'.route('purchases.show', [$row->purchase_id]).'" class="text-hover" id="details" title="view" >'.$row->purchase_inv.'</a>';
+                    } elseif ($row->production_voucher_no) {
 
-                        return 'Production: ' . '<a href="' . route('manufacturing.productions.show', [$row->production_id]) . '" class=" text-hover" id="details" title="view" >' . $row->production_voucher_no . '</a>';
-                    } else if ($row->pos_id) {
+                        return 'Production: '.'<a href="'.route('manufacturing.productions.show', [$row->production_id]).'" class=" text-hover" id="details" title="view" >'.$row->production_voucher_no.'</a>';
+                    } elseif ($row->pos_id) {
 
                         return 'Opening Stock';
-                    } else if ($row->sale_return_id) {
+                    } elseif ($row->sale_return_id) {
 
-                        return 'Sale Returned Stock : ' . '<a href="#" class="text-hover" id="details" title="view" >' . $row->sale_return_invoice . '</a>';
-                    } else if ($row->transfer_id) {
+                        return 'Sale Returned Stock : '.'<a href="#" class="text-hover" id="details" title="view" >'.$row->sale_return_invoice.'</a>';
+                    } elseif ($row->transfer_id) {
 
-                        return 'Received From Another B.L. : ' . '<a href="' . route('transfer.stock.branch.to.branch.receivable.show', [$row->transfer_id]) . '" class="text-hover" id="details" title="view" >' . $row->transfer_ref_id . '</a>';
+                        return 'Received From Another B.L. : '.'<a href="'.route('transfer.stock.branch.to.branch.receivable.show', [$row->transfer_id]).'" class="text-hover" id="details" title="view" >'.$row->transfer_ref_id.'</a>';
                     } else {
 
                         return 'Non-Manageable-Stock';
@@ -195,10 +197,10 @@ class StockInOutReportController extends Controller
 
                     if ($row->net_unit_cost) {
 
-                        return '<span class="net_unit_cost" data-value="' . $row->net_unit_cost . '">' . $row->net_unit_cost . '</span>';
+                        return '<span class="net_unit_cost" data-value="'.$row->net_unit_cost.'">'.$row->net_unit_cost.'</span>';
                     } else {
 
-                        return '<span class="net_unit_cost" data-value="' . $row->unit_cost_inc_tax . '">' . $row->unit_cost_inc_tax . '</span>';
+                        return '<span class="net_unit_cost" data-value="'.$row->unit_cost_inc_tax.'">'.$row->unit_cost_inc_tax.'</span>';
                     }
                 })
 
@@ -261,7 +263,7 @@ class StockInOutReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('sales.branch_id', NULL);
+                $query->where('sales.branch_id', null);
             } else {
 
                 $query->where('sales.branch_id', $request->branch_id);
@@ -272,7 +274,7 @@ class StockInOutReportController extends Controller
 
             if ($request->customer_id == 'NULL') {
 
-                $query->where('sales.customer_id', NULL);
+                $query->where('sales.customer_id', null);
             } else {
 
                 $query->where('sales.customer_id', $request->customer_id);

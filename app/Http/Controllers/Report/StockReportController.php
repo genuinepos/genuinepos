@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use App\Utils\Converter;
-use App\Models\Warehouse;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockReportController extends Controller
 {
     protected $converter;
+
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
@@ -41,7 +41,7 @@ class StockReportController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('product_branches.branch_id', NULL);
+                    $query->where('product_branches.branch_id', null);
                 } else {
 
                     $query->where('product_branches.branch_id', $request->branch_id);
@@ -96,34 +96,36 @@ class StockReportController extends Controller
 
             return DataTables::of($branch_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
-                ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('name', fn ($row) => Str::limit($row->name, 25, '').' '.$row->variant_name)
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->b_name) {
 
-                        return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->b_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? '<strong>' . $row->variant_quantity . '</strong>' : '<strong>' . $row->product_quantity . '</strong>') . '/' . $row->code_name . '</span>')
-                ->editColumn('price',  fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
-                ->editColumn('stock_value',  function ($row) use ($converter) {
+                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="'.($row->variant_quantity ? $row->variant_quantity : $row->product_quantity).'">'.($row->variant_quantity ? '<strong>'.$row->variant_quantity.'</strong>' : '<strong>'.$row->product_quantity.'</strong>').'/'.$row->code_name.'</span>')
+                ->editColumn('price', fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
+                ->editColumn('stock_value', function ($row) use ($converter) {
                     $price = $row->variant_cost_with_tax ? $row->variant_cost_with_tax : $row->product_cost_with_tax;
                     $stock = $row->variant_quantity ? $row->variant_quantity : $row->product_quantity;
                     $currentStockValue = $price * $stock;
-                    return '<span class="stock_value" data-value="' . $currentStockValue . '">' . $converter->format_in_bdt($currentStockValue) . '</span>';
+
+                    return '<span class="stock_value" data-value="'.$currentStockValue.'">'.$converter->format_in_bdt($currentStockValue).'</span>';
                 })
-                ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="' . ($row->v_total_sale ? $row->v_total_sale : $row->total_sale) . '">' . ($row->v_total_sale ? $row->v_total_sale : $row->total_sale) . '(' . $row->code_name . ')</span>')
+                ->editColumn('total_sale', fn ($row) => '<span class="total_sale" data-value="'.($row->v_total_sale ? $row->v_total_sale : $row->total_sale).'">'.($row->v_total_sale ? $row->v_total_sale : $row->total_sale).'('.$row->code_name.')</span>')
                 ->rawColumns(['product_code', 'name', 'branch', 'stock', 'price', 'stock_value', 'total_sale'])
                 ->make(true);
         }
         $brands = DB::table('brands')->get(['id', 'name']);
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
         $units = DB::table('units')->get(['id', 'name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('reports.stock_report.index', compact('branches', 'brands', 'taxes', 'units', 'categories'));
     }
 
@@ -174,7 +176,6 @@ class StockReportController extends Controller
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                $query;
             } else {
 
                 if (empty($request->warehouse_id)) {
@@ -205,8 +206,8 @@ class StockReportController extends Controller
 
             return DataTables::of($warehouse_stock)
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
-                ->editColumn('name',  fn ($row) => Str::limit($row->name, 25, '') . ' ' . $row->variant_name)
-                ->editColumn('branch',  function ($row) use ($generalSettings) {
+                ->editColumn('name', fn ($row) => Str::limit($row->name, 25, '').' '.$row->variant_name)
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->is_global == 1) {
 
@@ -215,23 +216,24 @@ class StockReportController extends Controller
 
                         if ($row->b_name) {
 
-                            return $row->b_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                            return $row->b_name.'/'.$row->branch_code.'(<b>BL</b>)';
                         } else {
 
-                            return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+                            return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                         }
                     }
                 })
-                ->editColumn('warehouse', fn ($row) => $row->w_name . '/' . $row->w_code)
-                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '">' . ($row->variant_quantity ? $row->variant_quantity : $row->product_quantity) . '(' . $row->code_name . ')</span>')
-                ->editColumn('price',  fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
-                ->editColumn('stock_value',  function ($row) use ($converter) {
+                ->editColumn('warehouse', fn ($row) => $row->w_name.'/'.$row->w_code)
+                ->editColumn('stock', fn ($row) => '<span class="stock" data-value="'.($row->variant_quantity ? $row->variant_quantity : $row->product_quantity).'">'.($row->variant_quantity ? $row->variant_quantity : $row->product_quantity).'('.$row->code_name.')</span>')
+                ->editColumn('price', fn ($row) => $row->variant_price ? $row->variant_price : $row->product_price)
+                ->editColumn('stock_value', function ($row) use ($converter) {
                     $price = $row->variant_cost_with_tax ? $row->variant_cost_with_tax : $row->product_cost_with_tax;
                     $stock = $row->variant_quantity ? $row->variant_quantity : $row->product_quantity;
                     $currentStockValue = $price * $stock;
-                    return '<span class="stock_value" data-value="' . $currentStockValue . '">' . $converter->format_in_bdt($currentStockValue) . '</span>';
+
+                    return '<span class="stock_value" data-value="'.$currentStockValue.'">'.$converter->format_in_bdt($currentStockValue).'</span>';
                 })
-                ->rawColumns(['product_code', 'name', 'branch', 'stock', 'price', 'stock_value',])
+                ->rawColumns(['product_code', 'name', 'branch', 'stock', 'price', 'stock_value'])
                 ->make(true);
         }
     }
@@ -256,7 +258,7 @@ class StockReportController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('product_branches.branch_id', NULL);
+                $query->where('product_branches.branch_id', null);
             } else {
 
                 $query->where('product_branches.branch_id', $request->branch_id);
@@ -285,10 +287,9 @@ class StockReportController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query;
         } else {
 
-             $query->where('product_branches.branch_id', auth()->user()->branch_id);
+            $query->where('product_branches.branch_id', auth()->user()->branch_id);
         }
 
         $branch_stock = $query->select(

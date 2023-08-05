@@ -2,74 +2,80 @@
 
 namespace Modules\Communication\Http\Controllers;
 
+use App\Interface\FileUploaderServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Yajra\DataTables\Facades\DataTables;
-use Modules\Communication\Entities\Email;
-use Modules\Communication\Entities\Contact;
-use Modules\Communication\Mail\WelcomeEmail;
-use App\Interface\FileUploaderServiceInterface;
-use Modules\Communication\Entities\ContactGroup;
 use Modules\Communication\Emails\SendWeeklyPostsEmail;
-use Modules\Communication\Http\Controllers\Controller;
+use Modules\Communication\Entities\Contact;
+use Modules\Communication\Entities\ContactGroup;
+use Modules\Communication\Entities\Email;
 use Modules\Communication\Interface\EmailServiceInterface;
+use Yajra\DataTables\Facades\DataTables;
 
 class CustomEmailController extends Controller
 {
     private $emailService;
+
     public function __construct(EmailServiceInterface $emailService)
     {
         $this->emailService = $emailService;
     }
+
     public function index(Request $request)
     {
 
         if ($request->ajax()) {
 
             $email = Email::all();
+
             return DataTables::of($email)
                 ->addColumn('check', function ($row) {
 
                     $html = '';
                     $html .= '<div class="icheck-primary text-center">
-                                    <input type="checkbox" name="email_id[]" value="' . $row->id . '" id="check1" class="mt-2 check1">
+                                    <input type="checkbox" name="email_id[]" value="'.$row->id.'" id="check1" class="mt-2 check1">
                                     <label for="check1"></label>
                                 </div>';
+
                     return $html;
                 })
                 ->editColumn('subject', function ($row) {
                     $html = '';
                     $message = $row['message'];
                     $message = substr($row['message'], 0, 60);
-                    $html = '<p><strong>' . $row['subject'] . '</strong> - ' . strip_tags($message) . '...</p>';
+                    $html = '<p><strong>'.$row['subject'].'</strong> - '.strip_tags($message).'...</p>';
+
                     return $html;
                 })
                 ->addColumn('status', function ($row) {
                     $html = '';
                     if ($row['status'] == 1) {
-                        $html .= '<div class="text-center"><a class="" href="' . route('communication.email.important', [$row->id, 1]) . '" id="status"><i class="fa-solid fa-star fa-lg"></i></a></div>';
+                        $html .= '<div class="text-center"><a class="" href="'.route('communication.email.important', [$row->id, 1]).'" id="status"><i class="fa-solid fa-star fa-lg"></i></a></div>';
                     } else {
-                        $html .= '<div class="text-center"><a class="" href="' . route('communication.email.important', [$row->id, 2]) . '" id="status"><i class="fa-thin fa-star fa-lg"></i></a></div>';
+                        $html .= '<div class="text-center"><a class="" href="'.route('communication.email.important', [$row->id, 2]).'" id="status"><i class="fa-thin fa-star fa-lg"></i></a></div>';
                     }
+
                     return $html;
                 })
                 ->addColumn('delete', function ($row) {
                     $html = '';
-                    $html .= '<div class="text-center"><a class="" href="' . route('communication.email.delete', $row->id) . '" id="delete"><i class="fa-solid fa-trash-can"></i></a></div>';
+                    $html .= '<div class="text-center"><a class="" href="'.route('communication.email.delete', $row->id).'" id="delete"><i class="fa-solid fa-trash-can"></i></a></div>';
+
                     return $html;
                 })
                 ->editColumn('attachment', function ($row) {
                     $html = '';
-                    if ($row['attachment'] != NULL) {
+                    if ($row['attachment'] != null) {
                         $html .= '<div class="text-center"><i class="fa-solid fa-paperclip"></i></div>';
                     } else {
                         $html .= '&nbsp;&nbsp;&nbsp; &nbsp;';
                     }
+
                     return $html;
                 })
                 ->addColumn('time', function ($row) {
 
-                    return  $row['created_at']->diffForHumans();
+                    return $row['created_at']->diffForHumans();
                 })
                 ->rawColumns(['check', 'status', 'subject', 'delete', 'time', 'attachment'])
                 ->make(true);
@@ -78,6 +84,7 @@ class CustomEmailController extends Controller
         $mails = Email::all();
         $groupIds = ContactGroup::pluck('id');
         $filtered_contact_email = Contact::whereNotNull('email')->whereIn('group_id', $groupIds)->get();
+
         return view('communication::email.index', [
             'mails' => $mails,
             'filtered_contact_email' => $filtered_contact_email,
@@ -100,9 +107,9 @@ class CustomEmailController extends Controller
             'subject' => 'required',
         ]);
 
-        $emailArray = array();
+        $emailArray = [];
 
-        if (!empty($request->group_id)) {
+        if (! empty($request->group_id)) {
 
             foreach ($request->group_id as $ids) {
 
@@ -112,7 +119,6 @@ class CustomEmailController extends Controller
                 }
             }
         }
-
 
         $emailArray = array_merge($request->to, $emailArray);
 
@@ -138,12 +144,11 @@ class CustomEmailController extends Controller
         // $this->emailService->sendMultiple($trimmedEmails, new SendWeeklyPostsEmail($mailData));
         $testMailData = [
             'title' => 'Mail from ItSolutionStuff.com',
-            'body' => 'This is for testing email using smtp.'
+            'body' => 'This is for testing email using smtp.',
         ];
 
         Mail::to('your_email@gmail.com')->send(new SendWeeklyPostsEmail($testMailData));
 
-        dd("Email is sent successfully.");
         return response()->json('Mail sent successfully');
     }
 
@@ -152,7 +157,7 @@ class CustomEmailController extends Controller
         if ($flag == 1) {
             $mails = Email::find($id);
 
-            $mails->status = FALSE;
+            $mails->status = false;
             $mails->save();
 
             return response()->json('Mail Marked as Unimportant');
@@ -166,23 +171,24 @@ class CustomEmailController extends Controller
         }
     }
 
-
     public function delete(Request $request, $id)
     {
         $mails = Email::find($id);
         $mails->delete();
+
         return response()->json(['errorMsg' => 'Mail Deleted Successfully']);
     }
 
     public function delete_all(Request $request)
     {
-        if (!isset($request->email_id)) {
+        if (! isset($request->email_id)) {
             return response()->json(['errorMsg' => 'Select mail first']);
         }
         foreach ($request->email_id as $key => $items) {
             $mails = Email::find($items);
             $mails->delete();
         }
+
         return response()->json(['errorMsg' => 'Mail Deleted Successfully']);
     }
 }

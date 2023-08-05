@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
-use Illuminate\Http\Request;
 use App\Models\ExpanseCategory;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExpanseCategoryController extends Controller
 {
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil)
     {
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
@@ -29,8 +29,8 @@ class ExpanseCategoryController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('expenses.categories.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('expenses.categories.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="'.route('expenses.categories.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('expenses.categories.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                     $html .= '</div>';
 
                     return $html;
@@ -49,7 +49,7 @@ class ExpanseCategoryController extends Controller
 
         $addCategory = ExpanseCategory::create([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, "0", STR_PAD_LEFT),
+            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, '0', STR_PAD_LEFT),
         ]);
 
         return $addCategory;
@@ -58,6 +58,7 @@ class ExpanseCategoryController extends Controller
     public function edit($id)
     {
         $expenseCategory = DB::table('expanse_categories')->where('id', $id)->first();
+
         return view('expanses.categories.ajax_view.edit', compact('expenseCategory'));
     }
 
@@ -83,7 +84,7 @@ class ExpanseCategoryController extends Controller
             return response()->json(['errorMsg' => 'Expense category can\'t be deleted. This Category associated with expense.']);
         }
 
-        if (!is_null($deleteCategory)) {
+        if (! is_null($deleteCategory)) {
 
             $deleteCategory->delete();
         }

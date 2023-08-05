@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
-use App\Models\Sale;
-use App\Models\User;
-use App\Utils\SmsUtil;
-use App\Models\Product;
-use App\Utils\SaleUtil;
-use App\Models\Customer;
-use App\Utils\AccountUtil;
-use App\Models\SalePayment;
-use App\Models\SaleProduct;
-use App\Utils\CustomerUtil;
-use App\Utils\PurchaseUtil;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Models\ProductBranch;
-use App\Utils\NameSearchUtil;
 use App\Mail\FinalSaleCreated;
 use App\Mail\SaleOrderCreated;
-use App\Utils\ProductStockUtil;
 use App\Mail\SaleQuotationCreated;
-use App\Utils\CustomerPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Models\Customer;
+use App\Models\PaymentMethod;
+use App\Models\Product;
+use App\Models\ProductBranch;
+use App\Models\Sale;
+use App\Models\SalePayment;
+use App\Models\SaleProduct;
+use App\Models\User;
 use App\Services\GeneralSettingServiceInterface;
-use Modules\Communication\Interface\SmsServiceInterface;
+use App\Utils\AccountUtil;
+use App\Utils\BranchWiseCustomerAmountUtil;
+use App\Utils\CustomerPaymentUtil;
+use App\Utils\CustomerUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\NameSearchUtil;
+use App\Utils\ProductStockUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SaleUtil;
+use App\Utils\SmsUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\EmailServiceInterface;
+use Modules\Communication\Interface\SmsServiceInterface;
 
 class SaleController extends Controller
 {
@@ -53,7 +53,7 @@ class SaleController extends Controller
 
     public function index2(Request $request)
     {
-        if (!auth()->user()->can('view_add_sale')) {
+        if (! auth()->user()->can('view_add_sale')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -70,7 +70,7 @@ class SaleController extends Controller
 
     public function posList(Request $request)
     {
-        if (!auth()->user()->can('pos_all')) {
+        if (! auth()->user()->can('pos_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -202,7 +202,7 @@ class SaleController extends Controller
     // Create sale view
     public function create()
     {
-        if (!auth()->user()->can('create_add_sale')) {
+        if (! auth()->user()->can('create_add_sale')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -278,7 +278,7 @@ class SaleController extends Controller
 
             $generalSettings = config('generalSettings');
 
-            if ($request->status == 3 && !$request->customer_id) {
+            if ($request->status == 3 && ! $request->customer_id) {
 
                 return response()->json(['errorMsg' => 'Listed customer is required for sales order.']);
             }
@@ -308,7 +308,7 @@ class SaleController extends Controller
 
             if (
                 $request->received_amount < $request->total_receivable_amount &&
-                !$request->customer_id &&
+                ! $request->customer_id &&
                 ($request->status == 1 || $request->status == 3)
             ) {
 
@@ -337,14 +337,14 @@ class SaleController extends Controller
 
                 if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
 
-                    $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
+                    $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y').$branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix.$branchInvoiceSchema->start_from;
                 } else {
 
                     $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
 
                     if ($defaultSchemas) {
 
-                        $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
+                        $invoicePrefix = $defaultSchemas->format == 2 ? date('Y').$defaultSchemas->start_from : $defaultSchemas->prefix.$defaultSchemas->start_from;
                     }
                 }
             }
@@ -357,7 +357,7 @@ class SaleController extends Controller
             $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, '0', STR_PAD_LEFT);
 
             $addSale = new Sale();
-            $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . $invoiceId;
+            $addSale->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix.$invoiceId;
             $addSale->admin_id = auth()->user()->id;
             $addSale->sale_account_id = $request->sale_account_id;
             $addSale->branch_id = auth()->user()->branch_id;
@@ -372,7 +372,7 @@ class SaleController extends Controller
             $addSale->pay_term = $request->pay_term;
             $addSale->date = $request->date;
             $addSale->time = date('h:i:s a');
-            $addSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+            $addSale->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
             $addSale->pay_term_number = $request->pay_term_number;
             $addSale->total_item = $request->total_item;
             $addSale->net_total_amount = $request->net_total_amount;
@@ -718,7 +718,7 @@ class SaleController extends Controller
     // Sale edit view
     public function edit($saleId)
     {
-        if (!auth()->user()->can('edit_add_sale')) {
+        if (! auth()->user()->can('edit_add_sale')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -779,7 +779,7 @@ class SaleController extends Controller
     // Update Sale
     public function update(Request $request, $saleId)
     {
-        if (!auth()->user()->can('edit_add_sale')) {
+        if (! auth()->user()->can('edit_add_sale')) {
             return response()->json('Access Denied');
         }
 
@@ -840,7 +840,7 @@ class SaleController extends Controller
 
         if (
             $request->paying_amount < $request->current_receivable &&
-            !$updateSale->customer_id &&
+            ! $updateSale->customer_id &&
             ($request->status == 1 || $request->status == 3)
         ) {
 
@@ -860,7 +860,7 @@ class SaleController extends Controller
 
         $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, '0', STR_PAD_LEFT);
 
-        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '') . $invoiceId;
+        $updateSale->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : '').$invoiceId;
         $updateSale->status = $request->status;
         $updateSale->sale_account_id = $request->sale_account_id;
         $updateSale->pay_term = $request->pay_term;
@@ -881,7 +881,7 @@ class SaleController extends Controller
         $updateSale->shipment_status = $request->shipment_status;
         $updateSale->delivered_to = $request->delivered_to;
         $updateSale->sale_note = $request->sale_note;
-        $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $updateSale->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updateSale->gross_pay = $request->previous_paid + $request->paying_amount;
         $updateSale->save();
 
@@ -1104,7 +1104,7 @@ class SaleController extends Controller
     // Delete Sale
     public function delete(Request $request, $saleId)
     {
-        if (!auth()->user()->can('delete_add_sale')) {
+        if (! auth()->user()->can('delete_add_sale')) {
 
             return response()->json('Access Denied');
         }
@@ -1128,7 +1128,7 @@ class SaleController extends Controller
     // Shipments View
     public function shipments(Request $request)
     {
-        if (!auth()->user()->can('shipment_access')) {
+        if (! auth()->user()->can('shipment_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -1146,7 +1146,7 @@ class SaleController extends Controller
     // Update shipment
     public function updateShipment(Request $request, $saleId)
     {
-        if (!auth()->user()->can('shipment_access')) {
+        if (! auth()->user()->can('shipment_access')) {
             return response()->json('Access Denied');
         }
 
@@ -1312,7 +1312,7 @@ class SaleController extends Controller
 
     public function paymentAdd(Request $request, $saleId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
             return response()->json('Access Denied');
         }
 
@@ -1392,7 +1392,7 @@ class SaleController extends Controller
     // Show payment modal
     public function paymentEdit($paymentId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
             return response()->json('Access Denied');
         }
 
@@ -1420,7 +1420,7 @@ class SaleController extends Controller
     // Payment update
     public function paymentUpdate(Request $request, $paymentId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
             return response()->json('Access Denied');
         }
 
@@ -1467,7 +1467,7 @@ class SaleController extends Controller
     // Show payment modal
     public function returnPaymentModal($saleId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
             return response()->json('Access Denied');
         }
 
@@ -1495,7 +1495,7 @@ class SaleController extends Controller
 
     public function returnPaymentAdd(Request $request, $saleId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
             return response()->json('Access Denied');
         }
 
@@ -1639,7 +1639,7 @@ class SaleController extends Controller
     // payment details
     public function paymentDetails($paymentId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
             return response()->json('Access Denied');
         }
 
@@ -1651,7 +1651,7 @@ class SaleController extends Controller
     // Delete sale payment
     public function paymentDelete(Request $request, $paymentId)
     {
-        if (!auth()->user()->can('sale_payment')) {
+        if (! auth()->user()->can('sale_payment')) {
 
             return response()->json('Access Denied');
         }
@@ -1659,7 +1659,7 @@ class SaleController extends Controller
         $deleteSalePayment = SalePayment::with('account', 'customer', 'sale', 'sale.sale_return')
             ->where('id', $paymentId)->first();
 
-        if (!is_null($deleteSalePayment)) {
+        if (! is_null($deleteSalePayment)) {
 
             //Update customer due
             if ($deleteSalePayment->payment_type == 1) {
@@ -1672,9 +1672,9 @@ class SaleController extends Controller
 
                 if ($deleteSalePayment->attachment != null) {
 
-                    if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
+                    if (file_exists(public_path('uploads/payment_attachment/'.$deleteSalePayment->attachment))) {
 
-                        unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
+                        unlink(public_path('uploads/payment_attachment/'.$deleteSalePayment->attachment));
                     }
                 }
 
@@ -1717,9 +1717,9 @@ class SaleController extends Controller
 
                 if ($deleteSalePayment->attachment != null) {
 
-                    if (file_exists(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment))) {
+                    if (file_exists(public_path('uploads/payment_attachment/'.$deleteSalePayment->attachment))) {
 
-                        unlink(public_path('uploads/payment_attachment/' . $deleteSalePayment->attachment));
+                        unlink(public_path('uploads/payment_attachment/'.$deleteSalePayment->attachment));
                     }
                 }
 
@@ -1867,7 +1867,7 @@ class SaleController extends Controller
     // Get notification form method
     public function settings()
     {
-        if (!auth()->user()->can('add_sale_settings')) {
+        if (! auth()->user()->can('add_sale_settings')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -1881,7 +1881,7 @@ class SaleController extends Controller
     // Add tax settings
     public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        if (!auth()->user()->can('add_sale_settings')) {
+        if (! auth()->user()->can('add_sale_settings')) {
             return response()->json('Asses Forbidden.');
         }
         $settings = [

@@ -40,10 +40,10 @@ class Product extends BaseModel
     public function purchase_products()
     {
         return $this->hasMany(PurchaseProduct::class, 'product_id')
-        ->where('product_id', NULL)
-        ->where('opening_stock_id', NULL)
-        ->where('sale_return_product_id', NULL)
-        ->where('transfer_branch_to_branch_product_id', NULL);
+            ->where('product_id', null)
+            ->where('opening_stock_id', null)
+            ->where('sale_return_product_id', null)
+            ->where('transfer_branch_to_branch_product_id', null);
     }
 
     public function sale_products()

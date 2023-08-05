@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Contacts\ContactController;
-use App\Http\Controllers\Contacts\MoneyReceiptController;
 use App\Http\Controllers\Contacts\ManageCustomerController;
 use App\Http\Controllers\Contacts\ManageSupplierController;
+use App\Http\Controllers\Contacts\MoneyReceiptController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'contacts'], function () {
 

@@ -2,39 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Utils\Util;
-use App\Models\Unit;
-use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Utils\AccountUtil;
-use App\Utils\ProductUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierUtil;
-use Illuminate\Http\Request;
 use App\Mail\PurchaseCreated;
 use App\Models\PaymentMethod;
-use App\Utils\NameSearchUtil;
+use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\PurchaseReturn;
+use App\Models\Purchase;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
+use App\Models\PurchaseReturn;
+use App\Models\Supplier;
 use App\Models\SupplierProduct;
-use App\Utils\ProductStockUtil;
-use App\Utils\PurchaseReturnUtil;
-use App\Utils\PurchaseProductUtil;
-use App\Utils\SupplierPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Models\Unit;
 use App\Services\GeneralSettingServiceInterface;
+use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\NameSearchUtil;
+use App\Utils\ProductStockUtil;
+use App\Utils\ProductUtil;
+use App\Utils\PurchaseProductUtil;
+use App\Utils\PurchaseReturnUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierPaymentUtil;
+use App\Utils\SupplierUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\EmailServiceInterface;
 
 class PurchaseController extends Controller
 {
     public function __construct(
-        private EmailServiceInterface  $emailService,
+        private EmailServiceInterface $emailService,
         private NameSearchUtil $nameSearchUtil,
         private PurchaseUtil $purchaseUtil,
         private PurchaseProductUtil $purchaseProductUtil,
@@ -194,7 +194,7 @@ class PurchaseController extends Controller
             $i = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : NULL;
+                $variant_id = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
                 $SupplierProduct = SupplierProduct::where('supplier_id', $request->supplier_id)
                     ->where('product_id', $product_id)
                     ->where('product_variant_id', $variant_id)
@@ -300,7 +300,7 @@ class PurchaseController extends Controller
             $loop = 0;
             foreach ($request->product_ids as $productId) {
 
-                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : NULL;
+                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : null;
                 $__xMargin = isset($request->profits) ? $request->profits[$loop] : 0;
                 $__selling_price = isset($request->selling_prices) ? $request->selling_prices[$loop] : 0;
 
@@ -321,7 +321,7 @@ class PurchaseController extends Controller
             $__index = 0;
             foreach ($request->product_ids as $productId) {
 
-                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : NULL;
+                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockUtil->adjustMainProductAndVariantStock($productId, $variantId);
 
                 if (isset($request->warehouse_count)) {
@@ -468,7 +468,7 @@ class PurchaseController extends Controller
 
                 if ($SupplierProduct) {
 
-                    $SupplierProduct->label_qty -= (float)$purchaseProduct->quantity;
+                    $SupplierProduct->label_qty -= (float) $purchaseProduct->quantity;
                     $SupplierProduct->save();
                 }
             }
@@ -483,7 +483,7 @@ class PurchaseController extends Controller
             $i = 0;
             foreach ($request->product_ids as $productId) {
 
-                $variantId = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : NULL;
+                $variantId = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
 
                 $SupplierProduct = SupplierProduct::where('supplier_id', $purchase->supplier_id)
                     ->where('product_id', $productId)
@@ -512,7 +512,7 @@ class PurchaseController extends Controller
             $loop = 0;
             foreach ($request->product_ids as $productId) {
 
-                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : NULL;
+                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : null;
 
                 $__xMargin = isset($request->profits) ? $request->profits[$loop] : 0;
                 $__sellingPrice = isset($request->selling_prices) ? $request->selling_prices[$loop] : 0;
@@ -539,8 +539,8 @@ class PurchaseController extends Controller
             }
 
             $deletedUnusedPurchaseProducts = PurchaseProduct::where('purchase_id', $updatePurchase->id)
-                    ->where('delete_in_update', 1)
-                    ->get();
+                ->where('delete_in_update', 1)
+                ->get();
 
             if (count($deletedUnusedPurchaseProducts) > 0) {
 

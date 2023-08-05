@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Contacts\ManageCustomerService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ManageCustomerController extends Controller
 {
@@ -14,7 +14,8 @@ class ManageCustomerController extends Controller
     ) {
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
 
         if ($request->ajax()) {
 
@@ -26,7 +27,6 @@ class ManageCustomerController extends Controller
 
             $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         }
-
 
         return view('contacts.manage_customers.index', compact('branches'));
     }

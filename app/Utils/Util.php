@@ -70,7 +70,7 @@ class Util
         $addProduct->profit = $request->profit ? $request->profit : 0;
         $addProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
         $addProduct->product_price = $request->product_price ? $request->product_price : 0;
-        $addProduct->alert_quantity = $request->alert_quantity ? $request->alert_quantity: 0;
+        $addProduct->alert_quantity = $request->alert_quantity ? $request->alert_quantity : 0;
         $addProduct->tax_id = $tax_id;
         $addProduct->tax_type = 1;
         $addProduct->is_purchased = 1;

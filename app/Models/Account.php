@@ -1,14 +1,10 @@
 <?php
 
 namespace App\Models;
-use App\Models\Bank;
-use App\Models\User;
-use App\Models\BaseModel;
-use App\Models\AccountBranch;
-use App\Models\AccountLedger;
-use App\Models\Contacts\Contact;
+
 use App\Models\Accounts\AccountGroup;
 use App\Models\Accounts\BankAccessBranch;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends BaseModel

@@ -322,7 +322,7 @@ class CustomerUtil
         $addCustomerLedger->branch_id = $branch_id;
         $addCustomerLedger->customer_id = $customer_id;
         $addCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-        $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $addCustomerLedger->{$voucher_type['id']} = $trans_id;
         $addCustomerLedger->{$voucher_type['amt']} = $amount;
         $addCustomerLedger->amount = $amount;
@@ -348,7 +348,7 @@ class CustomerUtil
             $previousTime = date('H:i:s', strtotime($updateCustomerLedger->report_date));
             $updateCustomerLedger->branch_id = $new_branch_id ? $new_branch_id : $previous_branch_id;
             $updateCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $updateCustomerLedger->{$voucher_type['amt']} = $amount;
             $updateCustomerLedger->amount = $amount;
             $updateCustomerLedger->running_balance = 0;

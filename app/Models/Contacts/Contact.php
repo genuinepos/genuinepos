@@ -4,16 +4,15 @@ namespace App\Models\Contacts;
 
 use App\Enums\ContactType;
 use App\Models\CustomerGroup;
-use App\Models\Contacts\MoneyReceipt;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Contacts\ContactOpeningBalance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
 {
     use HasFactory;
+
     protected $casts = [
-        'type' => ContactType::class
+        'type' => ContactType::class,
     ];
 
     public function openingBalances()

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Contacts\ManageSupplierService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ManageSupplierController extends Controller
 {
@@ -14,7 +14,8 @@ class ManageSupplierController extends Controller
     ) {
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
 
         if ($request->ajax()) {
 

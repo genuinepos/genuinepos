@@ -2,16 +2,15 @@
 
 namespace App\Utils;
 
-use Carbon\Carbon;
 use App\Models\Product;
-use App\Models\Purchase;
-use App\Utils\Converter;
-use Illuminate\Support\Str;
 use App\Models\ProductVariant;
+use App\Models\Purchase;
+use App\Models\PurchaseOrderProduct;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Models\PurchaseOrderProduct;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseUtil
@@ -29,8 +28,8 @@ class PurchaseUtil
     public function addPurchase($request, $invoiceVoucherRefIdUtil, $invoicePrefix)
     {
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, "0", STR_PAD_LEFT);
-        $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : NULL;
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix.str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, '0', STR_PAD_LEFT);
+        $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : null;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_id = $request->supplier_id;
         $addPurchase->purchase_account_id = $request->purchase_account_id;
@@ -53,13 +52,13 @@ class PurchaseUtil
         $addPurchase->purchase_status = 1;
         $addPurchase->is_purchased = 1;
         $addPurchase->date = $request->date;
-        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchase->is_last_created = 1;
 
         if ($request->hasFile('attachment')) {
 
             $purchaseAttachment = $request->file('attachment');
-            $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
+            $purchaseAttachmentName = uniqid().'-'.'.'.$purchaseAttachment->getClientOriginalExtension();
             $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
             $addPurchase->attachment = $purchaseAttachmentName;
         }
@@ -69,9 +68,10 @@ class PurchaseUtil
         return $addPurchase;
     }
 
-    public function updatePurchase($request, $purchase){
+    public function updatePurchase($request, $purchase)
+    {
 
-        $purchase->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
+        $purchase->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : null;
         $purchase->pay_term = $request->pay_term;
         $purchase->pay_term_number = $request->pay_term_number;
         $purchase->purchase_account_id = $request->purchase_account_id;
@@ -89,20 +89,20 @@ class PurchaseUtil
         $purchase->purchase_note = $request->purchase_note;
         $purchase->purchase_status = 1;
         $purchase->date = $request->date;
-        $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
 
         if ($request->hasFile('attachment')) {
 
             if ($purchase->attachment != null) {
 
-                if (file_exists(public_path('uploads/purchase_attachment/' . $purchase->attachment))) {
+                if (file_exists(public_path('uploads/purchase_attachment/'.$purchase->attachment))) {
 
-                    unlink(public_path('uploads/purchase_attachment/' . $purchase->attachment));
+                    unlink(public_path('uploads/purchase_attachment/'.$purchase->attachment));
                 }
             }
 
             $purchaseAttachment = $request->file('attachment');
-            $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
+            $purchaseAttachmentName = uniqid().'-'.'.'.$purchaseAttachment->getClientOriginalExtension();
             $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
             $purchase->attachment = $purchaseAttachmentName;
         }

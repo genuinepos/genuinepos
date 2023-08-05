@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\BankService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BankController extends Controller
 {
@@ -18,7 +18,7 @@ class BankController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -31,7 +31,7 @@ class BankController extends Controller
         return view('accounting.banks.index');
     }
 
-    function create()
+    public function create()
     {
 
         return view('accounting.banks.ajax_view.create');
@@ -39,14 +39,14 @@ class BankController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $this->validate(
             $request,
-            ['name' => 'required|unique:banks,name',]
+            ['name' => 'required|unique:banks,name']
         );
 
         try {
@@ -68,24 +68,25 @@ class BankController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $bank = $this->bankService->singleBank(id: $id);
+
         return view('accounting.banks.ajax_view.edit', compact('bank'));
     }
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $this->validate($request, [
-            'name' => 'required|unique:banks,name,' . $id,
+            'name' => 'required|unique:banks,name,'.$id,
         ]);
 
         try {
@@ -106,7 +107,7 @@ class BankController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -122,7 +123,7 @@ class BankController extends Controller
                 return response()->json(['errorMsg' => $deleteBank['msg']]);
             }
 
-            $this->userActivityLogUtil->addLog(action: 3,  subject_type: 16, data_obj: $deleteBank);
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 16, data_obj: $deleteBank);
 
             DB::commit();
         } catch (Exception $e) {

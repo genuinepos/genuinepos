@@ -2,13 +2,13 @@
 
 namespace App\Models\Contacts;
 
-use App\Models\Branch;
 use App\Models\BaseModel;
-use App\Models\Contacts\Contact;
+use App\Models\Branch;
 
 class MoneyReceipt extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function contact()

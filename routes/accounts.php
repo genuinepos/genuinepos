@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AccountGroupController;
+use App\Http\Controllers\Accounts\BankController;
 
 Route::group(['prefix' => 'accounting'], function () {
 
@@ -35,7 +35,7 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('ledger/{accountId}', 'ledger')->name('accounts.ledger');
         Route::get('ledger/print/{accountId}', 'ledgerPrint')->name('accounts.ledger.print');
         Route::post('store', 'store')->name('accounts.store');
-        Route::get('edit/{id}','edit')->name('accounts.edit');
+        Route::get('edit/{id}', 'edit')->name('accounts.edit');
         Route::post('update/{id}', 'update')->name('accounts.update');
         Route::delete('delete/{accountId}', 'delete')->name('accounts.delete');
     });

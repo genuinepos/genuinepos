@@ -2,12 +2,12 @@
 
 namespace App\Services\Accounts;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountGroup;
+use Illuminate\Support\Facades\DB;
 
 class AccountGroupService
 {
-    function accountGroups(object $request = null, array $with = null)
+    public function accountGroups(object $request = null, array $with = null)
     {
         $query = AccountGroup::query();
 
@@ -22,7 +22,7 @@ class AccountGroupService
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('branch_id', NULL);
+                    $query->where('branch_id', null);
                 } else {
 
                     $query->where('branch_id', $request->branch_id);
@@ -30,7 +30,7 @@ class AccountGroupService
             }
         }
 
-        if (auth()->user()->role_type != 1 || !auth()->user()->role_type != 2) {
+        if (auth()->user()->role_type != 1 || ! auth()->user()->role_type != 2) {
 
             $query->where('branch_id', auth()->user()->branch_id);
         }
@@ -96,7 +96,7 @@ class AccountGroupService
 
         $deleteGroup = AccountGroup::with('subGroups')->where('id', $id)->first();
 
-        if (!is_null($deleteGroup)) {
+        if (! is_null($deleteGroup)) {
 
             // if ($deleteGroup->is_reserved == 1 || count($deleteGroup->subGroups) > 0 || count($deleteGroup->accounts)) {
             if ($deleteGroup->is_reserved == 1 || count($deleteGroup->subGroups) > 0) {

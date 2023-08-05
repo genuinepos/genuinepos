@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\Util;
+use App\Models\PaymentMethod;
 use App\Models\Purchase;
 use App\Utils\AccountUtil;
-use App\Utils\ProductUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierUtil;
-use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
-use App\Utils\PurchaseOrderUtil;
-use App\Utils\SupplierPaymentUtil;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\ProductUtil;
 use App\Utils\PurchaseOrderProductUtil;
+use App\Utils\PurchaseOrderUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierPaymentUtil;
+use App\Utils\SupplierUtil;
+use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderController extends Controller
 {
@@ -35,7 +35,7 @@ class PurchaseOrderController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -47,6 +47,7 @@ class PurchaseOrderController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
         $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
+
         return view('purchases.orders.index', compact('branches', 'suppliers'));
     }
 
@@ -135,7 +136,7 @@ class PurchaseOrderController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Product table is empty.']);
         } elseif (count($request->product_ids) > 60) {
@@ -163,9 +164,9 @@ class PurchaseOrderController extends Controller
                     invoicePrefix: $paymentInvoicePrefix,
                     request: $request,
                     payingAmount: $request->paying_amount,
-                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, "0", STR_PAD_LEFT),
+                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT),
                     purchase: $addOrder,
-                    supplier_payment_id: NULL
+                    supplier_payment_id: null
                 );
 
                 // Add Bank/Cash-In-Hand A/C Ledger
@@ -234,7 +235,7 @@ class PurchaseOrderController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Product table is empty.']);
         }
@@ -264,7 +265,7 @@ class PurchaseOrderController extends Controller
 
                 if ($SupplierProduct) {
 
-                    $SupplierProduct->label_qty -= (float)$purchaseProduct->quantity;
+                    $SupplierProduct->label_qty -= (float) $purchaseProduct->quantity;
                     $SupplierProduct->save();
                 }
             }
@@ -279,14 +280,14 @@ class PurchaseOrderController extends Controller
             $i = 0;
             foreach ($request->product_ids as $productId) {
 
-                $variantId = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : NULL;
+                $variantId = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
 
                 $SupplierProduct = SupplierProduct::where('supplier_id', $purchase->supplier_id)
                     ->where('product_id', $productId)
                     ->where('product_variant_id', $variantId)
                     ->first();
 
-                if (!$SupplierProduct) {
+                if (! $SupplierProduct) {
 
                     $addSupplierProduct = new SupplierProduct();
                     $addSupplierProduct->supplier_id = $purchase->supplier_id;
@@ -308,7 +309,7 @@ class PurchaseOrderController extends Controller
             $loop = 0;
             foreach ($request->product_ids as $productId) {
 
-                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : NULL;
+                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : null;
 
                 $__xMargin = isset($request->profits) ? $request->profits[$loop] : 0;
                 $__sellingPrice = isset($request->selling_prices) ? $request->selling_prices[$loop] : 0;
@@ -427,7 +428,6 @@ class PurchaseOrderController extends Controller
 
         return response()->json('Successfully purchase is updated');
     }
-
 
     // Purchase edit view
     public function edit($id)

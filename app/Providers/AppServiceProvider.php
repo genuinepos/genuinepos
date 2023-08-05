@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Models\GeneralSetting;
 use App\Services\CacheService;
-use App\Services\CodeGenerationService;
 use App\Services\CacheServiceInterface;
+use App\Services\CodeGenerationService;
 use App\Services\GeneralSettingService;
 use App\Services\GeneralSettingServiceInterface;
-use App\Interfaces\CodeGenerationServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

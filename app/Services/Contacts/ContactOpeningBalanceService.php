@@ -2,12 +2,13 @@
 
 namespace App\Services\Contacts;
 
-use Carbon\Carbon;
 use App\Models\Contacts\ContactOpeningBalance;
+use Carbon\Carbon;
 
 class ContactOpeningBalanceService
 {
-    function addContactOpeningBalance($contactId, $openingBalance, $openingBalanceType) {
+    public function addContactOpeningBalance($contactId, $openingBalance, $openingBalanceType)
+    {
 
         $addCustomerOpeningBalance = new ContactOpeningBalance();
         $addCustomerOpeningBalance->contact_id = $contactId;
@@ -19,7 +20,8 @@ class ContactOpeningBalanceService
         $addCustomerOpeningBalance->save();
     }
 
-    function updateContactOpeningBalance($contactOpeningBalance, $openingBalance, $openingBalanceType) {
+    public function updateContactOpeningBalance($contactOpeningBalance, $openingBalance, $openingBalanceType)
+    {
 
         $contactOpeningBalance->amount = $openingBalance ? $openingBalance : 0;
         $contactOpeningBalance->amount_type = $openingBalanceType;

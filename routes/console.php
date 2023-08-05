@@ -21,7 +21,6 @@ Artisan::command('temp', function () {
     });
 });
 
-
 Artisan::command('a', function (CodeGenerationService $s) {
 
     $res1 = $s->generateAndTypeWiseWithoutYearMonth('contacts', 'contact_id', 'type', '1', 'C');

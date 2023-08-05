@@ -26,7 +26,7 @@ use Yajra\DataTables\Facades\DataTables;
 class ProductController extends Controller
 {
     public function __construct(
-        private EmailServiceInterface  $emailService,
+        private EmailServiceInterface $emailService,
         private ProductUtil $productUtil,
         private ProductStockUtil $productStockUtil,
         private UserActivityLogUtil $userActivityLogUtil
@@ -36,13 +36,14 @@ class ProductController extends Controller
     // index view
     public function expiredProducts(Request $request)
     {
-        if (!auth()->user()->can('product_all')) {
+        if (! auth()->user()->can('product_all')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
             return $this->productUtil->expiredProductTable($request);
         }
+
         return view('product.products.expired_products');
     }
 
@@ -68,7 +69,7 @@ class ProductController extends Controller
     // Add product view
     public function create(Request $request)
     {
-        if (!auth()->user()->can('product_add')) {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -88,7 +89,7 @@ class ProductController extends Controller
         }
 
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'desc')->get(['id', 'name']);
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
@@ -153,7 +154,6 @@ class ProductController extends Controller
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = $request->weight;
         $addProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
-
 
         if ($request->file('image')) {
 
@@ -277,7 +277,7 @@ class ProductController extends Controller
 
         if ($addProduct) {
 
-            if(env('EMAIL_ACTIVE') == 'true'){
+            if (env('EMAIL_ACTIVE') == 'true') {
 
                 $customers = Customer::pluck('email', 'id')->toArray();
                 $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
@@ -872,7 +872,7 @@ class ProductController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         $deleteProduct = Product::with(
             [
                 'product_images',

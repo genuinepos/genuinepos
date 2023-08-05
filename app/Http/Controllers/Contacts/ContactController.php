@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Enums\ContactType;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountService;
-use App\Services\Contacts\ContactService;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
-use App\Interfaces\CodeGenerationServiceInterface;
+use App\Services\Accounts\AccountService;
 use App\Services\Contacts\ContactCreditLimitService;
 use App\Services\Contacts\ContactOpeningBalanceService;
+use App\Services\Contacts\ContactService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -31,10 +31,11 @@ class ContactController extends Controller
     public function create($type)
     {
         $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
+
         return view('contacts.ajax_view.create', compact('type', 'customerGroups'));
     }
 
-    function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
+    public function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
         try {
 
@@ -94,6 +95,7 @@ class ContactController extends Controller
     {
         $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
         $contact = $this->contactService->singleContact(id: $contactId, with: ['openingBalance', 'customerGroup']);
+
         return view('contacts.ajax_view.edit', compact('type', 'contact', 'customerGroups'));
     }
 

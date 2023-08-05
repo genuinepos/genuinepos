@@ -6,7 +6,8 @@ use App\Models\CustomerCreditLimit;
 
 class CustomerCreditLimitService
 {
-    function addCustomerCreditLimit($customerId, $creditLimit = null, $payTerm = null, $payTermNumber = null) {
+    public function addCustomerCreditLimit($customerId, $creditLimit = null, $payTerm = null, $payTermNumber = null)
+    {
 
         $addCreditLimit = new CustomerCreditLimit();
         $addCreditLimit->customer_id = $customerId;

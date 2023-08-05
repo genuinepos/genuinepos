@@ -6,7 +6,7 @@ use App\Models\Contacts\ContactCreditLimit;
 
 class ContactCreditLimitService
 {
-    function addContactCreditLimit($contactId, $creditLimit, $payTerm, $payTermNumber)
+    public function addContactCreditLimit($contactId, $creditLimit, $payTerm, $payTermNumber)
     {
         $addCreditLimit = new ContactCreditLimit();
         $addCreditLimit->contact_id = $contactId;

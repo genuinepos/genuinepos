@@ -1952,5 +1952,5 @@ return [
     'sale_tax' => 'Sale Tax',
     'curr_receivable' => 'Curr. Receivable',
     'invoice_amount' => 'Invoice Amount',
-    
+
 ];

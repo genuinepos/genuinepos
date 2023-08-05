@@ -54,6 +54,7 @@ class ProductVariant extends BaseModel
         } else {
             $ordering = 'desc';
         }
+
         return $this->hasOne(PurchaseProduct::class, 'product_variant_id')->where('left_qty', '>', '0')
             ->orderBy('created_at', $ordering)->select('product_variant_id', 'net_unit_cost');
     }

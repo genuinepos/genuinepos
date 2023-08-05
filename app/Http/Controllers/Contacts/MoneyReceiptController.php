@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\MoneyReceiptService;
-use App\Interfaces\CodeGenerationServiceInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MoneyReceiptController extends Controller
 {
-
     public function __construct(
         private MoneyReceiptService $moneyReceiptService,
         private ContactService $contactService,
@@ -21,12 +20,14 @@ class MoneyReceiptController extends Controller
     public function index($contactId)
     {
         $contact = $this->contactService->singleContact(id: $contactId, with: ['moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch']);
+
         return view('contacts.money_receipts.index', compact('contact'));
     }
 
     public function create($contactId)
     {
         $contact = $this->contactService->singleContact(id: $contactId);
+
         return view('contacts.money_receipts.create', compact('contact'));
     }
 
@@ -34,7 +35,7 @@ class MoneyReceiptController extends Controller
     {
         $this->validate(
             $request,
-            ['date' => 'required|date',]
+            ['date' => 'required|date']
         );
 
         try {
@@ -74,7 +75,7 @@ class MoneyReceiptController extends Controller
     {
         $this->validate(
             $request,
-            ['date' => 'required|date',]
+            ['date' => 'required|date']
         );
 
         $updateMoneyReceipt = $this->moneyReceiptService->updateMoneyReceipt(moneyReceiptId: $receiptId, request: $request);
@@ -102,6 +103,7 @@ class MoneyReceiptController extends Controller
     public function print($receiptId)
     {
         $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
+
         return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 }

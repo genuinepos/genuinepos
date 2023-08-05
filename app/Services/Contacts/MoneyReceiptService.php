@@ -6,7 +6,8 @@ use App\Models\Contacts\MoneyReceipt;
 
 class MoneyReceiptService
 {
-    public function addMoneyReceipt($contactId, $request, $codeGenerator){
+    public function addMoneyReceipt($contactId, $request, $codeGenerator)
+    {
 
         $voucherPrefix = auth()?->user()?->branch ? auth()?->user()?->branch->branch_code : 'MB';
 
@@ -23,14 +24,15 @@ class MoneyReceiptService
         $addMoneyReceipt->is_date = $request->is_date;
         $addMoneyReceipt->is_customer_name = $request->is_customer_name;
         $addMoneyReceipt->is_header_less = $request->is_header_less;
-        $addMoneyReceipt->gap_from_top = $request->is_header_less == 1 ? $request->gap_from_top : NULL;
-        $addMoneyReceipt->date_ts = $request->date ? date('Y-m-d', strtotime($request->date)) : NULL;
+        $addMoneyReceipt->gap_from_top = $request->is_header_less == 1 ? $request->gap_from_top : null;
+        $addMoneyReceipt->date_ts = $request->date ? date('Y-m-d', strtotime($request->date)) : null;
         $addMoneyReceipt->save();
 
         return $addMoneyReceipt;
     }
 
-    public function updateMoneyReceipt($moneyReceiptId, $request){
+    public function updateMoneyReceipt($moneyReceiptId, $request)
+    {
 
         $updateMoneyReceipt = MoneyReceipt::where('id', $moneyReceiptId)->first();
         $updateMoneyReceipt->amount = $request->amount;
@@ -40,24 +42,26 @@ class MoneyReceiptService
         $updateMoneyReceipt->is_date = $request->is_date;
         $updateMoneyReceipt->is_customer_name = $request->is_customer_name;
         $updateMoneyReceipt->is_header_less = $request->is_header_less;
-        $updateMoneyReceipt->gap_from_top = $request->is_header_less == 1 ? $request->gap_from_top : NULL;
-        $updateMoneyReceipt->date_ts = $request->date ? date('Y-m-d', strtotime($request->date)) : NULL;
+        $updateMoneyReceipt->gap_from_top = $request->is_header_less == 1 ? $request->gap_from_top : null;
+        $updateMoneyReceipt->date_ts = $request->date ? date('Y-m-d', strtotime($request->date)) : null;
         $updateMoneyReceipt->save();
 
         return $updateMoneyReceipt;
     }
 
-    public function deleteMoneyReceipt($receiptId) {
+    public function deleteMoneyReceipt($receiptId)
+    {
 
         $delete = MoneyReceipt::find($receiptId);
 
-        if (!is_null($delete)) {
+        if (! is_null($delete)) {
 
             $delete->delete();
         }
     }
 
-    public function singleMoneyReceipt(int $id, array $with = null) {
+    public function singleMoneyReceipt(int $id, array $with = null)
+    {
 
         $query = MoneyReceipt::query();
 

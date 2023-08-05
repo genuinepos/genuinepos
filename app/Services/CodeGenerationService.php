@@ -41,7 +41,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthWise(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null,?string $connection = 'mysql'): string
+    public function generateMonthWise(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null, ?string $connection = 'mysql'): string
     {
         $entryRaw = DB::connection($connection)
             ->table($table)

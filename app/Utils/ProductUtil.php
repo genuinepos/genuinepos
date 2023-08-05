@@ -2,18 +2,17 @@
 
 namespace App\Utils;
 
-use App\Models\Unit;
 use App\Models\Brand;
-use App\Models\Product;
 use App\Models\Category;
-use App\Models\Warranty;
+use App\Models\Product;
 use App\Models\ProductBranch;
-use App\Models\ProductVariant;
-use App\Utils\ProductStockUtil;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
+use App\Models\ProductOpeningStock;
+use App\Models\ProductVariant;
+use App\Models\Unit;
+use App\Models\Warranty;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class ProductUtil
 {
@@ -249,7 +248,7 @@ class ProductUtil
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 
-                    $text .= '<p class="m-0 p-0">' . ($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__shop_name']) . ',</p>';
+                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__shop_name']).',</p>';
                 }
 
                 return $text;
@@ -284,7 +283,6 @@ class ProductUtil
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query;
         } else {
 
             $query->where('purchases.branch_id', auth()->user()->branch_id);
@@ -318,7 +316,7 @@ class ProductUtil
         return DataTables::of($expiredProducts)
             ->addColumn('multiple_check', function ($row) {
 
-                return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="product_ids[]" value="' . $row->id . '"/>';
+                return '<input id="'.$row->id.'" class="data_id sorting_disabled" type="checkbox" name="product_ids[]" value="'.$row->id.'"/>';
             })
             ->addColumn('action', function ($row) {
 
@@ -331,10 +329,11 @@ class ProductUtil
 
                 $html .= ' </div>';
                 $html .= '</div>';
+
                 return $html;
             })->editColumn('name', function ($row) {
 
-                return $row->name . ($row->variant_name ? ' - ' . $row->variant_name : '');
+                return $row->name.($row->variant_name ? ' - '.$row->variant_name : '');
             })->editColumn('expire_date', function ($row) use ($generalSettings) {
 
                 return date($generalSettings['business__date_format'], strtotime($row->expire_date));

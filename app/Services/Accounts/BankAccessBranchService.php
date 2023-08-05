@@ -6,7 +6,8 @@ use App\Models\Accounts\BankAccessBranch;
 
 class BankAccessBranchService
 {
-    public function addBankAccessBranch(int $bankAccountId, array $branchIds = []) {
+    public function addBankAccessBranch(int $bankAccountId, array $branchIds = [])
+    {
 
         foreach ($branchIds as $branchId) {
 

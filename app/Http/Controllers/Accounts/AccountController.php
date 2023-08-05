@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Enums\ContactType;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\BankService;
-use App\Services\CodeGenerationService;
-use App\Services\Accounts\AccountService;
-use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
+use App\Services\Accounts\AccountService;
 use App\Services\Accounts\BankAccessBranchService;
+use App\Services\Accounts\BankService;
+use App\Services\CodeGenerationService;
 use App\Services\Contacts\ContactOpeningBalanceService;
+use App\Services\Contacts\ContactService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
@@ -32,7 +32,7 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -49,7 +49,7 @@ class AccountController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -64,7 +64,7 @@ class AccountController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -161,7 +161,7 @@ class AccountController extends Controller
 
     public function delete(Request $request, $accountId)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }

@@ -2,8 +2,8 @@
 
 namespace App\Services\Accounts;
 
-use Carbon\Carbon;
 use App\Models\Account;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -22,7 +22,7 @@ class AccountService
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('account_groups.branch_id', NULL);
+                $query->where('account_groups.branch_id', null);
             } else {
 
                 $query->where('account_groups.branch_id', $request->branch_id);
@@ -62,27 +62,28 @@ class AccountService
 
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="editAccount" class="dropdown-item" href="' . route('accounts.edit', [$row->id]) . '" > ' . __("Edit") . '</a>';
-                $html .= '<a class="dropdown-item" href="' . route('accounts.ledger', [$row->id]) . '">' . __('Ledger') . '</a>';
-                $html .= '<a class="dropdown-item" href="' . route('accounts.delete', [$row->id]) . '" id="delete">' . __("Delete") . '</a>';
+                $html .= '<a id="editAccount" class="dropdown-item" href="'.route('accounts.edit', [$row->id]).'" > '.__('Edit').'</a>';
+                $html .= '<a class="dropdown-item" href="'.route('accounts.ledger', [$row->id]).'">'.__('Ledger').'</a>';
+                $html .= '<a class="dropdown-item" href="'.route('accounts.delete', [$row->id]).'" id="delete">'.__('Delete').'</a>';
                 $html .= '</div>';
                 $html .= '</div>';
+
                 return $html;
             })
 
             ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
             ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'Not Applicable')
-            ->editColumn('group', fn ($row) => '<b>' . $row->group_name . '</b>')
+            ->editColumn('group', fn ($row) => '<b>'.$row->group_name.'</b>')
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->is_global == 0) {
 
-                    return $row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__shop_name'];
-                }else {
+                    return $row->branch_name ? $row->branch_name.'/'.$row->branch_code : $generalSettings['business__shop_name'];
+                } else {
 
-                  return  __('Global A/c');
+                    return __('Global A/c');
                 }
             })
             ->editColumn('opening_balance', fn ($row) => \App\Utils\Converter::format_in_bdt(0.00))
@@ -93,7 +94,7 @@ class AccountService
             ->make(true);
     }
 
-    public function addAccount($name, $accountGroupId, $phone = null, $address = null, $accountNumber = null, $bankId = NULL, $bankAddress = null, $bankCode = null, $swiftCode = null, $bankBranch = null, $taxPercent = null, $openingBalance = 0, $openingBalanceType = 'dr', $remarks = null, $contactId = null)
+    public function addAccount($name, $accountGroupId, $phone = null, $address = null, $accountNumber = null, $bankId = null, $bankAddress = null, $bankCode = null, $swiftCode = null, $bankBranch = null, $taxPercent = null, $openingBalance = 0, $openingBalanceType = 'dr', $remarks = null, $contactId = null)
     {
         $addAccount = new Account();
         $addAccount->name = $name;
@@ -116,7 +117,8 @@ class AccountService
         return $addAccount;
     }
 
-    public function deleteAccount($id){
+    public function deleteAccount($id)
+    {
 
         $deleteAccount = Account::with('accountLedgersWithOutOpeningBalances', 'contact')->where('id', $id)->first();
 
@@ -130,7 +132,7 @@ class AccountService
             return ['success' => false, 'msg' => __('Account can not be deleted. One or more ledger entries are belonging in this account.')];
         }
 
-        if (!is_null($deleteAccount)) {
+        if (! is_null($deleteAccount)) {
 
             $deleteAccount->delete();
             $deleteAccount?->contact?->delete();

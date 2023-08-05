@@ -11,7 +11,7 @@ class PurchaseProductUtil
         $addPurchaseProduct = new PurchaseProduct();
         $addPurchaseProduct->purchase_id = $purchaseId;
         $addPurchaseProduct->product_id = $request->product_ids[$index];
-        $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+        $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $addPurchaseProduct->description = $request->descriptions[$index];
         $addPurchaseProduct->quantity = $request->quantities[$index];
         $addPurchaseProduct->left_qty = $request->quantities[$index];
@@ -41,8 +41,8 @@ class PurchaseProductUtil
         }
 
         $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
-        $addPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : NULL;
-        $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
+        $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchaseProduct->save();
 
         return $addPurchaseProduct;
@@ -94,9 +94,9 @@ class PurchaseProductUtil
         }
 
         $updateOrAddPurchaseProduct->batch_number = $request->batch_numbers[$index];
-        $updateOrAddPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : NULL;
+        $updateOrAddPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
         $updateOrAddPurchaseProduct->delete_in_update = 0;
-        $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updateOrAddPurchaseProduct->save();
 
         $purchaseUtil->adjustPurchaseLeftQty($updateOrAddPurchaseProduct);

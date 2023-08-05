@@ -116,6 +116,28 @@ class AccountService
         return $addAccount;
     }
 
+    public function updateAccount($accountId, $name, $accountGroupId, $phone = null, $address = null, $accountNumber = null, $bankId = NULL, $bankAddress = null, $bankCode = null, $swiftCode = null, $bankBranch = null, $taxPercent = null, $openingBalance = 0, $openingBalanceType = 'dr', $remarks = null, $contactId = null)
+    {
+        $updateAccount = Account::with(['bankAccessBranches', 'contact', 'contact.openingBalance'])->where('id', $accountId)->first();
+        $updateAccount->name = $name;
+        $updateAccount->account_number = $accountNumber ? $accountNumber : null;
+        $updateAccount->bank_id = $bankId ? $bankId : null;
+        $updateAccount->bank_code = $bankCode ? $bankCode : null;
+        $updateAccount->swift_code = $swiftCode ? $swiftCode : null;
+        $updateAccount->bank_branch = $bankBranch ? $bankBranch : null;
+        $updateAccount->bank_address = $bankAddress ? $bankAddress : null;
+        $updateAccount->tax_percent = $taxPercent ? $taxPercent : 0;
+        $updateAccount->contact_id = $contactId;
+        $updateAccount->account_group_id = $accountGroupId;
+        $updateAccount->opening_balance = $openingBalance ? $openingBalance : 0;
+        $updateAccount->opening_balance_type = $openingBalanceType;
+        $updateAccount->remark = $remarks;
+        $updateAccount->updated_at = Carbon::now();
+        $updateAccount->save();
+
+        return $updateAccount;
+    }
+
     public function deleteAccount($id){
 
         $deleteAccount = Account::with('accountLedgersWithOutOpeningBalances', 'contact')->where('id', $id)->first();

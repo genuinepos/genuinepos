@@ -1,249 +1,89 @@
-@props(['title' => null])
+@props(['title' => null,])
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-menu="vertical" data-nav-size="nav-default">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ (isset($title) ? ($title . ' | ') : '') . config('app.name') }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
+    <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
+    @vite(['Resources/vendor/css/all.min.css', 'Resources/vendor/css/OverlayScrollbars.min.css', 'Resources/vendor/css/bootstrap.min.css', 'Resources/vendor/css/css/style.css', 'Resources/vendor/css/assets/css/blue-color.css'])
+    <link rel="stylesheet" id="rtlStyle" href="#">
     @stack('css')
-    @vite(['resources/js/app.js'])
 </head>
 
 <body>
-    <div id="app">
-        <x-saas::nav />
-        <x-saas::message />
-        {{ $slot }}
+    <!-- preloader start -->
+    <div class="preloader d-none">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
+    <!-- preloader end -->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- theme color hidden button -->
+    <button class="header-btn theme-color-btn d-none"><i class="fa-light fa-sun-bright"></i></button>
+    <!-- theme color hidden button -->
 
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-Token': '{{ csrf_token() }}'
-            }
-        });
+    <!-- main content start -->
+    <div class="main-content login-panel">
+        <div class="login-body">
+            <div class="top d-flex justify-content-between align-items-center">
+                <div class="logo">
+                    <img src="assets/images/logo-big.png" alt="Logo">
+                </div>
+                <a href="index.html"><i class="fa-duotone fa-house-chimney"></i></a>
+            </div>
+            <div class="bottom">
+                <h3 class="panel-title">Login</h3>
+                <form>
+                    <div class="input-group mb-30">
+                        <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
+                        <input type="text" class="form-control" placeholder="Username or email address">
+                    </div>
+                    <div class="input-group mb-20">
+                        <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
+                        <input type="password" class="form-control rounded-end" placeholder="Password">
+                        <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
+                    </div>
+                    <div class="d-flex justify-content-between mb-30">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="loginCheckbox">
+                            <label class="form-check-label text-white" for="loginCheckbox">
+                                Remember Me
+                            </label>
+                        </div>
+                        <a href="reset-password.html" class="text-white fs-14">Forgot Password?</a>
+                    </div>
+                    <button class="btn btn-primary w-100 login-btn">Sign in</button>
+                </form>
+                <div class="other-option">
+                    <p>Or continue with</p>
+                    <div class="social-box d-flex justify-content-center gap-20">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-google"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        // $(document).ready(function() {
-        //     $('.select2').select2();
-        // });
-
-        $(document).on('click', '.delete-btn', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            console.log(url);
-            $.confirm({
-                'title': 'Confirmation'
-                , 'message': 'Are you sure?'
-                , 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn btn-danger'
-                        , 'action': function() {
-                            console.log("goint to " + url);
-                            $.ajax({
-                                url: url
-                                , type: 'DELETE'
-                                , processData: false
-                                , dataType: false
-                                , cache: false
-                                , success: function(data) {
-                                    toastr.error(data);
-                                    $('.dataTable').DataTable().ajax.reload();
-                                }
-                            });
-                        }
-                    }
-                    , 'No': {
-                        'class': 'btn btn-secondary'
-                        , 'action': function() {
-
-                        }
-                    }
-                }
-            });
-        });
-
-
-        $(document).on('click', '.delete-and-refresh-btn', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            console.log(url);
-            $.confirm({
-                'title': 'Confirmation'
-                , 'message': 'Are you sure?'
-                , 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger'
-                        , 'action': function() {
-                            // console.log("Deleting from: " + url);
-                            $.ajax({
-                                url: url
-                                , type: 'DELETE'
-                                , processData: false
-                                , dataType: false
-                                , cache: false
-                                , success: function(data) {
-                                    window.location.reload();
-                                    toastr.success(data);
-                                }
-                            });
-                        }
-                    }
-                    , 'No': {
-                        'class': 'btn-secondary'
-                        , 'action': function() {
-
-                        }
-                    }
-                }
-            });
-        });
-
-        $('body').on('click', '.show-btn', function(e) {
-            e.preventDefault();
-            console.log($(this).attr('href'));
-            $.ajax({
-                url: $(this).attr('href')
-                , success: function(html) {
-                    $('#modal').html(html).modal('show');
-                }
-            });
-        });
-
-    </script>
-
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-Token': '{{ csrf_token() }}'
-            }
-        });
-
-        // $(document).ready(function() {
-        //     $('.select2').select2();
-        // });
-
-        $(document).on('click', '.delete-btn', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            console.log(url);
-            $.confirm({
-                'title': 'Confirmation'
-                , 'message': 'Are you sure?'
-                , 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn btn-danger'
-                        , 'action': function() {
-                            console.log("goint to " + url);
-                            $.ajax({
-                                url: url
-                                , type: 'DELETE'
-                                , processData: false
-                                , dataType: false
-                                , cache: false
-                                , success: function(data) {
-                                    toastr.error(data);
-                                    $('.dataTable').DataTable().ajax.reload();
-                                }
-                            });
-                        }
-                    }
-                    , 'No': {
-                        'class': 'btn btn-secondary'
-                        , 'action': function() {
-
-                        }
-                    }
-                }
-            });
-        });
-
-
-        $(document).on('click', '.delete-and-refresh-btn', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            console.log(url);
-            $.confirm({
-                'title': 'Confirmation'
-                , 'message': 'Are you sure?'
-                , 'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-danger'
-                        , 'action': function() {
-                            // console.log("Deleting from: " + url);
-                            $.ajax({
-                                url: url
-                                , type: 'DELETE'
-                                , processData: false
-                                , dataType: false
-                                , cache: false
-                                , success: function(data) {
-                                    window.location.reload();
-                                    toastr.success(data);
-                                }
-                            });
-                        }
-                    }
-                    , 'No': {
-                        'class': 'btn-secondary'
-                        , 'action': function() {
-
-                        }
-                    }
-                }
-            });
-        });
-
-        $('body').on('click', '.show-btn', function(e) {
-            e.preventDefault();
-            console.log($(this).attr('href'));
-            $.ajax({
-                url: $(this).attr('href')
-                , success: function(html) {
-                    $('#modal').html(html).modal('show');
-                }
-            });
-        });
-
-    </script>
-
-    @auth
-    <script>
-        function handleLogout() {
-            if (confirm("Are you sure logging out?")) {
-                document.getElementById('logout-form').submit();
-            }
-        }
-    </script>
-    @endauth
-
-    @if($errors->any())
-    @foreach($errors->all() as $error)
-    <script>
-        toastr.error("{{ $error }}");
-    </script>
-    @endforeach
-    @endif
-
-    @stack('js')
+        <!-- footer start -->
+        <div class="footer">
+            <p>Copyright©
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> All Rights Reserved By <span class="text-primary">Digiboard</span>
+            </p>
+        </div>
+        <!-- footer end -->
+    </div>
+    <!-- main content end -->
+    @vite(['Resources/assets/vendor/js/jquery-3.6.0.min.js', 'Resources/assets/vendor/js/jquery.overlayScrollbars.min.js', 'Resources/assets/vendor/js/bootstrap.bundle.min.js', 'Resources/assets/js/main.js'])
 </body>
 
 </html>

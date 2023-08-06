@@ -1,4 +1,150 @@
 {
+  "Modules/SAAS/Resources/assets/images/arrow-down.png": {
+    "file": "assets/arrow-down-d96f9dc0.png",
+    "src": "Modules/SAAS/Resources/assets/images/arrow-down.png"
+  },
+  "Modules/SAAS/Resources/assets/images/auth-bg-light.png": {
+    "file": "assets/auth-bg-light-c39b9a13.png",
+    "src": "Modules/SAAS/Resources/assets/images/auth-bg-light.png"
+  },
+  "Modules/SAAS/Resources/assets/images/auth-bg.png": {
+    "file": "assets/auth-bg-424d05b5.png",
+    "src": "Modules/SAAS/Resources/assets/images/auth-bg.png"
+  },
+  "Modules/SAAS/Resources/assets/images/bg-dark.jpg": {
+    "file": "assets/bg-dark-44b6918d.jpg",
+    "src": "Modules/SAAS/Resources/assets/images/bg-dark.jpg"
+  },
+  "Modules/SAAS/Resources/assets/images/bg-white.jpg": {
+    "file": "assets/bg-white-0891b343.jpg",
+    "src": "Modules/SAAS/Resources/assets/images/bg-white.jpg"
+  },
+  "Modules/SAAS/Resources/assets/images/bg.jpg": {
+    "file": "assets/bg-e324853c.jpg",
+    "src": "Modules/SAAS/Resources/assets/images/bg.jpg"
+  },
+  "Modules/SAAS/Resources/assets/images/chat-bg-black.png": {
+    "file": "assets/chat-bg-black-c1845983.png",
+    "src": "Modules/SAAS/Resources/assets/images/chat-bg-black.png"
+  },
+  "Modules/SAAS/Resources/assets/images/chat-bg.png": {
+    "file": "assets/chat-bg-671a1f39.png",
+    "src": "Modules/SAAS/Resources/assets/images/chat-bg.png"
+  },
+  "Modules/SAAS/Resources/assets/images/check-mark-black.png": {
+    "file": "assets/check-mark-black-3c059591.png",
+    "src": "Modules/SAAS/Resources/assets/images/check-mark-black.png"
+  },
+  "Modules/SAAS/Resources/assets/images/check-mark.png": {
+    "file": "assets/check-mark-ccfac1d7.png",
+    "src": "Modules/SAAS/Resources/assets/images/check-mark.png"
+  },
+  "Modules/SAAS/Resources/assets/images/circle-1.png": {
+    "file": "assets/circle-1-68217c09.png",
+    "src": "Modules/SAAS/Resources/assets/images/circle-1.png"
+  },
+  "Modules/SAAS/Resources/assets/images/circle-3.png": {
+    "file": "assets/circle-3-26d81de2.png",
+    "src": "Modules/SAAS/Resources/assets/images/circle-3.png"
+  },
+  "Modules/SAAS/Resources/assets/js/app.js": {
+    "file": "assets/app-d014fe2c.js",
+    "isEntry": true,
+    "src": "Modules/SAAS/Resources/assets/js/app.js"
+  },
+  "Modules/SAAS/Resources/assets/sass/app.scss": {
+    "file": "assets/app-b1179867.css",
+    "isEntry": true,
+    "src": "Modules/SAAS/Resources/assets/sass/app.scss"
+  },
+  "Modules/SAAS/Resources/assets/vendor/css/images/ui-icons_444444_256x240.png": {
+    "file": "assets/ui-icons_444444_256x240-e1796279.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/css/images/ui-icons_444444_256x240.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/css/images/ui-icons_555555_256x240.png": {
+    "file": "assets/ui-icons_555555_256x240-ef37e972.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/css/images/ui-icons_555555_256x240.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_asc_black.png": {
+    "file": "assets/sort_asc_black-79a61e41.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_asc_black.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_asc_white.png": {
+    "file": "assets/sort_asc_white-8637be7c.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_asc_white.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_both_black.png": {
+    "file": "assets/sort_both_black-a4864825.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_both_black.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_both_white.png": {
+    "file": "assets/sort_both_white-3003bd86.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_both_white.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_desc_black.png": {
+    "file": "assets/sort_desc_black-f37f33fc.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_desc_black.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_desc_white.png": {
+    "file": "assets/sort_desc_white-2d3b5192.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_desc_white.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-fd34fae5.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-brands-400.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-da321419.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-brands-400.woff2"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-duotone-900.ttf": {
+    "file": "assets/fa-duotone-900-4f87b939.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-duotone-900.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-duotone-900.woff2": {
+    "file": "assets/fa-duotone-900-1a4eda57.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-duotone-900.woff2"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-light-300.ttf": {
+    "file": "assets/fa-light-300-43044b20.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-light-300.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-light-300.woff2": {
+    "file": "assets/fa-light-300-aee810ef.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-light-300.woff2"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-3192a820.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-regular-400.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-d238dee5.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-regular-400.woff2"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-1f8c1c77.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-solid-900.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-1f490e77.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-solid-900.woff2"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-thin-100.ttf": {
+    "file": "assets/fa-thin-100-e3ee7773.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-thin-100.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-thin-100.woff2": {
+    "file": "assets/fa-thin-100-1709f5e9.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-thin-100.woff2"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-v4compatibility.ttf": {
+    "file": "assets/fa-v4compatibility-40049418.ttf",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-v4compatibility.ttf"
+  },
+  "Modules/SAAS/Resources/assets/vendor/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-c095b10e.woff2",
+    "src": "Modules/SAAS/Resources/assets/vendor/webfonts/fa-v4compatibility.woff2"
+  },
   "resources/js/app.js": {
     "file": "assets/app-a93965e6.js",
     "isEntry": true,

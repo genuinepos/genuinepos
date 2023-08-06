@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/scripts/main.ts',
                 'Modules/SAAS/Resources/assets/js/app.js',
                 'Modules/SAAS/Resources/assets/sass/app.scss',
+                'Modules/SAAS/Resources/assets/images/favicon.png',
             ],
             refresh: true,
         }),

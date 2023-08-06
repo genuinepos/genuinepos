@@ -7,9 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
-    <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
-    @vite(['Resources/vendor/css/all.min.css', 'Resources/vendor/css/OverlayScrollbars.min.css', 'Resources/vendor/css/bootstrap.min.css', 'Resources/vendor/css/css/style.css', 'Resources/vendor/css/assets/css/blue-color.css'])
-    <link rel="stylesheet" id="rtlStyle" href="#">
+    <link rel="shortcut icon" href="@vite(config('saas.asset_path') . '/images/favicon.png')">
+    @vite([config('saas.asset_path') . '/sass/admin.scss'])
     @stack('css')
 </head>
 
@@ -83,7 +82,7 @@
         <!-- footer end -->
     </div>
     <!-- main content end -->
-    @vite(['Resources/assets/vendor/js/jquery-3.6.0.min.js', 'Resources/assets/vendor/js/jquery.overlayScrollbars.min.js', 'Resources/assets/vendor/js/bootstrap.bundle.min.js', 'Resources/assets/js/main.js'])
+    @vite([config('saas.asset_path') . '/js/admin.js'])
 </body>
 
 </html>

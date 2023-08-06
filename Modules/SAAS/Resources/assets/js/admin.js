@@ -1,0 +1,11 @@
+import '../vendor/js/jquery-3.6.0.min.js';
+// import '../vendor/js/jquery-ui.min.js';
+// import '../vendor/js/jquery.overlayScrollbars.min.js';
+// import '../vendor/js/apexcharts.js';
+// import '../vendor/js/moment.min.js';
+// import '../vendor/js/daterangepicker.js';
+// import '../vendor/js/select2.min.js';
+import '../vendor/js/bootstrap.bundle.min.js';
+import './dashboard.js';
+import './main.js';
+// import './select2-init.js';

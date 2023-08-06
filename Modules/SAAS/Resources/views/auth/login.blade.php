@@ -65,7 +65,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
     <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
-    @vite(['Resources/assets/vendor/css/all.min.css', 'Resources/assets/vendor/css/OverlayScrollbars.min.css', 'Resources/assets/vendor/css/bootstrap.min.css', 'Resources/assets/vendor/css/css/style.css', 'Resources/assets/vendor/css/assets/css/blue-color.css'])
+    @vite([config('saas.asset_path') . '/sass/guest.scss'])
     <link rel="stylesheet" id="rtlStyle" href="#">
     @stack('css')
 </head>
@@ -140,12 +140,7 @@
         <!-- footer end -->
     </div>
     <!-- main content end -->
-
-    <script src="{{ asset('modules/saas/vendor/js/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('modules/saas/vendor/js/jquery.overlayScrollbars.min.js') }}"></script>
-    <script src="{{ asset('modules/saas/vendor/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('modules/saas/js/main.js') }}"></script>
-    @vite('Resources/assets/assets/js/app.js')
+    @vite([config('saas.asset_path') . '/js/guest.js']);
 </body>
 
 </html>

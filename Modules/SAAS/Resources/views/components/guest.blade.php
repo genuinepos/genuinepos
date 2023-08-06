@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ (isset($title) ? "$title - " : null) . config('app.name') }} </title>
     <link rel="shortcut icon" href="favicon.png">
-    @vite([config('saas.relative_path') . '/Resources/assets/sass/app.scss'])
+    @vite([config('saas.asset_path') . '/sass/guest.scss'])
 </head>
 
 <body class="body-padding body-p-top light-theme">
@@ -1579,7 +1579,7 @@
         </div>
     </div>
     <!-- Add Task Modal End -->
-    @vite([config('saas.relative_path') . '/Resources/assets/js/app.js']);
+    @vite([config('saas.asset_path') . '/js/guest.js']);
 </body>
 
 </html>

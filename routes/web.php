@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use App\Providers\RouteServiceProvider;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
     // Guest User
     Auth::routes();
     Route::view('pin_login', 'auth.pin_login');
+
     // Authenticated User
     Route::middleware('auth')->group(base_path('routes/admin.php'));
     Route::middleware('auth')->group(base_path('routes/hrms.php'));
@@ -23,3 +25,17 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
     Route::middleware('auth')->group(base_path('routes/contacts.php'));
     Route::middleware('auth')->group(base_path('routes/accounts.php'));
 });
+
+/*
+|--------------------------------------------------------------------------
+| Common welcome/home URI ("/" route) for main platform and all tenants
+|--------------------------------------------------------------------------
+*/
+Route::get('/', function () {
+    $isTenant = tenant()?->id;
+    if (isset($isTenant)) {
+        return redirect(RouteServiceProvider::HOME);
+    }
+    return view('saas::welcome-page');
+// });
+})->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

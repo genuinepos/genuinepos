@@ -5,6 +5,7 @@
         "Dispatchable",
         "Queueable",
         "Spatie",
+        "speeddigit",
         "Stancl",
         "superadmin"
     ],
@@ -20,6 +21,6 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
- 
+
    "hide-files.files": []
 }

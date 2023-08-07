@@ -55,7 +55,7 @@
         </div>
     </div>
 </x-saas::guest> --}}
-@props(['title' => null,])
+@props(['title' => null])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-menu="vertical" data-nav-size="nav-default">
 
@@ -65,8 +65,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
     <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
-    @vite([config('saas.asset_path') . '/sass/guest.scss'])
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
+    <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
     <link rel="stylesheet" id="rtlStyle" href="#">
+
     @stack('css')
 </head>
 
@@ -90,35 +96,48 @@
         <div class="login-body">
             <div class="top d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <img src="{{ asset('modules/saas/images/logo-big.png') }}" alt="Logo">
+                    <img src="{{ asset('modules/saas/images/logo_white.png') }}" alt="Logo">
                 </div>
-                <a href="index.html"><i class="fa-duotone fa-house-chimney"></i></a>
+                <a href="/"><i class="fa-duotone fa-house-chimney"></i></a>
             </div>
             <div class="bottom">
-                <h3 class="panel-title">Login</h3>
-                <form>
+                <h3 class="panel-title">{{ __('Login') }}</h3>
+                <form method="POST" action="{{ route('saas.login') }}">
+                    @csrf
                     <div class="input-group mb-30">
                         <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
-                        <input type="text" class="form-control" placeholder="Username or email address">
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="{{ __('Email Address') }}">
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="input-group mb-20">
                         <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
-                        <input type="password" class="form-control rounded-end" placeholder="Password">
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="{{ __('Password') }}">
+
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                         <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
                     </div>
                     <div class="d-flex justify-content-between mb-30">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="loginCheckbox">
                             <label class="form-check-label text-white" for="loginCheckbox">
-                                Remember Me
+                                {{ __('Remember Me') }}
                             </label>
                         </div>
-                        <a href="reset-password.html" class="text-white fs-14">Forgot Password?</a>
+                        <a href="#" class="text-white fs-14">{{ __('Forgot Password?') }}</a>
                     </div>
-                    <button class="btn btn-primary w-100 login-btn">Sign in</button>
+                    <button class="btn btn-primary w-100 login-btn">{{ __('Sign in') }}</button>
                 </form>
                 <div class="other-option">
-                    <p>Or continue with</p>
+                    <p>{{ __('Don\'t have an account? ') }} <a href="{{ route('saas.register') }}">{{ __('Register here') }}</a></p>
+                    <p>{{ __('Or continue with') }}</p>
                     <div class="social-box d-flex justify-content-center gap-20">
                         <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                         <a href="#"><i class="fa-brands fa-twitter"></i></a>
@@ -129,18 +148,13 @@
             </div>
         </div>
 
-        <!-- footer start -->
-        <div class="footer">
-            <p>Copyright©
-                <script>
-                    document.write(new Date().getFullYear())
-                </script> All Rights Reserved By <span class="text-primary">Digiboard</span>
-            </p>
-        </div>
-        <!-- footer end -->
+        <x-saas::admin-footer />
     </div>
     <!-- main content end -->
-    @vite([config('saas.asset_path') . '/js/guest.js']);
+    <script src="{{ asset('modules/saas') }}/vendor/js/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('modules/saas') }}/vendor/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="{{ asset('modules/saas') }}/vendor/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('modules/saas') }}/js/main.js"></script>
 </body>
 
 </html>

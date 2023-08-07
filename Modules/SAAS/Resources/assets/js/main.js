@@ -85,110 +85,112 @@
         // Theme Color Change From Header & Settings
         //------------------------------------------------------------------------------------------------------------------
         // ====== Enable Light Theme From Header ======
-        // let lightMode = localStorage.getItem('lightMode');
-        // const enableLightMode = () => {
-        //     $('body').addClass('light-theme');
-        //     $('.theme-color-btn').addClass('light-mode');
-        //     if ($('.theme-color-btn').hasClass('light-mode')) {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
-        //         $('#lightTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
-        //         $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-black.png');
-        //     } else {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
-        //         $('#lightTheme').removeClass('active');
-        //         if($('body').hasClass('dark-theme')){
-        //             $('#darkTheme').addClass('active');
-        //         } else {
-        //             $('#blueTheme').addClass('active');
-        //         }
-        //     }
-        //     localStorage.setItem("lightMode", "enabled");
-        // };
-        // const disableLightMode = () => {
-        //     $('body').removeClass('light-theme');
-        //     $('.theme-color-btn').removeClass('light-mode');
-        //     if (!$('.theme-color-btn').hasClass('light-mode')) {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
-        //         $('#lightTheme').removeClass('active');
-        //         if($('body').hasClass('dark-theme')){
-        //             $('#darkTheme').addClass('active');
-        //         } else {
-        //             $('#blueTheme').addClass('active');
-        //         }
-        //         $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-big.png');
-        //     } else {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
-        //         $('#lightTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
-        //     }
-        //     localStorage.setItem("lightMode", null);
-        // };
-        // if (lightMode === "enabled") {
-        //     enableLightMode();
-        //     localStorage.removeItem("darkTheme");
-        //     localStorage.removeItem("blueTheme");
-        //     $('#lightTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
-        // }
-        // $('.theme-color-btn').on('click', function () {
-        //     lightMode = localStorage.getItem("lightMode");
+        let lightMode = localStorage.getItem('lightMode');
+        const enableLightMode = () => {
+            $('body').addClass('light-theme');
+            $('.theme-color-btn').addClass('light-mode');
+            if ($('.theme-color-btn').hasClass('light-mode')) {
+                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+                $('#lightTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
+                var logoSrc = window.logoSrc;
+                $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', window.logoSrc);
+            } else {
+                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+                $('#lightTheme').removeClass('active');
+                if ($('body').hasClass('dark-theme')) {
+                    $('#darkTheme').addClass('active');
+                } else {
+                    $('#blueTheme').addClass('active');
+                }
+            }
+            localStorage.setItem("lightMode", "enabled");
+        };
+        const disableLightMode = () => {
+            $('body').removeClass('light-theme');
+            $('.theme-color-btn').removeClass('light-mode');
+            if (!$('.theme-color-btn').hasClass('light-mode')) {
+                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+                $('#lightTheme').removeClass('active');
+                if ($('body').hasClass('dark-theme')) {
+                    $('#darkTheme').addClass('active');
+                } else {
+                    $('#blueTheme').addClass('active');
+                }
+                $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', window.logoSrc);
+            } else {
+                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+                $('#lightTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
+            }
+            localStorage.setItem("lightMode", null);
+        };
+        if (lightMode === "enabled") {
+            enableLightMode();
+            localStorage.removeItem("darkTheme");
+            localStorage.removeItem("blueTheme");
+            $('#lightTheme').addClass('active').parent().siblings().find('.dashboard-icon').removeClass('active');
+        }
+        $('.theme-color-btn').on('click', function () {
+            lightMode = localStorage.getItem("lightMode");
 
-        //     if (lightMode !== "enabled") {
-        //         enableLightMode();
-        //         // disableDarkMode();
-        //     } else {
-        //         localStorage.removeItem("lightTheme");
-        //         // localStorage.removeItem("darkTheme");
-        //         disableLightMode();
-        //     }
-        // });
-        // // ====== Enable Light Theme From Header ======
+            if (lightMode !== "enabled") {
+                enableLightMode();
+                // disableDarkMode();
+            } else {
+                localStorage.removeItem("lightTheme");
+                // localStorage.removeItem("darkTheme");
+                disableLightMode();
+            }
+        });
+        // ====== Enable Light Theme From Header ======
 
-        // // ====== Enable Light Theme From Settings ======
-        // $('#lightTheme').on('click', function () {
-        //     enableLightMode();
-        //     disableDarkMode();
-        // });
+        // ====== Enable Light Theme From Settings ======
+        $('#lightTheme').on('click', function () {
+            enableLightMode();
+            disableDarkMode();
+        });
 
-        // // ====== Enable Dark Theme From Settings ======
-        // let darkMode = localStorage.getItem('darkMode');
-        // const enableDarkMode = () => {
-        //     $('body').addClass('dark-theme').removeClass('light-theme');
-        //     $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', 'assets/images/logo-big.png');
-        //     $('.theme-color-btn').removeClass('light-mode');
-        //     if ($('.theme-color-btn').hasClass('light-mode')) {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
-        //     } else {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
-        //     }
-        //     localStorage.setItem("darkMode", "enabled");
-        // };
-        // const disableDarkMode = () => {
-        //     $('body').removeClass('dark-theme');
-        //     $('.theme-color-btn').removeClass('light-mode');
-        //     if($('body').hasClass('light-theme')) {
-        //         $('.header .main-logo .logo-big img').attr('src', 'assets/images/logo-black.png');
-        //         $('.theme-color-btn').addClass('light-mode');
-        //     }
-        //     if ($('.theme-color-btn').hasClass('light-mode')) {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
-        //     } else {
-        //         $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
-        //     }
-        //     localStorage.setItem("darkMode", null);
-        // };
-        // if (darkMode === "enabled") {
-        //     enableDarkMode();
-        //     $('#darkTheme').addClass('active');
-        // }
-        // $('#darkTheme').on('click', function () {
-        //     enableDarkMode();
-        //     disableLightMode();
-        // });
+        // ====== Enable Dark Theme From Settings ======
+        let darkMode = localStorage.getItem('darkMode');
+        const enableDarkMode = () => {
+            $('body').addClass('dark-theme').removeClass('light-theme');
+            $('.header .main-logo .logo-big img, .mobile-logo img, .logo img').attr('src', window.logoSrc);
+            $('.theme-color-btn').removeClass('light-mode');
+            if ($('.theme-color-btn').hasClass('light-mode')) {
+                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+            } else {
+                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+            }
+            localStorage.setItem("darkMode", "enabled");
+        };
+        const disableDarkMode = () => {
+            $('body').removeClass('dark-theme');
+            $('.theme-color-btn').removeClass('light-mode');
+            if ($('body').hasClass('light-theme')) {
+                var logoSrc = window.logoSrc;
+                $('.header .main-logo .logo-big img').attr('src', window.logoSrc);
+                $('.theme-color-btn').addClass('light-mode');
+            }
+            if ($('.theme-color-btn').hasClass('light-mode')) {
+                $('.theme-color-btn').html('<i class="fa-light fa-cloud-moon"></i>');
+            } else {
+                $('.theme-color-btn').html('<i class="fa-light fa-sun-bright"></i>');
+            }
+            localStorage.setItem("darkMode", null);
+        };
+        if (darkMode === "enabled") {
+            enableDarkMode();
+            $('#darkTheme').addClass('active');
+        }
+        $('#darkTheme').on('click', function () {
+            enableDarkMode();
+            disableLightMode();
+        });
 
-        // // ====== Enable Blue Theme From Settings ======
-        // $('#blueTheme').on('click', function () {
-        //     disableDarkMode();
-        //     disableLightMode();
-        // });
+        // ====== Enable Blue Theme From Settings ======
+        $('#blueTheme').on('click', function () {
+            disableDarkMode();
+            disableLightMode();
+        });
 
         //------------------------------------------------------------------------------------------------------------------
         // Main Content Height
@@ -1040,15 +1042,13 @@
         //------------------------------------------------------------------------------------------------------------------
         // Jquery UI Date Picker
         //------------------------------------------------------------------------------------------------------------------
-        if ($('.date-picker').length) {
-            $('.date-picker').datepicker({
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                dateFormat: 'd M, y',
-            });
-        }
-
-
+        // if ($('.date-picker').length) {
+        //     $('.date-picker').datepicker({
+        //         showOtherMonths: true,
+        //         selectOtherMonths: true,
+        //         dateFormat: 'd M, y',
+        //     });
+        // }
 
         //------------------------------------------------------------------------------------------------------------------
         // Jquery Uploader Plugin For Form Elements Page

@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
+        "apexcharts",
         "datatable",
+        "daterangepicker",
         "dbal",
         "Dispatchable",
         "Queueable",
@@ -21,6 +23,5 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
-
-   "hide-files.files": []
+    "hide-files.files": []
 }

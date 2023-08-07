@@ -47,15 +47,28 @@
     "file": "assets/circle-3-26d81de2.png",
     "src": "Modules/SAAS/Resources/assets/images/circle-3.png"
   },
-  "Modules/SAAS/Resources/assets/js/app.js": {
-    "file": "assets/app-d014fe2c.js",
+  "Modules/SAAS/Resources/assets/js/admin.js": {
+    "file": "assets/admin-117bb173.js",
+    "imports": [
+      "Modules/SAAS/Resources/assets/js/guest.js"
+    ],
     "isEntry": true,
-    "src": "Modules/SAAS/Resources/assets/js/app.js"
+    "src": "Modules/SAAS/Resources/assets/js/admin.js"
   },
-  "Modules/SAAS/Resources/assets/sass/app.scss": {
-    "file": "assets/app-b1179867.css",
+  "Modules/SAAS/Resources/assets/js/guest.js": {
+    "file": "assets/guest-a3a965c3.js",
     "isEntry": true,
-    "src": "Modules/SAAS/Resources/assets/sass/app.scss"
+    "src": "Modules/SAAS/Resources/assets/js/guest.js"
+  },
+  "Modules/SAAS/Resources/assets/sass/admin.scss": {
+    "file": "assets/admin-2dabf3bd.css",
+    "isEntry": true,
+    "src": "Modules/SAAS/Resources/assets/sass/admin.scss"
+  },
+  "Modules/SAAS/Resources/assets/sass/guest.scss": {
+    "file": "assets/guest-c9dbba8b.css",
+    "isEntry": true,
+    "src": "Modules/SAAS/Resources/assets/sass/guest.scss"
   },
   "Modules/SAAS/Resources/assets/vendor/css/images/ui-icons_444444_256x240.png": {
     "file": "assets/ui-icons_444444_256x240-e1796279.png",
@@ -65,6 +78,10 @@
     "file": "assets/ui-icons_555555_256x240-ef37e972.png",
     "src": "Modules/SAAS/Resources/assets/vendor/css/images/ui-icons_555555_256x240.png"
   },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_asc.png": {
+    "file": "assets/sort_asc-77c4b9a4.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_asc.png"
+  },
   "Modules/SAAS/Resources/assets/vendor/images/sort_asc_black.png": {
     "file": "assets/sort_asc_black-79a61e41.png",
     "src": "Modules/SAAS/Resources/assets/vendor/images/sort_asc_black.png"
@@ -73,6 +90,10 @@
     "file": "assets/sort_asc_white-8637be7c.png",
     "src": "Modules/SAAS/Resources/assets/vendor/images/sort_asc_white.png"
   },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_both.png": {
+    "file": "assets/sort_both-cad3898f.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_both.png"
+  },
   "Modules/SAAS/Resources/assets/vendor/images/sort_both_black.png": {
     "file": "assets/sort_both_black-a4864825.png",
     "src": "Modules/SAAS/Resources/assets/vendor/images/sort_both_black.png"
@@ -80,6 +101,10 @@
   "Modules/SAAS/Resources/assets/vendor/images/sort_both_white.png": {
     "file": "assets/sort_both_white-3003bd86.png",
     "src": "Modules/SAAS/Resources/assets/vendor/images/sort_both_white.png"
+  },
+  "Modules/SAAS/Resources/assets/vendor/images/sort_desc.png": {
+    "file": "assets/sort_desc-3930fe7a.png",
+    "src": "Modules/SAAS/Resources/assets/vendor/images/sort_desc.png"
   },
   "Modules/SAAS/Resources/assets/vendor/images/sort_desc_black.png": {
     "file": "assets/sort_desc_black-f37f33fc.png",

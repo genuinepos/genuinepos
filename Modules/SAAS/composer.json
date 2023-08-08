@@ -1,10 +1,10 @@
 {
-    "name": "nwidart/saas",
+    "name": "speeddigit/saas",
     "description": "",
     "authors": [
         {
-            "name": "Nicolas Widart",
-            "email": "n.widart@gmail.com"
+            "name": "SpeedDigit Private Limited",
+            "email": "speeddigitinfo@gmail.com"
         }
     ],
     "extra": {

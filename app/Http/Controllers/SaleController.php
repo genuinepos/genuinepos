@@ -203,6 +203,7 @@ class SaleController extends Controller
     public function create()
     {
         if (! auth()->user()->can('create_add_sale')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -214,7 +215,7 @@ class SaleController extends Controller
 
         $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
 
-        $invoice_schemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
+        $invoiceSchemas = DB::table('invoice_schemas')->get(['format', 'prefix', 'start_from']);
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')

@@ -383,7 +383,7 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('product_add'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('products.add.view') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('products.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>

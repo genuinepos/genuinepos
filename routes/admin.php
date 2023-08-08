@@ -115,6 +115,7 @@ Route::group(['prefix' => 'common/ajax/call'], function () {
     Route::get('branch/allow/login/users/{branchId}', [CommonAjaxCallController::class, 'branchAllowLoginUsers']);
     Route::get('branch/users/{branchId}', [CommonAjaxCallController::class, 'branchUsers']);
     Route::get('get/supplier/{supplierId}', [CommonAjaxCallController::class, 'getSupplier']);
+    Route::get('get/last/id/{table}/{placeholderLimit}', [CommonAjaxCallController::class, 'getLastId'])->name('common.ajax.call.get.last.id');
 });
 
 //Product section route group
@@ -154,7 +155,6 @@ Route::group(['prefix' => 'product'], function () {
         Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
         Route::get('get/all/product', [ProductController::class, 'getAllProduct'])->name('products.get.all.product');
         Route::get('add', [ProductController::class, 'create'])->name('products.add.view');
-        Route::get('get/form/part/{type}', [ProductController::class, 'getFormPart']);
         Route::post('store', [ProductController::class, 'store'])->name('products.add.store');
         Route::get('edit/{productId}', [ProductController::class, 'edit'])->name('products.edit');
         Route::get('product/variants/{productId}', [ProductController::class, 'getProductVariants'])->name('products.get.product.variants');
@@ -1103,6 +1103,7 @@ Route::group(['prefix' => 'communication'], function () {
         Route::get('settings/server/setup/design/pages', [SmsController::class, 'smsServerSetupDesignPages'])->name('communication.sms.settings.server.setup.design.pages');
     });
 });
+
 Route::controller(FeedbackController::class)->group(function () {
     Route::group(['prefix' => 'feedback'], function () {
         Route::get('/', 'index')->name('feedback.index');

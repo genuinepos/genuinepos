@@ -21,8 +21,8 @@ class ContactController extends Controller
         private ContactService $contactService,
         private ContactOpeningBalanceService $contactOpeningBalanceService,
         private ContactCreditLimitService $contactCreditLimitService,
-        private AccountService $AccountService,
-        private AccountGroupService $AccountGroupService,
+        private AccountService $accountService,
+        private AccountGroupService $accountGroupService,
         private AccountLedgerService $accountLedgerService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
@@ -48,10 +48,10 @@ class ContactController extends Controller
 
             $contactIdPrefix = $type == ContactType::Customer->value ? $cusIdPrefix : $supIdPrefix;
 
-            $customerAccountGroup = $this->AccountGroupService->singleAccountGroupByAnyCondition()
+            $customerAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
                 ->where('sub_sub_group_number', 6)->where('is_reserved', 1)->first();
 
-            $supplierAccountGroup = $this->AccountGroupService->singleAccountGroupByAnyCondition()
+            $supplierAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
                 ->where('sub_sub_group_number', 10)->where('is_reserved', 1)->first();
 
             $__accountGroup_id = $type == ContactType::Customer->value ? $customerAccountGroup->id : $supplierAccountGroup->id;
@@ -68,7 +68,7 @@ class ContactController extends Controller
                 $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
             }
 
-            $addAccount = $this->AccountService->addAccount(name: $request->name, accountGroupId: $__accountGroup_id, phone: $request->phone, address: $request->address, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type, contactId: $addContact->id);
+            $addAccount = $this->accountService->addAccount(name: $request->name, accountGroupId: $__accountGroup_id, phone: $request->phone, address: $request->address, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type, contactId: $addContact->id);
 
             $this->accountLedgerService->addAccountLedgerEntry(
                 voucher_type_id: 0,
@@ -108,11 +108,19 @@ class ContactController extends Controller
             $generalSettings = config('generalSettings');
             $accountStartDate = $generalSettings['business__start_date'];
 
+            $customerAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
+                ->where('sub_sub_group_number', 6)->where('is_reserved', 1)->first();
+
+            $supplierAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
+                ->where('sub_sub_group_number', 10)->where('is_reserved', 1)->first();
+
+            $__accountGroup_id = $type == ContactType::Customer->value ? $customerAccountGroup->id : $supplierAccountGroup->id;
+
             $updateContact = $this->contactService->updateContact($contactId, type: $type, name: $request->name, phone: $request->phone, businessName: $request->business_name, email: $request->email, alternativePhone: $request->alternative_phone, landLine: $request->landline, dateOfBirth: $request->date_of_birth, taxNumber: $request->tax_number, customerGroupId: $request->customer_group_id, address: $request->address, city: $request->city, state: $request->state, country: $request->country, zipCode: $request->zip_code, shippingAddress: $request->shipping_address, payTerm: $request->pay_term, payTermNumber: $request->pay_term_number, creditLimit: $request->credit_limit, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
 
             if ($type == ContactType::Supplier->value) {
 
-                $updateContactOpeningBalance = $this->contactOpeningBalanceService->updateContactOpeningBalance(contact: $updateContact->openingBalance, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
+                $updateContactOpeningBalance = $this->contactOpeningBalanceService->updateContactOpeningBalance(contactOpeningBalance: $updateContact->openingBalance, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
             }
 
             // if ($type == ContactType::Customer->value) {
@@ -120,11 +128,21 @@ class ContactController extends Controller
             //     $this->contactCreditLimitService->addContactCreditLimit(contactId: $addContact->id, creditLimit: $request->credit_limit, payTerm: $request->pay_term, payTermNumber: $request->pay_term_number);
             // }
 
+            $updateAccount = $this->accountService->updateAccount(
+                accountId: $updateContact?->account?->id,
+                name: $request->name,
+                phone: $request->phone,
+                address: $request->address,
+                accountGroupId: $__accountGroup_id,
+                openingBalance: $request->opening_balance,
+                openingBalanceType: $request->opening_balance_type,
+            );
+
             $this->accountLedgerService->updateAccountLedgerEntry(
                 voucher_type_id: 0,
                 date: $accountStartDate,
-                account_id: $addAccount->id,
-                trans_id: $addAccount->id,
+                account_id: $updateAccount->id,
+                trans_id: $updateAccount->id,
                 amount: $request->opening_balance ? $request->opening_balance : 0,
                 amount_type: $request->opening_balance_type == 'dr' ? 'debit' : 'credit',
             );

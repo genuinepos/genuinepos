@@ -16,10 +16,13 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
     Auth::routes();
     Route::view('pin_login', 'auth.pin_login');
     // Authenticated User
+    Route::middleware('auth')->group(base_path('routes/dev_routes.php'));
     Route::middleware('auth')->group(base_path('routes/admin.php'));
     Route::middleware('auth')->group(base_path('routes/hrms.php'));
     Route::middleware('auth')->group(base_path('routes/essential.php'));
     Route::middleware('auth')->group(base_path('routes/manufacturing.php'));
     Route::middleware('auth')->group(base_path('routes/contacts.php'));
     Route::middleware('auth')->group(base_path('routes/accounts.php'));
+    Route::middleware('auth')->group(base_path('routes/sales.php'));
+    Route::middleware('auth')->group(base_path('routes/products.php'));
 });

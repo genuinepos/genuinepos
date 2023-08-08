@@ -46,7 +46,7 @@
                 <div class="form-group row mt-1 customer_account_field {{ $account->group->sub_sub_group_number == 6 ? '' : 'd-hide' }}">
                     <div class="col-md-12">
                         <label><strong> {{ __("Phone No.") }} : </strong><span class="text-danger">*</span></label>
-                        <input {{ $account->group->sub_sub_group_number == 6 ? 'required' : '' }} type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" value="{{ $account->phone }}" data-next="customer_type" placeholder="{{ __("Phone Number") }}" />
+                        <input {{ $account->group->sub_sub_group_number == 6 ? 'required' : '' }} type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" value="{{ $account->phone }}" data-next="customer_credit_limit" placeholder="{{ __("Phone Number") }}" />
                         <span class="error error_customer_phone_no"></span>
                     </div>
 
@@ -57,7 +57,7 @@
 
                     <div class="col-md-12">
                         <label><strong> {{ __("Address") }}</strong></label>
-                        <input type="text" name="customer_address" class="form-control" id="customer_address" value="{{ $account->address }}" placeholder="{{ __("Customer Address") }}" />
+                        <input type="text" name="customer_address" class="form-control" id="customer_address" data-next="opening_balance" value="{{ $account->address }}" placeholder="{{ __("Customer Address") }}" />
                     </div>
                 </div>
 
@@ -277,8 +277,7 @@
         $('.bank_details_field').hide();
         $('.customer_account_field').hide();
         $('.supplier_account_field').hide();
-        $('#general_opening_balance').show();
-        $('#sr_wise_opening_balance').hide();
+        $('#access_branches').hide();
         var is_allowed_bank_details = $(this).find('option:selected').data('is_allowed_bank_details');
         var is_bank_or_cash_ac = $(this).find('option:selected').data('is_bank_or_cash_ac');
         var is_fixed_tax_calculator = $(this).find('option:selected').data('is_fixed_tax_calculator');
@@ -289,8 +288,6 @@
 
             $('#customer_phone_no').prop('required', true);
             $('.customer_account_field').show();
-            $('#sr_wise_opening_balance').show();
-            $('#general_opening_balance').hide();
         }
 
         if (sub_sub_group_number == 10) {

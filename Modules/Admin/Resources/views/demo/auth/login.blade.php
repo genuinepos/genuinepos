@@ -2,13 +2,13 @@
     <div class="login-body">
         <div class="top d-flex justify-content-between align-items-center">
             <div class="logo">
-                <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="Logo">
+                <img src="{{ asset('modules/admin/images/logo_black.png') }}" alt="Logo">
             </div>
             <a href="/"><i class="fa-duotone fa-house-chimney"></i></a>
         </div>
         <div class="bottom">
             <h3 class="panel-title">{{ __('Login') }}</h3>
-            <form method="POST" action="{{ route('saas.login') }}">
+            <form method="POST" action="#">
                 @csrf
                 <div class="input-group mb-30">
                     <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
@@ -41,14 +41,14 @@
                 <button class="btn btn-primary w-100 login-btn">{{ __('Sign in') }}</button>
             </form>
             <div class="other-option">
-                <p>{{ __('Don\'t have an account? ') }} <a href="{{ route('saas.register') }}">{{ __('Register here') }}</a></p>
-                {{-- <p>{{ __('Or continue with') }}</p>
+                <p>{{ __('Don\'t have an account? ') }} <a href="#">{{ __('Register here') }}</a></p>
+                <p>{{ __('Or continue with') }}</p>
                 <div class="social-box d-flex justify-content-center gap-20">
                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#"><i class="fa-brands fa-twitter"></i></a>
                     <a href="#"><i class="fa-brands fa-google"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                </div> --}}
+                </div>
             </div>
         </div>
     </div>

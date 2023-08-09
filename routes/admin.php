@@ -910,19 +910,6 @@ Route::group(['prefix' => 'accounting'], function () {
 
 Route::group(['prefix' => 'settings'], function () {
 
-    Route::group(['prefix' => 'branches'], function () {
-
-        Route::get('/', [BranchController::class, 'index'])->name('settings.branches.index');
-        Route::get('get/all/branch', [BranchController::class, 'getAllBranch'])->name('settings.get.all.branch');
-        Route::get('create', [BranchController::class, 'create'])->name('settings.branches.create');
-        Route::post('store', [BranchController::class, 'store'])->name('settings.branches.store');
-        Route::get('edit/{branchId}', [BranchController::class, 'edit'])->name('settings.branches.edit');
-        Route::post('update/{branchId}', [BranchController::class, 'update'])->name('settings.branches.update');
-        Route::delete('delete/{id}', [BranchController::class, 'delete'])->name('settings.branches.delete');
-        Route::get('quick/invoice/schema/modal', [BranchController::class, 'quickInvoiceSchemaModal'])->name('settings.branches.quick.invoice.schema.modal');
-        Route::post('quick/invoice/schema/store', [BranchController::class, 'quickInvoiceSchemaStore'])->name('settings.branches.quick.invoice.schema.store');
-    });
-
     Route::group(['prefix' => 'warehouses'], function () {
 
         Route::get('/', [WarehouseController::class, 'index'])->name('settings.warehouses.index');
@@ -997,17 +984,6 @@ Route::group(['prefix' => 'settings'], function () {
             Route::post('update/{schemaId}', [InvoiceSchemaController::class, 'update'])->name('invoices.schemas.update');
             Route::delete('delete/{schemaId}', [InvoiceSchemaController::class, 'delete'])->name('invoices.schemas.delete');
             Route::get('set/default/{schemaId}', [InvoiceSchemaController::class, 'setDefault'])->name('invoices.schemas.set.default');
-        });
-
-        Route::group(['prefix' => 'layouts'], function () {
-
-            Route::get('/', [InvoiceLayoutController::class, 'index'])->name('invoices.layouts.index');
-            Route::get('create', [InvoiceLayoutController::class, 'create'])->name('invoices.layouts.create');
-            Route::post('/', [InvoiceLayoutController::class, 'store'])->name('invoices.layouts.store');
-            Route::get('edit/{layoutId}', [InvoiceLayoutController::class, 'edit'])->name('invoices.layouts.edit');
-            Route::post('update/{layoutId}', [InvoiceLayoutController::class, 'update'])->name('invoices.layouts.update');
-            Route::delete('delete/{layoutId}', [InvoiceLayoutController::class, 'delete'])->name('invoices.layouts.delete');
-            Route::get('set/default/{schemaId}', [InvoiceLayoutController::class, 'setDefault'])->name('invoices.layouts.set.default');
         });
     });
 

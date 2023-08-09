@@ -27,6 +27,7 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
     Route::middleware('auth')->group(base_path('routes/accounts.php'));
     Route::middleware('auth')->group(base_path('routes/sales.php'));
     Route::middleware('auth')->group(base_path('routes/products.php'));
+    Route::middleware('auth')->group(base_path('routes/setups.php'));
 });
 
 /*

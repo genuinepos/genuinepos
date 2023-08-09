@@ -640,13 +640,13 @@
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('branch'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('settings.branches.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('branches.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-project-diagram"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.branches')</p>
+                                                <p class="switch_text">{{ __("Shops") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2277,13 +2277,13 @@
                                 @if ($generalSettings['addons__branches'] == 1)
                                     @if (auth()->user()->can('branch'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('settings.branches.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('branches.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-project-diagram"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.branches')</p>
+                                                <p class="switch_text">{{ __("Shops") }}</p>
                                             </a>
                                         </div>
                                     @endif

@@ -22,6 +22,32 @@ class ProductController extends Controller
     ) {
     }
 
+    public function index(Request $request)
+    {
+        if (! auth()->user()->can('product_all')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
+
+            return $this->productService->productListTable($request);
+        }
+
+        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
+        $brands = DB::table('brands')->get(['id', 'name']);
+        $units = DB::table('units')->get(['id', 'name', 'code_name']);
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.is_default_tax_calculator', 1)
+            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
+
+        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
+        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
+    }
+
     public function create(Request $request)
     {
         if (!auth()->user()->can('product_add')) {
@@ -39,7 +65,8 @@ class ProductController extends Controller
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
 
-        $taxAccounts = $this->accountService->accounts()->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.is_default_tax_calculator', 1)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
@@ -99,7 +126,7 @@ class ProductController extends Controller
             DB::rollBack();
         }
 
-        return $addedProduct;
+        return $addProduct;
     }
 
     public function formPart($type)

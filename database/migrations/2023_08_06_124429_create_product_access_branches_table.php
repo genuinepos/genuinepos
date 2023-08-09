@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_access_branches', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('variant_id')->nullable();
             $table->timestamps();

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreign('sale_product_id')->references('id')->on('sale_products')->onDelete('cascade');
             $table->foreign('purchase_product_id')->references('id')->on('purchase_products')->onDelete('cascade');
             $table->foreign('opening_stock_product_id')->references('id')->on('product_opening_stocks')->onDelete('cascade');
-            $table->foreign('stock_adjustment_product_id')->references('id')->on('stock_adjustment_product_id')->onDelete('cascade');
+            $table->foreign('stock_adjustment_product_id')->references('id')->on('stock_adjustment_products')->onDelete('cascade');
             $table->foreign('production_id')->references('id')->on('productions')->onDelete('cascade');
         });
     }

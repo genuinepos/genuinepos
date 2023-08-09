@@ -1,48 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setups;
 
 use App\Models\Branch;
-use App\Models\InvoiceSchema;
-use App\Utils\BranchUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 
 class BranchController extends Controller
 {
-    protected $branchUtil;
-
-    public function __construct(BranchUtil $branchUtil)
-    {
-        $this->branchUtil = $branchUtil;
-
+    public function __construct(
+       private BranchService $branchService
+    ){
     }
 
     public function index()
     {
         $generalSettings = config('generalSettings');
 
-        if ($generalSettings['addons__branches'] == 0) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
         if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        return view('settings.branches.index');
+        return view('setups.branches.index');
     }
 
     public function getAllBranch()
     {
         $generalSettings = config('generalSettings');
-
-        if ($generalSettings['addons__branches'] == 0) {
-
-            abort(403, 'Access Forbidden.');
-        }
 
         $branches = '';
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -58,12 +45,10 @@ class BranchController extends Controller
 
     public function create()
     {
-        $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
-        $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();
-
         $roles = DB::table('roles')->select('id', 'name')->get();
+        $branches = $this->branchService->branches()->get();
 
-        return view('settings.branches.ajax_view.create', compact('invSchemas', 'invLayouts', 'roles'));
+        return view('setups.branches.ajax_view.create', compact('branches', 'roles'));
     }
 
     public function store(Request $request)
@@ -72,16 +57,11 @@ class BranchController extends Controller
 
         $branch_limit = $generalSettings['addons__branch_limit'];
 
-        if ($generalSettings['addons__branches'] == 0) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
         $branchCount = DB::table('branches')->count();
 
         if ($branch_limit <= $branchCount) {
 
-            return response()->json(['errorMsg' => "Business Location limit is ${branch_limit}"]);
+            return response()->json(['errorMsg' => "Shop limit is ${branch_limit}"]);
         }
 
         $this->validate($request, [
@@ -93,12 +73,10 @@ class BranchController extends Controller
             'country' => 'required',
             'zip_code' => 'required',
             'logo' => 'sometimes|image|max:2048',
-            'invoice_schema_id' => 'required',
-            'pos_sale_invoice_layout_id' => 'required',
-            'add_sale_invoice_layout_id' => 'required',
         ]);
 
         if ($request->add_opening_user) {
+
             $this->validate($request, [
                 'first_name' => 'required',
                 'user_phone' => 'required',
@@ -107,41 +85,20 @@ class BranchController extends Controller
             ]);
         }
 
-        $branchLogoName = '';
-        if ($request->hasFile('logo')) {
-            $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid().'-'.'.'.$branchLogo->getClientOriginalExtension();
-            $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
-        }
+        $addBranch = $this->branchService->addBranch($request);
 
-        $addBranchGetId = Branch::insertGetId([
-            'name' => $request->name,
-            'branch_code' => $request->code,
-            'phone' => $request->phone,
-            'city' => $request->city,
-            'state' => $request->state,
-            'zip_code' => $request->zip_code,
-            'country' => $request->country,
-            'alternate_phone_number' => $request->alternate_phone_number,
-            'email' => $request->email,
-            'website' => $request->website,
-            'purchase_permission' => $request->purchase_permission ? $request->purchase_permission : 0,
-            'invoice_schema_id' => $request->invoice_schema_id,
-            'add_sale_invoice_layout_id' => $request->add_sale_invoice_layout_id,
-            'pos_sale_invoice_layout_id' => $request->pos_sale_invoice_layout_id,
-            'logo' => $branchLogoName ? $branchLogoName : 'default.png',
-        ]);
+        $this->branchService->addBranchDefaultAccountGroups($addBranch->id);
 
-        $this->branchUtil->addBranchDefaultAccounts($addBranchGetId);
+        $this->branchService->addBranchDefaultAccounts($addBranch->id);
 
-        $this->branchUtil->addBranchDefaultCashCounter($addBranchGetId);
+        // $this->branchUtil->addBranchDefaultCashCounter($addBranchGetId);
 
-        if ($request->add_opening_user) {
+        // if ($request->add_opening_user) {
 
-            $this->branchUtil->addBranchOpeningUser($request, $addBranchGetId);
-        }
+        //     $this->branchUtil->addBranchOpeningUser($request, $addBranchGetId);
+        // }
 
-        return response()->json('Business Location created successfully');
+        return response()->json('Shop created successfully');
     }
 
     public function edit($branchId)
@@ -190,9 +147,12 @@ class BranchController extends Controller
         $updateBranch->default_account_id = $request->default_account_id;
 
         if ($request->hasFile('logo')) {
+
             if ($updateBranch->logo != 'default.png') {
-                if (file_exists(public_path('uploads/branch_logo/'.$updateBranch->logo))) {
-                    unlink(public_path('uploads/branch_logo/'.$updateBranch->logo));
+
+                if (file_exists(public_path('uploads/branch_logo/'. $updateBranch->logo))) {
+
+                    unlink(public_path('uploads/branch_logo/'. $updateBranch->logo));
                 }
             }
 
@@ -204,7 +164,7 @@ class BranchController extends Controller
 
         $updateBranch->save();
 
-        return response()->json('Business location updated successfully');
+        return response()->json('Shop updated successfully');
     }
 
     public function delete(Request $request, $id)

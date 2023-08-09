@@ -1,4 +1,4 @@
-<x-saas::admin>
+<x-admin::admin-layout>
     <div class="container">
         <div class="card mt-3">
             <div class="card-header">
@@ -40,4 +40,4 @@
             </div>
         </div>
     </div>
-</x-saas::admin>
+</x-admin::admin-layout>

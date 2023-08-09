@@ -46,7 +46,7 @@
                 <div class="form-group row mt-1 customer_account_field d-hide">
                     <div class="col-md-12">
                         <label><strong>{{ __('Phone No') }}</strong><span class="text-danger">*</span></label>
-                        <input required type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" data-next="customer_type" placeholder="Phone number" />
+                        <input required type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" data-next="customer_credit_limit" placeholder="Phone number" />
                         <span class="error error_customer_phone_no"></span>
                     </div>
 

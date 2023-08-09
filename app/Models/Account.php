@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Accounts\Bank;
+use App\Models\Contacts\Contact;
 use App\Models\Accounts\AccountGroup;
 use App\Models\Accounts\BankAccessBranch;
-use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends BaseModel
@@ -16,7 +17,7 @@ class Account extends BaseModel
 
     public function bank()
     {
-        return $this->belongsTo(Bank::class, 'bank_id')->select(['id', 'name', 'branch_name']);
+        return $this->belongsTo(Bank::class, 'bank_id');
     }
 
     public function group()
@@ -32,6 +33,11 @@ class Account extends BaseModel
     public function bankAccessBranches()
     {
         return $this->hasMany(BankAccessBranch::class, 'bank_account_id');
+    }
+
+    public function bankAccessBranch()
+    {
+        return $this->hasOne(BankAccessBranch::class, 'bank_account_id')->where('branch_id', auth()->user()->branch_id);
     }
 
     public function accountLedgers()

@@ -2,10 +2,11 @@
 
 namespace App\Models\Contacts;
 
+use App\Models\Account;
 use App\Enums\ContactType;
 use App\Models\CustomerGroup;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Contact extends Model
 {
@@ -18,6 +19,11 @@ class Contact extends Model
     public function openingBalances()
     {
         return $this->hasMany(ContactOpeningBalance::class, 'contact_id');
+    }
+
+    public function account()
+    {
+        return $this->hasOne(Account::class, 'contact_id');
     }
 
     public function openingBalance()

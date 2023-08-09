@@ -64,11 +64,11 @@ class AccountLedgerService
         $current_account_id = null,
         $cash_bank_account_id = null
     ) {
+        //dd($account_id);
         $voucherType = $this->voucherType($voucher_type_id);
-
         $update = '';
         $query = AccountLedger::where($voucherType['id'], $trans_id)->where('voucher_type', $voucher_type_id);
-
+        // dd($voucher_type_id);
         if ($current_account_id) {
 
             $query->where('account_id', $current_account_id);
@@ -90,7 +90,7 @@ class AccountLedgerService
             $update->save();
         } else {
 
-            $this->addAccountLedger(
+            $this->addAccountLedgerEntry(
                 $voucher_type_id,
                 $date,
                 $account_id,

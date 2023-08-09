@@ -46,7 +46,7 @@ class ContactService
 
     public function updateContact($contactId, $type, $name, $phone, $businessName = null, $email = null, $alternativePhone = null, $landLine = null, $dateOfBirth = null, $taxNumber = null, $customerGroupId = null, $address = null, $city = null, $state = null, $country = null, $zipCode = null, $shippingAddress = null, $payTerm = null, $payTermNumber = null, $creditLimit = null, $openingBalance = 0, $openingBalanceType = 'dr')
     {
-        $updateContact = Contact::with('openingBalance')->where('id', $contactId)->first();
+        $updateContact = Contact::with('openingBalance', 'account')->where('id', $contactId)->first();
         $updateContact->type = $type;
         $updateContact->name = $name;
         $updateContact->phone = $phone;

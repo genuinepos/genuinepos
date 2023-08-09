@@ -40,7 +40,7 @@ class BankAccessBranchService
                     $addOrEditBankAccessBranch =  new BankAccessBranch();
                 }
 
-                $addOrEditBankAccessBranch->bank_account_id = $bankAccountId;
+                $addOrEditBankAccessBranch->bank_account_id = $bankAccount->id;
                 $addOrEditBankAccessBranch->branch_id = $branchId;
                 $addOrEditBankAccessBranch->is_delete_in_update = 0;
                 $addOrEditBankAccessBranch->save();

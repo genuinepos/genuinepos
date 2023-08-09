@@ -28,11 +28,11 @@
                                         @if ($generalSettings['addons__branches'] == 1)
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-lg-2 col-md-3">
-                                                    <label><b>@lang('menu.business_location') </b> </label>
+                                                    <label><b>{{ __("Shop/Business") }}</b></label>
                                                     <select class="form-control submit_able select2" name="branch_id" id="branch_id">
                                                         <option value="">@lang('menu.all')</option>
                                                         <option value="NULL">
-                                                            {{ $generalSettings['business__shop_name'] . '(HO)' }}
+                                                            {{ $generalSettings['business__shop_name'] . '(Business)' }}
                                                         </option>
                                                         @foreach ($branches as $branch)
                                                             <option value="{{ $branch->id }}">
@@ -46,8 +46,7 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.type') </b></label>
-                                            <select name="product_type" id="product_type"
-                                                class="form-control submit_able select2" autofocus>
+                                            <select name="product_type" id="product_type" class="form-control submit_able select2" autofocus>
                                                 <option value="">@lang('menu.all')</option>
                                                 <option value="1">@lang('menu.single')</option>
                                                 <option value="2">@lang('menu.variant')</option>
@@ -57,8 +56,7 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.category') </b></label>
-                                            <select id="category_id" name="category_id"
-                                                class="form-control submit_able select2">
+                                            <select id="category_id" name="category_id" class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($categories as $cate)
                                                     <option value="{{ $cate->id }}">{{ $cate->name }}</option>
@@ -68,8 +66,7 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.unit') </b></label>
-                                            <select id="unit_id" name="unit_id"
-                                                class="form-control submit_able select2">
+                                            <select id="unit_id" name="unit_id" class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
@@ -79,10 +76,10 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.tax') </b></label>
-                                            <select id="tax_id" name="tax_id" class="form-control submit_able select2">
+                                            <select id="tax_ac_id" name="tax_ac_id" class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
-                                                @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->id }}">{{ $tax->tax_name.' ('.$unit->code_name.')' }}</option>
+                                                @foreach ($taxAccounts as $tax)
+                                                    <option value="{{ $tax->id }}">{{ $tax->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -98,8 +95,7 @@
 
                                         <div class="col-lg-2 col-md-3">
                                             <label><b>@lang('menu.brand')</b></label>
-                                            <select id="brand_id" name="brand_id"
-                                                class="form-control submit_able select2">
+                                            <select id="brand_id" name="brand_id" class="form-control submit_able select2">
                                                 <option value="">@lang('menu.all')</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -125,7 +121,7 @@
                                 @if(auth()->user()->can('product_add'))
 
                                     <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
-                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add_product')</a>
+                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i>{{ __("Add Product") }}</a>
 
                                         <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
 
@@ -143,7 +139,7 @@
                                     @method('DELETE')
                                     @csrf
                                     <input type="hidden" name="action" id="action">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6></div>
+                                    <div class="data_preloader"> <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}...</h6></div>
                                     <div class="table-responsive" id="data_list">
                                         <table class="display table-hover data_tbl data__table">
                                             <thead>
@@ -151,18 +147,18 @@
                                                     <th data-bSortable="false">
                                                         <input class="all" type="checkbox" name="all_checked"/>
                                                     </th>
-                                                    <th>@lang('menu.image')</th>
-                                                    <th>@lang('menu.action')</th>
-                                                    <th>@lang('menu.product')</th>
-                                                    <th>@lang('menu.access_location')</th>
-                                                    <th>@lang('menu.purchase_cost')</th>
-                                                    <th>@lang('menu.selling_price')</th>
-                                                    <th>@lang('menu.current_stock')</th>
-                                                    <th>{{ __('Product Type') }}</th>
-                                                    <th>@lang('menu.category')</th>
-                                                    <th>@lang('menu.brand')</th>
-                                                    <th>@lang('menu.tax')</th>
-                                                    <th>@lang('menu.status')</th>
+                                                    <th>{{ __("Image") }}</th>
+                                                    <th>{{ __("Action") }}</th>
+                                                    <th>{{ __("Product") }}</th>
+                                                    <th>{{ __("Access Shop/Business") }}</th>
+                                                    <th>{{ __("Unit Cost(Inc.Tax)") }}</th>
+                                                    <th>{{ __("Unit Price(Exc. Tax)") }}</th>
+                                                    <th>{{ __("Curr. Stock") }}</th>
+                                                    <th>{{ __("Type") }}</th>
+                                                    <th>{{ __("Category") }}</th>
+                                                    <th>{{ __("Brand") }}</th>
+                                                    <th>{{ __("Default Tax") }}</th>
+                                                    <th>{{ __("Status") }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -234,7 +230,7 @@
                 d.category_id = $('#category_id').val();
                 d.brand_id = $('#brand_id').val();
                 d.unit_id = $('#unit_id').val();
-                d.tax_id = $('#tax_id').val();
+                d.tax_ac_id = $('#tax_ac_id').val();
                 d.status = $('#status').val();
                 d.is_for_sale = $('#is_for_sale').val();
             }
@@ -258,8 +254,7 @@
 
     $(document).ready(function() {
 
-        $(document).on('change', '.submit_able',
-        function() {
+        $(document).on('change', '.submit_able', function() {
 
             product_table.ajax.reload();
         });
@@ -515,8 +510,7 @@
 
         var qty = $(this).val() ? $(this).val() : 0;
         var tr = $(this).closest('tr');
-        var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val() ? tr.find('#unit_cost_inc_tax').val() :
-            0;
+        var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val() ? tr.find('#unit_cost_inc_tax').val() : 0;
         var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
         tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
         tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));

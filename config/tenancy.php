@@ -189,7 +189,7 @@ return [
      */
     'migration_parameters' => [
         '--force' => true, // This needs to be true to run migrations in production.
-        '--path' => [database_path('migrations')],
+        '--path' => [database_path('migrations/tenant')],
         '--realpath' => true,
     ],
 

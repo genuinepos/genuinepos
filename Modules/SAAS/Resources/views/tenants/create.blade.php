@@ -1,4 +1,4 @@
-<x-saas::admin title="Create tenant">
+<x-admin::admin-layout title="Create tenant">
     <div class="container">
         <div class="card  mt-3">
             <div class="card-header">
@@ -48,4 +48,4 @@
             }
         </script>
     @endpush
-</x-saas::admin>
+</x-admin::admin-layout>

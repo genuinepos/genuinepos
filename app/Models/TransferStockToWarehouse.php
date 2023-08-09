@@ -1,20 +1,18 @@
 <?php
 
 namespace App\Models;
-use App\Models\Branch;
-use App\Models\Warehouse;
-// use App\Models\AdminAndUser;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\TransferStockToWarehouseProduct;
 
-class TransferStockToWarehouse extends Model
+// use App\Models\User;
+
+class TransferStockToWarehouse extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     // public function admin()
     // {
-    //     return $this->belongsTo(AdminAndUser::class, 'admin_id');
+    //     return $this->belongsTo(User::class, 'admin_id');
     // }
 
     public function branch()

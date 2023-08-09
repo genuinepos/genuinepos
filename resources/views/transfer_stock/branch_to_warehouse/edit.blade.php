@@ -9,75 +9,123 @@
         .select_area ul li a:hover {background-color: #999396;color: #fff;}
         .selectProduct{background-color: #746e70; color: #fff!important;}b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h6>{{ __('Edit Transfer Stock (Business Location To Warehouse)') }}</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_transfer_to_warehouse_form" action="{{ route('transfer.stock.to.warehouse.update', $transferId) }}" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h6>Edit Transfer Stock (Business Location To Warehouse)</h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.b_location') </b><span class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
+                                            <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-3"><b>B.Location :</b><span class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
-                                                    <input type="hidden" name="branch_id" value="{{ auth()->user()->branch_id }}" id="branch_id">
-                                                </div>
-                                            </div>
-                                        </div> 
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4"><b>@lang('menu.warehouse') </b><span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                <option value="">@lang('menu.select_warehouse')</option>
+                                                @foreach ($warehouses as $warehouse)
+                                                    <option {{ $warehouse->id == $transfer->warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_warehouse_id"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4"><b>Warehouse :</b><span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $warehouse)
-                                                            <option {{ $warehouse->id == $transfer->warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_warehouse_id"></span>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.date')</b></label>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control  changeable"
+                                                value="{{ date($generalSettings['business__date_format'], strtotime($transfer->date)) }}" id="datepicker">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.ref_id') </b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Reference ID">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="sale-content mb-3">
+                        <div class="card">
+                            <div class="card-body p-2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="searching_area" style="position: relative;">
+                                            <label for="inputEmail3" class="col-form-label">@lang('menu.item_search')</label>
+                                            <div class="input-group ">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                 </div>
+                                                <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                            </div>
+                                            <div class="select_area">
+                                                <ul id="list" class="variant_list_area">
+
+                                                </ul>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b></label>
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control  changeable"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="datepicker">
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="sale-item-sec">
+                                        <div class="sale-item-inner">
+                                            <div class="table-responsive">
+                                                <table class="table display table-sm data__table">
+                                                    <thead class="staky">
+                                                        <tr>
+                                                            <th>@lang('menu.product')</th>
+                                                            <th></th>
+                                                            <th class="text-center">@lang('menu.quantity')</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
+                                                            <th class="text-center">@lang('menu.sub_total')</th>
+                                                            <th><i class="fas fa-trash-alt text-danger"></i></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="transfer_list">
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-3"><b>Ref ID :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Reference ID">
-                                                </div>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -88,102 +136,43 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Item Search</label>
-                                                    <div class="input-group ">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
-                                                        </div>
-                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                    </div>
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area">
-                                                            
-                                                        </ul>
-                                                    </div>
-                                                </div> 
-                                            </div>
-                                        </div>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="table display table-sm data__table">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th></th>
-                                                                    <th class="text-center">Quantity</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt text-danger"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="transfer_list">
-                                                               
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.total_item') </b></label>
+                                        <div class="col-8">
+                                            <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
+                                            <input type="number" step="any" class="d-hide" name="total_send_quantity" id="total_send_quantity">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                            
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Total Item :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
-                                                    <input type="number" step="any" class="d-none" name="total_send_quantity" id="total_send_quantity">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>@lang('menu.net_total') : {{ $generalSettings['business__currency'] }}</b> </label>
+                                        <div class="col-8">
+                                            <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Net Total : {{ json_decode($generalSettings->business, true)['currency'] }}</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control" value="0.00" >
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4"><b>{{ __('Ship Cost') }} </b> </label>
+                                        <div class="col-8">
+                                            <input name="shipping_charge" type="number" class="form-control" id="shipping_charge" value="0.00">
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>Ship Cost :</b> </label>
-                                                <div class="col-8">
-                                                    <input name="shipping_charge" type="number" class="form-control" id="shipping_charge" value="0.00"> 
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-2"><b>Note :</b></label>
-                                                <div class="col-10">
-                                                    <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="Additional note"> 
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-2"><b>@lang('menu.note') </b></label>
+                                        <div class="col-10">
+                                            <input name="additional_note" type="text" class="form-control" id="additional_note" placeholder="{{ __('Additional Note') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -194,9 +183,11 @@
 
                 <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes </button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes') </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,7 +197,7 @@
 
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Calculate total amount functionalitie
@@ -257,11 +248,11 @@
         // add Transfer product by searching product code
         function searchProduct(product_code, branch_id){
             $.ajax({
-                url:"{{ url('transfer/stocks/to/warehouse/sarach/product') }}"+"/"+product_code+"/"+branch_id,
+                url:"{{ url('transfer/stocks/to/warehouse/search/product') }}"+"/"+product_code+"/"+branch_id,
                 dataType: 'json',
                 success:function(product){
                     if(!$.isEmptyObject(product.errorMsg)){
-                        toastr.error(product.errorMsg); 
+                        toastr.error(product.errorMsg);
                         $('#search_product').val("");
                         return;
                     }
@@ -290,7 +281,7 @@
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitPrice = closestTr.find('#unit_price').val();
                                         var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -308,7 +299,7 @@
                                     tr += '<td class="text-start" colspan="2">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
-                                    tr += '<span class="product_variant"></span>'; 
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '</a><br/>';
                                     tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+product.unit.name+')'+'<small>';
@@ -332,12 +323,12 @@
                                     tr += '</div>';
                                     tr += '</td>';
                                     tr += '<td class="text text-center">';
-                                    tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
+                                    tr += '<span class="span_unit">'+product.unit.name+'</span>';
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
-                                
+
                                     tr += '<td class="text text-center">';
-                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                                     tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
                                     tr += '<td class="text-center">';
@@ -345,10 +336,10 @@
                                     tr += '</td>';
                                     tr += '</tr>';
                                     $('#transfer_list').prepend(tr);
-                                    calculateTotalAmount();  
+                                    calculateTotalAmount();
                                 }
                             }else{
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var products = product.namedProducts;
                                 var li = "";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
@@ -368,7 +359,7 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0);
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
@@ -386,7 +377,7 @@
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitPrice = closestTr.find('#unit_price').val();
                                         var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -395,9 +386,9 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                            
+
                             if(sameVariant == 0){
                                 var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                                 var tr = '';
@@ -405,7 +396,7 @@
                                 tr += '<td class="text-start" colspan="2">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>';
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '</a><br/>';
                                 tr += '<small class="text-muted">Current Stock - '+qty_limit+' ('+variant_product.product.unit.name+')'+'<small>';
@@ -428,11 +419,11 @@
                                 tr += '</div>';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
-                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
+                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>';
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
                                 tr += '<td class="text text-center">';
-                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
+                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>';
                                 tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                                 tr += '</td>';
                                 tr += '<td class="text-center">';
@@ -441,12 +432,12 @@
                                 tr += '</tr>';
                                 $('#transfer_list').prepend(tr);
                                 calculateTotalAmount();
-                            }    
+                            }
                         }else if (!$.isEmptyObject(product.namedProducts)) {
                             if(product.namedProducts.length > 0){
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
                                 $.each(products, function (key, product) {
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
                                     if (product.product_variants.length > 0) {
@@ -527,7 +518,7 @@
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                
+
                                 //Update Subtotal
                                 var unitPrice = closestTr.find('#unit_price').val();
                                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -541,7 +532,7 @@
                                     keyName = 1;
                                 }
                                 return;
-                            }    
+                            }
                         });
 
                         if(sameProduct == 0){
@@ -550,7 +541,7 @@
                             tr += '<td class="text-start" colspan="2" class="">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant"></span>'; 
+                            tr += '<span class="product_variant"></span>';
                             tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
                             tr += '</a><br/>';
                             tr += '<small class="text-muted">Current Stock - '+singleProductQty+' ('+product_unit+')'+'<small>';
@@ -571,14 +562,14 @@
                             tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text">';
-                            tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
+                            tr += '<b><span class="span_unit">'+product_unit+'</span></b>';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
-                           
+
                             tr += '<td class="text text-center">';
                             var unitPriceIncTax = parseFloat(product_price_exc_tax) / 100 * parseFloat(p_tax_percent) + parseFloat(product_price_exc_tax);
                             tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'">';
-                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                             tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             tr += '<td class="text-center">';
@@ -586,14 +577,14 @@
                             tr += '</td>';
                             tr += '</tr>';
                             $('#transfer_list').prepend(tr);
-                            calculateTotalAmount();   
+                            calculateTotalAmount();
                             if (keyName == 9) {
                                 $("#quantity").select();
                                 keyName = 1;
                             }
                         }
                     }else{
-                        toastr.error(singleProductQty.errorMsg);   
+                        toastr.error(singleProductQty.errorMsg);
                     }
                 }
             });
@@ -648,7 +639,7 @@
 
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitPrice = closestTr.find('#unit_price').val();
                                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -662,7 +653,7 @@
                                     }
                                     return;
                                 }
-                            }    
+                            }
                         });
 
                         if(sameVariant == 0){
@@ -671,7 +662,7 @@
                             tr += '<td class="text-start" colspan="2">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>';
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '</a><br/>';
                             tr += '<small class="text-muted">Current Stock - '+branchVariantQty+' ('+product_unit+')'+'<small>';
@@ -696,12 +687,12 @@
                             tr += '</div>';
                             tr += '</td>';
                             tr += '<td class="text text-center">';
-                            tr += '<span class="span_unit">'+product_unit+'</span>'; 
+                            tr += '<span class="span_unit">'+product_unit+'</span>';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
-                       
+
                             tr += '<td class="text text-center">';
-                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
+                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>';
                             tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             tr += '<td class="text-center">';
@@ -716,7 +707,7 @@
                             }
                         }
                     }else{
-                        toastr.warning(branchVariantQty.errorMsg);   
+                        toastr.warning(branchVariantQty.errorMsg);
                     }
                 }
             });
@@ -736,14 +727,14 @@
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                    calculateTotalAmount();  
+                    calculateTotalAmount();
                     return;
                 }
                 var unitPrice = tr.find('#unit_price').val();
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
+                calculateTotalAmount();
             }
         });
 
@@ -760,14 +751,14 @@
                     var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                    calculateTotalAmount();  
+                    calculateTotalAmount();
                     return;
                 }
                 var unitPrice = tr.find('#unit_price').val();
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         });
 
@@ -776,7 +767,7 @@
             calculateTotalAmount();
         });
 
-        // Remove product form purchase product list (Table) 
+        // Remove product form purchase product list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
             $(this).closest('tr').remove();
@@ -788,15 +779,15 @@
             e.preventDefault();
             var totalItem = $('#total_item').val();
             if (parseFloat(totalItem) == 0) {
-                toastr.error('Transfer product table is empty.','Some thing went wrong.'); 
+                toastr.error('Transfer product table is empty.','Some thing went wrong.');
                 return;
             }
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
+                $('.error').html('');
+                var countErrorField = 0;
             $.each(inputs, function(key, val){
                 var inputId = $(val).attr('id');
                 var idValue = $('#'+inputId).val();
@@ -809,7 +800,7 @@
 
             if(countErrorField > 0){
                 $('.loading_button').hide();
-                toastr.error('Please check again all form fields.','Some thing went wrong.'); 
+                toastr.error('Please check again all form fields.','Some thing went wrong.');
                 return;
             }
 
@@ -819,13 +810,13 @@
                 data: request,
                 success:function(data){
                     if(!$.isEmptyObject(data.errorMsg)){
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                     }
 
                     if(!$.isEmptyObject(data.successMsg)){
                         $('.loading_button').hide();
-                        toastr.success(data.successMsg); 
+                        toastr.success(data.successMsg);
                          window.location = "{{route('transfer.stock.to.warehouse.index')}}";
                     }
                 }
@@ -853,11 +844,11 @@
             tr.find('#quantity').addClass('.form-control:focus');
             tr.find('#quantity').blur();
         });
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
 
         setInterval(function(){
             $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        }, 500);
 
         setInterval(function(){
             $('#search_product').removeClass('is-valid');
@@ -865,7 +856,7 @@
 
         $('.submit_button').on('click', function () {
             var value = $(this).val();
-            $('#action').val(value); 
+            $('#action').val(value);
         });
 
         $(document).keypress(".scanable",function(event){
@@ -875,7 +866,7 @@
         });
 
         $('body').keyup(function(e){
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            if (e.keyCode == 13 || e.keyCode == 9){
                 $(".selectProduct").click();
                 $('#list').empty();
                 keyName = e.keyCode;
@@ -913,17 +904,17 @@
                         tr += '<a href="#" class="text-dark" id="edit_product">';
                         tr += '<span class="product_name">'+transferProduct.product.name+'</span>';
                         var variant = transferProduct.product_variant_id != null ? ' -'+transferProduct.variant.variant_name+'- ' : '';
-                        tr += '<span class="product_variant">'+variant+'</span>'; 
+                        tr += '<span class="product_variant">'+variant+'</span>';
                         var code = transferProduct.product_variant_id != null ? transferProduct.variant.variant_code : transferProduct.product.product_code;
                         tr += '<span class="product_code">'+'('+code+')'+'</span>';
                         tr += '</a>';
                         tr += '<input value="'+transferProduct.product_id+'" type="hidden" class="productId-'+transferProduct.product_id+'" id="product_id" name="product_ids[]">';
 
                         if (transferProduct.product_variant_id != null) {
-                            tr += '<input value="'+transferProduct.product_variant_id+'" type="hidden" class="variantId-'+transferProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
+                            tr += '<input value="'+transferProduct.product_variant_id+'" type="hidden" class="variantId-'+transferProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">';
                         }else{
-                            tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
-                        }   
+                            tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                        }
 
                         tr += '<input readonly name="unit_prices[]" type="hidden"  id="unit_price" value="'+transferProduct.unit_price+'">';
                         tr += '<input type="hidden" id="previous_quantity" value="'+transferProduct.quantity+'">';
@@ -942,12 +933,12 @@
                         tr += '</div>';
                         tr += '</td>';
                         tr += '<td class="text">';
-                        tr += '<span class="span_unit">'+transferProduct.unit+'</span>'; 
+                        tr += '<span class="span_unit">'+transferProduct.unit+'</span>';
                         tr += '<input  name="units[]" type="hidden" id="unit" value="'+transferProduct.unit+'">';
                         tr += '</td>';
-                        
+
                         tr += '<td class="text text-center">';
-                        tr += '<strong><span class="span_subtotal">'+transferProduct.subtotal+'</span></strong>'; 
+                        tr += '<strong><span class="span_subtotal">'+transferProduct.subtotal+'</span></strong>';
                         tr += '<input value="'+transferProduct.subtotal+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                         tr += '</td>';
                         tr += '<td class="text-center">';
@@ -963,7 +954,7 @@
         }
         getEditableTransfer();
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

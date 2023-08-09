@@ -1,402 +1,402 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        table.table.modal-table.table-sm.table-bordered.financial_report_table td {
+    font-size: 13px;
+    font-weight: 400;
+}
+    </style>
 @endpush
 @section('title', 'Profit Loss A/C - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="far fa-money-bill-alt"></span>
+                    <h5>@lang('menu.financial_report')</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_financial_report">
+                                <div class="form-group row">
+                                    @if ($generalSettings['addons__branches'] == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.business_location') : </strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
+                                    @endif
 
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="far fa-money-bill-alt"></span>
-                                <h5>Financial Report</h5>
-                            </div>
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.from_date') : </strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="from_date" id="datepicker"
+                                                class="form-control from_date date"
+                                                autocomplete="off">
+                                        </div>
+                                    </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.to_date') : </strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                        </div>
+                                    </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_financial_report" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row align-items-end">
+                                            <div class="col-6">
+                                                <label><strong></strong></label>
+                                                <div class="input-group">
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                 </div>
                                             </div>
-                                        </form>
+
+                                            <div class="col-6">
+                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="row margin_row mt-1">
-                        <div class="card col-md-7">
+            <div class="col-md-8">
+                <div class="card">
 
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>Financial Report</h6>
-                                </div>
-                            </div>
+                    <div class="section-header">
+                        <h6>@lang('menu.financial_report')</h6>
+                    </div>
 
-                            <div class="widget_content mt-2">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="table modal-table table-sm table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td class="aiability_area">
-                                                    <table class="table table-sm">
-                                                        <tbody>
-                                                            {{-- Cash Flow from investing --}}
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>ASSET :</strong>
-                                                                </th>
-                                                            </tr>
-                                                            
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Fixed Asset :</em> 
-                                                                </td>
-                                                                <td class="text-start"><b><em>0.00</em></b>  </td>
-                                                            </tr>
+                    <div class="widget_content mt-2">
+                        <div class="data_preloader">
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                        </div>
+                        <div class="table-responsive" id="data-list">
+                            <table class="table modal-table table-sm table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="aiability_area">
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    {{-- Cash Flow from investing --}}
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.asset') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>SALES :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.fixed_asset') : </em>
+                                                        </td>
+                                                        <td class="text-start"><b><em>0.00</em></b>  </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Sale:</em>  
-                                                                </td>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.sales') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em></b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_sale')</em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Sale Due :</em>  
-                                                                </td>
-                                    
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em></b>    
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em></b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Sale Return :</em>  
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_sale_due') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>   
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em></b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>PURCHASE :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_sale_return') : </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                   <em>Total Purchase :</em>   
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>
-                                                                </td>
-                                                            </tr> 
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.purchase') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Purchase Due :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_purchase') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr> 
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Purchase Return :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_purchase_due') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr> 
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>EXPENSES :</strong>
-                                                                </th>
-                                                            </tr> 
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_purchase_return') : </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Direct Expense :</em>
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.expenses') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Indirect Expense :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_direct_expense') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>PRODUCTS :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Indirect Expense') }} </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Closing Stock :</em>
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.products') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Stock Adjustment :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.closing_stock') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Stock Adjustment Recovered Amount :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_stock_adjustment') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>LOAN & LIABILITIES :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Stock Adjustment Recovered Amount') }} </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Loan Liabilities :</em>
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.loan_and_liabilities') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Loan & Liabilities Due Paid :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Loan Liabilities') }} </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Payable Loan & Liabilities Due :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Loan & Liabilities Due Paid') }} </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>LOAN & ADVANCE :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.payable_loan_liabilities_due') : </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Loan & Advance :</em>
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.loan_and_advance') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Loan & Advance Due Received :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.total_loan_advance') : </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Receivable Loan & Advance Due :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Loan & Advance Due Received') }} </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>PROFIT LOSS :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Receivable Loan & Advance Due') }} </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Daily Profit :</em>
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.profit_loss') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Gross Profit :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Daily Profit') }} </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Total Net Profit :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Gross Profit') }} </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <th class="text-start bg-secondary text-white" colspan="2">
-                                                                    <strong>ACCOUNT BALANCE :</strong>
-                                                                </th>
-                                                            </tr>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Total Net Profit') }} </em>
+                                                        </td>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Cash-In-Hand Balance :</em>
-                                                                </td>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
+                                                    <tr>
+                                                        <th class="text-start bg-secondary text-white" colspan="2">
+                                                            <span>@lang('menu.account_balance') : </span>
+                                                        </th>
+                                                    </tr>
 
-                                                            <tr>
-                                                                <td class="text-start">
-                                                                    <em>Bank A/C Balance :</em>
-                                                                </td>
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>{{ __('Cash-In-Hand Balance') }} </em>
+                                                        </td>
 
-                                                                <td class="text-start">
-                                                                    <b><em>0.00</em> </b>  
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="text-start">
+                                                            <em>@lang('menu.bank_ac_balance')</em>
+                                                        </td>
+
+                                                        <td class="text-start">
+                                                            <b><em>0.00</em> </b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -452,7 +452,7 @@
                     debug: false,
                     importCSS: true,
                     importStyle: true,
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                     removeInline: false,
                     printDelay: 700,
                     header: null,

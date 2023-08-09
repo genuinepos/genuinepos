@@ -1,14 +1,14 @@
 <!--begin::Form-->
 @php
-    $currency = json_decode($generalSettings->business, true)['currency'];
+    $currency = $generalSettings['business__currency'];
 @endphp
 <div class="form-group row">
-    @if ($addons->branches == 1)
+    @if ($generalSettings['addons__branches'] == 1)
         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
             <div class="col-md-6">
                 <select name="branch_id" id="today_branch_id" class="form-control">
-                    <option value="">All Business Locations</option>
-                    <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ json_decode($generalSettings->business, true)['shop_name'] }}(Head Office)</option>
+                    <option value="">@lang('menu.all_business_locations')</option>
+                    <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ $generalSettings['business__shop_name'] }}(@lang('menu.head_office'))</option>
                     @foreach ($branches as $br)
                         <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                     @endforeach
@@ -18,8 +18,8 @@
     @endif
 
     <div class="col-md-6">
-        <div class="loader d-none">
-            <i class="fas fa-sync fa-spin ts_preloader text-primary"></i> <b>Processing...</b>  
+        <div class="loader d-hide">
+            <i class="fas fa-sync fa-spin ts_preloader text-primary"></i> <b>@lang('menu.processing')...</b>
         </div>
     </div>
 </div>
@@ -43,133 +43,133 @@
 
 <div class="print_body">
     <div class="today_summery_area mt-2">
-        <div class="print_today_summery_header d-none">
+        <div class="print_today_summery_header d-hide">
             <div class="row text-center">
-                @if ($addons->branches == 1)
+                @if ($generalSettings['addons__branches'] == 1)
                     <h4>
                         @if ($branch_id == 'HF')
-                            {{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(Head Office)</strong>
+                            {{ $generalSettings['business__shop_name'] }} <strong>(@lang('menu.head_office'))</strong>
                         @elseif($branch_id == '')
-                            All Business Locations.
-                        @else 
+                        @lang('menu.all_business_locations').
+                        @else
                             {{ $branch->name.'/'.$branch->branch_code }}
                         @endif
                     </h4>
-                @else 
-                    <h4>{{ json_decode($generalSettings->business, true)['shop_name'] }} <strong>(HO)</strong></h4>
+                @else
+                    <h4>{{ $generalSettings['business__shop_name'] }} <strong>(HO)</strong></h4>
                 @endif
             </div>
 
             <div class="row text-center">
-                <p>Today Summery</p>
+                <p>{{ __('Today Summery') }}</p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <table class="table modal-table table-sm">
+                <table class="display table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Total Purchase :</th>
+                            <th class="text-start">@lang('menu.total_purchase') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchase) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Payment :</th>
+                            <th class="text-start">{{ __('Total Payment') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayment) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Purchase Due :</th>
+                            <th class="text-start">@lang('menu.total_purchase_due') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseDue) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Adjustment :</th>
+                            <th class="text-start">@lang('menu.total_adjustment') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_adjustment) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Expense :</th>
+                            <th class="text-start">@lang('menu.total_expense') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalExpense) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Discount :</th>
+                            <th class="text-start">{{ __('Total Sale Discount') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDiscount) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Transfer Shiping Charge :</th>
+                            <th class="text-start">{{ __('Transfer Shipping Charge') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalTransferShippingCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Purchanse Shiping Charge :</th>
+                            <th class="text-start">{{ __('purchase Shipping Charge') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($purchaseTotalShipmentCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Customer Reward :</th>
+                            <th class="text-start">@lang('menu.total_customer_reward') </th>
                             <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Return :</th>
+                            <th class="text-start">@lang('menu.total_sale_return') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
-                        @if ($addons->hrm == 1)
+                        @if ($generalSettings['addons__hrm'] == 1)
                             <tr>
-                                <th class="text-start">Total Payroll :</th>
+                                <th class="text-start">@lang('menu.total_payroll') </th>
                                 <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>
                             </tr>
                         @endif
-                        
+
 
                     </tbody>
                 </table>
             </div>
 
             <div class="col-md-6">
-                <table class="table modal-table table-sm">
+                <table class="display table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Current Stock :</th>
+                            <th class="text-start">@lang('menu.current_stock') </th>
                             <td class="text-start">{{ $currency }} 0.00</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total sale :</th>
+                            <th class="text-start">@lang('menu.total_sale') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSales) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Received :</th>
+                            <th class="text-start">@lang('menu.total_received') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Due :</th>
+                            <th class="text-start">@lang('menu.total_sale_due') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSaleDue) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Stock Recovered :</th>
+                            <th class="text-start">@lang('menu.total_stock_recovered') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($total_recovered) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Purchase Return :</th>
+                            <th class="text-start">@lang('menu.total_purchase_return') </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPurchaseReturn) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sale Shipping Charge :</th>
+                            <th class="text-start">{{ __('Total Sale Shipping Charge') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesShipmentCost) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Round Off :</th>
+                            <th class="text-start">{{ __('Total Round Off') }} </th>
                             <td class="text-start">{{ $currency }} 0.00 (P)</td>
                         </tr>
                     </tbody>
@@ -178,7 +178,7 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-start">Today Daily Profit :</th>
+                            <th class="text-start">{{ __('Today Daily Profit') }} </th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($todayProfit) }}</td>
                         </tr>
                     </tbody>
@@ -186,14 +186,14 @@
             </div>
         </div>
 
-        <div class="print_today_summery_footer d-none">
+        <div class="print_today_summery_footer d-hide">
             <br><br>
             <div class="row">
                 <div class="col-6">
-                    <p><strong>CHECKED BY :</strong></p>
+                    <p><strong>@lang('menu.checked_by') </strong></p>
                 </div>
                 <div class="col-6 text-end">
-                    <p><strong>APPROVED BY :</strong></p>
+                    <p><strong>@lang('menu.approved_by') </strong></p>
                 </div>
             </div>
         </div>

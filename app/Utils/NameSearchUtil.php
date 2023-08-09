@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 
@@ -24,14 +23,13 @@ class NameSearchUtil
                 'products.product_code',
                 'products.is_combo',
                 'products.is_manage_stock',
-                // 'products.is_purchased',
                 'products.is_show_emi_on_pos',
+                'products.has_batch_no_expire_date',
                 'products.is_variant',
                 'products.product_cost',
                 'products.product_cost_with_tax',
                 'products.product_price',
                 'products.profit',
-                // 'products.quantity',
                 'products.tax_id',
                 'products.tax_type',
                 'products.thumbnail_photo',
@@ -48,11 +46,13 @@ class NameSearchUtil
                 'product_variants.variant_price',
                 'units.name as unit_name',
             )
-            ->where('products.is_for_sale', 1)
+            // ->where('products.is_for_sale', 1)
             ->where('products.status', 1)
-            ->where('product_branches.status', 1)
+            // ->where('product_branches.status', 1)
             ->where('product_branches.branch_id', auth()->user()->branch_id)
-            ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
+            // ->where('products.name', 'LIKE',  $keyword . '%')
+            ->where('products.name', 'LIKE', '%'.$keyword.'%')
+            ->orderBy('id', 'desc')->limit(25)
             ->get();
 
         if ($namedProducts && count($namedProducts) > 0) {
@@ -64,7 +64,7 @@ class NameSearchUtil
         }
     }
 
-    public function searchStockToBranch($product, $product_code, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL, $isCheckStock = true)
+    public function searchStockToBranch($product, $product_code, $branch_id, $status = null, $is_allowed_discount = false, $price_group_id = null, $isCheckStock = true)
     {
         if ($product) {
 
@@ -206,7 +206,7 @@ class NameSearchUtil
         return $this->nameSearching($product_code);
     }
 
-    public function addSaleSearchStockToWarehouse($product, $product_code, $warehouse_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL, $isCheckStock = true)
+    public function addSaleSearchStockToWarehouse($product, $product_code, $warehouse_id, $status = null, $is_allowed_discount = false, $price_group_id = null, $isCheckStock = true)
     {
         if ($product) {
 
@@ -214,7 +214,7 @@ class NameSearchUtil
                 ->where('branch_id', auth()->user()->branch_id)
                 ->where('product_id', $product->id)->where('status', 1)->first();
 
-            if (!$productBranch) {
+            if (! $productBranch) {
 
                 return response()->json(['errorMsg' => 'Product is not available in business Location']);
             }
@@ -294,7 +294,7 @@ class NameSearchUtil
                     ->where('product_id', $variant_product->product->id)
                     ->where('status', 1)->first();
 
-                if (!$productBranch) {
+                if (! $productBranch) {
 
                     return response()->json(['errorMsg' => 'Product(Variant) is not available in Business Location']);
                 }
@@ -367,7 +367,7 @@ class NameSearchUtil
         return $this->nameSearching($product_code);
     }
 
-    public function checkBranchSingleProductStock($product_id, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    public function checkBranchSingleProductStock($product_id, $branch_id, $status = null, $is_allowed_discount = false, $price_group_id = null)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
@@ -413,7 +413,7 @@ class NameSearchUtil
         }
     }
 
-    public function checkAddSaleWarehouseSingleProductStock($product_id, $warehouse_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    public function checkAddSaleWarehouseSingleProductStock($product_id, $warehouse_id, $status = null, $is_allowed_discount = false, $price_group_id = null)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
@@ -459,7 +459,7 @@ class NameSearchUtil
         }
     }
 
-    public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    public function checkBranchVariantProductStock($product_id, $variant_id, $branch_id, $status = null, $is_allowed_discount = false, $price_group_id = null)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
@@ -469,7 +469,7 @@ class NameSearchUtil
 
             return response()->json([
                 'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                'stock' => PHP_INT_MAX
+                'stock' => PHP_INT_MAX,
             ]);
         }
 
@@ -488,7 +488,7 @@ class NameSearchUtil
 
                     return response()->json([
                         'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                        'stock' => $productBranchVariant->variant_quantity
+                        'stock' => $productBranchVariant->variant_quantity,
                     ]);
                 }
 
@@ -496,7 +496,7 @@ class NameSearchUtil
 
                     return response()->json([
                         'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                        'stock' =>  $productBranchVariant->variant_quantity
+                        'stock' => $productBranchVariant->variant_quantity,
                     ]);
                 } else {
 
@@ -512,7 +512,7 @@ class NameSearchUtil
         }
     }
 
-    public function checkAddSaleWarehouseVariantProductStock($product_id, $variant_id, $warehouse_id, $status = NULL, $is_allowed_discount = false, $price_group_id = NULL)
+    public function checkAddSaleWarehouseVariantProductStock($product_id, $variant_id, $warehouse_id, $status = null, $is_allowed_discount = false, $price_group_id = null)
     {
         $product = DB::table('products')
             ->where('id', $product_id)->select('id', 'is_manage_stock', 'brand_id', 'category_id')
@@ -522,7 +522,7 @@ class NameSearchUtil
 
             return response()->json([
                 'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                'stock' => PHP_INT_MAX
+                'stock' => PHP_INT_MAX,
             ]);
         }
 
@@ -541,7 +541,7 @@ class NameSearchUtil
 
                     return response()->json([
                         'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                        'stock' => $productWarehouseVariant->variant_quantity
+                        'stock' => $productWarehouseVariant->variant_quantity,
                     ]);
                 }
 
@@ -549,7 +549,7 @@ class NameSearchUtil
 
                     return response()->json([
                         'discount' => $is_allowed_discount == true ? $this->productDiscount($product->id, $price_group_id, $product->brand_id, $product->category_id) : null,
-                        'stock' =>  $productWarehouseVariant->variant_quantity
+                        'stock' => $productWarehouseVariant->variant_quantity,
                     ]);
                 } else {
 
@@ -584,7 +584,7 @@ class NameSearchUtil
         }
     }
 
-    // Check warehouse product variant qty 
+    // Check warehouse product variant qty
     public function checkWarehouseProductVariant($product_id, $variant_id, $warehouse_id)
     {
         $productWarehouse = DB::table('product_warehouses')
@@ -631,7 +631,7 @@ class NameSearchUtil
                 ->where('branch_id', auth()->user()->branch_id)
                 ->where('product_id', $product->id)->where('status', 1)->first();
 
-            if (!$productBranch) {
+            if (! $productBranch) {
 
                 return response()->json(['errorMsg' => 'Product is not available in business Location']);
             }
@@ -652,7 +652,7 @@ class NameSearchUtil
                         return response()->json(
                             [
                                 'product' => $product,
-                                'qty_limit' => $productWarehouse->product_quantity
+                                'qty_limit' => $productWarehouse->product_quantity,
                             ]
                         );
                     } else {
@@ -676,7 +676,7 @@ class NameSearchUtil
                     ->where('branch_id', auth()->user()->branch_id)
                     ->where('product_id', $variant_product->product_id)->where('status', 1)->first();
 
-                if (!$productBranch) {
+                if (! $productBranch) {
 
                     return response()->json(['errorMsg' => 'Product is not available in business Location']);
                 }
@@ -709,7 +709,7 @@ class NameSearchUtil
                         return response()->json(
                             [
                                 'variant_product' => $variant_product,
-                                'qty_limit' => $productWarehouseVariant->variant_quantity
+                                'qty_limit' => $productWarehouseVariant->variant_quantity,
                             ]
                         );
                     } else {
@@ -730,9 +730,9 @@ class NameSearchUtil
     {
         $presentDate = date('Y-m-d');
 
-        $__price_group_id = $price_group_id != 'no_id' ? $price_group_id : NULL;
-        $__category_id = $category_id ? $category_id : NULL;
-        $__brand_id = $brand_id ? $brand_id : NULL;
+        $__price_group_id = $price_group_id != 'no_id' ? $price_group_id : null;
+        $__category_id = $category_id ? $category_id : null;
+        $__brand_id = $brand_id ? $brand_id : null;
 
         $discountProductWise = DB::table('discount_products')
             ->where('discount_products.product_id', $product_id)
@@ -740,7 +740,7 @@ class NameSearchUtil
             ->where('discounts.branch_id', auth()->user()->branch_id)
             ->where('discounts.is_active', 1)
             ->where('discounts.price_group_id', $__price_group_id)
-            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`')
+            ->whereRaw('"'.$presentDate.'" between `start_at` and `end_at`')
             ->orderBy('discounts.priority', 'desc')
             ->first();
 
@@ -754,23 +754,23 @@ class NameSearchUtil
             ->where('discounts.branch_id', auth()->user()->branch_id)
             ->where('discounts.is_active', 1)
             //->where('discounts.price_group_id', $__price_group_id)
-            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`');
+            ->whereRaw('"'.$presentDate.'" between `start_at` and `end_at`');
 
         if ($__brand_id && $__category_id) {
 
-            $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', NULL);
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', NULL);
+            $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
+            $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
             $discountBrandCategoryWiseQ->where('discounts.category_id', $__category_id);
             $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brand_id);
-        } elseif ($__brand_id && !$__category_id) {
+        } elseif ($__brand_id && ! $__category_id) {
 
-            $discountBrandCategoryWiseQ->where('discounts.category_id', NULL);
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', NULL);
+            $discountBrandCategoryWiseQ->where('discounts.category_id', null);
+            $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
             $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brand_id);
-        } elseif (!$__brand_id && $__category_id) {
+        } elseif (! $__brand_id && $__category_id) {
 
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', NULL);
-            $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', NULL);
+            $discountBrandCategoryWiseQ->where('discounts.brand_id', null);
+            $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
             $discountBrandCategoryWiseQ->where('discounts.category_id', $__category_id);
         }
 
@@ -791,7 +791,7 @@ class NameSearchUtil
         //     if ($discountBrandCategoryWise->brand_id == $__brand_id && $discountBrandCategoryWise->category_id == $__category_id) {
 
         //         return $this->setDiscount($discountBrandCategoryWise);
-        //     } 
+        //     }
         // } elseif (!$discountBrandCategoryWise->brand_id && $discountBrandCategoryWise->category_id) {
 
         //     if ($discountBrandCategoryWise->category_id == $__category_id) {

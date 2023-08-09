@@ -3,32 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use App\Models\Product;
-use App\Utils\SaleUtil;
-use App\Utils\Converter;
 use App\Models\SaleReturn;
 use App\Utils\AccountUtil;
-use App\Models\SalePayment;
-use App\Models\SaleProduct;
+use App\Utils\Converter;
 use App\Utils\CustomerUtil;
-use Illuminate\Http\Request;
+use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
 use App\Utils\ProductStockUtil;
-use App\Models\SaleReturnProduct;
-use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\SaleUtil;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleReturnController extends Controller
 {
     protected $productStockUtil;
+
     protected $saleUtil;
+
     protected $nameSearchUtil;
+
     protected $accountUtil;
+
     protected $customerUtil;
+
     protected $converter;
+
     protected $invoiceVoucherRefIdUtil;
+
     protected $userActivityLogUtil;
 
     public function __construct(
@@ -50,13 +53,13 @@ class SaleReturnController extends Controller
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     // Sale return index view
     public function index(Request $request)
     {
-        if (auth()->user()->permission->sale['return_access'] == '0') {
+        if (! auth()->user()->can('return_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -64,7 +67,7 @@ class SaleReturnController extends Controller
         if ($request->ajax()) {
 
             $returns = '';
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $query = DB::table('sale_returns')
                 ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
                 ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
@@ -93,44 +96,45 @@ class SaleReturnController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('sales.returns.show', $row->id) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('sales.returns.show', $row->id).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                     if (auth()->user()->branch_id == $row->branch_id) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sale.return.random.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.returns.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
+                        $html .= '<a class="dropdown-item" href="'.route('sale.return.random.edit', [$row->id]).'"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.returns.delete', [$row->id]).'"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
 
-                        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('sales.returns.payment.list', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
+                        $html .= '<a class="dropdown-item" id="view_payment" href="'.route('sales.returns.payment.list', [$row->id]).'"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
 
                         if ($row->total_return_due > 0 && $row->sale_id) {
 
-                            if (auth()->user()->permission->sale['sale_payment'] == '1') {
+                            if (! auth()->user()->can('sale_payment')) {
 
-                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->sale_id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amt.</a>';
+                                $html .= '<a class="dropdown-item" id="add_return_payment" href="'.route('sales.return.payment.modal', [$row->sale_id]).'"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amt.</a>';
                             }
                         }
                     }
 
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
 
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
 
-                    return $row->branch_name != null ? ($row->branch_name . '/' . $row->branch_code) . '<b>(BL)</b>' : json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                    return $row->branch_name != null ? ($row->branch_name.'/'.$row->branch_code).'<b>(BL)</b>' : $generalSettings['business__shop_name'].'<b>(HO)</b>';
                 })
-                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount text-danger" data-value="' . $row->total_return_amount . '">' . $this->converter->format_in_bdt($row->total_return_amount) . '</span>')
+                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount text-danger" data-value="'.$row->total_return_amount.'">'.$this->converter->format_in_bdt($row->total_return_amount).'</span>')
 
-                ->editColumn('total_return_due_pay', fn ($row) => '<span class="total_return_due_pay text-success" data-value="' . $row->total_return_due_pay . '">' . $this->converter->format_in_bdt($row->total_return_due_pay) . '</span>')
+                ->editColumn('total_return_due_pay', fn ($row) => '<span class="total_return_due_pay text-success" data-value="'.$row->total_return_due_pay.'">'.$this->converter->format_in_bdt($row->total_return_due_pay).'</span>')
 
-                // ->editColumn('total_return_due', function ($row) { 
+                // ->editColumn('total_return_due', function ($row) {
 
                 //     if ($row->sale_id) {
-                        
+
                 //         if ($row->total_return_due >= 0) {
 
                 //             return '<span class="text-danger">' . $this->converter->format_in_bdt($row->total_return_due) . '</span>';
@@ -149,16 +153,16 @@ class SaleReturnController extends Controller
 
                 //             return '<span class="text-danger"><b>Due</b></span>';
                 //         } else {
-    
+
                 //             return '<span class="text-success"><b>Paid</b></span>';
                 //         }
                 //     }else{
 
                 //         return '<span class="text-danger"><b>CHECK CUSTOMER DUE</b></span>';
                 //     }
-                    
+
                 // })
-                
+
                 ->editColumn('customer', function ($row) {
 
                     return $row->cus_name ? $row->cus_name : 'Walk-In-Customer';
@@ -185,7 +189,7 @@ class SaleReturnController extends Controller
         return view('sales.sale_return.ajax_view.show', compact('saleReturn'));
     }
 
-    //Deleted sale return 
+    //Deleted sale return
     public function delete($saleReturnId)
     {
         $saleReturn = SaleReturn::with(['sale', 'customer', 'sale_return_products'])->where('id', $saleReturnId)->first();
@@ -196,7 +200,7 @@ class SaleReturnController extends Controller
 
         if ($saleReturn->total_return_due_pay > 0) {
 
-            return response()->json(['errorMsg' => "You can not delete this return invoice, Cause your have paid some or full amount on this return."]);
+            return response()->json(['errorMsg' => 'You can not delete this return invoice, Cause your have paid some or full amount on this return.']);
         }
 
         // Add User Activity Log
@@ -242,7 +246,7 @@ class SaleReturnController extends Controller
             'payments.account',
             'payments.paymentMethod',
             'customer',
-            'branch'
+            'branch',
         ])->where('id', $returnId)->first();
 
         return view('sales.sale_return.ajax_view.return_payment_list', compact('return'));

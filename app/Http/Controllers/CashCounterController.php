@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\CashCounter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rule;
+use Yajra\DataTables\Facades\DataTables;
 
 class CashCounterController extends Controller
 {
     // Cash Counter main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->setup['cash_counters'] == '0') {
+        if (! auth()->user()->can('cash_counters')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first(['business']);
+            $generalSettings = config('generalSettings');
             $cashCounters = '';
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
                     ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
                     ->select(
@@ -31,6 +32,7 @@ class CashCounterController extends Controller
                         'cash_counters.short_name'
                     )->get();
             } else {
+
                 $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
                     ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
                     ->select(
@@ -47,29 +49,30 @@ class CashCounterController extends Controller
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
 
-                    $html .= '<a href="' . route('settings.cash.counter.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('settings.cash.counter.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('settings.cash.counter.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('settings.cash.counter.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->br_name) {
-                        return $row->br_name . '/' . $row->br_code . '(<b>BR</b>)';
+                        return $row->br_name.'/'.$row->br_code.'(<b>BR</b>)';
                     } else {
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
                 ->rawColumns(['branch', 'action'])
                 ->make(true);
         }
+
         return view('settings.cash_counter.index');
     }
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('cash_counter_limit')->first();
-
-        $cash_counter_limit = $addons->cash_counter_limit;
+        $generalSettings = config('generalSettings');
+        $cash_counter_limit = $generalSettings['addons__cash_counter_limit'];
 
         $cash_counters = DB::table('cash_counters')
             ->where('branch_id', auth()->user()->branch_id)
@@ -77,7 +80,7 @@ class CashCounterController extends Controller
 
         if ($cash_counter_limit <= $cash_counters) {
 
-            return response()->json(["errorMsg" => "Cash counter limit is ${cash_counter_limit}"]);
+            return response()->json(['errorMsg' => "Cash counter limit is ${cash_counter_limit}"]);
         }
 
         $this->validate($request, [
@@ -103,14 +106,15 @@ class CashCounterController extends Controller
     public function edit($id)
     {
         $cc = DB::table('cash_counters')->where('id', $id)->orderBy('id', 'DESC')->first(['id', 'counter_name', 'short_name']);
+
         return view('settings.cash_counter.ajax_view.edit_cash_counter', compact('cc'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'counter_name' => 'required|unique:cash_counters,counter_name,' . $id,
-            'short_name' => 'required|unique:cash_counters,short_name,' . $id,
+            'counter_name' => 'required|unique:cash_counters,counter_name,'.$id,
+            'short_name' => 'required|unique:cash_counters,short_name,'.$id,
         ]);
 
         $updateCC = CashCounter::where('id', $id)->first();
@@ -125,7 +129,7 @@ class CashCounterController extends Controller
     public function delete(Request $request, $id)
     {
         $delete = CashCounter::find($id);
-        if (!is_null($delete)) {
+        if (! is_null($delete)) {
             $delete->delete();
         }
 

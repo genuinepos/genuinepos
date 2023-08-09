@@ -2,17 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Account;
-use App\Models\CashFlow;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Models\PaymentMethod;
-use App\Models\SupplierLedger;
-use Illuminate\Database\Eloquent\Model;
-
-class PurchasePayment extends Model
+class PurchasePayment extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function purchase()

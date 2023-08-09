@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class RolePermission extends Model
+class RolePermission extends BaseModel
 {
     protected $casts = [
         'user' => 'array',
@@ -28,6 +26,8 @@ class RolePermission extends Model
         'e_commerce' => 'array',
         'others' => 'array',
     ];
+
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 }

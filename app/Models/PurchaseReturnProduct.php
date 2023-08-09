@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\PurchaseReturn;
-use App\Models\PurchaseProduct;
-use Illuminate\Database\Eloquent\Model;
-
-class PurchaseReturnProduct extends Model
+class PurchaseReturnProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function purchase_return()

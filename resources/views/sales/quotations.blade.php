@@ -12,25 +12,27 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-quote-right"></span>
-                                <h5>Quotations</h5>
+                                <h5>@lang('menu.quotation')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
                                         <form id="filter_form">
                                             <div class="form-group row">
-                                                @if ($addons->branches == 1)
+                                                @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id">
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id">
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $b)
                                                                     <option value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
                                                                 @endforeach
@@ -40,13 +42,13 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Customer :</strong></label>
-                                                    <select name="customer_id" class="form-control selectpicker submit_able" id="customer_id">
+                                                    <label><strong>@lang('menu.customer') </strong></label>
+                                                    <select name="customer_id" class="form-control selectpicker submit_able select2" id="customer_id">
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -59,7 +61,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -72,7 +74,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -81,39 +83,33 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
+                                <div class="col-6">
                                     <h6>All Quotation</h6>
                                 </div>
-                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('sales.create') }}"><i
-                                                    class="fas fa-plus-square"></i> Add</a>
-                                        </div>
+                                @if(auth()->user()->can('purchase_add'))
+                                    <div class="col-6 d-flex justify-content-end">
+                                        <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                     </div>
                                 @endif
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Quotation ID</th>
-                                                <th>Business Location</th>
-                                                <th>Customer</th>
-                                                <th>Total Amount</th>
-                                                <th>Created By</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.quotation_id')</th>
+                                                <th>@lang('menu.business_location')</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.total_amount')</th>
+                                                <th>@lang('menu.created_by')</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -135,7 +131,7 @@
     <div id="quotation_details"></div>
 @endsection
 @push('scripts')
-    <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Show session message by toster alert.
@@ -190,7 +186,7 @@
         // Get all supplier for filter form
         function setCustomers(){
             $.get("{{route('sales.get.all.customer')}}", function(customers) {
-                $('#customer_id').append('<option value="">All</option>');
+                $('#customer_id').append('<option value="">@lang('menu.all')</option>');
                 $('#customer_id').append('<option value="NULL">Walk-In-Customer</option>');
                 $.each(customers, function(key, val){
                     $('#customer_id').append('<option value="'+val.id+'">'+ val.name +' ('+val.phone+')'+'</option>');
@@ -236,7 +232,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 800,
                 header: null,
@@ -248,7 +244,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},

@@ -1,25 +1,37 @@
 <?php
 
 namespace App\Models;
-use App\Models\Bank;
-use App\Models\AdminAndUser;
-use App\Models\AccountBranch;
-use App\Models\AccountLedger;
-use Illuminate\Database\Eloquent\Model;
 
-class Account extends Model
+use App\Models\Accounts\AccountGroup;
+use App\Models\Accounts\BankAccessBranch;
+use App\Models\Contacts\Contact;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Account extends BaseModel
 {
+    use HasFactory;
+
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
-    
+
     public function bank()
     {
         return $this->belongsTo(Bank::class, 'bank_id')->select(['id', 'name', 'branch_name']);
     }
 
+    public function group()
+    {
+        return $this->belongsTo(AccountGroup::class, 'account_group_id');
+    }
+
     public function accountBranches()
     {
         return $this->hasMany(AccountBranch::class);
+    }
+
+    public function bankAccessBranches()
+    {
+        return $this->hasMany(BankAccessBranch::class, 'bank_account_id');
     }
 
     public function accountLedgers()
@@ -29,6 +41,21 @@ class Account extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
+    }
+
+    public function accountLedgersWithOutOpeningBalances()
+    {
+        return $this->hasMany(AccountLedger::class)->where('voucher_type', '!=', 0);
+    }
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class, 'contact_id');
+    }
+
+    public function openingBalance()
+    {
+        return $this->hasOne(AccountLedger::class, 'account_id')->where('voucher_type', 0)->where('branch_id', auth()->user()->branch_id);
     }
 }

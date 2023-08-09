@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CommonAjaxCallController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+
     }
 
     public function branchAuthenticatedUsers($branchId)
     {
-        $branch_id = $branchId != 'NULL' ? $branchId : NULL;
-        return DB::table('admin_and_users')
+        $branch_id = $branchId != 'NULL' ? $branchId : null;
+
+        return DB::table('users')
             ->where('branch_id', $branch_id)
             ->where('allow_login', 1)->get();
     }
@@ -37,10 +37,10 @@ class CommonAjaxCallController extends Controller
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query->distinct('product_branches.branch_id')->get(); 
-        }else{
+            $query->distinct('product_branches.branch_id')->get();
+        } else {
 
-            $query->where('product_branches.branch_id', auth()->user()->branch_id)->distinct('product_branches.branch_id')->get(); 
+            $query->where('product_branches.branch_id', auth()->user()->branch_id)->distinct('product_branches.branch_id')->get();
         }
 
         $products = $query->select(
@@ -133,7 +133,7 @@ class CommonAjaxCallController extends Controller
             ->where('created_by', $create_by)
             ->where('is_return_available', 0)
             ->orderBy('id', 'desc')
-            ->limit(10)
+            ->limit(40)
             ->get();
 
         return view('common_ajax_view.recent_sale_list', compact('sales'));
@@ -167,7 +167,7 @@ class CommonAjaxCallController extends Controller
         return view('common_ajax_view.recent_draft_list', compact('drafts'));
     }
 
-    // Search product 
+    // Search product
     public function searchProductForReportFilter($product_name)
     {
         return $products = DB::table('products')
@@ -194,24 +194,24 @@ class CommonAjaxCallController extends Controller
     // Get all parent Category
     public function branchWarehouses($branch_id)
     {
-        $branch_id = $branch_id == 'NULL' ? NULL : $branch_id;
+        $branch_id = $branch_id == 'NULL' ? null : $branch_id;
 
-        return  DB::table('warehouse_branches')
-        ->where('warehouse_branches.branch_id', $branch_id)
-        ->orWhere('warehouse_branches.is_global', 1)
-        ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
-        ->select(
-            'warehouses.id',
-            'warehouses.warehouse_name',
-            'warehouses.warehouse_code',
-        )->get();
+        return DB::table('warehouse_branches')
+            ->where('warehouse_branches.branch_id', $branch_id)
+            ->orWhere('warehouse_branches.is_global', 1)
+            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
+            ->select(
+                'warehouses.id',
+                'warehouses.warehouse_name',
+                'warehouses.warehouse_code',
+            )->get();
     }
 
     public function branchAllowLoginUsers($branchId)
     {
-        $branch_id = $branchId == 'NULL' ? NULL : $branchId;
+        $branch_id = $branchId == 'NULL' ? null : $branchId;
 
-        return DB::table('admin_and_users')
+        return DB::table('users')
             ->where('branch_id', $branch_id)
             ->where('allow_login', 1)
             ->select('id', 'prefix', 'name', 'last_name')
@@ -220,9 +220,9 @@ class CommonAjaxCallController extends Controller
 
     public function branchUsers($branchId)
     {
-        $branch_id = $branchId == 'NULL' ? NULL : $branchId;
+        $branch_id = $branchId == 'NULL' ? null : $branchId;
 
-        return DB::table('admin_and_users')
+        return DB::table('users')
             ->where('branch_id', $branch_id)
             ->select('id', 'prefix', 'name', 'last_name')
             ->get();
@@ -245,6 +245,7 @@ class CommonAjaxCallController extends Controller
                 'total_purchase_return_due',
             )
             ->first();
+
         return response()->json($supplier);
     }
 }

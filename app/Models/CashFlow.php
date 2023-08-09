@@ -2,19 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Account;
 use App\Models\Hrm\Payroll;
-use App\Models\SalePayment;
-use App\Models\AdminAndUser;
-use App\Models\MoneyReceipt;
-use App\Models\ExpansePayment;
-use App\Models\PurchasePayment;
 use App\Models\Hrm\PayrollPayment;
-use Illuminate\Database\Eloquent\Model;
 
-class CashFlow extends Model
+class CashFlow extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function account()
@@ -84,6 +78,6 @@ class CashFlow extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

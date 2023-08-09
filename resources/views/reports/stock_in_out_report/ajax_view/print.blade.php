@@ -1,19 +1,50 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {
+        position: fixed;
+        bottom: 24px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 </style>
 @php
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
     $totalStockInQty = 0;
     $totalStockOutQty = 0;
 @endphp
@@ -21,16 +52,13 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}                                                                                            </h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <h5>{{ $generalSettings['business__shop_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
-
             @php
                 $branch = DB::table('branches')
                     ->where('id', $branch_id)
@@ -38,16 +66,15 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Stock In-Out Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.stock_in_out_report') </b></h6>
 
         @if ($fromDate && $toDate)
-
-            <p style="margin-top: 10px;"><b>From :</b>
-                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($fromDate)) }}
-                <b>To</b> {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($toDate)) }}
+            <p style="margin-top: 10px;"><b>@lang('menu.from') </b>
+                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
             </p>
         @endif
     </div>
@@ -58,17 +85,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">Product</th>
-                    <th class="text-start">Sale</th>
-                    <th class="text-start">Sale Date</th>
-                    <th class="text-start">B. Location</th>
-                    <th class="text-end">Sold/Out Qty</th>
-                    <th class="text-end">Sold Price({{json_decode($generalSettings->business, true)['currency']}})</th>
-                
-                    <th class="text-start">Customer</th>
-                    <th class="text-start">Stock In By</th>
-                    <th class="text-start">Stock In Date</th>
-                    <th class="text-end">Unit Cost({{json_decode($generalSettings->business, true)['currency']}})</th>
+                    <th class="text-start">@lang('menu.product')</th>
+                    <th class="text-start">@lang('menu.sale')</th>
+                    <th class="text-start">@lang('menu.sale_date')</th>
+                    <th class="text-start">{{ __('B. Location') }}</th>
+                    <th class="text-end">{{ __('Sold/Out Qty') }}</th>
+                    <th class="text-end">{{ __('Sold Price') }}({{ $generalSettings['business__currency'] }})</th>
+
+                    <th class="text-start">@lang('menu.customer')</th>
+                    <th class="text-start">{{ __('Stock In By') }}</th>
+                    <th class="text-start">{{ __('Stock In Date') }}</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -89,10 +116,10 @@
                             {{ date($__date_format, strtotime($row->date)) }}
                         </td>
                         <td class="text-start">
-                            @if ($row->branch_name) 
+                            @if ($row->branch_name)
                                 {{ $row->branch_name }}
-                            @else 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                            @else
+                                {{ $generalSettings['business__shop_name'] }}
                             @endif
                         </td>
 
@@ -102,24 +129,19 @@
                             {{ App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) }}
                         </td>
 
-                        <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer'; }}</td>
-                        
+                        <td class="text-start">{{ $row->customer_name ? $row->customer_name : 'Walk-In-Customer' }}</td>
+
                         <td class="text-start">
                             @if ($row->purchase_inv)
-
-                                {{ 'Purchase:'. $row->purchase_inv }}  
-                            @elseif ($row->production_voucher_no) 
-
+                                {{ 'Purchase:' . $row->purchase_inv }}
+                            @elseif ($row->production_voucher_no)
                                 {{ 'Production:' . $row->production_voucher_no }}
                             @elseif ($row->pos_id)
-
                                 {{ 'Opening Stock' }}
-                            @elseif ($row->sale_return_id) 
-
-                                {{ 'Sale Returned Stock:'  . $row->sale_return_invoice }}
-                            @else 
-
-                                Non-Manageable-Stock        
+                            @elseif ($row->sale_return_id)
+                                {{ 'Sale Returned Stock:' . $row->sale_return_invoice }}
+                            @else
+                                {{ __('Non-Manageable-Stock') }}
                             @endif
                         </td>
 
@@ -133,7 +155,7 @@
                     </tr>
                 @endforeach
             </tbody>
-          
+
         </table>
     </div>
 </div>
@@ -144,14 +166,14 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">Total Stock In Qty : </th>
+                    <th class="text-end">{{ __('Total Stock In Qty') }} </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalStockInQty) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">Total Stock Out Qty : </th>
+                    <th class="text-end">{{ __('Total Stock Out Qty') }} </th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalStockOutQty) }}
                     </td>
@@ -164,17 +186,17 @@
 <div id="footer">
     <div class="row mt-1">
         <div class="col-4 text-start">
-            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
         </div>
 
         <div class="col-4 text-center">
             @if (env('PRINT_SD_SALE') == true)
-                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             @endif
         </div>
 
         <div class="col-4 text-end">
-            <small>Print Time : {{ date($timeFormat) }}</small>
+            <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
         </div>
     </div>
 </div>

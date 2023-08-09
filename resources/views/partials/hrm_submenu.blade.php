@@ -111,14 +111,14 @@
                     <li>
                         <a href="" class="text-primary"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
                     </li>
-                    
-                    @if (auth()->user()->permission->hrms['leave_type'] == '1')
+
+                    @if(auth()->user()->can('leave_type'))
                         <li>
-                            <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
+                            <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>{{ __('Leave Types') }}</b></a>
                         </li>
                     @endif
 
-                    @if (auth()->user()->permission->hrms['leave_approve'] == '1')
+                    @if(auth()->user()->can('leave_approve'))
                         <li>
                             <a href="{{ route('hrm.leave') }}" class="text-white "><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
                         </li>
@@ -160,14 +160,14 @@
         <div class="card-title ps-4">
             <h5 class="text-start text-primary pl-5">
                 <i class="fas fa-tachometer-alt"></i>
-                <span class="">HRM</span> Dashboard
+                <span class="">HRM</span> @lang('menu.dashboard')
             </h5>
         </div>
 
         <div class="card-title mt-1 ps-4">
             <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                <option value="">All Business Lacation</option>
-                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                <option value="">{{ __('All Business Location') }}</option>
+                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                 {{-- @foreach ($branches as $branch)
                     <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                 @endforeach --}}
@@ -179,15 +179,15 @@
                 <div class="col-md-6">
                     <div class="preloader_area" style="position: relative;">
                         <div class="data_preloader mt-4">
-                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                         </div>
                     </div>
-                    
+
                     <div class="form_element users_data">
                         <div class="section-header d-flex justify-content-between align-items-center px-3">
-                            <h6><span class="fas fa-users"></span>Users</h6>
+                            <h6><span class="fas fa-users"></span>@lang('menu.users')</h6>
                             <span class="badge bg-secondary text-white">
-                                <div id="small-badge">Total: 4324</div>
+                                <div id="small-badge">@lang('menu.total'): 4324</div>
                             </span>
                         </div>
                         <div class="widget_content">
@@ -196,13 +196,13 @@
                                     <table id="users_table" class="display data__table data_tble stock_table compact" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Department</th>
-                                                <th>Total</th>
+                                                <th>@lang('menu.department')</th>
+                                                <th>@lang('menu.total')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Branch Manger</td>
+                                                <td>{{ __('Branch Manger') }}</td>
                                                 <td>125</td>
                                             </tr>
                                         </tbody>
@@ -216,7 +216,7 @@
                 <div class="col-md-6">
                     <div class="preloader_area" style="position: relative;">
                         <div class="data_preloader mt-4">
-                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                         </div>
                     </div>
 
@@ -224,7 +224,7 @@
                         <div class="section-header d-flex justify-content-between align-items-center px-3">
                             <h6>
                                 <span class="fas fa-user-check"></span>
-                                Today's Attendance
+                                {{ __('Todays Attendance') }}
                             </h6>
                         </div>
 
@@ -235,9 +235,9 @@
                                         width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Employee</th>
-                                                <th>Clock-in Time</th>
-                                                <th>Clock-out Time</th>
+                                                <th>{{ __('Employee') }}</th>
+                                                <th>{{ __('Clock-in Time') }}</th>
+                                                <th>{{ __('Clock-out Time') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -259,14 +259,14 @@
                 <div class="col-md-6">
                     <div class="preloader_area" style="position: relative;">
                         <div class="data_preloader mt-4">
-                            <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                         </div>
                     </div>
                     <div class="form_element">
                         <div class="section-header d-flex justify-content-between align-items-center px-3">
                             <h6>
                                 <span class="far fa-file-alt"></span>
-                                Leave Applications
+                                {{ __('Leave Applications') }}
                             </h6>
                         </div>
                         <div class="widget_content">
@@ -275,7 +275,7 @@
                                     <table id="leave_application_table"
                                         class="display data__table data_tble stock_table compact mt-2" width="100%">
                                         <tbody class="mx-2 mt-5" id="leaves">
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -288,19 +288,19 @@
                         <div class="section-header d-flex justify-content-between align-items-center px-3">
                             <h6>
                                 <span class="far fa-file-alt"></span>
-                                Holidays
+                                {{ __('Holidays') }}
                             </h6>
                         </div>
                         <div class="widget_content">
                             <div class="px-3 pt-2">
-                                <div class="px-1"><strong>Today:</strong></div>
+                                <div class="px-1"><strong>{{ __('Today') }}</strong></div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item list-group-item-success">Its' work day</li>
                                 </ul>
                             </div>
                             <div class="px-3 pt-2 pb-2">
                                 <div class="px-1">
-                                    <span><strong>Upcoming Holidays:</strong></span>
+                                    <span><strong>{{ __('Upcoming Holidays') }}</strong></span>
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item list-group-item-warning">A simple warning list group item

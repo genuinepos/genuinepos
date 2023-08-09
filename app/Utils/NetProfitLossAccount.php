@@ -5,7 +5,6 @@ namespace App\Utils;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-
 class NetProfitLossAccount
 {
     public function netLossProfit($request = null): array
@@ -22,10 +21,10 @@ class NetProfitLossAccount
 
         $individualProductSaleTax = $this->individualProductSaleTax($request);
         $directExpense = $this->directExpense($request);
-        $indirectExpense  = $this->indirectExpense($request);
-        $totalSaleReturn  = $this->totalSaleReturn($request);
-        $totalPurchaseReturn  = $this->totalPurchaseReturn($request);
-        $transferShipmentCost  = $this->transferShipmentCost($request = null);
+        $indirectExpense = $this->indirectExpense($request);
+        $totalSaleReturn = $this->totalSaleReturn($request);
+        $totalPurchaseReturn = $this->totalPurchaseReturn($request);
+        $transferShipmentCost = $this->transferShipmentCost($request = null);
 
         $grossProfit = $totalSaleAmounts->sum('total_sale')
             // + ($closingStock - $openingStock->sum('total_ops_value'))
@@ -85,7 +84,7 @@ class NetProfitLossAccount
         ];
     }
 
-    public function closingStock($request = NULL)
+    public function closingStock($request = null)
     {
         $purchaseProduct = '';
         $saleProducts = '';
@@ -103,8 +102,8 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $purchaseProductQ->where('purchase_products.branch_id', NULL);
-                $saleProductsQ->where('sales.branch_id', NULL);
+                $purchaseProductQ->where('purchase_products.branch_id', null);
+                $saleProductsQ->where('sales.branch_id', null);
             } else {
 
                 $purchaseProductQ->where('purchase_products.branch_id', $request->branch_id);
@@ -152,7 +151,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $purchasesQ->where('purchases.branch_id', NULL);
+                $purchasesQ->where('purchases.branch_id', null);
             } else {
 
                 $purchasesQ->where('purchases.branch_id', $request->branch_id);
@@ -194,7 +193,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $salesQ->where('sales.branch_id', NULL);
+                $salesQ->where('sales.branch_id', null);
             } else {
 
                 $salesQ->where('sales.branch_id', $request->branch_id);
@@ -229,7 +228,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $openingStockQ->where('product_opening_stocks.branch_id', NULL);
+                $openingStockQ->where('product_opening_stocks.branch_id', null);
             } else {
 
                 $openingStockQ->where('product_opening_stocks.branch_id', $request->branch_id);
@@ -265,7 +264,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $individualProductSaleTaxQ->where('sales.branch_id', NULL);
+                $individualProductSaleTaxQ->where('sales.branch_id', null);
             } else {
 
                 $individualProductSaleTaxQ->where('sales.branch_id', $request->branch_id);
@@ -302,7 +301,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $directExpenseQ->where('expanses.branch_id', NULL);
+                $directExpenseQ->where('expanses.branch_id', null);
             } else {
 
                 $directExpenseQ->where('expanses.branch_id', $request->branch_id);
@@ -340,7 +339,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $indirectExpenseQ->where('expanses.branch_id', NULL);
+                $indirectExpenseQ->where('expanses.branch_id', null);
             } else {
 
                 $indirectExpenseQ->where('expanses.branch_id', $request->branch_id);
@@ -379,7 +378,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $stockAdjustmentsQ->where('stock_adjustments.branch_id', NULL);
+                $stockAdjustmentsQ->where('stock_adjustments.branch_id', null);
             } else {
 
                 $stockAdjustmentsQ->where('stock_adjustments.branch_id', $request->branch_id);
@@ -419,7 +418,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $saleProductQuery->where('sales.branch_id', NULL);
+                $saleProductQuery->where('sales.branch_id', null);
             } else {
 
                 $saleProductQuery->where('sales.branch_id', $request->branch_id);
@@ -460,7 +459,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $totalSaleReturnQuery->where('sale_returns.branch_id', NULL);
+                $totalSaleReturnQuery->where('sale_returns.branch_id', null);
             } else {
 
                 $totalSaleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
@@ -501,7 +500,7 @@ class NetProfitLossAccount
 
             if ($request->branch_id == 'NULL') {
 
-                $totalPurchaseReturnQuery->where('purchase_returns.branch_id', NULL);
+                $totalPurchaseReturnQuery->where('purchase_returns.branch_id', null);
             } else {
 
                 $totalPurchaseReturnQuery->where('purchase_returns.branch_id', $request->branch_id);
@@ -537,13 +536,12 @@ class NetProfitLossAccount
         $transferStWarehouseQuery = DB::table('transfer_stock_to_warehouses')
             ->select(DB::raw('sum(shipping_charge) as w_total_shipment_charge'));
 
-            
         if (isset($request->branch_id) && $request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
-                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', NULL);
-                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
+                $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', null);
+                $transferStWarehouseQuery->where('transfer_stock_to_warehouses.branch_id', null);
             } else {
 
                 $transferStBranchQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);

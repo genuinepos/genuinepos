@@ -4,62 +4,52 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <!-- =====================================================================BODY CONTENT================== -->
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-receipt"></span>
-                                <h5>Invoice Schemas</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+        <div class="main__content">
+            <!-- =====================================================================BODY CONTENT================== -->
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-receipt"></span>
+                    <h5>@lang('menu.invoice_schemas')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <!-- =========================================top section button=================== -->
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-7">
+                        <h6>All Invoice Schemas</h6>
+                    </div>
+
+                    <div class="col-5 d-flex justify-content-end">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                    </div>
+                </div>
+
+                    <div class="widget_content">
+                        <div class="table-responsive" id="data-list">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">@lang('menu.name')</th>
+                                        <th class="text-start">@lang('menu.prefix')</th>
+                                        <th class="text-start">@lang('menu.start_from')</th>
+                                        <th class="text-start">@lang('menu.action')</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <!-- =========================================top section button=================== -->
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All Invoice Schemas</h6>
-                                    </div>
-                               
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                    <div class="widget_content">
-                                        <div class="table-responsive" id="data-list">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-start">Name</th>
-                                                        <th class="text-start">Prefix</th>
-                                                        <th class="text-start">Start From</th>
-                                                        <th class="text-start">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>
@@ -70,7 +60,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Invoice Schema</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_invoice_schema')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -78,26 +68,26 @@
                     <form id="add_schema_form" action="{{ route('invoices.schemas.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label><b>Preview : <span id="schema_preview"></span></label>
+                            <label><b>@lang('menu.preview') </b> <span id="schema_preview"></span></label>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Name :</b> <span class="text-danger">*</span></label>
+                                <label>@lang('menu.name') :<span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control form-control-sm" id="name" placeholder="Schema name"/>
                                 <span class="error error_name"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="row">
-                                    <p class="checkbox_input_wrap mt-4"> <input type="checkbox" name="set_as_default" autocomplete="off" id="set_as_default">&nbsp;&nbsp;<b>Set as default.</b></p>
+                                    <p class="checkbox_input_wrap mt-4"> <input type="checkbox" name="set_as_default" autocomplete="off" id="set_as_default">&nbsp;&nbsp;@lang('menu.set_as_default').</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Format :</b> <span class="text-danger">*</span></label>
+                                <label>{{ __('Format') }} : <span class="text-danger">*</span></label>
                                 <select name="format" class="form-control form-control-sm" id="format">
                                     <option value="1">FORMAT-XXXX</option>
                                     <option value="2">FORMAT-{{ date('Y') }}/XXXX</option>
@@ -106,36 +96,38 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Prefix :</b> <span class="text-danger">*</span></label>
-                                <input type="text" name="prefix" class="form-control form-control-sm" id="prefix" placeholder="Prefix"/>
+                                <label>@lang('menu.prefix') : <span class="text-danger">*</span></label>
+                                <input type="text" name="prefix" class="form-control form-control-sm" id="prefix" placeholder="@lang('menu.prefix')"/>
                                 <span class="error error_prefix"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Start From :</b></label>
-                                <input type="number" name="start_from" class="form-control form-control-sm" id="start_from" placeholder="Start From" value="0"/>
+                                <label>@lang('menu.start_from') </label>
+                                <input type="number" name="start_from" class="form-control form-control-sm" id="start_from" placeholder="@lang('menu.start_from')" value="0"/>
                             </div>
                         </div>
 
-                        <div class="form-group text-end mt-3">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <div class="form-group d-flex justify-content-end mt-3">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
      <!-- Edit Modal -->
      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Invoice Schema</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_invoice_schema')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="edit_modal_body">
@@ -143,8 +135,8 @@
                 </div>
             </div>
         </div>
-    </div> 
-    <!-- Modal End--> 
+    </div>
+    <!-- Modal End-->
 
 @endsection
 @push('scripts')
@@ -220,7 +212,7 @@
             }
         });
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function(){
             // Add category by ajax
             $(document).on('submit', '#add_schema_form',function(e){
@@ -297,7 +289,7 @@
                         toastr.success(data);
                         $('.loading_button').hide();
                         table.ajax.reload();
-                        $('#editModal').modal('hide'); 
+                        $('#editModal').modal('hide');
                     },
                     error: function(err) {
                         $('.loading_button').hide();
@@ -310,11 +302,11 @@
             });
 
             $(document).on('click', '#delete',function(e){
-                e.preventDefault(); 
+                e.preventDefault();
                 var url = $(this).attr('href');
-                $('#deleted_form').attr('action', url);       
+                $('#deleted_form').attr('action', url);
                 $.confirm({
-                    'title': 'Delete Confirmation',
+                    'title': 'Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
                         'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},

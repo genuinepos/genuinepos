@@ -7,11 +7,10 @@ html {
 .sub-title {
     text-transform: uppercase;
     font-size: 1em;
-    color: rgb(216, 204, 204);
+    color: rgb(13 15 17);
 }
 .card-counter {
     box-shadow: 2px 2px 10px #dadada;
-    margin: 5px;
     padding: 20px 10px;
     background-color: #fff;
     color: white;
@@ -33,7 +32,6 @@ html {
     color: #fff;
 }
 .table-responsive {
-    margin-top: -13px;
     padding-left: 8px;
     padding-right: 8px;
     margin-bottom: 5px !important;
@@ -81,7 +79,7 @@ html {
 .card-counter .icon {
     font-size: 3.5em;
     padding: 10px;
-    opacity: 0.5;
+    /* opacity: 0.5; */
     color: white !important;
 }
 .card-counter .count-numbers {
@@ -190,9 +188,6 @@ html {
     .button-group {
         display: block !important;
     }
-    .d-flex {
-        display: block !important;
-    }
     .card-counter {
         display: block !important;
         height: 165px;
@@ -200,6 +195,9 @@ html {
 }
 
 .switch_bar_cards {
+    background: #222222;
+    padding: 10px 5px;
+    border-radius: 7px;
     justify-content: center;
     gap: 10px;
 }
@@ -239,4 +237,5 @@ html {
 }
 .switch_bar_cards .switch_bar p {
     font-size: 10px;
+    color: #ffffff;
 }

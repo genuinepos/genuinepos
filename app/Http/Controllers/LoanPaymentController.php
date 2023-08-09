@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
-use App\Utils\LoanUtil;
-use App\Models\CashFlow;
-use App\Utils\AccountUtil;
 use App\Models\LoanPayment;
+use App\Models\LoanPaymentDistribution;
+use App\Utils\AccountUtil;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\LoanUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\LoanPaymentDistribution;
-use App\Utils\InvoiceVoucherRefIdUtil;
 
 class LoanPaymentController extends Controller
 {
     protected $accountUtil;
+
     protected $loanUtil;
+
     protected $invoiceVoucherRefIdUtil;
+
     public function __construct(
         AccountUtil $accountUtil,
         LoanUtil $loanUtil,
@@ -25,7 +27,7 @@ class LoanPaymentController extends Controller
         $this->accountUtil = $accountUtil;
         $this->loanUtil = $loanUtil;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     public function loanAdvanceReceiveModal($company_id)
@@ -57,7 +59,7 @@ class LoanPaymentController extends Controller
         ]);
 
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LAR' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LAR'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 1;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -79,7 +81,7 @@ class LoanPaymentController extends Controller
         );
 
         $dueLoans = Loan::where('type', 1)->where('loan_company_id', $company_id)->where('due', '>', 0)->get();
-        
+
         foreach ($dueLoans as $dueLoan) {
             if ($dueLoan->due > $request->paying_amount) {
 
@@ -115,7 +117,7 @@ class LoanPaymentController extends Controller
                     $request->paying_amount -= $dueLoan->due;
                     $this->loanUtil->loanAmountAdjustment($dueLoan);
                 } else {
-                    
+
                     break;
                 }
             }
@@ -153,9 +155,9 @@ class LoanPaymentController extends Controller
             'payment_method_id|required' => 'Please select a payment method.',
             'account_id|required' => 'Please select debit account.',
         ]);
-        
+
         $loanPayment = new LoanPayment();
-        $loanPayment->voucher_no = 'LLP' . $this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
+        $loanPayment->voucher_no = 'LLP'.$this->invoiceVoucherRefIdUtil->getLastId('loan_payments');
         $loanPayment->company_id = $company_id;
         $loanPayment->payment_type = 2;
         $loanPayment->branch_id = auth()->user()->branch_id;
@@ -217,6 +219,7 @@ class LoanPaymentController extends Controller
         }
 
         $this->loanUtil->adjustCompanyLoanLiabilityAmount($company_id);
+
         return response()->json('Get Loan due paid Successfully');
     }
 
@@ -230,6 +233,7 @@ class LoanPaymentController extends Controller
             ->select('loan_payments.*', 'accounts.name as ac_name', 'accounts.account_number as ac_no', 'payment_methods.name as payment_method')
             ->where('loan_payments.company_id', $company_id)
             ->orderBy('loan_payments.report_date', 'desc')->get();
+
         return view('accounting.loans.ajax_view.payment_list', compact('company', 'loan_payments'));
     }
 
@@ -256,9 +260,11 @@ class LoanPaymentController extends Controller
         }
 
         if ($storedAccountId) {
-            
+
             $this->accountUtil->adjustAccountBalance('debit', $storedAccountId);
         }
+
+        DB::statement('ALTER TABLE loan_payments AUTO_INCREMENT = 1');
 
         return response()->json('Loan payment deleted Successfully');
     }

@@ -19,21 +19,21 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <h5 class="text-primary">Open Cash Register</h5>
+                                                    <h5 class="text-primary">{{ __('Open Cash Register') }}</h5>
                                                 </div>
-    
+
                                                 <div class="col-md-6">
-                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                                                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <div class="element-body">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>Opeing Balance :</b> <span class="text-danger">*</span> </label>
+                                                    <label class="col-4"> <b>{{ __('Opeing Balance') }} </b> <span class="text-danger">*</span> </label>
                                                     <div class="col-8">
                                                         <input required type="number" step="any" name="cash_in_hand" class="form-control" placeholder="Enter Amount" value="0.00">
                                                         <span class="error">{{ $errors->first('cash_in_hand') }}</span>
@@ -43,12 +43,12 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Cash Counter :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.cash_counter') </b> </label>
                                                     <div class="col-8">
                                                         <select required name="counter_id" class="form-control">
-                                                            <option value="">Select Cash Counter</option>
+                                                            <option value="">{{ __("Select Cash Counter") }}</option>
                                                             @foreach ($cashCounters as $cc)
-                                                                <option {{ old('counter_id') == $cc->id ? 'SELECTED' : '' }} 
+                                                                <option {{ old('counter_id') == $cc->id ? 'SELECTED' : '' }}
                                                                     value="{{ $cc->id }}">{{ $cc->counter_name.' ('.$cc->short_name.')' }}
                                                                 </option>
                                                             @endforeach
@@ -62,16 +62,16 @@
                                         <div class="row mt-2">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Business Location :</b></label>
+                                                    <label class="col-4"><b>@lang('menu.business_location') </b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
+                                                        <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>Sale Account :</b> </label>
+                                                    <label class="col-4"><b>@lang('menu.sale_account') </b> </label>
                                                     <div class="col-8">
                                                         <select required name="sale_account_id" class="form-control add_input"
                                                         id="sale_account_id" data-name="Sale A/C">
@@ -91,7 +91,7 @@
                                             <div class="row justify-content-center">
                                                 <div class="col-12 text-end">
                                                     <button type="submit" class="btn btn-sm btn-success ">
-                                                        <b>Submit</b>
+                                                        <b>{{ __('Submit') }}</b>
                                                     </button>
                                                 </div>
                                             </div>
@@ -107,5 +107,5 @@
     </div>
 @endsection
 @push('scripts')
-    
+
 @endpush

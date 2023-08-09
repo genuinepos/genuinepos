@@ -2,35 +2,46 @@
     @php
         $stock = 0;
         if ($ingredient->variant_id) {
+
             if ($warehouseId != 'null') {
+
                 $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouseId)
                 ->where('product_id', $ingredient->product_id)->first();
+
                 if ($productWarehouse) {
+
                     $productWarehouseVariant = DB::table('product_warehouse_variants')->where('product_warehouse_id', $productWarehouse->id)
                     ->where('product_variant_id', $ingredient->variant_id)->first();
                     $stock = $productWarehouseVariant ? $productWarehouseVariant->variant_quantity : 0;
                 }
             }else {
+
                 $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
                 ->where('product_id', $ingredient->product_id)->first();
+
                 if ($productBranch) {
+
                     $productBranchVariant = DB::table('product_branch_variants')->where('product_branch_id', $productBranch->id)
                     ->where('product_variant_id', $ingredient->variant_id)->first();
                     $stock = $productBranchVariant ? $productBranchVariant->variant_quantity : 0;
                 }
             }
         }else {
+
             if ($warehouseId != 'null') {
+
                 $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouseId)
                 ->where('product_id', $ingredient->product_id)->first();
                 $stock = $productWarehouse ? $productWarehouse->product_quantity : 0;
             } else {
+
                 $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
                 ->where('product_id', $ingredient->product_id)->first();
                 $stock = $productBranch ? $productBranch->product_quantity : 0;
             }
         }
     @endphp
+
     <tr class="text-start">
         <td>
             <span class="product_name">{{ $ingredient->p_name }}</span><br>

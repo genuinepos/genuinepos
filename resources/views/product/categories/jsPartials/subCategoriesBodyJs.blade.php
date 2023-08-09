@@ -1,14 +1,14 @@
 <script>
     var subCatetable = $('.data_tbl2').DataTable({
        dom: "lBfrtip",
-       buttons: [ 
+       buttons: [
            {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
            {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
        ],
        processing: true,
        serverSide: true,
        searchable: true,
-       "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+       "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
        ajax: "{{ route('product.subcategories.index') }}",
        columnDefs: [{"targets": [0, 1, 3, 4], "orderable": false, "searchable": false}],
@@ -51,10 +51,10 @@
                     $('.submit_button').prop('type', 'submit');
                     $('.loading_button').hide();
                     $('.error').html('');
-                    
+
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -75,6 +75,7 @@
                 $("#edit_sub_cate_form_body").html(data);
                 $('#add_sub_cate_form').hide();
                 $('#edit_sub_cate_form').show();
+                $('#edit_sub_cate_form').removeClass('d-hide');
                 $('.data_preloader').hide();
                 document.getElementById('e_sub_name').focus();
             })
@@ -111,11 +112,11 @@
         });
 
         $(document).on('click', '#delete_sub_cate',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_sub_cate_form').attr('action', url);       
+            $('#deleted_sub_cate_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_sub_cate_form').submit();}},
@@ -140,9 +141,9 @@
                    $('#deleted_form')[0].reset();
                },error: function(err) {
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                }
            });

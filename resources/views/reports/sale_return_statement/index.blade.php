@@ -12,26 +12,28 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sale Return Statements</h5>
+                                <h5>@lang('menu.sale_return_statement')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
+                                        <form id="filter_form">
                                             <div class="form-group row">
-                                                @if ($addons->branches == 1)
+                                                @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') : </strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                class="form-control submit_able select2" id="branch_id" autofocus>
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -43,10 +45,10 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Customer :</strong></label>
-                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">Walk-In-Customer</option>
+                                                    <label><strong>@lang('menu.customer') : </strong></label>
+                                                    <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
+                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                         @foreach ($customers as $customer)
                                                             <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                         @endforeach
@@ -54,7 +56,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -67,7 +69,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -78,18 +80,17 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
+                                                    <div class="row align-items-end">
+                                                        <div class="col-6">
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-6">
-                                                            <label></label>
-                                                            <div class="input-group">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_return_statement_report"><i class="fas fa-print "></i> Print</a>
+                                                        <div class="col-6">
+                                                            <div class="input-group justify-content-end">
+                                                                <a href="#" class="btn btn-sm btn-primary float-end" id="print_return_statement_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -100,45 +101,42 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Sale Return Statement List</h6>
+                                    <h6>{{ __('Sale Return Statement List') }}</h6>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     {{-- <table class="display data_tbl data__table table-hover"> --}}
                                         <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Return Invoice ID</th>
-                                                <th>Parent Sale</th>
-                                                <th>Stock Location</th>
-                                                <th>Customer</th>
-                                                <th>Entered By</th>
-                                                <th>Total Item</th>
-                                                <th>Total Qty</th>
-                                                <th>Net Total Amt.</th>
-                                                <th>Return Discount</th>
-                                                <th>Order Tax</th>
-                                                <th>Total Return Amt.</th>
-                                                <th>Total Refunded Amt.</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.return_invoice_id')</th>
+                                                <th>@lang('menu.parent_sale')</th>
+                                                <th>@lang('menu.stock_location')</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.entered_by')</th>
+                                                <th>@lang('menu.total_item')</th>
+                                                <th>@lang('menu.total_qty')</th>
+                                                <th>{{ __('Net total Amt') }}.</th>
+                                                <th>@lang('menu.return_discount')</th>
+                                                <th>@lang('menu.order_tax')</th>
+                                                <th>{{ __('Total Return Amt') }}.</th>
+                                                <th>{{ __('Total Refunded Amt') }}.</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
                                                 <th colspan="6" class="text-white text-end">
-                                                    Total : ({{ json_decode($generalSettings->business, true)['currency'] }})
+                                                    @lang('menu.total') : ({{ $generalSettings['business__currency'] }})
                                                 </th>
 
                                                 <th id="total_item" class="text-white text-end"></th>
@@ -169,7 +167,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        
+
         var return_statements_table = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
@@ -178,7 +176,7 @@
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
             ],
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('reports.sale.return.statement.index') }}",
@@ -201,7 +199,7 @@
                 {data: 'parent_sale', name: 'sales.invoice_id'},
                 {data: 'from', name: 'branches.name'},
                 {data: 'customer', name: 'customers.name'},
-                {data: 'created_by', name: 'admin_and_users.name'},
+                {data: 'created_by', name: 'users.name'},
                 {data: 'total_item', name: 'total_item', className: 'text-end'},
                 {data: 'total_qty', name: 'total_qty', className: 'text-end'},
                 {data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
@@ -209,7 +207,7 @@
                 {data: 'return_tax_amount', name: 'return_tax_amount', className: 'text-end'},
                 {data: 'total_return_amount', name: 'total_return_amount', className: 'text-end'},
                 {data: 'total_return_due_pay', name: 'total_return_due_pay', className: 'text-end'},
-             
+
             ],fnDrawCallback: function() {
 
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
@@ -252,7 +250,7 @@
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
-            
+
             $('.data_preloader').show();
             return_statements_table.ajax.reload();
         });
@@ -262,7 +260,7 @@
             e.preventDefault();
 
             var url = "{{ route('reports.sale.return.statement.print') }}";
-            
+
             var branch_id = $('#branch_id').val();
             var customer_id = $('#customer_id').val();
             var payment_status = $('#payment_status').val();
@@ -274,23 +272,23 @@
                 type:'get',
                 data: {branch_id, customer_id, payment_status,from_date, to_date},
                 success:function(data){
-                    
+
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 500, 
-                        header: "", 
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
                         pageTitle: "",
-                        formValues: false,         
-                        canvas: false, 
+                        formValues: false,
+                        canvas: false,
                         beforePrint: null,
-                        afterPrint: null      
+                        afterPrint: null
                     });
                 }
-            }); 
+            });
         });
 
         new Litepicker({

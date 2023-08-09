@@ -2,17 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Sale;
-use App\Models\Branch;
-use App\Models\Customer;
-use App\Models\Warehouse;
-use App\Models\SalePayment;
-use App\Models\SaleReturnProduct;
-use Illuminate\Database\Eloquent\Model;
-
-class SaleReturn extends Model
+class SaleReturn extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function customer()

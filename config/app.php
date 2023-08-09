@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'domain' => (string) env('APP_DOMAIN', 'pos.test'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -27,9 +29,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-    'env' => env('PRINT_SD_SALE', true),
-    'env' => env('PRINT_SD_PURCHASE', true),
-    'env' => env('PRINT_SD_PAYMENT', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
         Intervention\Image\ImageServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -176,8 +177,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TenancyServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        App\Providers\GeneralSettingProvider::class,
+        App\Providers\EmailSettingServiceProvider::class,
     ],
 
     /*

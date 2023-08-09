@@ -2,12 +2,14 @@
 
 namespace App\Models\Hrm;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Shift extends Model
+class Shift extends BaseModel
 {
     use HasFactory;
+
     protected $table = 'hrm_shifts';
-    protected $fillable = ['shift_name','shift_type','start_time','endtime','holiday'];
+
+    protected $fillable = ['shift_name', 'shift_type', 'start_time', 'endtime', 'holiday'];
 }

@@ -2,12 +2,13 @@
 
 namespace App\Models\Hrm;
 
+use App\Models\BaseModel;
 
-use Illuminate\Database\Eloquent\Model;
-
-class PayrollAllowance extends Model
+class PayrollAllowance extends BaseModel
 {
     protected $table = 'hrm_payroll_allowances';
+
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 }

@@ -10,7 +10,7 @@ class PaymentMethodSettingsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+
     }
 
     public function index()
@@ -38,7 +38,7 @@ class PaymentMethodSettingsController extends Controller
                 $updateSetting = PaymentMethodSetting::where('branch_id', auth()->user()->branch_id)
                     ->where('payment_method_id', $method_id)->first();
 
-                if (!$updateSetting) {
+                if (! $updateSetting) {
 
                     $add = new PaymentMethodSetting();
                     $add->payment_method_id = $method_id;

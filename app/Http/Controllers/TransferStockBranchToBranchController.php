@@ -2,26 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use App\Utils\NameSearchUtil;
 use App\Models\ProductVariant;
-use App\Utils\TransferStockUtil;
-use Illuminate\Support\Facades\DB;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\TransferStockBranchToBranch;
 use App\Models\TransferStockBranchToBranchProducts;
 use App\Utils\Converter;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Utils\NameSearchUtil;
+use App\Utils\TransferStockUtil;
 use App\Utils\UserActivityLogUtil;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class TransferStockBranchToBranchController extends Controller
 {
     protected $nameSearchUtil;
+
     protected $invoiceVoucherRefIdUtil;
+
     protected $transferStockUtil;
+
     protected $converter;
+
     protected $userActivityLogUtil;
 
     public function __construct(
@@ -37,14 +41,14 @@ class TransferStockBranchToBranchController extends Controller
         $this->transferStockUtil = $transferStockUtil;
         $this->converter = $converter;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     public function transferList(Request $request)
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->select('id', 'business')->first();
+            $generalSettings = config('generalSettings');
 
             $transfers = '';
 
@@ -56,7 +60,7 @@ class TransferStockBranchToBranchController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('transfer_stock_branch_to_branches.sender_branch_id', NULL);
+                    $query->where('transfer_stock_branch_to_branches.sender_branch_id', null);
                 } else {
 
                     $query->where('transfer_stock_branch_to_branches.sender_branch_id', $request->branch_id);
@@ -101,66 +105,67 @@ class TransferStockBranchToBranchController extends Controller
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
 
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stock.branch.to.branch.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stock.branch.to.branch.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
 
                     if (auth()->user()->branch_id == $row->sender_branch_id) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('transfer.stock.branch.to.branch.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="'.route('transfer.stock.branch.to.branch.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
 
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('transfer.stock.branch.to.branch.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="'.route('transfer.stock.branch.to.branch.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     $html .= '<a class="dropdown-item" id="send_notification" href="#"><i class="fas fa-envelope text-primary"></i> Send Notification</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', json_decode($generalSettings->business, true)['date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
 
                     return date($__date_format, strtotime($row->date));
                 })
-                ->editColumn('sender_branch',  function ($row) use ($generalSettings) {
+                ->editColumn('sender_branch', function ($row) use ($generalSettings) {
 
                     if ($row->sender_branch_name) {
 
-                        return $row->sender_branch_name . '/' . $row->sender_branch_code . '(<b>BL</b>)';
+                        return $row->sender_branch_name.'/'.$row->sender_branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('receiver_branch',  function ($row) use ($generalSettings) {
+                ->editColumn('receiver_branch', function ($row) use ($generalSettings) {
 
                     if ($row->receiver_branch_name) {
 
-                        return $row->receiver_branch_name . '/' . $row->receiver_branch_code . '(<b>BL</b>)';
+                        return $row->receiver_branch_name.'/'.$row->receiver_branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
 
-                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . $this->converter->format_in_bdt($row->total_item) . '</span>')
+                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.$this->converter->format_in_bdt($row->total_item).'</span>')
 
-                ->editColumn('total_send_qty', fn ($row) => '<span class="total_send_qty" data-value="' . $row->total_send_qty . '">' . $this->converter->format_in_bdt($row->total_send_qty) . '</span>')
+                ->editColumn('total_send_qty', fn ($row) => '<span class="total_send_qty" data-value="'.$row->total_send_qty.'">'.$this->converter->format_in_bdt($row->total_send_qty).'</span>')
 
-                ->editColumn('total_received_qty', fn ($row) => '<span class="total_received_qty text-success" data-value="' . $row->total_received_qty . '">' . $this->converter->format_in_bdt($row->total_received_qty) . '</span>')
+                ->editColumn('total_received_qty', fn ($row) => '<span class="total_received_qty text-success" data-value="'.$row->total_received_qty.'">'.$this->converter->format_in_bdt($row->total_received_qty).'</span>')
 
-                ->editColumn('total_pending_qty', fn ($row) =>  '<span class="total_pending_qty text-danger" data-value="' . $row->total_pending_qty . '">' . $this->converter->format_in_bdt($row->total_pending_qty) . '</span>')
+                ->editColumn('total_pending_qty', fn ($row) => '<span class="total_pending_qty text-danger" data-value="'.$row->total_pending_qty.'">'.$this->converter->format_in_bdt($row->total_pending_qty).'</span>')
 
-                ->editColumn('transfer_cost', fn ($row) => '<span class="transfer_cost" data-value="' . $row->transfer_cost . '">' . $this->converter->format_in_bdt($row->transfer_cost) . '</span>')
+                ->editColumn('transfer_cost', fn ($row) => '<span class="transfer_cost" data-value="'.$row->transfer_cost.'">'.$this->converter->format_in_bdt($row->transfer_cost).'</span>')
 
                 ->editColumn('receive_status', function ($row) {
 
                     if ($row->receive_status == 1) {
 
                         return '<span class="badge bg-danger">Pending</span>';
-                    } else if ($row->receive_status == 2) {
+                    } elseif ($row->receive_status == 2) {
 
                         return '<span class="badge bg-warning text-white">Partial</span>';
-                    } else if ($row->receive_status == 3) {
+                    } elseif ($row->receive_status == 3) {
 
                         return '<span class="badge bg-success">Completed</span>';
                     }
@@ -182,11 +187,7 @@ class TransferStockBranchToBranchController extends Controller
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
 
-        return view(
-
-            'transfer_stock.branch_to_branch.transfer_list',
-
-            compact('warehouses', 'branches')
+        return view('transfer_stock.branch_to_branch.transfer_list', compact('warehouses', 'branches')
         );
     }
 
@@ -244,22 +245,22 @@ class TransferStockBranchToBranchController extends Controller
             'receiver_branch_id.required' => 'Receive from field is required',
         ]);
 
-        $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : NULL;
+        $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : null;
 
         if ($receiver_branch_id == $request->sender_branch_id) {
 
             return response()->json(['errorMsg' => 'Sender Business Location and Receiver Business Location must not be same.']);
         }
 
-        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('transfer_stock_branch_to_branches'), 5, "0", STR_PAD_LEFT);
+        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('transfer_stock_branch_to_branches'), 5, '0', STR_PAD_LEFT);
 
         $addTransfer = new TransferStockBranchToBranch();
-        $addTransfer->ref_id = 'TBB' . $refId;
+        $addTransfer->ref_id = 'TBB'.$refId;
         $addTransfer->sender_branch_id = $request->sender_branch_id;
         $addTransfer->sender_warehouse_id = $request->sender_warehouse_id;
         $addTransfer->receiver_branch_id = $receiver_branch_id;
         $addTransfer->date = $request->date;
-        $addTransfer->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addTransfer->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addTransfer->total_item = $request->total_item;
         $addTransfer->total_send_qty = $request->total_send_qty;
         $addTransfer->total_pending_qty = $request->total_send_qty;
@@ -277,7 +278,7 @@ class TransferStockBranchToBranchController extends Controller
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
 
                 $addTransProduct = new TransferStockBranchToBranchProducts();
                 $addTransProduct->transfer_id = $addTransfer->id;
@@ -317,7 +318,7 @@ class TransferStockBranchToBranchController extends Controller
                     'Transfer_products',
                     'Transfer_products.product',
                     'Transfer_products.variant',
-                    'Transfer_products.product.unit'
+                    'Transfer_products.product.unit',
                 ]
             )->where('id', $addTransfer->id)->first();
 
@@ -391,19 +392,19 @@ class TransferStockBranchToBranchController extends Controller
             'receiver_branch_id.required' => 'Receive from field is required',
         ]);
 
-        $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : NULL;
+        $receiver_branch_id = $request->receiver_branch_id != 'NULL' ? $request->receiver_branch_id : null;
 
-        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('transfer_stock_branch_to_branches'), 5, "0", STR_PAD_LEFT);
+        $refId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('transfer_stock_branch_to_branches'), 5, '0', STR_PAD_LEFT);
 
         $updateTransfer = TransferStockBranchToBranch::with('transfer_products', 'expense')
             ->where('id', $transferId)->first();
 
-        $updateTransfer->ref_id = $request->ref_id ? $request->ref_id : 'TBB' . $refId;
+        $updateTransfer->ref_id = $request->ref_id ? $request->ref_id : 'TBB'.$refId;
         $updateTransfer->sender_branch_id = $request->sender_branch_id;
         $updateTransfer->sender_warehouse_id = $request->sender_warehouse_id;
         $updateTransfer->receiver_branch_id = $receiver_branch_id;
         $updateTransfer->date = $request->date;
-        $updateTransfer->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $updateTransfer->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $updateTransfer->total_item = $request->total_item;
         $updateTransfer->total_send_qty = $request->total_send_qty;
         $updateTransfer->total_pending_qty = $request->total_send_qty;
@@ -442,7 +443,7 @@ class TransferStockBranchToBranchController extends Controller
             $index = 0;
             foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
 
                 $updateTransferProduct = TransferStockBranchToBranchProducts::where('transfer_id', $updateTransfer->id)
                     ->where('product_id', $product_id)
@@ -502,12 +503,15 @@ class TransferStockBranchToBranchController extends Controller
         $deleteTransfer = TransferStockBranchToBranch::with('expense', 'expense.expense_payments')
             ->where('id', $transferId)->first();
 
+        if (($deleteTransfer->receive_status) !== 1) {
+            return response()->json(['errorMsg' => 'Transfer can\'t be deleted. One or more quantity has already been receive from this transfer.']);
+        }
         if ($deleteTransfer->received_qty > 0) {
 
             return response()->json(['errorMsg' => 'Transfer can not be deleted. Cause one or more quantity has already been received from this transfer.']);
         }
 
-        if (!is_null($deleteTransfer)) {
+        if (! is_null($deleteTransfer)) {
 
             $this->userActivityLogUtil->addLog(
                 action: 3,
@@ -532,7 +536,7 @@ class TransferStockBranchToBranchController extends Controller
                 'Transfer_products',
                 'Transfer_products.product',
                 'Transfer_products.variant',
-                'Transfer_products.product.unit'
+                'Transfer_products.product.unit',
             ]
         )->where('id', $transferId)->first();
 
@@ -548,9 +552,9 @@ class TransferStockBranchToBranchController extends Controller
             return response()->json(['errorMsg' => 'Please select receiver Business Location']);
         }
 
-        $__receiverBranchId = $receiverBranchId == 'NULL' ? NULL : $receiverBranchId;
+        $__receiverBranchId = $receiverBranchId == 'NULL' ? null : $receiverBranchId;
 
-        $product_code = (string)$product_code;
+        $product_code = (string) $product_code;
         $__product_code = str_replace('~', '/', $product_code);
         $branch_id = auth()->user()->branch_id;
 
@@ -615,7 +619,7 @@ class TransferStockBranchToBranchController extends Controller
             return response()->json(['errorMsg' => 'Please select receiver Business Location']);
         }
 
-        $__receiverBranchId = $receiverBranchId == 'NULL' ? NULL : $receiverBranchId;
+        $__receiverBranchId = $receiverBranchId == 'NULL' ? null : $receiverBranchId;
 
         $productBranch = DB::table('product_branches')
             ->where('branch_id', $__receiverBranchId)->where('product_id', $product_id)
@@ -644,7 +648,7 @@ class TransferStockBranchToBranchController extends Controller
             return response()->json(['errorMsg' => 'Please select receiver Business Location']);
         }
 
-        $__receiverBranchId = $receiverBranchId == 'NULL' ? NULL : $receiverBranchId;
+        $__receiverBranchId = $receiverBranchId == 'NULL' ? null : $receiverBranchId;
 
         $productBranch = DB::table('product_branches')
             ->where('branch_id', $__receiverBranchId)->where('product_id', $product_id)

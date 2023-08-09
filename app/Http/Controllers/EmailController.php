@@ -2,43 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GeneralSettingServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 
 class EmailController extends Controller
 {
-    public function __construct()
+    public function __construct(
+        private GeneralSettingServiceInterface $generalSettingService
+    ) {
+    }
+
+    public function emailServerSetupDesignPages()
     {
-        $this->middleware('auth:admin_and_user');
+        return view('communication.email.design_pages');
     }
 
     public function emailSettings(Request $request)
     {
-        return view('communication.email.settings.index');
+        $generalSettings = config('generalSettings');
+        $emailSetting = [];
+        $emailSetting['MAIL_MAILER'] = $generalSettings['email_config__MAIL_MAILER'] ?? '';
+        $emailSetting['MAIL_HOST'] = $generalSettings['email_config__MAIL_HOST'] ?? '';
+        $emailSetting['MAIL_PORT'] = $generalSettings['email_config__MAIL_PORT'] ?? '';
+        $emailSetting['MAIL_USERNAME'] = $generalSettings['email_config__MAIL_USERNAME'] ?? '';
+        $emailSetting['MAIL_PASSWORD'] = $generalSettings['email_config__MAIL_PASSWORD'] ?? '';
+        $emailSetting['MAIL_ENCRYPTION'] = $generalSettings['email_config__MAIL_ENCRYPTION'] ?? '';
+        $emailSetting['MAIL_FROM_ADDRESS'] = $generalSettings['email_config__MAIL_FROM_ADDRESS'] ?? '';
+        $emailSetting['MAIL_FROM_NAME'] = $generalSettings['email_config__MAIL_FROM_NAME'] ?? '';
+        $emailSetting['MAIL_ACTIVE'] = $generalSettings['email_config__MAIL_ACTIVE'] ?? '';
+
+        return view('communication.email.settings.index', compact('emailSetting'));
     }
 
     public function emailSettingsStore(Request $request)
     {
-        $MAIL_FROM_NAME = str_replace('"', '', $request->get('MAIL_FROM_NAME'));
-        $MAIL_FROM_ADDRESS = str_replace('"', '', $request->get('MAIL_FROM_ADDRESS'));
-        $MAIL_ENCRYPTION = str_replace('"', '', $request->get('MAIL_ENCRYPTION'));
-        $MAIL_PASSWORD = str_replace('"', '', $request->get('MAIL_PASSWORD'));
-        $MAIL_USERNAME = str_replace('"', '', $request->get('MAIL_USERNAME'));
-        $MAIL_PORT = str_replace('"', '', $request->get('MAIL_PORT'));
-        $MAIL_HOST = str_replace('"', '', $request->get('MAIL_HOST'));
-        $MAIL_MAILER = str_replace('"', '', $request->get('MAIL_MAILER'));
-        $MAIL_ACTIVE = isset($request->MAIL_ACTIVE) ? 'true' : 'false';
-
-        Artisan::call("env:set MAIL_MAILER='" . $MAIL_MAILER . "'");
-        Artisan::call("env:set MAIL_HOST='" . $MAIL_HOST . "'");
-        Artisan::call("env:set MAIL_PORT='" . $MAIL_PORT . "'");
-        Artisan::call("env:set MAIL_USERNAME='" . $MAIL_USERNAME . "'");
-        Artisan::call("env:set MAIL_PASSWORD='" . $MAIL_PASSWORD . "'");
-        Artisan::call("env:set MAIL_ENCRYPTION='" . $MAIL_ENCRYPTION  . "'");
-        Artisan::call("env:set MAIL_FROM_ADDRESS='" . $MAIL_FROM_ADDRESS . "'");
-        Artisan::call("env:set MAIL_FROM_NAME='" . $MAIL_FROM_NAME . "'");
-        Artisan::call("env:set MAIL_ACTIVE='" . $MAIL_ACTIVE . "'");
-
-        return response()->json('Email settings updated successfully');
+        $settings = [];
+        $settings['email_config__MAIL_MAILER'] = $request->get('MAIL_MAILER');
+        $settings['email_config__MAIL_HOST'] = $request->get('MAIL_HOST');
+        $settings['email_config__MAIL_PORT'] = $request->get('MAIL_PORT');
+        $settings['email_config__MAIL_USERNAME'] = $request->get('MAIL_USERNAME');
+        $settings['email_config__MAIL_PASSWORD'] = $request->get('MAIL_PASSWORD');
+        $settings['email_config__MAIL_ENCRYPTION'] = $request->get('MAIL_ENCRYPTION');
+        $settings['email_config__MAIL_FROM_ADDRESS'] = $request->get('MAIL_FROM_ADDRESS');
+        $settings['email_config__MAIL_FROM_NAME'] = $request->get('MAIL_FROM_NAME');
+        $settings['email_config__MAIL_ACTIVE'] = $request->MAIL_ACTIVE == 'on' ? true : false;
+        $isSucceed = $this->generalSettingService->updateAndSync($settings);
+        if ($isSucceed) {
+            return response()->json('Email settings updated successfully');
+        }
     }
 }

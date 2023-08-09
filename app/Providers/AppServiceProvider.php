@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
-use Exception;
-use Illuminate\Support\Facades\DB;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Models\GeneralSetting;
+use App\Services\CacheService;
+use App\Services\CacheServiceInterface;
+use App\Services\CodeGenerationService;
+use App\Services\GeneralSettingService;
+use App\Services\GeneralSettingServiceInterface;
 use Illuminate\Support\ServiceProvider;
-use App\Utils\DatabaseUtils\TimestampType;
-// use Doctrine\DBAL\Types\Type;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +20,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(GeneralSetting::class, function () {
+            return new GeneralSetting();
+        });
+
+        $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
+        $this->app->bind(CacheServiceInterface::class, CacheService::class);
+        $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);
+        $this->app->alias(GeneralSetting::class, 'general-settings');
     }
 
     /**
@@ -27,26 +37,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // The application will send a exception(warning) message if anything goes wrong. But will work.
-        try {
-
-            $generalSettings = DB::table('general_settings')->first();
-            $addons = DB::table('addons')->first();
-            // $warehouseCount = DB::table('warehouses')->count();
-
-            $dateFormat = json_decode($generalSettings->business, true)['date_format'];
-            $__date_format = str_replace('-', '/', $dateFormat);
-            
-            if (isset($generalSettings) && isset($addons)) {
-
-                view()->share('generalSettings', $generalSettings);
-                view()->share('addons', $addons);
-                // view()->share('warehouseCount', $warehouseCount);
-                view()->share('__date_format', $__date_format);
-            }
-        } catch (Exception $e) {
-            
-            echo $e->getMessage() . PHP_EOL;
-        }
+        // Tenant codes moved to (App\Listener\TenantBootstrapped::class)->handle();
     }
 }

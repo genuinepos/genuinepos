@@ -11,10 +11,10 @@
         <div class="col-md-6">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>Supplier : </strong>
+                    <li><strong>@lang('menu.supplier') </strong>
                         {{ $supplier->name  }}
                     </li>
-                    <li><strong>Business : </strong>
+                    <li><strong>@lang('menu.business') </strong>
                         {{ $supplier->business_name }}
                     </li>
                 </ul>
@@ -26,21 +26,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <h6>
-                            Total Paid : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}
                             <b class="text-success">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            Total Purchase Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_purchase_due') : {{ $generalSettings['business__currency'] }}
                             <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            Total Returnable amount Due : {{ json_decode($generalSettings->business, true)['currency'] }}
+                            @lang('menu.total_purchase_due') : {{ $generalSettings['business__currency'] }}
                             <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}</b>
                         </h6>
                     </li>
@@ -52,19 +52,19 @@
 
 <div class="payment_list_table">
     <div class="data_preloader payment_list_preloader">
-        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
     </div>
     <div class="table-responsive">
         <table class="table modal-table table-sm table-striped">
             <thead>
                 <tr class="bg-primary">
-                    <th class="text-white text-start">Date</th>
-                    <th class="text-white text-start">Voucher No</th>
-                    <th class="text-white text-start">Type</th>
-                    <th class="text-white text-start">Method</th>
-                    <th class="text-white text-start">Account</th>
-                    <th class="text-white text-end">Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                    <th class="text-white text-start">Action</th>
+                    <th class="text-white text-start">@lang('menu.date')</th>
+                    <th class="text-white text-start">@lang('menu.voucher_no')</th>
+                    <th class="text-white text-start">@lang('menu.type')</th>
+                    <th class="text-white text-start">@lang('menu.method')</th>
+                    <th class="text-white text-start">@lang('menu.account')</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business__currency'] }})</th>
+                    <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
             <tbody id="payment_list_body">
@@ -72,16 +72,16 @@
                     $total = 0;
                 @endphp
                 @if (count($supplier_payments) > 0)
-                   
+
                     @foreach ($supplier_payments as $payment)
                         <tr>
                             <td class="text-start">
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                             </td>
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Purchase Due' : 'Return due' }}</td>
                             <td class="text-start">{{ $payment->payment_method ? $payment->payment_method : $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C: '.$payment->ac_no.')' : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C '.$payment->ac_no.')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php
@@ -96,13 +96,13 @@
                     @endforeach
                 @else
                     <tr>
-                        <th colspan="7" class="text-center">No Data Found</th>
+                        <th colspan="7" class="text-center">@lang('menu.no_data_found')</th>
                     </tr>
                 @endif
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>Total : {{json_decode($generalSettings->business, true)['currency'] }}</b> </th>
+                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{$generalSettings['business__currency'] }}</b> </th>
                     <th class="text-white text-end">
                         <b>{{ App\Utils\Converter::format_in_bdt($total) }}</b>
                     </th>

@@ -12,114 +12,110 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="far fa-money-bill-alt"></span>
-                                <h5>Sale Payment Report</h5>
+                                <h5>{{ __('Sale Payment Report') }}</h5>
                             </div>
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                             </a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @else 
-                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    @endif
+                        <div class="p-3">
+                            <div class="form_element rounded mt-0 mb-3">
+                                <div class="element-body">
+                                    <form id="filter_form">
+                                        <div class="form-group row">
+                                            @if ($generalSettings['addons__branches'] == 1)
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-md-2">
+                                                        <label><strong>@lang('menu.business_location') : </strong></label>
+                                                        <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @else
+                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                 @endif
-                                                <div class="col-md-2">
-                                                    <label><strong>Customer :</strong></label>
-                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach ($customers as $customer)
-                                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                            @endif
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.customer') : </strong></label>
+                                                <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($customers as $customer)
+                                                        <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.from_date') : </strong></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"><i
+                                                                class="fas fa-calendar-week input_i"></i></span>
                                                     </div>
+                                                    <input type="text" name="from_date" id="datepicker"
+                                                        class="form-control from_date date"
+                                                        autocomplete="off">
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.to_date') : </strong></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"><i
+                                                                class="fas fa-calendar-week input_i"></i></span>
                                                     </div>
+                                                    <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="row align-items-end">
+                                                    <div class="col-6">
+                                                        <label><strong></strong></label>
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                         </div>
+                                                    </div>
 
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print "></i> Print</a>
-                                                        </div>
+                                                    <div class="col-6">
+                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row margin_row mt-1">
                             <div class="card">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Voucher No</th>
-                                                <th>Customer</th>
-                                                <th>Payment Method</th>
-                                                <th>Sale Invoice ID</th>
-                                                <th>Amount({{json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.voucher_no')</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.payment_method')</th>
+                                                <th>{{ __('Sale Invoice ID') }}</th>
+                                                <th>@lang('menu.amount')({{$generalSettings['business__currency'] }})</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business__currency'] }}</th>
                                                 <th class="text-start text-white">
                                                     <span id="paid_amount"></span>
                                                 </th>
@@ -127,7 +123,7 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,13 +136,13 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
         ],
         "processing": true,
         "serverSide": true,
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.sale.payments.index') }}",
@@ -205,16 +201,16 @@
             data: {branch_id, customer_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 

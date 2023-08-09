@@ -24,165 +24,161 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sold Product List</h5>
+                                <h5>@lang('menu.sold_product_list')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                             </a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form">
-                                            <div class="form-group row">
-                                                <div class="col-md-2 search_area">
-                                                    <label><strong>Search Product :</strong></label>
-                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
-                                                    <input type="hidden" name="product_id" id="product_id" value="">
-                                                    <input type="hidden" name="variant_id" id="variant_id" value="">
-                                                    <div class="search_result d-none">
-                                                        <ul id="list" class="list-unstyled">
-                                                            <li><a id="select_product" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
-                                                        </ul>
-                                                    </div>
+                        <div class="p-3">
+                            <div class="form_element rounded mt-0 mb-3">
+                                <div class="element-body">
+                                    <form id="filter_form">
+                                        <div class="form-group row">
+                                            <div class="col-md-2 search_area">
+                                                <label><strong>{{ __('Search Product') }} </strong></label>
+                                                <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
+                                                <input type="hidden" name="product_id" id="product_id" value="">
+                                                <input type="hidden" name="variant_id" id="variant_id" value="">
+                                                <div class="search_result d-hide">
+                                                    <ul id="list" class="list-unstyled">
+                                                        <li><a id="select_product" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
+                                                    </ul>
                                                 </div>
+                                            </div>
 
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @else 
-                                                        <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                                    @endif
+                                            @if ($generalSettings['addons__branches'] == 1)
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-md-2">
+                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                        <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @else
+                                                    <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                                 @endif
+                                            @endif
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Customer :</strong></label>
-                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">Walk-In-Customer</option>
-                                                        @foreach ($customers as $customer)
-                                                            <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.customer') </strong></label>
+                                                <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ __('Walk-In-Customer') }}</option>
+                                                    @foreach ($customers as $customer)
+                                                        <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Category :</strong></label>
-                                                    <select name="category_id" class="form-control submit_able"
-                                                        id="category_id">
-                                                        <option value="">All</option>
-                                                        @foreach ($categories as $category)
-                                                            <option value="{{ $category->id }}">{{$category->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.category') </strong></label>
+                                                <select name="category_id" class="form-control submit_able select2"
+                                                    id="category_id">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}">{{$category->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Sub-Category :</strong></label>
-                                                    <select name="sub_category_id" class="form-control" id="sub_category_id">
-                                                        <option value="">All</option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.sub_category') </strong></label>
+                                                <select name="sub_category_id" class="form-control" id="sub_category_id">
+                                                    <option value="">@lang('menu.all')</option>
+                                                </select>
+                                            </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>Sold By :</strong></label>
-                                                    <select name="sold_by" id="sold_by" class="form-control">
-                                                        <option value="">All</option>
-                                                        <option value="1">Add Sale</option>
-                                                        <option value="2">POS</option>
-                                                    </select>
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.sold_by') </strong></label>
+                                                <select name="sold_by" id="sold_by" class="form-control">
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="1">@lang('menu.add_sale')</option>
+                                                    <option value="2">POS</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.from_date') </strong></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"><i
+                                                                class="fas fa-calendar-week input_i"></i></span>
+                                                    </div>
+                                                    <input type="text" name="from_date" id="datepicker"
+                                                        class="form-control from_date"
+                                                        autocomplete="off">
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row">
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date"
-                                                            autocomplete="off">
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.to_date') </strong></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1"><i
+                                                                class="fas fa-calendar-week input_i"></i></span>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2"
-                                                            class="form-control to_date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
+                                                    <input type="text" name="to_date" id="datepicker2"
+                                                        class="form-control to_date"
+                                                        autocomplete="off">
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+
+                                            <div class="col-md-2">
+                                                <label><strong></strong></label>
+                                                <div class="input-group">
+                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row margin_row mt-1">
                             <div class="card">
                                 <div class="section-header">
-                                    <div class="col-md-10">
-                                        <h6>Sold Product List</h6>
+                                    <div class="col-6">
+                                        <h6>@lang('menu.sold_product_list')</h6>
                                     </div>
-                                    @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                        <div class="col-md-2">
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
+                                    @if(auth()->user()->can('purchase_add'))
+                                        <div class="col-6 d-flex justify-content-end">
+                                            <a href="#" class="btn btn-sm btn-primary" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
                                         </div>
                                     @endif
                                 </div>
 
                                 <div class="widget_content">
                                     <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                     </div>
                                     <div class="table-responsive" id="data-list">
                                         <table class="display data_tbl data__table">
                                             <thead>
                                                 <tr>
-                                                    <th>Date</th>
-                                                    <th>Product</th>
-                                                    <th>P.Code</th>
-                                                    <th>Customer</th>
-                                                    <th>Invoice ID</th>
-                                                    <th>Sold By</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit Price({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                    <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                    <th>@lang('menu.date')</th>
+                                                    <th>@lang('menu.product')</th>
+                                                    <th>@lang('menu.p_code')</th>
+                                                    <th>@lang('menu.customer')</th>
+                                                    <th>@lang('menu.invoice_id')</th>
+                                                    <th>@lang('menu.sold_by')</th>
+                                                    <th>@lang('menu.quantity')</th>
+                                                    <th>@lang('menu.unit_price')({{ $generalSettings['business__currency'] }})</th>
+                                                    <th>@lang('menu.subtotal')({{ $generalSettings['business__currency'] }})</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-end text-white">Total :{{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                    <th colspan="6" class="text-end text-white">@lang('menu.total') :{{ $generalSettings['business__currency'] }}</th>
                                                     <th class="text-white">(<span id="total_qty"></span>)</th>
                                                     <th class="text-white">---</th>
                                                     <th class="text-white"> <span id="total_subtotal"></span></th>
@@ -191,7 +187,7 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -201,19 +197,19 @@
     <div id="sale_details"></div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
+<script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
         ],
         "processing": true,
         "serverSide": true,
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         //aaSorting: [[0, 'desc']],
         "ajax": {
@@ -279,7 +275,7 @@
         table.ajax.reload();
     });
 
-    //Submit filter form by date-range field blur 
+    //Submit filter form by date-range field blur
     $(document).on('click', '#search_product', function () {
         $(this).val('');
         $('#product_id').val('');
@@ -333,7 +329,7 @@
 
     $('body').keyup(function(e){
         e.preventDefault();
-        if (e.keyCode == 13 || e.keyCode == 9) {  
+        if (e.keyCode == 13 || e.keyCode == 9) {
             $(".selectProduct").click();
             $('.search_result').hide();
             $('#list').empty();
@@ -346,7 +342,7 @@
         $('.data_preloader').show();
         var url = $(this).attr('href');
         $.get(url, function(data) {
-            
+
             $('#sale_details').html(data);
             $('.data_preloader').hide();
             $('#detailsModal').modal('show');
@@ -374,16 +370,16 @@
             data: {branch_id, product_id, customer_id, variant_id, from_date, to_date},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 
         // Make print
@@ -395,7 +391,7 @@
             debug: false,
             importCSS: true,
             importStyle: true,
-            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
             removeInline: false,
             printDelay: 500,
             header : null,
@@ -411,7 +407,7 @@
             debug: false,
             importCSS: true,
             importStyle: true,
-            loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
             removeInline: false,
             printDelay: 800,
             header: null,
@@ -433,7 +429,7 @@
                     debug: false,
                     importCSS: true,
                     importStyle: true,
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                     removeInline: false,
                     printDelay: 700,
                     header: null,

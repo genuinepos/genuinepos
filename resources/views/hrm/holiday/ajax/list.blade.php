@@ -1,36 +1,36 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr class="text-center">
-            <th>S/L</th>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Allowed Branch</th>
-            <th>Note</th>
-            <th>Actions</th>
+            <th>@lang('menu.sl')</th>
+            <th>@lang('menu.name')</th>
+            <th>@lang('menu.date')</th>
+            <th>{{ __('Allowed Branch') }}</th>
+            <th>@lang('menu.note')</th>
+            <th>@lang('menu.action')</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($holidays as $key => $row)
             <tr data-info="{{ $row }}" class="text-center">
-                <td>{{ $key+1 }}</td> 
-                <td>{{ $row->holiday_name }}</td> 
-                <td>{{date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->start_date)) }} to {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->end_date)) }} </td> 
+                <td>{{ $key+1 }}</td>
+                <td>{{ $row->holiday_name }}</td>
+                <td>{{date($generalSettings['business__date_format'], strtotime($row->start_date)) }} to {{ date($generalSettings['business__date_format'], strtotime($row->end_date)) }} </td>
                 <td>
                     @if ($row->is_all)
                         All
                     @elseif($row->branch_id)
                         {{ $row->branch->name.'/'.$row->branch->branch_code }}
-                    @else 
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }}  (<b>Head Office</b>)
+                    @else
+                        {{ $generalSettings['business__shop_name'] }}  (<b>@lang('menu.head_office')</b>)
                     @endif
-                </td> 
-                <td>{{ $row->notes }}</td> 
-                <td> 
+                </td>
+                <td>{{ $row->notes }}</td>
+                <td>
                     <div class="dropdown table-dropdown">
                         <a href="{{ route('hrm.holidays.edit', $row->id) }}" id="edit" title="Edit details" class="action-btn c-edit" id="edit"><span class="fas fa-edit"></span></a>
                         <a href="{{ route('hrm.holidays.delete', $row->id) }}" class="action-btn c-delete" id="delete"><span class="fas fa-trash "></span></a>
                     </div>
-                </td> 
+                </td>
             </tr>
         @endforeach
     </tbody>
@@ -40,7 +40,7 @@
     $('.data_tbl').DataTable(
         {
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},

@@ -924,7 +924,7 @@
 	        function() { $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
 	    );
 
-	    // MENUS    	
+	    // MENUS
 	    $('#flat').menu({
 	        content: $('#flat').next().html(), // grab content from this page
 	        showSpeed: 400
@@ -1088,7 +1088,7 @@
 	    }); // nw | n | ne | w | e | sw | s | se
 
 
-	    //MIN Chart 
+	    //MIN Chart
 
 	    $("span.pie").peity("pie", {
 	        diameter: 150,
@@ -1458,7 +1458,7 @@
 	        var elem = $(this).closest('.item');
 
 	        $.confirm({
-	            'title': 'Delete Confirmation',
+	            'title': 'Confirmation',
 	            'message': 'You are about to delete this item. <br />It cannot be restored at a later time! Continue?',
 	            'buttons': {
 	                'Yes': {
@@ -1483,7 +1483,7 @@
 
 
 	        $.confirm({
-	            'title': 'Delete Confirmation',
+	            'title': 'Confirmation',
 	            'message': 'You are about to delete this item. <br />It cannot be restored at a later time! Continue?',
 	            'buttons': {
 	                'Yes': {

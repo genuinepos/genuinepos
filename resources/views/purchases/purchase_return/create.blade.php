@@ -5,91 +5,86 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-undo"></span>
+                    <h5>@lang('menu.purchase_return')</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_purchase_return_form" action="{{ route('purchases.returns.store', $purchaseId) }}" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Purchase Return</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="m-0"><strong>@lang('menu.invoice_id')</strong> {{ $purchase->invoice_id }} </p>
+                                    <p class="m-0"><strong>@lang('menu.date')</strong> {{ $purchase->date }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <p class="m-0 "><strong> @lang('menu.supplier') </strong> {{ $purchase->supplier->name }}</p>
+                                    <p class="m-0 branch"><strong>@lang('menu.business_location') </strong>
+                                        @if($purchase->branch)
+                                            {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
+                                        @else
+                                            {{ $generalSettings['business__shop_name'] }} <b>(HO)</b>
+                                        @endif
+                                    </p>
+                                        <p class="m-0 warehouse"><strong>{{ __('Purchase Stored Location') }} </strong>
+                                        @if ($purchase->warehouse)
+                                            {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
+                                        @elseif($purchase->branch)
+                                            {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
+                                        @else
+                                            {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
+                                        @endif
+                                    </p>
+                                    </div>
+                            </div>
+                            <hr>
+                            <div class="row g-1">
+                                <div class="col-lg-4 col-md-10">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-5"><b>{{ __('PR.Invoice ID') }} </b><span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-7">
+                                            <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="{{ __('Purchase Return Invoice ID') }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="m-0"><strong>Invoice ID: </strong> {{ $purchase->invoice_id }} </p> 
-                                            <p class="m-0"><strong>Date: </strong> {{ $purchase->date }}</p> 
-                                         </div>
-                                         <div class="col-md-6">
-                                            <p class="m-0 "><strong> Supplier : </strong> {{ $purchase->supplier->name }}</p> 
-                                            <p class="m-0 branch"><strong>Business Location : </strong> 
-                                                @if($purchase->branch) 
-                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }}<b>(B.L.)</b>
-                                                @else 
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
-                                                @endif
-                                            </p>
-                                             <p class="m-0 warehouse"><strong>Purchase Stored Location : </strong>
-                                                @if ($purchase->warehouse)
-                                                    {{ $purchase->warehouse->warehouse_name.'/'.$purchase->warehouse->warehouse_code }}<b>(WH)</b>
-                                                @elseif($purchase->branch)
-                                                    {{ $purchase->branch->name.'/'.$purchase->branch->branch_code }} <b>(B.L.)</b>
-                                                @else 
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b>
-                                                @endif
-                                            </p>
-                                         </div>
+                                <div class="col-lg-4 col-md-10">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-5"><b>@lang('menu.date') </b> <span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-7">
+                                            <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date($generalSettings['business__date_format']) }}">
+                                            <span class="error error_date"></span>
+                                        </div>
                                     </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4"><b>PR.Invoice ID : </b><span
-                                                        class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" class="form-control" id="invoice_id" placeholder="Purchase Return Invoice ID" autocomplete="off">
-                                                </div>
-                                            </div>
-                                        </div>
+                                </div>
 
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Date :</b> <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" id="date" class="form-control" autocomplete="off" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-5"><b>Purchase Return A/C : <span
-                                                    class="text-danger">*</span></b></label>
-                                                <div class="col-7">
-                                                    <select name="purchase_return_account_id" class="form-control add_input"
-                                                        id="purchase_return_account_id" data-name="Purchase Return A/C">
-                                                        @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
-                                                            <option value="{{ $purchaseReturnAccount->id }}">
-                                                                {{ $purchaseReturnAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_purchase_return_account_id"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-lg-4 col-md-10">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-5"><b>{{ __('Purchase Return A/C') }} : <span
+                                            class="text-danger">*</span></b></label>
+                                        <div class="col-7">
+                                            <select name="purchase_return_account_id" class="form-control add_input"
+                                                id="purchase_return_account_id" data-name="Purchase Return A/C">
+                                                @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
+                                                    <option value="{{ $purchaseReturnAccount->id }}">
+                                                        {{ $purchaseReturnAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_purchase_return_account_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -99,32 +94,26 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product Name</th>
-                                                                    <th></th>
-                                                                    <th>Unit Cost</th>
-                                                                    <th>Lot Number</th>
-                                                                    <th>Purchase Quantity</th>
-                                                                    <th>Return Quantity</th>
-                                                                    <th>Return Subtotal</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="purchase_return_list"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="sale-item-sec">
+                                    <div class="sale-item-inner">
+                                        <div class="table-responsive">
+                                            <table class="display data__table table-striped">
+                                                <thead class="staky">
+                                                    <tr>
+                                                        <th>@lang('menu.product_name')</th>
+                                                        <th></th>
+                                                        <th>@lang('menu.unit_cost')</th>
+                                                        <th>@lang('menu.lot_number')</th>
+                                                        <th>@lang('menu.purchase_quantity')</th>
+                                                        <th>@lang('menu.return_quantity')</th>
+                                                        <th>@lang('menu.return_subtotal')</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="purchase_return_list"></tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -133,19 +122,15 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-2"><b>Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</b>  </label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
-                                                </div>
-                                            </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-2"><b>@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</b>  </label>
+                                        <div class="col-8">
+                                            <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00">
                                         </div>
                                     </div>
                                 </div>
@@ -154,13 +139,15 @@
                     </div>
                 </section>
 
-                <div class="submit_button_area pt-1">
+                <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button type="submit" data-action="save" class="btn btn-sm btn-primary submit_button float-end">Save</button>
-                            <button type="submit" data-action="save_and_print" class="btn btn-sm btn-primary submit_button float-end me-1">Save & Print</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i
+                                    class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                <button type="submit" data-action="save" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                <button type="submit" data-action="save_and_print" class="btn btn-sm btn-success submit_button">@lang('menu.save_print')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,7 +156,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+<script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     function getPurchaseReturn() {
@@ -186,21 +173,21 @@
                     if (purchase.purchase_return) {
                         $('#purchase_return_account_id').val(purchase.purchase_return.purchase_return_account_id);
                     }
-                    
+
                     $.each(purchase.purchase_return.purchase_return_products, function (key, return_product) {
                         var tr = "";
                         tr += '<tr >';
                         tr += '<td colspan="2" class="text text-dark">';
                         tr += '<span class="product_name">'+return_product.purchase_product.product.name+'</span>';
                         var variant = return_product.purchase_product.variant ? ' ('+return_product.purchase_product.variant.variant_name+')' : '';
-                        
-                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>'; 
+
+                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>';
 
                         var code = return_product.purchase_product.variant ? return_product.purchase_product.variant.variant_code : return_product.purchase_product.product.product_code;
                         tr += ' <span class="product_code"><small>('+code+')</small></span>';
                         tr += '<input value="'+return_product.purchase_product_id+'" type="hidden" id="purchase_product_id" name="purchase_product_ids[]">';
                         tr += '</td>';
-                        
+
                         tr += '<td class="text">';
                         tr += '<span class="span_unit_cost">'+return_product.purchase_product.net_unit_cost+'</span>';
                         tr += '<input value="'+return_product.purchase_product.net_unit_cost+'" type="hidden" name="unit_costs[]" id="unit_cost">';
@@ -237,12 +224,12 @@
                         tr += '<td colspan="2" class="text text-dark">';
                         tr += '<span class="product_name">'+purchase_product.product.name+'</span>';
                         var variant = purchase_product.variant ? ' ('+purchase_product.variant.variant_name+')' : '';
-                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>'; 
+                        tr += '<span class="product_variant"><small><b>'+variant+'</b></small></span>';
                         var code = purchase_product.variant ? purchase_product.variant.variant_code : purchase_product.product.product_code;
                         tr += ' <span class="product_code"><small>('+code+')</small></span>';
                         tr += '<input value="'+purchase_product.id+'" type="hidden" id="purchase_product_id" name="purchase_product_ids[]">';
                         tr += '</td>';
-                        
+
                         tr += '<td class="text">';
                         tr += '<span class="span_unit_cost">'+purchase_product.net_unit_cost+'</span>';
                         tr += '<input value="'+purchase_product.net_unit_cost+'" type="hidden" name="unit_costs[]" id="unit_cost">';
@@ -283,13 +270,13 @@
     function calculateTotalAmount(){
         var quantities = document.querySelectorAll('#return_quantity');
         var subtotals = document.querySelectorAll('#return_subtotal');
-  
+
         // Update Net total Amount
         var netTotalAmount = 0;
         subtotals.forEach(function(subtotal){
             netTotalAmount += parseFloat(subtotal.value);
         });
-        
+
         $('#total_return_amount').val(parseFloat(netTotalAmount).toFixed(2));
     }
 
@@ -316,7 +303,7 @@
                 var calcSubtotal = parseFloat(unitPrice) * parseFloat(return_quantity);
                 tr.find('#return_subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_return_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         }
     });
@@ -336,21 +323,21 @@
                 $('.submit_button').prop('type', 'sumbit');
                 $('.error').html('');
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else if(!$.isEmptyObject(data.seccessMsg)) {
-                    toastr.success(data.seccessMsg); 
+                    toastr.success(data.seccessMsg);
                 }else {
                     $('.loading_button').hide();
-                    toastr.success('Successfully purchase return is added.'); 
+                    toastr.success('Successfully purchase return is added.');
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 1000, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 1000,
+                        header: null,
                     });
                 }
             },error: function(err) {
@@ -359,7 +346,7 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }
 
@@ -375,7 +362,7 @@
         $('#action').val(action);
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

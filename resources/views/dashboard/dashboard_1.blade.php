@@ -1,15 +1,20 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
-    <link href="{{ asset('public/backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')
-    @if (auth()->user()->permission->dashboard['dash_data'] == '1')
-        <div id="dashboard" class="pb-5">
-            <div class="row">
+    @if (auth()->user()->can('dash_data'))
+        <div id="dashboard" class="p-3">
+            <div class="row mb-3">
                 <div class="main__content">
-                    <div class="d-flex mx-3 mt-3 switch_bar_cards">
+                    <div class="welcome-user">
+                        <div class="alert mb-1 py-0 w-100 h-auto alert-success">
+                            <span>@lang('menu.welcome') <strong>{{ auth()->user()->prefix.' '.auth()->user()->name.' '.auth()->user()->last_name }}</strong></span>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap mt-2 switch_bar_cards">
 
                         {{-- <div class="switch_bar">
                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
@@ -29,22 +34,22 @@
                             <a href="{{ route('short.menus.modal.form') }}" class="bar-link" id="addShortcutBtn">
                                 <span><i class="fas fa-plus-square text-white"></i></span>
                             </a>
-                            <p>Add Shortcut</p>
+                            <p>@lang('menu.add_shortcut')</p>
                         </div>
                     </div>
 
                     <div class="">
-                        <div class="row mx-2 mt-3">
+                        <div class="row mt-3">
                             <div class="d-flex justify-content-end align-items-center gap-3">
                                 <input type="hidden" id="date_range" value="{{ $thisMonth }}">
-                                @if ($addons->branches == 1)
+                                @if ($generalSettings['addons__branches'] == 1)
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                         <div class="select-dropdown">
                                             <select name="branch_id" id="branch_id">
-                                                <option value="">All Business Locations</option>
+                                                <option value="">@lang('menu.all_business_locations')</option>
                                                 <option value="NULL">
-                                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}
-                                                    (Head Office)</option>
+                                                    {{ $generalSettings['business__shop_name'] }}
+                                                    (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $br)
                                                     <option value="{{ $br->id }}">
                                                         {{ $br->name . '/' . $br->branch_code }}
@@ -59,7 +64,7 @@
                                 {{-- <div class="button-group">
                                     <label class="button-group__btn" id="date" data-value="{{ $toDay }}">
                                         <input type="radio" name="group" />
-                                        <span class="button-group__label">Current Day</span>
+                                        <span class="button-group__label">@lang('menu.current_day')</span>
                                     </label>
 
                                     <label class="button-group__btn">
@@ -83,27 +88,27 @@
                                     </label>
                                 </div> --}}
                                 <div class="select-dropdown">
-                                    <select name="" id="">
-                                        <option value="">Current Day</option>
-                                        <option value="">This Week</option>
-                                        <option value="">This Month</option>
-                                        <option value="">This Year</option>
-                                        <option value="">All Time</option>
+                                    <select name="date" id="date">
+                                        <option value="{{ $toDay }}">@lang('menu.current_day')</option>
+                                        <option value="{{ $thisWeek }}">@lang('menu.this_week')</option>
+                                        <option value="{{ $thisMonth }}">@lang('menu.this_month')</option>
+                                        <option value="{{ $thisYear }}">@lang('menu.this_year')</option>
+                                        <option value="all_time">@lang('menu.all_time')</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Cards --}}
-                        <div class="mx-3 mt-2">
-                            <div class="row">
+                        <div class="mt-3">
+                            <div class="row g-3">
                                 <div class="col-md-3">
                                     <div class="card-counter primary d-flex justify-content-around align-content-center">
                                         <div class="icon">
                                             <i class="fas fa-receipt"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Purchase</h3>
+                                            <h3 class="sub-title">@lang('menu.total_purchase')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_purchase"></span>
@@ -118,7 +123,7 @@
                                             <i class="fas fa-money-check"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Sale</h3>
+                                            <h3 class="sub-title">@lang('menu.total_sale')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_sale"></span>
@@ -133,7 +138,7 @@
                                             <i class="fas fa-clipboard"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Purchase Due</h3>
+                                            <h3 class="sub-title">@lang('menu.purchase_due')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_purchase_due"></span>
@@ -148,7 +153,7 @@
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Invoice Due</h3>
+                                            <h3 class="sub-title">@lang('menu.invoice_due')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_sale_due"></span>
@@ -156,16 +161,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
                                 <div class="col-md-3">
                                     <div class="card-counter info d-flex justify-content-around align-content-center">
                                         <div class="icon">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Expense</h3>
+                                            <h3 class="sub-title">@lang('menu.expense')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_expense"></span>
@@ -180,7 +183,7 @@
                                             <i class="fas fa-user"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total User</h3>
+                                            <h3 class="sub-title">@lang('menu.total_user')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_user"></span>
@@ -195,7 +198,7 @@
                                             <i class="fas fa-list"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Products</h3>
+                                            <h3 class="sub-title">@lang('menu.total_products')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span id="total_product"></span>
@@ -210,7 +213,7 @@
                                             <i class="fas fa-balance-scale"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">Total Adjustment</h3>
+                                            <h3 class="sub-title">@lang('menu.total_adjustment')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_adjustment"></span>
@@ -223,100 +226,38 @@
                     </div>
                 </div>
             </div>
-            <div class="row px-3 m-1">
-                <section>
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <section>
+                        <div class="form_element rounded m-0">
+                            <div class="section-header justify-content-between">
                                 <h6>
-                                    <span class="fas fa-table"></span>Stock Alert Of
+                                    <span class="fas fa-table"></span>@lang('menu.stock_alert_of')
                                     <b>
                                         @if (auth()->user()->branch_id)
                                             {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
                                         @else
-                                            {{ json_decode($generalSettings->business, true)['shop_name'] }}
+                                            {{ $generalSettings['business__shop_name'] }}
                                         @endif
                                     </b>
                                 </h6>
-                            </div>
-                            <div class="widget_content">
-                                <div class="mtr-table">
-                                    <div class="table-responsive">
-                                        <table id="stock_alert_table" class="display data__table data_tble stock_table"
-                                            width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>S/L</th>
-                                                    <th>Product</th>
-                                                    <th>Product Code(SKU)</th>
-                                                    <th>Current Stock</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <div class="row">
-                        <div class="form_element">
-                            <div class="section-header">
-                                <span class="fas fa-table"></span>
-                                <h6>Sales Order</h6>
+                                <a href="#">@lang('menu.see_more')</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
-                                    <table id="sales_order_table" class="display data__table data_tble order_table"
-                                        cellspacing="0" width="100%">
+                                    <table id="stock_alert_table" class="display data__table data_tble stock_table"
+                                        width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Invoice ID</th>
-                                                <th>Branch</th>
-                                                <th>Customer</th>
-                                                <th>Shipment Status</th>
-                                                <th>Created By</th>
+                                                <th>@lang('menu.sl')</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.product_code')(SKU)</th>
+                                                <th>@lang('menu.current_stock')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                     </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <div class="row px-2">
-                <div class="col-md-6">
-                    <section>
-                        <div class="container">
-                            <div class="row">
-                                <div class="form_element">
-                                    <div class="section-header">
-                                        <span class="fas fa-table"></span>
-                                        <h6>Sales Payment Due</h6>
-                                    </div>
-                                    <div class="widget_content">
-                                        <div class="table-responsive">
-
-                                            <table id="sales_payment_due_table"
-                                                class="display data__table data_tble due_table" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Customer</th>
-                                                        <th>Invoice ID</th>
-                                                        <th>Branch</th>
-                                                        <th>Due Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -325,32 +266,85 @@
 
                 <div class="col-md-6">
                     <section>
-                        <div class="container">
-                            <div class="row">
-                                <div class="form_element">
-                                    <div class="section-header">
-                                        <span class="fas fa-table"></span>
-                                        <h6>Purchase Payment Due</h6>
-                                    </div>
-                                    <div class="widget_content">
-                                        <div class="table-responsive">
+                        <div class="form_element rounded m-0">
+                            <div class="section-header justify-content-between">
+                                <h6><span class="fas fa-table"></span> @lang('menu.sales_order')</h6>
+                                <a href="#">@lang('menu.see_more')</a>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
+                                    <table id="sales_order_table" class="display data__table data_tble order_table"
+                                        cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.invoice_id')</th>
+                                                <th>@lang('menu.branch')</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.shipment_status')</th>
+                                                <th>@lang('menu.created_by')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
 
-                                            <table id="purchase_payment_due_table"
-                                                class="display data__table data_tble purchase_due_table" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Supplier</th>
-                                                        <th>P.Invoice ID</th>
-                                                        <th>Branch</th>
-                                                        <th>Due Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                <div class="col-md-6">
+                    <section>
+                        <div class="form_element rounded m-0">
+                            <div class="section-header justify-content-between">
+                                <h6><span class="fas fa-table"></span>@lang('menu.sales_payment_due')</h6>
+                                <a href="#">@lang('menu.see_more')</a>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
 
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                    <table id="sales_payment_due_table"
+                                        class="display data__table data_tble due_table" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.invoice_id')</th>
+                                                <th>@lang('menu.branch')</th>
+                                                <th>@lang('menu.due_amount')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-md-6">
+                    <section>
+                        <div class="form_element rounded m-0">
+                            <div class="section-header justify-content-between">
+                                <h6><span class="fas fa-table"></span>@lang('menu.purchase_payment_due')</h6>
+                                <a href="#">@lang('menu.see_more')</a>
+                            </div>
+                            <div class="widget_content">
+                                <div class="table-responsive">
+
+                                    <table id="purchase_payment_due_table"
+                                        class="display data__table data_tble purchase_due_table" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
+                                                <th>@lang('menu.branch')</th>
+                                                <th>@lang('menu.due_amount')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -361,10 +355,10 @@
 
         <!--Add shortcut menu modal-->
         <div class="modal fade" id="shortcutMenuModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">Add Shortcut Menus</h6>
+                        <h6 class="modal-title" id="payment_heading">@lang('menu.add_shortcut_menus')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -383,7 +377,7 @@
             <br><br><br>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h1 class="text-primary display-5">Welcome,
+                    <h1 class="text-primary display-5">@lang('menu.welcome'),
                         <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</strong>
                     </h1>
                 </div>
@@ -392,10 +386,10 @@
     @endif
 @endsection
 @push('scripts')
-    @if (auth()->user()->permission->dashboard['dash_data'] == '1')
+    @if (auth()->user()->can('dash_data'))
         <script>
-            $(document).on('click', '#date', function() {
-                var date_range = $(this).data('value');
+            $(document).on('change', '#date', function() {
+                var date_range = $(this).val();
                 $('#date_range').val(date_range);
                 getCardAmount();
                 sale_order_table.ajax.reload();
@@ -474,9 +468,10 @@
                 columns: [{data: 'sup_name',name: 'sup_name'},{data: 'invoice_id',name: 'invoice_id'},{data: 'from',name: 'from'},{data: 'due',name: 'due'},],
             });
 
-            var __currency = "{{ json_decode($generalSettings->business, true)['currency'] }}";
+            var __currency = "{{ $generalSettings['business__currency'] }}";
 
             function getCardAmount() {
+
                 var date_range = $('#date_range').val();
                 var branch_id = $('#branch_id').val();
                 $('.card_preloader').show();

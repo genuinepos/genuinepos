@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\BarcodeSetting;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -11,34 +11,35 @@ class BarcodeSettingController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->permission->setup['barcode_settings'] == '0') {
+        if (! auth()->user()->can('barcode_settings')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
             $barcodeSettings = DB::table('barcode_settings')->where('is_fixed', 0)->orderBy('id', 'DESC')->get(['id', 'name', 'description', 'is_default']);
+
             return DataTables::of($barcodeSettings)
                 ->addIndexColumn()
                 ->editColumn('name', function ($row) {
-                    return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
+                    return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
                 })
                 ->addColumn('action', function ($row) {
                     // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('settings.barcode.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('settings.barcode.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                     if ($row->is_default == 0) {
-                        $html .= '<a href="' . route('settings.barcode.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                        $html .= '<a href="' . route('settings.barcode.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
-                        Set Default
-                        </a>';
+                        $html .= '<a href="'.route('settings.barcode.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="'.route('settings.barcode.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn"> Set Default</a>';
                     }
 
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->rawColumns(['action', 'name'])
                 ->make(true);
         }
+
         return view('settings.barcode_settings.index');
     }
 
@@ -88,8 +89,8 @@ class BarcodeSettingController extends Controller
             'is_default' => isset($request->set_as_default) ? 1 : 0,
         ]);
 
-        $barcodeSetting = BarcodeSetting::all();
-        if (count($barcodeSetting) == 1) {
+        $barcodeSettingCount = BarcodeSetting::count();
+        if ($barcodeSettingCount == 1) {
             $barcodeSetting = BarcodeSetting::first();
             $barcodeSetting->is_default = 1;
             $barcodeSetting->save();
@@ -101,6 +102,7 @@ class BarcodeSettingController extends Controller
     public function edit($id)
     {
         $bs = DB::table('barcode_settings')->where('id', $id)->first();
+
         return view('settings.barcode_settings.edit', compact('bs'));
     }
 
@@ -120,6 +122,14 @@ class BarcodeSettingController extends Controller
             'stickers_in_one_sheet' => 'required',
         ]);
 
+        if (isset($request->set_as_default)) {
+            $defaultBarcodeSetting = BarcodeSetting::where('is_default', 1)->first();
+            if ($defaultBarcodeSetting) {
+                $defaultBarcodeSetting->is_default = 0;
+                $defaultBarcodeSetting->save();
+            }
+        }
+
         $updateBs = BarcodeSetting::where('id', $id)->first();
 
         $updateBs->update([
@@ -136,6 +146,7 @@ class BarcodeSettingController extends Controller
             'column_distance' => $request->column_distance,
             'stickers_in_a_row' => $request->stickers_in_a_row,
             'stickers_in_one_sheet' => $request->stickers_in_one_sheet,
+            'is_default' => isset($request->set_as_default) ? 1 : 0,
         ]);
 
         return response()->json('Barcode sticker setting updated Successfully.');
@@ -144,7 +155,7 @@ class BarcodeSettingController extends Controller
     public function delete(Request $request, $id)
     {
         $delete = BarcodeSetting::find($id);
-        if (!is_null($delete)) {
+        if (! is_null($delete)) {
             $delete->delete();
         }
 
@@ -162,6 +173,12 @@ class BarcodeSettingController extends Controller
         $updateBs = BarcodeSetting::where('id', $id)->first();
         $updateBs->is_default = 1;
         $updateBs->save();
+
         return response()->json('Default set successfully');
+    }
+
+    public function designPage()
+    {
+        return view('settings.barcode_settings.design_pages');
     }
 }

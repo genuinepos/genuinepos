@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Utils\ProductStockUtil;
-use Illuminate\Support\Facades\DB;
-use App\Models\TransferStockToBranch;
-use Yajra\DataTables\Facades\DataTables;
-use App\Models\TransferStockToBranchProduct;
 use App\Jobs\BranchReceiveStockDetailsMailJob;
+use App\Models\TransferStockToBranch;
+use App\Models\TransferStockToBranchProduct;
+use App\Utils\ProductStockUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class BranchReceiveStockController extends Controller
 {
     protected $productStockUtil;
-    public function __construct(ProductStockUtil $productStockUtil,)
+
+    public function __construct(ProductStockUtil $productStockUtil)
     {
         $this->productStockUtil = $productStockUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     //Branch receiving stock index view
@@ -24,7 +25,7 @@ class BranchReceiveStockController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $transfers = DB::table('transfer_stock_to_branches')
                 ->leftJoin('warehouses', 'transfer_stock_to_branches.warehouse_id', 'warehouses.id')
                 ->leftJoin('branches', 'transfer_stock_to_branches.branch_id', 'branches.id')->select(
@@ -43,29 +44,30 @@ class BranchReceiveStockController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('transfer.stocks.to.warehouse.receive.stock.process.view', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Process To Receive</a>';
-                    $html .= '<a class="dropdown-item" id="send_mail" href="' . route('transfer.stocks.to.warehouse.receive.stock.mail', $row->id) . '"><i class="fas fa-envelope mr-1 text-primary"></i> Send Receive Details Via Email</a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('transfer.stocks.to.warehouse.receive.stock.show', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('transfer.stocks.to.warehouse.receive.stock.process.view', [$row->id]).'"><i class="far fa-edit mr-1 text-primary"></i> Process To Receive</a>';
+                    $html .= '<a class="dropdown-item" id="send_mail" href="'.route('transfer.stocks.to.warehouse.receive.stock.mail', $row->id).'"><i class="fas fa-envelope mr-1 text-primary"></i> Send Receive Details Via Email</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) {
 
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) {
+                ->editColumn('from', function ($row) {
 
-                    return  $row->warehouse_name . '/' . $row->warehouse_code;
+                    return $row->warehouse_name.'/'.$row->warehouse_code;
                 })
-                ->editColumn('to',  function ($row) use ($generalSettings) {
+                ->editColumn('to', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return  $row->branch_name . '/' . $row->branch_code;
+                        return $row->branch_name.'/'.$row->branch_code;
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
                 ->editColumn('status', function ($row) {
@@ -74,20 +76,21 @@ class BranchReceiveStockController extends Controller
                     if ($row->status == 1) {
 
                         $html .= '<span class="badge bg-danger">Pending</span>';
-                    } else if ($row->status == 2) {
+                    } elseif ($row->status == 2) {
 
                         $html .= '<span class="badge bg-warning text-white">Partial</span>';
-                    } else if ($row->status == 3) {
+                    } elseif ($row->status == 3) {
 
                         $html .= '<span class="badge bg-success">Completed</span>';
                     }
+
                     return $html;
                 })
                 ->rawColumns(['date', 'from', 'to', 'status', 'action'])
                 ->make(true);
         }
 
-        $users = DB::table('admin_and_users')
+        $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name', 'email']);
 
@@ -97,12 +100,14 @@ class BranchReceiveStockController extends Controller
     public function show($sendStockId)
     {
         $sendStock = TransferStockToBranch::with(['warehouse', 'branch', 'transfer_products', 'transfer_products.product', 'transfer_products.variant'])->where('id', $sendStockId)->first();
+
         return view('transfer_stock.branch_to_warehouse.receive_stock.ajax_view.show', compact('sendStock'));
     }
 
-    public function receiveProducessView($sendStockId)
+    public function receiveProcessView($sendStockId)
     {
         $sendStockId = $sendStockId;
+
         return view('transfer_stock.branch_to_warehouse.receive_stock.product_receive_stock_view', compact('sendStockId'));
     }
 
@@ -149,7 +154,7 @@ class BranchReceiveStockController extends Controller
         $index = 0;
         foreach ($product_ids as $product_id) {
 
-            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+            $variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
             $updateTransferProduct = TransferStockToBranchProduct::where('transfer_stock_id', $updateSandStocks->id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)
@@ -167,6 +172,7 @@ class BranchReceiveStockController extends Controller
         }
 
         session()->flash('successMsg', 'Successfully receiving has been has been processed');
+
         return response()->json(['successMsg' => 'Successfully receiving has been has been processed']);
     }
 
@@ -179,7 +185,7 @@ class BranchReceiveStockController extends Controller
 
         $transfer = TransferStockToBranch::with([
             'warehouse', 'branch', 'transfer_products',
-            'transfer_products.product', 'transfer_products.variant'
+            'transfer_products.product', 'transfer_products.variant',
         ])->where('id', $sendStockId)->first();
 
         BranchReceiveStockDetailsMailJob::dispatch($request->user_email, $request->mail_note, $transfer)

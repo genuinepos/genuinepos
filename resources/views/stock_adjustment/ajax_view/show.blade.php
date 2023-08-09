@@ -1,10 +1,10 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog col-80-modal">
       <div class="modal-content" >
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Stock Adjustment Details (Reference No : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
+            <h5 class="modal-title" id="exampleModalLabel">@lang('menu.stock_adjustment_details') (@lang('menu.reference_no') : <strong>{{ $adjustment->invoice_id }}</strong>)</h5>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -12,36 +12,36 @@
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
                         <li>
-                            <strong>Business Location : </strong> 
-                            {{ 
-                                $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' 
+                            <strong>@lang('menu.business_location') : </strong>
+                            {{
+                                $adjustment->branch ? $adjustment->branch->name.'/'.$adjustment->branch->branch_code : $generalSettings['business__shop_name'].' (HO)'
                             }}
                         </li>
 
                         @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
-                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b> 
+                                <strong>@lang('menu.adjustment_location') : </strong>
+                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone}}</li>
-                            <li><strong>Address : </strong> {{ $adjustment->warehouse->address}}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone}}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address}}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
                             <li>
-                                <strong>Adjustment Location : </strong> 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                <strong>@lang('menu.adjustment_location') : </strong>
+                                {{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
-                            <li><strong>Address : </strong> 
-                                {{ json_decode($generalSettings->business, true)['address'] }}
+                            <li><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}</li>
+                            <li><strong>@lang('menu.address') : </strong>
+                                {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
                     </ul>
@@ -49,12 +49,12 @@
 
                 <div class="col-md-6 text-left">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>Reference No : </strong> {{ $adjustment->invoice_id }}</li>
-                        <li><strong>Type : </strong>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong> {{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.type') : </strong>
                             {!! $adjustment->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>' !!}
                         </li>
-                        <li><strong>Created By : </strong>
+                        <li><strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>
@@ -65,12 +65,12 @@
                 <div class="table-responsive">
                     <table id="" class="table modal-table table-sm">
                         <thead>
-                            <tr class="bg-primary text-white text-start">
-                                <th class="text-start">SL</th>
-                                <th class="text-start">Product</th>
-                                <th class="text-start">Quantity</th>
-                                <th class="text-start">Unit Cost Inc.Tax</th>
-                                <th class="text-start">SubTotal</th>
+                            <tr class="bg-secondary text-white text-start">
+                                <th class="text-start">@lang('menu.sl')</th>
+                                <th class="text-start">@lang('menu.product')</th>
+                                <th class="text-start">@lang('menu.quantity')</th>
+                                <th class="text-start">@lang('menu.unit_cost_inc_tax')</th>
+                                <th class="text-start">@lang('menu.sub_total')</th>
                             </tr>
                         </thead>
                         <tbody class="adjustment_product_list">
@@ -78,14 +78,14 @@
                                 <tr>
                                     <td class="text-start">{{ $loop->index + 1 }}</td>
                                     @php
-                                        $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                        $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                                     @endphp
                                     <td class="text-start">{{ $product->product->name.$variant }}</td>
                                     <td class="text-start">{{ $product->quantity.' ('.$product->unit.')' }}</td>
                                     <td class="text-start">
-                                        {{ json_decode($generalSettings->business, true)['currency'].' '.$product->unit_cost_inc_tax }}
+                                        {{ $generalSettings['business__currency'].' '.$product->unit_cost_inc_tax }}
                                     </td>
-                                    <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'].' '.$product->subtotal }} </td>
+                                    <td class="text-start">{{ $generalSettings['business__currency'].' '.$product->subtotal }} </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -99,20 +99,20 @@
                         <div class="table-responsive">
                            <table class="table modal-table table-striped table-sm">
                                <thead>
-                                   <tr class="bg-primary text-white">
-                                       <th>Date</th>
-                                       <th>Voucher No</th>
-                                       <th>Method</th>
-                                       <th>Account</th>
+                                   <tr class="bg-secondary text-white">
+                                       <th>@lang('menu.date')</th>
+                                       <th>@lang('menu.voucher_no')</th>
+                                       <th>@lang('menu.method')</th>
+                                       <th>@lang('menu.account')</th>
                                        <th>
-                                           Recovered Amount({{ json_decode($generalSettings->business, true)['currency'] }})
+                                           @lang('menu.recovered_amount')({{ $generalSettings['business__currency'] }})
                                        </th>
                                    </tr>
                                </thead>
                                <tbody id="p_details_payment_list">
                                   @if ($adjustment->recover)
                                     <tr>
-                                        <td>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->recover->report_date)) }}</td>
+                                        <td>{{ date($generalSettings['business__date_format'], strtotime($adjustment->recover->report_date)) }}</td>
                                         <td>{{ $adjustment->recover->voucher_no }}</td>
                                         <td>{{ $adjustment->recover->paymentMethod ? $adjustment->recover->paymentMethod->name : '' }}</td>
                                         <td>
@@ -120,10 +120,10 @@
                                         </td>
                                         <td>{{ App\Utils\Converter::format_in_bdt($adjustment->recover->recovered_amount) }}</td>
                                     </tr>
-                                  @else   
+                                  @else
                                       <tr>
-                                          <td colspan="7" class="text-center">No Data Found</td>
-                                      </tr>  
+                                          <td colspan="7" class="text-center">@lang('menu.no_data_found')</td>
+                                      </tr>
                                   @endif
                                </tbody>
                            </table>
@@ -135,15 +135,15 @@
                     <div class="table-responsive">
                         <table class="table modal-table table-sm">
                             <tr>
-                                <th class="text-start">Net Total Amount</th>
+                                <th class="text-start">@lang('menu.net_total_amount') : </th>
                                 <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->net_total_amount}}
+                                    {{ $generalSettings['business__currency'].' '.$adjustment->net_total_amount}}
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-start">Recovered Amount </th>
+                                <th class="text-start">@lang('menu.recovered_amount') : </th>
                                 <td class="text-start">
-                                    {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->recovered_amount }}
+                                    {{ $generalSettings['business__currency'].' '.$adjustment->recovered_amount }}
                                 </td>
                             </tr>
                         </table>
@@ -155,15 +155,15 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="details_area">
-                        <h6>Reason : </h6>
+                        <h6>@lang('menu.reason') : </h6>
                         <p class="reason">{{ $adjustment->reason }}</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-            <button type="submit" class="c-btn button-success print_btn">Print</button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+            <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
         </div>
       </div>
     </div>
@@ -171,7 +171,7 @@
 <!-- Details Modal End-->
 
 <!-- Adjustment print templete-->
-<div class="adjustment_print_template d-none">
+<div class="adjustment_print_template d-hide">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
@@ -181,15 +181,15 @@
                             <h5 class="branch_name">{{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }}</h5>
                             <p class="address">{{ $adjustment->branch->city }}, {{ $adjustment->branch->state }},
                                 {{ $adjustment->branch->zip_code }}, {{ $adjustment->branch->country }}</p>
-                            <p class="branch_phone"><b>Phone</b> : {{ $adjustment->branch->phone }}</p>
+                            <p class="branch_phone"><b>@lang('menu.phone')</b> : {{ $adjustment->branch->phone }}</p>
                             <p class="branch_email">{{ $adjustment->branch->email }}</p>
                         @else
-                            <h5 class="business_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                            <p class="address">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-                            <p class="branch_phone"><b>Phone</b> : {{ json_decode($generalSettings->business, true)['phone'] }}</p>
-                            <p class="branch_email"><b>Email</b> : {{ json_decode($generalSettings->business, true)['email'] }}</p>
+                            <h5 class="business_name">{{ $generalSettings['business__shop_name'] }}</h5>
+                            <p class="address">{{ $generalSettings['business__address'] }}</p>
+                            <p class="branch_phone"><b>@lang('menu.phone')</b> : {{ $generalSettings['business__phone'] }}</p>
+                            <p class="branch_email"><b>@lang('menu.email')</b> : {{ $generalSettings['business__email'] }}</p>
                         @endif
-                        <h6 class="bill_name">Stock Adjustment Details</h6>
+                        <h6 class="bill_name">@lang('menu.stock_adjustment_details')</h6>
                     </div>
                 </div>
             </div>
@@ -199,45 +199,45 @@
             <div class="row">
                 <div class="col-8">
                     <ul class="list-unstyled">
-                        <li><strong>Date : </strong>{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
-                        <li><strong>Reference No : </strong>{{ $adjustment->invoice_id }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) . ' ' . $adjustment->time }}</li>
+                        <li><strong>@lang('menu.reference_no') : </strong>{{ $adjustment->invoice_id }}</li>
                           @if ($adjustment->warehouse_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
-                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(WAREHOUSE)</b>
+                                <strong>@lang('menu.adjustment_location') : </strong>
+                                {{ $adjustment->warehouse->warehouse_name.'/'.$adjustment->warehouse->warehouse_code }} <b>(@lang('menu.warehouse'))</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->warehouse->phone }}</li>
-                            <li><strong>Address : </strong> {{ $adjustment->warehouse->address }}</li>
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->warehouse->phone }}</li>
+                            <li><strong>@lang('menu.address') : </strong> {{ $adjustment->warehouse->address }}</li>
                         @elseif($adjustment->branch_id)
                             <li>
-                                <strong>Adjustment Location : </strong> 
+                                <strong>@lang('menu.adjustment_location') : </strong>
                                 {{ $adjustment->branch->name.'/'.$adjustment->branch->branch_code }} <b>(BRANCH)</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ $adjustment->branch->phone}}</li>
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.phone') : </strong> {{ $adjustment->branch->phone}}</li>
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $adjustment->branch->city}}, {{ $adjustment->branch->state}}, {{ $adjustment->branch->zip_code}}, {{ $adjustment->branch->country}}
                             </li>
                         @else
                             <li>
-                                <strong>Adjustment Location : </strong> 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(Head Office)</b>
+                                <strong>@lang('menu.adjustment_location') : </strong>
+                                {{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b>
                             </li>
-                            <li><strong>Phone : </strong> {{ json_decode($generalSettings->business, true)['phone'] }}</li>
-                            <li><strong>Address : </strong> 
-                                {{ json_decode($generalSettings->business, true)['address'] }}
+                            <li><strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}</li>
+                            <li><strong>@lang('menu.address') : </strong>
+                                {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
                     </ul>
                 </div>
-        
+
                 <div class="col-4">
                     <ul class="list-unstyled float-right">
                         <li>
-                            <strong>Type : </strong>
+                            <strong>@lang('menu.type') : </strong>
                             {{ $adjustment->type == 1 ? 'Normal' : 'Abnormal' }}
                         </li>
                         <li>
-                            <strong>Created By : </strong>
+                            <strong>@lang('menu.created_by') : </strong>
                             {{ $adjustment->admin ? $adjustment->admin->prefix.' '.$adjustment->admin->name.' '.$adjustment->admin->last_name : 'N/A' }}
                         </li>
                     </ul>
@@ -250,11 +250,11 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th scope="col" class="text-start">SL</th>
-                            <th scope="col" class="text-start">Product</th>
-                            <th scope="col" class="text-start">Quantity</th>
-                            <th scope="col" class="text-start">Unit Cost Inc.Tax</th>
-                            <th scope="col" class="text-start">SubTotal</th>
+                            <th scope="col" class="text-start">@lang('menu.sl')</th>
+                            <th scope="col" class="text-start">@lang('menu.product')</th>
+                            <th scope="col" class="text-start">@lang('menu.quantity')</th>
+                            <th scope="col" class="text-start">@lang('menu.unit_cost_inc_tax')</th>
+                            <th scope="col" class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>
@@ -263,28 +263,28 @@
                         <tr>
                             <td class="text-start">{{ $loop->index + 1 }}</td>
                             @php
-                                $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : ''; 
+                                $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
                             @endphp
                             <td class="text-start">{{ $product->product->name.$variant }}</td>
                             <td class="text-start">{{ $product->quantity.' ('.$product->unit.')' }}</td>
                             <td class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'].' '.$product->unit_cost_inc_tax }}
+                                {{ $generalSettings['business__currency'].' '.$product->unit_cost_inc_tax }}
                             </td>
-                            <td class="text-start">{{ json_decode($generalSettings->business, true)['currency'].' '.$product->subtotal }} </td>
+                            <td class="text-start">{{ $generalSettings['business__currency'].' '.$product->subtotal }} </td>
                         </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">Net Total Amount :</th>
+                        <th colspan="4" class="text-end">@lang('menu.net_total_amount') : </th>
                         <td class="text-start">
-                            {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->net_total_amount}}
+                            {{ $generalSettings['business__currency'].' '.$adjustment->net_total_amount}}
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="4" class="text-end">Recovered Amount :</th>
+                        <th colspan="4" class="text-end">@lang('menu.recovered_amount') : </th>
                         <td class="text-start">
-                            {{ json_decode($generalSettings->business, true)['currency'].' '.$adjustment->recovered_amount }}
+                            {{ $generalSettings['business__currency'].' '.$adjustment->recovered_amount }}
                         </td>
                     </tr>
                 </tfoot>
@@ -295,11 +295,11 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>CHECKED BY :</strong></h6>
+                    <h6><strong>@lang('menu.checked_by')</strong></h6>
                 </div>
 
                 <div class="col-md-6 text-end">
-                    <h6><strong>APPROVED BY :</strong></h6>
+                    <h6><strong>@lang('menu.approved_by')</strong></h6>
                 </div>
             </div>
         </div>
@@ -314,7 +314,7 @@
         @if (env('PRINT_SD_OTHERS') == true)
             <div class="print_footer">
                 <div class="text-center">
-                    <small>Software by <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 </div>
             </div>
         @endif

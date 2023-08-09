@@ -1,5 +1,5 @@
 @php
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <style>
     .payment_top_card {background: #d7dfe8;}
@@ -10,10 +10,10 @@
     .payment_details_contant{background: azure!important;}
     h6.checkbox_input_wrap {border: 1px solid #495677;padding: 0px 7px;}
 </style>
-<div class="modal-dialog col-60-modal" role="document">
+<div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Add Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_payment') <span class="type_name"></span></h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -23,12 +23,12 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong><span>{{ $purchase->supplier->name }}</span></li>
-                                <li><strong>Business : </strong>
-                                    <span>{{ $purchase->supplier->business_name }}</span> 
+                                <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span></li>
+                                <li><strong>@lang('menu.business') : </strong>
+                                    <span>{{ $purchase->supplier->business_name }}</span>
                                 </li>
-                                <li><strong>phone : </strong>
-                                    <span>{{ $purchase->supplier->phone }}</span> 
+                                <li><strong>@lang('menu.phone') : </strong>
+                                    <span>{{ $purchase->supplier->phone }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -36,9 +36,9 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong> Reference ID : </strong>{{ $purchase->invoice_id }}</li>
-                                <li><strong>B.Location : </strong>
-                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}
+                                <li><strong> @lang('menu.reference_id') : </strong>{{ $purchase->invoice_id }}</li>
+                                <li><strong>@lang('menu.b_location') : </strong>
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}
                                 </li>
                             </ul>
                         </div>
@@ -47,34 +47,35 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>
+                                <li><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency'] }} </strong>
                                     <span class="total_due text-danger"><strong>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</strong></span>
                                 </li>
                                 <li>
-                                    <strong>Date : </strong>
-                                    {{ 
-                                        date(json_decode($generalSettings->business, true)['date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) 
+                                    <strong>@lang('menu.date') : </strong>
+                                    {{
+                                        date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time))
                                     }}
                                 </li>
-                                <li><strong>Purchase Status : </strong>
+                                <li><strong>@lang('menu.purchases_status') : </strong>
                                     @if ($purchase->purchase_status == 1)
-                                        <span class="text-success"><b>Received</b></span>
+                                        <span class="text-success"><b>@lang('menu.receive') : </b></span>
                                     @elseif($purchase->purchase_status == 2){
-                                        <span class="text-warning"><b>Pending</b></span>
+                                        <span class="text-warning"><b>@lang('menu.pending')</b></span>
+                                    }
                                     @else
-                                        <span class="text-primary"><b>Ordered</b></span>
+                                        <span class="text-primary"><b>@lang('menu.ordered')</b></span>
                                     @endif
                                 </li>
-                                <li><strong>Payment Status : </strong>
+                                <li><strong>@lang('menu.payment_status') : </strong>
                                     @php
                                         $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                                     @endphp
                                     @if ($purchase->due <= 0)
-                                        <span class="text-success"><b>Paid</b></span>
-                                    @elseif($purchase->due > 0 && $purchase->due < $payable) 
-                                        <span class="text-primary"><b>Partial</b></span>
+                                        <span class="text-success"><b>@lang('menu.paid')</b></span>
+                                    @elseif($purchase->due > 0 && $purchase->due < $payable)
+                                        <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                     @elseif($payable == $purchase->due)
-                                        <span class="text-danger "><b>Due</b></span>
+                                        <span class="text-danger "><b>@lang('menu.due')</b></span>
                                     @endif
                                 </li>
                             </ul>
@@ -87,7 +88,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -101,20 +102,20 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
                                     <i class="fas fa-calendar-week text-dark input_i"></i>
                                 </span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -123,8 +124,8 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option 
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" 
+                                    <option
+                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
                                         value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
@@ -137,7 +138,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Credit Account :</strong> </label>
+                        <label><strong>@lang('menu.credit_account') : </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
@@ -160,21 +161,23 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <label><strong>@lang('menu.attach_document') : </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> Payment Note :</strong></label>
+                    <label><strong> @lang('menu.payment_note') : </strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                 </div>
 
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -197,7 +200,7 @@
         }
 
         var url = $(this).attr('action');
-    
+
         $.ajax({
             url: url,
             type: 'post',
@@ -208,7 +211,7 @@
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
-                    
+
                     toastr.error(data.errorMsg, 'ERROR');
                     $('.loading_button').hide();
                 } else {
@@ -225,7 +228,7 @@
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }
 
@@ -236,7 +239,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

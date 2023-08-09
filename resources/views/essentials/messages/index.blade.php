@@ -12,7 +12,7 @@
         .delete_message {color: red;font-weight: 700;}
         .message_area:last-child{border-bottom: 0px solid black;}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'User Messages - ')
 @section('content')
@@ -22,81 +22,59 @@
                 <div class="border-class">
                     <div class="main__content">
                         <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul class="list-unstyled">
-                                        @if (auth()->user()->permission->essential['assign_todo'] == '1')
-                                            <li>
-                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
-                                            </li>
-                                        @endif
-                                        
-                                        @if (auth()->user()->permission->essential['work_space'] == '1')
-                                            <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large"></i> <b>@lang('menu.work_space')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['memo'] == '1')
-                                            <li>
-                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.memo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['msg'] == '1')
-                                            <li>
-                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope text-primary"></i> <b>@lang('menu.message')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
+                            <div class="name-head">
+                                <span class="fas fa-envelope"></span>
+                                <h6>@lang('menu.message_manage')</h6>
                             </div>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                            </a>
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-12">
-                                        <h6>Messages </h6>
-                                    </div>
+                    <div class="p-3">
+                        <div class="card">
+                            <div class="section-header">
+                                <div class="col-md-12">
+                                    <h6>@lang('menu.message') </h6>
                                 </div>
-    
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="row">
-                                        <div class="message_area" id="chat-box">
-                                            
-                                        </div>
-                                    </div>
+                            </div>
 
-                                    <div class="px-2 py-1 form-header">
-                                        <div class="col-md-12">
-                                            <form id="add_message_form" action="{{ route('messages.store') }}">
-                                                @csrf
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        {{-- <input required type="text" name="task_name" id="task_name" class="form-control" placeholder="Wright task and press enter">  --}}
-                                                        
-                                                        <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
-                                                    </div>
-                                                    <div class="col-md-2"> 
-                                                        <button type="submit" class="c-btn button-success me-0 float-start submit_button">
-                                                            <i class="fas fa-spinner ts_preloader d-none" id="ts_preloader"></i>
-                                                       Send</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                            <div class="py-2 px-3">
+                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                                <div class="row">
+                                    <div class="message_area" id="chat-box">
+
                                     </div>
                                 </div>
-    
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
+
+                                <form id="add_message_form" action="{{ route('messages.store') }}">
                                     @csrf
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex">
+                                                {{-- <input required type="text" name="task_name" id="task_name" class="form-control" placeholder="Wright task and press enter">  --}}
+                                                <div class="attach-document-group">
+                                                    <label for="attachedFile"><i class="fas fa-plus"></i></label>
+                                                    <input type="file" name="attachment" id="attachedFile">
+                                                </div>
+
+                                                <input required type="text" name="description" id="description" class="form-control form-control-sm" placeholder="Type Message" autofocus>
+
+                                                <button type="submit" class="c-btn me-0 float-start submit_button">
+                                                    <i class="fas fa-spinner ts_preloader d-hide" id="ts_preloader"></i>
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
+
+                            <form id="deleted_form" action="" method="post">
+                                @method('DELETE')
+                                @csrf
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -105,7 +83,7 @@
     </div>
 @endsection
 @push('scripts')
-<script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
     // Get all messages by ajax
     function message_list() {
@@ -125,7 +103,7 @@
     //Add message request by ajax
     $(document).on('submit', '#add_message_form', function(e){
         e.preventDefault();
-        $('#ts_preloader').removeClass('d-none');
+        $('#ts_preloader').removeClass('d-hide');
         var url = $(this).attr('action');
         var request = $(this).serialize();
         $.ajax({
@@ -135,8 +113,8 @@
             success:function(data){
                 message_list();
                 $('#add_message_form')[0].reset();
-                toastr.success(data); 
-                $('#ts_preloader').addClass('d-none');
+                toastr.success(data);
+                $('#ts_preloader').addClass('d-hide');
                 scroll_down_chat_div();
             }
         });
@@ -145,9 +123,9 @@
     $(document).on('click', '#delete',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);           
+        $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {
@@ -160,7 +138,7 @@
                     'class': 'no bg-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });

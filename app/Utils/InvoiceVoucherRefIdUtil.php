@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ class InvoiceVoucherRefIdUtil
         if ($lastCustomerPayment) {
             $id = ++$lastCustomerPayment->id;
         }
+
         return $id;
     }
 
@@ -22,6 +24,7 @@ class InvoiceVoucherRefIdUtil
         if ($lastSalePayment) {
             $id = ++$lastSalePayment->id;
         }
+
         return $id;
     }
 
@@ -32,6 +35,7 @@ class InvoiceVoucherRefIdUtil
         if ($lastSupplierPayment) {
             $id = ++$lastSupplierPayment->id;
         }
+
         return $id;
     }
 
@@ -42,6 +46,7 @@ class InvoiceVoucherRefIdUtil
         if ($lastPurchasePayment) {
             $id = ++$lastPurchasePayment->id;
         }
+
         return $id;
     }
 
@@ -52,6 +57,7 @@ class InvoiceVoucherRefIdUtil
         if ($lastEntry) {
             $id = ++$lastEntry->id;
         }
+
         return $id;
     }
 }

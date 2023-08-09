@@ -2,18 +2,18 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-3">
-            <label><b>Product Name :</b> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control" id="sale_code" placeholder="Product Name"/>
+            <label><b>@lang('menu.product_name') : </b> <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control" id="sale_code" placeholder="@lang('menu.product_name')"/>
             <span class="error error_sale_name"></span>
         </div>
 
         <div class="col-md-3">
-            <label><b>Product Code (SKU) :</b></label>
-            <input type="text" name="product_code" class="form-control" placeholder="Product code"/>
+            <label><b>@lang('menu.product_code') (SKU) : </b></label>
+            <input type="text" name="product_code" class="form-control" placeholder="@lang('menu.product_code')"/>
         </div>
 
         <div class="col-md-3">
-            <label><b>Barcode Type :</b></label>
+            <label><b>@lang('menu.barcode_type') : </b></label>
             <select class="form-control" name="barcode_type" id="sale_barcode_type">
                 <option value="CODE128">Code 128 (C128)</option>
                 <option value="CODE39">Code 39 (C39)</option>
@@ -23,9 +23,9 @@
         </div>
 
         <div class="col-md-3">
-            <label><b> Unit :</b> <span class="text-danger">*</span></label>
+            <label><b> @lang('menu.unit') : </b> <span class="text-danger">*</span></label>
             <select class="form-control product_unit" name="unit_id" id="sale_unit_id">
-                <option value="">Select Unit</option>
+                <option value="">@lang('menu.select_unit')</option>
                 @foreach ($units as $unit)
                     <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                 @endforeach
@@ -35,11 +35,11 @@
     </div>
 
     <div class="form-group row mt-1">
-        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1')
+        @if ($generalSettings['product__is_enable_categories'] == '1')
             <div class="col-md-3">
-                <label><b>Category :</b> </label>
+                <label><b>@lang('menu.category') : </b> </label>
                 <select class="form-control category" name="category_id" id="sale_category_id">
-                    <option value="">Select Category</option>
+                    <option value="">@lang('menu.select_category')</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
@@ -47,22 +47,21 @@
             </div>
         @endif
 
-        @if (json_decode($generalSettings->product, true)['is_enable_categories'] == '1' && json_decode($generalSettings->product, true)['is_enable_sub_categories'] == '1')
+        @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
             <div class="col-md-3 parent_category">
-                <label><b>Child category :</b></label>
-                <select class="form-control" name="child_category_id"
-                    id="sale_child_category_id">
-                    <option value="">Select category first</option>
+                <label><b>@lang('menu.child_category') :</b></label>
+                <select class="form-control" name="sub_category_id" id="sale_sub_category_id">
+                    <option value="">@lang('menu.select_category_first')</option>
                 </select>
             </div>
         @endif
 
-        @if (json_decode($generalSettings->product, true)['is_enable_brands'] == '1')
+        @if ($generalSettings['product__is_enable_brands'] == '1')
             <div class="col-md-3">
-                <label><b>Brand :</b></label>
+                <label><b>@lang('menu.brand')</b></label>
                 <select class="form-control" data-live-search="true" name="brand_id"
                     id="sale_brand_id">
-                    <option value="">Select Brand</option>
+                    <option value="">@lang('menu.select_brand')</option>
                     @foreach ($brands as $brand)
                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                     @endforeach
@@ -70,11 +69,11 @@
             </div>
         @endif
 
-        @if (json_decode($generalSettings->product, true)['is_enable_warranty'] == '1')
+        @if ($generalSettings['product__is_enable_warranty'] == '1')
             <div class="col-md-3">
-                <label><b>Warranty :</b></label>
+                <label><b>@lang('menu.warranty') : </b></label>
                 <select class="form-control" name="warranty_id" id="sale_warranty_id">
-                    <option value="">Select Warranty</option>
+                    <option value="">@lang('menu.select_warranty')</option>
                     @foreach ($warranties as $warranty)
                         <option value="{{ $warranty->id }}">{{ $warranty->name }} ({{$warranty->type == 1 ? 'Warranty' : 'Guaranty'}})</option>
                     @endforeach
@@ -84,24 +83,37 @@
     </div>
 
     <div class="form-group row mt-1">
-        <div class="col-md-8">
-            <label><b>Description :</b> </label>
-            <textarea  name="product_details" class="form-control" cols="10" rows="3"></textarea>
+        <div class="col-md-3">
+            <label><b>@lang('menu.displayed_in_ecom')</b></label>
+            <select name="is_show_in_ecom" class="form-control" id="is_show_in_ecom" data-next="weight">
+                <option value="0">@lang('menu.no')</option>
+                <option value="1">@lang('menu.yes')</option>
+            </select>
         </div>
-        <div class="col-md-4">
-            <div class="row">
-                &nbsp;&nbsp;&nbsp;&nbsp; <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_in_ecom" id="is_show_in_ecom" value="1"> &nbsp; <b>Product wil be displayed in E-Commerce.</b>  &nbsp; </p>
-                <p class="checkbox_input_wrap p-0 m-0"> <input type="checkbox" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="1"> &nbsp; <b>Enable IMEI or SL NO</b>  &nbsp;</p>
-            </div>
+
+        <div class="col-md-3">
+            <label> <b>@lang('menu.enable_imei_or_sl_no')</b></label>
+            <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_not_for_sale">
+                <option value="0">@lang('menu.no')</option>
+                <option value="1">@lang('menu.yes')</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label><b>@lang('menu.batch_no_expire_date') </b> </label>
+            <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date">
+                <option value="0">@lang('menu.no')</option>
+                <option value="1">@lang('menu.yes')</option>
+            </select>
         </div>
     </div>
 
     <div class="form-group row mt-1">
-        @if (json_decode($generalSettings->product, true)['is_enable_price_tax'] == '1')
+        @if ($generalSettings['product__is_enable_price_tax'] == '1')
             <div class="col-md-3 ">
-                <label><b>Tax :</b> </label>
+                <label><b>@lang('menu.tax') : </b> </label>
                 <select class="form-control" name="tax_id" id="sale_tax_id">
-                    <option value="">NoTax</option>
+                    <option value="">@lang('menu.no_tax')</option>
                     @foreach ($taxes as $tax)
                         <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
                     @endforeach
@@ -110,7 +122,7 @@
         @endif
 
         <div class="col-md-3">
-            <label><b>Alert quentity :</b></label>
+            <label><b>@lang('menu.alert_quantity') : </b></label>
             <input type="number" name="alert_quantity" class="form-control"
                 autocomplete="off" id="sale_alert_quantity" value="0">
         </div>
@@ -120,10 +132,10 @@
         <div class="col-md-12">
             <table class="table modal-table table-sm">
                 <thead>
-                    <tr class="bg-primary text-white">
-                        <th>Default Purchase Price</th>
-                        <th>x Margin(%)</th>
-                        <th>Selling Price</th>
+                    <tr class="bg-secondary text-white">
+                        <th>@lang('menu.default_purchase_price')</th>
+                        <th>@lang('menu.x_margin')(%)</th>
+                        <th>@lang('menu.selling_price')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -131,12 +143,12 @@
                         <td>
                             <div class="row">
                                 <div class="col-md-6 text-start">
-                                    <label><b>Item Cost Exc.Tax :</b> <span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_exc_tax') : </b></label>
                                     <input type="text" name="product_cost" class="form-control" autocomplete="off" id="sale_product_cost" placeholder="Unit Cost Exc. Tax">
                                     <span class="error error_sale_product_cost"></span>
                                 </div>
                                 <div class="col-md-6 text-start">
-                                    <label><b>Item Cost (Inc.Tax) :</b><span class="text-danger">*</span></label>
+                                    <label><b>@lang('menu.unit_cost_inc_tax') : </b></label>
                                     <input type="text" name="product_cost_with_tax"
                                     class="form-control" autocomplete="off"
                                     id="sale_product_cost_with_tax" placeholder="Unit Cost Inc. Tax">
@@ -146,12 +158,12 @@
                         </td>
                         <td>
                             <label></label>
-                            <input type="text" name="profit" class="form-control" autocomplete="off" id="sale_profit" value="{{ json_decode($generalSettings->business, true)['default_profit'] }}">
+                            <input type="text" name="profit" class="form-control" autocomplete="off" id="sale_profit" value="{{ $generalSettings['business__default_profit'] }}">
                         </td>
                         <td class="text-start">
                             <div class="row">
                                 <div class="col-md-12 text-start">
-                                <label><b>Price Exc.Tax :</b><span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.price_exc_tax') : </b></label>
                                     <input type="text" name="product_price" class="form-control" autocomplete="off" id="sale_product_price">
                                     <span class="error error_sale_product_price"></span>
                                 </div>
@@ -165,15 +177,15 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <p><strong>Add Opening Stock</strong></p>
+            <p><strong>{{ __('Add opening stock') }}</strong></p>
             <div class="table-responsive">
                 <table class="table modal-table table-sm">
                     <thead>
-                        <tr class="bg-primary text-white">
-                            <th>Business Location</th>
-                            <th>Quantity</th>
-                            <th>Unit Cost Inc.Tax</th>
-                            <th>SubTotal</th>
+                        <tr class="bg-secondary text-white">
+                            <th>@lang('menu.business_location')</th>
+                            <th>@lang('menu.quantity')</th>
+                            <th>@lang('menu.unit_cost_inc_tax')</th>
+                            <th>@lang('menu.sub_total')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -181,8 +193,8 @@
                             <td>
                                 <input type="hidden" name="branch_id" id="os_branch_id" value="{{ auth()->user()->branch_id }}">
                                 <p>
-                                    {!! auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code :  json_decode($generalSettings->business, true)['shop_name'] .'<b>(HO)</b>' !!}
-                                </p> 
+                                    {!! auth()->user()->branch_id ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code :  $generalSettings['business__shop_name'] .'<b>(HO)</b>' !!}
+                                </p>
                             </td>
 
                             <td>
@@ -197,18 +209,20 @@
                                 <b><span class="os_span_subtotal">0.00</span></b>
                                 <input type="hidden" name="subtotal" id="os_subtotal" value="0.00">
                             </td>
-                        </tr> 
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    
+
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+            </div>
         </div>
     </div>
 </form>
@@ -306,12 +320,12 @@
             dataType: 'json',
             success:function(subcate){
 
-                $('#sale_child_category_id').empty();
-                $('#sale_child_category_id').append('<option value="">Select Sub-Category</option>');
+                $('#sale_sub_category_id').empty();
+                $('#sale_sub_category_id').append('<option value="">Select Sub-Category</option>');
 
                 $.each(subcate, function(key, val){
 
-                    $('#sale_child_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
+                    $('#sale_sub_category_id').append('<option value="'+val.id+'">'+val.name+'</option>');
                 });
             }
         });

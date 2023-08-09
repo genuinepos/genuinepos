@@ -9,39 +9,127 @@
     <title>Genuine POS</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/fontawesome/css/all.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/bootstrap.min.css">
-    {{-- <link href="{{asset('public')}}/backend/css/reset.css" rel="stylesheet" type="text/css"> --}}
-    <link href="{{asset('public')}}/backend/css/typography.css" rel="stylesheet" type="text/css">
-    <link href="{{asset('public')}}/backend/css/body.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{{ asset('public/backend/asset/css/calculator.css') }}">
+    {{-- creat pate link start --}}
 
-    {{-- <link href="{{asset('public')}}/backend/css/form.css" rel="stylesheet" type="text/css"> --}}
-    <link href="{{asset('public')}}/backend/css/gradient.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/comon.css">
-    {{-- <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/layout.css"> --}}
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/pos.css">
-    <link href="{{asset('public')}}/assets/plugins/custom/toastrjs/toastr.min.css" rel="stylesheet"
+    <link href="{{asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- Calculator -->
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
+    <link rel="stylesheet" href="{{asset('backend/asset/css/comon.css') }}">
+    <link rel="stylesheet" href="{{asset('backend/asset/css/pos.css') }}">
+    <link href="{{asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet"
     type="text/css"/>
-    <link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="{{asset('public')}}/backend/asset/css/style.css">
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{asset('backend/asset/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
+    <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
-    <script src="{{ asset('public') }}/assets/plugins/custom/toastrjs/toastr.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
-    {{-- <script src="{{asset('public')}}/backend/js/jquery-1.7.1.min.js "></script> --}}
-    <script src="{{asset('public')}}/backend/asset/js/bootstrap.bundle.min.js "></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.min.js"></script>
-    <script src="{{asset('public')}}/assets/plugins/custom/Shortcuts-master/shortcuts.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/digital_clock/digital_clock.js"></script>
+
+    <script src="{{asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
+    <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
+    <script src="{{asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
+    <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
+    <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
+    {{-- creat pate link end --}}
+
+    <style>
+        .d-hide {
+            display: none;
+        }
+        @media (min-width: 576px) {
+            .modal-full-display {
+                max-width: 93% !important;
+            }
+
+            .four-col-modal {
+                max-width: 70% !important;
+                margin: 3.8rem auto;
+            }
+
+            .five-col-modal {
+                max-width: 90% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-80-modal {
+                max-width: 80% !important;
+                margin: 3.8rem auto;
+            }
+
+            .double-col-modal {
+                max-width: 35% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-40-modal {
+                max-width: 40% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-45-modal {
+                max-width: 45% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-50-modal {
+                max-width: 50% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-55-modal {
+                max-width: 55% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-60-modal {
+                max-width: 60% !important;
+                margin: 3.8rem auto;
+            }
+
+            .col-65-modal {
+                max-width: 65% !important;
+                margin: 3.8rem auto;
+            }
+        }
+
+        .modal-middle {
+            margin-top: 33%;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #cbe4ee
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            /* background-color: #EBEDF3;*/
+            background-color: #cbe4ee;
+        }
+
+        /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
+
+
+        .widget_content .table-responsive {
+            min-height: 80vh !important;
+        }
+    </style>
 </head>
 
-<body class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
+<body class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}">
     <form id="pos_submit_form" action="{{ route('sales.pos.update') }}" method="POST">
         @csrf
         <div class="pos-body">
@@ -50,48 +138,47 @@
             </div>
         </div>
 
-         <!--Add Payment modal-->
-         <div class="modal fade in" id="otherPaymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!--Add Payment modal-->
+        <div class="modal fade in" id="otherPaymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog col-50-modal" role="document">
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">Choose Payment method</h6>
-                        <a href="" class="close-btn" id="cancel_pay_mathod"><span
-                            class="fas fa-times"></span></a>
+                        <h6 class="modal-title" id="payment_heading">@lang('menu.choose_payment_method')</h6>
+                        <a href="" class="close-btn" id="cancel_pay_mathod"><span class="fas fa-times"></span></a>
                     </div>
 
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                        <option value="{{ $method->id }}">{{ $method->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>Debit Account :</strong> </label>
+                                <label><strong>@lang('menu.debit_account') </strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
                                     <select name="account_id" class="form-control" id="account_id">
                                         @foreach ($accounts as $account)
-                                            <option value="{{ $account->id }}">
-                                                @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                @endphp
-                                                {{ $account->name.$accountType}}
-                                            </option>
+                                        <option value="{{ $account->id }}">
+                                            @php
+                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
+                                            @endphp
+                                            {{ $account->name.$accountType}}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -99,15 +186,15 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> Payment Note :</strong></label>
+                            <label><strong> @lang('menu.payment_note') </strong></label>
                             <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">Confirm (F10)</a>
-                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">Close</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
+                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">@lang('menu.confirm') (F10)</a>
+                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
                             </div>
                         </div>
                     </div>
@@ -115,49 +202,44 @@
             </div>
         </div>
 
-         <!-- Recent transection list modal-->
+        <!-- Recent transection list modal-->
         <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog col-40-modal" role="document">
+            <div class="modal-dialog col-60-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Recent Transections</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="tab_list_area">
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a id="tab_btn" class="tab_btn tab_active text-white" href="{{url('sales/pos/recent/sales')}}"><i class="fas fa-info-circle"></i> Final</a>
-                                </li>
+                            <div class="btn-group">
+                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
 
-                                <li>
-                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/quotations')}}"><i class="fas fa-scroll"></i>Quotation</a>
-                                </li>
+                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
 
-                                <li>
-                                    <a id="tab_btn" class="tab_btn text-white" href="{{url('sales/pos/recent/drafts')}}"><i class="fas fa-shopping-bag"></i> Draft</a>
-                                </li>
-                            </ul>
+                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
+                            </div>
                         </div>
 
                         <div class="tab_contant">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="table_area">
+                                    <div class="recent_sale_table_area">
                                         <div class="data_preloader" id="recent_trans_preloader">
-                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table modal-table table-sm table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-start">SL</th>
-                                                        <th class="text-start">Reference/InvoiceId</th>
-                                                        <th class="text-start">Customer</th>
-                                                        <th class="text-start">Total</th>
-                                                        <th class="text-start">Actions</th>
+                                                        <th class="text-start fw-bold">@lang('menu.sl')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.date')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.reference')/@lang('menu.invoice_id')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.customer')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.total')</th>
+                                                        <th class="text-start fw-bold">@lang('menu.actions')</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="data-list" id="transection_list"></tbody>
@@ -170,14 +252,14 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-     <!-- Recent transection list modal end-->
+        <!-- Recent transection list modal end-->
     </form>
 
     <!-- Hold invoice list modal -->
@@ -185,9 +267,8 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Hold Invoices</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.hold_invoices')</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -196,7 +277,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="data_preloader" id="hold_invoice_preloader">
-                                        <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                     </div>
                                     <div class="table-responsive" id="hold_invoices"></div>
                                 </div>
@@ -206,7 +287,7 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">Close</button>
+                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
                         </div>
                     </div>
                 </div>
@@ -220,36 +301,34 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="data_preloader" id="stock_preloader">
-                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
-                    <h6 class="modal-title">Item Stocks</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>
             </div>
         </div>
     </div>
     <!-- Edit selling product modal end-->
-    
-    @if (auth()->user()->permission->product['product_add'] == '1')
-        <!--Add Product Modal-->
-        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="add_product_body">
-                        <!--begin::Form-->
-                    </div>
+
+    @if(auth()->user()->can('product_add'))
+    <!--Add Product Modal-->
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog four-col-modal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                </div>
+                <div class="modal-body" id="add_product_body">
+                    <!--begin::Form-->
                 </div>
             </div>
         </div>
-        <!--Add Product Modal End-->
+    </div>
+    <!--Add Product Modal End-->
     @endif
 
     <!--Add Customer Modal-->
@@ -257,9 +336,8 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
@@ -272,9 +350,8 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title">Suspended Sales</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <h6 class="modal-title">@lang('menu.suspended_sales')</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="suspended_sale_list">
 
@@ -290,59 +367,57 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product">
                         <div class="form-group">
-                            <label> <strong>Quantity</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value=""/>
+                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
+                            <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value="" />
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group">
-                            <label> <strong>Unit Price Exc.Tax</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->permission->sale['edit_price_pos_screen'] == '1' ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value=""/>
+                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
+                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen') ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value="" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 
-                        @if (auth()->user()->permission->sale['edit_discount_pos_screen'] == '1')
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <label><strong>Discount Type</strong>  :</label>
-                                    <select class="form-control form-control-sm" id="e_unit_discount_type">
-                                        <option value="2">Percentage</option>
-                                        <option value="1">Fixed</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label><strong>Discount</strong>  :</label>
-                                    <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00"/>
-                                    <input type="hidden" id="e_discount_amount"/>
-                                </div>
+                        @if(auth()->user()->can('edit_discount_pos_screen'))
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label><strong>@lang('menu.discount_type')</strong> </label>
+                                <select class="form-control form-control-sm" id="e_unit_discount_type">
+                                    <option value="2">@lang('menu.percentage')</option>
+                                    <option value="1">@lang('menu.fixed')</option>
+                                </select>
                             </div>
+
+                            <div class="col-md-6">
+                                <label><strong>@lang('menu.discount')</strong> </label>
+                                <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00" />
+                                <input type="hidden" id="e_discount_amount" />
+                            </div>
+                        </div>
                         @endif
 
                         <div class="form-group">
-                            <label><strong>Tax</strong> :</label>
+                            <label><strong>@lang('menu.tax')</strong> </label>
                             <select class="form-control form-control-sm" id="e_unit_tax">
 
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label><strong>Sale Unit</strong> :</label>
+                            <label><strong>@lang('menu.sale_unit')</strong> </label>
                             <select class="form-control form-control-sm" id="e_unit"></select>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" class="c-btn button-success me-0 float-end">Update</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                                <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.update')</button>
+                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                             </div>
                         </div>
                     </form>
@@ -357,12 +432,11 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
                 <div class="modal-header">
-                    <h6 class="modal-title">Item Stocks</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>
             </div>
@@ -376,88 +450,21 @@
         @csrf
     </form>
     <!--Data delete form end-->
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
             $.ajax({
-                url: "{{ route('pos.short.menus.edit.page.show') }}",
-                type: 'get',
-                success: function(data) {
+                url: "{{ route('pos.short.menus.edit.page.show') }}"
+                , type: 'get'
+                , success: function(data) {
                     $('#pos-shortcut-menus').html(data);
                 }
             });
         }
         allPosShortcutMenus();
 
-        // Calculate total amount functionalitie
-        function calculateTotalAmount(){
-
-            var indexs = document.querySelectorAll('#index');
-            indexs.forEach(function(index) {
-
-                var className = index.getAttribute("class");
-                var rowIndex = $('.' + className).closest('tr').index();
-                $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
-            });
-
-            var quantities = document.querySelectorAll('#quantity');
-            var subtotals = document.querySelectorAll('#subtotal');
-            // Update Total Item
-            var total_item = 0;
-            quantities.forEach(function(qty){
-
-                total_item += 1;
-            });
-
-            $('#total_item').val(parseFloat(total_item));
-
-            // Update Net total Amount
-            var netTotalAmount = 0;
-            subtotals.forEach(function(subtotal){
-
-                netTotalAmount += parseFloat(subtotal.value);
-            });
-
-            $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
-
-            if ($('#order_discount_type').val() == 2) {
-
-                var orderDisAmount = parseFloat(netTotalAmount) /100 * parseFloat($('#order_discount').val() ? $('#order_discount').val() : 0);
-                $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
-            }else{
-                
-                var orderDiscount = $('#order_discount').val() ? $('#order_discount').val() : 0;
-                $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
-            }
-
-            var orderDiscountAmount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
-            // Calc order tax amount
-            var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
-            var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax) ;
-            $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
-
-            // Update Total payable Amount
-            var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
-            var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
-            var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
-
-            var calcInvoicePayable = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge);
-
-            $('#total_invoice_payable').val(parseFloat(calcInvoicePayable).toFixed(2));
-
-            var calcTotalPayableAmount = parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount) + parseFloat(calcOrderTaxAmount) + parseFloat(shipmentCharge) + parseFloat(previousDue);
-            $('#total_payable_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            $('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-            // Update purchase due
-            var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-            var changeAmount = parseFloat(payingAmount) - parseFloat(calcTotalPayableAmount);
-            $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-            var calcTotalDue = parseFloat(calcTotalPayableAmount) - parseFloat(payingAmount);
-            $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
-        }
-
-        $(document).keypress(".scanable",function(event){
+        $(document).keypress(".scanable", function(event) {
 
             if (event.which == '10' || event.which == '13') {
 
@@ -465,60 +472,24 @@
             }
         });
 
-        var tableRowIndex = 0;
-        $(document).on('click', '#delete',function(e){
-
+        $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
-            var parentTableRow = $(this).closest('tr');
-            tableRowIndex = parentTableRow.index();  
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
             $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
+                'title': 'Confirmation'
+                , 'content': 'Are you sure, you want to exit?'
+                , 'buttons': {
                     'Yes': {
                         'class': 'yes btn-modal-primary',
-                        'action': function() {$('#deleted_form').submit();$('#recent_trans_preloader').show()}
-                    },
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-
-                    pickHoldInvoice();
-                    toastr.error(data);
-                    var productTableRow = $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
-                    $('#recent_trans_preloader').hide();
-                }
-            });
-        });
-
-        $(document).on('click', '#pos_exit_button',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#payment_deleted_form').attr('action', url);           
-            $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure, you want to exit?',
-                'buttons': {
-                    'Yes': {
-                        'class': 'yes btn-modal-primary',
-                        'action': function() {window.location = "{{ route('sales.pos.create') }}";}
-                    },
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                        'action': function() {
+                            window.location = "{{ route('sales.pos.create') }}";
+                        }
+                    }
+                    , 'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });

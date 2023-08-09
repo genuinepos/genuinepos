@@ -1,16 +1,18 @@
 <?php
 
 namespace App\Models\Essential;
-use App\Models\AdminAndUser;
-use Illuminate\Database\Eloquent\Model;
 
-class TodoUsers extends Model
+use App\Models\BaseModel;
+use App\Models\User;
+
+class TodoUsers extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function user()
     {
-        return $this->belongsTo(AdminAndUser::class);
+        return $this->belongsTo(User::class);
     }
 }

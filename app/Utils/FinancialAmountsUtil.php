@@ -4,7 +4,6 @@ namespace App\Utils;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Utils\NetProfitLossAccount;
 
 class FinancialAmountsUtil
 {
@@ -17,7 +16,7 @@ class FinancialAmountsUtil
         $this->netProfitLossAccount = $netProfitLossAccount;
     }
 
-    public function allFinancialAmounts($request = NULL): array
+    public function allFinancialAmounts($request = null): array
     {
         $cashAndBankBalance = $this->cashAndBankBalance($request);
         $loanAmounts = $this->loanAmounts($request);
@@ -62,7 +61,7 @@ class FinancialAmountsUtil
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
             ->whereIn('accounts.account_type', [1, 2])
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
-            ->where('account_ledgers.loan_id', '!=', NULL)
+            ->where('account_ledgers.loan_id', '!=', null)
             // ->where('debit', '!=', NULL)
             ->leftJoin('loans', 'account_ledgers.loan_id', 'loans.id')
             ->where('loans.loan_by', 'Expense');
@@ -77,8 +76,8 @@ class FinancialAmountsUtil
 
             if ($request->branch_id == 'NULL') {
 
-                $cashInHandAmountsQ->where('account_branches.branch_id', NULL);
-                $expenseLoanQ->where('account_branches.branch_id', NULL);
+                $cashInHandAmountsQ->where('account_branches.branch_id', null);
+                $expenseLoanQ->where('account_branches.branch_id', null);
             } else {
 
                 $cashInHandAmountsQ->where('account_branches.branch_id', $request->branch_id);
@@ -154,7 +153,7 @@ class FinancialAmountsUtil
 
             if ($request->branch_id == 'NULL') {
 
-                $fixedAssetAmountsQ->where('account_branches.branch_id', NULL);
+                $fixedAssetAmountsQ->where('account_branches.branch_id', null);
             } else {
 
                 $fixedAssetAmountsQ->where('account_branches.branch_id', $request->branch_id);
@@ -197,7 +196,7 @@ class FinancialAmountsUtil
 
             if ($request->branch_id == 'NULL') {
 
-                $loanQ->where('loans.branch_id', NULL);
+                $loanQ->where('loans.branch_id', null);
             } else {
 
                 $loanQ->where('loans.branch_id', $request->branch_id);
@@ -214,7 +213,6 @@ class FinancialAmountsUtil
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $loanQ;
         } else {
 
             $loanQ->where('loans.branch_id', auth()->user()->branch_id)

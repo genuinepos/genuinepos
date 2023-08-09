@@ -1,17 +1,16 @@
 :root {
+    --brand-color: #3b3d58;
     --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
-    --red-color-1: #7e0d3d;
+    --red-color-1: var(--brand-color);
     --red-color-2: #3a1026;
 
     --blue-color-gradient: linear-gradient(#036dad 0%, #29b0fd 100%);
     --blue-color-1: #29b0fd;
     --blue-color-2: #036dad;
 
-    --dark-color-gradient: linear-gradient(#444444, #0a0b0c);
+    --dark-color-gradient: linear-gradient(var(--brand-color), #444444);
     --dark-color-1: #0d3850;
-    --dark-color-2: #0a0b0c;
-
-    /* --light-color-gradient: linear-gradient(#e1e1e1, #989898); */
+    --brand-color: #3b3d58;
     --light-color-gradient: -webkit-linear-gradient(
         top,
         rgba(255, 255, 255, 0.3) 0%,
@@ -25,9 +24,10 @@
     --white-color: #fff;
     --black-color: rgb(41, 41, 41);
     --black-color-1: rgb(71, 71, 71);
+    --black-color-2: rgb(62, 62, 62);
 }
 
-/*================= Color pallete  ===================*/
+/*================= Color pallette  ===================*/
 .color_change_wrapper {
     position: fixed;
     right: 6px;
@@ -168,7 +168,7 @@ body.blue-theme {
     background: var(--light-color-gradient);
 }
 
-.blue-theme .check-out-woaper {
+.blue-theme .check-out-wraper {
     background: var(--blue-color-gradient);
     border: 1px solid var(--blue-color-2);
 }
@@ -231,88 +231,72 @@ body.blue-theme {
 
 /* =================Dark theme =======================  */
 body.dark-theme {
-    background: var(--light-color-gradient) !important;
-}
-
-.dark-theme .pos-body {
-    border: 1px solid var(--dark-color-2);
-    background: linear-gradient(#dedede, #444444);
-}
-
-.dark-theme .head-pos {
-    border-bottom: 1px solid var(--dark-color-2);
+    background: #eef0f8 !important;
 }
 
 .dark-theme .pos-btn {
-    border: 2px solid #fff;
+    border: 1px solid var(--blue-color-1);
     color: #fff;
 }
 
 .dark-theme nav.pos-navigation {
-    background: var(--dark-color-gradient);
+    background: var(--black-color);
 }
 
 .dark-theme .date {
-    border: 1px solid #fff;
-    color: #fff;
-}
-
-.dark-theme .left-cat-pos {
-    background: var(--light-color-gradient);
-    border: 1px solid #6f5a5a !important;
+    border: 1px solid #4a4a4a;
+    color: #cecece;
 }
 
 .dark-theme .pos-footer {
-    background: var(--dark-color-gradient);
+    background: var(--black-color);
 }
 
 .dark-theme .cat-button {
-    background: var(--dark-color-gradient);
+    background: var(--black-color-1);
+    border-left: 3px solid var(--black-color-1);
     color: #fff;
+    transition: .3s;
+}
+.dark-theme .cat-button.active {
+    background: var(--black-color-2);
+    border-left-color: #7bc4ff;
 }
 
 .dark-theme .cat-button:hover {
-    background: var(--dark-color-gradient);
+    background: var(--black-color-2);
+    border-left: 3px solid #7bc4ff;
     color: #fff;
 }
 
 .dark-theme .product-inner {
-    background: #fff;
-    border: 1px solid var(--dark-color-2);
+    background: var(--black-color);
 }
 
 .dark-theme .show-product {
-    background: var(--light-color-gradient);
-    border: 1px solid var(--dark-color-2);
+    background: var(--black-color);
 }
 
 .dark-theme .product {
-    background: #f7f7f7;
+    background: var(--black-color-1);
     box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
 }
 
 .dark-theme .product-ctn .product-name {
-    color: var(--title-color);
-    background: #ddd;
+    color: #fff;
+    background: var(--black-color-1);
 }
 
 .dark-theme .product-name a {
-    color: #000;
-}
-
-.dark-theme .cart-table {
-    border: 1px solid var(--dark-color-2);
-    background: var(--light-color-gradient);
+    color: #fff;
 }
 
 .dark-theme .cart-table-inner-pos {
-    background: #fff;
-    border: 1px solid var(--dark-color-2);
+    background: #ededed;
 }
 
 .dark-theme .tbl-head {
-    border-bottom: 2px solid #000;
-    background: #98989869;
+    background: var(--black-color);
 }
 
 .dark-theme .data_preloader {
@@ -321,22 +305,24 @@ body.dark-theme {
 }
 
 .dark-theme .sub-total-input {
-    background: var(--dark-color-gradient);
+    background: var(--black-color);
 }
 
-.dark-theme .pos-right-inner {
-    border: 1px solid var(--dark-color-2);
-    background: var(--light-color-gradient);
+.dark-theme .check-out-wraper {
+    background: var(--black-color);
 }
 
-.dark-theme .check-out-woaper {
-    background: var(--dark-color-gradient);
-    border: 1px solid var(--dark-color-2);
+.dark-theme .function-sec {
+    background: var(--black-color-2);
+}
+
+.dark-theme .btn-bg {
+    background: var(--black-color-1);
 }
 
 .dark-theme .resent-tn {
     color: #fff;
-    background: var(--dark-color-1);
+    background: var(--brand-color);
 }
 
 .dark-theme .modal-header {
@@ -358,7 +344,7 @@ body.dark-theme {
 }
 
 .dark-theme .btn_30_blue a {
-    border: var(--dark-color-2) 1px solid;
+    /* border: var(--brand-color) 1px solid; */
     box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
     -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
         inset 0 1px 1px -1px #fff;
@@ -374,7 +360,7 @@ body.dark-theme {
 }
 
 .dark-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
-    background: var(--dark-color-1);
+    background: var(--brand-color);
 }
 
 .dark-theme
@@ -382,7 +368,7 @@ body.dark-theme {
     .jconfirm-box
     .jconfirm-buttons
     button.btn-default:hover {
-    background: var(--dark-color-2);
+    background: var(--brand-color);
 }
 
 .dark-theme .set-height {
@@ -390,8 +376,7 @@ body.dark-theme {
 }
 
 .dark-theme .all-cat {
-    border: 1px solid #000;
-    background: rgb(71, 71, 71);
+    background: var(--black-color);
 }
 
 /* =================Dark theme end =======================  */
@@ -411,7 +396,7 @@ body.light-theme {
 }
 
 .light-theme .pos-btn {
-    border: 2px solid var(--dark-color-1);
+    border: 2px solid var(--brand-color);
     color: #fff;
 }
 
@@ -420,8 +405,8 @@ body.light-theme {
 }
 
 .light-theme .date {
-    border: 1px solid var(--dark-color-1);
-    color: var(--dark-color-1);
+    border: 1px solid var(--brand-color);
+    color: var(--brand-color);
 }
 
 .light-theme .left-cat-pos {
@@ -435,12 +420,12 @@ body.light-theme {
 
 .light-theme .cat-button {
     background: var(--light-color-gradient);
-    color: var(--dark-color-1);
+    color: var(--brand-color);
 }
 
 .light-theme .cat-button:hover {
     background: var(--light-color-gradient);
-    color: var(--dark-color-2);
+    color: var(--brand-color);
 }
 
 .light-theme .product-inner {
@@ -495,13 +480,13 @@ body.light-theme {
     background: var(--light-color-gradient);
 }
 
-.light-theme .check-out-woaper {
+.light-theme .check-out-wraper {
     background: var(--light-color-gradient);
     border: 1px solid var(--light-color-2);
 }
 
 .light-theme .resent-tn {
-    color: var(--dark-color-2);
+    color: var(--brand-color);
     background: var(--light-color-1);
 }
 
@@ -531,7 +516,7 @@ body.light-theme {
     -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
     text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
         0px 1px 0px rgb(255 255 255 / 20%);
-    color: var(--dark-color-2);
+    color: var(--brand-color);
     background: var(--light-color-gradient);
 }
 
@@ -541,7 +526,7 @@ body.light-theme {
 
 .light-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
     background: var(--light-color-1);
-    color: var(--dark-color-2);
+    color: var(--brand-color);
 }
 
 .light-theme
@@ -549,7 +534,7 @@ body.light-theme {
     .jconfirm-box
     .jconfirm-buttons
     button.btn-default:hover {
-    color: var(--dark-color-2);
+    color: var(--brand-color);
 }
 
 .light-theme
@@ -561,15 +546,15 @@ body.light-theme {
 }
 
 .light-theme p.address-name {
-    color: var(--dark-color-1);
+    color: var(--brand-color);
 }
 
 .light-theme p.store-name {
-    color: var(--dark-color-1);
+    color: var(--brand-color);
 }
 
 .light-theme small.login-user-name {
-    color: var(--dark-color-1);
+    color: var(--brand-color);
 }
 
 .light-theme .date p span {
@@ -577,14 +562,28 @@ body.light-theme {
 }
 
 .light-theme .text-white {
-    color: var(--dark-color-2) !important;
+    color: var(--brand-color) !important;
 }
 
 .light-theme .modal-title {
-    color: var(--dark-color-2);
+    color: var(--brand-color);
 }
 
 .light-theme .jconfirm .jconfirm-box div.jconfirm-title-c .jconfirm-title {
-    color: var(--dark-color-2);
+    color: var(--brand-color);
 }
 /* =================Light theme end=======================  */
+
+
+
+
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+    .dark-theme .cat-button {
+        border-left-width: 0;
+    }
+    .dark-theme .cat-button:hover,
+    .dark-theme .cat-button.active {
+        border-left: 0;
+        border-bottom-color: #7bc4ff;
+    }
+}

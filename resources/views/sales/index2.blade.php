@@ -12,26 +12,27 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Sales</h5>
+                                <h5>@lang('menu.sales')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
+                                        <form id="filter_form">
                                             <div class="form-group row">
-                                                @if ($addons->branches == 1)
+                                                @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') </strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                class="form-control submit_able select2" id="branch_id" autofocus>
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -43,10 +44,10 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Customer :</strong></label>
-                                                    <select name="customer_id" class="form-control submit_able" id="customer_id" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="NULL">Walk-In-Customer</option>
+                                                    <label><strong>@lang('menu.customer') </strong></label>
+                                                    <select name="customer_id" class="form-control submit_able select2" id="customer_id" autofocus>
+                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="NULL">{{ __('Walk-In-Customer') }}</option>
                                                         @foreach ($customers as $customer)
                                                             <option value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
                                                         @endforeach
@@ -54,16 +55,16 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Payment Status :</strong></label>
+                                                    <label><strong>@lang('menu.payment_status') </strong></label>
                                                     <select name="payment_status" id="payment_status" class="form-control">
-                                                        <option value="">All</option>
-                                                        <option value="1">Paid</option>
-                                                        <option value="2">Due</option>
+                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="1">@lang('menu.paid')</option>
+                                                        <option value="2">@lang('menu.due')</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -76,7 +77,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -89,7 +90,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -98,27 +99,23 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Sale</h6>
+                                <div class="col-6">
+                                    <h6>{{ __('All Sale') }}</h6>
                                 </div>
-                                
-                                @if (auth()->user()->permission->sale['create_add_sale'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('sales.create') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-                                        </div>
+
+                                @if(auth()->user()->can('create_add_sale'))
+                                    <div class="col-6 d-flex justify-content-end">
+                                        <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                                     </div>
                                 @endif
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     {{-- <table class="display data_tbl data__table table-hover"> --}}
@@ -126,36 +123,36 @@
                                         <table class="display data_tbl data__table">
                                         <thead>
                                             {{-- <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
-                                                <th>Invoice ID</th>
-                                                <th>Stock Location</th>
-                                                <th>Customer</th>
-                                                <th>Return Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Return Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Payment Status</th>
-                                                <th>Sell Due({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Paid({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.invoice_id')</th>
+                                                <th>@lang('menu.stock_location')</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>Return Amount({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.return_due')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.payment_status')</th>
+                                                <th>Sell Due({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.total_amount')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.total_paid')({{ $generalSettings['business__currency'] }})</th>
                                             </tr> --}}
                                             <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
-                                                <th>Invoice ID</th>
-                                                <th>Stock Location</th>
-                                                <th>Customer</th>
-                                                <th>Payment Status</th> 
-                                                <th>Total Payable</th>
-                                                <th>Paid</th>
-                                                <th>Due</th>
-                                                <th>Return</th>
-                                                <th>Return Due</th>
+                                                <th>@lang('menu.action')</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.invoice_id')</th>
+                                                <th>@lang('menu.stock_location')</th>
+                                                <th>@lang('menu.customer')</th>
+                                                <th>@lang('menu.payment_status')</th>
+                                                <th>@lang('menu.total_payable')</th>
+                                                <th>@lang('menu.paid')</th>
+                                                <th>@lang('menu.due')</th>
+                                                <th>{{ __('Return') }}</th>
+                                                <th>@lang('menu.return_due')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
                                                 <th id="total_payable_amount" class="text-white text-end"></th>
                                                 <th id="paid" class="text-white text-end"></th>
                                                 <th id="due" class="text-white text-end"></th>
@@ -189,13 +186,13 @@
         </div>
     </div>
 
-    @if (auth()->user()->permission->sale['sale_payment'] == '1')
+    @if(auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -212,7 +209,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -229,9 +226,9 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">Print</a></li> --}}
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
+                                    {{-- <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary">@lang('menu.print')</a></li> --}}
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
                                 </ul>
                             </div>
                         </div>
@@ -259,7 +256,7 @@
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
             ],
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('sales.index2') }}",
@@ -289,7 +286,7 @@
                 {data: 'due', name: 'due', className: 'text-end'},
                 {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
                 {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
-             
+
             ],fnDrawCallback: function() {
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
                 $('#total_payable_amount').text(bdFormat(total_payable_amount));
@@ -305,7 +302,7 @@
 
                 var sale_return_due = sum_table_col($('.data_tbl'), 'sale_return_due');
                 $('#sale_return_due').text(bdFormat(sale_return_due));
-                
+
                 $('.data_preloader').hide();
             }
         });
@@ -358,12 +355,11 @@
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            $('#payment_heading').html('Add Payment');
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -377,8 +373,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -393,8 +389,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -408,8 +404,8 @@
 
             $.get(url, function(data) {
 
-                $('#paymentModal').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#paymentModal').html(data);
+                $('#paymentModal').modal('show');
                 $('.data_preloader').hide();
             });
         });
@@ -433,7 +429,7 @@
             var url = $(this).attr('href');
 
             $.get(url, function(data) {
-                
+
                 $('.data_preloader').hide();
                 $('#edit_shipment_modal_content').html(data);
                 $('#editShipmentModal').modal('show');
@@ -451,7 +447,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 500,
                 header : null,
@@ -469,7 +465,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 800,
                 header: null,
@@ -489,7 +485,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                 removeInline: true,
                 printDelay: 500,
                 header: header,
@@ -512,7 +508,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
@@ -526,7 +522,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -556,7 +552,7 @@
             var url = $(this).attr('href');
             $('#payment_deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},
@@ -635,7 +631,7 @@
         document.onkeyup = function () {
             var e = e || window.event; // for IE to cover IEs window event-object
             // console.log(e);
-            
+
             if(e.ctrlKey && e.which == 13) {
 
                 // $('#add_btn').click();

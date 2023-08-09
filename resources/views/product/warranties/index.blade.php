@@ -4,187 +4,181 @@
 @section('title', 'Warrantites - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-desktop"></span> <h5> Warranties/Guaranties</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-desktop"></span> <h5> @lang('menu.warranties')/@lang('menu.guaranties')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                </a>
+            </div>
+        </div>
+
+        <div class="p-lg-3 p-1">
+            <div class="row g-lg-3 g-1">
+                <div class="col-lg-4">
+                    <div class="card" id="add_form">
+                        <div class="section-header">
+                            <h6>@lang('menu.add_warranty')/@lang('menu.guaranty')</h6>
+                        </div>
+
+                        <div class="form-area px-3 pb-2">
+                            <form id="add_warranty_form" action="{{ route('product.warranties.store') }}" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <strong>@lang('menu.name') </strong> <span class="text-danger">*</span>
+                                    <input type="text" name="name" class="form-control add_input" data-name="Warranty name"
+                                        id="name" placeholder="Warranty name" />
+                                    <span class="error error_name"></span>
+                                </div>
+
+                                <div class="form-group row mt-1">
+                                    <div class="col-lg-4">
+                                        <strong>@lang('menu.type') </strong> <span class="text-danger">*</span>
+                                        <select name="type" class="form-control" id="type">
+                                            <option value="1">@lang('menu.warranty')</option>
+                                            <option value="2">@lang('menu.guaranty')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-8">
+                                        <strong>@lang('menu.duration') </strong> <span class="text-danger">*</span>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="number" name="duration" class="form-control add_input"
+                                                    data-name="Warranty duration" id="duration" placeholder="Warranty duration">
+                                                <span class="error error_duration"></span>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <select name="duration_type" class="form-control" id="duration_type">
+                                                    <option value="Months">@lang('menu.months')</option>
+                                                    <option value="Days">@lang('menu.days')</option>
+                                                    <option value="Years">@lang('menu.years')</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mt-2">
+                                    <strong>@lang('menu.description') </strong>
+                                    <textarea name="description" id="description" class="form-control" cols="10" rows="3"
+                                        placeholder="Warranty description"></textarea>
+                                </div>
+
+                                <div class="form-group row mt-3">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                            <button type="reset" class="btn btn-sm btn-danger">@lang('menu.reset')</button>
+                                            <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-4">
-                            <div class="card" id="add_form">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Add Warranty/Guaranty</h6>
+                    <div class="card d-hide" id="edit_form">
+                        <div class="section-header">
+                            <h6>@lang('menu.edit_warranty')/@lang('menu.guaranty')</h6>
+                        </div>
+
+                        <div class="form-area px-3 pb-2">
+                            <form id="edit_warranty_form" action="{{ route('product.warranties.update') }}">
+                                <input type="hidden" name="id" id="id">
+                                <div class="form-group">
+                                    <strong>@lang('menu.name') </strong> <span class="text-danger">*</span>
+                                    <input type="text" name="name" class="form-control edit_input" data-name="Bank name" id="e_name"
+                                        placeholder="@lang('menu.bank_name')" />
+                                    <span class="error error_e_name"></span>
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-md-4">
+                                        <strong>@lang('menu.type') </strong> <span class="text-danger">*</span>
+                                        <select name="type" class="form-control" id="e_type">
+                                            <option value="1">@lang('menu.warranty')</option>
+                                            <option value="2">@lang('menu.guaranty')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <strong>@lang('menu.duration') </strong> <span class="text-danger">*</span>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="number" name="duration" class="form-control edit_input"
+                                                data-name="Warranty duration" id="e_duration">
+                                                <span class="error error_e_duration"></span>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <select name="duration_type" class="form-control" id="e_duration_type">
+                                                    <option value="Months">@lang('menu.months')</option>
+                                                    <option value="Days">@lang('menu.days')</option>
+                                                    <option value="Years">@lang('menu.years')</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-area px-3 pb-2">
-                                    <form id="add_warranty_form" action="{{ route('product.warranties.store') }}" method="POST">
-                                        @csrf
-                                        <div class="form-group">
-                                            <strong>Name :</strong> <span class="text-danger">*</span>
-                                            <input type="text" name="name" class="form-control add_input" data-name="Warranty name"
-                                                id="name" placeholder="Warranty name" />
-                                            <span class="error error_name"></span>
-                                        </div>
-                
-                                        <div class="form-group row mt-1">
-                                            <div class="col-lg-4">
-                                                <strong>Type :</strong> <span class="text-danger">*</span>
-                                                <select name="type" class="form-control" id="type">
-                                                    <option value="1">Warranty</option>
-                                                    <option value="2">Guaranty</option>
-                                                </select>
-                                            </div>
-                
-                                            <div class="col-lg-8">
-                                                <strong>Duration :</strong> <span class="text-danger">*</span>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="duration" class="form-control add_input"
-                                                            data-name="Warranty duration" id="duration" placeholder="Warranty duration">
-                                                        <span class="error error_duration"></span>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <select name="duration_type" class="form-control" id="duration_type">
-                                                            <option value="Months">Months</option>
-                                                            <option value="Days">Days</option>
-                                                            <option value="Years">Years</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                
-                                        <div class="form-group mt-1">
-                                            <strong>Description :</strong>
-                                            <textarea name="description" id="description" class="form-control" cols="10" rows="3"
-                                                placeholder="Warranty description"></textarea>
-                                        </div>
-                
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i
-                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn button-success float-end me-0 submit_button">Save</button>
-                                                <button type="reset" class="c-btn btn_orange float-end">Reset</button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div class="form-group mt-2">
+                                    <strong>@lang('menu.description') </strong>
+                                    <textarea name="description" id="e_description" class="form-control form-control-sm" cols="10"
+                                        rows="3" placeholder="Warranty description"></textarea>
                                 </div>
+
+                                <div class="form-group row mt-3">
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <div class="btn-loading">
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                            <button type="button" class="btn btn-sm btn-danger" id="close_form">@lang('menu.close')</button>
+                                            <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="section-header">
+                            <div class="col-md-6">
+                                <h6>@lang('menu.warranty')/@lang('menu.guaranty_list')</h6>
                             </div>
+                        </div>
+                        <!--begin: Datatable-->
+                        <div class="widget_content">
+                            <div class="data_preloader">
+                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                            </div>
+                            <div class="table-responsive" id="data-list">
+                                <table class="display data_tbl data__table">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>@lang('menu.sl')</th>
+                                            <th>@lang('menu.name')</th>
+                                            <th>@lang('menu.duration')</th>
+                                            <th>@lang('menu.description')</th>
+                                            <th>@lang('menu.action')</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                            <div class="card d-none" id="edit_form">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Edit Warranty/Guaranty</h6>
-                                    </div>
-                                </div>
-
-                                <div class="form-area px-3 pb-2">
-                                    <form id="edit_warranty_form" action="{{ route('product.warranties.update') }}">
-                                        <input type="hidden" name="id" id="id">
-                                        <div class="form-group">
-                                            <strong>Name :</strong> <span class="text-danger">*</span>
-                                            <input type="text" name="name" class="form-control edit_input" data-name="Bank name" id="e_name"
-                                                placeholder="Bank name" />
-                                            <span class="error error_e_name"></span>
-                                        </div>
-                
-                                        <div class="row mt-1">
-                                            <div class="col-md-4">
-                                                <strong>Type :</strong> <span class="text-danger">*</span>
-                                                <select name="type" class="form-control" id="e_type">
-                                                    <option value="1">Warranty</option>
-                                                    <option value="2">Guaranty</option>
-                                                </select>
-                                            </div>
-                
-                                            <div class="col-md-8">
-                                                <strong>Duration :</strong> <span class="text-danger">*</span>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <input type="number" name="duration" class="form-control edit_input"
-                                                        data-name="Warranty duration" id="e_duration">
-                                                        <span class="error error_e_duration"></span>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <select name="duration_type" class="form-control" id="e_duration_type">
-                                                            <option value="Months">Months</option>
-                                                            <option value="Days">Days</option>
-                                                            <option value="Years">Years</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                
-                                        <div class="form-group mt-2">
-                                            <strong>Description :</strong>
-                                            <textarea name="description" id="e_description" class="form-control form-control-sm" cols="10"
-                                                rows="3" placeholder="Warranty description"></textarea>
-                                        </div>
-                
-                                        <div class="form-group row mt-2">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn loading_button d-none"><i
-                                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save Changes</button>
-                                                <button type="button" class="c-btn btn_orange float-end" id="close_form">Close</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Warranty/Guaranty List</h6>
-                                    </div>
-                                </div>
-                                <!--begin: Datatable-->
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>SL</th>
-                                                    <th>Name</th>
-                                                    <th>Duration</th>
-                                                    <th>Description</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-    
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-    
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            </div>
-                        </div>
+                        <form id="deleted_form" action="" method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>
@@ -210,7 +204,7 @@
         // Setup ajax for csrf token.
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-        // call jquery method 
+        // call jquery method
         $(document).ready(function() {
             // Add Customar group by ajax
             $('#add_warranty_form').on('submit', function(e) {
@@ -252,9 +246,9 @@
                         $('.loading_button').hide();
                         $('.submit_button').prop('type', 'submit');
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error, Please contact to the support team.'); 
+                            toastr.error('Server Error, Please contact to the support team.');
                         }
                     }
                 });
@@ -273,6 +267,7 @@
                 $('#e_description').val(warranty.description);
                 $('#add_form').hide();
                 $('#edit_form').show();
+                $('#edit_form').removeClass('d-hide');
                 document.getElementById('e_name').focus();
             });
 
@@ -313,9 +308,9 @@
                     },error:function(err){
                         $('.loading_button').hide();
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error, Please contact to the support team.'); 
+                            toastr.error('Server Error, Please contact to the support team.');
                         }
                     }
                 });
@@ -326,7 +321,7 @@
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);
                 $.confirm({
-                    'title': 'Delete Confirmation',
+                    'title': 'Confirmation',
                     'content': 'Are you sure, you want to delete?',
                     'buttons': {
                         'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -351,9 +346,9 @@
                         $('#deleted_form')[0].reset();
                     },error: function(err) {
                         if (err.status == 0) {
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                         }else{
-                            toastr.error('Server Error. Please contact to the support team.'); 
+                            toastr.error('Server Error. Please contact to the support team.');
                         }
                     }
                 });

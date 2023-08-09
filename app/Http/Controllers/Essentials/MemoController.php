@@ -2,30 +2,35 @@
 
 namespace App\Http\Controllers\Essentials;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Essential\Memo;
 use App\Models\Essential\MemoUser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class MemoController extends Controller
 {
     public function index(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if (! auth()->user()->can('memo')) {
+
             abort(403, 'Access Forbidden.');
         }
 
-        if (auth()->user()->permission->essential['memo'] == '0') {
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
+        if (! auth()->user()->can('memo')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
             $memos = DB::table('memo_users')
                 ->join('memos', 'memo_users.memo_id', 'memos.id')
-                ->join('admin_and_users as shared_by', 'memos.admin_id', 'shared_by.id')
+                ->join('users as shared_by', 'memos.admin_id', 'shared_by.id')
                 ->where('memo_users.user_id', auth()->user()->id)
                 ->select(
                     'memo_users.is_author',
@@ -38,25 +43,27 @@ class MemoController extends Controller
                     'shared_by.last_name',
                 )
                 ->orderBy('id', 'desc');
+
             return DataTables::of($memos)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="'.route('memos.show', [$row->id]).'" class="action-btn c-edit" id="view" title="view"><span class="fas fa-eye text-info"></span></a>';
                     if ($row->is_author == 1) {
-                        $html .= '<a href="' . route('memos.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                        $html .= '<a href="' . route('memos.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="'.route('memos.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                        $html .= '<a href="'.route('memos.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                         $html .= '<a href="'.route('memos.add.user.view', [$row->id]).'" class="bg-primary text-white rounded p-1" id="add_user_btn">
                         Share
                         </a>';
                     }
-                   
+
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('heading', function ($row) {
                     if ($row->is_author == 1) {
                         return $row->heading;
-                    }else {
+                    } else {
                         return $row->heading.'<br><b>Shared By : </b><span class="text-muted">'.$row->prefix.' '.$row->name.' '.$row->last_name.'</span>';
                     }
                 })
@@ -66,13 +73,19 @@ class MemoController extends Controller
                 ->rawColumns(['action', 'created_at', 'heading'])
                 ->make(true);
         }
+
         return view('essentials.memos.index');
     }
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if (! auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -91,7 +104,7 @@ class MemoController extends Controller
         MemoUser::insert([
             'memo_id' => $addMemo,
             'user_id' => auth()->user()->id,
-            'is_author' => 1
+            'is_author' => 1,
         ]);
 
         return response()->json('Memo created successfully.');
@@ -99,22 +112,33 @@ class MemoController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if (! auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteMemo = Memo::where('id', $id)->first();
-        if (!is_null($deleteMemo)) {
+        if (! is_null($deleteMemo)) {
             $deleteMemo->delete();
         }
+
         return response()->json('Memo deleted successfully.');
     }
 
     public function edit($id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if (! auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -123,8 +147,13 @@ class MemoController extends Controller
 
     public function update(Request $request)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if (! auth()->user()->can('memo')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -144,15 +173,17 @@ class MemoController extends Controller
 
     public function addUserView($id)
     {
+
         $memo = Memo::with(['memo_users'])->where('id', $id)->first('id', 'admin_id');
-        $users = DB::table('admin_and_users')->where('branch_id', auth()->user()->branch_id)->get();
+        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get();
+
         return view('essentials.memos.ajax_view.add_user_form', compact('memo', 'users'));
     }
 
     public function addUsers(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -169,10 +200,10 @@ class MemoController extends Controller
                 if ($existsUser) {
                     $existsUser->is_delete_in_update = 0;
                     $existsUser->save();
-                }else {
+                } else {
                     MemoUser::insert([
                         'memo_id' => $id,
-                        'user_id' => $user_id
+                        'user_id' => $user_id,
                     ]);
                 }
             }
@@ -188,12 +219,18 @@ class MemoController extends Controller
 
     public function show($id)
     {
-        $addons = DB::table('addons')->select('todo')->first();
-        if ($addons->todo == 0) {
+        if (! auth()->user()->can('memo')) {
+
             abort(403, 'Access Forbidden.');
         }
-        
+
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__todo'] == 0) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $memo = Memo::where('id', $id)->first();
+
         return view('essentials.memos.ajax_view.show', compact('memo'));
     }
 }

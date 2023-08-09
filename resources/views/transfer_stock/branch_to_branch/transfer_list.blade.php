@@ -5,155 +5,149 @@
 @section('title', 'Transfer Stock (Business Location To Business Location) - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
-                                <h5>Transfer Stocks (Business Location To Business Location)</h5>
-                            </div>
+        <div class="border-class">
+            <div class="main__content">
 
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+                <div class="sec-name">
+                    <div class="name-head">
+                        <span class="fas fa-shopping-cart"></span>
+                        <h5>{{ __('Transfer Stocks (Business Location To Business Location)') }}</h5>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                </div>
+            </div>
 
-                                                                <option SELECTED value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                      
-                                                                @foreach ($branches as $branch)
-                                                                    @if (auth()->user()->branch_id != $branch->id)
-                                                                        <option value="{{ $branch->id }}">
-                                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                                        </option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <form id="filter_form">
+                                    <div class="form-group row">
+                                        @if ($generalSettings['addons__branches'] == 1)
+                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-2">
-                                                    <label><strong>Payment Status :</strong></label>
-                                                    <select name="receive_status" id="receive_status" class="form-control">
-                                                        <option value="">All</option>
-                                                        <option value="1">Pending</option>
-                                                        <option value="2">Partial</option>
-                                                        <option value="3">Completed</option>
+                                                    <label><strong>@lang('menu.business_location') : </strong></label>
+                                                    <select name="branch_id"
+                                                        class="form-control submit_able select2" id="branch_id" autofocus>
+                                                        <option value="">@lang('menu.all')</option>
+
+                                                        <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+
+                                                        @foreach ($branches as $branch)
+                                                            @if (auth()->user()->branch_id != $branch->id)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
                                                     </select>
                                                 </div>
+                                            @endif
+                                        @endif
 
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.payment_status') : </strong></label>
+                                            <select name="receive_status" id="receive_status" class="form-control">
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="1">@lang('menu.pending')</option>
+                                                <option value="2">@lang('menu.partial')</option>
+                                                <option value="3">@lang('menu.completed')</option>
+                                            </select>
+                                        </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.from_date') : </strong></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                            class="fas fa-calendar-week input_f"></i></span>
                                                 </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
-                                                    <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                    </div>
-                                                </div>
+                                                <input type="text" name="from_date" id="datepicker"
+                                                    class="form-control from_date date"
+                                                    autocomplete="off">
                                             </div>
-                                        </form>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.to_date') : </strong></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1"><i
+                                                            class="fas fa-calendar-week input_f"></i></span>
+                                                </div>
+                                                <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label><strong></strong></label>
+                                            <div class="input-group">
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="row margin_row mt-1">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>Transfer List</h6>
-                                </div>
+                <div class="card">
+                    <div class="section-header">
+                        <div class="col-6">
+                            <h6>@lang('menu.transfer_list')</h6>
+                        </div>
 
-                                <div class="col-md-2">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="{{ route('transfer.stock.branch.to.branch.create') }}" id="add_btn"><i class="fas fa-plus-square"></i> Add (Ctrl + Enter)</a>
-                                    </div>
-                                </div>
-                               
-                            </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
+                        </div>
 
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    {{-- <table class="display data_tbl data__table table-hover"> --}}
-                                    <table class="display data_tbl table-sm table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Actions</th>
-                                                <th>Date</th>
-                                                <th>Reference ID</th>
-                                                <th>Sender B. Location</th>
-                                                <th>Receiver B.Location</th>
-                                                <th>Receive Status</th>
-                                                <th>Total Item</th>
-                                                <th>Send Qty</th>
-                                                <th>Received Qty</th>
-                                                <th>Pending Qty</th>
-                                                <th>Total Transfer Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th id="total_item" class="text-white text-end"></th>
-                                                <th id="total_send_qty" class="text-white text-end"></th>
-                                                <th id="total_received_qty" class="text-white text-end"></th>
-                                                <th id="total_pending_qty" class="text-white text-end"></th>
-                                                <th id="transfer_cost" class="text-white text-end"></th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
+                    </div>
 
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
+                    <div class="widget_content">
+                        <div class="data_preloader">
+                            <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                        </div>
+                        <div class="table-responsive" id="data-list">
+                            {{-- <table class="display data_tbl data__table table-hover"> --}}
+                            <table class="display data_tbl table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>@lang('menu.action')</th>
+                                        <th>@lang('menu.date')</th>
+                                        <th>@lang('menu.reference_id')</th>
+                                        <th>{{ __('Sender B. Location') }}</th>
+                                        <th>@lang('menu.receiver') @lang('menu.b_location')</th>
+                                        <th>@lang('menu.receive_status')</th>
+                                        <th>@lang('menu.total_item')</th>
+                                        <th>@lang('menu.send_qty')</th>
+                                        <th>@lang('menu.received_qty')</th>
+                                        <th>@lang('menu.pending_qty')</th>
+                                        <th>{{ __('Total Transfer Cost') }}({{ $generalSettings['business__currency'] }})</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                <tfoot>
+                                    <tr class="bg-secondary">
+                                        <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th id="total_item" class="text-white text-end"></th>
+                                        <th id="total_send_qty" class="text-white text-end"></th>
+                                        <th id="total_received_qty" class="text-white text-end"></th>
+                                        <th id="total_pending_qty" class="text-white text-end"></th>
+                                        <th id="transfer_cost" class="text-white text-end"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
+
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>
@@ -165,7 +159,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Send Notification</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.send_notification')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                         class="fas fa-times"></span></a>
                 </div>
@@ -192,7 +186,7 @@
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
 
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
 
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
 
@@ -224,7 +218,7 @@
                 {data: 'total_received_qty', name: 'total_received_qty', className: 'text-end'},
                 {data: 'total_pending_qty', name: 'total_pending_qty', className: 'text-end'},
                 {data: 'transfer_cost', name: 'transfer_cost', className: 'text-end'},
-                
+
             ],fnDrawCallback: function() {
 
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
@@ -287,7 +281,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 500,
                 header : null,
@@ -303,7 +297,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 800,
                 header: null,
@@ -317,7 +311,7 @@
             $('#deleted_form').attr('action', url);
             $.confirm({
 
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -349,11 +343,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }else if (err.status == 500) {
-                        
-                        toastr.error('Server Error. Please contact to the support team.'); 
+
+                        toastr.error('Server Error. Please contact to the support team.');
                         return;
                     }
                 }
@@ -403,7 +397,7 @@
         document.onkeyup = function () {
             var e = e || window.event; // for IE to cover IEs window event-object
             // console.log(e);
-            
+
             if(e.ctrlKey && e.which == 13) {
 
                 // $('#add_btn').click();

@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\AdminAndUser;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
-
     protected $userActivityLogUtil;
 
     /*
@@ -48,6 +46,15 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function showLoginForm()
+    {
+        if (Auth::check('web')) {
+
+            return redirect()->back();
+        }
+
+        return view('auth.login');
+    }
 
     public function login(Request $request)
     {
@@ -56,15 +63,13 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = AdminAndUser::with('permission')
-            ->where('username', $request->username)
-            ->where('allow_login', 1)->first();
+        $admin = User::where('username', $request->username)->where('allow_login', 1)->first();
 
-        if ($admin && $admin->allow_login == 1 && $admin->permission) {
+        if (isset($admin) && $admin->allow_login == 1) {
 
-            if (Auth::guard('admin_and_user')->attempt(['username' => $request->username, 'password' => $request->password])) {
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
 
-                if (!Session::has($admin->language)) {
+                if (! Session::has($admin->language)) {
 
                     session(['lang' => $admin->language]);
                 }
@@ -78,14 +83,16 @@ class LoginController extends Controller
                 );
 
                 return redirect()->intended(route('dashboard.dashboard'));
+
             } else {
 
                 session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
+
                 return redirect()->back();
             }
         } else {
-
             session()->flash('errorMsg', 'Login failed. Please try with correct username and password');
+
             return redirect()->back();
         }
     }

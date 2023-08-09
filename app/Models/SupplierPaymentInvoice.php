@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Purchase;
-use Illuminate\Database\Eloquent\Model;
-
-class SupplierPaymentInvoice extends Model
+class SupplierPaymentInvoice extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function purchase()

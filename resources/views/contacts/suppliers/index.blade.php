@@ -5,291 +5,137 @@
 @section('title', 'Supplier List - ')
 @section('content')
 <div class="body-woaper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="border-class">
-                <div class="main__content">
-                    <div class="sec-name">
-                        <div class="name-head">
-                            <span class="fas fa-users"></span>
-                            <h5>Suppliers</h5>
-                        </div>
+    <div class="main__content">
+        <div class="sec-name">
+            <div class="name-head">
+                <span class="fas fa-users"></span>
+                <h5>@lang('menu.supplier')</h5>
+            </div>
 
-                        <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                    </div>
+            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+        </div>
+    </div>
 
-                    @if ($addons->branches == 1)
-                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="sec-name">
-                                        <div class="col-md-12">
-                                            <form id="filter_form" class="px-2">
-                                                <div class="form-group row">
-                                                    <div class="col-md-2">
-                                                        <label><strong>Business Location :</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control submit_able" id="branch_id" autofocus>
-                                                            <option value="">All</option>
-                                                            <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                            @foreach ($branches as $branch)
-                                                                <option value="{{ $branch->id }}">
-                                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                        
-                                                    <div class="col-md-2">
-                                                        <label><strong></strong></label>
-                                                        <div class="input-group">
-                                                            <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+    <div class="p-3">
+        @if ($generalSettings['addons__branches'] == 1)
+            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <form id="filter_form" class="p-2">
+                                <div class="form-group row">
+                                    <div class="col-xl-2 col-lg-3 col-md-4">
+                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                        <select name="branch_id"
+                                            class="form-control submit_able select2" id="branch_id" autofocus>
+                                            <option value="">@lang('menu.all')</option>
+                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                            @foreach ($branches as $branch)
+                                                <option value="{{ $branch->id }}">
+                                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xl-2 col-lg-3 col-md-4">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endif
-                    @endif
-                </div>
-                
-                <div class="row margin_row mt-1">
-                    <div class="card">
-                        <div class="section-header">
-                            <div class="col-md-6">
-                                <h6>All Supplier</h6>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="btn_30_blue float-end">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-                                </div>
-
-                                <div class="btn_30_blue float-end">
-                                    <a href="{{ route('contacts.suppliers.import.create') }}"><i class="fas fa-plus-square"></i> Import Suppliers</a>
-                                </div>
-                            </div>
-                        </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6>
-                                    <i class="fas fa-spinner"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr class="text-start">
-                                                <th>Actions</th>
-                                                <th>Supplier ID</th>
-                                                <th>Prefix</th>
-                                                <th>Name</th>
-                                                <th>Business</th>
-                                                <th>Phone</th>
-                                                <th>Opening Balance</th>
-                                                <th>Total Purchase</th>
-                                                <th>Total Paid</th>
-                                                <th>Purchase Due</th>
-                                                <th>Total Return</th>
-                                                <th>Return Due</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th id="opening_balance" class="text-white text-end"></th>
-                                                <th id="total_purchase" class="text-white text-end"></th>
-                                                <th id="total_paid" class="text-white text-end"></th>
-                                                <th id="total_purchase_due" class="text-white text-end"></th>
-                                                <th id="total_return" class="text-white text-end"></th>
-                                                <th id="total_purchase_return_due" class="text-white text-end"></th>
-                                                <th class="text-white text-start">---</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            @endif
+        @endif
+
+        <div class="card">
+            <div class="section-header">
+                <div class="col-md-6">
+                    <h6>All Supplier</h6>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-end gap-2">
+                    <a href="{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}" id="addContact" class="btn btn-sm btn-primary"> <i class="fas fa-plus-square"></i> @lang('menu.add')
+                    </a>
+
+                    <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_suppliers')</a>
+                </div>
+            </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6>
+                        <i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr class="text-start">
+                                    <th>@lang('menu.action')</th>
+                                    <th>@lang('menu.supplier_id')</th>
+                                    <th>@lang('menu.prefix')</th>
+                                    <th>@lang('menu.name')</th>
+                                    <th>@lang('menu.business')</th>
+                                    <th>@lang('menu.phone')</th>
+                                    <th>@lang('menu.opening_balance')</th>
+                                    <th>@lang('menu.total_purchase')</th>
+                                    <th>@lang('menu.total_paid')</th>
+                                    <th>@lang('menu.purchase_due')</th>
+                                    <th>@lang('menu.total_return')</th>
+                                    <th>@lang('menu.return_due')</th>
+                                    <th>@lang('menu.status')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
+                                    <th id="opening_balance" class="text-white text-end"></th>
+                                    <th id="total_purchase" class="text-white text-end"></th>
+                                    <th id="total_paid" class="text-white text-end"></th>
+                                    <th id="total_purchase_due" class="text-white text-end"></th>
+                                    <th id="total_return" class="text-white text-end"></th>
+                                    <th id="total_purchase_return_due" class="text-white text-end"></th>
+                                    <th class="text-white text-start">---</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Add Modal ---->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Supplier</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_supplier_form" action="{{ route('contacts.supplier.store') }}">
+<div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
+</div>
 
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <b>Name :</b>  <span class="text-danger">*</span>
-                                <input type="text" name="name" class="form-control  add_input" data-name="Supplier name" id="name" placeholder="Supplier name"/>
-                                <span class="error error_name" style="color: red;"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Phone :</b> <span class="text-danger">*</span>
-                                <input type="text" name="phone" class="form-control  add_input" data-name="Phone number" id="phone" placeholder="Phone number"/>
-                                <span class="error error_phone"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                              <b>Supplier ID :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i>
-                                <input type="text" name="contact_id" class="form-control" placeholder="Contact ID"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Business Name :</b>
-                                <input type="text" name="business_name" class="form-control" placeholder="Business name"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                               <b>Alternative Number :</b>
-                                <input type="text" name="alternative_phone" class="form-control " placeholder="Alternative phone number"/>
-                            </div>
-
-                            <div class="col-md-3">
-                               <b>Landline :</b>
-                                <input type="text" name="landline" class="form-control " placeholder="landline number"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Email :</b>
-                                <input type="text" name="email" class="form-control " placeholder="Email address"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Date Of Birth :</b>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
-                                    </div>
-                                    <input type="text" name="date_of_birth" class="form-control date-of-birth-picker" autocomplete="off"  placeholder="YYYY-MM-DD">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <b>Tax Number :</b>
-                                <input type="text" name="tax_number" class="form-control " placeholder="Tax number"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Opening Balance :</b> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this supplier due." class="fas fa-info-circle tp"></i>
-                                <input type="number" name="opening_balance" class="form-control" placeholder="Opening balance"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><b>Pay Term</b> : </label>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <input type="number" step="any" name="pay_term_number" class="form-control"
-                                        id="pay_term_number" placeholder="Number"/>
-                                    </div>
-                                    
-                                    <div class="col-md-7">
-                                        <select name="pay_term" class="form-control">
-                                            <option value="">Days/Months</option>
-                                            <option value="1">Days</option>
-                                            <option value="2">Months</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-9">
-                                <b>Address :</b>
-                                <input type="text" name="address" class="form-control "  placeholder="Address">
-                            </div>
-                            <div class="col-md-3">
-                               <b>Prefix <i data-bs-toggle="tooltip" data-bs-placement="right" title="This prefix for barcode." class="fas fa-info-circle tp"></i> :</b>
-                                <input type="text" name="prefix" class="form-control " placeholder="prefix"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <b>City :</b>
-                                <input type="text" name="city" class="form-control " placeholder="City"/>
-                            </div>
-
-                            <div class="col-md-3">
-                               <b>State :</b>
-                                <input type="text" name="state" class="form-control " placeholder="State"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Country :</b>
-                                <input type="text" name="country" class="form-control " placeholder="Country"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <b>Zip-Code :</b>
-                                <input type="text" name="zip_code" class="form-control " placeholder="zip_code"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-5">
-                               <b>Shipping Address :</b>
-                                <input type="text" name="shipping_address" class="form-control " placeholder="Shipping address"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_supplier')</h6>
+                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
+            <div class="modal-body" id="edit_modal_body"></div>
         </div>
     </div>
-    <!-- Add Modal End---->
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Supplier</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit_modal_body"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit Modal End-->
+</div>
+<!-- Edit Modal End-->
 @endsection
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    var table = $('.data_tbl').DataTable({
+    var contactTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -299,7 +145,7 @@
         "serverSide": true,
         aaSorting: [[0, 'asc']],
         ajax: "{{ route('contacts.supplier.index') }}",
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('contacts.supplier.index') }}",
@@ -322,7 +168,7 @@
             {data: 'total_return', name: 'total_return', className: 'text-end'},
             {data: 'total_purchase_return_due', name: 'total_purchase_return_due', className: 'text-end'},
             {data: 'status', name: 'status'},
-        ],fnDrawCallback: function() {
+        ], fnDrawCallback: function() {
 
             var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
             $('#opening_balance').text(bdFormat(opening_balance));
@@ -361,109 +207,42 @@
         $('.data_preloader').show();
         table.ajax.reload();
     });
-    
+
     // Setup ajax for csrf token.
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     // call jquery method
-    $(document).ready(function(){ 
+    $(document).ready(function(){
         // Add Supplier by ajax
-        $('#add_supplier_form').on('submit', function(e) {
+        $('#addContact').on('click', function(e) {
+
             e.preventDefault();
-
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.add_input');
-                $('.error').html('');  
-                var countErrorField = 0; 
-                 
-            $.each(inputs, function(key, val){
-
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-
-                if(idValue == ''){
-
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-
-                $('.loading_button').hide();
-                return;
-            }
-            
-            $('.submit_button').prop('type', 'button');
-            $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data) {
-
-                    toastr.success('Supplier added successfully.');
-                    $('#add_supplier_form')[0].reset();
-                    $('.loading_button').hide();
-                    $('#addModal').modal('hide');
-                    $('.submit_button').prop('type', 'submit');
-                    table.ajax.reload();
-                },error: function () {
-
-                    $('.loading_button').hide();
-                    $('.submit_button').prop('type', 'submit');
-                }
-            });
-        });
-
-        // pass editable data to edit modal fields
-        $(document).on('click', '#edit', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
             var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#edit_modal_body').html(data);
-                $('#editModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
 
-        // edit category by ajax
-        $(document).on('submit', '#edit_supplier_form', function(e){
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.edit_input');
-                $('.error').html('');  
-                var countErrorField = 0;  
-            $.each(inputs, function(key, val){
-                var inputId = $(val).attr('id');
-                var idValue = $('#'+inputId).val();
-                if(idValue == ''){
-                    countErrorField += 1;
-                    var fieldName = $('#'+inputId).data('name');
-                    $('.error_'+inputId).html(fieldName+' is required.');
-                }
-            });
-
-            if(countErrorField > 0){
-                $('.loading_button').hide();
-                return;
-            }
-            
             $.ajax({
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data){
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                    $('#edit_supplier_form')[0].reset();
-                    table.ajax.reload();
-                    $('#editModal').modal('hide');
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#addOrEditContactModal').html(data);
+                    $('#addOrEditContactModal').modal('show');
+
+                    setTimeout(function(){
+
+                        $('#contact_name').focus();
+                    }, 500);
+
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
+                        return;
+                    }else if (err.status == 500) {
+
+                        toastr.error('Server Error. Please contact to the support team.');
+                        return;
+                    }
                 }
             });
         });
@@ -473,7 +252,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
@@ -493,7 +272,13 @@
                 async:false,
                 data:request,
                 success:function(data){
-                    table.ajax.reload();
+
+                    if(!$.isEmptyObject(data.errorMsg)){
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    contactTable.ajax.reload();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
                 }
@@ -503,28 +288,39 @@
         // Show sweet alert for delete
         $(document).on('click', '#change_status',function(e){
             e.preventDefault();
-            var url = $(this).attr('href');
-            $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
-                    toastr.success(data);
-                    table.ajax.reload();
+            var url = $(this).data('url');
+
+            $.confirm({
+                'title': 'Changes Status',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'Yes btn-danger',
+                        'action': function() {
+                            $.ajax({
+                                url: url,
+                                type: 'GET',
+                                success: function(data) {
+
+                                    if (!$.isEmptyObject(data.errorMsg)) {
+                                        toastr.error(data.errorMsg);
+                                        return;
+                                    }
+                                    toastr.success(data);
+                                    table.ajax.reload();
+                                }
+                            });
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary',
+                        'action': function() {
+                            // console.log('Confirmation canceled.');
+                        }
+                    }
                 }
             });
         });
     });
-
-    document.onkeyup = function () {
-        var e = e || window.event; // for IE to cover IEs window event-object
-        //console.log(e);
-        if(e.ctrlKey && e.which == 13) {
-            $('#addModal').modal('show');
-            setTimeout(function () {
-                $('#name').focus();
-            }, 500);
-            //return false;
-        }
-    }
 </script>
  @endpush

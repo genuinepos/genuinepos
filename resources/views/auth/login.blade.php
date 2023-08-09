@@ -1,8 +1,8 @@
 @extends('layout.app')
 @section('title', 'Login - ')
-    @push('css')
-        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    @endpush
+@push('css')
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+@endpush
 @section('content')
     <div class="form-wraper user_login">
         <div class="container">
@@ -11,39 +11,40 @@
                     <div class="border-div">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-head">
+                                {{-- <div class="form-head">
                                     <div class="head p-1">
-                                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-
-                                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                                        @else 
-                                        
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                        @if ($generalSettings['business__business_logo'] != null)
+                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                        @else
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">
+                                                {{ $generalSettings['business__shop_name'] }}
+                                            </span>
                                         @endif
                                         <span class="head-text">
-                                            Genuine POS, Point of Sale software by SpeedDigit
+                                            {{ config('speeddigit.name') }}, {{ config('speeddigit.slogan')}}
                                         </span>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="main-form">
-                                   <div class="form_inner">
+                                    <div class="form_inner">
                                         <div class="form-title">
-                                            <p>User Login</p>
+                                            <p>@lang('menu.user_login')</p>
                                         </div>
                                         <form action="{{ route('login') }}" method="POST">
                                             @csrf
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
-                                                <input type="text" name="username" class="form-control form-st"
-                                                    value="{{ old('username') }}" placeholder="Username" required />
+                                                <input required type="text" name="username" class="form-control form-st"
+                                                    value="{{ old('username') }}" placeholder="{{ __('Username') }}" />
                                             </div>
+
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>
-                                                <input name="password" type="Password"
-                                                    class="form-control form-st rounded-bottom" placeholder="Password"
-                                                    required />
+                                                <input required name="password" type="Password"
+                                                    class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
                                             </div>
+
                                             @if (Session::has('errorMsg'))
                                                 <div class="bg-danger p-3 mt-4">
                                                     <p class="text-white">
@@ -51,42 +52,58 @@
                                                     </p>
                                                 </div>
                                             @endif
-                                            <button type="submit" class="submit-button">Login</button>
+
+                                            <button type="submit" class="submit-button">{{ __('Login') }}</button>
                                             <div class="login_opt_link">
                                                 @if (Route::has('password.request'))
-                                                    <a class="forget-pw" href="{{ route('password.request') }}">
-                                                        &nbsp; {{ __('Forgot Your Password?') }}
-                                                    </a>
+                                                    <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp;
+                                                        {{ __('Forgot Your Password?') }}</a>
                                                 @endif
                                                 <div class="form-group cx-box">
                                                     <input type="checkbox" id="remembar" class="form-control">
-                                                    <label for="remembar">Remembar me</label>
+                                                    <label for="remembar">{{ __('Remember Me') }}</label>
                                                 </div>
                                             </div>
                                         </form>
-                                   </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
-                                    <div class="head addr-t pt-4">
+                                    <div class="head addr-t">
                                         {{-- <h2>
                                             Genuine Point Of Sale
                                         </h2> --}}
                                         <div class="px-2">
                                             <p class="logo-main-sec">
-                                                <img src="{{ asset('public/backend/images/static/app_logo.png') }}" class="logo">
+                                                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
+                                                <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
                                             </p>
-                                            <p class="version">Version: 1.0</p>
-                                            <p class="details"><span>Address:</span> Motijheel Arambagh, Dhaka</p>
-                                            <p class="details"><span>Support:</span> support@speeddigit.com</p>
-                                            <p class="details"><span>Website:</span> www.speeddigit.com</p>
+                                            <table class="text-white">
+                                                <tbody>
+                                                    <tr class="details">
+                                                        <td>@lang('menu.address') :</td>
+                                                        <td>{{ config('speeddigit.address') }}</td>
+                                                    </tr>
+                                                    <tr class="details">
+                                                        <td>@lang('menu.support') :</td>
+                                                        <td>{{ config('speeddigit.support_email') }}</td>
+                                                    </tr>
+                                                    <tr class="details">
+                                                        <td>@lang('menu.website') :</td>
+                                                        <td>{{ config('speeddigit.website') }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
                                             <div class="function-btn">
-                                                <a href="https://www.facebook.com/mygenuinepos" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
-                                                <a href="https://twitter.com/GenuinePos" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
-                                                <a href="https://www.youtube.com/channel/UCaAEw77OeMvjwu5vOjueWmQ" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
+                                                <a href="{{ config('speeddigit.facebook') }}" target="_blank"><span
+                                                        class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
+                                                <a href="{{ config('speeddigit.twitter') }}" target="_blank"><span
+                                                        class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
+                                                <a href="{{ config('speeddigit.youtube') }}" target="_blank"><span
+                                                        class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -99,14 +116,18 @@
         </div>
     </div>
 
-    <div class="back_btn_wrapper">
+    {{-- <div class="back_btn_wrapper">
         <div class="back_btn">
-            <a href="#" class="btn">Back</a>
+            <a href="#" class="btn">@lang('menu.back')</a>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 <style>
+    .head {
+        padding-top: 10px !important;
+    }
+
     .back_btn_wrapper {
         position: fixed;
         top: 10px;
@@ -152,7 +173,6 @@
     }
 
     .main-form {
-        margin-top: 11px;
         padding: 6px;
         border-radius: 3px;
         box-shadow: -1px 0px 10px 1px #0a0a0a52;
@@ -167,7 +187,12 @@
     }
 
     .left-inner-addon i {
-        color: #f5f5f5!important;
+        color: #f5f5f5 !important;
+    }
+
+    .btn-fn {
+        width: 30px !important;
+        height: 30px !important;
     }
 
     .btn-fn a {
@@ -191,17 +216,36 @@
     }
 
     .version {
-        margin-bottom: 40px;
+        margin-bottom: 5px;
         color: white;
         font-weight: 400;
-        font-size: 14px
+        font-size: 10px
+    }
+
+    .logo-main-sec {
+        margin-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .function-btn {
+        margin-top: 9px !important;
     }
 
     .login_opt_link .form-group input {
         display: inline-block;
     }
+
+    table {
+        width: min-content;
+        margin: auto !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    table td:first-child {
+        min-width: 60px;
+    }
 </style>
 
 @push('js')
-
 @endpush

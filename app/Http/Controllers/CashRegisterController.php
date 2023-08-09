@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\CashRegister;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\CashRegisterTransaction;
 
 class CashRegisterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+
     }
 
     // Create cash register
     public function create()
     {
+        if (! auth()->user()->can('cash_counters')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $cashCounters = DB::table('cash_counters')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'counter_name', 'short_name']);
@@ -28,11 +31,11 @@ class CashRegisterController extends Controller
             ->where('accounts.account_type', 5)
             ->get(['accounts.id', 'accounts.name']);
 
-        $openedCashRegister = CashRegister::with('branch', 'admin', 'admin.role')
+        $openedCashRegister = CashRegister::with('branch', 'admin')
             ->where('admin_id', auth()->user()->id)->where('status', 1)
             ->first();
 
-        if (!$openedCashRegister) {
+        if (! $openedCashRegister) {
 
             return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts'));
         } else {
@@ -44,7 +47,12 @@ class CashRegisterController extends Controller
     // Store cash register
     public function store(Request $request)
     {
-        $settings = DB::table('general_settings')->select(['business'])->first();
+        if (! auth()->user()->can('cash_counters')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $generalSettings = config('generalSettings');
 
         $this->validate($request, [
             'counter_id' => 'required',
@@ -54,13 +62,13 @@ class CashRegisterController extends Controller
             'sale_account_id.required' => 'Sale A/C is required',
         ]);
 
-        $dateFormat = json_decode($settings->business, true)['date_format'];
-        $timeFormat = json_decode($settings->business, true)['time_format'];
-        
+        $dateFormat = $generalSettings['business__date_format'];
+        $timeFormat = $generalSettings['business__time_format'];
+
         $__timeFormat = '';
         if ($timeFormat == '12') {
             $__timeFormat = ' h:i:s';
-        } else if ($timeFormat == '24') {
+        } elseif ($timeFormat == '24') {
             $__timeFormat = ' H:i:s';
         }
 
@@ -79,7 +87,7 @@ class CashRegisterController extends Controller
     // cash register Details
     public function cashRegisterDetails()
     {
-        if (auth()->user()->permission->register['register_view'] == '0') {
+        if (! auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -107,7 +115,7 @@ class CashRegisterController extends Controller
     // Cash Register Details For Report
     public function cashRegisterDetailsForReport($crId)
     {
-        if (auth()->user()->permission->register['register_view'] == '0') {
+        if (! auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -132,7 +140,7 @@ class CashRegisterController extends Controller
         );
     }
 
-    // get closing cash register details 
+    // get closing cash register details
     public function closeCashRegisterModalView()
     {
         $queries = $this->detailsRegisterQuery();
@@ -171,33 +179,33 @@ class CashRegisterController extends Controller
         return redirect()->back();
     }
 
-    private function detailsRegisterQuery($crId = NULL)
+    private function detailsRegisterQuery($crId = null)
     {
         $activeCashRegister = '';
         $activeCashRegisterQuery = DB::table('cash_registers')
             ->leftJoin('branches', 'cash_registers.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'cash_registers.admin_id', 'admin_and_users.id')
+            ->leftJoin('users', 'cash_registers.admin_id', 'users.id')
             ->leftJoin('cash_counters', 'cash_registers.cash_counter_id', 'cash_counters.id')
             ->select(
                 'cash_registers.id',
                 'cash_registers.created_at',
                 'cash_registers.closed_at',
                 'cash_registers.cash_in_hand',
-                'admin_and_users.prefix as u_prefix',
-                'admin_and_users.name as u_first_name',
-                'admin_and_users.last_name as u_last_name',
-                'admin_and_users.username',
-                'admin_and_users.email as u_email',
+                'users.prefix as u_prefix',
+                'users.name as u_first_name',
+                'users.last_name as u_last_name',
+                'users.username',
+                'users.email as u_email',
                 'cash_counters.counter_name',
                 'cash_counters.short_name as cc_s_name',
                 'branches.name as b_name',
                 'branches.branch_code as b_name',
             );
 
-        if (!$crId) {
+        if (! $crId) {
 
             $activeCashRegister = $activeCashRegisterQuery
-                ->where('admin_and_users.id', auth()->user()->id)
+                ->where('users.id', auth()->user()->id)
                 ->where('cash_registers.status', 1)->first();
         } else {
 
@@ -232,7 +240,7 @@ class CashRegisterController extends Controller
             'activeCashRegister' => $activeCashRegister,
             'paymentMethodPayments' => $paymentMethodPayments,
             'accountPayments' => $accountPayments,
-            'totalCredit' => $totalCredit
+            'totalCredit' => $totalCredit,
         ];
     }
 }

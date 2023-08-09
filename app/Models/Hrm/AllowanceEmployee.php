@@ -2,17 +2,18 @@
 
 namespace App\Models\Hrm;
 
-use App\Models\AdminAndUser;
-use App\Models\Hrm\Allowance;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use App\Models\User;
 
-class AllowanceEmployee extends Model
+class AllowanceEmployee extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
+
     public function employee()
     {
-        return $this->belongsTo(AdminAndUser::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function allowance()

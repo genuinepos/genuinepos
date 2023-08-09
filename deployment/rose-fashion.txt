@@ -1,0 +1,11 @@
+Update changes:
+
+Schema::table('products', function (Blueprint $table) {
+    $table->dropForeign(['parent_category_id']);
+    $table->renameColumn('parent_category_id', 'sub_category_id');
+    $table->foreign('sub_category_id')
+        ->references('id')
+        ->on('categories')
+        ->onDelete('set null');
+});
+

@@ -4,7 +4,13 @@
     <input type="hidden" name="id" id="id" value="{{ $data->id }}">
 
     <div class="form-group">
-        <label><b>Parent category :</b> <span class="text-danger">*</span></label> 
+        <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
+        <input type="text" name="name" class="form-control " value="{{ $data->name }}" id="e_sub_name" placeholder="Sub category name"/>
+        <span class="error error_sub_e_name"></span>
+    </div>
+
+    <div class="form-group mt-1">
+        <label><b>@lang('menu.parent_category') </b> <span class="text-danger">*</span></label>
         <select name="parent_category_id" class="form-control" id="edit_parent_category">
         	@foreach($category as $row)
              <option value="{{ $row->id }}" @if($data->parent_category_id==$row->id) selected @endif>{{ $row->name }}</option>
@@ -14,27 +20,23 @@
     </div>
 
     <div class="form-group mt-1">
-        <label><b>Name :</b> <span class="text-danger">*</span></label> 
-        <input type="text" name="name" class="form-control " value="{{ $data->name }}" id="e_sub_name" placeholder="Sub category name"/>
-        <span class="error error_sub_e_name"></span>
-    </div>
-
-    <div class="form-group mt-1">
-        <label><b>Description :</b> </label>
+        <label><b>@lang('menu.description') </b> </label>
         <textarea name="description" class="form-control" cols="30" rows="3" placeholder="Description">{{ $data->description }}</textarea>
     </div>
 
     <div class="form-group editable_cate_img_field mt-1">
-        <label><b>Sub Category photo :</b></label> 
+        <label><b>{{ __('Sub Category photo') }} </b></label>
         <input type="file" name="photo" class="form-control" id="e_photo" accept=".jpg, .jpeg, .png, .gif">
         <span class="error error_sub_e_photo"></span>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success float-end me-0">Save Changes</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_sub_cate_form">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="button" class="btn btn-sm btn-success" id="close_sub_cate_form">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_changes')</button>
+            </div>
         </div>
     </div>
 </form>

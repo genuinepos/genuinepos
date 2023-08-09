@@ -19,5 +19,5 @@
         </tr>  
     @endforeach 
 @else
-    <tr><td colspan="5"><b>No Data Found.</b></td></tr>
+    <tr><td colspan="5"><b>@lang('menu.no_data_found').</b></td></tr>
 @endif

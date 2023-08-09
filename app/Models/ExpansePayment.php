@@ -2,13 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Account;
-use App\Models\Expanse;
-use App\Models\CashFlow;
-use App\Models\PaymentMethod;
-use Illuminate\Database\Eloquent\Model;
-
-class ExpansePayment extends Model
+class ExpansePayment extends BaseModel
 {
     //protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
@@ -32,5 +26,4 @@ class ExpansePayment extends Model
     {
         return $this->belongsTo(PaymentMethod::class);
     }
-
 }

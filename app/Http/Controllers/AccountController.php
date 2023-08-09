@@ -2,52 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Utils\Util;
-use App\Models\Bank;
 use App\Models\Account;
-use App\Models\CashFlow;
-use App\Utils\Converter;
-use App\Utils\AccountUtil;
-use App\Models\AccountType;
-use Illuminate\Http\Request;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
+use App\Utils\AccountUtil;
+use App\Utils\Converter;
 use App\Utils\UserActivityLogUtil;
+use App\Utils\Util;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class AccountController extends Controller
 {
-    protected $accountUtil;
-    protected $util;
-    protected $converter;
-    protected $userActivityLogUtil;
-
     public function __construct(
-        AccountUtil $accountUtil,
-        Util $util,
-        Converter $converter,
-        UserActivityLogUtil $userActivityLogUtil
+        private AccountUtil $accountUtil,
+        private Util $util,
+        private Converter $converter,
+        private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->accountUtil = $accountUtil;
-        $this->util = $util;
-        $this->converter = $converter;
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
     }
 
-    // Bank main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
-
+        if (! auth()->user()->can('ac_access')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $accounts = '';
             $query = DB::table('account_branches')
                 ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -58,7 +43,7 @@ class AccountController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('account_branches.branch_id', NULL);
+                    $query->where('account_branches.branch_id', null);
                 } else {
 
                     $query->where('account_branches.branch_id', $request->branch_id);
@@ -97,43 +82,37 @@ class AccountController extends Controller
 
                 ->addColumn('action', function ($row) {
                     $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a id="edit" class="dropdown-item" href="' . route('accounting.accounts.edit', [$row->id]) . '" ><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.accounts.book', [$row->id]) . '"><i class="fas fa-book text-primary"></i> Account Book</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('accounting.accounts.delete', [$row->id]) . '" id="delete"><i class="fas fa-trash text-primary"></i> Delete</a>';
+                    $html .= '<a id="edit" class="dropdown-item" href="'.route('accounting.accounts.edit', [$row->id]).'" ><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('accounting.accounts.book', [$row->id]).'"><i class="fas fa-book text-primary"></i> Account Book</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('accounting.accounts.delete', [$row->id]).'" id="delete"><i class="fas fa-trash text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
 
                 ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
-
-                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name . ' (' . $row->b_branch . ')' : 'Not Applicable')
-
-                ->editColumn('account_type', fn ($row) => '<b>' . $this->util->accountType($row->account_type) . '</b>')
-
-                ->editColumn('branch', fn ($row) => '<b>' . ($row->branch_name ? $row->branch_name . '/' . $row->branch_code : json_decode($generalSettings->business, true)['shop_name']) . '</b>')
-
+                ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'Not Applicable')
+                ->editColumn('account_type', fn ($row) => '<b>'.$this->util->accountType($row->account_type).'</b>')
+                ->editColumn('branch', fn ($row) => '<b>'.($row->branch_name ? $row->branch_name.'/'.$row->branch_code : $generalSettings['business__shop_name']).'</b>')
                 ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
-
                 ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
-
                 ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])
-
                 ->make(true);
         }
 
         $banks = DB::table('banks')->get();
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('accounting.accounts.index', compact('banks', 'branches'));
     }
 
     //Get account book
     public function accountBook(Request $request, $accountId)
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -144,7 +123,7 @@ class AccountController extends Controller
 
         if ($request->ajax()) {
 
-            $settings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
 
             $ledgers = '';
 
@@ -242,39 +221,42 @@ class AccountController extends Controller
 
                 if ($balanceType == 'debit') {
 
-                    $ledger->running_balance =  $tempRunning + ($ledger->debit - $ledger->credit);
+                    $ledger->running_balance = $tempRunning + ($ledger->debit - $ledger->credit);
                     $tempRunning = $ledger->running_balance;
                 } elseif ($balanceType == 'credit') {
 
-                    $ledger->running_balance =  $tempRunning + ($ledger->credit - $ledger->debit);
+                    $ledger->running_balance = $tempRunning + ($ledger->credit - $ledger->debit);
                     $tempRunning = $ledger->running_balance;
                 }
             }
 
             return DataTables::of($ledgers)
-                ->editColumn('date', function ($row) use ($settings) {
+                ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $dateFormat = json_decode($settings->business, true)['date_format'];
+                    $dateFormat = $generalSettings['business__date_format'];
                     $__date_format = str_replace('-', '/', $dateFormat);
+
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('particulars', function ($row) use ($accountUtil) {
 
                     $type = $accountUtil->voucherType($row->voucher_type);
-                    $des = $row->{$type['pur']} ? '/' . $row->{$type['pur']} : '';
-                    $receiver_ac = $row->receiver_acn ? '/To:<b>' . $row->receiver_acn . '</b>' : '';
-                    $sender_ac = $row->sender_acn ? '/From:<b>' . $row->sender_acn . '</b>' : '';
-                    return '<b>' . $type['name'] . '</b>' . $receiver_ac . $sender_ac . $des;
+                    $des = $row->{$type['pur']} ? '/'.$row->{$type['pur']} : '';
+                    $receiver_ac = $row->receiver_acn ? '/To:<b>'.$row->receiver_acn.'</b>' : '';
+                    $sender_ac = $row->sender_acn ? '/From:<b>'.$row->sender_acn.'</b>' : '';
+
+                    return '<b>'.$type['name'].'</b>'.$receiver_ac.$sender_ac.$des;
                     //return '<b>' . $type['name'].'</b>';
                 })
-                ->editColumn('voucher_no',  function ($row) use ($accountUtil) {
+                ->editColumn('voucher_no', function ($row) use ($accountUtil) {
 
                     $type = $accountUtil->voucherType($row->voucher_type);
+
                     return $row->{$type['voucher_no']};
                 })
-                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . $this->converter->format_in_bdt($row->debit) . '</span>')
-                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . $this->converter->format_in_bdt($row->credit) . '</span>')
-                ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . $this->converter->format_in_bdt($row->running_balance) . '</span>')
+                ->editColumn('debit', fn ($row) => '<span class="debit" data-value="'.$row->debit.'">'.$this->converter->format_in_bdt($row->debit).'</span>')
+                ->editColumn('credit', fn ($row) => '<span class="credit" data-value="'.$row->credit.'">'.$this->converter->format_in_bdt($row->credit).'</span>')
+                ->editColumn('running_balance', fn ($row) => '<span class="running_balance">'.$this->converter->format_in_bdt($row->running_balance).'</span>')
                 ->rawColumns(['date', 'particulars', 'voucher_no', 'debit', 'credit', 'running_balance'])
                 ->make(true);
         }
@@ -295,8 +277,8 @@ class AccountController extends Controller
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
-                "business_location"    => "required|array",
-                "business_location.*"  => "required",
+                'business_location' => 'required|array',
+                'business_location.*' => 'required',
             ]);
         }
 
@@ -316,11 +298,11 @@ class AccountController extends Controller
 
         if ($request->account_type == 2) {
 
-            foreach($request->business_location as $branch_id) {
+            foreach ($request->business_location as $branch_id) {
 
                 AccountBranch::insert(
                     [
-                        'branch_id' => $branch_id != 'NULL' ? $branch_id : NULL,
+                        'branch_id' => $branch_id != 'NULL' ? $branch_id : null,
                         'account_id' => $addAccountGetId,
                     ]
                 );
@@ -361,9 +343,10 @@ class AccountController extends Controller
     public function edit($id)
     {
         $account = Account::with('accountBranches')->where('id', $id)->first();
-        $isExistsHeadOffice = DB::table('account_branches')->where('account_id', $id)->where('branch_id', NULL)->first();
+        $isExistsHeadOffice = DB::table('account_branches')->where('account_id', $id)->where('branch_id', null)->first();
         $banks = DB::table('banks')->get();
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('accounting.accounts.ajax_view.edit_account', compact('account', 'isExistsHeadOffice', 'banks', 'branches'));
     }
 
@@ -379,8 +362,8 @@ class AccountController extends Controller
             $this->validate($request, [
                 'bank_id' => 'required',
                 'account_number' => 'required',
-                "business_location"    => "required|array",
-                "business_location.*"  => "required",
+                'business_location' => 'required|array',
+                'business_location.*' => 'required',
             ]);
         }
 
@@ -411,7 +394,7 @@ class AccountController extends Controller
 
             foreach ($request->business_location as $branch) {
 
-                $branch_id = $branch != 'NULL' ? $branch : NULL;
+                $branch_id = $branch != 'NULL' ? $branch : null;
                 $accountBranch = AccountBranch::where('account_id', $updateAccount->id)->where('branch_id', $branch_id)->first();
 
                 if ($accountBranch) {
@@ -497,7 +480,7 @@ class AccountController extends Controller
             return response()->json('Account can not be deleted. One or more ledgers is belonging in this account.');
         }
 
-        if (!is_null($deleteAccount)) {
+        if (! is_null($deleteAccount)) {
 
             $this->userActivityLogUtil->addLog(
                 action: 3,

@@ -3,167 +3,134 @@
     <style>
         .top-menu-area ul li { display: inline-block;margin-right: 3px; }
         .top-menu-area a { border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px; }
-        .form-control { padding: 4px!important; }
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/assets/plugins/custom/image-previewer/jquery.magnify.min.css"/>
-    <link rel="stylesheet" href="{{ asset('public') }}/backend/asset/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/custom/image-previewer/jquery.magnify.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap-datepicker.min.css') }}">
 @endpush
 @section('title', 'All Workspaces - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-th-large"></span>
+                    <h6>@lang('menu.work_space')</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                </a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul class="list-unstyled">
-                                        @if (auth()->user()->permission->essential['assign_todo'] == '1')
-                                            <li>
-                                                <a href="{{ route('todo.index') }}" class="text-white"><i class="fas fa-th-list"></i> <b>@lang('menu.todo')</b></a>
-                                            </li>
-                                        @endif
-                                        
-                                        @if (auth()->user()->permission->essential['work_space'] == '1')
-                                            <li>
-                                                <a href="{{ route('workspace.index') }}" class="text-white"><i class="fas fa-th-large text-primary"></i> <b>@lang('menu.work_space')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['memo'] == '1')
-                                            <li>
-                                                <a href="{{ route('memos.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.memo')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->essential['msg'] == '1')
-                                            <li>
-                                                <a href="{{ route('messages.index') }}" class="text-white"><i class="fas fa-envelope"></i> <b>@lang('menu.message')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <i class="fas fa-funnel-dollar ms-2"></i> <b>Filter</b>
-                                        <form action="" method="get" class="px-2">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-3">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Priority : </strong></label>
-                                                    <select name="priority"
-                                                        class="form-control submit_able" id="priority" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="Low">Low</option>
-                                                        <option value="Medium">Medium</option>
-                                                        <option value="High">High</option>
-                                                        <option value="Urgent">Urgent</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Status : </strong></label>
-                                                    <select name="status"
-                                                        class="form-control submit_able" id="status" autofocus>
-                                                        <option value="">All</option>
-                                                        <option value="New">New</option>
-                                                        <option value="In-Progress">In-Progress</option>
-                                                        <option value="On-Hold">On-Hold</option>
-                                                        <option value="Complated">Complated</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label><strong>Date Range :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
-                                                        </div>
-                                                        <input readonly type="text" name="date_range" id="date_range"
-                                                            class="form-control daterange submit_able_input"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form action="" method="get">
+                                <div class="form-group row">
+                                    @if ($generalSettings['addons__branches'] == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-md-3">
+                                                <label><strong>@lang('menu.business_location') </strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
+                                        @endif
+                                    @endif
+
+                                    <div class="col-md-3">
+                                        <label><strong>@lang('menu.priority') </strong></label>
+                                        <select name="priority"
+                                            class="form-control submit_able select2" id="priority" autofocus>
+                                            <option value="">@lang('menu.all')</option>
+                                            <option value="Low">@lang('menu.low')</option>
+                                            <option value="Medium">@lang('menu.medium')</option>
+                                            <option value="High">@lang('menu.high')</option>
+                                            <option value="Urgent">@lang('menu.urgent')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><strong>@lang('menu.status') </strong></label>
+                                        <select name="status"
+                                            class="form-control submit_able select2" id="status" autofocus>
+                                            <option value="">@lang('menu.all')</option>
+                                            <option value="New">@lang('menu.new')</option>
+                                            <option value="In-Progress">@lang('menu.in_progress')</option>
+                                            <option value="On-Hold">@lang('menu.on_hold')</option>
+                                            <option value="Complated">@lang('menu.completed')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label><strong>@lang('menu.date_range') </strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i
+                                                        class="fas fa-calendar-week input_i"></i></span>
+                                            </div>
+                                            <input readonly type="text" name="date_range" id="date_range"
+                                                class="form-control daterange submit_able_input"
+                                                autocomplete="off">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row px-3 mt-1">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>All Work Space </h6>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                class="fas fa-plus-square"></i> Add</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th>Entry Date</th>
-                                                <th>Name</th>
-                                                <th>Workspace ID</th>
-                                                <th>Location</th>
-                                                <th>Priority</th>
-                                                <th>Status</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Estimated Hour</th>
-                                                <th>Assigned By</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>{{ __('All Work Space') }} </h6>
+                    </div>
+
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                    </div>
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.entry_date')</th>
+                                    <th>@lang('menu.name')</th>
+                                    <th>@lang('menu.workspace_id')</th>
+                                    <th>@lang('menu.location')</th>
+                                    <th>@lang('menu.priority')</th>
+                                    <th>@lang('menu.status')</th>
+                                    <th>@lang('menu.start_date')</th>
+                                    <th>@lang('menu.end_date')</th>
+                                    <th>{{ __('Estimated Hour') }}</th>
+                                    <th>@lang('menu.assigned_by')</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -174,7 +141,7 @@
         <div class="modal-dialog col-55-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Work Space</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_work_space')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -183,12 +150,12 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>Name :</b></label>
+                                <label><b>@lang('menu.name') </b><span class="text-danger"> *</span></label>
                                 <input required type="text" name="name" class="form-control" placeholder="Workspace Name">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Assigned To :</b></label>
+                                <label><b>@lang('menu.assigned_to') </b><span class="text-danger"> *</span></label>
                                 <select required name="user_ids[]" class="form-control select2" multiple="multiple">
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->prefix.' '.$user->name.' '.$user->last_name }}</option>
@@ -199,65 +166,66 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Priority : </b></label>
+                                <label><b>@lang('menu.priority') </b><span class="text-danger"> *</span></label>
                                 <select required name="priority" class="form-control">
-                                    <option value="">Select Priority</option>
-                                    <option value="Low">Low</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="High">High</option>
-                                    <option value="Urgent">Urgent</option>
+                                    <option value="">@lang('menu.select_priority')</option>
+                                    <option value="Low">@lang('menu.low')</option>
+                                    <option value="Medium">@lang('menu.medium')</option>
+                                    <option value="High">@lang('menu.high')</option>
+                                    <option value="Urgent">@lang('menu.urgent')</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Status : </strong></label>
+                                <label><strong>@lang('menu.status') </strong><span class="text-danger"> *</span></label>
                                 <select required name="status" class="form-control">
-                                    <option value="">Select Status</option>
-                                    <option value="New">New</option>
-                                    <option value="In-Progress">In-Progress</option>
-                                    <option value="On-Hold">On-Hold</option>
-                                    <option value="Complated">Complated</option>
+                                    <option value="">@lang('menu.select_status')</option>
+                                    <option value="New">@lang('menu.new')</option>
+                                    <option value="In-Progress">@lang('menu.in_progress')</option>
+                                    <option value="On-Hold">@lang('menu.on_hold')</option>
+                                    <option value="Complated">@lang('menu.completed')</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Start Date : </b></label>
-                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date(json_decode($generalSettings->business, true)['date_format'])}}" autocomplete="off">
+                                <label><b>@lang('menu.start_date') </b><span class="text-danger"> *</span></label>
+                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date($generalSettings['business__date_format'])}}" autocomplete="off">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>End Date : </b></label>
-                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ json_decode($generalSettings->business, true)['date_format'] }}" autocomplete="off">
+                                <label><b>@lang('menu.end_date') </b><span class="text-danger"> *</span></label>
+                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><b>Description : </b></label>
+                                <label><b>@lang('menu.description') </b></label>
                                 <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description."></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><b>Documents : </b></label>
+                                <label><b>Documents </b></label>
                                 <input type="file" name="documents[]" class="form-control" multiple id="documents" placeholder="Workspace Description.">
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Estimated Hours : </b></label>
-                                <input type="text" name="estimated_hours" class="form-control" placeholder="Estimated Hours">
+                                <label><b>{{ __('Estimated Hour') }} </b></label>
+                                <input type="text" name="estimated_hours" class="form-control" placeholder="{{ __('Estimated Hour') }}">
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -285,7 +253,7 @@
     <!-- Add Modal -->
     <div class="modal fade" id="docsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
       aria-labelledby="staticBackdrop" aria-hidden="true">
-      <div class="modal-dialog col-40-modal" role="document">
+      <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
               <div class="modal-header">
                   <h6 class="modal-title" id="exampleModalLabel">Uploaded Documents</h6>
@@ -298,11 +266,11 @@
   <!-- Add Modal End-->
 @endsection
 @push('scripts')
-<script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/daterangepicker/daterangepicker.js"></script>
-<script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
-<script src="{{ asset('public') }}/assets/plugins/custom/image-previewer/jquery.magnify.min.js"></script>
-<script src="{{ asset('public') }}/backend/asset/js/bootstrap-date-picker.min.js"></script>
+<script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/image-previewer/jquery.magnify.min.js') }}"></script>
+<script src="{{ asset('backend/asset/js/bootstrap-date-picker.min.js') }}"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         "processing": true,
@@ -314,7 +282,7 @@
             {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         aaSorting: [[0, 'desc']],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('workspace.index') }}",
@@ -336,7 +304,7 @@
             {data: 'start_date', name: 'start_date'},
             {data: 'end_date', name: 'end_date'},
             {data: 'estimated_hours', name: 'estimated_hours'},
-            {data: 'assigned_by', name: 'admin_and_users.name'},
+            {data: 'assigned_by', name: 'users.name'},
             {data: 'action'},
         ],
     });
@@ -466,7 +434,7 @@
         var url = $(this).attr('href');
         $('#deleted_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes bg-primary','action': function() {$('#deleted_form').submit();}},
@@ -497,7 +465,7 @@
         var tr = $(this).closest('tr');
         $('#deleted_doc_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes bg-primary','action': function() {$('#deleted_doc_form').submit();tr.remove();}},
@@ -554,7 +522,7 @@
     $('.select2').select2();
     $('[data-magnify=gallery]').magnify();
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'dd');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');

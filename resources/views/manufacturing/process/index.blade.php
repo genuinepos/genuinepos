@@ -1,115 +1,82 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'All Process - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (auth()->user()->permission->manufacturing['process_view'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire text-primary"></i> <b>@lang('menu.process')</b></a>
-                                            </li>
-                                        @endif
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-dumpster-fire"></span>
+                    <h6>@lang('menu.process')</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                </a>
+            </div>
+        </div>
 
-                                        @if (auth()->user()->permission->manufacturing['production_view'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->manufacturing['manuf_settings'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h"></i> <b>@lang('menu.manufacturing_setting')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->manufacturing['manuf_report'] == '1')
-                                            <li>
-                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+        <div class="p-3">
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>@lang('menu.process')</h6>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Process</h6>
-                                    </div>
-
-                                    @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
-                                        <div class="col-md-6">
-                                            <div class="btn_30_blue float-end">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                        class="fas fa-plus-square"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-    
-                                <div class="widget_content">
-                                    <div class="data_preloader">
-                                        <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="data-list">
-                                        <form id="update_product_cost_form" action="">
-                                            <table class="display data_tbl data__table">
-                                                <thead>
-                                                    <tr class="bg-navey-blue">
-                                                        <th data-bSortable="false">
-                                                            <input class="all" type="checkbox" name="all_checked"/>
-                                                        </th>
-                                                        <th class="text-black">Actions</th>
-                                                        <th class="text-black">Product Name</th>
-                                                        <th class="text-black">Category</th>
-                                                        <th class="text-black">SubCategory</th>
-                                                        <th class="text-black">Wastage</th>
-                                                        <th class="text-black">Output Quantity</th>
-                                                        <th class="text-black">Total Ingrediant Cost</th>
-                                                        <th class="text-black">Production Cost</th>
-                                                        <th class="text-black">Total Cost</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </form>
-                                    </div>
-                                </div>
-    
-                                @if (auth()->user()->permission->manufacturing['process_delete'] == '1')
-                                    <form id="deleted_form" action="" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                    </form>
-                                @endif
-                            </div>
+                    @if (auth()->user()->can('process_add'))
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                         </div>
+                    @endif
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <form id="update_product_cost_form" action="">
+                            <table class="display data_tbl data__table">
+                                <thead>
+                                    <tr class="bg-navey-blue">
+                                        <th data-bSortable="false">
+                                            <input class="all" type="checkbox" name="all_checked"/>
+                                        </th>
+                                        <th class="text-black">@lang('menu.action')</th>
+                                        <th class="text-black">@lang('menu.product_name')</th>
+                                        <th class="text-black">@lang('menu.category')</th>
+                                        <th class="text-black">@lang('menu.sub_category')</th>
+                                        <th class="text-black">@lang('menu.wastage')</th>
+                                        <th class="text-black">@lang('menu.output_quantity')</th>
+                                        <th class="text-black">{{ __('Total Ingredient Cost') }}</th>
+                                        <th class="text-black">@lang('menu.production_cost')</th>
+                                        <th class="text-black">@lang('menu.total_cost')</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
+
+                @if (auth()->user()->can('process_delete'))
+                    <form id="deleted_form" action="" method="post">
+                        @method('DELETE')
+                        @csrf
+                    </form>
+                @endif
             </div>
         </div>
     </div>
 
-    @if (auth()->user()->permission->manufacturing['process_add'] == '1') 
+    @if(auth()->user()->can('process_add'))
         <div class="modal fade" id="addModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog double-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Choose Product</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.choose_product')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                                 class="fas fa-times"></span></a>
                     </div>
@@ -117,7 +84,7 @@
                         <!--begin::Form-->
                         <form action="{{ route('manufacturing.process.create') }}" method="GET">
                             <div class="form-group">
-                                <label><b>Select Product</b> : <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.select_product')</b> : <span class="text-danger">*</span></label>
                                 <select required name="product_id" class="form-control select2">
                                     @foreach ($products as $product)
                                         @php
@@ -130,12 +97,14 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-none">
-                                        <i class="fas fa-spinner text-primary"></i><b> Loading...</b>
-                                    </button>
-                                    <button type="submit" class="c-btn me-0 button-success float-end submit_button">Save</button>
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <div class="btn-loading">
+                                        <button type="button" class="btn loading_button d-hide">
+                                            <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
+                                        </button>
+                                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                        <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -149,19 +118,19 @@
     aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-50-modal" role="document">
             <div class="modal-content" id="view-modal-content">
-             
+
             </div>
         </div>
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         $('.select2').select2();
-        
+
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -169,7 +138,7 @@
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             ajax: "{{ route('manufacturing.process.index') }}",
             columnDefs: [{"targets": [0],"orderable": false,"searchable": false}],
@@ -200,14 +169,14 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){ 
-            e.preventDefault(); 
+        $(document).on('click', '#delete',function(e){
+            e.preventDefault();
 
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);   
+            $('#deleted_form').attr('action', url);
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -215,7 +184,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e){
             e.preventDefault();
@@ -244,6 +213,20 @@
 
                 $('.data_id').prop('checked', false);
             }
+        });
+        $(document).on('click', '.print_btn',function (e) {
+           e.preventDefault();
+            var body = $('.transfer_print_template').html();
+            var header = $('.heading_area').html();
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 1000,
+                header: null,
+            });
         });
     </script>
 @endpush

@@ -9,7 +9,7 @@
 
         <td>
             @if ($leave->status == 0)
-                <span class="badge bg-warning">Pending</span>
+                <span class="badge bg-warning">@lang('menu.pending')</span>
             @elseif($leave->status == 1)
                 <span class="badge bg-success">Approved</span>
             @else 
@@ -20,7 +20,7 @@
     @endforeach
 @else
     <tr>
-        <td colspan="2" class="text-center">No Data Found.</td>
+        <td colspan="2" class="text-center">@lang('menu.no_data_found').</td>
     </tr>
 @endif
 

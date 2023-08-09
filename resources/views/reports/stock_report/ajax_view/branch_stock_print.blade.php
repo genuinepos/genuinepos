@@ -13,20 +13,20 @@
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px;margin-right: 20px;}
 </style>
 @php
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
-            <p><b>All Business Location</b></p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ json_decode($generalSettings->business, true)['address'] }}</p>
+            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -38,7 +38,7 @@
             <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
         @endif
 
-        <h6 style="margin-top: 10px;"><b>Business Location Stock Report </b></h6>
+        <h6 style="margin-top: 10px;"><b>@lang('menu.business_location_stock_report') </b></h6>
     </div>
 </div>
 <br>
@@ -47,13 +47,13 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-start">P.Code</th>
-                    <th class="text-start">Product</th>
-                    <th class="text-start">Business Location</th>
-                    <th class="text-end">Unit Price</th>
-                    <th class="text-end">Current Stock</th>
-                    <th class="text-end">Stock Value <b><small>(By Unit Cost)</small></b></th>
-                    <th class="text-end">Total Sold</th>
+                    <th class="text-start">@lang('menu.p_code')</th>
+                    <th class="text-start">@lang('menu.product')</th>
+                    <th class="text-start">@lang('menu.business_location')</th>
+                    <th class="text-end">@lang('menu.unit_price')</th>
+                    <th class="text-end">@lang('menu.current_stock')</th>
+                    <th class="text-end">@lang('menu.stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+                    <th class="text-end">@lang('menu.total_sold')</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
@@ -62,7 +62,7 @@
                         <tr>
                             <td class="text-start">{{ $row->variant_code }}</td>
                             <td class="text-start">{{ $row->name.'-'.$row->variant_name }}</td>
-                            <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)' !!}</td>
+                            <td class="text-start">{!! $row->b_name ? $row->b_name.'/'.$row->branch_code.'<b>(BL)<b/>' : $generalSettings['business__shop_name'] . '(<b>HO</b>)' !!}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->variant_price) }}</td>
                             <td class="text-end">{{ $row->variant_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
@@ -77,7 +77,7 @@
                         <tr>
                             <td class="text-start">{{ $row->product_code }}</td>
                             <td class="text-start">{{ $row->name }}</td>
-                            <td class="text-start">{!! $row->b_name ? $row->b_name : json_decode($generalSettings->business, true)['shop_name'] !!}</td>
+                            <td class="text-start">{!! $row->b_name ? $row->b_name : $generalSettings['business__shop_name'] !!}</td>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($row->product_price) }}</td>
                             <td class="text-end">{{ $row->product_quantity.'('.$row->code_name.')' }}</td>
                             <td class="text-end">
@@ -98,17 +98,17 @@
 <div id="footer">
     <div class="row mt-1">
         <div class="col-4 text-start">
-            <small>Print Date : {{ date(json_decode($generalSettings->business, true)['date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
         </div>
 
         <div class="col-4 text-center">
             @if (env('PRINT_SD_SALE') == true)
-                <small>Powered By <b>SpeedDigit Software Solution.</b></small>
+                <small>@lang('menu.powered_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
             @endif
         </div>
 
         <div class="col-4 text-end">
-            <small>Print Time : {{ date($timeFormat) }}</small>
+            <small>@lang('menu.print_time') : {{ date($timeFormat) }}</small>
         </div>
     </div>
 </div>

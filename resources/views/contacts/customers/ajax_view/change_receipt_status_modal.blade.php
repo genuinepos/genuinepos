@@ -1,7 +1,7 @@
 <div class="modal-dialog four-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Change Money Receipt Voucher Status (Voucher No : {{ $receipt->invoice_id }} )</h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.change_money_receipt_voucher_status') (@lang('menu.voucher_no') : {{ $receipt->invoice_id }} )</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <i aria-hidden="true" class="ki ki-close"></i>
             </button>
@@ -12,22 +12,22 @@
                 @csrf
                 <div class="row mt-2">
                     <div class="col-md-4">
-                        <label><b>Received Amount :</b> <span class="text-danger">*</span> </label>
-                        <input type="number" step="any" name="amount" class="form-control form-control-sm vcs_input" id="received_amount" data-name="Received amount" placeholder="Received Amount"/>
+                        <label><b>@lang('menu.received_amount') </b> <span class="text-danger">*</span> </label>
+                        <input type="number" step="any" name="amount" class="form-control form-control-sm vcs_input" id="received_amount" data-name="Received amount" placeholder="@lang('menu.received_amount')"/>
                         <span class="error error_vcs_received_amount"></span>
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Status :</strong> </strong> <span class="text-danger">*</span> </label>
+                        <label><strong>@lang('menu.status') </strong> </strong> <span class="text-danger">*</span> </label>
                         <select disabled name="status" class="form-control form-control-sm mr_input" data-name="Money receipt status" id="vcs_status">
-                            <option value="Pending">Pending</option>
-                            <option selected value="Completed">Completed</option>
+                            <option value="Pending">@lang('menu.pending')</option>
+                            <option selected value="Completed"> @lang('menu.completed')</option>
                         </select>
                         <span class="error error_vcs_status"></span>
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i
@@ -42,25 +42,25 @@
 
                 <div class="row mt-2">
                     <div class="col-md-4">
-                        <label><strong>Payment Method :</strong> </strong></label>
+                        <label><strong>@lang('menu.payment_method') </strong> </strong></label>
                         <select name="payment_method" class="form-control form-control-sm" id="vcs_status">
-                            <option value="Cash">Cash</option>
-                            <option value="Advanced">Advanced</option>
-                            <option value="Card">Card</option>
-                            <option value="Cheque">Cheque</option>
-                            <option value="Bank-Transfer">Bank-Transfer</option>
-                            <option value="Other">Other</option>
-                            <option value="Custom">Custom Field</option>
+                            <option value="Cash">@lang('menu.cash')</option>
+                            <option value="Advanced">@lang('menu.advanced')</option>
+                            <option value="Card">@lang('menu.card')</option>
+                            <option value="Cheque">@lang('menu.cheque')</option>
+                            <option value="Bank-Transfer">@lang('menu.bank_transfer')</option>
+                            <option value="Other">@lang('menu.other')</option>
+                            <option value="Custom">@lang('menu.custom_field')</option>
                         </select>
                     </div>
 
                     <div class="col-md-8">
-                        <label><strong>Account :</strong> </strong> </label>
+                        <label><strong>@lang('menu.account') </strong> </strong> </label>
                         <select name="account_id" class="form-control form-control-sm">
-                            <option value="">None</option>
+                            <option value="">@lang('menu.none')</option>
                             @foreach ($accounts as $account)
-                                <option value="{{ $account->id }}">{{ $account->name }} (A/C:
-                                    {{ $account->account_number }}) (Balance: {{ $account->balance }})</option>
+                                <option value="{{ $account->id }}">{{ $account->name }} (A/C
+                                    {{ $account->account_number }}) (@lang('menu.balance') {{ $account->balance }})</option>
                             @endforeach
                         </select>
                     </div>
@@ -68,9 +68,9 @@
 
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
+                        <button type="submit" class="c-btn button-success float-end">@lang('menu.save')</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
             </form>

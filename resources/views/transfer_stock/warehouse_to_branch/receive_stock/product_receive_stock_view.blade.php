@@ -8,37 +8,63 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-exchange-alt"></span>
+                    <h5>@lang('menu.process_to_receive_stock')</h5>
+                </div>
+
+                <div class="col-6">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="receive_stock_form" action="{{ route('transfer.stocks.to.branch.receive.stock.process.save', $sendStockId) }}" method="POST">
                 @csrf
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Process To Receive Stock</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
+                        <div class="element-body">
+                            <p class="m-0"><strong>@lang('menu.transfer_stock_details') </strong></p>
+                            <hr class="m-1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="m-0"><strong>@lang('menu.reference_id') : </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p>
+                                    <p class="m-0"><strong>@lang('menu.date') : </strong> <span class="transfer_date">05-12-2020</span></p>
                                     </div>
-                                </div>
+                                    <div class="col-md-6">
+                                    <p class="m-0"><strong>@lang('menu.business_location') (From) : </strong> <span class="branch">Dhaka Branch - 145225</span></p>
+                                        <p class="m-0"><strong>@lang('menu.warehouse') (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                                <div class="element-body">
-                                    <p class="m-0"><strong>Transfer Stock Details </strong></p>
-                                    <hr class="m-1">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="m-0"><strong>Reference ID: </strong> <span class="transfer_invoice_id">SI-14252-45525588</span> </p> 
-                                            <p class="m-0"><strong>Date: </strong> <span class="transfer_date">05-12-2020</span></p> 
-                                         </div>
-                                         <div class="col-md-6">
-                                            <p class="m-0"><strong>Business Location (From): </strong> <span class="branch">Dhaka Branch - 145225</span></p>
-                                             <p class="m-0"><strong>Warehouse (To) : </strong> <span class="warehouse">Warehouse-1 (W-1)</span> </p> 
-                                         </div>
+                <section>
+                    <div class="sale-content mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="sale-item-sec">
+                                        <div class="sale-item-inner">
+                                            <div class="table-responsive">
+                                                <table class="display data__table table-striped">
+                                                    <thead class="staky">
+                                                        <tr>
+                                                            <th>@lang('menu.product')</th>
+                                                            <th class="text-center">@lang('menu.send_quantity')</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
+                                                            <th class="text-center">@lang('menu.pending_qty')</th>
+                                                            <th class="text-center">@lang('menu.receive_quantity')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="send_stock_list"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -47,30 +73,23 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th class="text-center">Send Quantity</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">Pending Qty</th>
-                                                                    <th class="text-center">Receive Quantity</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="send_stock_list"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-4">{{ __('Receiver Note') }} </label>
+                                        <div class="col-8">
+                                            <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="{{ __('Receiver Note') }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class=" col-4">@lang('menu.net_total') </label>
+                                        <div class="col-8">
+                                            <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -79,42 +98,13 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4">Receiver Note :</label>
-                                                <div class="col-8">
-                                                    <input type="text" name="receiver_note" id="receiver_note" class="form-control" placeholder="Receiver note">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class=" col-4">Net Total :</label>
-                                                <div class="col-8">
-                                                    <input readonly type="number" step="any" name="total_received_quantity" id="total_received_quantity" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="submit_button_area py-2">
+                <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary float-end">Save</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                <button class="btn btn-sm btn-success float-end">@lang('menu.save')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,7 +114,7 @@
 @endsection
 @push('scripts')
 <script>
-     var headBranch = "{{json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}";
+     var headBranch = "{{$generalSettings['business__shop_name'].'(HO)' }}";
     // Get editable data by ajax
     function getReceiveableStock(){
         $.ajax({
@@ -146,7 +136,7 @@
                     tr += '<a href="#" class="text-success" id="edit_product">';
                     tr += '<span class="product_name">'+sendProduct.product.name+'</span>';
                     var variant = sendProduct.product_variant_id != null ? ' -'+sendProduct.variant.variant_name+'- ' : '';
-                    tr += '<span class="product_variant">'+variant+'</span>'; 
+                    tr += '<span class="product_variant">'+variant+'</span>';
                     var code = sendProduct.product_variant_id != null ? sendProduct.variant.variant_code : sendProduct.product.product_code;
                     tr += '<span class="product_code">'+'('+code+')'+'</span>';
                     tr += '</a>';
@@ -154,11 +144,11 @@
 
                     if (sendProduct.product_variant_id != null) {
 
-                        tr += '<input value="'+sendProduct.product_variant_id+'" type="hidden" class="variantId-'+sendProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">'; 
+                        tr += '<input value="'+sendProduct.product_variant_id+'" type="hidden" class="variantId-'+sendProduct.product_variant_id+'" id="variant_id" name="variant_ids[]">';
                     }else{
-                        
-                        tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';  
-                    }   
+
+                        tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
+                    }
                     tr += '<input type="hidden" id="unit" value="'+sendProduct.unit+'">';
                     tr += '<input type="hidden" name="previous_received_quantities[]" id="previous_received_quantity" value="'+sendProduct.received_qty+'">';
                     tr += '<input type="hidden" id="qty_limit" value="'+sendProduct.quantity+'">';
@@ -215,20 +205,20 @@
                 alert('Only - '+qty_limit+' '+unit+' is available.');
                 $(this).val(qty_limit);
                 tr.find('#pending_qty').html(parseFloat(0).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
                 return;
             }
-            calculateTotalAmount();  
+            calculateTotalAmount();
         }
     });
-   
+
 
     //Add purchase request by ajax
     $('#receive_stock_form').on('submit', function(e){
         e.preventDefault();
         var totalItem = $('#total_item').val();
         if (parseFloat(totalItem) == 0) {
-            toastr.error('Transfer product table is empty.','Some thing went wrong.'); 
+            toastr.error('Transfer product table is empty.','Some thing went wrong.');
             return;
         }
         $('.loading_button').show();
@@ -236,8 +226,8 @@
         var request = $(this).serialize();
         var inputs = $('.add_input');
             inputs.removeClass('is-invalid');
-            $('.error').html('');  
-            var countErrorField = 0;  
+            $('.error').html('');
+            var countErrorField = 0;
         $.each(inputs, function(key, val){
             var inputId = $(val).attr('id');
             var idValue = $('#'+inputId).val();
@@ -250,7 +240,7 @@
 
         if(countErrorField > 0){
             $('.loading_button').hide();
-            toastr.error('Please check again all form fields.','Some thing went wrong.'); 
+            toastr.error('Please check again all form fields.','Some thing went wrong.');
             return;
         }
 
@@ -261,21 +251,21 @@
             success:function(data){
                 console.log(data);
                 if(!$.isEmptyObject(data.errorMsg)){
-                    toastr.error(data.errorMsg,'ERROR'); 
+                    toastr.error(data.errorMsg,'ERROR');
                     $('.loading_button').hide();
                 }else{
                     $('.loading_button').hide();
-                    toastr.success(data.successMsg); 
+                    toastr.success(data.successMsg);
                     window.location = "{{route('transfer.stocks.to.branch.receive.stock.index')}}";
                 }
             }
         });
     });
 
-    // Automatic remove searching product is found signal 
+    // Automatic remove searching product is found signal
     $('.submit_button').on('click', function () {
         var value = $(this).val();
-        $('#action').val(value); 
+        $('#action').val(value);
     });
 </script>
 @endpush

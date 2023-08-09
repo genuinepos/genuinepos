@@ -9,122 +9,125 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CustomerUtil
 {
-    public function customerListTable($request)
-    {
-        $branchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
+    // public function customerListTable($request)
+    // {
+    //     $branchWiseCustomerAmountUtil =  new \App\Utils\BranchWiseCustomerAmountUtil();
 
-        $customers = DB::table('customers')
-            ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
-            ->select(
-                'customers.id',
-                'customers.contact_id',
-                'customers.name',
-                'customers.business_name',
-                'customers.status',
-                'customers.phone',
-                'customer_groups.group_name'
-            );
+    //     $customers = DB::table('customers')
+    //         ->leftJoin('customer_groups', 'customers.customer_group_id', 'customer_groups.id')
+    //         ->select(
+    //             'customers.id',
+    //             'customers.contact_id',
+    //             'customers.name',
+    //             'customers.business_name',
+    //             'customers.status',
+    //             'customers.phone',
+    //             'customer_groups.group_name'
+    //         );
 
-        return DataTables::of($customers)
-            ->addColumn('action', function ($row) {
-                $html = '';
-                $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+    //     return DataTables::of($customers)
+    //         ->addColumn('action', function ($row) {
+    //             $html = '';
+    //             $html .= '<div class="btn-group" role="group">';
+    //             $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
 
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.customer.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
+    //             $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.customer.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
 
-                $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
+    //             $html .= '<a class="dropdown-item" id="money_receipt_list" href="' . route('money.receipt.voucher.list', [$row->id]) . '"><i class="far fa-file-alt text-primary"></i> Payment Receipt Voucher</a>';
 
-                if (auth()->user()->permission->contact['customer_edit'] == '1') {
+    //             if (auth()->user()->can('customer_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('contacts.customer.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
-                }
+    //                 $html .= '<a class="dropdown-item" href="' . route('contacts.customer.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+    //             }
 
-                if (auth()->user()->permission->contact['customer_delete'] == '1') {
+    //             if (auth()->user()->can('customer_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                }
+    //                 $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.customer.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+    //             }
 
-                if ($row->status == 1) {
+    //             // if ($row->status == 1) {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                } else {
+    //             //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+    //             // } else {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                }
+    //             //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('contacts.customer.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+    //             // }
 
-                $html .= '</div>';
-                $html .= '</div>';
-                return $html;
-            })
-            ->editColumn('business_name', fn ($row) => $row->business_name ? $row->business_name : '...')
+    //             $html .= '</div>';
+    //             $html .= '</div>';
+    //             return $html;
+    //         })
+    //         ->editColumn('business_name', fn ($row) => $row->business_name ? $row->business_name : '...')
 
-            ->editColumn('group_name', fn ($row) => $row->group_name ? $row->group_name : '...')
+    //         ->editColumn('group_name', fn ($row) => $row->group_name ? $row->group_name : '...')
 
-            ->editColumn('credit_limit', function ($row) use ($request) {
+    //         ->editColumn('credit_limit', function ($row) use ($request) {
 
-                if ($request->branch_id == '') {
+    //             if ($request->branch_id == '') {
 
-                    $branch_id = auth()->user()->branch_id;
-                    $creditLimit = DB::table('customer_credit_limits')->where('branch_id', $branch_id)->where('customer_id', $row->id)->first(['credit_limit']);
-                    return $creditLimit ? $creditLimit->credit_limit : '';
-                } else {
+    //                 $branch_id = auth()->user()->branch_id;
+    //                 $creditLimit = DB::table('customer_credit_limits')->where('branch_id', $branch_id)->where('customer_id', $row->id)->first(['credit_limit']);
+    //                 return $creditLimit ? $creditLimit->credit_limit : '';
+    //             } else {
 
-                    $branch_id = $request->branch_id == 'NULL' ? NULL : $request->branch_id;
-                    $creditLimit = DB::table('customer_credit_limits')->where('branch_id', $branch_id)->where('customer_id', $row->id)->first(['credit_limit']);
-                    return $creditLimit ? $creditLimit->credit_limit : '';
-                }
-            })
+    //                 $branch_id = $request->branch_id == 'NULL' ? NULL : $request->branch_id;
+    //                 $creditLimit = DB::table('customer_credit_limits')->where('branch_id', $branch_id)->where('customer_id', $row->id)->first(['credit_limit']);
+    //                 return $creditLimit ? $creditLimit->credit_limit : '';
+    //             }
+    //         })
 
-            ->editColumn('opening_balance', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
- 
-                $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
-                return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
-            })
+    //         ->editColumn('opening_balance', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-            ->editColumn('total_sale', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+    //             $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
+    //             return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
+    //         })
 
-                $totalSale = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale'];
-                return '<span class="total_sale" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
-            })
+    //         ->editColumn('total_sale', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-            ->editColumn('total_paid', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+    //             $totalSale = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale'];
+    //             return '<span class="total_sale" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
+    //         })
 
-                $totalPaid = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_paid'];
-                return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
-            })
+    //         ->editColumn('total_paid', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-            ->editColumn('total_sale_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+    //             $totalPaid = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_paid'];
+    //             return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
+    //         })
 
-                $totalSaleDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
-                return '<span class="total_sale_due" data-value="' . $totalSaleDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleDue) . '</span>';
-            })
+    //     $totalSaleDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_due'];
 
-            ->editColumn('total_return', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+    //     return '<span class="total_sale_due" data-value="'.$totalSaleDue.'">'.\App\Utils\Converter::format_in_bdt($totalSaleDue).'</span>';
+    // })
 
-                $totalReturn = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_return'];
-                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
-            })
+    //         ->editColumn('total_return', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-            ->editColumn('total_sale_return_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
+    //             $totalReturn = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_return'];
+    //             return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
+    //         })
 
-                $totalSaleReturnDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_return_due'];
-                return '<span class="total_sale_return_due" data-value="' . $totalSaleReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleReturnDue) . '</span>';
-            })
+    //         ->editColumn('total_sale_return_due', function ($row) use ($request, $branchWiseCustomerAmountUtil) {
 
-            ->editColumn('status', function ($row) {
+    //             $totalSaleReturnDue = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['total_sale_return_due'];
+    //             return '<span class="total_sale_return_due" data-value="' . $totalSaleReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalSaleReturnDue) . '</span>';
+    //         })
 
-                if ($row->status == 1) {
+    //         ->editColumn('status', function ($row) {
 
-                    return '<i class="far fa-thumbs-up text-success"></i>';
-                } else {
-
-                    return '<i class="far fa-thumbs-down text-danger"></i>';
-                }
-            })
-            ->rawColumns(['action', 'credit_limit', 'business_name', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due', 'status'])
-            ->make(true);
-    }
+    //             if ($row->status == 1) {
+    //                 $html = '<div class="form-check form-switch">';
+    //                 $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('contacts.customer.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+    //                 $html .= '</div>';
+    //                 return $html;
+    //             } else {
+    //                 $html = '<div class="form-check form-switch">';
+    //                 $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.customer.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+    //                 $html .= '</div>';
+    //                 return $html;
+    //             }
+    //         })
+    //         ->rawColumns(['action', 'credit_limit', 'business_name', 'group_name', 'opening_balance', 'total_sale', 'total_paid', 'total_sale_due', 'total_return', 'total_sale_return_due', 'status'])
+    //         ->make(true);
+    // }
 
     // public function adjustCustomerAmountForSalePaymentDue($customerId)
     // {
@@ -261,8 +264,7 @@ class CustomerUtil
             0 => [
                 'name' => 'Opening Balance',
                 'id' => 'sale_id',
-                'voucher_no' =>
-                'sale_inv_id',
+                'voucher_no' => 'sale_inv_id',
                 'amt' => 'debit',
                 'par' => 'sale_par',
             ],
@@ -320,7 +322,7 @@ class CustomerUtil
         $addCustomerLedger->branch_id = $branch_id;
         $addCustomerLedger->customer_id = $customer_id;
         $addCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-        $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $addCustomerLedger->{$voucher_type['id']} = $trans_id;
         $addCustomerLedger->{$voucher_type['amt']} = $amount;
         $addCustomerLedger->amount = $amount;
@@ -346,7 +348,7 @@ class CustomerUtil
             $previousTime = date('H:i:s', strtotime($updateCustomerLedger->report_date));
             $updateCustomerLedger->branch_id = $new_branch_id ? $new_branch_id : $previous_branch_id;
             $updateCustomerLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $updateCustomerLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $updateCustomerLedger->{$voucher_type['amt']} = $amount;
             $updateCustomerLedger->amount = $amount;
             $updateCustomerLedger->running_balance = 0;

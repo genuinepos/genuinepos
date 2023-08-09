@@ -2,13 +2,13 @@
 
 namespace App\Models\Essential;
 
-use App\Models\AdminAndUser;
-use App\Models\Essential\Workspace;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use App\Models\User;
 
-class WorkspaceUsers extends Model
+class WorkspaceUsers extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function workspace()
@@ -18,6 +18,6 @@ class WorkspaceUsers extends Model
 
     public function user()
     {
-        return $this->belongsTo(AdminAndUser::class, 'user_id')->select('id', 'prefix', 'name', 'last_name');
+        return $this->belongsTo(User::class, 'user_id')->select('id', 'prefix', 'name', 'last_name');
     }
 }

@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Sale;
-use App\Models\SaleReturn;
-use Illuminate\Database\Eloquent\Model;
-
-class CustomerPaymentInvoice extends Model
+class CustomerPaymentInvoice extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function sale()

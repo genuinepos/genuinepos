@@ -3,18 +3,19 @@
 namespace App\Utils;
 
 use App\Models\Purchase;
-use App\Utils\PurchaseUtil;
-use App\Models\PurchaseReturn;
 use App\Models\PurchaseProduct;
-use App\Utils\ProductStockUtil;
-use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseReturn;
 use App\Models\PurchaseReturnProduct;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseReturnUtil
 {
     public $purchaseUtil;
+
     public $productStockUtil;
+
     public $supplierUtil;
+
     public $accountUtil;
 
     public function __construct(
@@ -44,7 +45,7 @@ class PurchaseReturnUtil
         $addPurchaseReturn = new PurchaseReturn();
         $addPurchaseReturn->purchase_id = $purchase->id;
         $addPurchaseReturn->purchase_return_account_id = $request->purchase_return_account_id;
-        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI') . $invoiceId;
+        $addPurchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI').$invoiceId;
 
         if ($purchase->warehouse_id) {
 
@@ -80,8 +81,8 @@ class PurchaseReturnUtil
             $addReturnProduct = new PurchaseReturnProduct();
             $addReturnProduct->purchase_return_id = $addPurchaseReturn->id;
             $addReturnProduct->purchase_product_id = $purchase_product_id;
-            $addReturnProduct->product_id =  $purchaseProduct->product_id;
-            $addReturnProduct->product_variant_id = $purchaseProduct->product_variant_id ? $purchaseProduct->product_variant_id : NULL;
+            $addReturnProduct->product_id = $purchaseProduct->product_id;
+            $addReturnProduct->product_variant_id = $purchaseProduct->product_variant_id ? $purchaseProduct->product_variant_id : null;
             $addReturnProduct->return_qty = $return_quantities[$index];
             $addReturnProduct->unit = $units[$index];
             $addReturnProduct->return_subtotal = $return_subtotals[$index];
@@ -138,7 +139,7 @@ class PurchaseReturnUtil
         $purchaseReturnDue = $request->total_return_amount - $purchaseDue;
 
         // Update purchase return
-        $purchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI') . $invoiceId;
+        $purchaseReturn->invoice_id = $request->invoice_id ? $request->invoice_id : ($invoicePrefix != null ? $invoicePrefix : 'PRI').$invoiceId;
 
         if ($purchase->warehouse_id) {
 
@@ -281,6 +282,6 @@ class PurchaseReturnUtil
 
     public function adjustSupplierReturnAmounts($purchaseReturn)
     {
-        return;
+
     }
 }

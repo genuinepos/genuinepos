@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
     <style>
          .select_area {background: #ffffff;box-sizing: border-box;position: absolute;width: 64.2%;z-index: 9999999;padding: 0;left: 17.9%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
@@ -18,126 +18,124 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Generate Barcode</h5>
+                                <h5>@lang('menu.generate_barcode')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back </a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back') </a>
                         </div>
                     </div>
 
                     <!-- =========================================top section button=================== -->
-                    <div class="row mt-1">
-                        <div class="card">
-                            <div class="card ">
-                                <form id="multiple_completed_form"
-                                    action="{{ route('barcode.multiple.genereate.completed') }}" method="post">
-                                    @csrf
-                                </form>
-                                <!--begin::Form-->
-                                <form id="preview" action="{{ route('barcode.preview') }}" target="_blank" method="get">
-                                    @csrf
-                                    <div class="card-body">
-                                        <input type="hidden" id="business_name"
-                                            value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
-                                        <div class="form-group row">
-                                            <div class="col-md-8 offset-2">
-                                                <div class="input-group ">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                                                    </div>
-                                                    <input type="text" name="search_product" class="form-control "
-                                                        autocomplete="off" id="search_product"
-                                                        placeholder="Search Product by Product name / Product code(SKU)">
+                    <div class="p-3">
+                        <div class="card ">
+                            <form id="multiple_completed_form"
+                                action="{{ route('barcode.multiple.generate.completed') }}" method="post">
+                                @csrf
+                            </form>
+                            <!--begin::Form-->
+                            <form id="preview" action="{{ route('barcode.preview') }}" target="_blank" method="post">
+                                @csrf
+                                <div class="card-body">
+                                    <input type="hidden" id="business_name"
+                                        value="{{ $generalSettings['business__shop_name'] }}">
+                                    <div class="form-group row mb-3">
+                                        <div class="col-12">
+                                            <div class="input-group ">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                                 </div>
-                                                <div class="select_area">
-                                                    <ul class="product_dropdown_list">
-
-                                                    </ul>
-                                                </div>
+                                                <input type="text" name="search_product" class="form-control "
+                                                    autocomplete="off" id="search_product"
+                                                    placeholder="Search Product by Product name / Product code(SKU)">
                                             </div>
-                                        </div>
+                                            <div class="select_area">
+                                                <ul class="product_dropdown_list">
 
-                                        <div class="barcode_product_table_area">
-                                            <div class="table_area">
-                                                <div class="data_preloader d-none">
-                                                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
-                                                </div>
-                                                <table class="table modal-table table-sm">
-                                                    <thead>
-                                                        <tr class="bg-primary text-white text-start">
-                                                            <th class="text-start">Product</th>
-                                                            <th class="text-start">Supplier</th>
-                                                            <th class="text-start">Quantity</th>
-                                                            <th class="text-start">Packing Date</th>
-                                                            <th class="text-start">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="barcode_product_list">
-
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th colspan="5" class="text-start"><a href="" class="btn btn-sm btn-success multiple_completed"> Generate Completed All</a></th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                        <div class="extra_label">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <ul class="list-unstyled">
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price Price. &nbsp;</p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Product Variant &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Product Tax &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix &nbsp; </p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-4">
-                                                <label><b>Barcode Setting :</b></label>
-                                                <select name="br_setting_id" class="form-control">
-                                                    @foreach ($bc_settings as $bc_setting)
-                                                        <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
-                                                            {{ $bc_setting->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-12">
-                                                <button type="submit" class="btn btn-sm btn-primary float-end">Preview</button>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                                <!--end::Form-->
-                            </div>
+
+                                    <div class="barcode_product_table_area">
+                                        <div class="table_area">
+                                            <div class="data_preloader d-hide">
+                                                <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                                            </div>
+                                            <table class="table modal-table table-sm">
+                                                <thead>
+                                                    <tr class="bg-secondary text-white text-start">
+                                                        <th class="text-start">@lang('menu.product')</th>
+                                                        <th class="text-start">@lang('menu.supplier')</th>
+                                                        <th class="text-start">@lang('menu.quantity')</th>
+                                                        <th class="text-start">@lang('menu.packing_date')</th>
+                                                        <th class="text-start">@lang('menu.action')</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="barcode_product_list">
+
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="5" class="text-start"><a href="" class="btn btn-sm btn-success multiple_completed"> @lang('menu.generate_completed_all')</a></th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="extra_label">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; @lang('menu.price_price'). &nbsp;</p>
+                                                    </li>
+
+                                                    <li>
+                                                        <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; @lang('menu.product_name') &nbsp; </p>
+                                                    </li>
+
+                                                    <li>
+                                                        <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; @lang('menu.product_variant') &nbsp; </p>
+                                                    </li>
+
+                                                    <li>
+                                                        <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.product_tax') &nbsp; </p>
+                                                    </li>
+
+                                                    <li>
+                                                        <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; @lang('menu.business_name') &nbsp; </p>
+                                                    </li>
+
+                                                    <li>
+                                                        <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; @lang('menu.supplier_prefix') &nbsp; </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <label><b>@lang('menu.barcode_settings') </b></label>
+                                            <select name="br_setting_id" class="form-control">
+                                                @foreach ($bc_settings as $bc_setting)
+                                                    <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
+                                                        {{ $bc_setting->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-sm btn-primary float-end">@lang('menu.preview')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <!--end::Form-->
                         </div>
                     </div>
                 </div>
@@ -146,14 +144,14 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/barcode/JsBarcode.all.min.js"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/printme/jquery-printme.min.js"></script>
+    <script src="{{ asset('assets/plugins/custom/barcode/JsBarcode.all.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/printme/jquery-printme.min.js') }}"></script>
     <script>
         // Get all supplier products
         function getSupplierProduct(){
             $('.data_preloader').show();
             $.ajax({
-                url:"{{route('barcode.get.spacific.supplier.product', $productId)}}",
+                url:"{{route('barcode.get.specific.supplier.product', $productId)}}",
                 async:true,
                 type:'get',
                 dataType: 'json',
@@ -162,19 +160,19 @@
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';  
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
-                            
+                        }
+
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
                         }else{
                             tr += '<span class="span_product_code">'+' ('+sProduct.product.product_code+')'+'</span>';
                         }
-                        
+
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
                         tr += '<input type="hidden" name="product_name[]" value="'+sProduct.product.name+'">';
@@ -183,7 +181,7 @@
                             tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.product_variant_id+'">';
                             tr += '<input type="hidden" name="product_variant[]" value="'+sProduct.variant.variant_name+'">';
                             tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" value="'+sProduct.variant.variant_code+'">';
-                         
+
                             var priceIncTax = parseFloat(sProduct.variant.variant_price) /100 * parseFloat(tax) + parseFloat(sProduct.variant.variant_price);
                             if (sProduct.product.tax_type == 2) {
                                 var inclusiveTax = 100 + parseFloat(tax)
@@ -203,9 +201,9 @@
                                 tax_amount = parseFloat(sProduct.product.product_price) - parseFloat(calcAmount);
                                 priceIncTax = parseFloat(sProduct.product.product_price) + parseFloat(tax_amount);
                             }
-                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">'; 
+                            tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
                         }
-                        
+
                         tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
                         tr += '</td>';
 
@@ -237,7 +235,7 @@
         }
         getSupplierProduct();
 
-        // Searcha product 
+        // Searcha product
         $('#search_product').on('input', function () {
            var searchKeyWord = $(this).val();
            $('.product_dropdown_list').empty();
@@ -270,7 +268,7 @@
             });
         });
 
-        //Get Seleled product requested by ajax 
+        //Get Seleled product requested by ajax
         $(document).on('click', '.select_product', function(e) {
             e.preventDefault();
             var product_id = $(this).data('p_id');
@@ -304,19 +302,19 @@
                         var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
 
                         var sameProduct = rows.filter(function (row) {
-                           return row.productPrefix == createPrefix; 
+                           return row.productPrefix == createPrefix;
                         });
 
                         if (sameProduct.length == 0) {
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td class="text-start">';
-                            tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';  
+                            tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
                             if (sProduct.product_variant_id != null) {
                                 tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                             }else{
                                 tr += '<span class="span_product_code"></span>';
-                            } 
+                            }
 
                             if (sProduct.product_variant_id != null) {
                                 tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
@@ -331,7 +329,7 @@
                             tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
                             tr += '<input type="hidden" name="product_variant[]" value="">';
                             tr += '<input type="hidden" class="productCode-'+sProduct.product.product_code+'" name="product_code[]" value="'+sProduct.product.product_code+'">';
-                            
+
                             var priceIncTax = parseFloat(sProduct.product.product_price) /100 * parseFloat(tax) + parseFloat(sProduct.product.product_price);
                             if (sProduct.product.tax_type == 2) {
                                 var inclusiveTax = 100 + parseFloat(tax)
@@ -339,7 +337,7 @@
                                 tax_amount = parseFloat(sProduct.product.product_price) - parseFloat(calcAmount);
                                 priceIncTax = parseFloat(sProduct.product.product_price) + parseFloat(tax_amount);
                             }
-                            tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">'; 
+                            tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
                             tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
                             tr += '</td>';
 
@@ -369,7 +367,7 @@
             });
         });
 
-        //Get Seleled product requested by ajax 
+        //Get Seleled product requested by ajax
         $(document).on('click', '.select_variant_product', function(e) {
             e.preventDefault();
             var product_id = $(this).data('p_id');
@@ -394,31 +392,31 @@
                         var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                         console.log('prefix-'+createPrefix);
                         var sameProduct = rows.filter(function (row) {
-                           return row.productPrefix == createPrefix; 
+                           return row.productPrefix == createPrefix;
                         });
 
                         if (sameProduct.length > 0) {
-                           alert('This variant is exists in barcode table.'); 
+                           alert('This variant is exists in barcode table.');
                            return;
                         }
-                        
+
                         if (sameProduct.length == 0) {
                             var tr = '';
                             tr += '<tr>';
                             tr += '<td class="text-start">';
-                            tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';  
+                            tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
                             if (sProduct.product_variant_id != null) {
                                 tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                             }else{
                                 tr += '<span class="span_product_code"></span>';
-                            } 
+                            }
 
                             if (sProduct.product_variant_id != null) {
                                     tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
                             }else{
                                 tr += '<span class="span_product_code">'+' ('+sProduct.product.product_code+')'+'</span>';
                             }
-                            
+
                             var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                             tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
                             tr += '<input type="hidden" name="product_name" value="'+sProduct.product.name+'">';
@@ -430,12 +428,12 @@
                                 tax_amount = parseFloat(sProduct.variant.variant_price) - parseFloat(calcAmount);
                                 priceIncTax = parseFloat(sProduct.variant.variant_price) + parseFloat(tax_amount);
                             }
-                          
+
                             tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
                             tr += '<input type="hidden" name="product_variant[]" id="product_variant" value="'+sProduct.variant.variant_name+'">';
                             tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" value="'+sProduct.variant.variant_code+'">';
                             tr += '<input type="hidden" name="product_price" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
-                       
+
                             tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
                             tr += '</td>';
 
@@ -465,7 +463,7 @@
             });
         });
 
-        // Dispose Select area 
+        // Dispose Select area
         $(document).on('click', '.remove_select_area_btn', function(e){
             e.preventDefault();
             $('.select_area').hide();
@@ -474,7 +472,7 @@
         // Generate confirm request send by ajax
         $(document).on('click', '.remove_btn',function (e) {
             e.preventDefault();
-            var tr = $(this).closest('tr').remove(); 
+            var tr = $(this).closest('tr').remove();
         });
     </script>
-@endpush 
+@endpush

@@ -2,16 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\RolePermission;
-use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role as BaseRole;
 
-class Role extends Model
+class Role extends BaseRole
 {
-    protected $guarded = [];
-    protected $hidden = ['created_at', 'updated_at'];
-
-    public function permission()
-    {
-        return $this->hasOne(RolePermission::class, 'role_id');
-    }
 }

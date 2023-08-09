@@ -2,14 +2,15 @@
 
 namespace App\Models\Manufacturing;
 
-use App\Models\Unit;
+use App\Models\BaseModel;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Unit;
 
-class ProductionIngredient extends Model
+class ProductionIngredient extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function product()

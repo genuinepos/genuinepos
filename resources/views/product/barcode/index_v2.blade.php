@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
 <style>
     .select_area {background: #ffffff;box-sizing: border-box;position: absolute;width: 64.2%;z-index: 9999999;padding: 0;left: 17.9%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
     .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
@@ -18,160 +18,170 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Generate Barcode</h5>
+                                <h5>@lang('menu.generate_barcode')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-7">
-                            <div class="card ">
-                                <form id="multiple_completed_form" class="d-none"
-                                    action="{{ route('barcode.multiple.generate.completed') }}" method="post">
-                                    @csrf
-                                    <table>
-                                        <tbody id="deleteable_supplier_products"></tbody>
-                                    </table>
-                                </form>
-
-                                <form action="{{ route('barcode.preview') }}" method="POST" target="_blank">
-                                    @csrf
-                                    <div class="card-body">
-                                        <input type="hidden" id="business_name"
-                                            value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
-                                        <div class="form-group row">
-                                            <div class="col-md-8">
-                                                <label><b>Barcode Setting :</b></label>
-                                                <select name="br_setting_id" class="form-control">
-                                                    @foreach ($bc_settings as $bc_setting)
-                                                        <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
-                                                            {{ $bc_setting->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="extra_label mt-1">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <ul class="list-unstyled">
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price inc.Tax &nbsp;</p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name. &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Variant Name. &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Tax &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name. &nbsp; </p>
-                                                        </li>
-
-                                                        <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix. &nbsp; </p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group mt-3 row">
-                                            <div class="col-md-12">
-                                                <div class="input-group ">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                                                    </div>
-                                                    <input type="text" name="search_product" class="form-control "
-                                                        autocomplete="off" id="search_product"
-                                                        placeholder="Search Product by Product name / Product code(SKU)">
-                                                </div>
-                                                <div class="select_area">
-                                                    <ul class="product_dropdown_list"></ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="barcode_product_table_area mt-2">
-                                                    <div class="table_heading">
-                                                        <p class="p-0 m-0"><strong>Product List</strong></p>
-                                                    </div>
-                                                    <div class="table_area">
-                                                        <div class="data_preloader d-none">
-                                                            <h6><i class="fas fa-spinner"></i> Processing...</h6>
-                                                        </div>
-                                                        <div class="table-responsive">
-                                                            <table class="table modal-table table-sm">
-                                                                <thead>
-                                                                    <tr class="bg-primary text-white text-start">
-                                                                        <th class="text-start">Product</th>
-                                                                        <th class="text-start">Supplier</th>
-                                                                        <th class="text-start">Quantity</th>
-                                                                        <th class="text-start">Action</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="barcode_product_list"></tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <th colspan="2" class="text-end">Total Prepired Qty</th>
-                                                                        <th class="text-start">(<span id="prepired_qty">0</span>)</th>
-                                                                        <th ></th>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-md-6 multiple_cmp_btn_area">
-                                                <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> DELETE SELECTED ALL </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <button type="submit" class="btn btn-sm btn-primary float-end">Preview & Print</button>
-                                            </div>
-                                        </div>
+                    <div class="p-lg-3 p-1">
+                        <div class="row g-lg-3 g-1">
+                            <div class="col-md-7">
+                                <div class="card ">
+                                    <div class="card-header">
+                                        <p><b>@lang('menu.barcode_settings') </b></p>
                                     </div>
-                                </form>
+                                    <form id="multiple_completed_form" class="d-hide"
+                                        action="{{ route('barcode.multiple.generate.completed') }}" method="post">
+                                        @csrf
+                                        <table>
+                                            <tbody id="deleteable_supplier_products"></tbody>
+                                        </table>
+                                    </form>
+
+                                    <form action="{{ route('barcode.preview') }}" method="POST" target="_blank">
+                                        @csrf
+                                        <div class="card-body">
+                                            <input type="hidden" id="business_name"
+                                                value="{{ $generalSettings['business__shop_name'] }}">
+                                            <div class="form-group row">
+                                                <div class="col-md-8">
+                                                    <select name="br_setting_id" class="form-control">
+                                                        @foreach ($bc_settings as $bc_setting)
+                                                            <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
+                                                                {{ $bc_setting->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="extra_label mt-1">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; @lang('menu.price_inc_tax') &nbsp;</p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; @lang('menu.product_name'). &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; @lang('menu.variant_name'). &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p class="checkbox_input_wrap"><input type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.tax') &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; @lang('menu.business_name'). &nbsp; </p>
+                                                            </li>
+
+                                                            <li>
+                                                                <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; @lang('menu.supplier_prefix') &nbsp; </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group mt-3 row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group ">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                                        </div>
+                                                        <input type="text" name="search_product" class="form-control "
+                                                            autocomplete="off" id="search_product"
+                                                            placeholder="Search Product by Product name / Product code(SKU)">
+                                                    </div>
+                                                    <div class="select_area">
+                                                        <ul class="product_dropdown_list"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="barcode_product_table_area mt-2">
+                                                        <div class="table_heading">
+                                                            <p class="p-0 m-0"><strong>@lang('menu.product_list')</strong></p>
+                                                        </div>
+                                                        <div class="table_area">
+                                                            <div class="data_preloader d-hide">
+                                                                <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <table class="table modal-table table-sm">
+                                                                    <thead>
+                                                                        <tr class="bg-secondary text-white text-start">
+                                                                            <th class="text-start">@lang('menu.product')</th>
+                                                                            <th class="text-start">@lang('menu.supplier')</th>
+                                                                            <th class="text-start">@lang('menu.quantity')</th>
+                                                                            <th class="text-start">@lang('menu.action')</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="barcode_product_list"></tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <th colspan="2" class="text-end">Total Prepired Qty</th>
+                                                                            <th class="text-start">(<span id="prepired_qty">0</span>)</th>
+                                                                            <th ></th>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <div class="multiple_cmp_btn_area">
+                                                        <a href="" class="btn btn-sm btn-danger multiple_completed" style=""> @lang('menu.delete_selected_all') </a> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Note : Delete all items from puchased products which is selected for generation the barcodes" class="fas fa-info-circle tp"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button type="submit" class="btn btn-sm btn-primary float-end">{{ __("Preview & Print") }}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-5">
-                            <div class="table_product_list">
-                                <div class="card p-1">
-                                    <div class="heading">
-                                        <p><strong>Purchased Product List</strong></p>
+                            <div class="col-md-5">
+                                <div class="table_product_list">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <p><strong>@lang('menu.purchase_product_list')</strong></p>
+                                        </div>
+                                        <div class="card-body p-2">
+                                            <div class="table-responsive">
+                                                <table class="display data_tbl data__table table-hover" id="data">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-start"><input type="checkbox" id="chack_all">@lang('menu.all')</th>
+                                                            <th class="text-start">@lang('menu.product')</th>
+                                                            <th class="text-start">@lang('menu.supplier')</th>
+                                                            <th class="text-start">@lang('menu.quantity')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="purchased_product_list"></tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="3" class="text-end">{{ __('Total Pending Qty') }} </th>
+                                                            <th colspan="3" class="text-end">0</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <table class="display data_tbl data__table table-hover" id="data">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start"><input type="checkbox" id="chack_all">All</th>
-                                                <th class="text-start">Product</th>
-                                                <th class="text-start">Supplier</th>
-                                                <th class="text-start">Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="purchased_product_list"></tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="3" class="text-end">Total Pending Qty :</th>
-                                                <th colspan="3" class="text-end">0</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +206,7 @@
     }
     getSupplierProducts();
 
-    // Searcha product 
+    // Searcha product
     $('#search_product').on('input', function () {
        var searchKeyWord = $(this).val();
        $('.product_dropdown_list').empty();
@@ -229,7 +239,7 @@
         });
     });
 
-    //Get Seleled product requested by ajax 
+    //Get Seleled product requested by ajax
     $(document).on('click', '.select_product', function(e) {
         e.preventDefault();
         var product_id = $(this).data('p_id');
@@ -261,20 +271,20 @@
                     var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
-                        return row.productPrefix == createPrefix; 
+                        return row.productPrefix == createPrefix;
                     });
 
                     if (sameProduct.length == 0) {
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>'; 
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
+                        }
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
@@ -297,8 +307,8 @@
                         tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="noid">';
                         tr += '<input type="hidden" name="product_variant[]" value="">';
                         tr += '<input type="hidden" class="productCode-'+ sProduct.product.product_code+'" name="product_code[]" value="'+ sProduct.product.product_code +'">';
-                        tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+ parseFloat(priceIncTax).toFixed(2) +'">'; 
-                        
+                        tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+ parseFloat(priceIncTax).toFixed(2) +'">';
+
                         tr += '<input type="hidden" name="product_tax[]" value="'+ tax +'">';
                         tr += '</td>';
 
@@ -324,7 +334,7 @@
         });
     });
 
-    //Get Seleled product requested by ajax 
+    //Get Seleled product requested by ajax
     $(document).on('click', '.select_variant_product', function(e) {
         e.preventDefault();
         var product_id = $(this).data('p_id');
@@ -357,34 +367,34 @@
                     var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
-                       return row.productPrefix == createPrefix; 
+                       return row.productPrefix == createPrefix;
                     });
 
                     if (sameProduct.length > 0) {
-                       alert('This variant is exists in barcode table.'); 
+                       alert('This variant is exists in barcode table.');
                        return;
                     }
                     if (sameProduct.length == 0) {
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';  
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
+                        }
 
                         if (sProduct.product_variant_id != null) {
                                 tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
                         }else{
                             tr += '<span class="span_product_code">'+' ('+sProduct.product.product_code+')'+'</span>';
                         }
-                        
+
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
                         tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+sProduct.product.name+'">';
-                       
+
                         tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-" value="'+sProduct.variant.id+'">';
                         tr += '<input type="hidden" name="product_variant[]" id="product_variant" value="'+sProduct.variant.variant_name+'">';
                         tr += '<input type="hidden" class="productCode-'+sProduct.variant.variant_code+'" name="product_code[]" value="'+sProduct.variant.variant_code+'">';
@@ -398,7 +408,7 @@
                         }
 
                         tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
-                      
+
                         tr += '<input type="hidden" name="product_tax[]" id="product_tax" value="'+tax+'">';
                         tr += '</td>';
 
@@ -427,15 +437,15 @@
     // Generate confirm request send by ajax
     $(document).on('click', '.remove_btn',function (e) {
         e.preventDefault();
-        var tr = $(this).closest('tr').remove(); 
+        var tr = $(this).closest('tr').remove();
         calculateQty();
     })
 
     $(document).on('click', '.multiple_completed',function(e){
         e.preventDefault();
-        $('#action').val('multipla_deactive');         
+        $('#action').val('multipla_deactive');
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Once deleted, you will not be able to recover this file!',
             'buttons': {
                 'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#multiple_completed_form').submit();}},'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
@@ -465,12 +475,12 @@
             }
         });
     });
-    
+
     $(document).on('change','#chack_all',function() {
         if($(this).is(':CHECKED', true)){
-            $('.check').click(); 
-        }else{ 
-            $('.check').click(); 
+            $('.check').click();
+        }else{
+            $('.check').click();
         }
     });
 
@@ -490,11 +500,11 @@
         var label_qty = tr.data('label_qty');
         var barcode_type = tr.data('barcode_type');
 
-        if ($(this).is(':CHECKED', true)) { 
+        if ($(this).is(':CHECKED', true)) {
             var tr = '';
             tr += '<tr class="'+supplier_prefix+product_id+(variant_id  ? variant_id : null)+'">';
             tr += '<td class="text-start">';
-            tr += '<span class="span_product_name">'+product_name+'</span>'; 
+            tr += '<span class="span_product_name">'+product_name+'</span>';
 
             if (variant_id) {
                 tr += '<span class="span_variant_name">'+' - '+variant_name+'</span>';
@@ -513,8 +523,8 @@
             tr += '<input type="hidden" name="product_variant_ids[]" id="product_variant_id" class="variantId-'+variant_id+'" value="'+variant_id+'">';
             tr += '<input type="hidden" name="product_variant[]" value="'+variant_name+'">';
             tr += '<input type="hidden" class="productCode-'+ (variant_code ? variant_code : product_code)+'" name="product_code[]" value="'+ (variant_code ? variant_code : product_code) +'">';
-            tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+ parseFloat(price).toFixed(2) +'">'; 
-            
+            tr += '<input type="hidden" name="product_price[]" id="product_price" value="'+ parseFloat(price).toFixed(2) +'">';
+
             tr += '<input type="hidden" name="product_tax[]" value="'+ tax +'">';
             tr += '</td>';
 
@@ -553,7 +563,7 @@
             total_qty += parseFloat(left_qty.value);
         });
         $('#prepired_qty').html(total_qty);
-        
+
         if (parseFloat(total_qty) > 0) {
             $('.multiple_cmp_btn_area').show();
         }else{

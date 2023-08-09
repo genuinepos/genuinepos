@@ -10,37 +10,37 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-check-double"></span>
-                                <h5>Receive Stocks</h5>
+                                <h5>@lang('menu.receive_stocks')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
-                    
-                    <div class="row margin_row mt-1">
+
+                    <div class="p-3">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Transferred Stocks From Branch</h6>
+                                <div class="col-12">
+                                    <h6>{{ __('All Transferred Stocks From Branch') }}</h6>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Reference ID</th>
-                                                <th class="text-start">B.Location(From)</th>
-                                                <th class="text-start">Warehouse(To)</th>
-                                                <th class="text-start">Total Item</th>
-                                                <th class="text-start">Total Qty</th>
-                                                <th class="text-start">Status</th>
-                                                <th class="text-center">Actions</th>
+                                                <th class="text-start">@lang('menu.date')</th>
+                                                <th class="text-start">@lang('menu.reference_id')</th>
+                                                <th class="text-start">@lang('menu.b_location')(From)</th>
+                                                <th class="text-start">@lang('menu.warehouse')(To)</th>
+                                                <th class="text-start">@lang('menu.total_item')</th>
+                                                <th class="text-start">@lang('menu.total_qty')</th>
+                                                <th class="text-start">@lang('menu.status')</th>
+                                                <th class="text-center">@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -62,14 +62,14 @@
     </div>
 
     <div id="transfer_details">
-        
+
     </div>
 @endsection
 @push('scripts')
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -115,17 +115,17 @@
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.transfer_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                removeInline: false, 
-                printDelay: 1000, 
-                header: null,        
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                removeInline: false,
+                printDelay: 1000,
+                header: null,
             });
         });
     </script>

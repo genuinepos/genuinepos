@@ -3,29 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Utils\Converter;
-use App\Utils\AccountUtil;
-use Illuminate\Http\Request;
-use App\Models\ProductBranch;
-use App\Models\ProductVariant;
 use App\Models\StockAdjustment;
-use App\Utils\ProductStockUtil;
-use App\Models\ProductWarehouse;
-use Illuminate\Support\Facades\DB;
 use App\Models\StockAdjustmentProduct;
 use App\Models\StockAdjustmentRecover;
+use App\Utils\AccountUtil;
+use App\Utils\Converter;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\NameSearchUtil;
+use App\Utils\ProductStockUtil;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentController extends Controller
 {
     protected $productStockUtil;
+
     protected $converter;
+
     protected $invoiceVoucherRefIdUtil;
+
     protected $accountUtil;
+
     protected $nameSearchUtil;
+
     protected $userActivityLogUtil;
 
     public function __construct(
@@ -43,29 +45,29 @@ class StockAdjustmentController extends Controller
         $this->accountUtil = $accountUtil;
         $this->nameSearchUtil = $nameSearchUtil;
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     // Index view of stock adjustment
     public function index(Request $request)
     {
-        if (auth()->user()->permission->s_adjust['adjustment_all'] == '0') {
+        if (! auth()->user()->can('adjustment_all')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $adjustments = '';
             $query = DB::table('stock_adjustments')->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
                 ->leftJoin('warehouses', 'stock_adjustments.warehouse_id', 'warehouses.id')
-                ->leftJoin('admin_and_users', 'stock_adjustments.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'stock_adjustments.admin_id', 'users.id');
 
             if ($request->branch_id) {
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('stock_adjustments.branch_id', NULL);
+                    $query->where('stock_adjustments.branch_id', null);
                 } else {
 
                     $query->where('stock_adjustments.branch_id', $request->branch_id);
@@ -92,9 +94,9 @@ class StockAdjustmentController extends Controller
                 'branches.branch_code',
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
-                'admin_and_users.prefix',
-                'admin_and_users.name',
-                'admin_and_users.last_name',
+                'users.prefix',
+                'users.name',
+                'users.last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -112,63 +114,65 @@ class StockAdjustmentController extends Controller
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('stock.adjustments.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item details_button" href="'.route('stock.adjustments.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
 
-                    if (auth()->user()->permission->s_adjust['adjustment_delete'] == '1') {
+                    if (auth()->user()->can('adjustment_delete')) {
 
                         if (auth()->user()->branch_id == $row->branch_id) {
 
-                            $html .= '<a class="dropdown-item" id="delete" href="' . route('stock.adjustments.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete
+                            $html .= '<a class="dropdown-item" id="delete" href="'.route('stock.adjustments.delete', $row->id).'"><i class="far fa-trash-alt text-primary"></i> Delete
                             </a>';
                         }
                     }
 
                     $html .= '</div>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
+                    return date($generalSettings['business__date_format'], strtotime($row->date));
                 })
-                ->editColumn('business_location',  function ($row) use ($generalSettings) {
+                ->editColumn('business_location', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business__shop_name'].'<b>(HO)</b>';
                     }
                 })
-                ->editColumn('adjustment_location',  function ($row) use ($generalSettings) {
+                ->editColumn('adjustment_location', function ($row) use ($generalSettings) {
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name . '/' . $row->warehouse_code . '(<b>WH</b>)';
+                        return $row->warehouse_name.'/'.$row->warehouse_code.'(<b>WH</b>)';
                     } elseif ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name'] . '<b>(HO)</b>';
+                        return $generalSettings['business__shop_name'].'<b>(HO)</b>';
                     }
                 })
-                ->editColumn('type',  function ($row) {
+                ->editColumn('type', function ($row) {
 
                     return $row->type == 1 ? '<span class="badge bg-primary">Normal</span>' : '<span class="badge bg-danger">Abnormal</span>';
                 })
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.$this->converter->format_in_bdt($row->net_total_amount).'</span>')
 
-                ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . $row->recovered_amount . '">' . $this->converter->format_in_bdt($row->recovered_amount) . '</span>')
+                ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="'.$row->recovered_amount.'">'.$this->converter->format_in_bdt($row->recovered_amount).'</span>')
 
-                ->editColumn('created_by', fn ($row) => $row->prefix . ' ' . $row->name . ' ' . $row->last_name)
+                ->editColumn('created_by', fn ($row) => $row->prefix.' '.$row->name.' '.$row->last_name)
 
                 ->rawColumns(['action', 'date', 'invoice_id', 'business_location', 'adjustment_location', 'type', 'net_total_amount', 'recovered_amount', 'created_by'])
                 ->make(true);
         }
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('stock_adjustment.index', compact('branches'));
     }
 
@@ -192,7 +196,7 @@ class StockAdjustmentController extends Controller
     // Stock adjustment create view
     public function create()
     {
-        if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+        if (! auth()->user()->can('adjustment_add_from_location')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -216,7 +220,7 @@ class StockAdjustmentController extends Controller
 
     public function createFromWarehouse()
     {
-        if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+        if (! auth()->user()->can('adjustment_add_from_warehouse')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -252,13 +256,13 @@ class StockAdjustmentController extends Controller
     {
         if (isset($request->warehouse_count)) {
 
-            if (auth()->user()->permission->s_adjust['adjustment_add_from_warehouse'] == '0') {
+            if (! auth()->user()->can('adjustment_add_from_warehouse')) {
 
                 return response()->json('Access Denied.');
             }
         } else {
 
-            if (auth()->user()->permission->s_adjust['adjustment_add_from_location'] == '0') {
+            if (! auth()->user()->can('adjustment_add_from_location')) {
 
                 return response()->json('Access Denied.');
             }
@@ -271,7 +275,7 @@ class StockAdjustmentController extends Controller
             'account_id' => 'required',
         ], [
             'adjustment_account_id.required' => 'Adjustment A/C is required.',
-            'account_id.required' => 'Debit A/C is required.'
+            'account_id.required' => 'Debit A/C is required.',
         ]);
 
         if (isset($request->warehouse_count)) {
@@ -286,19 +290,17 @@ class StockAdjustmentController extends Controller
             return response()->json(['errorMsg' => 'product table is empty.']);
         }
 
-        $settings = DB::table('general_settings')
-            ->select(['prefix'])
-            ->first();
+        $generalSettings = config('generalSettings');
 
-        $voucherPrefix = json_decode($settings->prefix, true)['stock_djustment'];
+        $voucherPrefix = $generalSettings['prefix__stock_adjustment'];
         $__voucherPrefix = $voucherPrefix != null ? $voucherPrefix : '';
 
         // generate invoice ID
-        $invoiceId = $__voucherPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, "0", STR_PAD_LEFT);
+        $invoiceId = $__voucherPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustments'), 5, '0', STR_PAD_LEFT);
 
         // Add Stock adjustment.
         $addStockAdjustment = new StockAdjustment();
-        $addStockAdjustment->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : NULL;
+        $addStockAdjustment->warehouse_id = isset($request->warehouse_count) ? $request->warehouse_id : null;
         $addStockAdjustment->branch_id = auth()->user()->branch_id;
 
         $addStockAdjustment->invoice_id = $request->invoice_id ? $request->invoice_id : $invoiceId;
@@ -308,10 +310,10 @@ class StockAdjustmentController extends Controller
         $addStockAdjustment->net_total_amount = $request->net_total_amount;
         $addStockAdjustment->recovered_amount = $request->total_recovered_amount ? $request->total_recovered_amount : 0;
         $addStockAdjustment->date = $request->date;
-        $addStockAdjustment->time = date('h:i:s a');;
+        $addStockAdjustment->time = date('h:i:s a');
         $addStockAdjustment->month = date('F');
         $addStockAdjustment->year = date('Y');
-        $addStockAdjustment->report_date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addStockAdjustment->report_date_ts = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addStockAdjustment->admin_id = auth()->user()->id;
         $addStockAdjustment->reason = $request->reason;
         $addStockAdjustment->save();
@@ -345,7 +347,7 @@ class StockAdjustmentController extends Controller
         $index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
             $addStockAdjustmentProduct = new StockAdjustmentProduct();
             $addStockAdjustmentProduct->stock_adjustment_id = $addStockAdjustment->id;
             $addStockAdjustmentProduct->product_id = $product_id;
@@ -370,10 +372,10 @@ class StockAdjustmentController extends Controller
 
         if ($request->total_recovered_amount > 0) {
 
-            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers'), 5, "0", STR_PAD_LEFT);
+            $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('stock_adjustment_recovers'), 5, '0', STR_PAD_LEFT);
             $addStockAdjustmentRecovered = new StockAdjustmentRecover();
-            $addStockAdjustmentRecovered->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-            $addStockAdjustmentRecovered->voucher_no = 'SARV' . $voucher_no;
+            $addStockAdjustmentRecovered->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+            $addStockAdjustmentRecovered->voucher_no = 'SARV'.$voucher_no;
             $addStockAdjustmentRecovered->stock_adjustment_id = $addStockAdjustment->id;
             $addStockAdjustmentRecovered->account_id = $request->account_id;
             $addStockAdjustmentRecovered->payment_method_id = $request->payment_method_id;
@@ -392,6 +394,7 @@ class StockAdjustmentController extends Controller
         }
 
         session()->flash('successMsg', 'Stock adjustment created successfully');
+
         return response()->json('Stock adjustment created successfully');
     }
 
@@ -405,12 +408,12 @@ class StockAdjustmentController extends Controller
             'recover',
         ])->where('id', $adjustmentId)->first();
 
-        if (!is_null($deleteAdjustment)) {
+        if (! is_null($deleteAdjustment)) {
 
             $storedWarehouseId = $deleteAdjustment->warehouse_id;
             $storedBranchId = $deleteAdjustment->branch_id;
             $storedStockAdjustmentAccountId = $deleteAdjustment->stock_adjustment_account_id;
-            $storedAccountId = $deleteAdjustment->recover ? $deleteAdjustment->recover->account_id : NULL;
+            $storedAccountId = $deleteAdjustment->recover ? $deleteAdjustment->recover->account_id : null;
             $storedAdjustmentProducts = $deleteAdjustment->adjustment_products;
 
             if (isset($storedWarehouseId)) {
@@ -461,6 +464,9 @@ class StockAdjustmentController extends Controller
                 );
             }
         }
+
+        DB::statement('ALTER TABLE stock_adjustments AUTO_INCREMENT = 1');
+
         return response()->json('Stock adjustment deleted successfully.');
     }
 
@@ -476,7 +482,7 @@ class StockAdjustmentController extends Controller
             'product_variants.updateVariantCost',
             'tax:id,tax_percent',
             'unit:id,name',
-            'updateProductCost'
+            'updateProductCost',
         ])->where('product_code', $__keyword)
             ->select([
                 'id',
@@ -506,7 +512,7 @@ class StockAdjustmentController extends Controller
             'product_variants.updateVariantCost',
             'tax:id,tax_percent',
             'unit:id,name',
-            'updateProductCost'
+            'updateProductCost',
         ])->where('product_code', $__keyword)
             ->select([
                 'id',

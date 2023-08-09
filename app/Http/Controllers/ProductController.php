@@ -2,57 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Utils\ProductUtil;
+use App\Mail\NewProductArrived;
 use App\Models\BulkVariant;
-use Illuminate\Support\Str;
 use App\Models\ComboProduct;
-use App\Models\ProductImage;
-use Illuminate\Http\Request;
-use App\Models\ProductBranch;
-use App\Models\ProductVariant;
-use App\Models\General_setting;
-use App\Models\PurchaseProduct;
-use App\Models\SupplierProduct;
-use App\Utils\ProductStockUtil;
+use App\Models\Customer;
 use App\Models\PriceGroupProduct;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductOpeningStock;
-use App\Models\ProductBranchVariant;
+use App\Models\ProductVariant;
+use App\Models\SupplierProduct;
+use App\Services\GeneralSettingServiceInterface;
+use App\Utils\ProductStockUtil;
+use App\Utils\ProductUtil;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Modules\Communication\Interface\EmailServiceInterface;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
-    protected $productUtil;
-    protected $productStockUtil;
-    protected $userActivityLogUtil;
     public function __construct(
-        ProductUtil $productUtil,
-        ProductStockUtil $productStockUtil,
-        UserActivityLogUtil $userActivityLogUtil
+        private EmailServiceInterface $emailService,
+        private ProductUtil $productUtil,
+        private ProductStockUtil $productStockUtil,
+        private UserActivityLogUtil $userActivityLogUtil
     ) {
-        $this->productUtil = $productUtil;
-        $this->productStockUtil = $productStockUtil;
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
     }
 
     // index view
-    public function allProduct(Request $request)
+    public function expiredProducts(Request $request)
     {
-        if (auth()->user()->permission->product['product_all'] == '0') {
-
+        if (! auth()->user()->can('product_all')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+            return $this->productUtil->expiredProductTable($request);
+        }
 
+        return view('product.products.expired_products');
+    }
+
+    public function allProduct(Request $request)
+    {
+        if (! auth()->user()->can('product_all')) {
+            abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
             return $this->productUtil->productListTable($request);
         }
 
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->get(['id', 'name']);
+        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
         $brands = DB::table('brands')->get(['id', 'name']);
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
@@ -64,7 +69,7 @@ class ProductController extends Controller
     // Add product view
     public function create(Request $request)
     {
-        if (auth()->user()->permission->product['product_add'] == '0') {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,21 +83,16 @@ class ProductController extends Controller
                 ->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
-                ->addColumn('action', fn ($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
+                ->addColumn('action', fn ($row) => '<a href="'.route('products.edit', [$row->id]).'" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
                 ->editColumn('name', fn ($row) => Str::limit($row->name, 17))
                 ->rawColumns(['action'])->make(true);
         }
 
         $units = DB::table('units')->get(['id', 'name', 'code_name']);
-
-        $categories = DB::table('categories')->where('parent_category_id', NULL)->orderBy('id', 'desc')->get(['id', 'name']);
-
+        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'desc')->get(['id', 'name']);
         $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
-
         $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
-
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
-
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
         return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes', 'branches'));
@@ -125,7 +125,7 @@ class ProductController extends Controller
 
         $addProduct = new Product();
 
-        $tax_id = NULL;
+        $tax_id = null;
 
         if ($request->tax_id) {
 
@@ -136,26 +136,24 @@ class ProductController extends Controller
         $addProduct->name = $request->name;
         $addProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
         $addProduct->category_id = $request->category_id;
-        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_id = $tax_id;
         $addProduct->tax_type = isset($request->tax_type) ? $request->tax_type : 1;
-        $addProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
+        $addProduct->expire_date = $request->expired_date ? $request->expired_date : null;
         $addProduct->product_condition = $request->product_condition;
-        $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
-        $addProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
-        $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
-        $addProduct->is_manage_stock = isset($request->is_manage_stock) ? 1 : 0;
+        $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $addProduct->is_for_sale = $request->is_for_sale;
+        $addProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $addProduct->is_manage_stock = $request->is_manage_stock;
         $addProduct->product_details = $request->product_details;
         $addProduct->is_purchased = 0;
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = $request->weight;
-        $addProduct->custom_field_1 = $request->custom_field_1;
-        $addProduct->custom_field_2 = $request->custom_field_2;
-        $addProduct->custom_field_3 = $request->custom_field_3;
+        $addProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
 
         if ($request->file('image')) {
 
@@ -172,8 +170,8 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
 
                     $productImage = $image;
-                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(600, 600)->save('public/uploads/product/' . $productImageName);
+                    $productImageName = uniqid().'.'.$productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(600, 600)->save('uploads/product/'.$productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $addProduct->id;
                     $addProductImage->image = $productImageName;
@@ -184,26 +182,16 @@ class ProductController extends Controller
 
         if ($request->type == 1) {
 
-            $this->validate(
-                $request,
-                [
-                    'profit' => 'required',
-                    'product_price' => 'required',
-                    'product_cost' => 'required',
-                    'product_cost_with_tax' => 'required',
-                ],
-            );
-
-            $addProduct->product_cost = $request->product_cost;
-            $addProduct->profit = $request->profit ? $request->profit : 0.00;
-            $addProduct->product_cost_with_tax = $request->product_cost_with_tax;
-            $addProduct->product_price = $request->product_price;
+            $addProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+            $addProduct->profit = $request->profit ? $request->profit : 0;
+            $addProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+            $addProduct->product_price = $request->product_price ? $request->product_price : 0;
 
             if ($request->file('photo')) {
 
                 $productThumbnailPhoto = $request->file('photo');
-                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(600, 600)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(600, 600)->save('uploads/product/thumbnail/'.$productThumbnailName);
                 $addProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -216,7 +204,7 @@ class ProductController extends Controller
                     return response()->json(['errorMsg' => 'You have selected variant option but there is no variant at all.']);
                 }
 
-                $this->validate($request, ['variant_image.*' => 'sometimes|image|max:2048',],);
+                $this->validate($request, ['variant_image.*' => 'sometimes|image|max:2048']);
 
                 $addProduct->save();
 
@@ -235,8 +223,8 @@ class ProductController extends Controller
                     if (isset($request->variant_image[$index])) {
 
                         $variantImage = $request->variant_image[$index];
-                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                        Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                        $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                        Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
                         $addVariant->variant_image = $variantImageName;
                     }
 
@@ -274,7 +262,7 @@ class ProductController extends Controller
                 $addComboProducts->product_id = $addProduct->id;
                 $addComboProducts->combo_product_id = $id;
                 $addComboProducts->quantity = $combo_quantities[$index];
-                $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
+                $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : null;
                 $addComboProducts->save();
                 $index++;
             }
@@ -287,8 +275,18 @@ class ProductController extends Controller
 
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
 
-        session()->flash('successMsg', 'Product create Successfully');
-        return response()->json('Product create Successfully');
+        if ($addProduct) {
+
+            if (env('EMAIL_ACTIVE') == 'true') {
+
+                $customers = Customer::pluck('email', 'id')->toArray();
+                $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
+            }
+        }
+
+        session()->flash('successMsg', 'Product created Successfully');
+
+        return response()->json('Product created Successfully');
     }
 
     public function view($productId)
@@ -422,6 +420,7 @@ class ProductController extends Controller
             )->get();
 
         $price_groups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
+
         return view('product.products.ajax_view.product_details_view', compact(
             'product',
             'price_groups',
@@ -441,7 +440,8 @@ class ProductController extends Controller
         $index = 0;
         foreach ($request->product_ids as $product_id) {
 
-            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : NULL;
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
+
             $openingStock = ProductOpeningStock::where('branch_id', $branch_id)
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)->first();
@@ -478,6 +478,9 @@ class ProductController extends Controller
     // Get opening stock
     public function openingStock($productId)
     {
+        if (! auth()->user()->can('openingStock_add')) {
+            abort(403, 'Access Forbidden.');
+        }
         $products = DB::table('products')->where('products.id', $productId)
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
@@ -526,13 +529,13 @@ class ProductController extends Controller
 
             foreach ($request->group_prices as $key => $group_price) {
 
-                (float)$__group_price = $group_price[$product_id][$variant_ids[$index]];
-                $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : NULL;
+                (float) $__group_price = $group_price[$product_id][$variant_ids[$index]];
+                $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
                 $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)->where('product_id', $product_id)->where('variant_id', $__variant_id)->first();
 
                 if ($updatePriceGroup) {
 
-                    $updatePriceGroup->price = $__group_price != null ? $__group_price : NULL;
+                    $updatePriceGroup->price = $__group_price != null ? $__group_price : null;
                     $updatePriceGroup->save();
                 } else {
 
@@ -540,7 +543,7 @@ class ProductController extends Controller
                     $addPriceGroup->price_group_id = $key;
                     $addPriceGroup->product_id = $product_id;
                     $addPriceGroup->variant_id = $__variant_id;
-                    $addPriceGroup->price = $__group_price != null ? $__group_price : NULL;
+                    $addPriceGroup->price = $__group_price != null ? $__group_price : null;
                     $addPriceGroup->save();
                 }
             }
@@ -549,16 +552,20 @@ class ProductController extends Controller
 
         if ($request->action_type == 'save') {
 
-            return response()->json(['saveMessage' =>  'Product price group updated Successfully']);
+            return response()->json(['saveMessage' => 'Product price group updated Successfully']);
         } else {
 
-            return response()->json(['saveAndAnotherMsg' =>  'Product price group updated Successfully']);
+            return response()->json(['saveAndAnotherMsg' => 'Product price group updated Successfully']);
         }
     }
 
     // edit view of product
     public function edit($productId)
     {
+        if (! auth()->user()->can('product_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $product = DB::table('products')->where('products.id', $productId)
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->select('products.*', 'taxes.tax_percent')
@@ -583,16 +590,18 @@ class ProductController extends Controller
         return view('product.products.edit_v2', compact('product', 'categories', 'units', 'brands', 'taxes', 'warranties', 'productBranches', 'branches'));
     }
 
-    // Get product variants 
+    // Get product variants
     public function getProductVariants($productId)
     {
         $variants = DB::table('product_variants')->where('product_id', $productId)->get();
+
         return response()->json($variants);
     }
 
     public function getComboProducts($productId)
     {
         $comboProducts = ComboProduct::with(['parentProduct', 'parentProduct.tax', 'product_variant'])->where('product_id', $productId)->get();
+
         return response()->json($comboProducts);
     }
 
@@ -600,7 +609,7 @@ class ProductController extends Controller
     public function update(Request $request, $productId)
     {
         $updateProduct = Product::with(['product_variants', 'ComboProducts'])->where('id', $productId)->first();
-        $tax_id = NULL;
+        $tax_id = null;
 
         if ($request->tax_id) {
 
@@ -614,6 +623,7 @@ class ProductController extends Controller
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
                 'image.*' => 'sometimes|image|max:2048',
+                'code' => 'required',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',
@@ -632,25 +642,23 @@ class ProductController extends Controller
         $updateProduct->name = $request->name;
         $updateProduct->product_code = $request->code ? $request->code : $request->auto_generated_code;
         $updateProduct->category_id = $request->category_id;
-        $updateProduct->parent_category_id = $request->child_category_id;
+        $updateProduct->sub_category_id = $request->sub_category_id;
         $updateProduct->brand_id = $request->brand_id;
         $updateProduct->unit_id = $request->unit_id;
         $updateProduct->alert_quantity = $request->alert_quantity;
         $updateProduct->tax_id = $tax_id;
         $updateProduct->tax_type = $request->tax_type;
-        $updateProduct->expire_date = $request->expired_date ? $request->expired_date : NULL;
+        $updateProduct->expire_date = $request->expired_date ? $request->expired_date : null;
         $updateProduct->product_condition = $request->product_condition;
-        $updateProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
-        $updateProduct->is_for_sale = isset($request->is_not_for_sale) ? 0 : 1;
-        $updateProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
-        $updateProduct->is_manage_stock = isset($request->is_manage_stock) ? 1 : 0;
+        $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $updateProduct->is_for_sale = $request->is_for_sale;
+        $updateProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $updateProduct->is_manage_stock = $request->is_manage_stock;
         $updateProduct->product_details = $request->product_details;
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;
         $updateProduct->weight = $request->weight;
-        $updateProduct->custom_field_1 = $request->custom_field_1;
-        $updateProduct->custom_field_2 = $request->custom_field_2;
-        $updateProduct->custom_field_3 = $request->custom_field_3;
+        $updateProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
 
         if ($request->file('image')) {
 
@@ -659,8 +667,8 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
 
                     $productImage = $image;
-                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(250, 250)->save('public/uploads/product/' . $productImageName);
+                    $productImageName = uniqid().'.'.$productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(250, 250)->save('uploads/product/'.$productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $updateProduct->id;
                     $addProductImage->image = $productImageName;
@@ -671,35 +679,25 @@ class ProductController extends Controller
 
         if ($updateProduct->type == 1) {
 
-            $this->validate(
-                $request,
-                [
-                    'profit' => 'required',
-                    'product_price' => 'required',
-                    'product_cost' => 'required',
-                    'product_cost_with_tax' => 'required',
-                ],
-            );
-
-            $updateProduct->product_cost = $request->product_cost;
-            $updateProduct->profit = $request->profit ? $request->profit : 0.00;
-            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax;
-            $updateProduct->product_price = $request->product_price;
+            $updateProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+            $updateProduct->profit = $request->profit ? $request->profit : 0;
+            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+            $updateProduct->product_price = $request->product_price ? $request->product_price : 0;
 
             // Upload product thumbnail
             if ($request->file('photo')) {
 
                 if ($updateProduct->thumbnail_photo != 'default.png') {
 
-                    if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+                    if (file_exists(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo))) {
 
-                        unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                        unlink(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo));
                     }
                 }
 
                 $productThumbnailPhoto = $request->file('photo');
-                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(250, 250)->save('public/uploads/product/thumbnail/' . $productThumbnailName);
+                $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(250, 250)->save('uploads/product/thumbnail/'.$productThumbnailName);
                 $updateProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -740,19 +738,19 @@ class ProductController extends Controller
                         $updateVariant->variant_price = $request->variant_prices_exc_tax[$index];
                         $updateVariant->delete_in_update = 0;
 
-                        if (isset($variant_images[$index])) {
+                        if (isset($request->variant_image[$index])) {
 
                             if ($updateVariant->variant_image != null) {
 
-                                if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                                if (file_exists(public_path('uploads/product/variant_image/'.$updateVariant->variant_image))) {
 
-                                    unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
+                                    unlink(public_path('uploads/product/thumbnail/'.$updateVariant->variant_image));
                                 }
                             }
 
-                            $variantImage = $request->variant_images[$index];
-                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                            $variantImage = $request->variant_image[$index];
+                            $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
                             $updateVariant->variant_image = $variantImageName;
                         }
 
@@ -768,11 +766,11 @@ class ProductController extends Controller
                         $addVariant->variant_profit = $request->variant_profits[$index];
                         $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
-                        if (isset($request->variant_images[$index])) {
+                        if (isset($request->variant_image[$index])) {
 
-                            $variantImage = $request->variant_images[$index];
-                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('public/uploads/product/variant_image/' . $variantImageName);
+                            $variantImage = $request->variant_image[$index];
+                            $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
                             $addVariant->variant_image = $variantImageName;
                         }
 
@@ -788,9 +786,9 @@ class ProductController extends Controller
 
                     if ($deleteNotFoundVariant->variant_image != null) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
+                        if (file_exists(public_path('uploads/product/variant_image/'.$updateVariant->variant_image))) {
 
-                            unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
+                            unlink(public_path('uploads/product/thumbnail/'.$updateVariant->variant_image));
                         }
                     }
 
@@ -840,7 +838,7 @@ class ProductController extends Controller
                     $addComboProducts->product_id = $updateProduct->id;
                     $addComboProducts->combo_product_id = $id;
                     $addComboProducts->quantity = $combo_quantities[$index];
-                    $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : NULL;
+                    $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : null;
                     $addComboProducts->save();
                 }
 
@@ -863,12 +861,18 @@ class ProductController extends Controller
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $updateProduct->id);
 
         session()->flash('successMsg', 'Successfully product is updated');
+
         return response()->json('Successfully product is updated');
     }
 
     // delete product
     public function delete(Request $request, $productId)
     {
+        if (! auth()->user()->can('product_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteProduct = Product::with(
             [
                 'product_images',
@@ -876,53 +880,78 @@ class ProductController extends Controller
                 'purchase_products',
                 'sale_products',
                 'order_products',
+                'productions',
+                'processes',
+                'processIngredients',
+                'transferBranchToBranchProducts',
                 'transfer_to_branch_products',
                 'transfer_to_warehouse_products',
             ]
         )->where('id', $productId)->first();
 
-        if (!is_null($deleteProduct)) {
+        if (count($deleteProduct->purchase_products) > 0) {
 
-            if ($deleteProduct->thumbnail_photo !== 'default.png') {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with purchase.']);
+        }
 
-                if (file_exists(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo))) {
+        if (count($deleteProduct->sale_products) > 0) {
 
-                    unlink(public_path('uploads/product/thumbnail/' . $deleteProduct->thumbnail_photo));
-                }
-            }
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with sales.']);
+        }
 
-            if ($deleteProduct->product_images->count() > 0) {
+        if (count($deleteProduct->order_products) > 0) {
 
-                foreach ($deleteProduct->product_images as $product_image) {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with purchase order.']);
+        }
 
-                    if (file_exists(public_path('uploads/product/' . $product_image->image))) {
+        if (count($deleteProduct->productions) > 0) {
 
-                        unlink(public_path('uploads/product/' . $product_image->image));
-                    }
-                }
-            }
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with manufacturing production.']);
+        }
 
-            if ($deleteProduct->product_variants->count() > 0) {
+        if (count($deleteProduct->processes) > 0) {
 
-                foreach ($deleteProduct->product_variants as $product_variant) {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with manufacturing process.']);
+        }
 
-                    if ($product_variant->variant_image) {
+        if (count($deleteProduct->processIngredients) > 0) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/' . $product_variant->variant_image))) {
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with manufacturing process ingredients.']);
+        }
 
-                            unlink(public_path('uploads/product/variant_image/' . $product_variant->variant_image));
-                        }
-                    }
-                }
-            }
+        if (count($deleteProduct->transferBranchToBranchProducts) > 0) {
+
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with Transfer Stock Business Location To Business Location.']);
+        }
+
+        if (count($deleteProduct->transfer_to_branch_products) > 0) {
+
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with Transfer Stock Warehouse To Business Location.']);
+        }
+
+        if (count($deleteProduct->transfer_to_warehouse_products) > 0) {
+
+            return response()->json(['errorMsg' => 'Product can\'t be deleted. This Product associated with Transfer Stock Business Location To warehouse.']);
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $deleteProduct = $this->productUtil->deleteProduct($deleteProduct);
 
             if ($deleteProduct) {
 
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $deleteProduct);
             }
 
-            $deleteProduct->delete();
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
+
+        DB::statement('ALTER TABLE products AUTO_INCREMENT = 1');
 
         return response()->json('Product deleted successfully');
     }
@@ -930,6 +959,10 @@ class ProductController extends Controller
     // multiple delete method
     public function multipleDelete(Request $request)
     {
+        if (! auth()->user()->can('product_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         if ($request->data_ids == null) {
             return response()->json(['errorMsg' => 'You did not select any product.']);
         }
@@ -942,7 +975,7 @@ class ProductController extends Controller
             //             if ($deleteProduct->thumbnail_photo !== 'default.png') {
             //                 if (file_exists(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo))) {
             //                     unlink(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo));
-            //                 } 
+            //                 }
             //             }
 
             //             if($deleteProduct->product_images->count() > 0){
@@ -962,7 +995,7 @@ class ProductController extends Controller
             //                     }
             //                 }
             //             }
-            //             $deleteProduct->delete(); 
+            //             $deleteProduct->delete();
             //         }
             //     }
 
@@ -975,6 +1008,7 @@ class ProductController extends Controller
                 $product->status = 0;
                 $product->save();
             }
+
             return response()->json('Successfully all selected product status deactivated');
         }
     }
@@ -987,11 +1021,13 @@ class ProductController extends Controller
 
             $statusChange->status = 0;
             $statusChange->save();
+
             return response()->json('Successfully Product is deactivated');
         } else {
 
             $statusChange->status = 1;
             $statusChange->save();
+
             return response()->json('Successfully Product is activated');
         }
     }
@@ -1000,6 +1036,7 @@ class ProductController extends Controller
     public function getAllFormVariants()
     {
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
+
         return response()->json($variants);
     }
 
@@ -1012,6 +1049,7 @@ class ProductController extends Controller
         } else {
 
             $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')->where('variant_code', $productCode)->first();
+
             return response()->json(['variant_product' => $variant_product]);
         }
     }
@@ -1058,31 +1096,30 @@ class ProductController extends Controller
         $type = $type;
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
+
         return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
     }
 
     public function settings()
     {
         $units = DB::table('units')->select('id', 'name', 'code_name')->get();
+
         return view('product.settings.index', compact('units'));
     }
 
-    public function settingsStore(Request $request)
+    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        $updateProductSettings = General_setting::first();
-
-        $productSettings = [
-            'product_code_prefix' => $request->product_code_prefix,
-            'default_unit_id' => $request->default_unit_id,
-            'is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
-            'is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
-            'is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
-            'is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
-            'is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
+        $settings = [
+            'product__product_code_prefix' => $request->product_code_prefix,
+            'product__default_unit_id' => $request->default_unit_id,
+            'product__is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
+            'product__is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
+            'product__is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
+            'product__is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
+            'product__is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
         ];
+        $generalSettingService->updateAndSync($settings);
 
-        $updateProductSettings->product = json_encode($productSettings);
-        $updateProductSettings->save();
         return response()->json('Product settings updated successfully');
     }
 }

@@ -2,9 +2,10 @@
     $('.loans').hide();
     var companies_table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print',autoPrint: true,exportOptions: {columns: ':visible'}}
+            {extend: 'print', text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+
         ],
         "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
         processing: true,
@@ -92,15 +93,15 @@
                     $('.error_e_' + key + '').html(error[0]);
                 });
             }
-        }); 
+        });
     });
 
     $(document).on('click', '#delete_company',function(e){
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
-        $('#delete_companies_form').attr('action', url);       
+        $('#delete_companies_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#delete_companies_form').submit();}},
@@ -147,8 +148,8 @@
         $('.data_preloader').show();
         var url = $(this).attr('href');
         $.get(url, function(data) {
-            $('#loanPymentModal').html(data); 
-            $('#loanPymentModal').modal('show'); 
+            $('#loanPymentModal').html(data);
+            $('#loanPymentModal').modal('show');
             $('.data_preloader').hide();
         });
     });
@@ -167,9 +168,9 @@
     $(document).on('click', '#delete_payment',function(e){
         e.preventDefault();
         var url = $(this).attr('href');
-        $('#deleted_payment_form').attr('action', url);           
+        $('#deleted_payment_form').attr('action', url);
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'message': 'Are you sure?',
             'buttons': {
                 'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_payment_form').submit();}},

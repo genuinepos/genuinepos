@@ -2,18 +2,18 @@
     @csrf
     <div class="form-group">
         <div class="col-md-12">
-            <label><b>Task :</b></label>
-            <input required type="text" name="task" class="form-control" placeholder="Task" value="{{ $todo->task }}">
+            <label><b>@lang('menu.task') </b></label>
+            <input required type="text" name="task" class="form-control" placeholder="@lang('menu.task')" value="{{ $todo->task }}">
         </div>
     </div>
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>Assigned To :</b></label>
+            <label><b>@lang('menu.assigned_to') </b></label>
             <select required name="user_ids[]" class="form-control select2" multiple="multiple">
-                <option disabled value=""> Select Please </option>
+                <option disabled value=""> @lang('menu.select_please') </option>
                 @foreach ($users as $user)
-                <option 
+                <option
                     @foreach ($todo->todo_users as $todo_user)
                         {{ $todo_user->user_id == $user->id ? "SELECTED" : '' }}
                     @endforeach
@@ -26,24 +26,24 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Priority : </b></label>
+            <label><b>@lang('menu.priority') </b></label>
             <select required name="priority" class="form-control">
-                <option value="">Select Priority</option>
-                <option {{ $todo->priority == 'Low' ? 'SELECTED' : ''  }} value="Low">Low</option>
-                <option {{ $todo->priority == 'Medium' ? 'SELECTED' : ''  }} value="Medium">Medium</option>
-                <option {{ $todo->priority == 'High' ? 'SELECTED' : ''  }} value="High">High</option>
-                <option {{ $todo->priority == 'Urgent' ? 'SELECTED' : ''  }} value="Urgent">Urgent</option>
+                <option value="">@lang('menu.select_priority')</option>
+                <option {{ $todo->priority == 'Low' ? 'SELECTED' : ''  }} value="Low">@lang('menu.low')</option>
+                <option {{ $todo->priority == 'Medium' ? 'SELECTED' : ''  }} value="Medium">@lang('menu.medium')</option>
+                <option {{ $todo->priority == 'High' ? 'SELECTED' : ''  }} value="High">@lang('menu.high')</option>
+                <option {{ $todo->priority == 'Urgent' ? 'SELECTED' : ''  }} value="Urgent">@lang('menu.urgent')</option>
             </select>
         </div>
 
         <div class="col-md-6">
-            <label><strong>Status : </strong></label>
+            <label><strong>@lang('menu.status') </strong></label>
             <select required name="status" class="form-control">
-                <option value="">Select Status</option>
-                <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">New</option>
-                <option {{ $todo->status == 'In-Progress' ? 'SELECTED' : ''  }} value="In-Progress">In-Progress</option>
-                <option {{ $todo->status == 'On-Hold' ? 'SELECTED' : ''  }} value="On-Hold">On-Hold</option>
-                <option {{ $todo->status == 'Complated' ? 'SELECTED' : ''  }} value="Complated">Complated</option>
+                <option value="">@lang('menu.select_status')</option>
+                <option {{ $todo->status == 'New' ? 'SELECTED' : ''  }} value="New">@lang('menu.new')</option>
+                <option {{ $todo->status == 'In-Progress' ? 'SELECTED' : ''  }} value="In-Progress">@lang('menu.in_progress')</option>
+                <option {{ $todo->status == 'On-Hold' ? 'SELECTED' : ''  }} value="On-Hold">@lang('menu.on_hold')</option>
+                <option {{ $todo->status == 'Complated' ? 'SELECTED' : ''  }} value="Complated">@lang('menu.completed')</option>
             </select>
         </div>
     </div>
@@ -51,29 +51,32 @@
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>Due Date : </b></label>
-            <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($todo->due_date)) }}">
+            <label><b>@lang('menu.due_date') </b></label>
+
+            <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date($generalSettings['business__date_format'], strtotime($todo->due_date)) }}">
         </div>
     </div>
 
     <div class="form-group mt-1">
         <div class="col-md-12">
-            <label><b>Description : </b></label>
+            <label><b>@lang('menu.description') </b></label>
             <textarea name="description" class="form-control" id="description" cols="10" rows="3" placeholder="Workspace Description.">{{ $todo->description }}</textarea>
         </div>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn me-0 button-success float-end">Save Changes</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_form">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_form">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_changes')</button>
+            </div>
         </div>
     </div>
 </form>
 <script>
     $('.select2').select2();
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

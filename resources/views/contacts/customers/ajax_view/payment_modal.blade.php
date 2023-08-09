@@ -17,7 +17,7 @@
 <div class="modal-dialog modal-dialog five-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">Receive Payment <span class="type_name"></span></h6>
+            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.receive_payment') <span class="type_name"></span></h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -26,8 +26,8 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Customer : </strong><span class="card_text customer_name">{{ $customer->name }}</span></li>
-                                <li><strong>Business : </strong><span class="card_text customer_business">{{ $customer->business_name }}</span></li>
+                                <li><strong>@lang('menu.customer') </strong><span class="card_text customer_name">{{ $customer->name }}</span></li>
+                                <li><strong>@lang('menu.business') </strong><span class="card_text customer_business">{{ $customer->business_name }}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -35,31 +35,31 @@
                     <div class="col-md-6">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Opening Balance : </strong>
+                                <li><strong>@lang('menu.opening_balance') </strong>
                                     <span class="card_text" id="customer_payment_opening_balance">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['opening_balance']) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['opening_balance']) }}
                                     </span>
                                 </li>
 
-                                <li><strong>Total Sale/Order : </strong>
+                                <li><strong>@lang('menu.total_sale')/@lang('menu.order') </strong>
                                     <span class="card_text" id="customer_payment_total_sale">
                                         {{ App\Utils\Converter::format_in_bdt($amounts['total_sale']) }}
                                     </span>
                                 </li>
 
-                                <li><strong>Total Return : </strong>
+                                <li><strong>@lang('menu.total_return') </strong>
                                     <span class="card_text" id="customer_payment_total_return">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_return']) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_return']) }}
                                     </span>
                                 </li>
 
-                                <li><strong>Total Paid : </strong>
+                                <li><strong>@lang('menu.total_paid') </strong>
                                     <span class="card_text text-success" id="customer_payment_total_paid">
-                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }} 
+                                        {{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}
                                     </span>
                                 </li>
 
-                                <li><strong>Total Due : </strong>
+                                <li><strong>@lang('menu.total_due') </strong>
                                     <span class="card_text text-danger" >
                                         <span id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_sale_due']) }}</span>
                                         <input type="hidden" id="card_total_due" value="{{ $amounts['total_sale_due'] }}">
@@ -78,8 +78,8 @@
                     <div class="col-md-5">
                         <div class="row">
                             <div class="col-lg-12">
-                                <label><strong>Business Location : </strong> </label>
-                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
+                                <label><strong>@lang('menu.business_location') </strong> </label>
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
                             <div class="col-md-12 mt-2">
@@ -90,37 +90,37 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_orders_and_invoices_area" value="all"> &nbsp; <b>All</b>
+                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_orders_and_invoices_area" value="all"> &nbsp; <b>@lang('menu.all')</b>
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-12">
                                             <div class="input-group mt-1">
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_invoice_table_area" value="sale_invoices"> &nbsp; <b>Receive Against Specific Invoices</b>
+                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_invoice_table_area" value="sale_invoices"> &nbsp; <b>@lang('menu.receive_against_specific_invoices')</b>
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="col-md-12">
                                             <div class="input-group mt-1">
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_orders_table_area"  value="sale_orders"> &nbsp; <b> Receive Against Specific Sales Orderes</b> </p>
+                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_orders_table_area"  value="sale_orders"> &nbsp; <b>{{ __('Receive Against Specific Sales Orderes') }}</b> </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <div class="invoice_and_order_table_area mt-2">
                                         <div class="all_orders_and_invoices_area due_table">
                                             <div class="row">
@@ -128,26 +128,26 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="heading_area">
-                                                                <p><strong>All </strong></p>
+                                                                <p><strong>@lang('menu.all')</strong></p>
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="due_all_table">
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
-                                                                <tr class="bg-primary">
-                                                                    <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
-                                                                    <th class="text-start text-white">Order/Invoice</th>
-                                                                    <th class="text-start text-white">Status</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Sold Amt.</th>
-                                                                    <th class="text-start text-white">Due</th>
+                                                                <tr class="bg-secondary">
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
+                                                                    <th class="text-start text-white">@lang('menu.order')/@lang('menu.invoice')</th>
+                                                                    <th class="text-start text-white">@lang('menu.status')</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
+                                                                    <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
+                                                                    <th class="text-start text-white">@lang('menu.due')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -155,37 +155,37 @@
                                                                     <tr>
                                                                         <td class="text-start"><input type="checkbox" name="sale_ids[]" class="sale_id" value="{{ $row->id }}" id="sale_id" data-due_amount="{{ $row->due }}"></td>
                                                                         <td class="text-start">{{ $row->date }}</td>
-        
+
                                                                         <td class="text-start">
                                                                             @if ($row->status == 1)
-                                                                            
+
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('sales.show', [$row->id]) }}">{{ $row->invoice_id }}</a>
                                                                             @elseif($row->status == 3 || $row->status == 7)
-        
+
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('sales.order.show', [$row->id]) }}">{{ $row->order_id }}</a>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">
                                                                             @if ($row->status == 1)
-                                                                                Sale
+                                                                                @lang('menu.sale')
                                                                             @else
-                                                                                Order
+                                                                                @lang('menu.order')
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">
                                                                             @php
                                                                                 $payable = $row->total_payable_amount - $row->sale_return_amount;
                                                                             @endphp
-        
-                                                                            @if ($row->due <= 0) 
-        
-                                                                                <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($row->due > 0 && $row->due < $payable) 
-        
-                                                                                <span class="text-primary"><b>Partial</b></span>
-                                                                            @elseif ($payable == $row->due) 
-        
-                                                                                <span class="text-danger"><b>Due</b></span>
+
+                                                                            @if ($row->due <= 0)
+
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
+                                                                            @elseif ($row->due > 0 && $row->due < $payable)
+
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
+                                                                            @elseif ($payable == $row->due)
+
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
@@ -198,8 +198,8 @@
                                                 </div>
                                             </div>
                                         </div>
-        
-                                        <div class="due_invoice_table_area due_table d-none">
+
+                                        <div class="due_invoice_table_area due_table d-hide">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="row">
@@ -208,22 +208,22 @@
                                                                 <p><strong>Due Sale Invoice List</strong></p>
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="due_invoice_table">
                                                         <table class="table modal-table table-sm mt-1 custom-tbl">
                                                             <thead>
                                                                 <tr class="bg-primary">
-                                                                    <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
-                                                                    <th class="text-start text-white">Invoice ID</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Sold Amt.</th>
-                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
+                                                                    <th class="text-start text-white">@lang('menu.invoice_id')</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
+                                                                    <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
+                                                                    <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -238,16 +238,16 @@
                                                                             @php
                                                                                 $payable = $invoice->total_payable_amount - $invoice->sale_return_amount;
                                                                             @endphp
-        
-                                                                            @if ($invoice->due <= 0) 
-        
-                                                                                <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($invoice->due > 0 && $invoice->due < $payable) 
-        
-                                                                                <span class="text-primary"><b>Partial</b></span>
-                                                                            @elseif ($payable == $invoice->due) 
-        
-                                                                                <span class="text-danger"><b>Due</b></span>
+
+                                                                            @if ($invoice->due <= 0)
+
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
+                                                                            @elseif ($invoice->due > 0 && $invoice->due < $payable)
+
+                                                                                <span class="text-primary"><b>@lang('menu.partial')</b></span>
+                                                                            @elseif ($payable == $invoice->due)
+
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
@@ -260,32 +260,32 @@
                                                 </div>
                                             </div>
                                         </div>
-        
-                                        <div class="due_orders_table_area due_table d-none">
+
+                                        <div class="due_orders_table_area due_table d-hide">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="heading_area">
-                                                                <p><strong>Due Sales Order List</strong> </p>
+                                                                <p><strong>@lang('menu.due_sales_order_list')</strong> </p>
                                                             </div>
                                                         </div>
-        
+
                                                         <div class="col-md-6">
-                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">Unselect All</a>
+                                                            <a href="#" id="close" class="btn btn-sm btn-danger float-end">@lang('menu.unselect_all')</a>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="due_orders_table">
                                                         <table class="table modal-table table-sm mt-1">
                                                             <thead>
-                                                                <tr class="bg-primary">
-                                                                    <th class="text-start text-white">Select</th>
-                                                                    <th class="text-start text-white">Date</th>
-                                                                    <th class="text-start text-white">Order ID</th>
-                                                                    <th class="text-start text-white">Pay Status</th>
-                                                                    <th class="text-start text-white">Sold Amt.</th>
-                                                                    <th class="text-start text-white">Due Amount</th>
+                                                                <tr class="bg-secondary">
+                                                                    <th class="text-start text-white">@lang('menu.select')</th>
+                                                                    <th class="text-start text-white">@lang('menu.date')</th>
+                                                                    <th class="text-start text-white">@lang('menu.order_id')</th>
+                                                                    <th class="text-start text-white">@lang('menu.pay_status')</th>
+                                                                    <th class="text-start text-white">{{ __('Sold Amt') }}.</th>
+                                                                    <th class="text-start text-white">@lang('menu.due_amount')</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -300,16 +300,16 @@
                                                                             @php
                                                                                 $payable = $order->total_payable_amount - $order->sale_return_amount;
                                                                             @endphp
-        
-                                                                            @if ($order->due <= 0) 
-        
-                                                                                <span class="text-success"><b>Paid</b></span>
-                                                                            @elseif ($order->due > 0 && $order->due < $payable) 
-        
-                                                                                 <span class="text-primary"><b>Partial</b></span>
-                                                                            @elseif ($payable == $order->due) 
-        
-                                                                                <span class="text-danger"><b>Due</b></span>
+
+                                                                            @if ($order->due <= 0)
+
+                                                                                <span class="text-success"><b>@lang('menu.paid')</b></span>
+                                                                            @elseif ($order->due > 0 && $order->due < $payable)
+
+                                                                                 <span class="text-primary"><b>@lang('menu.partial')</b></span>
+                                                                            @elseif ($payable == $order->due)
+
+                                                                                <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">{{ App\Utils\Converter::format_in_bdt($row->total_payable_amount) }}</td>
@@ -322,11 +322,11 @@
                                                 </div>
                                             </div>
                                         </div>
-        
+
                                         <div class="total_amount_area mt-1">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p><strong>Total Amount : </strong> <span id="total_amount">0.00</span></p>
+                                                    <p><strong>@lang('menu.total_amount') </strong> <span id="total_amount">0.00</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -339,7 +339,7 @@
                     <div class="col-md-7">
                         <div class="form-group row">
                             <div class="col-md-4">
-                                <label><strong>Amount :</strong> <span class="text-danger">*</span> </label>
+                                <label><strong>@lang('menu.amount') </strong> <span class="text-danger">*</span> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_f"></i></span>
@@ -349,33 +349,33 @@
                                 </div>
                                 <span class="error error_cp_paying_amount"></span>
                             </div>
-        
+
                             <div class="col-md-4">
-                                <label for="cp_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                                <label for="cp_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
                                     </div>
 
-                                    <input type="text" name="date" class="form-control cp_input" id="cp_date" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" autocomplete="off">
+                                    <input type="text" name="date" class="form-control cp_input" id="cp_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off">
                                 </div>
                                 <span class="error error_cp_date"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Reference :</strong> </label>
+                                <label><strong>@lang('menu.reference') </strong> </label>
                                 <input type="text" name="reference" class="form-control" placeholder="Payment Reference" autocomplete="off"/>
                             </div>
                         </div>
-        
+
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <label><strong>Less Amount :</strong> </label>
-                                <input type="number" step="any" name="less_amount" class="form-control" id="cp_less_amount" placeholder="Less Amount" autocomplete="off"/>
+                                <label><strong>@lang('menu.less_amount') </strong> </label>
+                                <input type="number" step="any" name="less_amount" class="form-control" id="cp_less_amount" placeholder="@lang('menu.less_amount')" autocomplete="off"/>
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark input_i"></i></span>
@@ -392,12 +392,12 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>Payment Account :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>{{ __('Payment Account') }} </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                                     </div>
-                                    
+
                                     <select name="account_id" class="form-control" id="cp_account_id">
                                         @foreach ($accounts as $account)
                                             <option value="{{ $account->id }}">
@@ -413,32 +413,34 @@
                                 </div>
                             </div>
                         </div>
-        
+
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
-                                <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                                <label><strong>@lang('menu.attach_document') </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                                 <input type="file" name="attachment" class="form-control" id="attachment">
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong> Payment Note :</strong></label>
+                                <label><strong> @lang('menu.payment_note') </strong></label>
                                 <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
                             <div class="col-md-12">
-                                <label><strong>IN WORD : </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
+                                <label><strong>@lang('menu.in_word') </strong> <strong><span class="text-danger text-uppercase" id="in_word"></span></strong></label>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button name="action" value="save" type="submit" class="c-btn button-success float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><b> @lang('menu.loading')...</b></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                            <button name="action" value="save" type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -452,9 +454,9 @@
         e.preventDefault();
 
         $('.loading_button').show();
-        
+
         var url = $(this).attr('action');
-        
+
         $.ajax({
             url: url,
             type: 'post',
@@ -507,11 +509,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Please check the connection.'); 
+                    toastr.error('Net Connetion Error. Please check the connection.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 
@@ -523,8 +525,8 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
-    
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -571,7 +573,7 @@
     $(document).on('click', '#payment_against', function() {
 
         var saleIds = document.querySelectorAll('#sale_id');
-        
+
         saleIds.forEach(function(input){
 
             $(input).prop('checked', false);
@@ -605,12 +607,12 @@
         calculateTotalDue();
     });
 
-    
+
     $(document).on('click', '#close', function (e) {
         e.preventDefault();
 
         var saleIds = document.querySelectorAll('#sale_id');
-        
+
         saleIds.forEach(function(input){
 
             $(input).prop('checked', false);
@@ -632,7 +634,7 @@
     });
 
     function calculateTotalDue() {
-        
+
         var cp_paying_amount = $('#cp_paying_amount').val() ? $('#cp_paying_amount').val() : 0;
         var card_total_due = $('#card_total_due').val() ? $('#card_total_due').val() : 0;
         var cp_less_amount = $('#cp_less_amount').val() ? $('#cp_less_amount').val() : 0;
@@ -654,7 +656,7 @@
 <script>
     var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
     var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
-  
+
       function inWords (num) {
           if ((num = num.toString()).length > 9) return 'overflow';
           n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
@@ -668,7 +670,7 @@
       }
 
         $(document).on('click', '.invoice_and_order_table_area table tbody tr', function () {
-            $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr'); 
+            $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr');
             $(this).addClass('active_tr');
         });
 </script>

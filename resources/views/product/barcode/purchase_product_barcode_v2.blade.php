@@ -1,5 +1,5 @@
 @extends('layout.master')
-@push('stylesheets') 
+@push('stylesheets')
     <style>
          .select_area {background: #ffffff;box-sizing: border-box;position: absolute;width: 64.2%;z-index: 9999999;padding: 0;left: 17.9%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
         .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
@@ -18,10 +18,10 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>Generate Barcode</h5>
+                                <h5>@lang('menu.generate_barcode')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back </a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i>@lang('menu.back') </a>
                         </div>
                     </div>
 
@@ -30,7 +30,7 @@
                         <div class="card">
                             <div class="card ">
                                 <form id="multiple_completed_form"
-                                    action="{{ route('barcode.multiple.genereate.completed') }}" method="post">
+                                    action="{{ route('barcode.multiple.generate.completed') }}" method="post">
                                     @csrf
                                 </form>
                                 <!--begin::Form-->
@@ -38,7 +38,7 @@
                                     @csrf
                                     <div class="card-body">
                                         <input type="hidden" id="business_name"
-                                            value="{{ json_decode($generalSettings->business, true)['shop_name'] }}">
+                                            value="{{ $generalSettings['business__shop_name'] }}">
                                         <div class="form-group row">
                                             <div class="col-md-8 offset-2">
                                                 <div class="input-group ">
@@ -59,20 +59,20 @@
 
                                         <div class="barcode_product_table_area">
                                             <div class="table_heading">
-                                                <p class="p-0 m-0"><strong>Recent Purchased Product List</strong></p>
+                                                <p class="p-0 m-0"><strong>{{ __('Recent Purchased Product List') }}</strong></p>
                                             </div>
                                             <div class="table_area">
-                                                <div class="data_preloader d-none">
-                                                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                                <div class="data_preloader d-hide">
+                                                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                                 </div>
                                                 <table class="table modal-table table-sm">
                                                     <thead>
                                                         <tr class="bg-primary text-white text-start">
-                                                            <th class="text-start">Product</th>
-                                                            <th class="text-start">Supplier</th>
-                                                            <th class="text-start">Quantity</th>
-                                                            <th class="text-start">Packing Date</th>
-                                                            <th class="text-start">Action</th>
+                                                            <th class="text-start">@lang('menu.product')</th>
+                                                            <th class="text-start">@lang('menu.supplier')</th>
+                                                            <th class="text-start">@lang('menu.quantity')</th>
+                                                            <th class="text-start">@lang('menu.packing_date')</th>
+                                                            <th class="text-start">@lang('menu.action')</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="barcode_product_list">
@@ -80,7 +80,7 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th colspan="5" class="text-start"><a href="" class="btn btn-sm btn-success multiple_completed"> Generate Completed All</a></th>
+                                                            <th colspan="5" class="text-start"><a href="" class="btn btn-sm btn-success multiple_completed"> @lang('menu.generate_completed_all')</a></th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -92,27 +92,27 @@
                                                 <div class="row">
                                                     <ul class="list-unstyled">
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; Price Price. &nbsp;</p>
+                                                            <p><input checked type="checkbox" name="is_price" class="checkbox" id="is_price"> &nbsp; @lang('menu.price_price') &nbsp;</p>
                                                         </li>
 
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; Product Name &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_product_name" class="checkbox" id="is_product_name"> &nbsp; @lang('menu.product_name') &nbsp; </p>
                                                         </li>
 
                                                         <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; Product Variant &nbsp; </p>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_product_variant" class="checkbox" id="is_product_variant"> &nbsp; @lang('menu.product_variant') &nbsp; </p>
                                                         </li>
 
                                                         <li>
-                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; Product Tax &nbsp; </p>
+                                                            <p class="checkbox_input_wrap"><input checked type="checkbox" name="is_tax" class="checkbox" id="is_tax"> &nbsp; @lang('menu.product_tax') &nbsp; </p>
                                                         </li>
 
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; Business Name &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_business_name" class="checkbox" id="is_business_name"> &nbsp; @lang('menu.business_name') &nbsp; </p>
                                                         </li>
 
                                                         <li>
-                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; Supplier Prefix &nbsp; </p>
+                                                            <p><input checked type="checkbox" name="is_supplier_prefix" class="checkbox" id="is_supplier_prefix"> &nbsp; @lang('menu.supplier_prefix') &nbsp; </p>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -121,7 +121,7 @@
 
                                         <div class="row mt-3">
                                             <div class="col-md-4">
-                                                <label><b>Barcode Setting :</b></label>
+                                                <label><b>@lang('menu.barcode_settings') </b></label>
                                                 <select name="br_setting_id" class="form-control">
                                                     @foreach ($bc_settings as $bc_setting)
                                                         <option {{ $bc_setting->is_default == 1 ? 'SELECTED' : '' }} value="{{ $bc_setting->id }}">
@@ -134,7 +134,7 @@
 
                                         <div class="row mt-3">
                                             <div class="col-md-12">
-                                                <button type="submit" class="btn btn-sm btn-primary float-end">Preview</button>
+                                                <button type="submit" class="btn btn-sm btn-primary float-end">@lang('menu.preview')</button>
                                             </div>
                                         </div>
                                     </div>
@@ -165,19 +165,19 @@
                     var tr = '';
                     tr += '<tr>';
                     tr += '<td class="text-start">';
-                    tr += '<span class="span_product_name">'+p_product.product.name+'</span>';  
+                    tr += '<span class="span_product_name">'+p_product.product.name+'</span>';
                     if (p_product.product_variant_id != null) {
                         tr += '<span class="span_variant_name">'+' - '+p_product.variant.variant_name+'</span>';
                     }else{
                         tr += '<span class="span_product_code"></span>';
-                    } 
-                        
+                    }
+
                     if (p_product.product_variant_id != null) {
                         tr += '<span class="span_product_code">'+' ('+p_product.variant.variant_code+')'+'</span>';
                     }else{
                         tr += '<span class="span_product_code">'+' ('+p_product.product.product_code+')'+'</span>';
                     }
-                    
+
                     var variant_id = p_product.product_variant_id != null ? p_product.product_variant_id : null;
                     tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+p_product.product.id+p_product.purchase.supplier_id+variant_id+'" id="product_id" value="'+p_product.product.id+'">';
                     tr += '<input type="hidden" name="product_name[]" id="product_name" value="'+p_product.product.name+'">';
@@ -205,9 +205,9 @@
                             tax_amount = parseFloat(p_product.product.product_price) - parseFloat(calcAmount);
                             priceIncTax = parseFloat(p_product.product.product_price) + parseFloat(tax_amount);
                         }
-                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">'; 
+                        tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
                     }
-                    
+
                     tr += '<input type="hidden" name="product_tax[]" value="'+p_product.unit_tax_percent+'">';
                     tr += '<input type="hidden" name="tax_type[]" value="'+p_product.product.tax_type+'">';
                     tr += '</td>';
@@ -262,7 +262,7 @@
         });
     });
 
-    // Searcha product 
+    // Searcha product
     $('#search_product').on('input', function () {
        var searchKeyWord = $(this).val();
        $('.product_dropdown_list').empty();
@@ -294,7 +294,7 @@
         });
     });
 
-    //Get Seleled product requested by ajax 
+    //Get Seleled product requested by ajax
     $(document).on('click', '.select_product', function(e) {
         e.preventDefault();
         var product_id = $(this).data('p_id');
@@ -326,7 +326,7 @@
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var sameProduct = rows.filter(function (row) {
-                        return row.productPrefix == createPrefix; 
+                        return row.productPrefix == createPrefix;
                     });
 
                     if (sameProduct.length > 0) {
@@ -338,13 +338,13 @@
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>'; 
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
+                        }
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
@@ -368,8 +368,8 @@
                             priceIncTax = parseFloat(sProduct.product.product_price) + parseFloat(tax_amount);
                         }
 
-                        tr += '<input type="hidden" name="product_price[]" value="'+ parseFloat(priceIncTax).toFixed(2)+'">'; 
-                        
+                        tr += '<input type="hidden" name="product_price[]" value="'+ parseFloat(priceIncTax).toFixed(2)+'">';
+
                         tr += '<input type="hidden" name="product_tax[]" value="'+ tax +'">';
                         tr += '<input type="hidden" name="tax_type[]" value="'+sProduct.product.tax_type+'">';
                         tr += '</td>';
@@ -400,7 +400,7 @@
         });
     });
 
-    //Get Seleled product requested by ajax 
+    //Get Seleled product requested by ajax
     $(document).on('click', '.select_variant_product', function(e) {
         e.preventDefault();
         $('.select_area').hide();
@@ -432,7 +432,7 @@
                     var tax = sProduct.product.tax != null ? sProduct.product.tax.tax_percent : 0.00 ;
                     var createPrefix = sProduct.supplier_id+''+sProduct.product_id+''+sProduct.product_variant_id;
                     var sameProduct = rows.filter(function (row) {
-                       return row.productPrefix == createPrefix; 
+                       return row.productPrefix == createPrefix;
                     });
 
                     if (sameProduct.length > 0) {
@@ -444,19 +444,19 @@
                         var tr = '';
                         tr += '<tr>';
                         tr += '<td class="text-start">';
-                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';  
+                        tr += '<span class="span_product_name">'+sProduct.product.name+'</span>';
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_variant_name">'+' - '+sProduct.variant.variant_name+'</span>';
                         }else{
                             tr += '<span class="span_product_code"></span>';
-                        } 
+                        }
 
                         if (sProduct.product_variant_id != null) {
                             tr += '<span class="span_product_code">'+' ('+sProduct.variant.variant_code+')'+'</span>';
                         }else{
                             tr += '<span class="span_product_code">'+' ('+sProduct.product.product_code+')'+'</span>';
                         }
-                        
+
                         var variant_id = sProduct.product_variant_id != null ? sProduct.product_variant_id : null;
                         tr += '<input type="hidden" name="product_ids[]" class="productPrefix-'+sProduct.product.id+sProduct.supplier_id+variant_id+'" id="product_id" value="'+sProduct.product.id+'">';
                         tr += '<input type="hidden" name="product_name[]" value="'+sProduct.product.name+'">';
@@ -473,7 +473,7 @@
                         }
 
                         tr += '<input type="hidden" name="product_price[]" value="'+parseFloat(priceIncTax).toFixed(2)+'">';
-                        
+
                         tr += '<input type="hidden" name="product_tax[]" value="'+tax+'">';
                         tr += '<input type="hidden" name="tax_type[]" value="'+sProduct.product.tax_type+'">';
                         tr += '</td>';
@@ -504,7 +504,7 @@
         });
     });
 
-    // Dispose Select area 
+    // Dispose Select area
     $(document).on('click', '.remove_select_area_btn', function(e){
         e.preventDefault();
         $('.select_area').hide();
@@ -513,14 +513,14 @@
     // Generate confirm request send by ajax
     $(document).on('click', '.remove_btn',function (e) {
         e.preventDefault();
-        var tr = $(this).closest('tr').remove(); 
+        var tr = $(this).closest('tr').remove();
     })
 
     $(document).on('click', '.multiple_completed',function(e){
         e.preventDefault();
-        $('#action').val('multipla_deactive');         
+        $('#action').val('multipla_deactive');
         $.confirm({
-            'title': 'Delete Confirmation',
+            'title': 'Confirmation',
             'content': 'Once deleted, you will not be able to recover this file!',
             'buttons': {
                 'Yes': {
@@ -533,7 +533,7 @@
                     'class': 'no btn-danger',
                     'action': function() {
                         // alert('Deleted canceled.')
-                    } 
+                    }
                 }
             }
         });
@@ -570,7 +570,7 @@
         var total_qty = 0;
         quantities.forEach(function(qty){
             total_qty += parseFloat(qty.value)
-        }); 
+        });
         console.log(total_qty);
         if (parseFloat(total_qty) == 0) {
             toastr.error('Total barcode label Quantity is 0');

@@ -2,23 +2,19 @@
 
 namespace App\Utils;
 
-use App\Models\Product;
 use App\Models\Customer;
-use App\Models\Supplier;
-use App\Models\ProductBranch;
-use App\Models\CustomerLedger;
-use App\Models\SupplierLedger;
 use App\Models\ExpanseCategory;
-use App\Models\PurchaseProduct;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductOpeningStock;
-use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Models\Product;
+use App\Models\ProductBranch;
 
 class Util
 {
     protected $invoiceVoucherRefIdUtil;
+
     protected $supplierUtil;
+
     protected $customerUtil;
+
     protected $productUtil;
 
     public function __construct(
@@ -36,7 +32,7 @@ class Util
     public function addQuickProductFromAddSale($request)
     {
         $addProduct = new Product();
-        $tax_id = NULL;
+        $tax_id = null;
         if ($request->tax_id) {
             $tax_id = explode('-', $request->tax_id)[0];
         }
@@ -45,9 +41,6 @@ class Util
             [
                 'name' => 'required',
                 'unit_id' => 'required',
-                'product_price' => 'required',
-                'product_cost' => 'required',
-                'product_cost_with_tax' => 'required',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',
@@ -63,27 +56,30 @@ class Util
             $b++;
         }
 
+        $generalSettings = config('generalSettings');
+        $productCodePrefix = $generalSettings['product__product_code_prefix'];
+
         $addProduct->type = 1;
         $addProduct->name = $request->name;
-        $addProduct->product_code = $request->product_code ? $request->product_code : $code;
+        $addProduct->product_code = $request->product_code ? $request->product_code : $productCodePrefix.$code;
         $addProduct->category_id = $request->category_id;
-        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
-        $addProduct->product_cost = $request->product_cost;
-        $addProduct->profit = $request->profit ? $request->profit : 0.00;
-        $addProduct->product_cost_with_tax = $request->product_cost_with_tax;
-        $addProduct->product_price = $request->product_price;
-        $addProduct->alert_quantity = $request->alert_quantity;
+        $addProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+        $addProduct->profit = $request->profit ? $request->profit : 0;
+        $addProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+        $addProduct->product_price = $request->product_price ? $request->product_price : 0;
+        $addProduct->alert_quantity = $request->alert_quantity ? $request->alert_quantity : 0;
         $addProduct->tax_id = $tax_id;
         $addProduct->tax_type = 1;
-        $addProduct->product_details = $request->product_details;
         $addProduct->is_purchased = 1;
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->is_purchased = 1;
-        $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
-        $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $addProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $addProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
         $addProduct->quantity = $request->quantity ? $request->quantity : 0;
         $addProduct->save();
 
@@ -91,8 +87,8 @@ class Util
         $this->productUtil->addOpeningStock(
             branch_id: $request->branch_id,
             product_id: $addProduct->id,
-            variant_id: NULL,
-            unit_cost_inc_tax: $request->product_cost_with_tax,
+            variant_id: null,
+            unit_cost_inc_tax: $request->product_cost_with_tax ? $request->product_cost_with_tax : 0,
             quantity: $request->quantity,
             subtotal: $request->subtotal
         );
@@ -101,7 +97,8 @@ class Util
         $addProductBranch = new ProductBranch();
         $addProductBranch->branch_id = $request->branch_id;
         $addProductBranch->product_id = $addProduct->id;
-        $addProductBranch->product_quantity = $request->quantity;
+        $addProductBranch->product_quantity = $request->quantity ? $request->quantity : 0;
+        $addProductBranch->status = 1;
         $addProductBranch->save();
 
         return response()->json($addProduct);
@@ -110,7 +107,7 @@ class Util
     public function addQuickProductFromPurchase($request)
     {
         $addProduct = new Product();
-        $tax_id = NULL;
+        $tax_id = null;
 
         if ($request->tax_id) {
 
@@ -119,46 +116,55 @@ class Util
 
         $request->validate(
             [
-                'name' => 'required',
-                'product_code' => 'required',
-                'unit_id' => 'required',
-                'product_price' => 'required',
-                'product_cost' => 'required',
-                'product_cost_with_tax' => 'required',
+                'name' => 'required', 'unit_id' => 'required',
             ],
             [
                 'unit_id.required' => 'Product unit field is required.',
             ]
         );
 
+        $l = 6;
+        $b = 0;
+        $code = '';
+        while ($b < $l) {
+            $code .= rand(1, 9);
+            $b++;
+        }
+
+        $generalSettings = config('generalSettings');
+        $productCodePrefix = $generalSettings['product__product_code_prefix'];
+
         $addProduct->type = 1;
         $addProduct->name = $request->name;
-        $addProduct->product_code = $request->product_code;
+        $addProduct->product_code = $request->product_code ? $request->product_code : $productCodePrefix.$code;
         $addProduct->category_id = $request->category_id;
-        $addProduct->parent_category_id = $request->child_category_id;
+        $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
-        $addProduct->product_cost = $request->product_cost;
-        $addProduct->profit = $request->profit ? $request->profit : 0.00;
-        $addProduct->product_cost_with_tax = $request->product_cost_with_tax;
-        $addProduct->product_price = $request->product_price;
+        $addProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+        $addProduct->profit = $request->profit ? $request->profit : 0;
+        $addProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+        $addProduct->product_price = $request->product_price ? $request->product_price : 0;
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_id = $tax_id;
-        $addProduct->product_details = $request->product_details;
         $addProduct->is_purchased = 1;
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
-        $addProduct->is_show_in_ecom = isset($request->is_show_in_ecom) ? 1 : 0;
-        $addProduct->is_show_emi_on_pos = isset($request->is_show_emi_on_pos) ? 1 : 0;
+        $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $addProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $addProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
         $addProduct->save();
 
         // Add product Branch
         $addProductBranch = new ProductBranch();
         $addProductBranch->branch_id = auth()->user()->branch_id;
         $addProductBranch->product_id = $addProduct->id;
+        $addProductBranch->status = 1;
         $addProductBranch->save();
 
-        return response()->json($addProduct);
+        $product = Product::with('tax', 'unit')->where('id', $addProduct->id)->first();
+
+        return response()->json($product);
     }
 
     public function addQuickExpenseCategory($request)
@@ -169,19 +175,9 @@ class Util
             ],
         );
 
-        $lastExpenseCategory = DB::table('expanse_categories')->orderBy('id', 'desc')->first();
-        $code = 0;
-        if ($lastExpenseCategory) {
-
-            $code = ++$lastExpenseCategory->id;
-        } else {
-
-            $code = 1;
-        }
-
         $addExpenseCategory = ExpanseCategory::create([
             'name' => $request->name,
-            'code' => $request->code ? $request->code : $code,
+            'code' => $request->code ? $request->code : str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_categories'), 4, '0', STR_PAD_LEFT),
         ]);
 
         return response()->json($addExpenseCategory);
@@ -273,13 +269,13 @@ class Util
                 return $data;
             } else {
 
-                return $filteredType =  array_filter($data, function ($val, $key) {
+                return $filteredType = array_filter($data, function ($val, $key) {
 
                     return $key != 2;
                 }, ARRAY_FILTER_USE_BOTH);
             }
         } else {
-            
+
             return $data;
         }
     }

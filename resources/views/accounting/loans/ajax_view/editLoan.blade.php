@@ -2,15 +2,15 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Date : <span class="text-danger">*</span></strong></label>
-            <input type="text" name="date" class="form-control" id="e_date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($loan->report_date)) }}">
+            <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
+            <input type="text" name="date" class="form-control" id="e_date" value="{{ date($generalSettings['business__date_format'], strtotime($loan->report_date)) }}">
             <span class="error error_e_date"></span>
         </div>
 
         <div class="col-md-6">
-            <label><b>Loan A/C :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.loan_ac') </b> <span class="text-danger">*</span></label>
             <select required name="loan_account_id" class="form-control" id="loan_account_id">
-                <option value="">Select Loan Account</option>
+                <option value="">@lang('menu.select_loan_account')</option>
                 @foreach ($loanAccounts as $loanAc)
                     <option {{ $loanAc->id == $loan->loan_account_id ? 'SELECTED' : '' }} value="{{ $loanAc->id }}">
                         {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}
@@ -22,9 +22,9 @@
 
     <div class="form-group row">
         <div class="col-md-6">
-            <label><strong>Company/People : <span class="text-danger">*</span></strong></label>
+            <label><strong>@lang('menu.company')/@lang('menu.people'): <span class="text-danger">*</span></strong></label>
             <select name="company_id" class="form-control" id="e_company_id">
-                <option value="">Select Company</option>
+                <option value="">@lang('menu.select_company')</option>
                 @foreach ($companies as $company)
                     <option {{ $loan->loan_company_id == $company->id ? 'SELECTED' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
                 @endforeach
@@ -33,11 +33,11 @@
         </div>
 
         <div class="col-md-6">
-            <label><b>Type :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.type') </b> <span class="text-danger">*</span></label>
             <select name="type" class="form-control" id="e_type">
-                <option value="">Select Type</option>
-                <option {{ $loan->type == 1 ? 'SELECTED' : '' }} value="1">Loan & Advance</option>
-                <option {{ $loan->type == 2 ? 'SELECTED' : '' }} value="2">Loan & Liabilities</option>
+                <option value="">@lang('menu.select_type')</option>
+                <option {{ $loan->type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.loan_and_advance')</option>
+                <option {{ $loan->type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.loan_and_liabilities')</option>
             </select>
             <span class="error error_e_type"></span>
         </div>
@@ -45,15 +45,15 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Loan Amount :</b> <span class="text-danger">*</span> </label>
-            <input type="number" step="any" name="loan_amount" class="form-control" id="e_loan_amount" placeholder="Loan Amount" value="{{ $loan->loan_amount }}"/>
+            <label><b>@lang('menu.loan_amount') </b> <span class="text-danger">*</span> </label>
+            <input type="number" step="any" name="loan_amount" class="form-control" id="e_loan_amount" placeholder="@lang('menu.loan_amount')" value="{{ $loan->loan_amount }}"/>
             <span class="error error_e_loan_amount"></span>
         </div>
 
         <div class="col-md-6">
-            <label><b>Debit/Credit Account :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.debit')/@lang('menu.credit_account') </b> <span class="text-danger">*</span></label>
             <select name="account_id" class="form-control" id="e_account_id">
-                <option value="">Select Account</option>
+                <option value="">@lang('menu.select_account')</option>
                 @foreach ($accounts as $account)
                     <option {{ $loan->account_id == $account->id ? 'SELECTED' : '' }} value="{{ $account->id }}">
                         @php
@@ -72,29 +72,31 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><b>Loan Reason :</b> </label>
-            <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="Loan Reason">{{ $loan->loan_reason }}</textarea>
+            <label><b>@lang('menu.loan_reason') </b> </label>
+            <textarea name="loan_reason" class="form-control" id="loan_reason" cols="10" rows="3" placeholder="@lang('menu.loan_reason')">{{ $loan->loan_reason }}</textarea>
         </div>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-            <button type="button" class="c-btn btn_orange float-end" id="close_loan_edit_form">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="button" class="btn btn-sm btn-danger" id="close_loan_edit_form">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+            </div>
         </div>
     </div>
 </form>
 
 <script>
-    // var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    // var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     // var _expectedDateFormat = '';
     // _expectedDateFormat = dateFormat.replace('d', 'dd');
     // _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');
     // _expectedDateFormat = _expectedDateFormat.replace('Y', 'yyyy');
     // $('.datepicker').datepicker({ format: _expectedDateFormat })
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

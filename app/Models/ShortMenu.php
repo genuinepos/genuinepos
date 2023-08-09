@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class ShortMenu extends Model
+class ShortMenu extends BaseModel
 {
     use HasFactory;
 }

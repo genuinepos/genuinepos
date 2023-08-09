@@ -3,13 +3,15 @@
 namespace App\Models\Hrm;
 
 use App\Models\Account;
+use App\Models\BaseModel;
 use App\Models\PaymentMethod;
-use Illuminate\Database\Eloquent\Model;
 
-class PayrollPayment extends Model
+class PayrollPayment extends BaseModel
 {
     protected $table = 'hrm_payroll_payments';
+
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function payroll()

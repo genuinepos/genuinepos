@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\BranchUtil;
 use App\Models\Branch;
-use App\Models\Account;
-use Illuminate\Http\Request;
 use App\Models\InvoiceSchema;
+use App\Utils\BranchUtil;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BranchController extends Controller
@@ -17,19 +16,18 @@ class BranchController extends Controller
     {
         $this->branchUtil = $branchUtil;
 
-        $this->middleware('auth:admin_and_user');
     }
 
     public function index()
     {
-        $addons = DB::table('addons')->select('branches')->first();
-        
-        if ($addons->branches == 0) {
+        $generalSettings = config('generalSettings');
+
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        if (auth()->user()->permission->setup['branch'] == '0') {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -39,10 +37,10 @@ class BranchController extends Controller
 
     public function getAllBranch()
     {
-        $addons = DB::table('addons')->select('branches')->first();
+        $generalSettings = config('generalSettings');
 
-        if ($addons->branches == 0) {
-            
+        if ($generalSettings['addons__branches'] == 0) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -70,11 +68,11 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        $addons = DB::table('addons')->select('branches', 'branch_limit')->first();
+        $generalSettings = config('generalSettings');
 
-        $branch_limit = $addons->branch_limit;
+        $branch_limit = $generalSettings['addons__branch_limit'];
 
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -83,7 +81,7 @@ class BranchController extends Controller
 
         if ($branch_limit <= $branchCount) {
 
-            return response()->json(["errorMsg" => "Business Location limit is ${branch_limit}"]);
+            return response()->json(['errorMsg' => "Business Location limit is ${branch_limit}"]);
         }
 
         $this->validate($request, [
@@ -104,8 +102,7 @@ class BranchController extends Controller
             $this->validate($request, [
                 'first_name' => 'required',
                 'user_phone' => 'required',
-                'role_id' => 'required',
-                'username' => 'required|unique:admin_and_users,username',
+                'username' => 'required|unique:users,username',
                 'password' => 'required|confirmed',
             ]);
         }
@@ -113,7 +110,7 @@ class BranchController extends Controller
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
             $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
+            $branchLogoName = uniqid().'-'.'.'.$branchLogo->getClientOriginalExtension();
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
         }
 
@@ -153,13 +150,14 @@ class BranchController extends Controller
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
         $invSchemas = DB::table('invoice_schemas')->select('id', 'name')->get();
         $invLayouts = DB::table('invoice_layouts')->select('id', 'name')->get();
+
         return view('settings.branches.ajax_view.edit', compact('branch', 'accounts', 'invSchemas', 'invLayouts'));
     }
 
     public function update(Request $request, $branchId)
     {
-        $addons = DB::table('addons')->select('branches')->first();
-        if ($addons->branches == 0) {
+        $generalSettings = config('generalSettings');
+        if ($generalSettings['addons__branches'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -193,13 +191,13 @@ class BranchController extends Controller
 
         if ($request->hasFile('logo')) {
             if ($updateBranch->logo != 'default.png') {
-                if (file_exists(public_path('uploads/branch_logo/' . $updateBranch->logo))) {
-                    unlink(public_path('uploads/branch_logo/' . $updateBranch->logo));
+                if (file_exists(public_path('uploads/branch_logo/'.$updateBranch->logo))) {
+                    unlink(public_path('uploads/branch_logo/'.$updateBranch->logo));
                 }
             }
 
             $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
+            $branchLogoName = uniqid().'-'.'.'.$branchLogo->getClientOriginalExtension();
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
             $updateBranch->logo = $branchLogoName;
         }
@@ -211,9 +209,9 @@ class BranchController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $addons = DB::table('addons')->select('branches')->first();
+        $generalSettings = config('generalSettings');
 
-        if ($addons->branches == 0) {
+        if ($generalSettings['addons__branches'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -221,7 +219,7 @@ class BranchController extends Controller
         $deleteBranch = Branch::with(['sales', 'purchases'])->where('id', $id)->first();
 
         if (count($deleteBranch->sales) > 0) {
-            
+
             return response()->json('Can not delete this business location. This location has one or more sales.');
         }
 
@@ -232,9 +230,9 @@ class BranchController extends Controller
 
         if ($deleteBranch->logo != 'default.png') {
 
-            if (file_exists(public_path('uploads/branch_logo/' . $deleteBranch->logo))) {
+            if (file_exists(public_path('uploads/branch_logo/'.$deleteBranch->logo))) {
 
-                unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
+                unlink(public_path('uploads/branch_logo/'.$deleteBranch->logo));
             }
         }
 
@@ -246,6 +244,7 @@ class BranchController extends Controller
     public function getAllAccounts()
     {
         $accounts = DB::table('accounts')->select('id', 'name', 'account_number')->get();
+
         return response()->json($accounts);
     }
 

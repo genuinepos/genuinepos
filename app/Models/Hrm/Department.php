@@ -2,12 +2,14 @@
 
 namespace App\Models\Hrm;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Department extends BaseModel
 {
     use HasFactory;
+
     protected $table = 'hrm_department';
-    protected $fillable = ['department_name','department_id','description'];
+
+    protected $fillable = ['department_name', 'department_id', 'description'];
 }

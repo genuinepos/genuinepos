@@ -1,15 +1,15 @@
 <table class="display data_tbl data__table">
     <thead>
         <tr class="bg-navey-blue">
-            <th>P.Code(SKU)</th>
-            <th>Product</th>
-            <th>Unit Price</th>
-            <th>Current Stock</th>
-            <th>Current Stock Value <b><small>(By Unit Cost)</small></b></th>
-            <th>Current Stock Value <b><small>(By Unit Price)</small></b></th>
-            <th>Potential profit</th>
-            <th>Total Unit Sold</th>
-            <th>Total Adjusted</th>
+            <th>@lang('menu.p_code')(SKU)</th>
+            <th>@lang('menu.product')</th>
+            <th>@lang('menu.unit_price')</th>
+            <th>@lang('menu.current_stock')</th>
+            <th>@lang('menu.current_stock_value') <b><small>(@lang('menu.by_nit_cost'))</small></b></th>
+            <th>@lang('menu.current_stock_value') <b><small>({{ __('By Unit Price') }})</small></b></th>
+            <th>{{ __('Potential profit') }}</th>
+            <th>{{ __('Total Unit Sold') }}</th>
+            <th>@lang('menu.total_adjusted')</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@
                         <td>{{ $product_variant->variant_price }}</td>
                         <td>{{ $product_variant->variant_quantity. '('.$product->unit->code_name.')' }}</td>
                         <td>
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ number_format((float) $product_variant->variant_quantity * $product_variant->variant_cost_with_tax, 2, '.', '') }}
                         </td>
 
@@ -33,7 +33,7 @@
                                 $tax = $product->tax ? $product->tax->tax_percent : 0;
                                 $sellingPriceIncTax = ($product_variant->variant_price / 100 * $tax) + $product_variant->variant_price;
                             @endphp
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ number_format((float) $product_variant->variant_quantity * $sellingPriceIncTax, 2, '.', '') }}
                         </td>
 
@@ -46,7 +46,7 @@
                                     }
                                 }
                             @endphp
-                            {{ json_decode($generalSettings->business, true)['currency'] }}
+                            {{ $generalSettings['business__currency'] }}
                             {{ number_format((float) $frofit, 2, '.', '') }}
                         </td>
 
@@ -61,7 +61,7 @@
                     <td>{{ $product->product_price }}</td>
                     <td>{{ $product->quantity. '('.$product->unit->code_name.')' }}</td>
                     <td>
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $generalSettings['business__currency'] }}
                         {{ number_format((float) $product->quantity * $product->product_cost_with_tax, 2, '.', '') }}
                     </td>
                     <td>
@@ -69,7 +69,7 @@
                             $tax = $product->tax ? $product->tax->tax_percent : 0;
                             $sellingPriceIncTax = ($product->product_price / 100 * $tax) + $product->product_price;
                         @endphp
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $generalSettings['business__currency'] }}
                         {{ number_format((float) $product->quantity * $sellingPriceIncTax, 2, '.', '') }}
                     </td>
 
@@ -82,7 +82,7 @@
                                 }
                             }
                         @endphp
-                        {{ json_decode($generalSettings->business, true)['currency'] }}
+                        {{ $generalSettings['business__currency'] }}
                         {{ number_format((float) $frofit, 2, '.', '') }}
                     </td>
 

@@ -5,161 +5,148 @@
 @section('title', 'Expense List - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-money-bill"></span>
+                    <h5>@lang('menu.expenses')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
             <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-money-bill"></span>
-                                <h5>Expenses</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_form">
+                                <div class="form-group row">
+                                    @if ($generalSettings['addons__branches'] == 1)
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
-                                        <form id="filter_form">
-                                            <div class="form-group row">
-                                                @if ($addons->branches == 1)
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                    
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id" class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                                <div class="col-md-2">
-                                                    <label><strong>Expense For :</strong></label>
-                                                    <select name="admin_id" class="form-control submit_able" id="admin_id" >
-                                                        <option value="">All</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>Category :</strong></label>
-                                                    <select name="cate_id" class="form-control submit_able" id="cate_id" >
-                                                        <option value="">All</option>
-                                                        @foreach ($ex_cates as $cate)
-                                                            <option value="{{ $cate->id }}">{{ $cate->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date date"
-                                                            autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
-                                                        </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 mt-3">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i> Print</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-md-2">
+                                                <label><strong>@lang('menu.business_location') </strong></label>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                        @endif
+                                    @endif
 
-                    <div class="row margin_row mt-2">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Expense</h6>
-                                </div>
-                                @if (auth()->user()->permission->expense['add_expense'] == '1')
                                     <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('expanses.create') }}"><i class="fas fa-plus-square"></i> Add</a>
+                                        <label><strong>@lang('menu.expense_for') </strong></label>
+                                        <select name="admin_id" class="form-control submit_able select2" id="admin_id" >
+                                            <option value="">@lang('menu.all')</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.category') </strong></label>
+                                        <select name="cate_id" class="form-control submit_able select2" id="cate_id" >
+                                            <option value="">@lang('menu.all')</option>
+                                            @foreach ($ex_cates as $cate)
+                                                <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.from_date') </strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                         </div>
                                     </div>
-                                @endif
-                            </div>
 
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-start">Actions</th>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Reference ID</th>
-                                                <th class="text-start">B.Location</th>
-                                                <th class="text-start">Description</th>
-                                                <th class="text-start">Expanse For</th>
-                                                <th class="text-start">Payment Status</th>
-                                                <th class="text-start">Tax</th>
-                                                <th class="text-start">Net Total</th>
-                                                <th class="text-start">Payment Due</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="7" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                                                <th class="text-white">---</th>
-                                                <th id="net_total_amount" class="text-white"></th>
-                                                <th id="due" class="text-white"></th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
+                                    <div class="col-md-2">
+                                        <label><strong>@lang('menu.to_date') </strong></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                            </div>
+                                            <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
+                                        </div>
+                                    </div>
 
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
+                                    <div class="col-md-2">
+                                        <div class="row align-items-end">
+                                            <div class="col-6">
+                                                <label><strong></strong></label>
+                                                <div class="input-group">
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <a href="#" class="btn btn-sm btn-primary float-end " id="print_report"><i class="fas fa-print "></i>@lang('menu.print')</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>All Expense</h6>
+                    </div>
+                    @if (auth()->user()->can('add_expense'))
+                        <div class="col-6 d-flex justify-content-end">
+                            <a href="{{ route('expanses.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">@lang('menu.action')</th>
+                                    <th class="text-start">@lang('menu.date')</th>
+                                    <th class="text-start">@lang('menu.reference_id')</th>
+                                    <th class="text-start">@lang('menu.b_location')</th>
+                                    <th class="text-start">@lang('menu.description')</th>
+                                    <th class="text-start">{{ __('Expanse For') }}</th>
+                                    <th class="text-start">@lang('menu.payment_status')</th>
+                                    <th class="text-start">@lang('menu.tax')</th>
+                                    <th class="text-start">@lang('menu.net_total')</th>
+                                    <th class="text-start">@lang('menu.payment_due')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <th colspan="7" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-white">---</th>
+                                    <th id="net_total_amount" class="text-white"></th>
+                                    <th id="due" class="text-white"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -169,7 +156,7 @@
         <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="payment_view_modal_body"></div>
@@ -199,7 +186,7 @@
         <div class="modal-dialog col-55-modal" role="document">
             <div class="modal-content payment_details_contant">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
                             class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
@@ -213,12 +200,10 @@
                             </ul>
                         </div>
                         <div class="col-md-6 text-end">
-                            <ul class="list-unstyled">
-                                <li class="mt-1">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
-                                </li>
-                            </ul>
+                            <div class="d-flex gap-2 justify-content-end">
+                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                <button type="submit" id="print_payment" class="btn btn-sm btn-success">@lang('menu.print')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -228,10 +213,10 @@
 
 @endsection
 @push('scripts')
-    <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        
+
         @if (Session::has('errorMsg'))
             toastr.error("{{ session('errorMsg') }}");
         @endif
@@ -244,7 +229,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('expanses.index') }}",
@@ -263,7 +248,7 @@
                 { data: 'invoice_id', name: 'invoice_id'},
                 { data: 'from', name: 'branches.name' },
                 { data: 'descriptions', name: 'descriptions' },
-                { data: 'user_name', name: 'admin_and_users.name' },
+                { data: 'user_name', name: 'users.name' },
                 { data: 'payment_status', name: 'payment_status', className: 'text-end'},
                 { data: 'tax_percent', name: 'tax_percent'},
                 { data: 'net_total_amount', name: 'net_total_amount', className: 'text-end'},
@@ -428,7 +413,7 @@
                 success:function(data){
 
                     $('#admin_id').empty();
-                    $('#admin_id').append('<option value="">All</option>');
+                    $('#admin_id').append('<option value="">@lang('menu.all')</option>');
                     $.each(data, function (key, val) {
 
                         var userPrefix = val.prefix != null ? val.prefix : '';
@@ -438,14 +423,14 @@
                 }
             })
         });
-        
+
         $(document).on('click', '#delete_payment',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
             var button = $(this);
             $('#payment_deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#payment_deleted_form').submit();}},
@@ -480,7 +465,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                 removeInline: true,
                 printDelay: 500,
                 header: header,
@@ -493,7 +478,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
@@ -541,7 +526,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                         removeInline: false,
                         printDelay: 500,
                         header: "",

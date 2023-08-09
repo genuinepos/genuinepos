@@ -5,8 +5,8 @@
 
     <tr class="text-center">
         <td>
-            <span class="product_name">{{ $product->name }}</span><br>
-            <span class="product_code">({{ $product->product_code }})</span><br>
+            <span class="product_name">{{ $product->name }} : </span><br>
+            <span class="product_code">({{ $product->product_code }}) : </span><br>
             <span class="product_variant"></span>
             <input value="{{ $product->id }}" type="hidden" class="productId-{{ $product->id }}" id="product_id"
                 name="product_ids[]">
@@ -27,7 +27,7 @@
         <td>
             <input value="{{ $product->product_cost }}" required name="unit_costs[]" type="text"
                 class="form-control form-control-sm" id="unit_cost">
-            @if (json_decode($generalSettings->purchase, true)['is_enable_lot_no'] == '1')
+            @if ($generalSettings['purchase__is_enable_lot_no'] == '1')
                 <input name="lot_number[]" placeholder="Lot No" type="text" class="form-control mt-1"
                     id="lot_number" value="">
             @endif
@@ -67,19 +67,19 @@
                 id="line_total" class="form-control">
         </td>
 
-        @if (json_decode($generalSettings->purchase, true)['is_edit_pro_price'] == '1')
+        @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
             <td>
                 <input value="{{ bcadd($product->profit, 0, 2) }}" type="text" name="profits[]"
                     class="form-control" id="profit">
             </td>
- 
+
             <td>
                 <input value="{{ bcadd($product->product_price, 0, 2) }}" type="text" name="selling_prices[]"
                     class="form-control" id="selling_price">
                 <a href="#" id="remove_product_btn" class="btn btn-sm btn-danger mt-1">-</a>
             </td>
         @endif
-        
+
        <td class="text-start">
             <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>
         </td>

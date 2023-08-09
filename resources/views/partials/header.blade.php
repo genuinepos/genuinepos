@@ -5,34 +5,35 @@
                 <div class="logo__sec">
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
-                            @if (auth()->user()->branch->logo != 'default.png')
+                            @if (auth()->user()?->branch?->logo != 'default.png')
                                 <img style="height: 40px; width:110px;"
-                                src="{{ asset('public/uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                                src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else
-                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                            @if ($generalSettings['business__business_logo'])
                                 <img style="height: 40px; width:110px;"
-                                src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}"
+                                src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                 alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{
-                                json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                $generalSettings['business__shop_name'] }}</span>
                             @endif
                         @endif
                     </a>
                 </div>
+                <div id="left_bar_toggle"><span class="fas fa-bars"></span></div>
                 <div class="notify-menu">
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-none d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
-                            @if ($addons->e_commerce == 1)
-                                <li class="top-icon d-none d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
-                            @endif
+                            <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
+                            {{-- @if ($generalSettings['addons__e_commerce'] == 1)
+                                <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
+                            @endif --}}
 
-                            @if (auth()->user()->permission->others['communication'] == '1')
-                                <li class="top-icon d-none d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
+                            {{-- @if(auth()->user()->can('communication'))
+                                <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
                                                 class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
                                         <li><a href="#"><i class="fas fa-bell"></i>
@@ -42,18 +43,40 @@
                                         <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send
                                                     SMS</span></a></li>
                                         <li><a href="#"><i class="fas fa-download"></i><span class="title">Download
-                                                    Center</span></a></li>
+                                                    {{ __('Center') }}</span></a></li>
                                     </ul>
                                 </li>
+                            @endif --}}
+
+                            @if(auth()->user()->can('today_summery'))
+                                <li class="top-icon"><a href="#" id="today_summery"><b>{{ __('Today') }}</b></a></li>
                             @endif
 
-                            @if (auth()->user()->permission->others['today_summery'] == '1')
-                                <li class="top-icon"><a href="#" id="today_summery"><b>Today</b></a></li>
-                            @endif
+                            <li class="top-icon dropdown notification-dropdown">
+                                <a href="" id="dropdownMenuButton0" data-bs-toggle="dropdown">
+                                    <i class="far fa-bell"></i>
+                                </a>
 
-                            <li class="top-icon"><a href=""><i class="far fa-bell"></i></a></li>
-                            @if (json_decode($generalSettings->modules, true)['pos'] == '1')
-                                @if (auth()->user()->permission->sale['pos_add'] == '1')
+                                <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton0">
+                                    <li>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
+                                    </li>
+
+                                    <li>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
+                                    </li>
+
+                                    <li>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
+                                    </li>
+
+                                    <a href="#" class="btn btn-sm btn-primary">@lang('menu.view_all')</a>
+
+                                </ul>
+                            </li>
+
+                            @if ($generalSettings['modules__pos'] == '1')
+                                @if(auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
                                 @endif
                             @endif
@@ -98,36 +121,35 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="dropdown dp__top">
-                                <a href="" class="top-icon" id="dropdownMenuButton1" data-bs-toggle="dropdown">
+                            <li class="dropdown dp__top top-icon">
+                                <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown">
                                     <i class="fas fa-language"></i>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
                                     <li>
-                                        <img style="height: 40px; width:40px; border-radius:3px;"
-                                            src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/us.svg" /><a
-                                            style="display:inline;" class="dropdown-item"
-                                            href="{{ route('change.lang', 'en') }}">English</a>
+                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('en') ? 'text-success' : '' }}" href="{{ route('change.lang', 'en') }}">English</a>
                                     </li>
 
                                     <li>
-                                        <img style="height: 40px; width:40px; border-radius:3px;"
-                                            src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/bd.svg" /><a
-                                            style="display:inline;" class="dropdown-item"
-                                            href="{{ route('change.lang', 'bn') }}">Bangla</a>
+                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('bn') ? 'text-success' : '' }}" href="{{ route('change.lang', 'bn') }}">Bangla</a>
                                     </li>
+
+                                    <li>
+                                        <a style="display:inline;" class="dropdown-item {{ app()->isLocale('ar') ? 'text-success' : '' }}" href="{{ route('change.lang', 'ar') }}">Arabic</a>
+                                    </li>
+
                                 </ul>
                             </li>
-                            <li class="top-icon d-none d-md-block"><a href="https://help.genuinepos.com/"
+                            <li class="top-icon d-hide d-md-block"><a href="https://help.genuinepos.com/"
                                     target="_blank"><b><span class="far fa-question-circle"></span></b></a></li>
                             <li class="dropdown dp__top top-icon">
-                                <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown" title="User">
+                                <a href="" class="" id="dropdownMenuButton2" data-bs-toggle="dropdown" title="User">
                                     <span class="fas fa-user"></span>
                                 </a>
 
-                                <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton1">
-                                    <li>
+                                <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton2">
+                                    {{-- <li>
                                         <span class="user_name text-primary">
                                             {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' .
                                             auth()->user()->last_name }}
@@ -136,32 +158,31 @@
                                             @elseif(auth()->user()->role_type == 2)
                                                 (Admin)
                                             @else
-                                                {{ auth()->user()->role->name }}
+                                                {{ auth()->user()->roles->first()->name }}
                                             @endif
                                         </span>
-                                    </li>
+                                    </li> --}}
 
                                     <li>
                                         <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block"
                                             href="{{ route('users.profile.view', auth()->user()->id) }}">View
                                             Profile</a>
                                     </li>
-                                    
+
                                     <li>
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"
-                                            href="{{ route('users.profile.index') }}">Edit Profile</a>
+                                            href="{{ route('users.profile.index') }}">{{ __('Edit Profile') }} </a>
                                     </li>
                                 </ul>
                             </li>
                             </li>
                             <li class="top-icon">
-                                <a href="" id="logout_option"><span class="fas fa-power-off" title="Logout"></span></a>
+                                <a role="button" id="openRightSidebar" ><i class="fas fa-bars"></i></a>
                             </li>
                         </ul>
                     </div>
 
                 </div>
-                <div id="left_bar_toggle"><span class="fas fa-bars"></span></div>
             </div>
         </div>
     </div>

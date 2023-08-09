@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
-use Carbon\Carbon;
 use App\Utils\Converter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,21 +18,23 @@ class DashboardController extends Controller
     {
         // define('TODAY_DATE', date('Y-m-d'));
         $this->converter = $converter;
-        $this->middleware('auth:admin_and_user');
+        $this->middleware('auth');
     }
 
     public function tester()
     {
         return TODAY_DATE;
     }
+
     // Admin dashboard
     public function index()
     {
-        $thisWeek = Carbon::now()->startOfWeek()->format('Y-m-d') . '~' . Carbon::now()->endOfWeek()->format('Y-m-d');
-        $thisYear = Carbon::now()->startOfYear()->format('Y-m-d') . '~' . Carbon::now()->endOfYear()->format('Y-m-d');
-        $thisMonth = Carbon::now()->startOfMonth()->format('Y-m-d') . '~' . Carbon::now()->endOfMonth()->format('Y-m-d');
-        $toDay = Carbon::now()->format('Y-m-d') . '~' . Carbon::now()->endOfDay()->format('Y-m-d');
+        $thisWeek = Carbon::now()->startOfWeek()->format('Y-m-d').'~'.Carbon::now()->endOfWeek()->format('Y-m-d');
+        $thisYear = Carbon::now()->startOfYear()->format('Y-m-d').'~'.Carbon::now()->endOfYear()->format('Y-m-d');
+        $thisMonth = Carbon::now()->startOfMonth()->format('Y-m-d').'~'.Carbon::now()->endOfMonth()->format('Y-m-d');
+        $toDay = Carbon::now()->format('Y-m-d').'~'.Carbon::now()->endOfDay()->format('Y-m-d');
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('dashboard.dashboard_1', compact('branches', 'thisWeek', 'thisYear', 'thisMonth', 'toDay'));
     }
 
@@ -54,7 +55,7 @@ class DashboardController extends Controller
         $users = '';
         $adjustments = '';
 
-        $userQuery = DB::table('admin_and_users');
+        $userQuery = DB::table('users');
         $purchaseQuery = DB::table('purchases')->select(
             DB::raw('sum(total_purchase_amount) as total_purchase'),
             //DB::raw('sum(case when due > 0 then due end) as total_due'),
@@ -80,17 +81,17 @@ class DashboardController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $purchaseQuery->where('purchases.branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL)->where('sales.status', 1);
-                $expenseQuery->where('expanses.branch_id', NULL);
-                $userQuery->where('admin_and_users.branch_id', NULL);
-                $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
+                $purchaseQuery->where('purchases.branch_id', null);
+                $saleQuery->where('sales.branch_id', null)->where('sales.status', 1);
+                $expenseQuery->where('expanses.branch_id', null);
+                $userQuery->where('users.branch_id', null);
+                $adjustmentQuery->where('stock_adjustments.branch_id', null);
             } else {
 
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
                 $saleQuery->where('sales.branch_id', $request->branch_id)->where('sales.status', 1);
                 $expenseQuery->where('expanses.branch_id', $request->branch_id);
-                $userQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $userQuery->where('users.branch_id', $request->branch_id);
                 $adjustmentQuery->where('stock_adjustments.branch_id', $request->branch_id);
             }
         }
@@ -124,10 +125,9 @@ class DashboardController extends Controller
                 ->where('sales.status', 1)->get();
             $purchases = $purchaseQuery->where('purchases.branch_id', auth()->user()->branch_id)->get();
             $expenses = $expenseQuery->where('expanses.branch_id', auth()->user()->branch_id)->get();
-            $users = $userQuery->where('admin_and_users.branch_id', auth()->user()->branch_id)->count();
+            $users = $userQuery->where('users.branch_id', auth()->user()->branch_id)->count();
             $adjustments = $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id)->get();
         }
-
 
         $totalSales = $sales->sum('total_sale');
         $totalSaleDue = $sales->sum('total_due');
@@ -141,7 +141,7 @@ class DashboardController extends Controller
         $total_adjustment = $adjustments->sum('total_adjustment');
 
         return response()->json([
-            'total_sale' =>  $this->converter->format_in_bdt($totalSales),
+            'total_sale' => $this->converter->format_in_bdt($totalSales),
             'totalSaleDue' => $this->converter->format_in_bdt($totalSaleDue),
             'totalSaleDiscount' => $this->converter->format_in_bdt($totalSaleDiscount),
             'totalPurchase' => $this->converter->format_in_bdt($totalPurchase),
@@ -182,7 +182,6 @@ class DashboardController extends Controller
                 ->orderBy('products.id', 'desc')
                 ->get();
 
-
             // if ($request->branch_id) {
 
             //     if ($request->branch_id == 'NULL') {
@@ -202,11 +201,11 @@ class DashboardController extends Controller
                 ->addIndexColumn()
                 ->editColumn('name', function ($row) {
 
-                    return $row->name . ($row->variant_name != null ? '/' . $row->variant_name : '');
+                    return $row->name.($row->variant_name != null ? '/'.$row->variant_name : '');
                 })
                 ->editColumn('stock', function ($row) {
 
-                    return $quantity = '<span class="text-danger"><b>' . $row->product_quantity . '/' . $row->unit_name . '</b></span>';
+                    return $quantity = '<span class="text-danger"><b>'.$row->product_quantity.'/'.$row->unit_name.'</b></span>';
                 })
                 ->rawColumns(['stock'])->make(true);
         }
@@ -216,17 +215,17 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $sales = '';
             $query = DB::table('sales')->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('customers', 'sales.customer_id', 'customers.id')
-                ->leftJoin('admin_and_users', 'sales.admin_id', 'admin_and_users.id');
+                ->leftJoin('users', 'sales.admin_id', 'users.id');
 
             if ($request->branch_id) {
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('sales.branch_id', NULL);
+                    $query->where('sales.branch_id', null);
                 } else {
 
                     $query->where('sales.branch_id', $request->branch_id);
@@ -253,9 +252,9 @@ class DashboardController extends Controller
                 'branches.name as branch_name',
                 'branches.branch_code',
                 'customers.name as customer_name',
-                'admin_and_users.prefix as c_prefix',
-                'admin_and_users.name as c_name',
-                'admin_and_users.last_name as c_last_name',
+                'users.prefix as c_prefix',
+                'users.name as c_name',
+                'users.last_name as c_last_name',
             );
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -272,30 +271,30 @@ class DashboardController extends Controller
 
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('shipment_status',  function ($row) {
+                ->editColumn('shipment_status', function ($row) {
 
                     if ($row->shipment_status == 1) {
 
                         return '<span class="badge bg-warning">Ordered</span>';
                     }
                 })
-                ->editColumn('customer',  function ($row) {
+                ->editColumn('customer', function ($row) {
 
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('created_by',  function ($row) {
+                ->editColumn('created_by', function ($row) {
 
-                    return $row->c_prefix . ' ' . $row->c_name . ' ' . $row->c_last_name;
+                    return $row->c_prefix.' '.$row->c_name.' '.$row->c_last_name;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'created_by', 'shipment_status'])
                 ->make(true);
@@ -306,7 +305,7 @@ class DashboardController extends Controller
     {
         if ($request->ajax()) {
 
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $sales = '';
             $query = DB::table('sales')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
@@ -316,7 +315,7 @@ class DashboardController extends Controller
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('sales.branch_id', NULL);
+                    $query->where('sales.branch_id', null);
                 } else {
 
                     $query->where('sales.branch_id', $request->branch_id);
@@ -358,23 +357,23 @@ class DashboardController extends Controller
 
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('customer',  function ($row) {
+                ->editColumn('customer', function ($row) {
 
                     return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
                 })
-                ->editColumn('due',  function ($row) use ($generalSettings) {
+                ->editColumn('due', function ($row) use ($generalSettings) {
 
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
+                    return $generalSettings['business__currency'].' '.$row->due;
                 })
                 ->rawColumns(['date', 'from', 'customer', 'due'])
                 ->make(true);
@@ -384,7 +383,7 @@ class DashboardController extends Controller
     public function purchaseDue(Request $request)
     {
         if ($request->ajax()) {
-            $generalSettings = DB::table('general_settings')->first();
+            $generalSettings = config('generalSettings');
             $purchases = '';
             $query = DB::table('purchases')
                 ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
@@ -392,7 +391,7 @@ class DashboardController extends Controller
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {
-                    $query->where('purchases.branch_id', NULL);
+                    $query->where('purchases.branch_id', null);
                 } else {
                     $query->where('purchases.branch_id', $request->branch_id);
                 }
@@ -432,19 +431,19 @@ class DashboardController extends Controller
 
                     return date('d/m/Y', strtotime($row->date));
                 })
-                ->editColumn('from',  function ($row) use ($generalSettings) {
+                ->editColumn('from', function ($row) use ($generalSettings) {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
 
-                        return json_decode($generalSettings->business, true)['shop_name']  . '(<b>HO</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                     }
                 })
-                ->editColumn('due',  function ($row) use ($generalSettings) {
+                ->editColumn('due', function ($row) use ($generalSettings) {
 
-                    return json_decode($generalSettings->business, true)['currency'] . ' ' . $row->due;
+                    return $generalSettings['business__currency'].' '.$row->due;
                 })
                 ->rawColumns(['date', 'from', 'due'])
                 ->make(true);
@@ -498,7 +497,7 @@ class DashboardController extends Controller
             );
 
         $purchasePaymentQ = DB::table('purchase_payments')
-            ->where('purchase_payments.supplier_payment_id', NULL)
+            ->where('purchase_payments.supplier_payment_id', null)
             ->where('purchase_payments.payment_type', 1)
             ->select(
                 DB::raw('sum(paid_amount) as total_paid'),
@@ -523,7 +522,7 @@ class DashboardController extends Controller
             );
 
         $salePaymentQ = DB::table('sale_payments')
-            ->where('sale_payments.customer_payment_id', NULL)
+            ->where('sale_payments.customer_payment_id', null)
             ->where('sale_payments.payment_type', 1)
             ->select(
                 DB::raw('sum(paid_amount) as total_paid'),
@@ -549,26 +548,26 @@ class DashboardController extends Controller
 
         $payrollQuery = DB::table('hrm_payroll_payments')
             ->leftJoin('hrm_payrolls', 'hrm_payroll_payments.payroll_id', 'hrm_payrolls.id')
-            ->leftJoin('admin_and_users', 'hrm_payrolls.user_id', 'admin_and_users.id')
+            ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
             ->select(DB::raw('sum(hrm_payroll_payments.paid) as total_payroll'));
 
         if ($request->branch_id) {
 
             if ($request->branch_id == 'HF') {
 
-                $purchaseQuery->where('purchases.branch_id', NULL);
-                $supplierPaymentQ->where('supplier_payments.branch_id', NULL);
-                $purchasePaymentQ->where('purchase_payments.branch_id', NULL);
-                $customerPaymentQ->where('customer_payments.branch_id', NULL);
-                $salePaymentQ->where('sale_payments.branch_id', NULL);
-                $saleQuery->where('sales.branch_id', NULL);
-                $expenseQuery->where('expanses.branch_id', NULL);
-                $adjustmentQuery->where('stock_adjustments.branch_id', NULL);
-                $purchaseReturnQuery->where('purchase_returns.branch_id', NULL);
-                $saleReturnQuery->where('sale_returns.branch_id', NULL);
-                $branchTransferQuery->where('transfer_stock_to_branches.branch_id', NULL);
-                $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', NULL);
-                $payrollQuery->where('admin_and_users.branch_id', NULL);
+                $purchaseQuery->where('purchases.branch_id', null);
+                $supplierPaymentQ->where('supplier_payments.branch_id', null);
+                $purchasePaymentQ->where('purchase_payments.branch_id', null);
+                $customerPaymentQ->where('customer_payments.branch_id', null);
+                $salePaymentQ->where('sale_payments.branch_id', null);
+                $saleQuery->where('sales.branch_id', null);
+                $expenseQuery->where('expanses.branch_id', null);
+                $adjustmentQuery->where('stock_adjustments.branch_id', null);
+                $purchaseReturnQuery->where('purchase_returns.branch_id', null);
+                $saleReturnQuery->where('sale_returns.branch_id', null);
+                $branchTransferQuery->where('transfer_stock_to_branches.branch_id', null);
+                $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', null);
+                $payrollQuery->where('users.branch_id', null);
             } else {
 
                 $purchaseQuery->where('purchases.branch_id', $request->branch_id);
@@ -583,7 +582,7 @@ class DashboardController extends Controller
                 $saleReturnQuery->where('sale_returns.branch_id', $request->branch_id);
                 $branchTransferQuery->where('transfer_stock_to_branches.branch_id', $request->branch_id);
                 $warehouseTransferQuery->where('transfer_stock_to_warehouses.branch_id', $request->branch_id);
-                $payrollQuery->where('admin_and_users.branch_id', $request->branch_id);
+                $payrollQuery->where('users.branch_id', $request->branch_id);
                 $branch = DB::table('branches')->where('id', $request->branch_id)
                     ->select('name', 'branch_code')
                     ->first();
@@ -638,7 +637,7 @@ class DashboardController extends Controller
                 ->whereDate('report_date', TODAY_DATE)->get();
 
             $payrolls = $payrollQuery->whereDate('hrm_payroll_payments.report_date', TODAY_DATE)
-                ->where('admin_and_users.branch_id', auth()->user()->branch_id)->get();
+                ->where('users.branch_id', auth()->user()->branch_id)->get();
         }
 
         $totalSales = $sales->sum('total_sale');
@@ -670,12 +669,13 @@ class DashboardController extends Controller
             $totalExpense,
             $totalPayroll,
             $totalTransferShippingCost,
-            $request->branch_id
+            $request->branch_id,
         ];
 
         $todayProfit = $this->todayProfit(...$todayProfitParameters);
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+
         return view('dashboard.ajax_view.today_summery', compact(
             'totalSales',
             'totalSaleDue',
@@ -715,7 +715,7 @@ class DashboardController extends Controller
 
         if ($branch_id) {
             if ($branch_id == 'HF') {
-                $saleProductQuery->where('sales.branch_id', NULL);
+                $saleProductQuery->where('sales.branch_id', null);
             } else {
                 $saleProductQuery->where('sales.branch_id', $branch_id);
             }
@@ -744,6 +744,7 @@ class DashboardController extends Controller
     public function changeLang($lang)
     {
         session(['lang' => $lang]);
+
         return redirect()->back();
     }
 }

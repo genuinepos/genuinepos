@@ -1,11 +1,11 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG();@endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog col-60-modal">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Purchase return (Purchase Return Invoice ID : <strong>{{ $return->invoice_id }}</strong>)
+                    @lang('menu.purchase_return') ({{ __('Purchase Return Invoice ID') }} : <strong>{{ $return->invoice_id }}</strong>)
                 </h5>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
@@ -15,31 +15,31 @@
                     <div class="col-md-6">
                         <ul class="list-unstyled">
                             <li>
-                                <strong>Return Details : </strong> </li>
+                                <strong>@lang('menu.return_details') : </strong> </li>
                             <li>
-                                <strong>PR.Invoice ID : </strong> {{ $return->invoice_id }}
+                                <strong>{{ __('PR.Invoice ID') }} </strong> {{ $return->invoice_id }}
                             </li>
                             <li>
-                                <strong>Return Date : </strong> {{ $return->date }}
+                                <strong>@lang('menu.return_date') : </strong> {{ $return->date }}
                             </li>
                             <li>
-                                <strong>supplier Name : </strong> 
+                                <strong>@lang('menu.supplier_name') : </strong>
                                 {{ $return->purchase ? $return->purchase->supplier->name.' (ID'.$return->purchase->supplier->contact_id.')' : $return->supplier->name.' (ID'.$return->supplier->contact_id.')' }}</span>
                             </li>
-                            <li class="warehouse"><strong>Business Location : </strong> 
-                                @if($return->branch) 
+                            <li class="warehouse"><strong>@lang('menu.business_location') : </strong>
+                                @if($return->branch)
                                     {{ $return->branch->name.'/'.$return->branch->branch_code }}<b>(BL)</b>
-                                @else 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }} <b>(HO)</b>
+                                @else
+                                    {{ $generalSettings['business__shop_name'] }} <b>(HO)</b>
                                 @endif
                             </li>
-                            <li class="warehouse"><strong>Return Stock Location : </strong> 
+                            <li class="warehouse"><strong>{{ __('Return Stock Location') }} </strong>
                                 @if ($return->warehouse)
                                     {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                                 @elseif($return->branch)
                                     {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(BL)</b>
-                                @else 
-                                    {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(HO)</b> 
+                                @else
+                                    {{ $generalSettings['business__shop_name'] }}<b>(HO)</b>
                                 @endif
                             </li>
                         </ul>
@@ -51,12 +51,12 @@
                     </div>
                     <div class="col-md-5 text-left">
                         <ul class="list-unstyled">
-                            <li class="parent_purchase"><strong>Purchase Details :</strong>  </li>
+                            <li class="parent_purchase"><strong>@lang('menu.purchase_details') : </strong>  </li>
                             <li class="parent_purchase">
-                                <strong>P.Invoice ID : </strong> 
+                                <strong>{{ __('P.Invoice ID') }} </strong>
                                 {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}
                             </li>
-                            <li class="parent_purchase"><strong>Date : </strong> 
+                            <li class="parent_purchase"><strong>@lang('menu.date') : </strong>
                                 {{ $return->purchase ? $return->purchase->date : 'N/A' }}
                             </li>
                         </ul>
@@ -66,12 +66,12 @@
                     <div class="table-responsive">
                         <table id="" class="table modal-table table-sm table-striped">
                             <thead>
-                                <tr class="bg-primary text-white text-start">
-                                    <th class="text-start" scope="col">SL</th>
-                                    <th class="text-start" scope="col">Product</th>
-                                    <th class="text-start" scope="col">Unit cost</th>
-                                    <th class="text-start" scope="col">Return Quantity</th>
-                                    <th class="text-start" scope="col">SubTotal</th>
+                                <tr class="bg-secondary text-white text-start">
+                                    <th class="text-start" scope="col">@lang('menu.sl')</th>
+                                    <th class="text-start" scope="col">@lang('menu.product')</th>
+                                    <th class="text-start" scope="col">@lang('menu.unit_cost')</th>
+                                    <th class="text-start" scope="col">@lang('menu.return_quantity')</th>
+                                    <th class="text-start" scope="col">@lang('menu.sub_total')</th>
                                 </tr>
                             </thead>
                             <tbody class="purchase_return_product_list">
@@ -86,8 +86,8 @@
                                                 @endif
                                                 @if ($return_product->variant)
                                                     ({{ $return_product->variant->variant_code }})
-                                                @else   
-                                                ({{ $return_product->product->product_code }}) 
+                                                @else
+                                                ({{ $return_product->product->product_code }})
                                                 @endif
                                             </td>
 
@@ -108,9 +108,9 @@
                                             </td>
 
                                             <td class="text-start">
-                                                {{ $return_product->return_subtotal }} 
+                                                {{ $return_product->return_subtotal }}
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>
@@ -123,7 +123,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tr>
-                                    <th class="text-start">Total Return Amount : </th>
+                                    <th class="text-start">@lang('menu.total_return_amount') : </th>
                                     <td class="total_return_amount text-start">{{ $return->total_return_amount }}</td>
                                 </tr>
                             </table>
@@ -132,8 +132,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="c-btn button-success print_btn">Print</button>
-                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success print_btn">@lang('menu.print')</button>
             </div>
         </div>
     </div>
@@ -153,29 +153,29 @@
     @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
 </style>
 <!-- purchase print templete-->
-<div class="purchase_return_print_template d-none">
+<div class="purchase_return_print_template d-hide">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
                 <div class="col-4">
                     @if ($return->branch)
                         @if ($return->branch->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('public/uploads/branch_logo/' . $return->branch->logo) }}">
-                        @else 
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch->logo) }}">
+                        @else
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch->name }}</span>
                         @endif
-                    @else 
-                        @if (json_decode($generalSettings->business, true)['business_logo'] != null)
-                            <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
-                        @else 
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                    @else
+                        @if ($generalSettings['business__business_logo'] != null)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @else
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
                         @endif
                     @endif
                 </div>
 
                 <div class="col-4">
                     <div class="heading text-center">
-                        <h5 class="bill_name">Purchase Return Bill</h5>
+                        <h5 class="bill_name">@lang('menu.purchase_return_bill')</h5>
                     </div>
                 </div>
 
@@ -189,40 +189,40 @@
             <div class="row">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li><strong>Return Details : </strong> </li>
-                        
-                        <li><strong>PR.Invoice ID : </strong> 
+                        <li><strong>@lang('menu.return_details') : </strong> </li>
+
+                        <li><strong>{{ __('PR.Invoice ID') }} </strong>
                             <span class="return_invoice_id">{{ $return->invoice_id }}</span>
                         </li>
 
-                        <li><strong>Return Date : </strong> 
+                        <li><strong>@lang('menu.return_date') : </strong>
                             <span class="return_date">{{ $return->date }}</span>
                         </li>
 
-                        <li><strong>Supplier Name : </strong> 
+                        <li><strong>@lang('menu.supplier_name') : </strong>
                             {{ $return->supplier ? $return->supplier->name : $return->purchase->supplier->name }}
                         </li>
 
-                        <li><strong>Return Stock Loction : </strong> 
+                        <li><strong>{{ __('Return Stock Location') }} </strong>
                             @if ($return->warehouse)
 
                                 {{ $return->warehouse->warehouse_name.'/'.$return->warehouse->warehouse_code }}<b>(WH)</b>
                             @elseif($return->branch)
 
                                 {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
-                            @else 
+                            @else
 
-                                {{ json_decode($generalSettings->business, true)['shop_name'] }}<b>(Head Office)</b> 
+                                {{ $generalSettings['business__shop_name'] }}<b>(@lang('menu.head_office'))</b>
                             @endif
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="col-6">
                     <ul class="list-unstyled float-right">
-                        <li><strong>Purchase Details : </strong> </li>
-                        <li><strong>Invoice No : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
-                        <li><strong>Date : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
+                        <li><strong>@lang('menu.purchase_details') : </strong> </li>
+                        <li><strong>@lang('menu.invoice_no') : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                     </ul>
                 </div>
             </div>
@@ -233,11 +233,11 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th class="text-start">SL</th>
-                            <th class="text-start">Product</th>
-                            <th class="text-end">Unit Cost</th>
-                            <th class="text-end">Return Quantity</th>
-                            <th class="text-end">SubTotal</th>
+                            <th class="text-start">@lang('menu.sl')</th>
+                            <th class="text-start">@lang('menu.product')</th>
+                            <th class="text-end">@lang('menu.unit_cost')</th>
+                            <th class="text-end">@lang('menu.return_quantity')</th>
+                            <th class="text-end">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>
@@ -258,9 +258,9 @@
                                     @if ($purchase_return_product->variant)
 
                                         ({{ $purchase_return_product->variant->variant_code }})
-                                    @else   
-                                    
-                                        ({{ $purchase_return_product->product->product_code }}) 
+                                    @else
+
+                                        ({{ $purchase_return_product->product->product_code }})
                                     @endif
                                 </td>
 
@@ -273,7 +273,7 @@
                                 </td>
 
                                 <td class="text-end">
-                                    {{ $purchase_return_product->return_subtotal }} 
+                                    {{ $purchase_return_product->return_subtotal }}
                                 </td>
                             </tr>
                         @endif
@@ -282,21 +282,21 @@
 
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">Total Return Amount : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                        <th colspan="4" class="text-end">@lang('menu.total_return_amount') : {{ $generalSettings['business__currency'] }}</th>
                         <td colspan="2" class="text-end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
                     </tr>
 
                     <tr>
-                        <th colspan="4" class="text-end">Total Due : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
-                        
+                        <th colspan="4" class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
+
                         <td colspan="2" class="text-end">
 
                             @if ($return->purchase_id)
 
                                 {{ App\Utils\Converter::format_in_bdt($return->total_return_due) }}
-                            @else 
-                            
-                                CHECK SUPPLIER DUE
+                            @else
+
+                                @lang('menu.check_supplier_due')
                             @endif
                         </td>
                     </tr>
@@ -308,10 +308,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <h6><strong>CHECKED BY</strong></h6>
+                    <h6><strong>@lang('menu.checked_by')</strong></h6>
                 </div>
                 <div class="col-md-6 text-end">
-                    <h6><strong>APPROVED BY</strong></h6>
+                    <h6><strong>@lang('menu.approved_by')</strong></h6>
                 </div>
             </div>
         </div>
@@ -326,7 +326,7 @@
         @if (env('PRINT_SD_PURCHASE') == true)
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <small>Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small>@lang('menu.software_by') : <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 </div>
             </div>
         @endif

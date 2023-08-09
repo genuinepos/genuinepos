@@ -5,15 +5,14 @@
         /* Search Product area style */
         .selectProduct {background-color: #ab1c59;color: #fff !important;}
         .search_area{position: relative;}
-        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
-            margin-top: 1px;}
+        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px; margin-top: 1px;}
         .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
         .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
         .search_result ul li a:hover {color: white;background-color: #ab1c59;}
         /* Search Product area style end */
     </style>
 @endpush
-@section('title', 'Purchase List - ')
+@section('title', 'Purchase Product List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -22,38 +21,40 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-basket"></span> <h5>Purchased Product List</h5>
+                                <span class="fas fa-shopping-basket"></span> <h5>@lang('menu.purchase_product_list')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
+                    </div>
 
+                    <div class="p-3">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-12">
+                                <div class="form_element rounded mt-0 mb-3">
+                                    <div class="element-body">
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
                                                 <div class="col-md-2 search_area">
-                                                    <label><strong>Search Product :</strong></label>
-                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="Search Product By name" autofocus autocomplete="off">
+                                                    <label><strong>{{ __('Search Product') }} </strong></label>
+                                                    <input type="text" name="search_product" id="search_product" class="form-control" placeholder="{{ __('Search Product') }}" autofocus autocomplete="off">
                                                     <input type="hidden" name="product_id" id="product_id" value="">
                                                     <input type="hidden" name="variant_id" id="variant_id" value="">
-                                                    <div class="search_result d-none">
+                                                    <div class="search_result d-hide">
                                                         <ul id="list" class="list-unstyled">
                                                             <li><a id="select_product" class="" data-p_id="" data-v_id="" href="">Samsung A30</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
 
-                                                @if ($addons->branches == 1)
+                                                @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                         <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
+                                                            <label><strong>@lang('menu.business_location') : </strong></label>
                                                             <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
+                                                                class="form-control submit_able select2" id="branch_id" autofocus>
+                                                                <option value="">@lang('menu.all')</option>
+                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
                                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -63,12 +64,12 @@
                                                         </div>
                                                     @endif
                                                 @endif
-                                                
+
                                                 <div class="col-md-2">
-                                                    <label><strong>Supplier :</strong></label>
-                                                    <select name="supplier_id" class="form-control submit_able"
+                                                    <label><strong>@lang('menu.supplier') : </strong></label>
+                                                    <select name="supplier_id" class="form-control submit_able select2"
                                                         id="supplier_id">
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         @foreach ($suppliers as $supplier)
                                                             <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
                                                         @endforeach
@@ -76,10 +77,10 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Category :</strong></label>
-                                                    <select name="category_id" class="form-control submit_able"
+                                                    <label><strong>@lang('menu.category') : </strong></label>
+                                                    <select name="category_id" class="form-control submit_able select2"
                                                         id="category_id">
-                                                        <option value="">All</option>
+                                                        <option value="">@lang('menu.all')</option>
                                                         @foreach ($categories as $category)
                                                             <option value="{{ $category->id }}">{{$category->name}}</option>
                                                         @endforeach
@@ -87,16 +88,16 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>Sub-Category :</strong></label>
-                                                    <select name="sub_category_id" class="form-control submit_able" id="sub_category_id">
-                                                        <option value="">All</option>
+                                                    <label><strong>@lang('menu.sub_category') : </strong></label>
+                                                    <select name="sub_category_id" class="form-control submit_able select2" id="sub_category_id">
+                                                        <option value="">@lang('menu.all')</option>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>From Date :</strong></label>
+                                                    <label><strong>@lang('menu.from_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -109,7 +110,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>To Date :</strong></label>
+                                                    <label><strong>@lang('menu.to_date') : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i
@@ -124,7 +125,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-search"></i> Filter</button>
+                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-search"></i> @lang('menu.filter')</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,45 +134,41 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row margin_row mt-1">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-10">
-                                    <h6>All Purchased Products</h6>
+                                <div class="col-9">
+                                    <h6>{{ __('All Purchased Products') }}</h6>
                                 </div>
-                                @if (auth()->user()->permission->purchase['purchase_add'] == '1')
-                                    <div class="col-md-2">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('purchases.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
+                                @if(auth()->user()->can('purchase_add'))
+                                    <div class="col-3 d-flex justify-content-end">
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                                     </div>
                                 @endif
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Product</th>
-                                                <th>P.Code</th>
-                                                <th>Supplier</th>
-                                                <th>P.Invoice ID</th>
-                                                <th>Quantity</th>
-                                                <th>Unit Cost({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Subtotal({{ json_decode($generalSettings->business, true)['currency'] }})</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.product')</th>
+                                                <th>@lang('menu.p_code')</th>
+                                                <th>@lang('menu.supplier')</th>
+                                                <th>{{ __('P.Invoice ID') }}</th>
+                                                <th>@lang('menu.quantity')</th>
+                                                <th>@lang('menu.unit_cost')</th>
+                                                <th>@lang('menu.subtotal')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white">Total : {{ json_decode($generalSettings->business, true)['currency'] }}</th>
+                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business__currency'] }}</th>
                                                 <th class="text-start text-white">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white"><span id="total_subtotal"></span></th>
@@ -195,20 +192,20 @@
     <div id="purchase_details"></div>
 @endsection
 @push('scripts')
-    <script type="text/javascript" src="{{ asset('public') }}/assets/plugins/custom/moment/moment.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary'},
             ],
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('purchases.product.list') }}",
@@ -226,7 +223,7 @@
             columns: [
                 {data: 'date', name: 'purchases.date'},
                 {data: 'product', name: 'products.name'},
-                {data: 'product_code', name: 'products.name'},
+                {data: 'product_code', name: 'products.product_code'},
                 {data: 'supplier_name', name: 'suppliers.name as supplier_name'},
                 {data: 'invoice_id', name: 'purchases.invoice_id'},
                 {data: 'quantity', name: 'quantity', className: 'text-end'},
@@ -279,12 +276,12 @@
         });
 
         $(document).on('click', '#delete',function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
-                'content': 'Are you sure, you went to delete?',
+                'title': 'Confirmation',
+                'content': 'Are you sure, you want to delete?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
                     'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
@@ -302,14 +299,14 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
-                    
+
                     table.ajax.reload();
                     toastr.error(data);
                 }
             });
         });
 
-        //Submit filter form by date-range field blur 
+        //Submit filter form by date-range field blur
         $(document).on('click', '#search_product', function () {
             $(this).val('');
             $('#product_id').val('');
@@ -369,7 +366,7 @@
 
             $('#list').empty();
             var product_name = $(this).val();
-            
+
             if (product_name === '') {
 
                 $('.search_result').hide();
@@ -413,7 +410,7 @@
 
         $('body').keyup(function(e){
 
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            if (e.keyCode == 13 || e.keyCode == 9){
 
                 $(".selectProduct").click();
                 $('.search_result').hide();

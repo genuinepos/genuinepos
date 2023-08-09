@@ -9106,13 +9106,13 @@ tr.el-finder-droppable td.icon p {
     padding: 0px;
     height: max-content;
     display: flex;
+    gap: 6px;
 }
 
 .breadCrumb ul li {
     display: block;
     position: relative;
     overflow: hidden;
-    margin: 0px 6px 0px 0;
     padding: 0px 10px 0px 0;
     font-size: 0.9167em;
     background: url(../images/chevron.png) no-repeat 100% 50%;
@@ -9134,6 +9134,7 @@ tr.el-finder-droppable td.icon p {
 .breadCrumb ul li a {
     display: block;
     position: relative;
+    width: max-content;
     height: 35px;
     float: left;
     background: linear-gradient(to right, #2d9dcf, #0d55a2);

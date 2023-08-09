@@ -17,7 +17,7 @@
     tr.noBorder td {border: 0px !important;}
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="loan_details_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -26,29 +26,29 @@
                     @if ($loan->branch)
                         {{ $loan->branch->name . '/' . $loan->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
-            
+
             <p style="width: 60%; margin:0 auto;">
                 @if ($loan->branch)
                     {{ $loan->branch->city . ', ' . $loan->branch->branch->state . ', ' . $loan->branch->zip_code . ', ' . $loan->branch->country }}
                 @else
-                    {{ json_decode($generalSettings->business, true)['address'] }}
+                    {{ $generalSettings['business__address'] }}
                 @endif
             </p>
             <br>
-            <h6><b>Loan Details</b></h6>
+            <h6><b>@lang('menu.loan_details')</b></h6>
         </div>
     </div>
 
     <div class="reference_area pt-3">
-        <p><b>Title :</b>
+        <p><b>@lang('menu.title') </b>
         {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
-        <p><b>Company/People :</b> {{ $loan->company->name }}</p>
-        <p><b>Address :</b></p>
-        <p><b>Phone :</b></p>
+        <p><b>@lang('menu.company')/@lang('menu.people') </b> {{ $loan->company->name }}</p>
+        <p><b>@lang('menu.address') </b></p>
+        <p><b>@lang('menu.phone') </b></p>
     </div>
 
     <div class="total_amount_table_area pt-5">
@@ -57,7 +57,7 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Voucher No :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') </th>
                             <td width="50%" class="text-start">
                                 {{ $loan->reference_no }}
                             </td>
@@ -66,14 +66,14 @@
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Pay Loan Amount :' : 'Receive Loan Amount :' }}</th>
                             <td width="50%" class="text-start">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Debit Account :' : 'Credit Account :' }}</th>
-                            <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name.' (A/C: '.$loan->account->account_number.')' : 'N/A' }}</td>
+                            <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name.' (A/C '.$loan->account->account_number.')' : 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,14 +89,14 @@
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Due :</th>
+                            <th width="50%" class="text-start">@lang('menu.due') </th>
                             <td width="50%" class="text-start">
                                 {{ App\Utils\Converter::format_in_bdt($loan->due) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Loan Reason :</th>
+                            <th width="50%" class="text-start">@lang('menu.loan_reason') </th>
                             <td width="50%" class="text-start">
                                 {{ $loan->loan_reason }}
                             </td>
@@ -107,13 +107,13 @@
         </div>
     </div>
 
-    <div class="signature_area pt-5 mt-5 d-none">
+    <div class="signature_area pt-5 mt-5 d-hide">
         <br>
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Receiver</th>
-                    <th width="50%" class="text-end">Signature Of Provider</th>
+                    <th width="50%">@lang('menu.signature_of_receiver')</th>
+                    <th width="50%" class="text-end">@lang('menu.signature_of_provider')</th>
                 </tr>
 
                 <tr>
@@ -125,7 +125,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-center">Software by <b>SpeedDigit Pvt. Ltd.</b></td>
+                        <td colspan="2" class="text-center">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></td>
                     </tr>
                 @endif
             </tbody>

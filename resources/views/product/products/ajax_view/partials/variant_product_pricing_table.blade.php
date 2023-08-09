@@ -1,18 +1,18 @@
 <table id="variant_product_pricing_table" class="table modal-table table-sm">
     <thead>
-        <tr class="bg-primary">
-            <th class="text-white text-start">Variations</th>
-            <th class="text-white text-start">Variant Code (SKU)</th>
-            <th class="text-white text-start">Stock</th>
-            <th class="text-white text-start">Default Purchase Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
-            <th class="text-white text-start">Default Purchase Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
-            <th class="text-white text-start">x Margin(%)</th>
-            <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Exc. tax)</th>
-            <th class="text-white text-start">Default Selling Price({{ json_decode($generalSettings->business, true)['currency'] }}) (Inc. tax)</th>
+        <tr class="bg-secondary">
+            <th class="text-white text-start">@lang('menu.variations')</th>
+            <th class="text-white text-start">@lang('menu.variant_code') (SKU)</th>
+            <th class="text-white text-start">@lang('menu.stock')</th>
+            <th class="text-white text-start">@lang('menu.default_purchase_price')({{ $generalSettings['business__currency'] }}) (Exc. tax)</th>
+            <th class="text-white text-start">@lang('menu.default_purchase_price')({{ $generalSettings['business__currency'] }}) (Inc. tax)</th>
+            <th class="text-white text-start">@lang('menu.x_margin')(%)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business__currency'] }}) (Exc. tax)</th>
+            <th class="text-white text-start">@lang('menu.default_selling_price')({{ $generalSettings['business__currency'] }}) (Inc. tax)</th>
             @if (count($price_groups) > 0)
-                <th class="text-white text-start">Price Group</th>
+                <th class="text-white text-start">@lang('menu.price_group')</th>
             @endif
-            <th class="text-white text-start">Variation Images</th>
+            <th class="text-white text-start">{{ __('Variation Images') }}</th>
         </tr>
     </thead>
     <tbody class="variant_product_pricing_table_body">
@@ -33,7 +33,7 @@
                 <td class="text-start">{{ $variant->variant_cost }}</td>
                 <td class="text-start">{{ $variant->variant_cost_with_tax }}</td>
                 <td class="text-start"> {{ $variant->variant_profit }}</td>
-                
+
                 <td class="text-start">
                     {{ App\Utils\Converter::format_in_bdt($variant->variant_price) }}
                 </td>
@@ -41,7 +41,7 @@
                 <td class="text-start">
                     {{ App\Utils\Converter::format_in_bdt($priceIncTax) }}
                 </td>
-                
+
                 @if (count($price_groups) > 0)
                     <td class="text-start">
                         @foreach ($price_groups as $pg)
@@ -63,7 +63,7 @@
 
                 <td class="text-start">
                     @if ($variant->variant_image)
-                        <img style="width: 40px;height:40px;" src="{{ asset('public/uploads/product/variant_image/'. $variant->variant_image) }}">
+                        <img style="width: 40px;height:40px;" src="{{ asset('uploads/product/variant_image/'. $variant->variant_image) }}">
                     @endif
                 </td>
             </tr>

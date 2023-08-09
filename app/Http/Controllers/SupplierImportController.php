@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Imports\SupplierImport;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SupplierImportController extends Controller
@@ -19,7 +20,19 @@ class SupplierImportController extends Controller
             'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
         ]);
 
-        Excel::import(new SupplierImport, $request->import_file);
+        try {
+            DB::beginTransaction();
+
+            Excel::import(new SupplierImport, $request->import_file);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        session()->flash('successMsg', 'Suppliers imported successfully');
+
         return redirect()->back();
     }
 }

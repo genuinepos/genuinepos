@@ -12,40 +12,40 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-undo-alt"></span>
-                                <h5>Sale Returns</h5>
+                                <h5>@lang('menu.sale_return')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
-               
-                    <div class="row margin_row mt-1">
+
+                    <div class="p-3">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>Sale Return List </h6>
+                                    <h6>@lang('menu.sale_return_list') </h6>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Actions</th>
-                                                <th class="text-start">Date</th>
-                                                <th class="text-start">Invoice ID</th>
-                                                <th class="text-start">Parent Sale</th>
-                                                <th class="text-start">Customer Name</th>
-                                                <th class="text-start">From</th>
-                                                {{-- <th class="text-start">Payment Status</th> --}}
-                                                <th class="text-start">Total Returned Amount</th>
+                                                <th class="text-start">@lang('menu.action')</th>
+                                                <th class="text-start">@lang('menu.date')</th>
+                                                <th class="text-start">@lang('menu.invoice_id')</th>
+                                                <th class="text-start">@lang('menu.parent_sale')</th>
+                                                <th class="text-start">@lang('menu.customer_name')</th>
+                                                <th class="text-start">@lang('menu.from')</th>
+                                                {{-- <th class="text-start">@lang('menu.payment_status')</th> --}}
+                                                <th class="text-start">@lang('menu.total_return_amount')</th>
                                                 {{-- <th class="text-start">Payment Due</th> --}}
-                                                <th class="text-start">Refunded Amount</th>
+                                                <th class="text-start">@lang('menu.refunded_amount')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -59,7 +59,7 @@
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -67,13 +67,13 @@
 
     <div id="sale_return_details"></div>
 
-    @if (auth()->user()->permission->sale['sale_payment'] == '1')
+    @if(auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment List</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -101,7 +101,7 @@
             <div class="modal-dialog four-col-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">Payment Details (<span class="payment_invoice"></span>)</h6>
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span class="payment_invoice"></span>)</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                     </div>
@@ -118,8 +118,8 @@
                             </div>
                             <div class="col-md-6 text-end">
                                 <ul class="list-unstyled">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">Close</button>
-                                    <button type="submit" id="print_payment" class="c-btn button-success">Print</button>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
+                                    <button type="submit" id="print_payment" class="c-btn button-success">@lang('menu.print')</button>
                                 </ul>
                             </div>
                         </div>
@@ -130,12 +130,12 @@
     @endif
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/print_this/printThis.js"></script>
+    <script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         var sales_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [ 
+            buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
                 {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -144,7 +144,7 @@
             "serverSide": true,
             // aaSorting: [[1, 'asc']],
             ajax: "{{ route('sales.returns.index') }}",
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             columnDefs: [{
                 "targets": [0, 6,],
@@ -187,8 +187,8 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
@@ -227,18 +227,18 @@
             $.get(url, function(data) {
 
                 $('.data_preloader').hide();
-                $('#payment-modal-body').html(data); 
-                $('#paymentModal').modal('show'); 
+                $('#payment-modal-body').html(data);
+                $('#paymentModal').modal('show');
             });
         });
 
         $(document).on('click', '#delete',function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);     
+            $('#deleted_form').attr('action', url);
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -246,7 +246,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#deleted_form',function(e) {
             e.preventDefault();
@@ -273,48 +273,48 @@
 
         // Make print
         $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
 
             var body = $('.sale_return_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",                      
-                removeInline: false, 
-                printDelay: 1000, 
-                header: null,        
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                removeInline: false,
+                printDelay: 1000,
+                header: null,
             });
         });
 
         // Print single payment details
         $('#print_payment').on('click', function (e) {
-           e.preventDefault(); 
+           e.preventDefault();
             var body = $('.sale_payment_print_area').html();
             var header = $('.print_header').html();
             var footer = $('.signature_area').html();
 
             $(body).printThis({
-                debug: false,                   
-                importCSS: true,                
-                importStyle: true,          
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                removeInline: true, 
-                printDelay: 500, 
-                header: header,  
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                removeInline: true,
+                printDelay: 500,
+                header: header,
                 footer: footer
             });
         });
 
         $(document).on('click', '#delete_payment',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
 
-            $('#payment_deleted_form').attr('action', url);    
+            $('#payment_deleted_form').attr('action', url);
 
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},
@@ -322,7 +322,7 @@
                 }
             });
         });
-            
+
         //data delete by ajax
         $(document).on('submit', '#payment_deleted_form',function(e){
             e.preventDefault();

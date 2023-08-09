@@ -2,18 +2,10 @@
 
 namespace App\Models;
 
-
-use App\Models\Sale;
-use App\Models\Account;
-use App\Models\Customer;
-use App\Models\SaleReturn;
-use App\Models\PaymentMethod;
-use App\Models\CustomerLedger;
-use Illuminate\Database\Eloquent\Model;
-
-class SalePayment extends Model
+class SalePayment extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function sale()

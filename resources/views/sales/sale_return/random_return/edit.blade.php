@@ -23,119 +23,114 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h6>{{ __('Edit Sale Return') }}</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_sale_return_form" action="{{ route('sale.return.random.update', $return->id) }}" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6>Edit Sale Return | <small class="text-muted">Save Changes = (Ctrl + Enter) </small></h6>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row gx-2">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>{{ __('Sale INV. ID') }} </b> </label>
+                                        <div class="col-8">
+                                            <div style="position: relative;">
+                                                <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
+                                                <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="{{ $return->sale_id }}">
+
+                                                <div class="invoice_search_result d-hide">
+                                                    <ul id="invoice_list" class="list-unstyled">
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>{{ __('B. Location') }} </b></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" tabindex="-1">
+                                            <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Sale INV. ID :</b> </label>
-                                                <div class="col-8">
-                                                    <div style="position: relative;">
-                                                        <input type="text" name="sale_invoice_id" id="sale_invoice_id" class="form-control scanable" placeholder="Search And Select Sale Invoice ID" autocomplete="off" value="{{ $return->sale ? $return->sale->invoice_id : '' }}">
-                                                        <input type="hidden" name="sale_id" id="sale_id" class="resetable" value="{{ $return->sale_id }}">
-
-                                                        <div class="invoice_search_result d-none">
-                                                            <ul id="invoice_list" class="list-unstyled">
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>B. Location :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}" tabindex="-1">
-                                                    <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.customer') </b> </label>
+                                        <div class="col-8">
+                                            <select name="customer_id" class="form-control" id="customer_id">
+                                                <option value="">{{ __('Walk-In-Customer') }}</option>
+                                                @foreach ($customers as $customer)
+                                                    <option {{ $customer->id == $return->customer_id ? 'SELECTED' : '' }} value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Customer :</b> </label>
-                                                <div class="col-8">
-                                                    <select name="customer_id" class="form-control" id="customer_id">
-                                                        <option value="">Walk-In-Customer</option>
-                                                        @foreach ($customers as $customer)
-                                                            <option {{ $customer->id == $return->customer_id ? 'SELECTED' : '' }} value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4">
+                                            <b>{{ __('Return A/C') }} : <span class="text-danger">*</span></b>
+                                        </label>
 
-                                            <div class="input-group mt-1">
-                                                <label class="col-4">
-                                                    <b>Return A/C : <span class="text-danger">*</span></b>
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <select name="sale_return_account_id" class="form-control add_input" id="sale_return_account_id" data-name="Sale Return A/C">
-                                                        @foreach ($saleReturnAccounts as $saleReturnAccount)
-                                                            <option {{ $return->sale_return_account_id ==  $saleReturnAccount->id ? 'SELECTED' : ''}} value="{{ $saleReturnAccount->id }}">
-                                                                {{ $saleReturnAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_sale_return_account_id"></span>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <select name="sale_return_account_id" class="form-control add_input" id="sale_return_account_id" data-name="Sale Return A/C">
+                                                @foreach ($saleReturnAccounts as $saleReturnAccount)
+                                                    <option {{ $return->sale_return_account_id ==  $saleReturnAccount->id ? 'SELECTED' : ''}} value="{{ $saleReturnAccount->id }}">
+                                                        {{ $saleReturnAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_sale_return_account_id"></span>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4">
-                                                    <b>Return Date : <span class="text-danger">*</span></b>
-                                                </label>
-                                                
-                                                <div class="col-8">
-                                                    <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($return->date)) }}" autocomplete="off" id="date">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4">
+                                            <b>@lang('menu.return_date') : <span class="text-danger">*</span></b>
+                                        </label>
 
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b> Price Group : </b></label>
-                                                
-                                                <div class="col-8">
-                                                    <select name="price_group_id" class="form-control"
-                                                        id="price_group_id">
-                                                        <option value="">Default Selling Price</option>
-                                                        @foreach ($price_groups as $pg)
-                                                            <option {{ json_decode($generalSettings->sale, true)['default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}" autocomplete="off" id="date">
+                                            <span class="error error_date"></span>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Re. Invoice ID:</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Sale Return Invoice ID" autocomplete="off" value="{{ $return->invoice_id }}">
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b> @lang('menu.price_group') </b></label>
+
+                                        <div class="col-8">
+                                            <select name="price_group_id" class="form-control"
+                                                id="price_group_id">
+                                                <option value="">@lang('menu.default_selling_price')</option>
+                                                @foreach ($price_groups as $pg)
+                                                    <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>@lang('menu.register_invoice_id')</b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Sale Return Invoice ID" autocomplete="off" value="{{ $return->invoice_id }}">
                                         </div>
                                     </div>
                                 </div>
@@ -146,110 +141,106 @@
 
                 <section>
                     <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Select Item</label>
-                                                    <select {{ $return->sale_id ? '' : 'disabled' }} class="form-control" id="sale_products">
-                                                        <option value="">Select Item</option>
-                                                        @if ($return->sale)
+                        <div class="card mb-3">
+                            <div class="card-body p-2">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="searching_area" style="position: relative;">
+                                            <label class="col-form-label">@lang('menu.select_item')</label>
+                                            <select {{ $return->sale_id ? '' : 'disabled' }} class="form-control" id="sale_products">
+                                                <option value="">@lang('menu.select_item')</option>
+                                                @if ($return->sale)
 
-                                                            @foreach ($return->sale->sale_products as $sale_product)
-                                                                <option value="{{ $sale_product->product_id }}" data-product_name="{{ $sale_product->product->name }}" data-unit_cost_inc_tax="{{ $sale_product->unit_cost_inc_tax }}" data-variant_id="{{ $sale_product->variant_id }}" data-variant_name="{{ $sale_product->variant ? $sale_product->variant->variant_name : '' }}" data-sale_product_id="{{ $sale_product->id }}" data-unit_price_exc_tax="{{ $sale_product->unit_price_exc_tax }}" data-unit_price_inc_tax="{{ $sale_product->unit_price_inc_tax }}" data-sale_quantity="{{ $sale_product->quantity }}" data-unit_discount_type="{{ $sale_product->unit_discount_type }}" data-unit_discount="{{ $sale_product->unit_discount }}" data-unit_discount_amount="{{ $sale_product->unit_discount_amount }}" data-unit="{{ $sale_product->unit }}" data-is_manage_stock="{{ $sale_product->product->is_manage_stock }}" data-product_code="{{ $sale_product->variant ? $sale_product->variant->variant_code : $sale_product->product->product_code }}" data-tax_type="{{ $sale_product->product->tax_type }}" data-unit_tax_percent="{{ $sale_product->unit_tax_percent }}" data-unit_tax_amount="{{ $sale_product->unit_tax_amount }}">{{ $sale_product->product->name }}</option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
+                                                    @foreach ($return->sale->sale_products as $sale_product)
+                                                        <option value="{{ $sale_product->product_id }}" data-product_name="{{ $sale_product->product->name }}" data-unit_cost_inc_tax="{{ $sale_product->unit_cost_inc_tax }}" data-variant_id="{{ $sale_product->variant_id }}" data-variant_name="{{ $sale_product->variant ? $sale_product->variant->variant_name : '' }}" data-sale_product_id="{{ $sale_product->id }}" data-unit_price_exc_tax="{{ $sale_product->unit_price_exc_tax }}" data-unit_price_inc_tax="{{ $sale_product->unit_price_inc_tax }}" data-sale_quantity="{{ $sale_product->quantity }}" data-unit_discount_type="{{ $sale_product->unit_discount_type }}" data-unit_discount="{{ $sale_product->unit_discount }}" data-unit_discount_amount="{{ $sale_product->unit_discount_amount }}" data-unit="{{ $sale_product->unit }}" data-is_manage_stock="{{ $sale_product->product->is_manage_stock }}" data-product_code="{{ $sale_product->variant ? $sale_product->variant->variant_code : $sale_product->product->product_code }}" data-tax_type="{{ $sale_product->product->tax_type }}" data-unit_tax_percent="{{ $sale_product->unit_tax_percent }}" data-unit_tax_amount="{{ $sale_product->unit_tax_amount }}">{{ $sale_product->product->name }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="searching_area" style="position: relative;">
+                                            <label class="col-form-label">@lang('menu.item_search')</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-barcode text-dark input_f"></i>
+                                                    </span>
                                                 </div>
+
+                                                <input {{ $return->sale_id ? 'disabled' : '' }} type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
                                             </div>
 
-                                            <div class="col-md-8">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-barcode text-dark input_f"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input {{ $return->sale_id ? 'disabled' : '' }} type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
-                                                    </div>
-    
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area"></ul>
-                                                    </div>
-                                                </div>
+                                            <div class="select_area">
+                                                <ul id="list" class="variant_list_area"></ul>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="row mt-1">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table sale-product-table">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th class="text-start">Product</th>
-                                                                    <th class="text-center">Unit Price</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">Return Quantity</th>
-                                                                    <th class="text-center">SubTotal</th>
-                                                                    <th><i class="fas fa-minus text-dark"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="return_item_list">
-                                                                @foreach ($return->sale_return_products as $return_item)
-                                                                   
-                                                                    <tr>
-                                                                        <td class="text-start">
-                                                                            <a href="#" class="text-success" id="edit_product" tabindex="-1">
-                                                                            <span class="product_name">{{ $return_item->product->name.($return_item->variant ? ' -'.$return_item->variant->variant_name : '') }}</span>
-                                                                            </a>
-                                                                            <input type="hidden" name="unit_costs_inc_tax[]" value="{{ $return_item->unit_cost_inc_tax }}">
-                                                                            <input type="hidden" name="sale_product_ids[]" id="sale_product_id" value="{{ $return_item->sale_product_id }}">
-                                                                            <input type="hidden" value="{{ $return_item->product_id }}" class="productId-{{ $return_item->product_id }}" id="product_id" name="product_ids[]">
-                                                                            <input type="hidden" value="{{ $return_item->product_variant_id }}" class="variantId-{{ $return_item->product_variant_id }}" id="variant_id" name="variant_ids[]">
-                                                                            <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $return_item->unit_discount_type }}">
-                                                                            <input type="hidden" name="unit_discounts[]"  id="unit_discount" value="{{ $return_item->unit_discount }}">
-                                                                            <input type="hidden" name="unit_discount_amounts[]"  id="unit_discount_amount" value="{{ $return_item->unit_discount_amount }}">
-                                                                            <input type="hidden" name="tax_types[]" value="{{ $return_item->tax_type }}" id="tax_type">
-                                                                            <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $return_item->unit_tax_percent }}">
-                                                                            <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $return_item->unit_tax_amount }}">
-                                                                        </td>
-                                    
-                                                                        <td>
-                                                                            <input type="hidden" name="unit_prices_exc_tax[]" value="{{ $return_item->unit_price_exc_tax }}" id="unit_price_exc_tax" tabindex="-1">
-                                                                            <input type="hidden" name="unit_prices[]" id="unit_price" value="{{ $return_item->unit_price_inc_tax }}" tabindex="-1">
-                                                                            <b><span id="span_unit_price">{{ $return_item->unit_price_inc_tax }}</span></b>
-                                                                        </td>
-                                                                    
-                                                                        <td class="text">
-                                                                            <b><span class="span_unit">{{ $return_item->unit }}</span></b> 
-                                                                            <input type="hidden" name="units[]" id="unit" value="{{ $return_item->unit }}">
-                                                                        </td>
-                                        
-                                                                        <td>
-                                                                            <input required type="number" step="any" name="return_quantities[]" class="form-control text-center" id="return_quantity" value="{{ $return_item->return_qty }}">
-                                                                        </td>
-                                        
-                                                                        <td class="text text-center">
-                                                                            <strong><span class="span_subtotal">{{ $return_item->return_subtotal }}</span></strong> 
-                                                                            <input readonly type="hidden" name="subtotals[]" id="subtotal" value="{{ $return_item->return_subtotal }}" tabindex="-1">
-                                                                        </td>
+                                <div class="row mt-1">
+                                    <div class="sale-item-sec">
+                                        <div class="sale-item-inner">
+                                            <div class="table-responsive">
+                                                <table class="display data__table table sale-product-table">
+                                                    <thead class="staky">
+                                                        <tr>
+                                                            <th class="text-start">@lang('menu.product')</th>
+                                                            <th class="text-center">@lang('menu.unit_price')</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
+                                                            <th class="text-center">@lang('menu.return_quantity')</th>
+                                                            <th class="text-center">@lang('menu.sub_total')</th>
+                                                            <th><i class="fas fa-minus text-dark"></i></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="return_item_list">
+                                                        @foreach ($return->sale_return_products as $return_item)
 
-                                                                        <td class="text-center">
-                                                                            <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                                            <tr>
+                                                                <td class="text-start">
+                                                                    <a href="#" class="text-success" id="edit_product" tabindex="-1">
+                                                                    <span class="product_name product_dscr_btn">{{ $return_item->product->name.($return_item->variant ? ' -'.$return_item->variant->variant_name : '') }}</span>
+                                                                    </a>
+                                                                    <input type="hidden" name="unit_costs_inc_tax[]" value="{{ $return_item->unit_cost_inc_tax }}">
+                                                                    <input type="hidden" name="sale_product_ids[]" id="sale_product_id" value="{{ $return_item->sale_product_id }}">
+                                                                    <input type="hidden" value="{{ $return_item->product_id }}" class="productId-{{ $return_item->product_id }}" id="product_id" name="product_ids[]">
+                                                                    <input type="hidden" value="{{ $return_item->product_variant_id }}" class="variantId-{{ $return_item->product_variant_id }}" id="variant_id" name="variant_ids[]">
+                                                                    <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $return_item->unit_discount_type }}">
+                                                                    <input type="hidden" name="unit_discounts[]"  id="unit_discount" value="{{ $return_item->unit_discount }}">
+                                                                    <input type="hidden" name="unit_discount_amounts[]"  id="unit_discount_amount" value="{{ $return_item->unit_discount_amount }}">
+                                                                    <input type="hidden" name="tax_types[]" value="{{ $return_item->tax_type }}" id="tax_type">
+                                                                    <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $return_item->unit_tax_percent }}">
+                                                                    <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $return_item->unit_tax_amount }}">
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="hidden" name="unit_prices_exc_tax[]" value="{{ $return_item->unit_price_exc_tax }}" id="unit_price_exc_tax" tabindex="-1">
+                                                                    <input type="hidden" name="unit_prices[]" id="unit_price" value="{{ $return_item->unit_price_inc_tax }}" tabindex="-1">
+                                                                    <b><span id="span_unit_price">{{ $return_item->unit_price_inc_tax }}</span></b>
+                                                                </td>
+
+                                                                <td class="text">
+                                                                    <b><span class="span_unit">{{ $return_item->unit }}</span></b>
+                                                                    <input type="hidden" name="units[]" id="unit" value="{{ $return_item->unit }}">
+                                                                </td>
+
+                                                                <td>
+                                                                    <input required type="number" step="any" name="return_quantities[]" class="form-control text-center" id="return_quantity" value="{{ $return_item->return_qty }}">
+                                                                </td>
+
+                                                                <td class="text text-center">
+                                                                    <strong><span class="span_subtotal">{{ $return_item->return_subtotal }}</span></strong>
+                                                                    <input readonly type="hidden" name="subtotals[]" id="subtotal" value="{{ $return_item->return_subtotal }}" tabindex="-1">
+                                                                </td>
+
+                                                                <td class="text-center">
+                                                                    <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -259,24 +250,24 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="row">
+                <section class="mb-3">
+                    <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="form_element">
-                                <div class="element-body">
+                            <div class="form_element rounded m-0">
+                                <div class="element-body p-2">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>Total Item :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') </b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $return->total_item }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Return Qty :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_return_qty') </b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_qty" type="number" step="any" class="form-control" id="total_qty" value="{{ $return->total_qty }}" tabindex="-1">
                                                         </div>
@@ -285,62 +276,62 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Net Total Amount :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.net_total_amount') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="net_total_amount" id="net_total_amount" class="form-control" value="{{ $return->net_total_amount }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Return Discount :</b></label>
+                                                        <label class=" col-4"><b>@lang('menu.return_discount') </b></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <select name="return_discount_type" class="form-control" id="return_discount_type">
-                                                                        <option {{ $return->return_discount_type == 1 ? 'SELECTED' : '' }} value="1">Fixed(0.00)</option>
-                                                                        <option {{ $return->return_discount_type == 2 ? 'SELECTED' : '' }} value="2">Percentage(%)</option>
+                                                                        <option {{ $return->return_discount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')(0.00)</option>
+                                                                        <option {{ $return->return_discount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')(%)</option>
                                                                     </select>
                                                                 </div>
-        
+
                                                                 <div class="col-md-6">
                                                                     <input name="return_discount" type="number" class="form-control" id="return_discount" value="{{ $return->return_discount }}">
                                                                 </div>
                                                             </div>
-                                                            <input name="return_discount_amount" type="number" step="any" class="d-none" id="return_discount_amount" value="{{ $return->return_discount_amount }}">
+                                                            <input name="return_discount_amount" type="number" step="any" class="d-hide" id="return_discount_amount" value="{{ $return->return_discount_amount }}">
                                                         </div>
                                                     </div>
-        
+
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Return Tax :</b>
+                                                        <label class="col-4"><b>@lang('menu.return_tax') </b>
                                                             <span class="text-danger">*</span>
                                                         </label>
 
                                                         <div class="col-8">
                                                             <select name="return_tax" class="form-control" id="return_tax">
-                                                                <option value="0.00">NoTax</option>
+                                                                <option value="0.00">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxes as $tax)
                                                                     <option {{ $return->return_tax == $tax->tax_percent ? 'SELECTED' : '' }} value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            <input name="return_tax_amount" type="number" step="any" class="d-none" id="return_tax_amount" value="{{ $return->return_tax_amount }}">
+                                                            <input name="return_tax_amount" type="number" step="any" class="d-hide" id="return_tax_amount" value="{{ $return->return_tax_amount }}">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Return Amount :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_return_amount') </b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control" value="{{ $return->total_return_amount }}" placeholder="Total Return Amount" tabindex="-1">
+                                                            <input readonly type="number" step="any" name="total_return_amount" id="total_return_amount" class="form-control" value="{{ $return->total_return_amount }}" placeholder="@lang('menu.total_return_amount')" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Return Note :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.return_note') </b></label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" name="return_note" id="return_note" class="form-control" value="{{ $return->return_note }}" placeholder="Return Note">
+                                                            <input type="number" step="any" name="return_note" id="return_note" class="form-control" value="{{ $return->return_note }}" placeholder="@lang('menu.return_note')">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -352,21 +343,21 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form_element">
-                                <div class="element-body">
+                            <div class="form_element rounded m-0">
+                                <div class="element-body p-2">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <div class="input-group customer_pre_due_field {{ $return->sale_id ? 'd-none' : '' }}">
-                                                        <label class="col-4"><b>Customer Previous Due :</b></label>
+                                                    <div class="input-group customer_pre_due_field {{ $return->sale_id ? 'd-hide' : '' }}">
+                                                        <label class="col-4"><b>{{ __('Customer Previous Due') }} </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="customer_previous_due" id="customer_previous_due" class="form-control text-danger" value="{{ $customerBalance > 0 ? $customerBalance : 0.00 }}" tabindex="-1">
                                                         </div>
                                                     </div>
 
-                                                    <div class="input-group invoice_due_field {{ $return->sale_id ? '' : 'd-none' }}">
-                                                        <label class="col-4"><b>Invoice Due :</b></label>
+                                                    <div class="input-group invoice_due_field {{ $return->sale_id ? '' : 'd-hide' }}">
+                                                        <label class="col-4"><b>@lang('menu.invoice_due') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="invoice_due" id="invoice_due" class="form-control text-danger" value="{{ $return->sale ? $return->sale->due : 0.00 }}" tabindex="-1">
                                                         </div>
@@ -375,28 +366,28 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Provious Refunded Amount :</b></label>
+                                                        <label class="col-4"><b>{{ __('Previous Refunded Amount') }} </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_return_due_pay" id="total_return_due_pay" class="form-control" value="{{ $return->total_return_due_pay }}">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Refundable Amount :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_refundable_amount') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_refundable_amount" id="total_refundable_amount" class="form-control" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Refunding Amount : </b> <strong>>></strong> </label>
+                                                        <label class="col-4"><b>{{ __('Refunding Amount') }} </b> <strong>>></strong> </label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" id="paying_amount" class="form-control" value="0.00">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Payment By : </b> </label>
+                                                        <label class="col-4"><b>{{ __('Payment By') }} </b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
@@ -409,7 +400,7 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Credit A/C: </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.credit') A/C</b> </label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-name="Debit A/C">
                                                                 @foreach ($accounts as $account)
@@ -427,9 +418,9 @@
 
                                                     <div class="col-md-12">
                                                         <div class="input-group mt-1">
-                                                            <label class="col-4"><b>Payment Note :</b></label>
+                                                            <label class="col-4"><b>@lang('menu.payment_note') </b></label>
                                                             <div class="col-8">
-                                                                <input type="text" name="payment_note" id="payment_note" class="form-control" value="" placeholder="Payment Note.">
+                                                                <input type="text" name="payment_note" id="payment_note" class="form-control" value="" placeholder="@lang('menu.payment_note').">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -445,9 +436,11 @@
 
                 <div class="submitBtn">
                     <div class="row justify-content-center">
-                        <div class="col-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-danger"></i> </button>
-                            <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                        <div class="col-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> </button>
+                                <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -467,40 +460,40 @@
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_return_product" action="">
-                       
+
                         <div class="form-group">
-                            <label> <strong>Quantity</strong> : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" readonly class="form-control edit_input" data-name="Quantity" id="e_return_quantity" placeholder="Quantity" tabindex="-1"/>
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label> <strong>Unit Price Exc.Tax</strong> : <span class="text-danger">*</span></label>
+                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
                             <input type="number" step="any" step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price_exc_tax" placeholder="Unit price" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Discount Type</strong> :</label>
+                                <label><strong>@lang('menu.discount_type')</strong> </label>
                                 <select class="form-control " id="e_unit_discount_type">
-                                    <option value="2">Percentage</option>
-                                    <option value="1">Fixed</option>
+                                    <option value="2">@lang('menu.percentage')</option>
+                                    <option value="1">@lang('menu.fixed')</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Discount</strong> :</label>
+                                <label><strong>@lang('menu.discount')</strong> </label>
                                 <input type="number" step="any" class="form-control " id="e_unit_discount" value="0.00"/>
                                 <input type="hidden" id="e_discount_amount"/>
                             </div>
                         </div>
-                       
+
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Tax</strong> :</label>
+                                <label><strong>@lang('menu.tax')</strong> </label>
                                 <select class="form-control" id="e_unit_tax">
-                                    <option value="0.00">NoTax</option>
+                                    <option value="0.00">@lang('menu.no_tax')</option>
                                     @foreach ($taxes as $tax)
                                         <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
                                     @endforeach
@@ -508,42 +501,42 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Tax Type</strong> :</label>
+                                <label><strong>@lang('menu.tax_type')</strong> </label>
                                 <select class="form-control" id="e_tax_type">
-                                    <option value="1">Exclusive</option>
-                                    <option value="2">Inclusive</option>
+                                    <option value="1">@lang('menu.exclusive')</option>
+                                    <option value="2">@lang('menu.exclusive')</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group text-end mt-3">
-                            <button type="submit" class="c-btn button-success float-end me-0">Update</button>
+                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Edit selling product modal End-->
 @endsection
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+
     <script>
         calculateTotalAmount();
         $('.submit_button').on('click', function () {
 
             var value = $(this).val();
-            $('#action').val(value); 
+            $('#action').val(value);
         });
 
         $('#customer_id').on('change', function () {
 
             $('#customer_previous_due').val(parseFloat(0).toFixed(2));
 
-            var customer_id = $(this).val(); 
-            var sale_id = $('#sale_id').val(); 
+            var customer_id = $(this).val();
+            var sale_id = $('#sale_id').val();
 
             var url = "{{ route('contacts.customer.amounts.branch.wise', ':customer_id') }}";
             var route = url.replace(':customer_id', customer_id);
@@ -590,7 +583,7 @@
 
         var ul = '';
         var selectObjClassName = '';
-        $('#sale_invoice_id').mousedown(function(e) {   
+        $('#sale_invoice_id').mousedown(function(e) {
 
             afterClickOrFocusSaleInvoiceId();
         }).focus(function(e){
@@ -599,7 +592,7 @@
         });
 
         function afterClickOrFocusSaleInvoiceId() {
-            
+
             if ($('#sale_invoice_id').val() == '') {
 
                 return;
@@ -612,8 +605,8 @@
             $('#sale_id').val('');
             $('#sale_products').prop('disabled', true);
             $('#search_product').prop('disabled', false);
-            $('.invoice_due_field').addClass('d-none');
-            $('.customer_pre_due_field').removeClass('d-none');
+            $('.invoice_due_field').addClass('d-hide');
+            $('.customer_pre_due_field').removeClass('d-hide');
             $('#return_item_list').empty();
             $('#sale_products').empty();
             $('#sale_products').append('<option value="">Select Item</option>');
@@ -621,7 +614,7 @@
         }
 
         function afterFocusSearchItemField() {
-            
+
             ul = document.getElementById('list')
             selectObjClassName = 'selectProduct';
 
@@ -668,7 +661,7 @@
 
         $(document).on('click', '#selected_invoice', function (e) {
             e.preventDefault();
-            
+
             var sale_invoice_id = $(this).html();
 
             var sale_id = $(this).data('sale_id');
@@ -683,7 +676,7 @@
 
                     if (!$.isEmptyObject(sale_products.errorMsg)) {
 
-                        toastr.error(sale_products.errorMsg); 
+                        toastr.error(sale_products.errorMsg);
                         return;
                     }
 
@@ -691,8 +684,8 @@
                     $('#sale_id').val(sale_id);
                     $('#customer_id').val(customer_id);
                     $('#invoice_due').val(invoice_due);
-                    $('.invoice_due_field').removeClass('d-none');
-                    $('.customer_pre_due_field').addClass('d-none');
+                    $('.invoice_due_field').removeClass('d-hide');
+                    $('.customer_pre_due_field').addClass('d-hide');
                     $('.invoice_search_result').hide();
                     $('#return_item_list').empty();
 
@@ -701,7 +694,7 @@
 
                     $('#sale_products').empty();
                     $('#sale_products').append('<option value="">Select Item</option>');
-  
+
                     $.each(sale_products, function(key, sale_product){
 
                         $('#sale_products').append(
@@ -714,7 +707,7 @@
 
         $(document).on('keyup', 'body', function(e){
 
-            if (e.keyCode == 13){  
+            if (e.keyCode == 13){
 
                 $('.'+selectObjClassName).click();
                 $('.invoice_search_result').hide();
@@ -726,7 +719,7 @@
 
         var productInfoObj = '';
         $(document).on('change', '#sale_products', function () {
-            
+
             productInfoObj = {
                 sale_product_id : $(this).find(':selected').data('sale_product_id'),
                 price_group_id : null,
@@ -746,12 +739,12 @@
                 tax_type : $(this).find(':selected').data('tax_type'),
                 unit_tax_percent : $(this).find(':selected').data('unit_tax_percent'),
                 unit_tax_amount : $(this).find(':selected').data('unit_tax_amount'),
-            } 
+            }
 
             addSingleProduct(productInfoObj);
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -779,7 +772,7 @@
         var delay = (function() {
             var timer = 0;
             return function(callback, ms) {
-                
+
                 clearTimeout (timer);
                 timer = setTimeout(callback, ms);
             };
@@ -791,7 +784,7 @@
 
             if ($('#customer_id').val() == '') {
 
-                toastr.error('Please select a listed customer first.'); 
+                toastr.error('Please select a listed customer first.');
                 $(this).val('');
                 return;
             }
@@ -805,7 +798,7 @@
 
             $('#search_product').focus();
             var price_group_id = $('#price_group_id').val();
-        
+
             $.ajax({
                 url:"{{ url('sales/returns/random/search/product/') }}" + "/"+ product_code,
                 dataType: 'json',
@@ -813,7 +806,7 @@
 
                     if(!$.isEmptyObject(product.errorMsg || product_code == '')){
 
-                        toastr.error(product.errorMsg); 
+                        toastr.error(product.errorMsg);
                         $('#search_product').val("");
                         $('.select_area').hide();
                         $('#stock_quantity').val(parseFloat(0).toFixed(2));
@@ -821,8 +814,8 @@
                     }
 
                     if(
-                        !$.isEmptyObject(product.product) 
-                        || !$.isEmptyObject(product.variant_product) 
+                        !$.isEmptyObject(product.product)
+                        || !$.isEmptyObject(product.variant_product)
                         || !$.isEmptyObject(product.namedProducts)
                     ) {
 
@@ -831,7 +824,7 @@
                         if(!$.isEmptyObject(product.product)){
 
                             var product = product.product;
-                            
+
                             if(product.product_variants.length == 0){
 
                                 $('.select_area').hide();
@@ -841,7 +834,7 @@
 
                                     $('#stock_quantity').val(parseFloat(qty_limit).toFixed(2));
                                 }
-                                
+
                                 product_ids = document.querySelectorAll('#product_id');
                                 var sameProduct = 0;
 
@@ -856,7 +849,7 @@
                                         var presentQty = closestTr.find('#return_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitPrice = closestTr.find('#unit_price').val();
                                         var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -870,7 +863,7 @@
                                 if(sameProduct == 0){
 
                                     var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0;
-                                    
+
                                     var price = 0;
                                     var __price = price_groups.filter(function (value) {
 
@@ -896,7 +889,7 @@
                                         unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                     }
 
-                                    var name = product.name.length > 35 ? product.name.substring(0, 35)+'...' : product.name; 
+                                    var name = product.name.length > 35 ? product.name.substring(0, 35)+'...' : product.name;
 
                                     var tr = '';
                                     tr += '<tr>';
@@ -908,7 +901,7 @@
                                     tr += '<input name="sale_product_ids[]" type="hidden" id="sale_product_id">';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
-                                    
+
                                     tr += '<input type="hidden" name="unit_discount_types[]" value="1" id="unit_discount_type">';
                                     tr += '<input type="hidden" name="unit_discounts[]" value="0.00" id="unit_discount">';
                                     tr += '<input type="hidden" name="unit_discount_amounts[]" value="0.00" id="unit_discount_amount">';
@@ -923,7 +916,7 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text">';
-                                    tr += '<b><span class="span_unit">'+product.unit.name+'</span></b>'; 
+                                    tr += '<b><span class="span_unit">'+product.unit.name+'</span></b>';
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
 
@@ -934,21 +927,21 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text text-center">';
-                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                                     tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal" tabindex="-1">';
                                     tr += '</td>';
-                                    
+
                                     tr += '<td class="text-center">';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                     tr += '</td>';
                                     tr += '</tr>';
                                     $('#return_item_list').prepend(tr);
-                                    calculateTotalAmount();  
+                                    calculateTotalAmount();
                                 }
                             }else{
 
                                 var li = "";
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
                                 $.each(product.product_variants, function(key, variant){
 
@@ -982,7 +975,7 @@
                                     li += '<a class="select_variant_product" data-product_type="variant" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit.name+'" data-v_tax_percent="'+tax_percent+'" data-v_tax_amount="'+tax_amount+'" data-v_code="'+variant.variant_code+'" data-v_price="'+variant.variant_price+'" data-v_name="'+variant.variant_name+'" data-unit_cost_inc_tax="'+variant.variant_cost_with_tax+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'" tabindex="-1"> '+product.name+' - '+variant.variant_name+' ('+variant.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                     li +='</li>';
                                 });
-                                
+
                                 $('.variant_list_area').append(li);
                                 $('.select_area').show();
                                 $('#search_product').val('');
@@ -1001,7 +994,7 @@
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.tax_percent : 0;
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
-                            
+
                             variant_ids.forEach(function(input){
 
                                 if(input.value != 'noid'){
@@ -1015,7 +1008,7 @@
                                         var presentQty = closestTr.find('#return_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitPrice = closestTr.find('#unit_price').val();
                                         var calcSubtotal = parseFloat(unitPrice) * parseFloat(updateQty);
@@ -1024,9 +1017,9 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                        
+
                             if(sameVariant == 0){
 
                                 var price = 0;
@@ -1054,7 +1047,7 @@
                                     unitPriceIncTax = parseFloat(price) + parseFloat(tax_amount);
                                 }
 
-                                var name = variant_product.product.name.length > 35 ? variant_product.product.name.substring(0, 35)+'...' : variant_product.product.name; 
+                                var name = variant_product.product.name.length > 35 ? variant_product.product.name.substring(0, 35)+'...' : variant_product.product.name;
 
                                 var tr = '';
                                 tr += '<tr>';
@@ -1072,17 +1065,17 @@
                                 tr += '<input type="hidden" name="tax_types[]" value="'+variant_product.product.tax_type+'" id="tax_type">';
                                 tr += '<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+tax_percent+'">';
                                 tr += '<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+parseFloat(tax_amount).toFixed(2)+'">';
-                              
+
                                 tr += '</td>';
 
                                 tr += '<td>';
                                 tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+parseFloat(price).toFixed(2)+'" id="unit_price_exc_tax" tabindex="-1">';
                                 tr += '<input name="unit_prices[]" type="hidden" id="unit_price" value="'+parseFloat(unitPriceIncTax).toFixed(2) +'" tabindex="-1">';
-                                tr += '<b><span id="span_unit_price">'+parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>'; 
+                                tr += '<b><span id="span_unit_price">'+parseFloat(unitPriceIncTax).toFixed(2) +'</span></b>';
                                 tr += '</td>';
-                                
+
                                 tr += '<td class="text">';
-                                tr += '<b><span class="span_unit">'+variant_product.product.unit.name+'</span></b>'; 
+                                tr += '<b><span class="span_unit">'+variant_product.product.unit.name+'</span></b>';
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
 
@@ -1091,7 +1084,7 @@
                                 tr += '</td>';
 
                                 tr += '<td class="text text-center">';
-                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>'; 
+                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitPriceIncTax).toFixed(2)+'</span></strong>';
                                 tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal" tabindex="-1">';
                                 tr += '</td>';
                                 tr += '<td class="text-center">';
@@ -1100,14 +1093,14 @@
                                 tr += '</tr>';
                                 $('#return_item_list').prepend(tr);
                                 calculateTotalAmount();
-                            }    
+                            }
                         }else if (!$.isEmptyObject(product.namedProducts)) {
-                            
+
                             if(product.namedProducts.length > 0){
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
 
                                 $.each(products, function (key, product) {
 
@@ -1128,7 +1121,7 @@
 
                                             price = product.variant_price;
                                         }
-                                        
+
                                         var tax_amount = parseFloat(price / 100 * tax_percent);
 
                                         var unitPriceIncTax = (parseFloat(price) / 100 * tax_percent) + parseFloat(price);
@@ -1145,7 +1138,7 @@
                                         li += '<li>';
                                         li += '<a href="#" class="select_variant_product" data-product_type="variant" data-p_id="'+product.id+'" data-is_manage_stock="'+product.is_manage_stock+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-tax_type="'+product.tax_type+'" data-unit="'+product.unit_name+'" data-v_tax_percent="'+tax_percent+'" data-v_tax_amount="'+tax_amount+'" data-v_code="'+product.variant_code+'" data-v_price_exc_tax="'+product.variant_price+'" data-v_price_inc_tax="'+parseFloat(unitPriceIncTax).toFixed(2)+'" data-v_name="'+product.variant_name+'" data-unit_cost_inc_tax="'+product.variant_cost_with_tax+'" tabindex="-1"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                         li +='</li>';
-                                        
+
                                     }else {
 
                                         var price = 0;
@@ -1161,7 +1154,7 @@
 
                                             price = product.product_price;
                                         }
-                                        
+
                                         var tax_amount = parseFloat(price / 100 * tax_percent);
                                         var unitPriceIncTax = (parseFloat(price) / 100 * tax_percent) + parseFloat(price);
 
@@ -1187,7 +1180,7 @@
                     }else{
 
                         $('#search_product').addClass('is-invalid');
-                        toastr.error('Product not found.', 'Failed'); 
+                        toastr.error('Product not found.', 'Failed');
                         $('#search_product').select();
                     }
                 }
@@ -1197,7 +1190,7 @@
         // select single product and add stock adjustment table
         $(document).on('click', '.select_single_product', function (e){
             e.preventDefault();
-    
+
             $('.select_area').hide();
 
             productInfoObj = {
@@ -1230,7 +1223,7 @@
 
             if (data.is_manage_stock == 1) {
 
-                $('#stock_quantity').val(parseFloat(data.stock).toFixed(2)); 
+                $('#stock_quantity').val(parseFloat(data.stock).toFixed(2));
             }
 
             var product_ids = document.querySelectorAll('#product_id');
@@ -1255,14 +1248,14 @@
                     calculateTotalAmount();
 
                     return;
-                }    
+                }
             });
 
             if(sameProduct == 0){
 
                 var price = data.unit_price_exc_tax;
 
-                var name = data.product_name.length > 35 ? data.product_name.substring(0, 35)+'...' : data.product_name; 
+                var name = data.product_name.length > 35 ? data.product_name.substring(0, 35)+'...' : data.product_name;
 
                 var tr = '';
                 tr += '<tr>';
@@ -1288,7 +1281,7 @@
                 var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(data.unit_tax_percent) + parseFloat(price);
 
                 if (data.tax_type == 2) {
-                    
+
                     var inclusiveTax = 100 + parseFloat(data.unit_tax_percent);
                     var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                     var __tax_amount = parseFloat(price) - parseFloat(calcTax);
@@ -1300,16 +1293,16 @@
                 tr += '</td>';
 
                 tr += '<td class="text">';
-                tr += '<b><span class="span_unit">'+data.unit+'</span></b>'; 
+                tr += '<b><span class="span_unit">'+data.unit+'</span></b>';
                 tr += '<input name="units[]" type="hidden" id="unit" value="'+data.unit+'">';
                 tr += '</td>';
-              
+
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="1.00" required name="return_quantities[]" class="form-control text-center" id="return_quantity">';
                 tr += '</td>';
 
                 tr += '<td class="text text-center">';
-                tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                 tr += '<input value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" name="subtotals[]" type="hidden" id="subtotal" tabindex="-1">';
                 tr += '</td>';
 
@@ -1318,7 +1311,7 @@
                 tr += '</td>';
                 tr += '</tr>';
                 $('#return_item_list').prepend(tr);
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         }
 
@@ -1359,7 +1352,7 @@
 
             if (data.is_manage_stock == 1) {
 
-                $('#stock_quantity').val(parseFloat(data.stock).toFixed(2)); 
+                $('#stock_quantity').val(parseFloat(data.stock).toFixed(2));
             }
 
             var variant_ids = document.querySelectorAll('#variant_id');
@@ -1384,14 +1377,14 @@
                     calculateTotalAmount();
 
                     return;
-                }    
+                }
             });
 
             if(sameVariant == 0){
 
                 var price = data.unit_price_exc_tax;
 
-                var name = data.product_name.length > 35 ? data.product_name.substring(0, 35)+'...' : data.product_name; 
+                var name = data.product_name.length > 35 ? data.product_name.substring(0, 35)+'...' : data.product_name;
 
                 var tr = '';
                 tr += '<tr>';
@@ -1417,7 +1410,7 @@
                 var unitPriceIncTax = parseFloat(price) / 100 * parseFloat(data.unit_tax_percent) + parseFloat(price);
 
                 if (data.tax_type == 2) {
-                    
+
                     var inclusiveTax = 100 + parseFloat(data.unit_tax_percent);
                     var calcTax = parseFloat(price) / parseFloat(inclusiveTax) * 100;
                     var __tax_amount = parseFloat(price) - parseFloat(calcTax);
@@ -1429,16 +1422,16 @@
                 tr += '</td>';
 
                 tr += '<td class="text">';
-                tr += '<b><span class="span_unit">'+data.unit+'</span></b>'; 
+                tr += '<b><span class="span_unit">'+data.unit+'</span></b>';
                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+data.unit+'">';
                 tr += '</td>';
-            
+
                 tr += '<td>';
                 tr += '<input type="number" step="any" value="1.00" required name="return_quantities[]" class="form-control text-center" id="return_quantity">';
                 tr += '</td>';
 
                 tr += '<td class="text text-center">';
-                tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>'; 
+                tr += '<strong><span class="span_subtotal"> '+parseFloat(unitPriceIncTax).toFixed(2)+' </span></strong>';
                 tr += '<input type="hidden" id="subtotal" value="'+parseFloat(unitPriceIncTax).toFixed(2)+'" name="subtotals[]" tabindex="-1">';
                 tr += '</td>';
 
@@ -1447,13 +1440,13 @@
                 tr += '</td>';
                 tr += '</tr>';
                 $('#return_item_list').prepend(tr);
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         }
 
         // change unit price
         $('#e_unit_price_exc_tax').on('input', function () {
-            
+
             var unit_price = $(this).val() ? $(this).val() : 0.00;
             var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
 
@@ -1492,7 +1485,7 @@
             var calcSubtotal = parseFloat(unitPrice) * parseFloat(return_quantity);
             tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
             tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-            calculateTotalAmount(); 
+            calculateTotalAmount();
         });
 
         // Calculate total amount functionalitie
@@ -1551,29 +1544,29 @@
             }
 
             var calcTotalAmount = parseFloat(netTotalAmount)
-                                - parseFloat(returnDiscountAmount) 
+                                - parseFloat(returnDiscountAmount)
                                 + parseFloat(calReturnTaxAmount);
 
             $('#total_return_amount').val(parseFloat(calcTotalAmount).toFixed(2));
 
             var total_return_due_pay = $('#total_return_due_pay').val()
-                           
+
             var calcTotalRefundableAmount = parseFloat(calcTotalAmount) - parseFloat(previousDue) - parseFloat(total_return_due_pay);
-     
+
             $('#total_refundable_amount').val(parseFloat(calcTotalRefundableAmount).toFixed(2));
         }
 
         $(document).on('input', '#return_discount', function(){
 
-            calculateTotalAmount(); 
+            calculateTotalAmount();
         });
 
         $(document).on('input', '#return_tax', function(){
 
-            calculateTotalAmount(); 
+            calculateTotalAmount();
         });
 
-        // Remove product form purchase product list (Table) 
+        // Remove product form purchase product list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
 
@@ -1591,7 +1584,7 @@
 
             if (parseFloat(totalItem) == 0) {
 
-                toastr.error('Return Product table is empty.','Some thing went wrong.'); 
+                toastr.error('Return Product table is empty.','Some thing went wrong.');
                 return;
             }
 
@@ -1599,8 +1592,8 @@
             var paying_amount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
 
             if (parseFloat(paying_amount) > 0 && parseFloat(paying_amount) > parseFloat(current_refundable)) {
-                
-                toastr.error('Refunding amount must not be greater then total refundable amount.'); 
+
+                toastr.error('Refunding amount must not be greater then total refundable amount.');
                 return;
             }
 
@@ -1620,30 +1613,30 @@
 
                     if(!$.isEmptyObject(data.errorMsg)){
 
-                        toastr.error(data.errorMsg); 
+                        toastr.error(data.errorMsg);
                         return;
                     }
 
-                    toastr.success(data); 
+                    toastr.success(data);
                     window.location = "{{ url()->previous() }}";
-                
+
                 },error: function(err) {
-                    
+
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     $('.error').html('');
-                
+
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.'); 
+                        toastr.error('Server error. Please contact to the support team.');
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
@@ -1688,8 +1681,8 @@
             e.preventDefault();
 
             var inputs = $('.edit_input');
-            $('.error').html('');  
-            var countErrorField = 0;  
+            $('.error').html('');
+            var countErrorField = 0;
 
             $.each(inputs, function(key, val){
 
@@ -1716,10 +1709,10 @@
             var e_unit_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0.00;
             var e_unit_tax_type = $('#e_tax_type').val() ? $('#e_tax_type').val() : 1;
             var e_unit_tax_percent = $('#e_unit_tax').val() ? $('#e_unit_tax').val() : 0.00;
-            
+
             var productTableRow = $('#return_item_list tr:nth-child(' + (tableRowIndex + 1) + ')');
-            // calculate unit tax 
-           
+            // calculate unit tax
+
             productTableRow.find('#return_quantity').val(parseFloat(e_quantity).toFixed(2));
             productTableRow.find('#unit_price_exc_tax').val(parseFloat(e_unit_price_exc_tax).toFixed(2));
             productTableRow.find('#unit_discount_type').val(e_unit_discount_type);
@@ -1741,7 +1734,7 @@
             productTableRow.find('#unit_tax_amount').val(parseFloat(calsUninTaxAmount).toFixed(2));
 
             var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(calsUninTaxAmount);
-            
+
             productTableRow.find('#unit_price').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
             productTableRow.find('#span_unit_price').html(parseFloat(calcUnitPriceIncTax).toFixed(2));
             var calcSubtotal = parseFloat(calcUnitPriceIncTax) * parseFloat(e_quantity);
@@ -1758,8 +1751,8 @@
             $('#edit_sale_return_form')[0].reset();
             $('#return_item_list').empty();
 
-            $('.invoice_due_field').addClass('d-none');
-            $('.customer_pre_due_field').removeClass('d-none');
+            $('.invoice_due_field').addClass('d-hide');
+            $('.customer_pre_due_field').removeClass('d-hide');
 
             $('#sale_products').prop('disabled', true);
             $('#search_product').prop('disabled', false);
@@ -1767,11 +1760,11 @@
             document.getElementById('search_product').focus();
         }
 
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
         setInterval(function(){
 
             $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        }, 500);
 
         setInterval(function(){
 
@@ -1798,5 +1791,5 @@
         }
 
     </script>
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.custom.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>
 @endpush

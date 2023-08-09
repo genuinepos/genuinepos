@@ -1,337 +1,133 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
 @endpush
 @section('title', 'Customer List - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-people-arrows"></span>
-                                <h5>Customers</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-people-arrows"></span>
+                    <h5>@lang('menu.customers')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
 
-                        @if ($addons->branches == 1)
-                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="sec-name">
-                                            <div class="col-md-12">
-                                                <form id="filter_form" class="px-2">
-                                                    <div class="form-group row">
-                                                        <div class="col-md-2">
-                                                            <label><strong>Business Location :</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able" id="branch_id" autofocus>
-                                                                <option value="">All</option>
-                                                                <option value="NULL">{{ json_decode($generalSettings->business, true)['shop_name'] }} (Head Office)</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        
-                                                        <div class="col-md-2">
-                                                            <label><strong></strong></label>
-                                                            <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-secondary float-start"><i class="fas fa-funnel-dollar"></i> Filter</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+        <div class="p-3">
+            @if ($generalSettings['addons__branches'] == 1)
+                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form_element rounded mt-0 mb-3">
+                                <div class="element-body">
+                                    <form id="filter_form" class="p-2">
+                                        <div class="form-group row">
+                                            <div class="col-xl-2 col-lg-3 col-md-4">
+                                                <label><strong>@lang('menu.business_location') </strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-3 col-md-4">
+                                                <label><strong></strong></label>
+                                                <div class="input-group">
+                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-                    </div>
-
-                    <div class="row margin_row mt-1">
-                        <div class="card">
-                            <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>All Customer</h6>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-                                    </div>
-
-                                    <div class="btn_30_blue float-end">
-                                        <a href="{{ route('contacts.customers.import.create') }}"><i class="fas fa-plus-square"></i> Import Customers</a>
-                                    </div>
-
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" class="print_report"><i class="fas fa-print"></i> Print All</a>
-                                    </div>
-
+                                    </form>
                                 </div>
                             </div>
-
-                            <div class="widget_content">
-                                <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
-                                </div>
-                                <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table">
-                                        <thead>
-                                            <tr class="text-start">
-                                                <th>Actions</th>
-                                                <th>Customer ID</th>
-                                                <th>Name</th>
-                                                <th>Business</th>
-                                                <th>Phone</th>
-                                                <th>Group</th>
-                                                <th>Credit Limit</th>
-                                                <th>Opening Balance</th>
-                                                <th>Total Sale</th>
-                                                <th>Total Paid</th>
-                                                <th>Sale Due</th>
-                                                <th>Total Return</th>
-                                                <th>Return Due</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tfoot>
-                                            <tr class="bg-secondary">
-                                                <th colspan="7" class="text-white text-end">Total : ({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th id="opening_balance" class="text-white text-end"></th>
-                                                <th id="total_sale" class="text-white text-end"></th>
-                                                <th id="total_paid" class="text-white text-end"></th>
-                                                <th id="total_sale_due" class="text-white text-end"></th>
-                                                <th id="total_return" class="text-white text-end"></th>
-                                                <th id="total_sale_return_due" class="text-white text-end"></th>
-                                                <th id="total_sale_return_due" class="text-white text-start">---</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                            <form id="deleted_form" action="" method="post">
-                                @method('DELETE')
-                                @csrf
-                            </form>
                         </div>
                     </div>
+                @endif
+            @endif
+
+            <div class="card">
+                <div class="section-header">
+                    <div class="col-md-4">
+                        <h6>{{ __('All Customer') }}</h6>
+                    </div>
+
+                    <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
+                        <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-square"></i> @lang('menu.add')
+                        </a>
+                        <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
+                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                    </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                    </div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr class="text-start">
+                                    <th>@lang('menu.action')</th>
+                                    <th>@lang('menu.customer_id')</th>
+                                    <th>@lang('menu.name')</th>
+                                    <th>@lang('menu.business')</th>
+                                    <th>@lang('menu.phone')</th>
+                                    <th>@lang('menu.group')</th>
+                                    <th>@lang('menu.credit_limit')</th>
+                                    <th>@lang('menu.opening_balance')</th>
+                                    <th>@lang('menu.total_sale')</th>
+                                    <th>@lang('menu.total_paid')</th>
+                                    <th>{{ __('Sale Due') }}</th>
+                                    <th>@lang('menu.total_return')</th>
+                                    <th>@lang('menu.return_due')</th>
+                                    <th>@lang('menu.status')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <th colspan="7" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
+                                    <th id="opening_balance" class="text-white text-end"></th>
+                                    <th id="total_sale" class="text-white text-end"></th>
+                                    <th id="total_paid" class="text-white text-end"></th>
+                                    <th id="total_sale_due" class="text-white text-end"></th>
+                                    <th id="total_return" class="text-white text-end"></th>
+                                    <th id="total_sale_return_due" class="text-white text-end"></th>
+                                    <th id="total_sale_return_due" class="text-white text-start">---</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
 
     <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Customer</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_customer_form" action="{{ route('contacts.customer.store') }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control add_input"
-                                    data-name="Customer name" id="name" placeholder="Customer name" />
-                                <span class="error error_name"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Phone :</strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" class="form-control add_input"
-                                    data-name="Phone number" id="phone" placeholder="Phone number" />
-                                <span class="error error_phone"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Customer ID :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i></label>
-                                <input type="text" name="contact_id" class="form-control"
-                                    placeholder="Customer ID"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Business Name :</strong></label>
-                                <input type="text" name="business_name" class="form-control"
-                                    placeholder="Business name" />
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <label><strong>Alternative Number :</strong> </label>
-                                <input type="text" name="alternative_phone" class="form-control"
-                                    placeholder="Alternative phone number" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Landline :</strong></label>
-                                <input type="text" name="landline" class="form-control"
-                                    placeholder="landline number" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Email :</strong></label>
-                                <input type="text" name="email" class="form-control"
-                                    placeholder="Email address" />
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <label><strong>Tax Number :</strong></label>
-                                <input type="text" name="tax_number" class="form-control"
-                                    placeholder="Tax number" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Opening Balance :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Opening balance will be added in this customer due." class="fas fa-info-circle tp"></i></label>
-                                <input type="number" step="any" name="opening_balance" class="form-control"
-                                    placeholder="Opening balance" value="0.00" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Credit Limit :</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
-                                <input type="number" step="any" name="credit_limit" class="form-control"
-                                    placeholder="Credit Limit" value=""/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Pay Term :</strong> </label>
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <input type="text" name="pay_term_number"
-                                            class="form-control" placeholder="Number"/>
-                                        </div>
-
-                                        <div class="col-md-7">
-                                            <select name="pay_term" class="form-control">
-                                                <option value="1">Select term</option>
-                                                <option value="2">Days </option>
-                                                <option value="3">Months</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <label><strong>Customer Group :</strong> </label>
-                                <select name="customer_group_id" class="form-control"
-                                    id="customer_group_id">
-                                    <option value="">None</option>
-                                    @foreach ($groups as $group)
-                                        <option value="{{ $group->id }}">{{ $group->group_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Date Of Birth :</strong></label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fas fa-calendar-week input_f"></i>
-                                        </span>
-                                    </div>
-                                    <input type="text" name="date_of_birth" id="date_of_birth" class="form-control"
-                                        autocomplete="off" placeholder="YYYY-MM-DD">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label><strong>Address :</strong> </label>
-                                <input type="text" name="address" class="form-control" placeholder="Address">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-3">
-                                <label><strong>City :</strong> </label>
-                                <input type="text" name="city" class="form-control" placeholder="City" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>State :</strong> </label>
-                                <input type="text" name="state" class="form-control" placeholder="State" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Country :</strong> </label>
-                                <input type="text" name="country" class="form-control"
-                                    placeholder="Country" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label><strong>Zip-Code :</strong> </label>
-                                <input type="text" name="zip_code" class="form-control"
-                                    placeholder="zip_code" />
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-5">
-                                <label><strong>Shipping Address :</strong> </label>
-                                <input type="text" name="shipping_address" class="form-control"
-                                    placeholder="Shipping address" />
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Customer</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit-modal-form-body"></div>
-            </div>
-        </div>
+    <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
     </div>
 
     <!-- Money Receipt list Modal-->
     <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Payment Receipt Voucher List</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_receipt_voucher')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -344,10 +140,10 @@
     <!--add money receipt Modal-->
     <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
         aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Generate Money Receipt Voucher</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.generate_money_receipt')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -365,21 +161,23 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
             ],
             "processing": true,
             "serverSide": true,
             aaSorting: [[0, 'asc']],
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('contacts.customer.index') }}",
                 "data": function(d) {
+
                     d.branch_id = $('#branch_id').val();
                 }
             },
@@ -430,6 +228,7 @@
                     );
                 }
             });
+
             return sum;
         }
 
@@ -446,48 +245,36 @@
         // call jquery method
         $(document).ready(function() {
             // Add category by ajax
-            $('#add_customer_form').on('submit', function(e) {
+            $('#addContact').on('click', function(e) {
+
                 e.preventDefault();
 
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.add_input');
-                $('.error').html('');
-                var countErrorField = 0;
+                var url = $(this).attr('href');
 
-                $.each(inputs, function(key, val) {
-
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val();
-
-                    if (idValue == '') {
-
-                        countErrorField += 1;
-                        var fieldName = $('#' + inputId).data('name');
-                        $('.error_' + inputId).html(fieldName + ' is required.');
-                    }
-                });
-
-                if (countErrorField > 0) {
-
-                    $('.loading_button').hide();
-                    return;
-                }
-
-                $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
-                    type: 'post',
-                    data: request,
+                    type: 'get',
                     success: function(data) {
 
-                        toastr.success(data);
-                        $('#add_customer_form')[0].reset();
-                        table.ajax.reload();
-                        $('.loading_button').hide();
-                        $('#addModal').modal('hide');
-                        $('.submit_button').prop('type', 'submit');
+                        $('#addOrEditContactModal').html(data);
+                        $('#addOrEditContactModal').modal('show');
+
+                        setTimeout(function(){
+
+                            $('#contact_name').focus();
+                        }, 500);
+
+                    }, error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        }else if (err.status == 500) {
+
+                            toastr.error('Server Error. Please contact to the support team.');
+                            return;
+                        }
                     }
                 });
             });
@@ -511,7 +298,7 @@
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);
                 $.confirm({
-                    'title': 'Delete Confirmation',
+                    'title': 'Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
                         'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
@@ -531,7 +318,10 @@
                     async: false,
                     data: request,
                     success: function(data) {
-
+                        if (!$.isEmptyObject(data.errorMsg)) {
+                            toastr.error(data.errorMsg, 'Attention');
+                            return;
+                        }
                         table.ajax.reload();
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
@@ -542,7 +332,7 @@
             // Show sweet alert for delete
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
-                var url = $(this).attr('href');
+                var url = $(this).data('url');
                  $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',
@@ -614,7 +404,7 @@
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                             removeInline: false,
                             printDelay: 500,
                             header: null,
@@ -647,7 +437,7 @@
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{ asset('public/assets/css/print/sale.print.css') }}",
+                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                             removeInline: false,
                             printDelay: 500,
                             header: null,
@@ -728,7 +518,7 @@
                 $('#receipt_deleted_form').attr('action', url);
 
                 $.confirm({
-                    'title': 'Delete Confirmation',
+                    'title': 'Confirmation',
                     'content': 'Are you sure?',
                     'buttons': {
 
@@ -778,7 +568,7 @@
                     debug: false,
                     importCSS: true,
                     importStyle: true,
-                    loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                    loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                     removeInline: true,
                     printDelay: 500,
                     header: header,
@@ -802,16 +592,16 @@
 
                     $('.data_preloader').hide();
                     $(data).printThis({
-                        debug: false,                   
-                        importCSS: true,                
-                        importStyle: true,          
-                        loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                        removeInline: false, 
-                        printDelay: 700, 
-                        header: null,        
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
-            }); 
+            });
         });
 
         new Litepicker({

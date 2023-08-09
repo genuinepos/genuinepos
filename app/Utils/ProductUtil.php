@@ -2,26 +2,26 @@
 
 namespace App\Utils;
 
-use App\Models\Unit;
 use App\Models\Brand;
-use App\Models\Product;
 use App\Models\Category;
-use App\Models\Warranty;
-use App\Utils\PurchaseUtil;
+use App\Models\Product;
 use App\Models\ProductBranch;
-use App\Models\PurchaseProduct;
-use App\Utils\ProductStockUtil;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
-use App\Models\ProductOpeningStock;
 use App\Models\ProductBranchVariant;
-use App\Utils\PurchaseSaleChainUtil;
+use App\Models\ProductOpeningStock;
+use App\Models\ProductVariant;
+use App\Models\Unit;
+use App\Models\Warranty;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class ProductUtil
 {
     public $purchaseUtil;
+
     public $purchaseSaleChainUtil;
+
     public $productStockUtil;
+
     public function __construct(
         PurchaseUtil $purchaseUtil,
         PurchaseSaleChainUtil $purchaseSaleChainUtil,
@@ -35,15 +35,16 @@ class ProductUtil
     public function productListTable($request)
     {
         $productStock = $this->productStockUtil;
-        $generalSettings = DB::table('general_settings')->select('business')->first();
+        // $generalSettings = config('generalSettings');
+        $generalSettings = config('generalSettings');
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
-        $img_url = asset('public/uploads/product/thumbnail');
+        $img_url = asset('uploads/product/thumbnail');
         $products = '';
 
         $query = DB::table('product_branches')
             ->leftJoin('products', 'product_branches.product_id', 'products.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.parent_category_id', 'sub_cate.id')
+            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
             ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
@@ -53,7 +54,7 @@ class ProductUtil
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('product_branches.branch_id', NULL);
+                $query->where('product_branches.branch_id', null);
             } else {
 
                 $query->where('product_branches.branch_id', $request->branch_id);
@@ -107,7 +108,6 @@ class ProductUtil
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $query;
         } else {
 
             $query->where('product_branches.branch_id', auth()->user()->branch_id);
@@ -117,6 +117,7 @@ class ProductUtil
             [
                 'products.id',
                 'products.name',
+                'products.product_code',
                 'products.status',
                 'products.is_variant',
                 'products.type',
@@ -137,53 +138,55 @@ class ProductUtil
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
 
-                return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
+                return '<input id="'.$row->id.'" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="'.$row->id.'"/>';
             })->editColumn('photo', function ($row) use ($img_url) {
 
-                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="'.$img_url.'/'.$row->thumbnail_photo.'">';
             })->addColumn('action', function ($row) use ($countPriceGroup) {
 
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
+                $html .= '<a class="dropdown-item details_button" href="'.route('products.view', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="'.route('products.check.purchase.and.generate.barcode', [$row->id]).'"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
-                if (auth()->user()->permission->product['product_edit']  == '1') {
+                if (auth()->user()->can('product_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('products.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
-                if (auth()->user()->permission->product['product_delete']  == '1') {
+                if (auth()->user()->can('product_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('products.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
-                if ($row->status == 1) {
+                // if ($row->status == 1) {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                } else {
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                // } else {
 
-                    $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                }
+                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                // }
 
-                if (auth()->user()->permission->product['openingStock_add']  == '1') {
+                if (auth()->user()->can('openingStock_add')) {
 
-                    $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
+                    $html .= '<a class="dropdown-item" id="opening_stock" href="'.route('products.opening.stock', [$row->id]).'"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
                 }
 
                 if ($countPriceGroup > 0) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('products.add.price.groups', [$row->id, $row->is_variant]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('products.add.price.groups', [$row->id, $row->is_variant]).'"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
                 }
 
                 $html .= ' </div>';
                 $html .= '</div>';
+
                 return $html;
             })->editColumn('name', function ($row) {
                 $html = '';
                 $html .= $row->name;
                 $html .= $row->is_manage_stock == 0 ? ' <span class="badge bg-primary pt-1"><i class="fas fa-wrench mr-1 text-white"></i></span>' : '';
+
                 return $html;
             })->editColumn('type', function ($row) {
 
@@ -201,16 +204,22 @@ class ProductUtil
                     return '<span class="text-info">Digital</span>';
                 }
             })
-            ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
+            ->editColumn('cate_name', fn ($row) => '<p class="p-0">'.($row->cate_name ? $row->cate_name : '...').'</p><p class="p-0">'.($row->sub_cate_name ? ' --- '.$row->sub_cate_name : '').'</p>')
 
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="'.route('products.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '</div>';
 
-                    return '<span class="text-success">Active</span>';
+                    return $html;
                 } else {
+                    $html = '<div class="form-check form-switch">';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('products.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '</div>';
 
-                    return '<span class="text-danger">Inactive</span>';
+                    return $html;
                 }
             })
             ->editColumn('access_locations', function ($row) use ($generalSettings, $request) {
@@ -220,10 +229,10 @@ class ProductUtil
                 if ($request->branch_id) {
 
                     if ($request->branch_id == 'NULL') {
-        
-                        $query->where('product_branches.branch_id', NULL);
+
+                        $query->where('product_branches.branch_id', null);
                     } else {
-        
+
                         $query->where('product_branches.branch_id', $request->branch_id);
                     }
                 }
@@ -231,27 +240,105 @@ class ProductUtil
                 if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
                     $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
-                }else {
-                    
+                } else {
+
                     $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
                 }
-                 
+
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 
-                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : json_decode($generalSettings->business, true)['shop_name']).',</p>';
+                    $text .= '<p class="m-0 p-0">'.($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__shop_name']).',</p>';
                 }
-                
+
                 return $text;
             })
             ->editColumn('quantity', function ($row) use ($productStock, $request) {
 
                 $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
-                return \App\Utils\Converter::format_in_bdt($quantity) . '/' . $row->unit_name;
+
+                return \App\Utils\Converter::format_in_bdt($quantity).'/'.$row->unit_name;
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
-            ->editColumn('tax_name', fn ($row) =>  $row->tax_name ? $row->tax_name : '...')
+            ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
             ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_locations'])
+            ->smart(true)->make(true);
+    }
+
+    public function expiredProductTable($request)
+    {
+        $generalSettings = config('generalSettings');
+
+        $expiredProducts = '';
+        $query = DB::table('purchase_products')
+            ->leftJoin('products', 'purchase_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'purchase_products.product_variant_id', 'product_variants.id')
+            ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+            ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
+            ->where('products.has_batch_no_expire_date', 1)
+            ->where('purchase_products.expire_date', '!=', 'NULL')
+            ->whereDate('purchase_products.expire_date', '<', date('Y-m-d'));
+
+        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
+        } else {
+
+            $query->where('purchases.branch_id', auth()->user()->branch_id);
+        }
+
+        $expiredProducts = $query->select(
+            [
+                'products.id',
+                'products.name',
+                'products.status',
+                'products.is_variant',
+                'products.type',
+                'products.product_cost',
+                'products.product_cost_with_tax',
+                'products.product_price',
+                'product_variants.variant_name',
+                'product_variants.variant_cost',
+                'product_variants.variant_cost_with_tax',
+                'product_variants.variant_price',
+                'warehouses.warehouse_name as w_name',
+                'warehouses.warehouse_code as w_code',
+                'purchases.invoice_id as p_invoice_id',
+                'suppliers.name as supplier_name',
+                'branches.name as b_name',
+                'branches.branch_code as b_code',
+                'purchase_products.batch_number',
+                'purchase_products.expire_date',
+            ]
+        )->orderBy('purchase_products.expire_date', 'asc');
+
+        return DataTables::of($expiredProducts)
+            ->addColumn('multiple_check', function ($row) {
+
+                return '<input id="'.$row->id.'" class="data_id sorting_disabled" type="checkbox" name="product_ids[]" value="'.$row->id.'"/>';
+            })
+            ->addColumn('action', function ($row) {
+
+                $html = '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                $html .= '<a class="dropdown-item" href="#"><i class="far fa-edit text-primary"></i> Add Return</a>';
+                $html .= '<a class="dropdown-item" href="#"><i class="fas fa-database text-primary"></i>Add Stock Adjustment</a>';
+                $html .= '<a class="dropdown-item" href="#"><i class="fas fa-database text-primary"></i>Add Replacement</a>';
+
+                $html .= ' </div>';
+                $html .= '</div>';
+
+                return $html;
+            })->editColumn('name', function ($row) {
+
+                return $row->name.($row->variant_name ? ' - '.$row->variant_name : '');
+            })->editColumn('expire_date', function ($row) use ($generalSettings) {
+
+                return date($generalSettings['business__date_format'], strtotime($row->expire_date));
+            })
+            ->rawColumns(['name', 'multiple_check', 'action'])
             ->smart(true)->make(true);
     }
 
@@ -264,6 +351,7 @@ class ProductUtil
         $addQuickCategory = new Category();
         $addQuickCategory->name = $request->name;
         $addQuickCategory->save();
+
         return response()->json($addQuickCategory);
     }
 
@@ -291,6 +379,7 @@ class ProductUtil
         $addUnit->name = $request->name;
         $addUnit->code_name = $request->code;
         $addUnit->save();
+
         return response()->json($addUnit);
     }
 
@@ -308,6 +397,7 @@ class ProductUtil
         $add->duration_type = $request->duration_type;
         $add->description = $request->description;
         $add->save();
+
         return response()->json($add);
     }
 
@@ -399,7 +489,7 @@ class ProductUtil
                     $productBranchVariant = ProductBranchVariant::where('product_branch_id', $productBranch->id)
                         ->where('product_id', $variant->product_id)->where('product_variant_id', $variant->id)->first();
 
-                    if (!$productBranchVariant) {
+                    if (! $productBranchVariant) {
 
                         $addProductBranchVariant = new ProductBranchVariant();
                         $addProductBranchVariant->product_branch_id = $productBranch->id;
@@ -427,6 +517,100 @@ class ProductUtil
                     $addProductBranchVariant->save();
                 }
             }
+        }
+    }
+
+    public function deleteProduct($deleteProduct)
+    {
+        if (! is_null($deleteProduct)) {
+
+            if ($deleteProduct->thumbnail_photo !== 'default.png') {
+
+                if (file_exists(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo))) {
+
+                    unlink(public_path('uploads/product/thumbnail/'.$deleteProduct->thumbnail_photo));
+                }
+            }
+
+            if ($deleteProduct->product_images->count() > 0) {
+
+                foreach ($deleteProduct->product_images as $product_image) {
+
+                    if (file_exists(public_path('uploads/product/'.$product_image->image))) {
+
+                        unlink(public_path('uploads/product/'.$product_image->image));
+                    }
+                }
+            }
+
+            if ($deleteProduct->product_variants->count() > 0) {
+
+                foreach ($deleteProduct->product_variants as $product_variant) {
+
+                    if ($product_variant->variant_image) {
+
+                        if (file_exists(public_path('uploads/product/variant_image/'.$product_variant->variant_image))) {
+
+                            unlink(public_path('uploads/product/variant_image/'.$product_variant->variant_image));
+                        }
+                    }
+                }
+            }
+
+            $deleteProduct->delete();
+        }
+    }
+
+    public function updateProductAndVariantPrice(
+        $productId,
+        $variantId,
+        $unitCostWithDiscount,
+        $unitCostIncTax,
+        $profit,
+        $sellingPrice,
+        $isEditProductPrice,
+        $isLastEntry
+    ) {
+        $updateProduct = Product::where('id', $productId)->first();
+        $updateProduct->is_purchased = 1;
+
+        if ($updateProduct->is_variant == 0) {
+
+            if ($isLastEntry == 1) {
+
+                $updateProduct->product_cost = $unitCostWithDiscount;
+                $updateProduct->product_cost_with_tax = $unitCostIncTax;
+            }
+
+            if ($isEditProductPrice == '1') {
+
+                $updateProduct->profit = $profit;
+                $updateProduct->product_price = $sellingPrice;
+            }
+        }
+
+        $updateProduct->save();
+
+        if ($variantId) {
+
+            $updateVariant = ProductVariant::where('id', $variantId)
+                ->where('product_id', $productId)
+                ->first();
+
+            if ($isLastEntry == 1) {
+
+                $updateVariant->variant_cost = $unitCostWithDiscount;
+                $updateVariant->variant_cost_with_tax = $unitCostIncTax;
+            }
+
+            if ($isEditProductPrice == '1') {
+
+                $updateVariant->variant_profit = $profit;
+                $updateVariant->variant_price = $sellingPrice;
+            }
+
+            $updateVariant->is_purchased = 1;
+            $updateVariant->save();
         }
     }
 }

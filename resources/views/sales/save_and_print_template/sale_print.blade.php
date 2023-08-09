@@ -1,6 +1,6 @@
 @php 
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp 
 <!-- Sale print templete-->
 @if ($sale->branch && $sale->branch->add_sale_invoice_layout)

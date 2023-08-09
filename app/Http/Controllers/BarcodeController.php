@@ -5,37 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\BarcodeSetting;
 use App\Models\Product;
 use App\Models\PurchaseProduct;
-use Illuminate\Http\Request;
 use App\Models\SupplierProduct;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BarcodeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+
     }
 
-    // Generate barcode index view 
+    // Generate barcode index view
     public function index()
     {
-        if (auth()->user()->permission->product['generate_barcode'] == '0') {
+        if (! auth()->user()->can('generate_barcode')) {
             abort(403, 'Access Forbidden.');
         }
 
         $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
+
         return view('product.barcode.index_v2', compact('bc_settings'));
     }
 
     public function preview(Request $request)
     {
         $req = $request;
-        if (!isset($req->product_ids)) {
+        if (! isset($req->product_ids)) {
+
             session()->flash('errorMsg', 'Product list is empty.');
+
             return redirect()->back();
         }
 
         $br_setting = BarcodeSetting::where('id', $request->br_setting_id)->first();
+
         return view('product.barcode.preview', compact('br_setting', 'req'));
     }
 
@@ -45,16 +49,16 @@ class BarcodeController extends Controller
         $supplier_products = SupplierProduct::with(['supplier', 'product', 'product.tax', 'variant'])
             ->where('label_qty', '>', 0)
             ->get();
+
         return view('product.barcode.ajax_view.purchase_product_list', compact('supplier_products'));
     }
-
 
     public function multipleGenerateCompleted(Request $request)
     {
         //return $request->all();
         $index = 0;
         foreach ($request->product_ids as $product_id) {
-            $variant_id = $request->product_variant_ids[$index] != 'null' ? $request->product_variant_ids[$index] : NULL;
+            $variant_id = $request->product_variant_ids[$index] != 'null' ? $request->product_variant_ids[$index] : null;
             $supplierProduct = SupplierProduct::where('supplier_id', $request->supplier_ids[$index])
                 ->where('product_id', $product_id)
                 ->where('product_variant_id', $variant_id)
@@ -73,7 +77,7 @@ class BarcodeController extends Controller
     public function searchProduct($searchKeyword)
     {
         $products = Product::with(['product_purchased_variants'])
-            ->where('name', 'like', $searchKeyword. '%')
+            ->where('name', 'like', $searchKeyword.'%')
             ->where('is_purchased', 1)->select(
                 'id',
                 'name',
@@ -103,18 +107,20 @@ class BarcodeController extends Controller
                 ->where('product_code', $searchKeyword)
                 ->where('is_purchased', 1)
                 ->get();
+
             return response()->json($products);
         }
     }
 
-    // Get selected product 
+    // Get selected product
     public function getSelectedProduct($productId)
     {
         $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
+
         return response()->json($supplierProducts);
     }
 
-    // Get selected product variant 
+    // Get selected product variant
     public function getSelectedProductVariant($productId, $variantId)
     {
         $supplierProducts = SupplierProduct::with(
@@ -125,21 +131,24 @@ class BarcodeController extends Controller
         )->where('product_id', $productId)
             ->where('product_variant_id', $variantId)
             ->get();
+
         return response()->json($supplierProducts);
     }
 
     // Generate specific product barcode view
-    public function genrateProductBarcode($productId)
+    public function generateProductBarcode($productId)
     {
         $productId = $productId;
         $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
+
         return view('product.barcode.specific_product_barcode', compact('productId', 'bc_settings'));
     }
 
     // Get specific product's supplier product
-    public function getSpacificSupplierProduct($productId)
+    public function getSpecificSupplierProduct($productId)
     {
         $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
+
         return response()->json($supplierProducts);
     }
 
@@ -148,6 +157,7 @@ class BarcodeController extends Controller
     {
         $purchaseId = $purchaseId;
         $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
+
         return view('product.barcode.purchase_product_barcode_v2', compact('purchaseId', 'bc_settings'));
     }
 
@@ -155,6 +165,7 @@ class BarcodeController extends Controller
     public function getPurchaseProduct($purchaseId)
     {
         $purchaseProducts = PurchaseProduct::with(['purchase', 'purchase.supplier', 'product', 'variant'])->where('purchase_id', $purchaseId)->get();
+
         return response()->json($purchaseProducts);
     }
 }

@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\StockAdjustment;
-use Illuminate\Database\Eloquent\Model;
-
-class StockAdjustmentProduct extends Model
+class StockAdjustmentProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
-    
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');

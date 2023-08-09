@@ -2,17 +2,19 @@
 
 namespace App\Utils;
 
-use Carbon\Carbon;
-use App\Utils\Converter;
 use App\Models\ExpansePayment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseUtil
 {
     protected $invoiceVoucherRefIdUtil;
+
     protected $converter;
+
     protected $accountUtil;
+
     public function __construct(
         InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         Converter $converter,
@@ -25,18 +27,18 @@ class ExpenseUtil
 
     public function expenseListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = config('generalSettings');
         $expenses = '';
 
         $query = DB::table('expanses')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('expanses.branch_id', NULL);
+                $query->where('expanses.branch_id', null);
             } else {
 
                 $query->where('expanses.branch_id', $request->branch_id);
@@ -50,7 +52,7 @@ class ExpenseUtil
 
         if ($request->cate_id) {
 
-            $query->where('expanses.category_ids', 'LIKE', '%'. $request->cate_id . '%');
+            $query->where('expanses.category_ids', 'LIKE', '%'.$request->cate_id.'%');
         }
 
         if ($request->from_date) {
@@ -66,9 +68,9 @@ class ExpenseUtil
             'expanses.*',
             'branches.name as branch_name',
             'branches.branch_code',
-            'admin_and_users.prefix as cr_prefix',
-            'admin_and_users.name as cr_name',
-            'admin_and_users.last_name as cr_last_name',
+            'users.prefix as cr_prefix',
+            'users.name as cr_name',
+            'users.last_name as cr_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -82,35 +84,36 @@ class ExpenseUtil
 
         return DataTables::of($expenses)
             ->addColumn('action', function ($row) {
-                
+
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                if (auth()->user()->branch_id == $row->branch_id) :
-                    
-                    if (auth()->user()->permission->expense['edit_expense'] == '1') :
+                if (auth()->user()->branch_id == $row->branch_id) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    endif;
+                    if (auth()->user()->can('edit_expense')) {
 
-                    if (auth()->user()->permission->expense['delete_expense'] == '1') :
+                        $html .= '<a class="dropdown-item" href="'.route('expanses.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    }
 
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    endif;
+                    if (auth()->user()->can('delete_expense')) {
 
-                    if ($row->due > 0) :
+                        $html .= '<a class="dropdown-item" id="delete" href="'.route('expanses.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    }
 
-                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('expanses.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
-                    endif;
-                endif;
+                    if ($row->due > 0) {
 
-                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('expanses.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
+                        $html .= '<a class="dropdown-item" id="add_payment" href="'.route('expanses.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                    }
+                }
+
+                $html .= '<a class="dropdown-item" id="view_payment" href="'.route('expanses.payment.view', [$row->id]).'"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';
+
                 return $html;
-            })->editColumn('descriptions', function ($row) use ($generalSettings) {
+            })->editColumn('descriptions', function ($row) {
 
                 $expenseDescriptions = DB::table('expense_descriptions')
                     ->where('expense_id', $row->id)
@@ -125,31 +128,31 @@ class ExpenseUtil
 
                 foreach ($expenseDescriptions as $exDescription) {
 
-                    $html .= '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b> ' . $exDescription->amount . '</br>';
+                    $html .= '<b>'.$exDescription->name.'('.$exDescription->code.'):</b> '.$exDescription->amount.'</br>';
                 }
 
                 return $html;
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
-            })->editColumn('from',  function ($row) use ($generalSettings) {
+                return date($generalSettings['business__date_format'], strtotime($row->date));
+            })->editColumn('from', function ($row) use ($generalSettings) {
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
+                    return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                 } else {
 
-                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                 }
             })
-            ->editColumn('user_name',  function ($row) {
+            ->editColumn('user_name', function ($row) {
 
-                return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
+                return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
             })
-            ->editColumn('payment_status',  function ($row) {
+            ->editColumn('payment_status', function ($row) {
 
-                $html = "";
+                $html = '';
                 $payable = $row->net_total_amount;
 
                 if ($row->due <= 0) {
@@ -162,31 +165,32 @@ class ExpenseUtil
 
                     $html .= '<span class="badge bg-danger text-white">Due</span>';
                 }
+
                 return $html;
             })
-            ->editColumn('tax_percent',  function ($row) {
+            ->editColumn('tax_percent', function ($row) {
 
-                return $row->tax_percent . '%';
+                return $row->tax_percent.'%';
             })
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.$this->converter->format_in_bdt($row->net_total_amount).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
             ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total_amount', 'descriptions'])
             ->make(true);
     }
 
     public function categoryWiseExpenseListTable($request)
     {
-        $generalSettings = DB::table('general_settings')->first();
+        $generalSettings = config('generalSettings');
         $expenses = '';
         $query = DB::table('expense_descriptions')
             ->leftJoin('expanses', 'expense_descriptions.expense_id', 'expanses.id')
             ->leftJoin('expanse_categories', 'expense_descriptions.expense_category_id', 'expanse_categories.id')
             ->leftJoin('branches', 'expanses.branch_id', 'branches.id')
-            ->leftJoin('admin_and_users', 'expanses.admin_id', 'admin_and_users.id');
+            ->leftJoin('users', 'expanses.admin_id', 'users.id');
 
         if ($request->branch_id) {
             if ($request->branch_id == 'NULL') {
-                $query->where('expanses.branch_id', NULL);
+                $query->where('expanses.branch_id', null);
             } else {
                 $query->where('expanses.branch_id', $request->branch_id);
             }
@@ -203,7 +207,7 @@ class ExpenseUtil
         if ($request->from_date) {
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
+            $date_range = [$from_date.' 00:00:00', $to_date.' 00:00:00'];
             $query->whereBetween('expanses.report_date', $date_range); // Final
         }
 
@@ -215,9 +219,9 @@ class ExpenseUtil
             'expanse_categories.code',
             'branches.name as branch_name',
             'branches.branch_code',
-            'admin_and_users.prefix as cr_prefix',
-            'admin_and_users.name as cr_name',
-            'admin_and_users.last_name as cr_last_name',
+            'users.prefix as cr_prefix',
+            'users.name as cr_name',
+            'users.last_name as cr_last_name',
         );
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -229,22 +233,22 @@ class ExpenseUtil
 
         return DataTables::of($expenses)
             ->editColumn('date', function ($row) use ($generalSettings) {
-                return date(json_decode($generalSettings->business, true)['date_format'], strtotime($row->date));
-            })->editColumn('from',  function ($row) use ($generalSettings) {
+                return date($generalSettings['business__date_format'], strtotime($row->date));
+            })->editColumn('from', function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
+                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                 } else {
-                    return json_decode($generalSettings->business, true)['shop_name'] . '(<b>HO</b>)';
+                    return $generalSettings['business__shop_name'].'(<b>HO</b>)';
                 }
             })->editColumn('category_name', function ($row) {
-                return $row->name . ' (' . $row->code . ')';
-            })->editColumn('user_name',  function ($row) {
+                return $row->name.' ('.$row->code.')';
+            })->editColumn('user_name', function ($row) {
                 if ($row->cr_name) {
-                    return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
+                    return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
                 } else {
                     return '---';
                 }
-            })->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
+            })->editColumn('amount', fn ($row) => '<span class="amount" data-value="'.$row->amount.'">'.$this->converter->format_in_bdt($row->amount).'</span>')
             ->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
             ->make(true);
     }
@@ -268,7 +272,7 @@ class ExpenseUtil
     public function addPaymentGetId($voucher_prefix, $expense_id, $request, $another_amount = 0)
     {
         $addExpensePayment = new ExpansePayment();
-        $addExpensePayment->invoice_id = ($voucher_prefix != null ? $voucher_prefix : 'EPV') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 5, "0", STR_PAD_LEFT);
+        $addExpensePayment->invoice_id = ($voucher_prefix != null ? $voucher_prefix : 'EPV').str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 5, '0', STR_PAD_LEFT);
         $addExpensePayment->expanse_id = $expense_id;
         $addExpensePayment->account_id = $request->account_id;
         $addExpensePayment->payment_method_id = $request->payment_method_id;
@@ -282,12 +286,13 @@ class ExpenseUtil
 
         if ($request->hasFile('attachment')) {
             $expensePaymentAttachment = $request->file('attachment');
-            $expensePaymentAttachmentName = uniqid() . '-' . '.' . $expensePaymentAttachment->getClientOriginalExtension();
+            $expensePaymentAttachmentName = uniqid().'-'.'.'.$expensePaymentAttachment->getClientOriginalExtension();
             $expensePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
             $addExpensePayment->attachment = $expensePaymentAttachmentName;
         }
 
         $addExpensePayment->save();
+
         return $addExpensePayment->id;
     }
 
@@ -303,13 +308,13 @@ class ExpenseUtil
 
         if ($request->hasFile('attachment')) {
             if ($expensePayment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/' . $expensePayment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/' . $expensePayment->attachment));
+                if (file_exists(public_path('uploads/payment_attachment/'.$expensePayment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/'.$expensePayment->attachment));
                 }
             }
             $expensePaymentAttachment = $request->file('attachment');
-            $expensePaymentAttachmentName = uniqid() . '-' . '.' . $expensePaymentAttachment->getClientOriginalExtension();
-            $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
+            $expensePaymentAttachmentName = uniqid().'-'.'.'.$expensePaymentAttachment->getClientOriginalExtension();
+            // $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
             $expensePayment->attachment = $expensePaymentAttachmentName;
         }
 
@@ -322,7 +327,7 @@ class ExpenseUtil
 
         $storedExpensePayments = $deleteExpense->expense_payments;
 
-        if (!is_null($deleteExpense)) {
+        if (! is_null($deleteExpense)) {
 
             $deleteExpense->delete();
 
@@ -332,9 +337,9 @@ class ExpenseUtil
 
                     if ($payment->attachment) {
 
-                        if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                        if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
 
-                            unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
+                            unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
                         }
                     }
 

@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\Account;
-use App\Models\Supplier;
-use App\Models\SupplierPaymentInvoice;
-use Illuminate\Database\Eloquent\Model;
-
-class SupplierPayment extends Model
+class SupplierPayment extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function supplier_payment_invoices()

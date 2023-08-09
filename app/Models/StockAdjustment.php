@@ -1,17 +1,13 @@
 <?php
 
 namespace App\Models;
-use App\Models\Branch;
-use App\Models\AdminAndUser;
-use App\Models\StockAdjustmentProduct;
-use App\Models\StockAdjustmentRecover;
-use Illuminate\Database\Eloquent\Model;
 
-class StockAdjustment extends Model
+class StockAdjustment extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
-    
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
@@ -24,9 +20,9 @@ class StockAdjustment extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
-    
+
     public function adjustment_products()
     {
         return $this->hasMany(StockAdjustmentProduct::class);

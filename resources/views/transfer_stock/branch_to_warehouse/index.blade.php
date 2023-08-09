@@ -10,37 +10,37 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-exchange-alt"></span>
-                                <h5>Transfer Stocks</h5>
+                                <h5>@lang('menu.transfer_stocks')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
-                    <div class="row margin_row mt-1">
+                    <div class="p-3">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-10">
-                                    <h6>All Transfer Stocks </h6>
+                                    <h6>{{ __('All Transfer Stocks') }} </h6>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>Date</th>
-                                                <th>Reference ID</th>
-                                                <th>B.Location(From)</th>
-                                                <th>Warehouse(To) </th>
-                                                <th>Shipping Charge({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Total Amount({{ json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.date')</th>
+                                                <th>@lang('menu.reference_id')</th>
+                                                <th>@lang('menu.b_location')(From)</th>
+                                                <th>@lang('menu.warehouse')(To) </th>
+                                                <th>@lang('menu.shipping_charge')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.total_amount')({{ $generalSettings['business__currency'] }})</th>
+                                                <th>@lang('menu.status')</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,7 +74,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             ajax: "{{ route('transfer.stock.to.warehouse.index') }}",
             columnDefs: [{"targets": [2, 3, 4, 7],"orderable": false,"searchable": false}],
@@ -106,7 +106,7 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
@@ -125,6 +125,10 @@
                 type:'post',
                 data:request,
                 success:function(data){
+                    if (!$.isEmptyObject(data.errorMsg)) {
+                        toastr.error(data.errorMsg, 'Attention');
+                        return;
+                    }
                     table.ajax.reload();
                     toastr.error(data);
                 }
@@ -140,7 +144,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
                 removeInline: false,
                 printDelay: 1000,
                 header: null,

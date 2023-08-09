@@ -1,11 +1,11 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print',autoPrint: true,exportOptions: {columns: ':visible'}}
+            {extend: 'print',className: 'btn btn-primary',autoPrint: true,exportOptions: {columns: ':visible'}}
         ],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         processing: true,
         serverSide: true,
@@ -24,7 +24,7 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function() {
         // Add category by ajax
         $(document).on('submit', '#add_category_form', function(e) {
@@ -42,13 +42,15 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
-                    
+
                     $('.error').html('');
-                    toastr.success(data);
+                    toastr.success('Category Added Successfully');
                     $('#add_category_form')[0].reset();
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'submit');
                     table.ajax.reload();
+
+                    $('#parent_category_id').append('<option value="' + data.id + '">' + data.name + '</option>');
                 },error: function(err) {
 
                     $('.loading_button').hide();
@@ -57,7 +59,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -80,24 +82,29 @@
                 success: function(data) {
                     $('#edit_cate_form_body').html(data);
                     $('#add_cate_form').hide();
+                    $('#edit_cate_form').removeClass('d-hide');
                     $('#edit_cate_form').show();
                     $('.data_preloader').hide();
                     document.getElementById('e_name').focus();
                 },error:function(err){
+
                     $('.data_preloader').hide();
+
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
                     }else{
-                        toastr.error('Server Error, Please contact to the support team.'); 
+                        
+                        toastr.error('Server Error, Please contact to the support team.');
                     }
                 }
             });
         });
 
         $(document).on('click', '#update_btn',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Edit Confirmation',
                 'content': 'Are you sure to edit?',
@@ -133,7 +140,7 @@
                     $('.error').html('');
 
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }
 
@@ -141,15 +148,15 @@
                         $('.error_e_' + key + '').html(error[0]);
                     });
                 }
-            }); 
+            });
         });
-        
+
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
                     'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
@@ -182,10 +189,10 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Please check the connection.'); 
+                        toastr.error('Net Connetion Error. Please check the connection.');
                     }else if(err.status == 500){
 
-                        toastr.error('Server Error. Please contact to the support team.'); 
+                        toastr.error('Server Error. Please contact to the support team.');
                     }
                 }
             });

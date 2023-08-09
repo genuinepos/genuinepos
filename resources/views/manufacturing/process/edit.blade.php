@@ -13,36 +13,31 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h5>@lang('menu.edit_process')</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_process_form" action="{{ route('manufacturing.process.update', $process->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $process->product_id }}">
                 <input type="hidden" name="variant_id" value="{{ $process->variant_id ? $process->variant_id : 'noid' }}">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Edit Process</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            @php
-                                                $p_code = $process->v_code ? $process->v_code : $process->p_code;
-                                            @endphp
-                                            <p> <strong>Product :</strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
-                                        </div>
-                                    </div>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @php
+                                        $p_code = $process->v_code ? $process->v_code : $process->p_code;
+                                    @endphp
+                                    <p> <strong>@lang('menu.product') </strong> {{ $process->p_name.' '.$process->v_name.' ('.$process->p_code.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -53,12 +48,12 @@
                     <div class="sale-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
+                                <div class="card mb-3">
+                                    <div class="card-body p-2">
+                                        <div class="row mb-3">
                                             <div class="col-md-6 offset-md-3">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">Select Ingredients</label>
+                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.select_ingredients')</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
@@ -67,66 +62,64 @@
                                                     </div>
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area">
-                                                        
+
                                                         </ul>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Ingredient</th>
-                                                                    <th>Final Quantity</th>
-                                                                    <th>Unit</th>
-                                                                    <th>Unit Cost</th>
-                                                                    <th>SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt"></i></th>
+                                        <div class="sale-item-sec">
+                                            <div class="sale-item-inner">
+                                                <div class="table-responsive">
+                                                    <table class="display data__table table-striped">
+                                                        <thead class="staky">
+                                                            <tr>
+                                                                <th>@lang('menu.ingredient')</th>
+                                                                <th>@lang('menu.final_quantity')</th>
+                                                                <th>@lang('menu.unit')</th>
+                                                                <th>@lang('menu.unit_cost')</th>
+                                                                <th>@lang('menu.subtotal')</th>
+                                                                <th><i class="fas fa-trash-alt"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="ingredient_list">
+                                                            @foreach ($processIngredients as $ingredient)
+                                                                <tr class="text-start">
+                                                                    <td>
+                                                                        <span class="product_name">{{ $ingredient->p_name }}</span><br>
+                                                                        <span class="product_variant">{{ $ingredient->v_name }}</span>
+                                                                        <input value="{{ $ingredient->p_id }}" type="hidden" class="productId-{{ $ingredient->p_id }}" id="product_id" name="product_ids[]">
+                                                                        <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <select name="unit_ids[]" id="unit_id" class="form-control">
+                                                                            @foreach ($units as $unit)
+                                                                                <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input readonly value="{{ $ingredient->unit_cost_inc_tax }}"  name="unit_costs_inc_tax[]" type="text" id="unit_cost_inc_tax" class="form-control text-center">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <input value="{{ $ingredient->subtotal }}" type="text" class="form-control text-center" name="subtotals[]" id="subtotal">
+                                                                    </td>
+
+                                                                    <td class="text-start">
+                                                                        <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>
+                                                                    </td>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody id="ingredient_list">
-                                                                @foreach ($processIngredients as $ingredient)
-                                                                    <tr class="text-start">
-                                                                        <td>
-                                                                            <span class="product_name">{{ $ingredient->p_name }}</span><br>
-                                                                            <span class="product_variant">{{ $ingredient->v_name }}</span>  
-                                                                            <input value="{{ $ingredient->p_id }}" type="hidden" class="productId-{{ $ingredient->p_id }}" id="product_id" name="product_ids[]">
-                                                                            <input value="{{ $ingredient->v_id ? $ingredient->v_id : 'noid' }}" type="hidden" id="variant_id" name="variant_ids[]">
-                                                                        </td>
-                                    
-                                                                        <td>
-                                                                            <input value="{{ $ingredient->final_qty }}" required name="final_quantities[]" type="number" step="any" class="form-control text-center" id="final_quantity">
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <select name="unit_ids[]" id="unit_id" class="form-control">
-                                                                                @foreach ($units as $unit)
-                                                                                    <option {{ $ingredient->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option> 
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <input readonly value="{{ $ingredient->unit_cost_inc_tax }}"  name="unit_costs_inc_tax[]" type="text" id="unit_cost_inc_tax" class="form-control text-center">
-                                                                        </td>
-                                    
-                                                                        <td>
-                                                                            <input value="{{ $ingredient->subtotal }}" type="text" class="form-control text-center" name="subtotals[]" id="subtotal">
-                                                                        </td>
-                                    
-                                                                        <td class="text-start">
-                                                                            <a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,39 +132,32 @@
 
                 <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $process->total_ingredient_cost }}">
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total_output_qty') : <span class="text-danger">*</span></b></label>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <label><b>Total Output Qty :</b></label>
-                                            <div class="row">
-                                                <div class="col-7">
-                                                    <input type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="Total Output Quantity" value="{{ $process->total_output_qty }}">
-                                                </div>
-
-                                                <div class="col-5">
-                                                    <select name="unit_id" class="form-control" id="unit_id">
-                                                        @foreach ($units as $unit)
-                                                            <option {{ $unit->id == $process->unit_id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label><b>Production Cost :</b></label>
-                                            <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="{{ $process->production_cost }}">
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label><b>Total Cost :</b></label>
-                                            <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="Total Cost" value="{{ $process->total_cost }}">
+                                        <div class="input-group">
+                                            <input required type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="{{ $process->total_output_qty }}">
+                                            <select required name="unit_id" class="form-control" id="unit_id">
+                                                @foreach ($units as $unit)
+                                                    <option {{ $unit->id == $process->unit_id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.production_cost') </b></label>
+                                    <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="@lang('menu.production_cost')" value="{{ $process->production_cost }}">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label><b>@lang('menu.total_cost') : <span class="text-danger">*</span></b></label>
+                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')" value="{{ $process->total_cost }}">
                                 </div>
                             </div>
                         </div>
@@ -180,10 +166,11 @@
 
                 <div class="submit_button_area">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-none"><i
-                                class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                            <button class="btn btn-sm btn-primary submit_button float-end">Save</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
+                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,7 +179,7 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script>
         var unites = [];
         function getUnites(){
@@ -201,7 +188,7 @@
                 success:function(units){
                     $.each(units, function(key, unit){
                         $('#unit_id').append('<option value="'+unit.id+'">'+unit.name+'</option>');
-                        unites.push({id : unit.id, name : unit.name}); 
+                        unites.push({id : unit.id, name : unit.name});
                     });
                 }
             });
@@ -231,7 +218,7 @@
                         toastr.error(product.errorMsg);
                         $('#search_product').val('');
                         return;
-                    } 
+                    }
 
                     if(!$.isEmptyObject(product.product) || !$.isEmptyObject(product.variant_product) || !$.isEmptyObject(product.namedProducts)) {
                         $('#search_product').addClass('is-valid');
@@ -247,13 +234,13 @@
                                         sameProduct += 1;
                                         var className = input.getAttribute('class');
                                         var closestTr = $('.'+className).closest('tr');
-                                        // update same product qty 
+                                        // update same product qty
                                         var presentQty = closestTr.find('#final_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#final_quantity').val(updateQty);
                                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                                         // update subtotal
-                                        var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
+                                        var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty);
                                         closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                                         closestTr.find('#span_subtotal').html(parseFloat(totalCost).toFixed(2));
                                         __calculateTotalAmount();
@@ -266,7 +253,7 @@
                                     tr += '<tr class="text-start">';
                                     tr += '<td>';
                                     tr += '<span class="product_name">'+product.name+'</span><br>';
-                                    tr += '<span class="product_variant"></span>';  
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                                     tr += '</td>';
@@ -281,10 +268,10 @@
 
                                         if (product.unit.id == unit.id) {
 
-                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>';
                                         }else{
 
-                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';
                                         }
                                     });
 
@@ -303,10 +290,10 @@
                                     tr += '<td class="text-start">';
                                     tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
                                     tr += '</td>';
-                                    
+
                                     tr += '</tr>';
-                                    $('#ingredient_list').prepend(tr); 
-                                    __calculateTotalAmount();  
+                                    $('#ingredient_list').prepend(tr);
+                                    __calculateTotalAmount();
                                 }
                             } else {
                                 var li = "";
@@ -323,7 +310,7 @@
                             if(product.namedProducts.length > 0){
 
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
 
                                 $.each(products, function (key, product) {
 
@@ -332,7 +319,7 @@
                                         li += '<li class="mt-1">';
                                         li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'"  data-unit="'+product.unit_id+'" data-v_code="'+product.variant_code+'" data-v_cost="'+product.variant_cost+'" data-v_cost_with_tax="'+product.variant_cost_with_tax+'" data-v_name="'+product.variant_name+'" href="#">'+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Unit Cost: '+product.variant_cost_with_tax+'</a>';
                                         li +='</li>';
-                                      
+
                                     }else{
 
                                         li += '<li class="mt-1">';
@@ -350,31 +337,34 @@
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
                             variant_ids.forEach(function(input){
+
                                 if(input.value != 'noid'){
+
                                     if(input.value == variant_product.id){
+
                                         sameVariant += 1;
                                         var className = input.getAttribute('class');
                                         var closestTr = $('.'+className).closest('tr');
-                                        // update same product qty 
+                                        // update same product qty
                                         var presentQty = closestTr.find('#final_quantity').val();
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#final_quantity').val(updateQty);
                                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                                         // update subtotal
-                                        var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
+                                        var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty);
                                         closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                                         __calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                            
+
                             if(sameVariant == 0){
                                 var tr = '';
                                 tr += '<tr class="text-center">';
                                 tr += '<td>';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';  
+                                tr += '<span class="product_variant">('+variant_product.variant_name+')</span>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
                                 tr += '</td>';
@@ -387,9 +377,9 @@
                                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                                     unites.forEach(function(unit) {
                                         if (product.unit.id == unit.id) {
-                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>';
                                         } else{
-                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';
                                         }
                                     });
                                 tr += '</select>';
@@ -406,11 +396,11 @@
                                 tr += '<td>';
                                 tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>';
                                 tr += '</td>';
-                                
+
                                 tr += '</tr>';
                                 $('#purchase_list').prepend(tr);
-                                __calculateTotalAmount(); 
-                            }    
+                                __calculateTotalAmount();
+                            }
                         }
                     }else{
                         $('#search_product').addClass('is-invalid');
@@ -434,24 +424,28 @@
             var productName = e.getAttribute('data-p_name');
             var productUnit = e.getAttribute('data-unit');
             var productCode = e.getAttribute('data-p_code');
-            var productCostIncTax = e.getAttribute('data-p_cost_with_tax'); 
+            var productCostIncTax = e.getAttribute('data-p_cost_with_tax');
             product_ids = document.querySelectorAll('#product_id');
             var sameProduct = 0;
             product_ids.forEach(function(input){
+
                 if(input.value == productId){
+
                     sameProduct += 1;
                     var className = input.getAttribute('class');
                     var closestTr = $('.'+className).closest('tr');
-                    // update same product qty 
+                    // update same product qty
                     var presentQty = closestTr.find('#final_quantity').val();
                     var updateQty = parseFloat(presentQty) + 1;
                     closestTr.find('#final_quantity').val(updateQty);
                     var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                     // update subtotal
-                    var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
+                    var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty);
                     closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                     __calculateTotalAmount();
+
                     if (keyName == 9) {
+
                         closestTr.find('#final_quantity').focus();
                         closestTr.find('#final_quantity').select();
                         keyName = 1;
@@ -465,7 +459,7 @@
                 tr += '<tr class="text-start">';
                 tr += '<td>';
                 tr += '<span class="product_name">'+productName+'</span><br>';
-                tr += '<span class="product_variant"></span>';  
+                tr += '<span class="product_variant"></span>';
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="noid" type="hidden" id="variant_id" name="variant_ids[]">';
                 tr += '</td>';
@@ -478,9 +472,9 @@
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                     unites.forEach(function(unit) {
                         if (productUnit == unit.id) {
-                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>';
                         }else{
-                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';
                         }
                     })
                 tr += '</select>';
@@ -497,11 +491,11 @@
                 tr += '<td class="text-start">';
                 tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash "></span></a>';
                 tr += '</td>';
-                
-                tr += '</tr>';
-                $('#ingredient_list').prepend(tr); 
 
-                __calculateTotalAmount();  
+                tr += '</tr>';
+                $('#ingredient_list').prepend(tr);
+
+                __calculateTotalAmount();
                 if (keyName == 9) {
                     $("#final_quantity").select();
                     keyName = 1;
@@ -514,7 +508,7 @@
             if (keyName == 13 || keyName == 1) {
                 document.getElementById('search_product').focus();
             }
-            
+
             $('.select_area').hide();
             $('#search_product').val("");
             $('#search_product').val('');
@@ -526,28 +520,32 @@
             var variantId = e.getAttribute('data-v_id');
             var variantName = e.getAttribute('data-v_name');
             var variantCode = e.getAttribute('data-v_code');
-            var variantCost = e.getAttribute('data-v_cost'); 
+            var variantCostIncTax = e.getAttribute('data-v_cost_with_tax');
             variant_id = document.querySelectorAll('#variant_id');
             __calculateTotalAmount();
             var sameVariant = 0;
+
             variant_id.forEach(function(input){
+
                 if(input.value != 'noid'){
+
                     if(input.value == variantId){
+
                         sameVariant += 1;
                         var className = input.getAttribute('class');
                         var closestTr = $('.'+className).closest('tr');
-                        // update same product qty 
+                        // update same product qty
                         var presentQty = closestTr.find('#final_quantity').val();
                         var updateQty = parseFloat(presentQty) + 1;
                         closestTr.find('#final_quantity').val(updateQty);
                         var unitCostIncTax = closestTr.find('#unit_cost_inc_tax').val();
                         // update subtotal
-                        var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty); 
+                        var totalCost = parseFloat(unitCostIncTax) * parseFloat(updateQty);
                         closestTr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
                         __calculateTotalAmount();
                         return;
                     }
-                }    
+                }
             });
 
             if(sameVariant == 0){
@@ -555,7 +553,7 @@
                 tr += '<tr>';
                 tr += '<td class="text-start">';
                 tr += '<span class="product_name">'+productName+'</span>';
-                tr += '<span class="product_variant">('+variantName+')</span>';  
+                tr += '<span class="product_variant">('+variantName+')</span>';
                 tr += '<input value="'+productId+'" type="hidden" class="productId-'+productId+'" id="product_id" name="product_ids[]">';
                 tr += '<input value="'+variantId+'" type="hidden" class="variantId-'+variantId+'" id="variant_id" name="variant_ids[]">';
                 tr += '</td>';
@@ -568,26 +566,26 @@
                 tr += '<select name="unit_ids[]" id="unit_id" class="form-control">';
                     unites.forEach(function(unit) {
                         if (productUnit == unit.id) {
-                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>'; 
+                            tr += '<option SELECTED value="'+unit.id+'">'+unit.name+'</option>';
                         } else {
-                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';   
+                            tr += '<option value="'+unit.id+'">'+unit.name+'</option>';
                         }
                     });
                 tr += '</select>';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
-                tr += '<input readonly value="'+variantCost+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
+                tr += '<input readonly value="'+variantCostIncTax+'" type="text" name="subtotals[]" id="subtotal" class="form-control text-center">';
                 tr += '</td>';
 
                 tr += '<td class="text-start">';
                 tr += '<a href="#" id="remove_product_btn" class="c-delete"><span class="fas fa-trash"></span></a>';
                 tr += '</td>';
-                
+
                 tr += '</tr>';
                 $('#ingredient_list').prepend(tr);
                 __calculateTotalAmount();
@@ -611,7 +609,7 @@
 
         function __calculateIngredientsTableAmount(tr) {
             var qty = tr.find('#final_quantity').val() ? tr.find('#final_quantity').val() : 0;
-            //Update subtotal 
+            //Update subtotal
             var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
             var totalCost = parseFloat(unitCostIncTax) * parseFloat(qty);
             var subtotal = tr.find('#subtotal').val(parseFloat(totalCost).toFixed(2));
@@ -619,9 +617,12 @@
         }
 
         function __calculateTotalAmount(){
+
             var subtotals = document.querySelectorAll('#subtotal');
             var totalIngredientCost = 0;
+
             subtotals.forEach(function(subtotal){
+
                 totalIngredientCost += parseFloat(subtotal.value);
             });
 
@@ -631,7 +632,7 @@
             $('#total_cost').val(parseFloat(totalCost).toFixed(2));
         }
 
-        // Remove product form ingredient list (Table) 
+        // Remove product form ingredient list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
             $(this).closest('tr').remove();
@@ -641,46 +642,63 @@
         //Add process request by ajax
         $('#edit_process_form').on('submit', function(e) {
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
+
+                    $('.loading_button').hide();
                     if(!$.isEmptyObject(data.errorMsg)) {
-                        toastr.error(data.errorMsg); 
-                        $('.loading_button').hide();
+
+                        toastr.error(data.errorMsg);
                     } else {
-                        $('.loading_button').hide();
-                        toastr.success(data); 
+
+                        toastr.success(data);
                         window.location = "{{ route('manufacturing.process.index') }}";
                     }
                 },error: function(err) {
+
+                    $('.error').html('');
+                    $('.loading_button').hide();
+
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
-                    }else{
-                        toastr.error('Server error please contact to the support.');
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
+                        return;
                     }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
         $('body').keyup(function(e){
-            if (e.keyCode == 13){  
+
+            if (e.keyCode == 13){
+
                 $(".selectProduct").click();
                 $('#list').empty();
             }
         });
 
         $(document).keypress(".scanable",function(event) {
+
             if (event.which == '10' || event.which == '13') {
+
                 event.preventDefault();
             }
         });
 
-        setInterval(function(){$('#search_product').removeClass('is-invalid');}, 500); 
+        setInterval(function(){$('#search_product').removeClass('is-invalid');}, 500);
         setInterval(function(){$('#search_product').removeClass('is-valid');}, 1000);
     </script>
 @endpush

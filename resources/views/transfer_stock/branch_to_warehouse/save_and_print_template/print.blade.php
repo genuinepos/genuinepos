@@ -1,12 +1,12 @@
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="transfer_print_template">
     <div class="details_area">
         <div class="heading_area">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12">
                     <div class="heading text-center">
-                        <h5 class="company_name">{{ json_decode($generalSettings->business, true)['shop_name'] }}</h5>
-                        <h6 class="bill_name">Transfer Stock Details (To Branch)</h6>
+                        <h5 class="company_name">{{ $generalSettings['business__shop_name'] }}</h5>
+                        <h6 class="bill_name">@lang('menu.transfer_stock_details') (To Branch)</h6>
                     </div>
                 </div>
             </div>
@@ -16,42 +16,42 @@
             <div class="row">
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>B.Location (From) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}</li>
-                        <li><strong>Phone : </strong> {{ $transfer->branch ? $transfer->branch->phone : json_decode($generalSettings->business, true)['phone'] }}</li>
+                        <li><strong>@lang('menu.b_location') (From) : </strong></li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}</li>
+                        <li><strong>@lang('menu.phone') : </strong> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</li>
                         @if ($transfer->branch)
-                            <li><strong>Address : </strong> 
+                            <li><strong>@lang('menu.address') : </strong>
                                 {{ $transfer->branch->city }},
                                 {{ $transfer->branch->state }},
                                 {{ $transfer->branch->zip_code }},
                                 {{ $transfer->branch->country }}.
                             </li>
-                        @else 
-                            <li><strong>Address : </strong> 
-                                {{ json_decode($generalSettings->business, true)['address'] }}
+                        @else
+                            <li><strong>@lang('menu.address') : </strong>
+                                {{ $generalSettings['business__address'] }}
                             </li>
                         @endif
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
-                        <li><strong>Warehouse (To) : </strong></li>
-                        <li><strong>Name :</strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
-                        <li><strong>Phone : </strong>{{ $transfer->warehouse->phone }}</li>
-                        <li><strong>Address : </strong> {{ $transfer->warehouse->address }}</li>
+                        <li><strong>@lang('menu.warehouse') (To) : </strong></li>
+                        <li><strong>@lang('menu.name') : </strong> {{ $transfer->warehouse->warehouse_name.'/'.$transfer->warehouse->warehouse_code }}</li>
+                        <li><strong>@lang('menu.phone') : </strong>{{ $transfer->warehouse->phone }}</li>
+                        <li><strong>@lang('menu.address') : </strong> {{ $transfer->warehouse->address }}</li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <ul class="list-unstyled float-end">
-                        <li><strong>Date : </strong> {{ $transfer->date }}</li>
-                        <li><strong>Reference ID : </strong> {{ $transfer->invoice_id }}</li>
-                        <li><strong>Status : </strong> 
-                            @if ($transfer->status == 1) 
-                                Pending
+                        <li><strong>@lang('menu.date') : </strong> {{ $transfer->date }}</li>
+                        <li><strong>@lang('menu.reference_id') : </strong> {{ $transfer->invoice_id }}</li>
+                        <li><strong>@lang('menu.status') : </strong>
+                            @if ($transfer->status == 1)
+                            @lang('menu.pending')
                             @elseif($transfer->status == 2)
-                                Partial
+                            @lang('menu.partial')
                             @elseif($transfer->status == 3)
-                               Completed
+                            @lang('menu.completed')
                             @endif
                         </li>
                     </ul>
@@ -64,13 +64,13 @@
                 <thead>
                     <tr>
                         <tr>
-                            <th class="text-start">SL</th>
-                            <th class="text-start">Product</th>
-                            <th class="text-start">Unit Price</th>
-                            <th class="text-start">Quantity</th>
-                            <th class="text-start">Unit</th>
-                            <th class="text-start">Receive Qty</th>
-                            <th class="text-start">SubTotal</th>
+                            <th class="text-start">@lang('menu.sl')</th>
+                            <th class="text-start">@lang('menu.product')</th>
+                            <th class="text-start">@lang('menu.unit_price')</th>
+                            <th class="text-start">@lang('menu.quantity')</th>
+                            <th class="text-start">@lang('menu.unit')</th>
+                            <th class="text-start">@lang('menu.receive_qty')</th>
+                            <th class="text-start">@lang('menu.sub_total')</th>
                         </tr>
                     </tr>
                 </thead>
@@ -92,17 +92,17 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-start" colspan="6"><strong>Net Total Amount :</strong></td>
+                        <td class="text-start" colspan="6"><strong>@lang('menu.net_total_amount') : </strong></td>
                         <td class="text-start" colspan="2">{{ $transfer->net_total_amount }}</td>
                     </tr>
-                   
+
                     <tr>
-                        <th class="text-start" colspan="6">Shipping Charge</th>
+                        <th class="text-start" colspan="6">@lang('menu.shipping_charge')</th>
                         <td class="text-start" colspan="2">{{ $transfer->shipping_charge }}</td>
                     </tr>
 
                     <tr>
-                        <th class="text-start" colspan="6">Grand Total</th>
+                        <th class="text-start" colspan="6">@lang('menu.grand_total')</th>
                         @php
                             $grandTotal = $transfer->net_total_amount  + $transfer->shipping_charge;
                         @endphp
@@ -116,10 +116,10 @@
         <div class="note">
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Receiver's Signature</strong></p>
+                    <p><strong>{{ __('Receivers signature') }}</strong></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p><strong>Signature Of Authority</strong></p>
+                    <p><strong>@lang('menu.signature_of_authority')</strong></p>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
                 <img style="width: 170px; height:20px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($transfer->invoice_id, $generator::TYPE_CODE_128)) }}">
                 <p class="p-0 m-0">{{ $transfer->invoice_id }}</b></small>
                 @if (env('PRINT_SD_OTHERS') == true)
-                    <small class="d-block">Software By <b>SpeedDigit Pvt. Ltd.</b></small>
+                    <small class="d-block">@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
                 @endif
             </div>
         </div>

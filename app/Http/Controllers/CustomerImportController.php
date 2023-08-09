@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CustomerImport;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerImportController extends Controller
 {
@@ -19,7 +20,19 @@ class CustomerImportController extends Controller
             'import_file' => 'required|mimes:csv,xlx,xlsx,xls',
         ]);
 
-        Excel::import(new CustomerImport, $request->import_file);
+        try {
+            DB::beginTransaction();
+
+            Excel::import(new CustomerImport, $request->import_file);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        session()->flash('successMsg', 'Customers imported successfully');
+
         return redirect()->back();
     }
 }

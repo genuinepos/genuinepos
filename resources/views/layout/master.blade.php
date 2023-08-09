@@ -1,33 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @php
     $rtl  = app()->isLocale('ar');
 @endphp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Title -->
-    <title>@yield('title') Genuine POS</title>
-
-    <!-- Icon -->
-    <link rel="shortcut icon" href="{{ asset('public/favicon.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+    <title>@yield('title') {{ config('app.name') }}</title>
+
     @include('layout._stylesheet')
     @stack('stylesheets')
 
+    <!-- Vite and Laravel-Vite used as Asset Build Tools (For SASS/VueJS/ReactJS or any other build process ) -->
+    @vite([
+        'resources/sass/app.scss',
+        'resources/js/app.js',
+        'resources/scripts/main.ts',
+    ])
 </head>
-<body id="dashboard-8" class="{{ isset(json_decode($generalSettings->system, true)['theme_color']) ?  json_decode($generalSettings->system, true)['theme_color'] : 'red-theme' }}">
 
-    {{-- color changing option  --}}
-    {{-- <div class="color_change_wrapper">
-        <ul>
-            <li class="red"></li>
-            <li class="blue"></li>
-            <li class="dark"></li>
-            <li class="light"></li>
-        </ul>
-    </div> --}}
+<body id="dashboard-8"
+class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
+@if($rtl) rtl @endif" @if($rtl) dir="rtl" @endif>
 
     <div class="all__content">
         @include('partials.sidebar')
@@ -38,18 +34,23 @@
                 @yield('content')
             </div>
         </div>
+
+        @include('partials.right_sidebar')
+
         <footer>
             <div class="logo_wrapper">
-                <img src="{{ asset('public/backend/images/static/app_logo.png') }}" class="logo">
+                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
             </div>
+
+            <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>
         </footer>
     </div>
 
     <div class="modal fade" id="todaySummeryModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Today Summery</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Today Summery') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -58,7 +59,7 @@
 
                     </div>
                     <div class="print-button-area">
-                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">Print</a>
+                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">@lang('menu.print')</a>
                     </div>
                 </div>
             </div>
@@ -101,16 +102,31 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",
+                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
                 removeInline: true,
                 printDelay: 500,
                 header: header,
                 footer: footer
             });
         });
+
+        $('.calculator-bg__main button').prop('type', 'button');
+
+        // POS read manual button
+        $('#readDocument').click(function () {
+
+            if ($('#readDocument div.doc').css('display', 'none')) {
+
+                $('#readDocument div.doc').toggleClass('d-block')
+            }
+        })
+
+        $(document).on('click', '#show_cost_button', function () {
+            $('#show_cost_section').toggle(500);
+        });
     </script>
     <!-- Logout form for global -->
-    <form id="logout_form" class="d-none" action="{{ route('logout') }}" method="POST">@csrf</form>
+    <form id="logout_form" class="d-hide" action="{{ route('logout') }}" method="POST">@csrf</form>
     <!-- Logout form for global end -->
 </body>
 

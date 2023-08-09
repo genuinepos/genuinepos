@@ -4,72 +4,60 @@
 @section('title', 'Role List - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-user-tag"></span>
-                                <h5>User Roles</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-user-tag"></span>
+                    <h5>{{ __('User Roles') }}</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-6">
+                        <h6>{{ __('All User Roles') }}</h6>
                     </div>
-                  
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>All User Roles</h6>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="{{ route('users.role.create') }}"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">SL</th>
-                                                    <th class="text-start">Bank Name</th>
-                                                    <th class="text-start">Branch Name</th>
-                                                    <th class="text-start">Address</th>
-                                                    <th class="text-start">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            </div>
-                        </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <a href="{{ route('users.role.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">@lang('menu.sl')</th>
+                                    <th class="text-start">@lang('menu.bank_name')</th>
+                                    <th class="text-start">@lang('menu.branch_name')</th>
+                                    <th class="text-start">@lang('menu.address')</th>
+                                    <th class="text-start">@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
 @endsection
 @push('scripts')
 <script>
-    // Show session message by toster alert.
     @if (Session::has('successMsg'))
         toastr.success('{{ session('successMsg') }}');
     @endif
 
-    // Get all role by ajax
     function getAllRoles(){
         $('.data_preloader').show();
         $.ajax({
@@ -86,12 +74,12 @@
     // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         $(document).on('click', '#delete',function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);       
+            $('#deleted_form').attr('action', url);
             $.confirm({
                 'title': 'Delete Confirmation',
                 'content': 'Are you sure?',
@@ -115,6 +103,9 @@
                     getAllRoles();
                     toastr.error(data);
                     $('#deleted_form')[0].reset();
+                },
+                error: function(data){
+                    toastr.error(data.responseJSON.message);
                 }
             });
         });

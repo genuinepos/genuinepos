@@ -17,7 +17,7 @@
     tr.noBorder td {border: 0px !important;}
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
-@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp 
+@php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="sale_payment_print_area">
     <div class="header_area">
         <div class="company_name text-center">
@@ -26,30 +26,30 @@
                     @if ($payment->sale->branch)
                         {{ $payment->sale->branch->name . '/' . $payment->sale->branch->branch_code }}
                     @else
-                        {{ json_decode($generalSettings->business, true)['shop_name'] }} (<b>Head Office</b>)
+                        {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
-            
+
             <p>
                 @if ($payment->sale->branch)
                     {{ $payment->sale->branch->city . ', ' . $payment->sale->branch->state . ', ' . $payment->sale->branch->zip_code . ', ' . $payment->sale->branch->country }}
                 @else
-                    {{ json_decode($generalSettings->business, true)['address'] }}
+                    {{ $generalSettings['business__address'] }}
                 @endif
             </p>
-            <h6 style="margin-top: 10px;"><b>Payment Details</b></h6>
+            <h6 style="margin-top: 10px;"><b>@lang('menu.payment_details')</b></h6>
         </div>
     </div>
 
     <div class="reference_area pt-3">
         <p>
-            <b>Title :</b>
-            {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }} 
+            <b>@lang('menu.title') : </b>
+            {{ $payment->payment_type == 1 ? 'Receive Payment' : 'Sale Return Payment' }}
         </p>
-        <p><b>Invoice No :</b> {{ $payment->sale->invoice_id }}</p>
+        <p><b>@lang('menu.invoice_no') : </b> {{ $payment->sale->invoice_id }}</p>
         <p>
-            <b>Customer :</b>
+            <b>@lang('menu.customer') : </b>
             {{ $payment->sale->customer ? $payment->sale->customer->name : 'Walk-In-Customer' }}
         </p>
     </div>
@@ -60,15 +60,15 @@
                 <table class="table table-sm table-md">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Paid Amount :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_amount') : </th>
                             <td width="50%">
-                                {{ json_decode($generalSettings->business, true)['currency'] }}
+                                {{ $generalSettings['business__currency'] }}
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Method :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_method') : </th>
                             <td width="50%">{{ $payment->paymentMethod ? $payment->paymentMethod->name : $payment->pay_mode }}</td>
                         </tr>
                     </tbody>
@@ -78,24 +78,24 @@
                 <table class="table table-sm">
                     <tbody>
                         <tr>
-                            <th width="50%" class="text-start">Voucher No :</th>
+                            <th width="50%" class="text-start">@lang('menu.voucher_no') : </th>
                             <td width="50%">
                                 {{ $payment->invoice_id }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Paid On :</th>
+                            <th width="50%" class="text-start">@lang('menu.paid_on') : </th>
                             <td width="50%">
                                 @php
-                                    $timeFormat = json_decode($generalSettings->business, true)['time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+                                    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
                                 @endphp
-                                {{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($payment->date)) . ' ' . date($timeFormat, strtotime($payment->time)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) . ' ' . date($timeFormat, strtotime($payment->time)) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">Payment Note :</th>
+                            <th width="50%" class="text-start">@lang('menu.payment_note') : </th>
                             <td width="50%">
                                 {{ $payment->note }}
                             </td>
@@ -106,13 +106,13 @@
         </div>
     </div>
 
-    <div class="signature_area pt-5 mt-5 d-none">
+    <div class="signature_area pt-5 mt-5 d-hide">
         <br>
         <table class="w-100 pt-5">
             <tbody>
                 <tr>
-                    <th width="50%">Signature Of Authority</th>
-                    <th width="50%" class="text-end">Signature Of Receiver</th>
+                    <th width="50%">@lang('menu.signature_of_authority')</th>
+                    <th width="50%" class="text-end">@lang('menu.signature_of_receiver')</th>
                 </tr>
 
                 <tr>
@@ -124,7 +124,7 @@
 
                 @if (env('PRINT_SD_PAYMENT') == true)
                     <tr>
-                        <td colspan="2" class="text-center"><small>Software by SpeedDigit Pvt. Ltd.</small></td>
+                        <td colspan="2" class="text-center"><small>@lang('menu.software_by_speedDigit_pvt_ltd')</small></td>
                     </tr>
                 @endif
             </tbody>

@@ -2,20 +2,20 @@
     @csrf
     <div class="form-group row">
         <div class="col-md-12">
-            <label><b>Method Name :</b> <span class="text-danger">*</span></label>
+            <label><b>{{ __('Method Name') }} </b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" id="e_name"
-                placeholder="Payment Method Name" value="{{ $method->name }}"/>
+                placeholder="{{ __('Method Name') }}" value="{{ $method->name }}"/>
             <span class="error error_e_name"></span>
         </div>
     </div>
 
     <div class="form-group row mt-2">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i
-                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save Changes</button>
-            <button type="reset" data-bs-dismiss="modal"
-                class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
+            </div>
         </div>
     </div>
 </form>

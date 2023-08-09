@@ -7,15 +7,15 @@
                 <div class="col-lg-4 col-md-5 col-12">
                     <div class="form-head">
                         <div class="head">
-                            @if (json_decode($generalSettings->business, true)['business_logo'] != null)
+                            @if ($generalSettings['business__business_logo'] != null)
 
-                                <img src="{{ asset('public/uploads/business_logo/' . json_decode($generalSettings->business, true)['business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                             @else 
 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ json_decode($generalSettings->business, true)['shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
                             @endif
                             <span class="head-text">
-                                Genuine POS, Point of Sale software by SpeedDigit
+                                {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}
                             </span>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
 
                     <div class="main-form">
                         <div class="form-title">
-                            <p>Forgot Password</p>
+                            <p>@lang('menu.forgot_password')</p>
                         </div>
                         <form action="{{ route('password.email') }}" method="POST">
                             @csrf

@@ -11,37 +11,39 @@ class InvoiceSchemaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin_and_user');
+
     }
 
     // Category main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->setup['inv_sc'] == '0') {
+        if (! auth()->user()->can('inv_sc')) {
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
             $schemas = DB::table('invoice_schemas')->orderBy('id', 'DESC')->get();
+
             return DataTables::of($schemas)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('invoices.schemas.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('invoices.schemas.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                     if ($row->is_default == 0) {
-                        $html .= '<a href="' . route('invoices.schemas.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                        $html .= '<a href="' . route('invoices.schemas.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
+                        $html .= '<a href="'.route('invoices.schemas.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="'.route('invoices.schemas.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn">
                         Set Default
                         </a>';
                     }
 
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->editColumn('prefix', function ($row) {
                     return $row->format == 2 ? date('Y') : $row->prefix;
                 })
                 ->editColumn('name', function ($row) {
-                    return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
+                    return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">Default</span>' : '');
                 })
                 ->rawColumns(['action', 'prefix', 'name'])
                 ->make(true);
@@ -87,6 +89,7 @@ class InvoiceSchemaController extends Controller
     public function edit($schemaId)
     {
         $schema = DB::table('invoice_schemas')->where('id', $schemaId)->first();
+
         return view('settings.invoices.schemas.ajax_view.edit_modal', compact('schema'));
     }
 
@@ -94,7 +97,7 @@ class InvoiceSchemaController extends Controller
     {
         // return $request->all();
         $this->validate($request, [
-            'name' => 'required|unique:invoice_schemas,name,' . $schemaId,
+            'name' => 'required|unique:invoice_schemas,name,'.$schemaId,
             'prefix' => 'required',
         ]);
 
@@ -104,13 +107,14 @@ class InvoiceSchemaController extends Controller
         $updateSchema->prefix = $request->prefix;
         $updateSchema->start_from = $request->start_from;
         $updateSchema->save();
+
         return response()->json('Successfully invoice schema is update');
     }
 
     public function delete(Request $request, $schemaId)
     {
         $deleteSchema = InvoiceSchema::find($schemaId);
-        if (!is_null($deleteSchema)) {
+        if (! is_null($deleteSchema)) {
             $deleteSchema->delete();
         }
 
@@ -128,6 +132,7 @@ class InvoiceSchemaController extends Controller
         $updateSchema = InvoiceSchema::where('id', $schemaId)->first();
         $updateSchema->is_default = 1;
         $updateSchema->save();
+
         return response()->json('Default set successfully');
     }
 }

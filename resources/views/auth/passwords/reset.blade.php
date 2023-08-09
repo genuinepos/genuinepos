@@ -7,9 +7,15 @@
                 <div class="col-lg-4 col-md-5 col-12">
                     <div class="form-head">
                         <div class="head">
-                            <img src="{{ asset('public/assets/images/genuine_pos.png') }}" alt="" class="logo">
+                            @if ($generalSettings['business__business_logo'] != null)
+
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                            @else 
+
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
+                            @endif
                             <span class="head-text">
-                                Genuine POS, Point of Sale Software By SpeedDigit
+                                {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}
                             </span>
                         </div>
                     </div>
@@ -24,7 +30,7 @@
 
                     <div class="main-form">
                         <div class="form-title">
-                            <p>Reset Password</p>
+                            <p>@lang('menu.reset_password')</p>
                         </div>
                         <form action="{{ route('password.update') }}" method="POST">
                             @csrf
@@ -44,7 +50,7 @@
                                 name="password"
                                 required
                                 autocomplete="new-password"
-                                placeholder="New Password"
+                                placeholder="@lang('menu.new_password')"
                                 autofocus>
                             </div>
 
@@ -52,7 +58,7 @@
                                 <i class="fa fa-check-double"></i>
 
                                 <input id="password_confimation" type="password" class="form-control form-st rounded-bottom"
-                                    name="password_confirmation" required placeholder="Confirm Password">
+                                    name="password_confirmation" required placeholder="@lang('menu.confirm_password')">
                             </div>
 
                             {{-- Custom errror message --}}

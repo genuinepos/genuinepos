@@ -9,113 +9,110 @@
         .select_area ul li a:hover {background-color: #999396;color: #fff;}
         .selectProduct{background-color: #746e70; color: #fff!important;}b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
+        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
+        .checkbox_input_wrap {text-align: right;}
     </style>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-edit"></span>
+                    <h5>{{ __('Edit Transfer Stock (Business Location To Business Location)') }}</h5>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="edit_transfer_form" action="{{ route('transfer.stock.branch.to.branch.update', $transfer->id) }}" method="POST">
                 @csrf
                 <input class="hidden_sp" type="hidden" name="action" id="action">
-                <section class="mt-5">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <h5>Edit Transfer Stock (Business Location To Business Location)</h5>
-                                        </div>
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-6">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.b_location') </b></label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}">
+
+                                            <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>B.Location :</b></label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}">
-
-                                                    <input type="hidden" name="sender_branch_id" value="{{ auth()->user()->branch_id }}" id="sender_branch_id">
-                                                </div>
-                                            </div>
-                                        </div> 
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Warehouse :</b></label>
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $w)
-                                                            <option {{ $transfer->sender_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">
-                                                                {{ $w->warehouse_name.'/'.$w->warehouse_code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Transfer Date :</b> 
-                                                    <span class="text-danger">*</span> 
-                                                </label>
-
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format'], strtotime($transfer->date)) }}" id="datepicker">
-                                                    <span class="error error_date"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Reference :</b> 
-                                                    <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
-                                                </label>
-                                                
-                                                <div class="col-8">
-                                                    <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID" value="{{ $transfer->ref_id }}">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.warehouse') </b></label>
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                <option value="">@lang('menu.select_warehouse')</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option {{ $transfer->sender_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">
+                                                        {{ $w->warehouse_name.'/'.$w->warehouse_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="row mt-1">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4">
-                                                    <b>Receive From : 
-                                                        <span class="text-danger">*</span>
-                                                    </b>
-                                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.transfer_date') </b>
+                                            <span class="text-danger">*</span>
+                                        </label>
 
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
-                                                        <option value="">Select Receiver B.Location</option>
-                                                        <option value="NULL">
-                                                            {{ json_decode($generalSettings->business, true)['shop_name'].'(HO)' }}
-                                                        </option>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control changeable" autocomplete="off"
+                                                value="{{ date($generalSettings['business__date_format'], strtotime($transfer->date)) }}" id="datepicker">
+                                            <span class="error error_date"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                        @foreach ($branches as $b)
-                                                            <option {{ $transfer->receiver_branch_id == $b->id ? 'SELECTED' : '' }} value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
-                                                        @endforeach
-                                                    </select>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.reference') </b>
+                                            <i data-bs-toggle="tooltip" data-bs-placement="right" title="If you keep this field empty, The Reference ID will be generated automatically." class="fas fa-info-circle tp"></i>
+                                        </label>
 
-                                                    <span class="error error_receiver_branch_id"></span>
-                                                </div>
-                                            </div>
+                                        <div class="col-8">
+                                            <input type="text" name="ref_id" id="ref_id" class="form-control" placeholder="Reference ID" value="{{ $transfer->ref_id }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4">
+                                            <b>@lang('menu.receive_from') :
+                                                <span class="text-danger">*</span>
+                                            </b>
+                                        </label>
+
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="receiver_branch_id" data-name="Receive By" id="receiver_branch_id">
+                                                <option value="">@lang('menu.select_receiver_b_location')</option>
+                                                <option value="NULL">
+                                                    {{ $generalSettings['business__shop_name'].'(HO)' }}
+                                                </option>
+
+                                                @foreach ($branches as $b)
+                                                    <option {{ $transfer->receiver_branch_id == $b->id ? 'SELECTED' : '' }} value="{{ $b->id }}">{{ $b->name.'/'.$b->branch_code }}</option>
+                                                @endforeach
+                                            </select>
+
+                                            <span class="error error_receiver_branch_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -125,124 +122,120 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-barcode text-dark input_f"></i>
-                                                            </span>
-                                                        </div>
+                    <div class="sale-content mb-3">
+                        <div class="card">
+                            <div class="card-body p-2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="searching_area" style="position: relative;">
+                                            <label class="col-form-label">@lang('menu.item_search')</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-barcode text-dark input_f"></i>
+                                                    </span>
+                                                </div>
 
-                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
-                                                    </div>
+                                                <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autofocus>
+                                            </div>
 
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area"></ul>
-                                                    </div>
-                                                </div> 
+                                            <div class="select_area">
+                                                <ul id="list" class="variant_list_area"></ul>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="table modal-table table-sm">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th class="text-start">Product</th>
-                                                                    <th></th>
-                                                                    <th class="text-center">Quantity</th>
-                                                                    <th class="text-center">Unit</th>
-                                                                    <th class="text-center">Unit Cost Inc.Tax</th>
-                                                                    <th class="text-center">SubTotal</th>
-                                                                    <th><i class="fas fa-trash-alt text-dark"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="transfer_list">
+                                <div class="row">
+                                    <div class="sale-item-sec">
+                                        <div class="sale-item-inner">
+                                            <div class="table-responsive">
+                                                <table class="table modal-table table-sm">
+                                                    <thead class="staky">
+                                                        <tr>
+                                                            <th class="text-start">@lang('menu.product')</th>
+                                                            <th></th>
+                                                            <th class="text-center">@lang('menu.quantity')</th>
+                                                            <th class="text-center">@lang('menu.unit')</th>
+                                                            <th class="text-center">@lang('menu.unit_cost_inc_tax')</th>
+                                                            <th class="text-center">@lang('menu.sub_total')</th>
+                                                            <th><i class="fas fa-trash-alt text-dark"></i></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="transfer_list">
+                                                        @php
+                                                            $index = 0;
+                                                        @endphp
+                                                        @foreach ($transfer->transfer_products as $transfer_product)
+
+                                                            @php
+                                                                $tax_percent = $transfer_product->product->tax_id ? $transfer_product->product->tax->tax_percent : 0;
+                                                            @endphp
+
+                                                            <tr>
+                                                                <td class="text-start" colspan="2">
+                                                                    <a href="#" class="text-success" id="edit_product">
+                                                                        <span class="product_name">
+                                                                            {{ $transfer_product->product->name }}
+                                                                        </span>
+                                                                        <span class="product_variant"></span>
+                                                                        <span class="product_code">{{ $transfer_product->product->product_code }}</span>
+                                                                    </a><br/>
+                                                                    <small class="text-muted">@lang('menu.current_stock') -{{ $qty_limits[$index].'/'.$transfer_product->product->unit->name }}<small>
+
+                                                                    <input value="{{ $transfer_product->product_id }}" type="hidden" class="productId-{{ $transfer_product->product_id }}" id="product_id" name="product_ids[]">
+
+                                                                    <input value="{{ $transfer_product->variant_id ? $transfer_product->variant_id : 'noid' }}" type="hidden" class="variantId-{{ $transfer_product->variant_id }}" id="variant_id" name="variant_ids[]">
+
+                                                                    <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] + $transfer_product->send_qty }}">
+                                                                </td>
+
+                                                                <td>
+                                                                    <input value="{{ $transfer_product->send_qty }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
+                                                                </td>
+
+                                                                <td class="text text-center">
+                                                                    <span class="span_unit">
+                                                                        {{ $transfer_product->product->unit->name }}
+                                                                    </span>
+
+                                                                    <input  name="units[]" type="hidden" id="unit" value="{{ $transfer_product->product->unit->name }}">
+                                                                </td>
+
                                                                 @php
-                                                                    $index = 0;
+
+                                                                    $unitCostIncTax = $transfer_product->product->product_cost_with_tax;
                                                                 @endphp
-                                                                @foreach ($transfer->transfer_products as $transfer_product)
 
-                                                                    @php
-                                                                        $tax_percent = $transfer_product->product->tax_id ? $transfer_product->product->tax->tax_percent : 0;  
-                                                                    @endphp
-                                                                    
-                                                                    <tr>
-                                                                        <td class="text-start" colspan="2">
-                                                                            <a href="#" class="text-success" id="edit_product">
-                                                                                <span class="product_name">
-                                                                                    {{ $transfer_product->product->name }}
-                                                                                </span>
-                                                                                <span class="product_variant"></span>
-                                                                                <span class="product_code">{{ $transfer_product->product->product_code }}</span>
-                                                                            </a><br/>
-                                                                            <small class="text-muted">Current Stock -{{ $qty_limits[$index].'/'.$transfer_product->product->unit->name }}<small>
+                                                                <td class="text text-center">
+                                                                    <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $unitCostIncTax }}">
+                                                                    <span class="span_unit_cost">
+                                                                        {{ $unitCostIncTax }}
+                                                                    </span>
+                                                                </td>
 
-                                                                            <input value="{{ $transfer_product->product_id }}" type="hidden" class="productId-{{ $transfer_product->product_id }}" id="product_id" name="product_ids[]">
+                                                                <td class="text text-center">
+                                                                    <strong>
+                                                                        <span class="span_subtotal">
+                                                                            {{ $transfer_product->subtotal }}
+                                                                        </span>
+                                                                    </strong>
 
-                                                                            <input value="{{ $transfer_product->variant_id ? $transfer_product->variant_id : 'noid' }}" type="hidden" class="variantId-{{ $transfer_product->variant_id }}" id="variant_id" name="variant_ids[]">
+                                                                    <input value="{{ $transfer_product->subtotal }}" readonly name="subtotals[]" type="hidden"  id="subtotal">
+                                                                </td>
 
-                                                                            <input type="hidden" id="qty_limit" value="{{ $qty_limits[$index] + $transfer_product->send_qty }}">
-                                                                        </td>
-                                    
-                                                                        <td>
-                                                                            <input value="{{ $transfer_product->send_qty }}" required name="quantities[]" type="number" step="any" class="form-control text-center" id="quantity">
-                                                                        </td>
-                                    
-                                                                        <td class="text text-center">
-                                                                            <span class="span_unit">
-                                                                                {{ $transfer_product->product->unit->name }}
-                                                                            </span> 
+                                                                <td class="text-center">
+                                                                    <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                </td>
+                                                            </tr>
 
-                                                                            <input  name="units[]" type="hidden" id="unit" value="{{ $transfer_product->product->unit->name }}">
-                                                                        </td>
-                                    
-                                                                        @php
-                                                                        
-                                                                          $unitCostIncTax = $transfer_product->product->product_cost_with_tax;  
-                                                                        @endphp
-                                                                        
-                                                                        <td class="text text-center">
-                                                                            <input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="{{ $unitCostIncTax }}">
-                                                                            <span class="span_unit_cost">
-                                                                                {{ $unitCostIncTax }}
-                                                                            </span> 
-                                                                        </td>
-                                                                    
-                                                                        <td class="text text-center">
-                                                                            <strong>
-                                                                                <span class="span_subtotal"> 
-                                                                                    {{ $transfer_product->subtotal }}
-                                                                                </span>
-                                                                            </strong>
+                                                            @php
+                                                                $index++;
+                                                            @endphp
+                                                        @endforeach
 
-                                                                            <input value="{{ $transfer_product->subtotal }}" readonly name="subtotals[]" type="hidden"  id="subtotal">
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            <a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    @php
-                                                                        $index++;
-                                                                    @endphp
-                                                                @endforeach
-                                                                
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -252,17 +245,17 @@
                     </div>
                 </section>
 
-                <section class="">
-                    <div class="row">
+                <section class="mb-3">
+                    <div class="row g-3">
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Item :</b> </label>
+                                                        <label class="col-4"><b>@lang('menu.total_item') </b> </label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="0.00">
                                                         </div>
@@ -271,7 +264,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Quantity :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_quantity') </b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_send_qty" type="number" step="any" class="form-control" id="total_send_qty" value="0.00">
                                                         </div>
@@ -280,7 +273,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Total Stock Value :</b></label>
+                                                        <label class="col-4"><b>@lang('menu.total_stock_value') </b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_stock_value" type="number" step="any" class="form-control" id="total_stock_value" value="0.00">
                                                         </div>
@@ -289,10 +282,10 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Transfer Note :</b>
+                                                        <label class="col-4"><b>@lang('menu.transfer_note') </b>
                                                         </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="transfer_note" id="transfer_note" class="form-control" placeholder="Transfer Note">
+                                                            <input type="text" name="transfer_note" id="transfer_note" class="form-control" placeholder="@lang('menu.transfer_note')">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -304,14 +297,14 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="form_element">
+                            <div class="form_element rounded m-0">
                                 <div class="element-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>Transfer Cost : </b> </label>
+                                                        <label class="col-4"><b>@lang('menu.transfer_cost') </b> </label>
                                                         <div class="col-8">
                                                             <input name="transfer_cost" type="number" step="any" id="transfer_cost" class="form-control" value="{{ $transfer->transfer_cost }}">
                                                         </div>
@@ -322,7 +315,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>Expense Ledger A/C :</b> 
+                                                            <b>{{ __('Expense Ledger A/C') }}</b>
                                                             <span class="text-danger">*</span>
                                                         </label>
 
@@ -343,7 +336,7 @@
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>Payment Method : 
+                                                            <b>@lang('menu.payment_method')
                                                                 <span class="text-danger">*</span>
                                                             </b>
                                                         </label>
@@ -360,13 +353,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <label class="col-4">
-                                                            <b>Credit A/C : 
+                                                            <b>@lang('menu.credit') A/C
                                                                 <span class="text-danger">*</span>
-                                                            </b> 
+                                                            </b>
                                                         </label>
 
                                                         <div class="col-8">
@@ -388,9 +381,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>Payment Note :</b> </label>
+                                                        <label class=" col-4"><b>@lang('menu.payment_note') </b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="Payment note" autocomplete="off" value="{{ $transfer->payment_note }}">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')" autocomplete="off" value="{{ $transfer->payment_note }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -407,9 +400,11 @@
 
                     <div class="row">
 
-                        <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> </button>
-                            <button type="submit" class="btn btn-sm btn-success submit_button">Save Changes</button>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div class="btn-loading">
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -419,7 +414,7 @@
 
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
@@ -440,7 +435,7 @@
 
             $('#total_item').val(parseFloat(total_item));
             $('#total_send_qty').val(parseFloat(total_send_qty).toFixed(2));
-            
+
             // Update Net total Amount
             var total_stock_value = 0;
 
@@ -486,7 +481,7 @@
 
                     if(!$.isEmptyObject(product.errorMsg)){
 
-                        toastr.error(product.errorMsg); 
+                        toastr.error(product.errorMsg);
                         $('#search_product').val("");
                         return;
                     }
@@ -494,8 +489,8 @@
                     var qty_limit = product.qty_limit;
 
                     if(
-                        !$.isEmptyObject(product.product) || 
-                        !$.isEmptyObject(product.variant_product) || 
+                        !$.isEmptyObject(product.product) ||
+                        !$.isEmptyObject(product.variant_product) ||
                         !$.isEmptyObject(product.namedProducts)
                     ){
 
@@ -526,7 +521,7 @@
                                         }
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitCost = closestTr.find('#unit_cost_inc_tax').val();
                                         var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -544,7 +539,7 @@
                                     tr += '<td class="text-start" colspan="2">';
                                     tr += '<a href="#" class="text-success" id="edit_product">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
-                                    tr += '<span class="product_variant"></span>'; 
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '</a><br/>';
                                     tr += '<small class="text-muted">Current Stock - '+qty_limit+'/'+product.unit.name+'<small>';
@@ -558,7 +553,7 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text text-center">';
-                                    tr += '<span class="span_unit">'+product.unit.name+'</span>'; 
+                                    tr += '<span class="span_unit">'+product.unit.name+'</span>';
                                     tr += '<input  name="units[]" type="hidden" id="unit" value="'+product.unit.name+'">';
                                     tr += '</td>';
 
@@ -566,11 +561,11 @@
 
                                     tr += '<td class="text text-center">';
                                     tr += '<input readonly name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
-                                    tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                                    tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>';
                                     tr += '</td>';
-                                
+
                                     tr += '<td class="text text-center">';
-                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>'; 
+                                    tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>';
                                     tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden"  id="subtotal">';
                                     tr += '</td>';
                                     tr += '<td class="text-center">';
@@ -578,11 +573,11 @@
                                     tr += '</td>';
                                     tr += '</tr>';
                                     $('#transfer_list').prepend(tr);
-                                    calculateTotalAmount();  
+                                    calculateTotalAmount();
                                 }
                             }else{
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var products = product.namedProducts;
                                 var li = "";
                                 var tax_percent = product.tax_id != null ? product.tax.tax_percent : 0.00;
@@ -606,7 +601,7 @@
                             $('#search_product').val('');
                             var variant_product = product.variant_product;
                             var tax_percent = variant_product.product.tax_id != null ? variant_product.product.tax.percent : 0;
-                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0); 
+                            var tax_rate = parseFloat(variant_product.product.tax != null ? variant_product.variant_price/100 * tax_percent : 0);
                             var variant_ids = document.querySelectorAll('#variant_id');
                             var sameVariant = 0;
 
@@ -631,7 +626,7 @@
 
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitCost = closestTr.find('#unit_cost_inc_tax').val();
                                         var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -640,9 +635,9 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                            
+
                             if(sameVariant == 0){
 
                                 var tr = '';
@@ -650,7 +645,7 @@
                                 tr += '<td class="text-start" colspan="2">';
                                 tr += '<a href="#" class="text-success" id="edit_product">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>';
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '</a><br/>';
                                 tr += '<small class="text-muted">Current Stock - '+qty_limit+'/'+variant_product.product.unit.name+'<small>';
@@ -665,7 +660,7 @@
                                 tr += '</td>';
 
                                 tr += '<td class="text text-center">';
-                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>'; 
+                                tr += '<span class="span_unit">'+variant_product.product.unit.name+'</span>';
                                 tr += '<input  name="units[]" type="hidden" id="unit" value="'+variant_product.product.unit.name+'">';
                                 tr += '</td>';
 
@@ -673,11 +668,11 @@
 
                                 tr += '<td class="text text-center">';
                                 tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2) +'">';
-                                tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                                tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>';
                                 tr += '</td>';
 
                                 tr += '<td class="text text-center">';
-                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitCostIncTax).toFixed(2)+'</span></strong>'; 
+                                tr += '<strong><span class="span_subtotal">'+parseFloat(unitCostIncTax).toFixed(2)+'</span></strong>';
                                 tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                                 tr += '</td>';
 
@@ -688,29 +683,29 @@
                                 $('#transfer_list').prepend(tr);
 
                                 calculateTotalAmount();
-                            }    
+                            }
                         }else if (!$.isEmptyObject(product.namedProducts)) {
-                            
+
                             if(product.namedProducts.length > 0){
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
 
                                 $.each(products, function (key, product) {
 
                                     var tax_percent = product.tax_id != null ? product.tax_percent : 0;
 
                                     if (product.is_variant == 1) {
-                                       
+
                                             var tax_amount = parseFloat(product.variant_price/100 * product.tax_percent);
-                                         
+
                                             var unitPriceIncTax = (parseFloat(product.variant_price) / 100 * tax_percent) + parseFloat(product.variant_price);
 
                                             li += '<li id="list" class="mt-1">';
                                             li += '<a class="select_variant_product" onclick="salectVariant(this); return false;" data-p_id="'+product.id+'" data-v_id="'+product.variant_id+'" data-p_name="'+product.name+'" data-p_tax_id="'+product.tax_id+'" data-unit="'+product.unit_name+'" data-tax_percent="'+tax_percent+'" data-tax_amount="'+tax_amount+'" data-v_code="'+product.variant_code+'" data-v_price="'+product.variant_price+'" data-v_name="'+product.variant_name+'" data-v_cost_inc_tax="'+product.variant_cost_with_tax+'" href="#"><img style="width:25px; height:25px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+product.name+' - '+product.variant_name+' ('+product.variant_code+')'+' - Price: '+parseFloat(unitPriceIncTax).toFixed(2)+'</a>';
                                             li +='</li>';
-                                       
+
                                     } else {
 
                                         var tax_amount = parseFloat(product.tax != null ? product.product_price/100 * product.tax.tax_percent : 0);
@@ -786,7 +781,7 @@
                                 }
                                 var updateQty = parseFloat(presentQty) + 1;
                                 closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                
+
                                 //Update Subtotal
                                 var unitCost = closestTr.find('#unit_cost_inc_tax').val();
                                 var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -803,7 +798,7 @@
                                 }
 
                                 return;
-                            }    
+                            }
                         });
 
                         if(sameProduct == 0){
@@ -813,7 +808,7 @@
                             tr += '<td class="text-start" colspan="2" class="">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant"></span>'; 
+                            tr += '<span class="product_variant"></span>';
                             tr += '<span class="product_code">'+' ('+product_code+')'+'</span>';
                             tr += '</a><br/>';
                             tr += '<small class="text-muted">Current Stock - '+singleProductQty+'/'+product_unit+'<small>';
@@ -827,7 +822,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<b><span class="span_unit">'+product_unit+'</span></b>'; 
+                            tr += '<b><span class="span_unit">'+product_unit+'</span></b>';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
 
@@ -835,14 +830,14 @@
 
                             tr += '<td class="text text-center">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
-                            tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                            tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>';
                             tr += '</td>';
-                           
+
                             tr += '<td class="text text-center">';
-                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>'; 
+                            tr += '<strong><span class="span_subtotal"> '+parseFloat(unitCostIncTax).toFixed(2)+' </span></strong>';
                             tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
-                            
+
                             tr += '<td class="text-center">';
                             tr += '<a href="#" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                             tr += '</td>';
@@ -850,7 +845,7 @@
                             tr += '</tr>';
                             $('#transfer_list').prepend(tr);
 
-                            calculateTotalAmount();  
+                            calculateTotalAmount();
 
                             if (keyName == 9) {
 
@@ -860,7 +855,7 @@
                         }
                     }else{
 
-                        toastr.error(singleProductQty.errorMsg);   
+                        toastr.error(singleProductQty.errorMsg);
                     }
                 }
             });
@@ -921,7 +916,7 @@
 
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitCost = closestTr.find('#unit_cost_inc_tax').val();
                                     var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -937,7 +932,7 @@
                                     }
                                     return;
                                 }
-                            }    
+                            }
                         });
 
                         if(sameVariant == 0){
@@ -947,7 +942,7 @@
                             tr += '<td class="text-start" colspan="2">';
                             tr += '<a href="#" class="text-success" id="edit_product">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>';
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '</a><br/>';
                             tr += '<small class="text-muted">Current Stock - '+branchVariantQty+'/'+product_unit+'<small>';
@@ -962,7 +957,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text text-center">';
-                            tr += '<span class="span_unit">'+product_unit+'</span>'; 
+                            tr += '<span class="span_unit">'+product_unit+'</span>';
                             tr += '<input  name="units[]" type="hidden" id="unit" value="'+product_unit+'">';
                             tr += '</td>';
 
@@ -970,11 +965,11 @@
 
                             tr += '<td class="text text-center">';
                             tr += '<input name="unit_costs_inc_tax[]" type="hidden" id="unit_cost_inc_tax" value="'+parseFloat(unitCostIncTax).toFixed(2)+'">';
-                            tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>'; 
+                            tr += '<span class="span_unit_cost">'+parseFloat(unitCostIncTax).toFixed(2)+'</span>';
                             tr += '</td>';
-                       
+
                             tr += '<td class="text text-center">';
-                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitCostIncTax).toFixed(2)+'</span></strong>'; 
+                            tr += '<strong><span class="span_subtotal">'+parseFloat(unitCostIncTax).toFixed(2)+'</span></strong>';
                             tr += '<input value="'+parseFloat(unitCostIncTax).toFixed(2)+'" readonly name="subtotals[]" type="hidden" id="subtotal">';
                             tr += '</td>';
                             tr += '<td class="text-center">';
@@ -993,7 +988,7 @@
                         }
                     }else{
 
-                        toastr.warning(branchVariantQty.errorMsg);   
+                        toastr.warning(branchVariantQty.errorMsg);
                     }
                 }
             });
@@ -1018,7 +1013,7 @@
                     var calcSubtotal = parseFloat(unitCost) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                    calculateTotalAmount();  
+                    calculateTotalAmount();
                     return;
                 }
 
@@ -1026,7 +1021,7 @@
                 var calcSubtotal = parseFloat(unitCost) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();  
+                calculateTotalAmount();
             }
         });
 
@@ -1048,7 +1043,7 @@
                     var calcSubtotal = parseFloat(unitCost) * parseFloat(qty_limit);
                     tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                     tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                    calculateTotalAmount();  
+                    calculateTotalAmount();
                     return;
                 }
 
@@ -1056,7 +1051,7 @@
                 var calcSubtotal = parseFloat(unitCost) * parseFloat(qty);
                 tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
                 tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount(); 
+                calculateTotalAmount();
             }
         });
 
@@ -1066,7 +1061,7 @@
             calculateTotalAmount();
         });
 
-        // Remove product form purchase product list (Table) 
+        // Remove product form purchase product list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
 
             e.preventDefault();
@@ -1082,12 +1077,12 @@
 
             if (parseFloat(totalItem) == 0) {
 
-                toastr.error('Transfer product table is empty.', 'Some thing went wrong.'); 
+                toastr.error('Transfer product table is empty.', 'Some thing went wrong.');
                 return;
             }
 
             $('.loading_button').show();
-            
+
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1099,13 +1094,13 @@
 
                     if(!$.isEmptyObject(data.errorMsg)){
 
-                        toastr.error(data.errorMsg,'ERROR'); 
+                        toastr.error(data.errorMsg,'ERROR');
                         $('.loading_button').hide();
                         return;
                     }
 
                     $('.loading_button').hide();
-                    toastr.success(data.successMsg); 
+                    toastr.success(data.successMsg);
                     window.location = "{{ url()->previous() }}"
 
                 }, error: function(err) {
@@ -1115,15 +1110,15 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     }else if (err.status == 500) {
-                        
-                        toastr.error('Server Error. Please contact to the support team.'); 
+
+                        toastr.error('Server Error. Please contact to the support team.');
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
@@ -1136,7 +1131,7 @@
         setInterval(function(){
 
             $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        }, 500);
 
         setInterval(function(){
 
@@ -1153,7 +1148,7 @@
 
         $('body').keyup(function(e){
 
-            if (e.keyCode == 13 || e.keyCode == 9){  
+            if (e.keyCode == 13 || e.keyCode == 9){
 
                 $(".selectProduct").click();
                 $('#list').empty();
@@ -1168,7 +1163,7 @@
         });
 
         $(document).on('change', '.add_input', function () {
-            
+
             document.getElementById('search_product').focus();
         });
 
@@ -1178,7 +1173,7 @@
             calculateTotalAmount();
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

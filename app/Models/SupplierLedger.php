@@ -1,15 +1,11 @@
 <?php
 
 namespace App\Models;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Models\PurchasePayment;
-use App\Models\SupplierPayment;
-use Illuminate\Database\Eloquent\Model;
 
-class SupplierLedger extends Model
+class SupplierLedger extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function purchase()

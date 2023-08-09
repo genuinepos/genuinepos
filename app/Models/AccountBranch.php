@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class AccountBranch extends Model
+class AccountBranch extends BaseModel
 {
-    protected $guarded = [];
-    protected $hidden = ['created_at', 'updated_at'];
+    use HasFactory;
 
+    protected $guarded = [];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }

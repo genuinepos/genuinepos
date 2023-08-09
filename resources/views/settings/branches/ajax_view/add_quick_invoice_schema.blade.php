@@ -1,18 +1,18 @@
 <form id="add_schema_form" action="{{ route('settings.branches.quick.invoice.schema.store') }}" method="POST">
     @csrf
     <div class="form-group">
-        <label><b>Preview : <span id="q_schema_preview"></span></label>
+        <label><b>@lang('menu.preview')<span id="q_schema_preview"></span></label>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Name :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.name') </b> <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" id="q_name" placeholder="Schema name"/>
             <span class="error error_q_name"></span>
         </div>
 
         <div class="col-md-6">
-            <label><b>Format :</b> <span class="text-danger">*</span></label>
+            <label><b>@lang('menu.from') </b> <span class="text-danger">*</span></label>
             <select name="format" class="form-control" id="q_format">
                 <option value="1">FORMAT-XXXX</option>
                 <option value="2">FORMAT-{{ date('Y') }}/XXXX</option>
@@ -23,21 +23,27 @@
 
     <div class="form-group row mt-1">
         <div class="col-md-6">
-            <label><b>Prefix :</b> <span class="text-danger">*</span></label>
-            <input type="text" name="prefix" class="form-control" id="q_prefix" placeholder="Prefix"/>
+            <label><b>@lang('menu.prefix') </b> <span class="text-danger">*</span></label>
+            <input type="text" name="prefix" class="form-control" id="q_prefix" placeholder="@lang('menu.prefix')"/>
             <span class="error error_q_prefix"></span>
         </div>
 
         <div class="col-md-6">
-            <label><b>Start From :</b></label>
-            <input type="number" name="start_from" class="form-control" id="q_start_from" placeholder="Start From" value="0"/>
+            <label><b>@lang('menu.start_from') </b></label>
+            <input type="number" name="start_from" class="form-control" id="q_start_from" placeholder="@lang('menu.start_from')" value="0"/>
         </div>
     </div>
 
-    <div class="form-group text-end mt-3">
-        <button type="button" class="btn loading_button d-none q_ld_btn"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+
+    <div class="form-group d-flex justify-content-end mt-3">
+        <div class="btn-loading">
+            <button type="button" class="btn loading_button d-hide q_ld_btn">
+                <i class="fas fa-spinner"></i>
+                <span> @lang('menu.loading')...</span>
+            </button>
+            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+            <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+        </div>
     </div>
 </form>
 

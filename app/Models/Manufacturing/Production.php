@@ -2,17 +2,18 @@
 
 namespace App\Models\Manufacturing;
 
+use App\Models\BaseModel;
 use App\Models\Branch;
 use App\Models\Product;
-use App\Models\Warehouse;
 use App\Models\ProductVariant;
 use App\Models\Tax;
 use App\Models\Unit;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Warehouse;
 
-class Production extends Model
+class Production extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function product()

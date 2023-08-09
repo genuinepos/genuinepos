@@ -2,15 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Branch;
-use App\Models\CashCounter;
-use App\Models\AdminAndUser;
-use App\Models\CashRegisterTransaction;
-use Illuminate\Database\Eloquent\Model;
-
-class CashRegister extends Model
+class CashRegister extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function cash_register_transactions()
@@ -30,6 +25,6 @@ class CashRegister extends Model
 
     public function admin()
     {
-        return $this->belongsTo(AdminAndUser::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

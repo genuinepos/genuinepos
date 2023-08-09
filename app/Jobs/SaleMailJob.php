@@ -4,11 +4,11 @@ namespace App\Jobs;
 
 use App\Mail\SaleMail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SaleMailJob implements ShouldQueue
 {
@@ -20,12 +20,14 @@ class SaleMailJob implements ShouldQueue
      * @return void
      */
     public $to;
+
     public $sale;
-    
+
     public function __construct($to, $sale)
     {
         $this->to = $to;
         $this->sale = $sale;
+
     }
 
     /**

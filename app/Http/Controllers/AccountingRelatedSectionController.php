@@ -2,36 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Product;
-
-use App\Models\CashFlow;
 use App\Utils\AccountUtil;
 use App\Utils\NetProfitLossAccount;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AccountingRelatedSectionController extends Controller
 {
     protected $accountUtil;
+
     protected $netProfitLossAccount;
 
     public function __construct(AccountUtil $accountUtil, NetProfitLossAccount $netProfitLossAccount)
     {
         $this->accountUtil = $accountUtil;
         $this->netProfitLossAccount = $netProfitLossAccount;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     // balance sheet view
     public function balanceSheet()
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('accounting.related_sections.balance_sheet', compact('branches'));
     }
 
@@ -109,21 +108,21 @@ class AccountingRelatedSectionController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $totalCashInHandQuery->where('account_branches.branch_id', NULL);
+                $totalCashInHandQuery->where('account_branches.branch_id', null);
 
-                $TotalBankBalanceQuery->where('account_branches.branch_id', NULL);
+                $TotalBankBalanceQuery->where('account_branches.branch_id', null);
 
-                $TotalCapitalQuery->where('account_branches.branch_id', NULL);
+                $TotalCapitalQuery->where('account_branches.branch_id', null);
 
-                $TotalInvestmentQuery->where('account_branches.branch_id', NULL);
+                $TotalInvestmentQuery->where('account_branches.branch_id', null);
 
-                $fixedAssetQuery->where('account_branches.branch_id', NULL);
+                $fixedAssetQuery->where('account_branches.branch_id', null);
 
-                $loanCompanyQuery->where('loan_companies.branch_id', NULL);
+                $loanCompanyQuery->where('loan_companies.branch_id', null);
 
-                $singleProductStockValueQuery->where('product_branches.branch_id', NULL);
+                $singleProductStockValueQuery->where('product_branches.branch_id', null);
 
-                $variantProductStockValueQuery->where('product_branches.branch_id', NULL);
+                $variantProductStockValueQuery->where('product_branches.branch_id', null);
             } else {
 
                 $totalCashInHandQuery->where('account_branches.branch_id', $request->branch_id);
@@ -149,22 +148,22 @@ class AccountingRelatedSectionController extends Controller
             $totalCashInHand = $totalCashInHandQuery->get();
 
             $TotalBankBalance = $TotalBankBalanceQuery->get();
-    
+
             $TotalCapital = $TotalCapitalQuery->get();
-    
+
             $TotalInvestment = $TotalInvestmentQuery->get();
-    
+
             $fixedAssets = $fixedAssetQuery->get();
-    
+
             $loanCompanies = $loanCompanyQuery->get();
-    
+
             $singleProductStockValue = $singleProductStockValueQuery->get();
-    
+
             $variantProductStockValue = $variantProductStockValueQuery->get();
         } else {
-            
+
             $totalCashInHand = $totalCashInHandQuery->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->get();
+                ->get();
 
             $TotalBankBalance = $TotalBankBalanceQuery->where('account_branches.branch_id', auth()->user()->branch_id)->get();
 
@@ -180,7 +179,7 @@ class AccountingRelatedSectionController extends Controller
 
             $variantProductStockValue = $variantProductStockValueQuery->where('product_branches.branch_id', auth()->user()->branch_id)->get();
         }
-        
+
         // $totalCashInHand = $totalCashInHandQuery->get();
 
         // $TotalBankBalance = $TotalBankBalanceQuery->get();
@@ -221,9 +220,10 @@ class AccountingRelatedSectionController extends Controller
     // Trial balance view
     public function trialBalance()
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (! auth()->user()->can('ac_access')) {
             abort(403, 'Access Forbidden.');
         }
+
         return view('accounting.related_sections.trial_balance');
     }
 
@@ -273,7 +273,7 @@ class AccountingRelatedSectionController extends Controller
     // Cash flow view
     public function cashFow()
     {
-        if (auth()->user()->permission->accounting['ac_access'] == '0') {
+        if (! auth()->user()->can('ac_access')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -319,10 +319,10 @@ class AccountingRelatedSectionController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $fixedAssetsQ->where('expanses.branch_id', NULL);
-                $currentAssetsQ->where('expanses.branch_id', NULL);
-                $currentLiabilityQ->where('loan_companies.branch_id', NULL);
-                $loanAndAdvanceQ->where('loan_companies.branch_id', NULL);
+                $fixedAssetsQ->where('expanses.branch_id', null);
+                $currentAssetsQ->where('expanses.branch_id', null);
+                $currentLiabilityQ->where('loan_companies.branch_id', null);
+                $loanAndAdvanceQ->where('loan_companies.branch_id', null);
             } else {
 
                 $fixedAssetsQ->where('expanses.branch_id', $request->branch_id);
@@ -411,10 +411,10 @@ class AccountingRelatedSectionController extends Controller
 
             if ($request->branch_id == 'NULL') {
 
-                $fixedAssetsQ->where('expanses.branch_id', NULL);
-                $currentAssetsQ->where('expanses.branch_id', NULL);
-                $currentLiabilityQ->where('loan_companies.branch_id', NULL);
-                $loanAndAdvanceQ->where('loan_companies.branch_id', NULL);
+                $fixedAssetsQ->where('expanses.branch_id', null);
+                $currentAssetsQ->where('expanses.branch_id', null);
+                $currentLiabilityQ->where('loan_companies.branch_id', null);
+                $loanAndAdvanceQ->where('loan_companies.branch_id', null);
             } else {
 
                 $fixedAssetsQ->where('expanses.branch_id', $request->branch_id);
@@ -479,6 +479,7 @@ class AccountingRelatedSectionController extends Controller
     public function profitLossAccount()
     {
         $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+
         return view('accounting.related_sections.loss_profit_ac', compact('branches'));
     }
 
@@ -488,7 +489,33 @@ class AccountingRelatedSectionController extends Controller
 
         return view(
             'accounting.related_sections.ajax_view.profit_loss_ac_ajax_view',
-            compact('netProfitLossAccount',)
+            compact('netProfitLossAccount')
+        );
+    }
+
+    public function printProfitLossAccount(Request $request)
+    {
+        $branch_id = $request->branch_id;
+
+        $fromDate = '';
+        $toDate = '';
+
+        if (isset($request->from_date) && $request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = isset($request->to_date) && $request->to_date
+                ? date('Y-m-d', strtotime($request->to_date))
+                : $from_date;
+
+            $fromDate = $from_date;
+            $toDate = $to_date;
+        }
+
+        $netProfitLossAccount = $this->netProfitLossAccount->netLossProfit($request);
+
+        return view(
+            'accounting.related_sections.ajax_view.print_profit_loss_ac',
+            compact('netProfitLossAccount', 'branch_id', 'fromDate', 'toDate')
         );
     }
 }

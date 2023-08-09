@@ -2,43 +2,45 @@
     @csrf
     <input type="hidden" name="id" value="{{ $allowance->id }}">
     <div class="form-group">
-        <label><b>Description or Title :</b> <span class="text-danger">*</span></label>
+        <label><b>Description or Title </b> <span class="text-danger">*</span></label>
         <input type="text" name="description" class="form-control form-control-sm" data-name="description"
             placeholder="Description or Title" value="{{ $allowance->description }}"/>
         <span class="error error_e_description"></span>
     </div>
 
     <div class="form-group">
-        <label><b>Type :</b></label>
+        <label><b>@lang('menu.type') </b></label>
         <select class="form-control form-control-sm" name="type">
-            <option {{ $allowance->type == 'Allowance' ? 'SELECTED' : '' }} value="Allowance">Allowance</option>
-            <option {{ $allowance->type == 'Deduction' ? 'SELECTED' : '' }} value="Deduction">Deduction</option>
+            <option {{ $allowance->type == 'Allowance' ? 'SELECTED' : '' }} value="Allowance">{{ __('Allowance') }}</option>
+            <option {{ $allowance->type == 'Deduction' ? 'SELECTED' : '' }} value="Deduction">{{ __('Deduction') }}</option>
         </select>
     </div>
 
     <div class="row">
         <div class="form-group col-6">
-            <label><b>Amount Type :</b> </label>
+            <label><b>{{ __('Amount Type') }} </b> </label>
             <select class="form-control form-control-sm" name="amount_type">
-                <option {{ $allowance->type == 1 ? 'SELECTED' : '' }} value="1">Fixed (0.0)</option>
-                <option {{ $allowance->type == 2 ? 'SELECTED' : '' }} value="2">Percentage (%)</option>
+                <option {{ $allowance->type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed') (0.0)</option>
+                <option {{ $allowance->type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage') (%)</option>
             </select>
         </div>
         <div class="form-group col-6">
-            <label><b>Amount : </b> <span class="text-danger">*</span></label>
-            <input type="text" name="amount" class="form-control form-control-sm" placeholder="Amount"
+            <label><b>@lang('menu.amount') </b> <span class="text-danger">*</span></label>
+            <input type="text" name="amount" class="form-control form-control-sm" placeholder="@lang('menu.amount')"
                 value="{{ $allowance->amount }}" />
             <span class="error error_e_amount"></span>
         </div>
     </div>
 
     <div class="form-group row mt-3">
-        <div class="col-md-12">
-            <button type="button" class="btn loading_button d-none"><i
-                    class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-            <button type="submit" class="c-btn me-0 button-success float-end">Save Change</button>
-            <button type="reset" data-bs-dismiss="modal"
-                class="c-btn btn_orange float-end">Close</button>
+        <div class="col-md-12 d-flex justify-content-end">
+            <div class="btn-loading">
+                <button type="button" class="btn loading_button d-hide">
+                    <i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span>
+                </button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                <button type="submit" class="btn btn-sm btn-success">@lang('menu.save_change')</button>
+            </div>
         </div>
     </div>
 </form>

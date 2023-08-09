@@ -2,57 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\Models\Brand;
-use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
+use DB;
+use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class BrandController extends Controller
 {
     protected $userActivityLogUtil;
+
     public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
 
     // Brand main page/index page
     public function index(Request $request)
     {
-        if (auth()->user()->permission->product['brand'] == '0') {
+        if (! auth()->user()->can('brand')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $img_url = asset('public/uploads/brand/');
+        $img_url = asset('uploads/brand/');
 
         if ($request->ajax()) {
 
             $brands = DB::table('brands')->orderBy('id', 'DESC')->get();
+
             return DataTables::of($brands)
                 ->addIndexColumn()
                 ->editColumn('photo', function ($row) use ($img_url) {
-                    return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
+                    return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';
                 })
                 ->addColumn('action', function ($row) {
                     // return $action_btn;
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('product.brands.edit', [$row->id]) . '" class="action-btn c-edit edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('product.brands.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="'.route('product.brands.edit', [$row->id]).'" class="action-btn c-edit edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('product.brands.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
+
                     return $html;
                 })
                 ->rawColumns(['photo', 'action'])
                 ->make(true);
         }
+
         return view('product.brands.index');
     }
 
     // Add Brand method
     public function store(Request $request)
     {
+        if (! auth()->user()->can('brand_create')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'sometimes|image|max:2048',
@@ -63,12 +71,12 @@ class BrandController extends Controller
         if ($request->file('photo')) {
 
             $brandPhoto = $request->file('photo');
-            $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('public/uploads/brand/' . $brandPhotoName);
+            $brandPhotoName = uniqid().'.'.$brandPhoto->getClientOriginalExtension();
+            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/'.$brandPhotoName);
 
             $addBrand = Brand::create([
                 'name' => $request->name,
-                'photo' => $brandPhotoName
+                'photo' => $brandPhotoName,
             ]);
         } else {
 
@@ -88,7 +96,13 @@ class BrandController extends Controller
     //edit method
     public function edit($id)
     {
+        if (! auth()->user()->can('brand_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $data = DB::table('brands')->where('id', $id)->first();
+
         return view('product.brands.ajax_view.edit', compact('data'));
     }
 
@@ -106,19 +120,19 @@ class BrandController extends Controller
 
             if ($updateBrand->photo !== 'default.png') {
 
-                if (file_exists(public_path('uploads/brand/' . $updateBrand->photo))) {
+                if (file_exists(public_path('uploads/brand/'.$updateBrand->photo))) {
 
-                    unlink(public_path('uploads/brand/' . $updateBrand->photo));
+                    unlink(public_path('uploads/brand/'.$updateBrand->photo));
                 }
             }
 
             $brandPhoto = $request->file('photo');
-            $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('public/uploads/brand/' . $brandPhotoName);
+            $brandPhotoName = uniqid().'.'.$brandPhoto->getClientOriginalExtension();
+            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/'.$brandPhotoName);
 
             $updateBrand->update([
                 'name' => $request->name,
-                'photo' => $brandPhotoName
+                'photo' => $brandPhotoName,
             ]);
         } else {
             $updateBrand->update([
@@ -134,17 +148,22 @@ class BrandController extends Controller
     // Delete Brand method//
     public function delete(Request $request, $brandId)
     {
+        if (! auth()->user()->can('brand_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $deleteBrand = Brand::find($brandId);
 
         if ($deleteBrand->photo !== 'default.png') {
 
-            if (file_exists(public_path('uploads/brand/' . $deleteBrand->photo))) {
+            if (file_exists(public_path('uploads/brand/'.$deleteBrand->photo))) {
 
-                unlink(public_path('uploads/brand/' . $deleteBrand->photo));
+                unlink(public_path('uploads/brand/'.$deleteBrand->photo));
             }
         }
 
-        if (!is_null($deleteBrand)) {
+        if (! is_null($deleteBrand)) {
 
             $this->userActivityLogUtil->addLog(action: 3, subject_type: 22, data_obj: $deleteBrand);
             $deleteBrand->delete();

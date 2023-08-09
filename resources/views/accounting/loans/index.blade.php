@@ -1,39 +1,29 @@
 @extends('layout.master')
 @push('stylesheets')
-<link href="{{ asset('public') }}/assets/css/tab.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('title', 'Loans - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="name-head">
-                                <span class="fas fa-glass-whiskey"></span>
-                                <h5>Loans</h5>
-                            </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
-                            </a>
-                        </div>
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-glass-whiskey"></span>
+                    <h5>@lang('menu.loans')</h5>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                </a>
+            </div>
 
-                        <div class="sec-name mt-1">
-                            <div class="name-head">
-                                <div class="tab_list_area">
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a id="tab_btn" data-show="companies" class="tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> Companies/Peoples</a>
-                                        </li>
-
-                                        <li>
-                                            <a id="tab_btn" data-show="loans" class="tab_btn" href="#">
-                                            <i class="fas fa-scroll"></i> Loans</a>
-                                        </li>
-                                    </ul>
-                                </div>
+            <div class="p-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab_list_area">
+                            <div class="btn-group">
+                                <a id="tab_btn" data-show="companies" class="btn btn-sm btn-primary tab_btn tab_active" href="#"><i class="fas fa-info-circle"></i> @lang('menu.companies')/@lang('menu.peoples')</a>
+                                <a id="tab_btn" data-show="loans" class="btn btn-sm btn-primary tab_btn" href="#"><i class="fas fa-scroll"></i> @lang('menu.loans')</a>
                             </div>
                         </div>
                         @include('accounting.loans.bodyPartials.companyBody')

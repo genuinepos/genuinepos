@@ -8,120 +8,51 @@
 @section('title', 'HRM Allowances/Deductions - ')
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="border-class">
-                    <div class="main__content">
-                        <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if (auth()->user()->permission->hrms['hrm_dashboard'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.dashboard.index') }}" class="text-white"><i class="fas fa-tachometer-alt"></i> <b>@lang('menu.hrm')</b></a>
-                                            </li>
-                                        @endif
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus"></span>
+                    <h6>{{ __('Allowances') }}/{{ __('Deductions') }}</h6>
+                </div>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
 
-                                        @if (auth()->user()->permission->hrms['leave_type'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.leave.type') }}" class="text-white "><i class="fas fa-th-large"></i> <b>Leave Types</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['leave_assign'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.leave') }}" class="text-white"><i class="fas fa-level-down-alt"></i> <b>@lang('menu.leave')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['shift'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['attendance'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['view_allowance_and_deduction'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.allowance') }}" class="text-white"><i class="fas fa-plus text-primary"></i> <b>@lang('menu.allowance_deduction')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['payroll'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.payroll.index') }}" class="text-white "><i class="far fa-money-bill-alt"></i> <b>@lang('menu.payroll')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['holiday'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['department'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if (auth()->user()->permission->hrms['designation'] == '1')
-                                            <li>
-                                                <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+        <div class="p-3">
+            <div class="form_element rounded m-0">
+                <div class="section-header">
+                    <div class="col-8">
+                        <h6>{{ __('Allowances') }}/{{ __('Deductions') }}</h6>
                     </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="section-header">
-                                    <div class="col-md-6">
-                                        <h6>Allowances/Deductions</h6>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="btn_30_blue float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> Add</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="widget_content">
-                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                    <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Serial</th>
-                                                    <th>Type</th>
-                                                    <th>Max leave</th>
-                                                    <th>Leave Count Interval</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <form id="deleted_form" action="" method="post">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            </div>
-                        </div>
+                    <div class="col-4 d-flex justify-content-end">
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
+
+                <div class="widget_content">
+                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>@lang('menu.serial')</th>
+                                    <th>@lang('menu.type')</th>
+                                    <th>{{ __('Max leave') }}</th>
+                                    <th>{{ __('Leave Count Interval') }}</th>
+                                    <th>@lang('menu.action')</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -132,7 +63,7 @@
         <div class="modal-dialog col-40-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Add Allowance/{{ __('Deduction') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -141,43 +72,43 @@
                     <form id="add_allowance_form" action="{{ route('hrm.allowance.store') }}">
                         <div class="form-group row">
                             <div class="col-md-6">
-                                <label><b>Description or Title :</b> <span class="text-danger">*</span></label>
+                                <label><b>Description or Title </b> <span class="text-danger">*</span></label>
                                 <input required type="text" name="description" class="form-control" placeholder="Description or Title"/>
                                 <span class="error error_description"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><b>Type :</b> <span class="text-danger">*</span></label>
+                                <label><b>@lang('menu.type') </b> <span class="text-danger">*</span></label>
                                 <select class="form-control" name="type" required="">
-                                    <option value="Allowance">Allowance</option>
-                                    <option value="Deduction">Deduction</option>
+                                    <option value="Allowance">{{ __('Allowance') }}</option>
+                                    <option value="Deduction">{{ __('Deduction') }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-6">
-                                <label><b>Amount Type :</b>  <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Amount Type') }} </b>  <span class="text-danger">*</span></label>
                                 <select class="form-control" name="amount_type" id="amount_type">
-                                    <option value="1">Fixed (0.0)</option>
-                                    <option value="2">Percentage (%)</option>
+                                    <option value="1">@lang('menu.fixed') (0.0)</option>
+                                    <option value="2">@lang('menu.percentage') (%)</option>
                                 </select>
                             </div>
 
                             <div class="col-6">
-                                <label><b>Amount :</b>  <span class="text-danger">*</span></label>
-                                <input type="number" step="any" name="amount" class="form-control" placeholder="Amount"/>
+                                <label><b>@lang('menu.amount') </b>  <span class="text-danger">*</span></label>
+                                <input type="number" step="any" name="amount" class="form-control" placeholder="@lang('menu.amount')"/>
                                 <span class="error error_amount"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn me-0 button-success float-end">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -191,7 +122,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/Deduction</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">Edit Allowance/{{ __('Deduction') }}</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -225,7 +156,7 @@
         }
     });
 
-    // call jquery method 
+    // call jquery method
     $(document).ready(function(){
         // Add department by ajax
         $('#add_allowance_form').on('submit', function(e){
@@ -274,7 +205,7 @@
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
-          
+
             $.ajax({
                 url:url,
                 type:'post',
@@ -283,7 +214,7 @@
                     toastr.success(data);
                     $('.loading_button').hide();
                     getAllAllowance();
-                    $('#editModal').modal('hide'); 
+                    $('#editModal').modal('hide');
                 },
                 error: function(err) {
                     $('.loading_button').hide();
@@ -299,9 +230,9 @@
         $(document).on('click', '#delete',function(e){
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);           
+            $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation',
+                'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
                     'Yes': {
@@ -314,7 +245,7 @@
                         'class': 'no btn-modal-primary',
                         'action': function() {
                             // alert('Deleted canceled.')
-                        } 
+                        }
                     }
                 }
             });

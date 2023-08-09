@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Warranty;
-use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
 
 class WarrantyController extends Controller
 {
     protected $userActivityLogUtil;
+
     public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
         $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('auth:admin_and_user');
+
     }
-    
+
     // Warranty main page/index page
     public function index()
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (! auth()->user()->can('warranties')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -30,13 +31,14 @@ class WarrantyController extends Controller
     public function allWarranty()
     {
         $warranties = Warranty::orderBy('id', 'DESC')->get();
+
         return view('product.warranties.ajax_view.warranty_list', compact('warranties'));
     }
 
     // Store warranty
     public function store(Request $request)
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (! auth()->user()->can('warranties')) {
 
             return response()->json('Access Denied');
         }
@@ -65,7 +67,7 @@ class WarrantyController extends Controller
     // Update warranty
     public function update(Request $request)
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (! auth()->user()->can('warranties')) {
 
             return response()->json('Access Denied');
         }
@@ -96,19 +98,20 @@ class WarrantyController extends Controller
     // Delete warranty
     public function delete(Request $request, $warrantyId)
     {
-        if (auth()->user()->permission->product['warranties'] == '0') {
+        if (! auth()->user()->can('warranties')) {
 
             return response()->json('Access Denied');
         }
-        
+
         $deleteWarranty = Warranty::find($warrantyId);
 
-        if (!is_null($deleteWarranty)) {
+        if (! is_null($deleteWarranty)) {
 
             $this->userActivityLogUtil->addLog(action: 3, subject_type: 25, data_obj: $deleteWarranty);
 
             $deleteWarranty->delete();
         }
+
         return response()->json('Warranty deleted successfully');
     }
 }

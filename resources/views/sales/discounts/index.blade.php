@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public') }}/backend/asset/css/select2.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'Discount - ')
 @section('content')
@@ -13,48 +13,44 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-people-arrows"></span>
-                                <h5>Manage Offer</h5>
+                                <h5>@lang('menu.manage_offers')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
-                    <div class="row margin_row mt-1">
+                    <div class="p-3">
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-md-6">
-                                    <h6>Offer List</h6>
+                                <div class="col-6">
+                                    <h6>{{ __('Offer List') }}</h6>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="btn_30_blue float-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                                                class="fas fa-plus-square"></i> Add (Ctrl+Enter)</a>
-                                    </div>
-
+                                <div class="col-6 d-flex justify-content-end">
+                                    <a href="#" data-bs-toggle="modal" class="btn btn-sm btn-primary" data-bs-target="#addModal"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner"></i> Processing...</h6>
+                                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr class="text-start">
-                                                <th>Offer Name</th>
-                                                <th>Business Location</th>
-                                                <th>Status</th>
-                                                <th>Start At</th>
-                                                <th>End At</th>
-                                                <th>Discount Type</th>
-                                                <th>Discount Amount</th>
-                                                <th>Priority</th>
-                                                <th>Brand</th>
-                                                <th>Category</th>
-                                                <th>Applicable Products</th>
-                                                <th>Actions</th>
+                                                <th>@lang('menu.offer_name')</th>
+                                                <th>@lang('menu.business_location')</th>
+                                                <th>@lang('menu.status')</th>
+                                                <th>@lang('menu.start_at')</th>
+                                                <th>@lang('menu.end_at')</th>
+                                                <th>@lang('menu.discount_type')</th>
+                                                <th>@lang('menu.discount_amount')</th>
+                                                <th>@lang('menu.priority')</th>
+                                                <th>@lang('menu.brand')</th>
+                                                <th>@lang('menu.category')</th>
+                                                <th>@lang('menu.applicable_products')</th>
+                                                <th>@lang('menu.action')</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -78,7 +74,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Add Offer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_offer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -89,17 +85,17 @@
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label><strong>Name :</strong> <span class="text-danger">*</span></label>
+                                <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control add_input"
-                                    data-name="Discount name" id="name" placeholder="Offer name" />
+                                    data-name="Discount name" id="name" placeholder="@lang('menu.offer_name')" />
                                 <span class="error error_name"></span>
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><strong>Priority <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> :</strong> <span class="text-danger">*</span> </label>
-                                <input type="text" name="priority" class="form-control add_input"
+                                <label><strong>@lang('menu.priority') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> </strong> <span class="text-danger">*</span> </label>
+                                <input type="number" name="priority" class="form-control add_input"
                                     data-name="Priority" id="priority" placeholder="Priority" />
                                 <span class="error error_priority"></span>
                             </div>
@@ -107,13 +103,13 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Start At :</strong> </label>
+                                <label><strong>@lang('menu.start_at') </strong><span class="text-danger">*</span></label>
                                 <input type="text" name="start_at" id="start_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_start_at"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>End At :</strong></label>
+                                <label><strong>@lang('menu.end_at') </strong><span class="text-danger">*</span></label>
                                 <input type="text" name="end_at" id="end_at" class="form-control add_input" autocomplete="off">
                                 <span class="error error_end_at"></span>
                             </div>
@@ -121,9 +117,9 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-12">
-                                <label><strong>Products :</strong> </label>
+                                <label><strong>@lang('menu.products') </strong> </label>
                                 <select name="product_ids[]" class="form-control select2" multiple="multiple" id="product_ids">
-                                   
+
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}">{{ $product->name.' ('.$product->product_code.')' }}</option>
                                     @endforeach
@@ -133,9 +129,9 @@
 
                         <div class="form-group row mt-1 brand_category_area">
                             <div class="col-md-6">
-                                <label><strong>Brand :</strong> </label>
+                                <label><strong>@lang('menu.brand')</strong><span class="text-danger">*</span></label>
                                 <select name="brand_id" id="brand_id" class="form-control add_input">
-                                    <option value="">Please select </option>
+                                    <option value="">@lang('menu.please_select') </option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
@@ -143,9 +139,9 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Category :</strong></label>
+                                <label><strong>@lang('menu.category') </strong><span class="text-danger">*</span></label>
                                 <select name="category_id" id="category_id" class="form-control add_input">
-                                    <option value="">Please select </option>
+                                    <option value="">@lang('menu.please_select') </option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
@@ -155,16 +151,16 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Discount Type :</strong> </label>
+                                <label><strong>@lang('menu.discount_type') </strong> </label>
                                 <select name="discount_type" id="discount_type" class="form-control add_input">
-                                    <option value="1">Fixed(0.00)</option>
-                                    <option value="1">Percentage(%)</option>
+                                    <option value="1">@lang('menu.fixed')(0.00)</option>
+                                    <option value="1">@lang('menu.percentage')(%)</option>
                                 </select>
                                 <span class="error error_discount_type"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>Discount Amount :</strong></label>
+                                <label><strong>@lang('menu.discount_amount') </strong><span class="text-danger">*</span></label>
                                 <input type="number" name="discount_amount" id="discount_amount" class="form-control add_input">
                                 <span class="error error_discount_amount"></span>
                             </div>
@@ -172,9 +168,9 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
-                                <label><strong>Selling Price Group :</strong> </label>
+                                <label><strong>@lang('menu.selling_price_group') </strong> </label>
                                 <select name="price_group_id" id="price_group_id" class="form-control">
-                                    <option value="">Default Price</option>
+                                    <option value="">@lang('menu.default_price')</option>
                                     @foreach ($price_groups as $price_group)
                                         <option value="{{ $price_group->id }}">{{ $price_group->name }}</option>
                                     @endforeach
@@ -187,32 +183,32 @@
                                 <div class="input-group mt-1">
                                     <div class="col-12">
                                         <div class="row">
-                                            <p class="checkbox_input_wrap"> 
-                                            <input type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp; Apply in customer Group</p> 
+                                            <p class="checkbox_input_wrap">
+                                            <input type="checkbox" name="apply_in_customer_group" id="apply_in_customer_group"> &nbsp; @lang('menu.apply_customer_group')</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="input-group mt-1">
                                     <div class="col-12">
                                         <div class="row">
-                                            <p class="checkbox_input_wrap"> 
-                                            <input CHECKED type="checkbox" name="is_active" id="is_active"> &nbsp; Is Active </p> 
+                                            <p class="checkbox_input_wrap">
+                                            <input CHECKED type="checkbox" name="is_active" id="is_active"> &nbsp; @lang('menu.is_active') </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-none"><i
-                                        class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                                <button type="submit" class="c-btn button-success me-0 float-end submit_button">Save</button>
-                                <button type="reset" data-bs-dismiss="modal"
-                                    class="c-btn btn_orange float-end">Close</button>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
+                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -226,7 +222,7 @@
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">Edit Offer</h6>
+                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.edit_offer')</h6>
                     <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                             class="fas fa-times"></span></a>
                 </div>
@@ -238,7 +234,7 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{ asset('public') }}/backend/asset/js/select2.min.js"></script>
+    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         $('.select2').select2({
             placeholder: "Select a products",
@@ -255,11 +251,11 @@
             "serverSide": true,
             aaSorting: [[0, 'asc']],
             ajax: "{{ route('sales.discounts.index') }}",
-            "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             columnDefs: [{"targets": [2, 10, 11],"orderable": false,"searchable": false}],
             columns: [
-               
+
                 {data: 'name',name: 'discounts.name'},
                 {data: 'branch',name: 'branches.name'},
                 {data: 'status',name: 'status'},
@@ -298,7 +294,7 @@
                 $('.loading_button').show();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
-               
+
                 $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
@@ -314,14 +310,14 @@
                         $('.submit_button').prop('type', 'submit');
                         $('.brand_category_area').show();
                     },error: function(err) {
-                    
+
                         $('.submit_button').prop('type', 'sumbit');
                         $('.loading_button').hide();
                         $('.error').html('');
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.'); 
+                            toastr.error('Net Connetion Error. Reload This Page.');
                             return;
                         }else if (err.status == 500){
 
@@ -356,7 +352,7 @@
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);
                 $.confirm({
-                    'title': 'Delete Confirmation',
+                    'title': 'Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
                         'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
@@ -387,7 +383,7 @@
             // Show sweet alert for delete
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
-                var url = $(this).attr('href');
+                var url = $(this).data('url');
                  $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',
@@ -410,7 +406,7 @@
             });
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -18,82 +18,77 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-users"></span>
-                                <h5>Supplier Report</h5>
+                                <h5>@lang('menu.supplier_report')</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> Back
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
                             </a>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sec-name">
-                                    <div class="col-md-8">
-                                        <form id="filter_tax_report_form" action="" method="get">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <div class="col-md-4">
-                                                    <label><strong>Supplier :</strong></label>
-                                                    <select name="supplier_id" class="form-control submit_able" id="supplier_id" autofocus>
-                                                        <option value="">All</option>
-                                                        @foreach ($suppliers as $supplier)
-                                                            <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
+                        <div class="p-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form_element rounded mt-0 mb-3">
+                                        <div class="element-body">
+                                            <div class="row justify-content-between align-items-end">
+                                                <div class="col-lg-4 col-md-6 col-9">
+                                                    <form id="filter_tax_report_form" action="" method="get">
+                                                        @csrf
+                                                        <select name="supplier_id" class="form-control submit_able select2" id="supplier_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            @foreach ($suppliers as $supplier)
+                                                                <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </form>
+                                                </div>
+
+                                                <div class="col-md-6 col-3">
+                                                    <div class="form-group">
+                                                        <label></label>
+                                                        <a href="#" class="btn btn-sm btn-primary float-end mt-1" id="print_report"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label></label>
-                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_report"><i class="fas fa-print"></i> Print</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row mt-1">
-                            <div class="report_data_area">
-                                <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> Processing...</h6></div>
-                                <div class="report_data">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="table-responsive" >
-                                                        <table class="display data_tbl data__table">
-                                                            <thead>
-                                                                <tr class="text-start">
-                                                                    <th>Supplier</th>
-                                                                    <th>Opening Balance Due</th>
-                                                                    <th>Total Purchase</th>
-                                                                    <th>Total Paid</th>
-                                                                    <th>Total Due</th>
-                                                                    <th>Total Return Due</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                            <tfoot>
-                                                                <tr class="bg-secondary">
-                                                                    <th class="text-end text-white">Total : ({{json_decode($generalSettings->business, true)['currency'] }})</th>
-                                                                    <th id="total_op_blc_due" class="text-white">0.00</th>
-                                                                    <th id="total_purchase" class="text-white">0.00</th>
-                                                                    <th id="total_paid" class="text-white">0.00</th>
-                                                                    <th id="total_purchase_due" class="text-white">0.00</th>
-                                                                    <th id="total_return_due" class="text-white">0.00</th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                            <div class="row">
+                                <div class="report_data_area">
+                                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                                    <div class="report_data">
+                                        <div class="card">
+                                            <div class="table-responsive" >
+                                                <table class="display data_tbl data__table">
+                                                    <thead>
+                                                        <tr class="text-start">
+                                                            <th>@lang('menu.supplier')</th>
+                                                            <th>@lang('menu.opening_balance')</th>
+                                                            <th>@lang('menu.total_purchase')</th>
+                                                            <th>@lang('menu.total_paid')</th>
+                                                            <th>@lang('menu.total_due')</th>
+                                                            <th>@lang('menu.total_return_due')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr class="bg-secondary">
+                                                            <th class="text-end text-white">@lang('menu.total') : ({{$generalSettings['business__currency'] }})</th>
+                                                            <th id="total_op_blc_due" class="text-white">0.00</th>
+                                                            <th id="total_purchase" class="text-white">0.00</th>
+                                                            <th id="total_paid" class="text-white">0.00</th>
+                                                            <th id="total_purchase_due" class="text-white">0.00</th>
+                                                            <th id="total_return_due" class="text-white">0.00</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
                                             </div>
-                                        </div>  
-                                    </div>  
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +102,7 @@
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [ 
+        buttons: [
             {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
             {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
             {extend: 'print',text: 'Print',className: 'btn btn-primary'},
@@ -115,7 +110,7 @@
         "processing": true,
         "serverSide": true,
         aaSorting: [[3, 'asc']],
-        "pageLength": parseInt("{{ json_decode($generalSettings->system, true)['datatable_page_entry'] }}"),
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('reports.supplier.index') }}",
@@ -170,16 +165,16 @@
             data: {supplier_id},
             success:function(data){
                 $(data).printThis({
-                    debug: false,                   
-                    importCSS: true,                
-                    importStyle: true,          
-                    loadCSS: "{{asset('public/assets/css/print/sale.print.css')}}",                      
-                    removeInline: false, 
-                    printDelay: 700, 
-                    header: null,        
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
                 });
             }
-        }); 
+        });
     });
 </script>
 @endpush

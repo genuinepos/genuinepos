@@ -12,111 +12,153 @@
 @endpush
 @section('content')
     <div class="body-woaper">
-        <div class="container-fluid">
+        <div class="main__content">
+            <div class="sec-name">
+                <div class="name-head">
+                    <span class="fas fa-plus-circle"></span>
+                    <h6>@lang('menu.add_purchase_return')</h6>
+                </div>
+
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+            </div>
+        </div>
+        <div class="p-3">
             <form id="add_purchase_return_form" action="{{ route('purchases.returns.supplier.return.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <input type="text" name="action" id="action">
-                <section class="mt-3">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="py-2 px-2 form-header">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h6>Add Purchase Return | <small class="text-muted">Save & Print = (Ctrl + Enter), Save = (Shift + Enter)</small></h6> 
-                                        </div>
+                <input type="hidden" name="action" id="action">
+                <section>
+                    <div class="form_element rounded mt-0 mb-3">
 
-                                        <div class="col-4">
-                                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-info float-end"><i class="fas fa-long-arrow-alt-left text-white"></i> Back</a>
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>@lang('menu.supplier')</b> <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select name="supplier_id" class="form-control add_input select2"
+                                                data-name="Supplier" id="supplier_id">
+                                                <option value="">@lang('menu.select_supplier')</option>
+                                                @foreach ($suppliers as $sup)
+                                                    <option value="{{$sup->id}}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
+                                                @endforeach
+                                            </select>
+
+                                            <span class="error error_supplier_id"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>@lang('menu.b_location') </b> </label>
+                                        <div class="col-8">
+                                            <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'] }}">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>Supplier :</b> <span
-                                                        class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select name="supplier_id" class="form-control add_input"
-                                                        data-name="Supplier" id="supplier_id">
-                                                        <option value="">Select Supplier</option>
-                                                        @foreach ($suppliers as $sup)
-                                                            <option value="{{$sup->id}}">{{ $sup->name.' ('.$sup->phone.')' }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    
-                                                    <span class="error error_supplier_id"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>B.Location :</b> </label>
-                                                <div class="col-8">
-                                                    <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'] }}">
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class=" col-4"><b>@lang('menu.r_invoice_id') </b> </label>
+                                        <div class="col-8">
+                                            <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="@lang('menu.invoice_id')">
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class=" col-4"><b>R. Invoice ID :</b> </label>
-                                                <div class="col-8">
-                                                    <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>Warehouse :</b></label>
-                                                <div class="col-8">
-                                                    <select class="form-control changeable add_input"
-                                                        name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
-                                                        <option value="">Select Warehouse</option>
-                                                        @foreach ($warehouses as $w)
-                                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>@lang('menu.warehouse') </b></label>
+                                        <div class="col-8">
+                                            <select class="form-control changeable add_input"
+                                                name="sender_warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                <option value="">@lang('menu.select_warehouse')</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Date :</b> <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <input required type="text" name="date" class="form-control changeable" autocomplete="off"
-                                                        value="{{ date(json_decode($generalSettings->business, true)['date_format']) }}" id="datepicker">
-                                                </div>
-                                            </div>
-
-                                            <div class="input-group mt-1">
-                                                <label class="col-4"><b>Return A/C : <span
-                                                    class="text-danger">*</span></b></label>
-                                                <div class="col-8">
-                                                    <select name="purchase_return_account_id" class="form-control add_input"
-                                                        id="purchase_return_account_id" data-name="Purchase Return A/C">
-                                                        @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
-                                                            <option value="{{ $purchaseReturnAccount->id }}">
-                                                                {{ $purchaseReturnAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_purchase_return_account_id"></span>
-                                                </div>
-                                            </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.date') </b> <span
+                                            class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input required type="text" name="date" class="form-control changeable" autocomplete="off"
+                                                value="{{ date($generalSettings['business__date_format']) }}" id="datepicker">
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label class="col-4"><b>Attachment :</b></label>
-                                                <div class="col-8">
-                                                    <input type="file" class="form-control" name="attachment">
-                                                </div>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>{{ __('Return A/C') }} : <span
+                                            class="text-danger">*</span></b></label>
+                                        <div class="col-8">
+                                            <select name="purchase_return_account_id" class="form-control add_input"
+                                                id="purchase_return_account_id" data-name="Purchase Return A/C">
+                                                @foreach ($purchaseReturnAccounts as $purchaseReturnAccount)
+                                                    <option value="{{ $purchaseReturnAccount->id }}">
+                                                        {{ $purchaseReturnAccount->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_purchase_return_account_id"></span>
                                         </div>
+                                    </div>
+                                </div>
 
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label class="col-4"><b>@lang('menu.attachment') </b></label>
+                                        <div class="col-8">
+                                            <input type="file" class="form-control" name="attachment">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="card">
+                        <div class="content-inner">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="searching_area" style="position: relative;">
+                                        <label class="col-form-label">@lang('menu.item_search')</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-barcode text-dark input_f"></i>
+                                                </span>
+                                            </div>
+                                            <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
+                                        </div>
+                                        <div class="select_area">
+                                            <ul id="list" class="variant_list_area"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="sale-item-sec">
+                                    <div class="sale-item-inner">
+                                        <div class="table-responsive">
+                                            <table class="display data__table table-striped">
+                                                <thead class="staky">
+                                                    <tr>
+                                                        <th>@lang('menu.product')</th>
+                                                        <th>@lang('menu.purchase_price')</th>
+                                                        <th>@lang('menu.current_stock')</th>
+                                                        <th>@lang('menu.return_quantity')</th>
+                                                        <th>@lang('menu.return_subtotal')</th>
+                                                        <th><i class="fas fa-trash-alt"></i></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="purchase_return_list"></tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -125,88 +167,31 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">Item Search</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-barcode text-dark input_f"></i>
-                                                            </span>
-                                                        </div>
-                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code">
-                                                    </div>
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area"></ul>
-                                                    </div>
-                                                </div> 
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="sale-item-sec">
-                                                <div class="sale-item-inner">
-                                                    <div class="table-responsive">
-                                                        <table class="display data__table table-striped">
-                                                            <thead class="staky">
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th>Purchase Price</th>
-                                                                    <th>Current Stock</th>
-                                                                    <th>Return Quantity</th>
-                                                                    <th>Return Subtotal</th>
-                                                                    <th><i class="fas fa-trash-alt"></i></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="purchase_return_list"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="form_element rounded my-3">
+                        <div class="element-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group mt-1">
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.tax') </b>  <span class="text-danger">*</span></label>
+                                        <div class="col-6">
+                                            <select name="purchase_tax" class="form-control" id="purchase_tax">
+                                            </select>
+                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="form_element">
-                                <div class="element-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="input-group mt-1">
-                                                <label for="inputEmail3" class="col-4"><b>Tax :</b>  <span class="text-danger">*</span></label>
-                                                <div class="col-8">
-                                                    <select name="purchase_tax" class="form-control" id="purchase_tax">
-                                                    </select>
-                                                    <input name="purchase_tax_amount" type="number" step="any" class="d-none" id="purchase_tax_amount" value="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <label><strong> Tax Amount (+) </strong> <span class="label_purchase_tax_amount">  0.00</span></label>
+                                    </div>
+                                </div>
 
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <label><strong> Tax Amount (+) : </strong> <span class="label_purchase_tax_amount">  0.00</span></label> 
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <label for="inputEmail3" class="col-4 text-center"><b>Net Total Amount</b> : {{ json_decode($generalSettings->business, true)['currency'] }}</label>
-                                                <div class="col-8">
-                                                    <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00" >
-                                                </div>
-                                            </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <label for="inputEmail3" class="col-6"><b>@lang('menu.net_total_amount')</b> : {{ $generalSettings['business__currency'] }}</label>
+                                        <div class="col-6">
+                                            <input readonly name="total_return_amount" type="number" step="any" id="total_return_amount" class="form-control" value="0.00" >
                                         </div>
                                     </div>
                                 </div>
@@ -216,16 +201,17 @@
                 </section>
 
                 <div class="row">
-                    <div class="col-md-12 text-end">
-                        <button type="button" class="btn loading_button d-none">
-                            <i class="fas fa-spinner text-primary"></i> <strong>Loading...</strong> 
-                        </button>
-                        <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-primary submit_button">
-                            Save & Print (Ctrl+Enter)
-                        </button>
-                        <button type="submit" id="save" value="2" class="btn btn-sm btn-primary submit_button">
-                            Save (Shift+Enter)
-                        </button>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-loading">
+                            <button type="button" class="btn loading_button d-hide">
+                                <i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span>
+                            </button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">
+                                @lang('menu.save_print')
+                            </button>
+                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">@lang('menu.save')
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -233,7 +219,7 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('public') }}/assets/plugins/custom/select_li/selectli.js"></script>
+    <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         function getTaxes(){
@@ -275,29 +261,29 @@
 
             delay(function() { searchProduct(__product_code, warehouse_id); }, 150); //sendAjaxical is the name of remote-command
         });
-      
+
         // add purchase product by searching product code
         function searchProduct(product_code, warehouse_id){
 
             $.ajax({
 
-                url:"{{url('purchases/returns/search/product')}}" + "/" + product_code + "/" + warehouse_id,  
-                
+                url:"{{url('purchases/returns/search/product')}}" + "/" + product_code + "/" + warehouse_id,
+
                 dataType: 'json',
 
                 success:function(product){
 
                     if(!$.isEmptyObject(product.errorMsg)){
 
-                        toastr.error(product.errorMsg); 
+                        toastr.error(product.errorMsg);
                         return;
                     }
 
                     var qty_limit = product.qty_limit;
 
                     if(
-                        !$.isEmptyObject(product.product) || 
-                        !$.isEmptyObject(product.variant_product) || 
+                        !$.isEmptyObject(product.product) ||
+                        !$.isEmptyObject(product.variant_product) ||
                         !$.isEmptyObject(product.namedProducts)
                     ) {
 
@@ -334,7 +320,7 @@
 
                                         var updateQty = parseFloat(presentQty) + 1;
                                         closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                        
+
                                         //Update Subtotal
                                         var unitCost = closestTr.find('#unit_cost').val();
                                         var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -351,7 +337,7 @@
                                     tr += '<tr>';
                                     tr += '<td class="text">';
                                     tr += '<span class="product_name">'+product.name+'</span>';
-                                    tr += '<span class="product_variant"></span>'; 
+                                    tr += '<span class="product_variant"></span>';
                                     tr += '<span class="product_code">'+' ('+product.product_code+')'+'</span>';
                                     tr += '<input value="'+product.id+'" type="hidden" class="productId-'+product.id+'" id="product_id" name="product_ids[]">';
                                     tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -364,16 +350,16 @@
                                     tr += '</td>';
 
                                     tr += '<td class="text"><span class="span_warehouse_stock">'+qty_limit+' ('+product.unit.name+')'+'</span></td>';
-                                   
+
                                     tr += '<td>';
                                     tr += '<input value="1.00" required name="return_quantities[]" type="text" class="form-control" id="return_quantity" autocomplete="off">';
                                     tr += '</td>';
-                                    
+
                                     tr += '<td class="text">';
-                                    tr += '<span class="span_return_subtotal">'+product.product_cost_with_tax+'</span>'; 
+                                    tr += '<span class="span_return_subtotal">'+product.product_cost_with_tax+'</span>';
                                     tr += '<input value="'+product.product_cost_with_tax+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                                     tr += '</td>';
-                                    
+
                                     tr += '<td>';
                                     tr += '<a href="" id="remove_product_btn" class=""><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                                     tr += '</td>';
@@ -433,16 +419,16 @@
                                         calculateTotalAmount();
                                         return;
                                     }
-                                }    
+                                }
                             });
-                           
+
                             if(sameVariant == 0){
 
                                 var tr = '';
                                 tr += '<tr>';
                                 tr += '<td colspan="2" class="text">';
                                 tr += '<span class="product_name">'+variant_product.product.name+'</span>';
-                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>'; 
+                                tr += '<span class="product_variant">'+' -'+variant_product.variant_name+'- '+'</span>';
                                 tr += '<span class="product_code">'+'('+variant_product.variant_code+')'+'</span>';
                                 tr += '<input value="'+variant_product.product.id+'" type="hidden" class="productId-'+variant_product.product.id+'" id="product_id" name="product_ids[]">';
                                 tr += '<input value="'+variant_product.id+'" type="hidden" class="variantId-'+variant_product.id+'" id="variant_id" name="variant_ids[]">';
@@ -464,7 +450,7 @@
                                 tr += '</td>';
 
                                 tr += '<td class="text">';
-                                tr += '<span class="span_return_subtotal">'+variant_product.variant_cost_with_tax+'</span>'; 
+                                tr += '<span class="span_return_subtotal">'+variant_product.variant_cost_with_tax+'</span>';
                                 tr += '<input value="'+variant_product.variant_cost_with_tax+'"  name="return_subtotals[]" type="hidden" id="return_subtotal">';
                                 tr += '</td>';
 
@@ -474,14 +460,14 @@
                                 tr += '</tr>';
                                 $('#purchase_return_list').append(tr);
                                 calculateTotalAmount();
-                            }    
+                            }
                         }else if (!$.isEmptyObject(product.namedProducts)) {
 
                             if(product.namedProducts.length > 0){
 
-                                var imgUrl = "{{asset('public/uploads/product/thumbnail')}}";
+                                var imgUrl = "{{asset('uploads/product/thumbnail')}}";
                                 var li = "";
-                                var products = product.namedProducts; 
+                                var products = product.namedProducts;
 
                                 $.each(products, function (key, product) {
 
@@ -557,7 +543,7 @@
                                     var updateQty = parseFloat(presentQty) + 1;
 
                                     closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitCost = closestTr.find('#unit_cost').val();
                                     var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -566,7 +552,7 @@
                                     calculateTotalAmount();
                                     return;
                                 }
-                            }    
+                            }
                         });
 
                         if(sameProduct == 0){
@@ -575,7 +561,7 @@
                             tr += '<tr>';
                             tr += '<td class="text">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant"></span>'; 
+                            tr += '<span class="product_variant"></span>';
                             tr += '<span class="product_code"></span>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="noid" type="hidden" class="variantId-" id="variant_id" name="variant_ids[]">';
@@ -594,7 +580,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<span class="span_return_subtotal">'+p_cost+'</span>'; 
+                            tr += '<span class="span_return_subtotal">'+p_cost+'</span>';
                             tr += '<input value="'+p_cost+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                             tr += '</td>';
 
@@ -607,7 +593,7 @@
                         }
                     }else{
 
-                        toastr.error(stock.errorMsg);   
+                        toastr.error(stock.errorMsg);
                     }
                 }
             });
@@ -665,7 +651,7 @@
 
                                     var updateQty = parseFloat(presentQty) + 1;
                                     closestTr.find('#return_quantity').val(parseFloat(updateQty).toFixed(2));
-                                    
+
                                     //Update Subtotal
                                     var unitCost = closestTr.find('#unit_cost').val();
                                     var calcSubtotal = parseFloat(unitCost) * parseFloat(updateQty);
@@ -674,7 +660,7 @@
                                     calculateTotalAmount();
                                     return;
                                 }
-                            }    
+                            }
                         });
 
                         if(sameVariant == 0){
@@ -684,7 +670,7 @@
 
                             tr += '<td class="text">';
                             tr += '<span class="product_name">'+product_name+'</span>';
-                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>'; 
+                            tr += '<span class="product_variant">'+' -'+variant_name+'- '+'</span>';
                             tr += '<span class="product_code">'+'('+variant_code+')'+'</span>';
                             tr += '<input value="'+product_id+'" type="hidden" class="productId-'+product_id+'" id="product_id" name="product_ids[]">';
                             tr += '<input value="'+variant_id+'" type="hidden" class="variantId-'+variant_id+'" id="variant_id" name="variant_ids[]">';
@@ -703,7 +689,7 @@
                             tr += '</td>';
 
                             tr += '<td class="text">';
-                            tr += '<span class="span_return_subtotal">' + variant_cost + '</span>'; 
+                            tr += '<span class="span_return_subtotal">' + variant_cost + '</span>';
                             tr += '<input value="'+variant_cost+'" name="return_subtotals[]" type="hidden" id="return_subtotal">';
                             tr += '</td>';
 
@@ -716,7 +702,7 @@
                         }
                     } else {
 
-                        toastr.error(stock.errorMsg);    
+                        toastr.error(stock.errorMsg);
                     }
                 }
             });
@@ -734,7 +720,7 @@
                 netTotalAmount += parseFloat(subtotal.value);
             });
 
-            var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0; 
+            var purchaseTaxAmount = $('#purchase_tax_amount').val() ? $('#purchase_tax_amount').val() : 0;
 
             var calcTotalReturnAmount = parseFloat(netTotalAmount) + parseFloat(purchaseTaxAmount);
 
@@ -748,7 +734,7 @@
 
             var qty = $(this).val() ? $(this).val() : 0;
             var tr = $(this).closest('tr');
-            //Update subtotal 
+            //Update subtotal
             var qty_limit = tr.find('#qty_limit').val();
             var unit = tr.find('#unit').val();
 
@@ -760,7 +746,7 @@
                 var calcReturnSubtotal = parseFloat(unitCost) * parseFloat(qty_limit);
                 tr.find('#return_subtotal').val(parseFloat(calcReturnSubtotal).toFixed(2));
                 tr.find('.span_return_subtotal').html(parseFloat(calcReturnSubtotal).toFixed(2));
-                calculateTotalAmount();  
+                calculateTotalAmount();
                 return;
             } else{
 
@@ -769,7 +755,7 @@
                 tr.find('#return_subtotal').val(parseFloat(calcReturnSubtotal).toFixed(2));
                 tr.find('.span_return_subtotal').html(parseFloat(calcReturnSubtotal).toFixed(2));
                 calculateTotalAmount();
-            } 
+            }
         });
 
         // Return Quantity increase or dicrease and clculate row amount
@@ -799,14 +785,14 @@
             calculateTotalAmount();
         });
 
-        // Dispose Select area 
+        // Dispose Select area
         $(document).on('click', '.remove_select_area_btn', function(e){
             e.preventDefault();
 
             $('.select_area').hide();
         });
 
-        // Remove product form purchase product list (Table) 
+        // Remove product form purchase product list (Table)
         $(document).on('click', '#remove_product_btn',function(e){
             e.preventDefault();
 
@@ -817,7 +803,7 @@
         $('.submit_button').on('click', function () {
 
             var value = $(this).val();
-            $('#action').val(value); 
+            $('#action').val(value);
         });
 
         //Add purchase request by ajax
@@ -835,7 +821,7 @@
                 cache: false,
                 processData: false,
                 success:function(data){
-                    
+
                     $('.loading_button').hide();
                     $('.submit_button').prop('type', 'sumbit');
                     $('.error').html('');
@@ -845,7 +831,7 @@
                         toastr.error(data.errorMsg,'ERROR');
                     }else if (data.successMsg) {
 
-                        toastr.success(data.successMsg); 
+                        toastr.success(data.successMsg);
                         $('#add_purchase_return_form')[0].reset();
                         $('#purchase_return_list').empty();
                     } else{
@@ -855,13 +841,13 @@
                         $('#purchase_return_list').empty();
 
                         $(data).printThis({
-                            debug: false,                   
-                            importCSS: true,                
-                            importStyle: true,          
-                            loadCSS: "{{asset('public/assets/css/print/purchase.print.css')}}",                      
-                            removeInline: false, 
-                            printDelay: 1000, 
-                            header: null,        
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                            removeInline: false,
+                            printDelay: 1000,
+                            header: null,
                         });
                     }
                 },error: function(err) {
@@ -872,15 +858,15 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.'); 
+                        toastr.error('Net Connetion Error. Reload This Page.');
                         return;
                     } else if(err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.'); 
+                        toastr.error('Server error. Please contact to the support team.');
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.'); 
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
@@ -890,11 +876,11 @@
             });
         });
 
-        // Automatic remove searching product is found signal 
+        // Automatic remove searching product is found signal
         setInterval(function(){
 
             $('#search_product').removeClass('is-invalid');
-        }, 500); 
+        }, 500);
 
         setInterval(function(){
 
@@ -904,7 +890,7 @@
         $('body').keyup(function(e) {
             e.preventDefault();
 
-            if (e.keyCode == 13){  
+            if (e.keyCode == 13){
 
                 $(".selectProduct").click();
                 $('#list').empty();
@@ -919,7 +905,7 @@
             }
         });
 
-        var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

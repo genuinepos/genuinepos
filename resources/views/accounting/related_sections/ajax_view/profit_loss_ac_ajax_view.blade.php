@@ -2,174 +2,174 @@
     <tbody>
         <tr>
             <td class="aiability_area">
-                <table class="table table-sm">
+                <table class="display table table-sm">
                     <tbody>
                         {{-- Cash Flow from operations --}}
                         <tr>
                             <td class="text-start">
-                            <em>Total Sale :</em> 
+                            <em>@lang('menu.total_sale') </em>
                             </td>
 
                             <td class="text-start">
-                            <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale']) }}</em> 
+                            <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale']) }}</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                            <em>Purchase Return :</em> 
+                            <em>@lang('menu.purchase_return') </em>
                             </td>
 
                             <td class="text-start">
-                            <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_purchase_return']) }}</em> 
+                            <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_purchase_return']) }}</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                            <em>Total Purchase : </em>  
+                            <em>@lang('menu.total_purchase') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_purchase']) }})</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_purchase']) }})</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                            <em>Sale Retun : </em> 
+                            <em>@lang('menu.sale_return') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale_return']) }})</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale_return']) }})</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                            <em>Direct Expense :</em>  
+                            <em>@lang('menu.direct_expense') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_direct_expense']) }})</em>     
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_direct_expense']) }})</em>
                             </td>
                         </tr>
 
-                        @if ($addons->manufacturing == 1)
+                        @if ($generalSettings['addons__manufacturing'] == 1)
                             <tr>
                                 <td class="text-start">
-                                <em>Total Production Cost :</em>  
+                                <em>@lang('menu.total_production_cost') </em>
                                 </td>
 
                                 <td class="text-start">
-                                    <em>(0.00)</em>     
+                                    <em>(0.00)</em>
                                 </td>
                             </tr>
                         @endif
-                        
+
                         {{-- <tr>
                             <td class="text-start">
-                            <em>Opening Stock :</em>  
+                            <em>@lang('menu.opening_stock') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['opening_stock']) }})</em>     
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['opening_stock']) }})</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                            <em>Closing Stock :</em>  
+                            <em>@lang('menu.closing_stock') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['closing_stock']) }}</em>     
+                                <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['closing_stock']) }}</em>
                             </td>
                         </tr> --}}
 
                         <tr>
                             <th class="text-end">
-                                <em>Gross Profit :</em>   
+                                <em>@lang('menu.gross_profit') </em>
                             </th>
 
                             <td class="text-start">
-                                <b><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['gross_profit']) }}</em></b>  
+                                <b><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['gross_profit']) }}</em></b>
                             </td>
                         </tr>
-                    
+
                         {{-- Cash Flow from investing --}}
                         <tr>
                             <th class="text-start" colspan="2">
-                                <strong>NET PROFIT LOSS INFORNATION :</strong>
+                                <strong>@lang('menu.net_profit_loss_information') </strong>
                             </th>
                         </tr>
-                        
+
                         <tr>
                             <td class="text-start">
-                                <em>Gross Profit :</em> 
+                                <em>@lang('menu.gross_profit') </em>
                             </td>
                             <td class="text-start"><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['gross_profit']) }}</em> </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Stock Adjustment :</em>  
+                                <em>@lang('menu.total_stock_adjustment') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_adjusted']) }})</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_adjusted']) }})</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Adjustment Recovered :</em>  
+                                <em>@lang('menu.total_adjustment_recovered') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_adjusted_recovered']) }}</em>    
+                                <em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_adjusted_recovered']) }}</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                                <em>Total Sale Order Tax :</em>  
+                                <em>@lang('menu.total_sale_order_tax') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale_order_tax']) }})</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_sale_order_tax']) }})</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                            <em>Item Sold Individual Tax :</em>  
+                            <em>@lang('menu.item_sold_individual_tax') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['individual_product_sale_tax']) }})</em>    
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['individual_product_sale_tax']) }})</em>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>Indirect Expense :</em>   
+                               <em>@lang('menu.indirect_expense') </em>
                             </td>
 
                             <td class="text-start">
-                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_indirect_expense']) }})</em> 
+                                <em>({{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['total_indirect_expense']) }})</em>
                             </td>
-                        </tr> 
-                        
+                        </tr>
+
                         <tr>
                             <th class="text-end">
-                                <em>Net Profit :</em>
+                                <em>@lang('menu.net_profit') </em>
                             </th>
 
                             <td class="text-start">
-                                <b><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['net_profit']) }}</em> </b>  
+                                <b><em>{{ App\Utils\Converter::format_in_bdt( $netProfitLossAccount['net_profit']) }}</em> </b>
                             </td>
-                        </tr> 
+                        </tr>
                     </tbody>
                 </table>
             </td>

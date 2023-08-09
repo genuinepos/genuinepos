@@ -22,12 +22,12 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Supplier : </strong><span>{{ $purchase->supplier->name }}</span></li>
-                                <li><strong>Business : </strong>
-                                    <span>{{ $purchase->supplier->business_name }}</span> 
+                                <li><strong>@lang('menu.supplier') : </strong><span>{{ $purchase->supplier->name }}</span></li>
+                                <li><strong>@lang('menu.business') : </strong>
+                                    <span>{{ $purchase->supplier->business_name }}</span>
                                 </li>
-                                <li><strong>Phone : </strong>
-                                    <span>{{ $purchase->supplier->phone }}</span> 
+                                <li><strong>@lang('menu.phone') : </strong>
+                                    <span>{{ $purchase->supplier->phone }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -35,10 +35,10 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>P. Invoice ID : </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
+                                <li><strong>{{ __('P.Invoice ID') }} </strong><span class="invoice_no">{{ $purchase->invoice_id }}</span>
                                 </li>
-                                <li><strong>B.Location : </strong>
-                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : json_decode($generalSettings->business, true)['shop_name'].' (HO)'}}
+                                <li><strong>@lang('menu.b_location') : </strong>
+                                    {{ $purchase->branch ? $purchase->branch->name . '/' . $purchase->branch->branch_code : $generalSettings['business__shop_name'].' (HO)'}}
                                 </li>
                             </ul>
                         </div>
@@ -47,7 +47,7 @@
                     <div class="col-md-4">
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
-                                <li><strong>Total Return Due : {{ json_decode($generalSettings->business, true)['currency'] }} </strong>{{ $purchase->purchase_return_due }}
+                                <li><strong>@lang('menu.total_return_due') : {{ $generalSettings['business__currency'] }} </strong>{{ $purchase->purchase_return_due }}
                                 </li>
                             </ul>
                         </div>
@@ -59,7 +59,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-4">
-                        <label><strong>Amount :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.amount') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label for="p_date"><strong>Date :</strong> <span class="text-danger">*</span></label>
+                        <label for="p_date"><strong>@lang('menu.date') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -86,7 +86,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label><strong>Payment Method :</strong> <span class="text-danger">*</span></label>
+                        <label><strong>@lang('menu.payment_method') : </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -107,7 +107,7 @@
 
                 <div class="form-group row mt-2">
                     <div class="col-md-7">
-                        <label><strong>Debit Account :</strong> </label>
+                        <label><strong>@lang('menu.debit_account') : </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
@@ -132,21 +132,21 @@
                     </div>
 
                     <div class="col-md-5">
-                        <label><strong>Attach document :</strong> <small class="text-danger">Note: Max Size 2MB. </small> </label>
+                        <label><strong>@lang('menu.attach_document') : </strong> <small class="text-danger">@lang('menu.note_max_size_2mb'). </small> </label>
                         <input type="file" name="attachment" class="form-control" id="attachment" data-name="Date" >
                     </div>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label><strong> Payment Note :</strong></label>
+                    <label><strong> @lang('menu.payment_note') : </strong></label>
                     <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                 </div>
 
                 <div class="form-group row mt-3">
                     <div class="col-md-12">
-                        <button type="button" class="btn loading_button d-none"><i class="fas fa-spinner text-primary"></i><b> Loading...</b></button>
-                        <button type="submit" class="c-btn button-success me-0 float-end">Save</button>
-                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">Close</button>
+                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
+                        <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.save')</button>
+                        <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
                     </div>
                 </div>
             </form>
@@ -158,7 +158,7 @@
      //Add purchase return payment request by ajax
      $('#payment_form').on('submit', function(e) {
         e.preventDefault();
-        
+
         $('.loading_button').show();
         var available = $('#p_available_amount').val();
         var paying_amount = $('#p_paying_amount').val();
@@ -171,7 +171,7 @@
         }
 
         var url = $(this).attr('action');
-    
+
         $.ajax({
             url: url,
             type: 'post',
@@ -200,11 +200,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.'); 
+                    toastr.error('Net Connetion Error. Reload This Page.');
                     return;
                 }else if (err.status == 500) {
-                    
-                    toastr.error('Server error. Please contact to the support team.'); 
+
+                    toastr.error('Server error. Please contact to the support team.');
                     return;
                 }
 
@@ -215,7 +215,7 @@
         });
     });
 
-    var dateFormat = "{{ json_decode($generalSettings->business, true)['date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -1,6 +1,6 @@
-<x-admin::admin-layout>
+<x-saas::admin-layout>
     <div class="dashboard-breadcrumb mb-30">
-        <h2>CRM Dashboard</h2>
+        <h2>{{ __("Dashboard") }}</h2>
         <div class="input-group dashboard-filter">
             <input type="text" class="form-control" name="basic" id="dashboardFilter" readonly>
             <label for="dashboardFilter" class="input-group-text"><i class="fa-light fa-calendar-days"></i></label>
@@ -238,7 +238,7 @@
             </div>
         </div>
     </div>
-</x-admin::admin-layout>
+</x-saas::admin-layout>
 
 <!-- Add Task Modal Start -->
 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">

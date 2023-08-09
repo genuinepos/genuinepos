@@ -1,4 +1,4 @@
-<x-admin::guest-layout>
+<x-saas::guest-layout>
     <div class="login-body">
         <div class="top d-flex justify-content-between align-items-center">
             <div class="logo">
@@ -52,4 +52,4 @@
             </div>
         </div>
     </div>
-</x-admin::guest-layout>
+</x-saas::guest-layout>

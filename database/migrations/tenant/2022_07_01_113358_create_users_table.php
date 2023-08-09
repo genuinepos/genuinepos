@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('prefix')->nullable();
-            $table->string('name');
-            $table->string('last_name')->nullable();
+            $table->id();
+            $table->string('prefix', 20)->nullable();
+            $table->string('name', 50);
+            $table->string('last_name', 50)->nullable();
             $table->string('emp_id', 50)->nullable();
-            $table->string('username')->nullable();
+            $table->string('username', 40)->nullable();
             $table->string('email')->nullable()->unique('users_email_unique');
             $table->timestamp('email_verified_at')->nullable();
             $table->unsignedBigInteger('shift_id')->nullable()->index('users_shift_id_foreign');
@@ -31,11 +31,11 @@ return new class extends Migration
             $table->string('remember_token')->nullable();
             $table->decimal('sales_commission_percent')->default(0);
             $table->decimal('max_sales_discount_percent')->default(0);
-            $table->string('phone')->nullable();
+            $table->string('phone', 50)->nullable();
             $table->string('date_of_birth')->nullable();
-            $table->string('gender')->nullable();
-            $table->string('marital_status')->nullable();
-            $table->string('blood_group')->nullable();
+            $table->string('gender', 10)->nullable();
+            $table->string('marital_status', 10)->nullable();
+            $table->string('blood_group', 8)->nullable();
             $table->string('photo')->default('default.png');
             $table->string('facebook_link')->nullable();
             $table->string('twitter_link')->nullable();
@@ -47,19 +47,19 @@ return new class extends Migration
             $table->string('guardian_name')->nullable();
             $table->string('id_proof_name')->nullable();
             $table->string('id_proof_number')->nullable();
-            $table->text('permanent_address')->nullable();
-            $table->text('current_address')->nullable();
+            $table->string('permanent_address')->nullable();
+            $table->string('current_address')->nullable();
             $table->string('bank_ac_holder_name')->nullable();
             $table->string('bank_ac_no')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('bank_identifier_code')->nullable();
             $table->string('bank_branch')->nullable();
             $table->string('tax_payer_id')->nullable();
-            $table->string('language')->nullable();
+            $table->string('language', 6)->nullable();
             $table->unsignedBigInteger('department_id')->nullable()->index('users_department_id_foreign');
             $table->unsignedBigInteger('designation_id')->nullable()->index('users_designation_id_foreign');
             $table->decimal('salary', 22)->default(0);
-            $table->string('salary_type', 191)->nullable();
+            $table->string('salary_type', 80)->nullable();
             $table->timestamps();
         });
     }

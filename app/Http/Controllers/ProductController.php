@@ -95,7 +95,7 @@ class ProductController extends Controller
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('product.products.create_v2', compact('units', 'categories', 'brands', 'warranties', 'taxes', 'branches'));
+        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxes', 'branches'));
     }
 
     public function store(Request $request)

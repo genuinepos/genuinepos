@@ -48,11 +48,13 @@ class AccountService
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-            $accounts = $query->orWhere('account_groups.is_global', 1)->orderBy('account_groups.sorting_number', 'asc')
+            $accounts = $query->orWhere('account_groups.is_global', 1)
+                ->orderBy('account_groups.sorting_number', 'asc')
                 ->orderBy('accounts.name', 'asc');
         } else {
 
-            $accounts = $query->where('account_groups.branch_id', auth()->user()->branch_id)->orWhere('account_groups.is_global', 1)
+            $accounts = $query->where('account_groups.branch_id', auth()->user()->branch_id)
+                ->orWhere('account_groups.is_global', 1)
                 ->orderBy('account_groups.sorting_number', 'asc')
                 ->orderBy('accounts.name', 'asc');
         }
@@ -173,5 +175,54 @@ class AccountService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function singleAccountByAnyCondition(array $with = null)
+    {
+        $query = Account::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
+    public function accounts(array $with = null)
+    {
+        $query = Account::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
+    public function restriction($accountGroup, $accountId)
+    {
+        $account = Account::with(['group', 'accountLedgersWithOutOpeningBalances'])->where('id', $accountId)->first();
+
+        if (
+            $account?->group?->sub_sub_group_number == 6 &&
+            $accountGroup->sub_sub_group_number != 6 &&
+            count($account->accountLedgersWithOutOpeningBalances) > 0
+        ) {
+
+            return ['pass' => false, 'msg' => $account?->group->name . ' ' . __('can be changed to other account group. One or more ledger entries are belonging in this account')];
+        }
+
+        if (
+            $account?->group?->sub_sub_group_number == 10 &&
+            $accountGroup->sub_sub_group_number != 10 &&
+            count($account->accountLedgersWithOutOpeningBalances) > 0
+        ) {
+
+            return ['pass' => false, 'msg' => $account?->group->name . ' ' . __('can be changed to other account group. One or more ledger entries are belonging in this account')];
+        }
+
+        return ['pass' => true];
     }
 }

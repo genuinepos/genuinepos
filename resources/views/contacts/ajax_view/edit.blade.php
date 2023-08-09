@@ -122,7 +122,7 @@
                                 @if ($type == \App\Enums\ContactType::Customer->value)
                                     <div class="col-md-12">
                                         <label><strong>@lang('menu.credit_limit') </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
-                                        <input type="number" step="any" name="credit_limit" class="form-control fw-bold" id="contact_credit_limit" value="{{ $contact->credit_limit }}" data-next="contact_pay_term_number" placeholder="@lang('menu.credit_limit')"/>
+                                        <input type="number" step="any" name="credit_limit" class="form-control fw-bold text-end" id="contact_credit_limit" value="{{ $contact->credit_limit }}" data-next="contact_pay_term_number" placeholder="@lang('menu.credit_limit')"/>
                                     </div>
                                 @endif
                             </div>
@@ -131,7 +131,7 @@
                                 <div class="col-md-12">
                                     <label><strong>@lang('menu.pay_term') </strong> </label>
                                     <div class="input-group">
-                                        <input type="text" name="pay_term_number" class="form-control fw-bold" id="contact_pay_term_number" value="{{ $contact->pay_term_number }}" data-next="contact_pay_term" placeholder="Number"/>
+                                        <input type="text" name="pay_term_number" class="form-control fw-bold text-end" id="contact_pay_term_number" value="{{ $contact->pay_term_number }}" data-next="contact_pay_term" placeholder="Number"/>
                                         <select name="pay_term" class="form-control" id="contact_pay_term" data-next="contact_opening_balance">
                                             <option value="">@lang('menu.select_term')</option>
                                             <option value="1">@lang('menu.days') </option>
@@ -149,7 +149,7 @@
                                             $openingBalanceAmount = $contact?->openingBalance ? $contact?->openingBalance?->amount : $contact?->opening_balance;
                                             $openingBalanceType = $contact?->openingBalance ? $contact?->openingBalance?->amount_type : $contact?->opening_balance_type;
                                         @endphp
-                                        <input type="number" step="any" name="opening_balance" class="form-control fw-bold" id="contact_opening_balance" value="{{ $openingBalanceAmount }}" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')"/>
+                                        <input type="number" step="any" name="opening_balance" class="form-control fw-bold text-end" id="contact_opening_balance" value="{{ $openingBalanceAmount }}" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')"/>
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_changes_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}

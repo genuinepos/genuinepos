@@ -14,3 +14,4 @@ pos.zip
 /pos.zip
 /vendor
 composer.lock
+storage/debugbar

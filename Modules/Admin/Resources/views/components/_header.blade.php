@@ -97,10 +97,10 @@
                             <div class="header-btn-box">
                                 <button class="header-btn" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-light fa-bell"></i>
-                                    <span class="badge bg-danger">2</span>
+                                    <span class="badge bg-danger">0</span>
                                 </button>
                                 <ul class="notification-dropdown dropdown-menu" aria-labelledby="notificationDropdown">
-                                    <li>
+                                    {{-- <li>
                                         <a href="#" class="d-flex align-items-center">
                                             <div class="avatar">
                                                 <img src="{{ asset('modules/admin/images/avatar.png') }}" alt="image">
@@ -111,17 +111,14 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="#" class="show-all-btn">Show all message</a>
+                                    </li> --}}
+                                    <li>
                                         <a href="#" class="d-flex align-items-center">
-                                            <div class="avatar">
-                                                <img src="{{ asset('modules/admin/images/avatar-2.png') }}" alt="image">
-                                            </div>
                                             <div class="notification-txt">
-                                                <span class="notification-icon text-success"><i class="fa-solid fa-comment-dots"></i></span> <span class="fw-bold">Cody</span> Commented on your post
+                                                Empty notifications
                                             </div>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="show-all-btn">Show all message</a>
                                     </li>
                                 </ul>
                             </div>
@@ -145,16 +142,17 @@
                                 <span class="d-block">Web Developer</span>
                             </div>
                         </li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span> Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-message-lines"></i></span> Message</a></li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li>
+                        <li><a class="dropdown-item" href="{{ route('saas.profile.edit', auth()->user()->id ) }}"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span> Profile</a></li>
+                        {{-- <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-message-lines"></i></span> Message</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li> --}}
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-question"></i></span> Help</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-gear"></i></span> Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-gear"></i></span> Settings</a></li>
                         <li>
-                            <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();documnet.getElementById('logoutForm').submit()">
+                            {{-- <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();alert('hi')"> --}}
+                            <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();document.getElementById('logoutForm').submit()">
                                 <span class="dropdown-icon">
                                     <i class="fa-regular fa-arrow-right-from-bracket"></i>
                                 </span> Logout

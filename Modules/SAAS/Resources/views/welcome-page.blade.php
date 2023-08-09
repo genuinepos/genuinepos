@@ -3,7 +3,7 @@
         <style>
             .bg {
                 /* background: url("https://source.unsplash.com/random/1920x1080/?nature") no-repeat center center;  */
-                background: url("{{ asset('modules/admin/images/main-bg-1.jpg') }}") no-repeat center center;
+                background: url("{{ asset('modules/saas/images/main-bg-1.jpg') }}") no-repeat center center;
                 width: 100%;
                 height: 100vh;
             }

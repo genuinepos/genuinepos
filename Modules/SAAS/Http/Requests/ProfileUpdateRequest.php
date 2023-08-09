@@ -3,6 +3,8 @@
 namespace Modules\SAAS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Modules\SAAS\Enums\SupportedLanguage;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -15,10 +17,11 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'string', 'email'],
+            'email' => ['nullable', 'string', 'email'],
             'phone' => ['nullable', 'string'],
+            'photo' => ['nullable', 'max:2048', 'mimes:png,jpg,jpeg,webp,ico,gif'],
             'address' => ['nullable', 'string'],
-            'language' => ['nullable', 'string'],
+            'language' => ['nullable', new Enum(SupportedLanguage::class)],
             'currency' => ['nullable', 'string'],
         ];
     }

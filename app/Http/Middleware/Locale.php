@@ -16,7 +16,6 @@ class Locale
     {
         $lang = session('lang');
         app()->setLocale($lang);
-
         return $next($request);
     }
 }

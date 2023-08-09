@@ -26,9 +26,7 @@ class LoginController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-
         Auth::guard()->login($user);
-
         return redirect()->to(route('saas.dashboard'))->with('success', 'Logged in!');
     }
 
@@ -37,7 +35,6 @@ class LoginController extends Controller
         Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->to(route('saas.welcome-page'))->with('error', 'Logged out!');
     }
 }

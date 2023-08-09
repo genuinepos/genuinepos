@@ -124,7 +124,6 @@ class PurchaseController extends Controller
                 'accounts.name',
                 'accounts.account_number',
                 'accounts.account_type',
-                'accounts.balance',
                 'banks.name as bank'
             )->get();
 

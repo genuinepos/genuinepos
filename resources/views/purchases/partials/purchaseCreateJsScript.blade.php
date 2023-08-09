@@ -182,8 +182,6 @@
                             $('#e_lot_number').val('');
                             $('#e_has_batch_no_expire_date').val(product.has_batch_no_expire_date);
 
-                            console.log(product.tax_type);
-
                             if (product.has_batch_no_expire_date == 1) {
 
                                 $('#e_batch_number').prop('readonly', false);

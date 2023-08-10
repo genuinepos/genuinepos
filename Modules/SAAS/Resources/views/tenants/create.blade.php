@@ -6,7 +6,7 @@
                     <h5>{{ __("Create Business") }}</h5>
                 </div>
                 <div class="panel-body">
-                    <form method="POST" action="{{ route('saas.tenants.store') }}">
+                    <form method="POST" action="{{ route('saas.tenants.store') }}" id="tenantStoreForm">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -17,7 +17,7 @@
                                 <div class="mt-3">
                                     <label for="name" class="form-label text-bold"><b>{{ __("Domain Name") }}</b></label>
                                     <input type="text" name="domain" id="domain" class="form-control @error('name') is-invalid  @enderror" placeholder="{{ __('Enter Domain Name') }}" oninput="domainPreview()" required/>
-                                    <p class="mt-2">* {{ __('Selected domain') }}:  <strong><span id="domainPreview" class="monospace"></span></strong></p>
+                                    {{-- <p class="mt-2">* {{ __('Selected domain') }}:  <strong><span id="domainPreview" class="monospace"></span></strong></p> --}}
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" class="btn btn-primary" value="{{ __('Create') }}"/>

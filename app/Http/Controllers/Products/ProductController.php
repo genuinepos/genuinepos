@@ -45,7 +45,7 @@ class ProductController extends Controller
 
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
+        return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
     }
 
     public function create(Request $request)

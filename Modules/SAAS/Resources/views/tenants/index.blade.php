@@ -18,10 +18,10 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>SL No.</th>
-                                    <th>Business Name</th>
-                                    <th>Domain</th>
-                                    <th>Action</th>
+                                    <th>{{ __("SL No.") }}</th>
+                                    <th>{{ __("Business Name") }}</th>
+                                    <th>{{ __("Domain") }}</th>
+                                    <th>{{ __("Action") }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,11 +36,9 @@
                                         <td>{{ $tenant->name }}</td>
                                         <td>{{ $domain }}</td>
                                         <td class="text-start">
-                                            <span class="badge bg-primary px-2">
-                                                <a href="{{ $domain }}" target="_blank">
-                                                    {{ __('Open App') }}
-                                                </a>
-                                            </span>
+                                            <a href="{{ $domain }}" target="_blank" role="button" class="btn btn-sm btn-primary text-white">
+                                                {{ __('Open App') }}
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

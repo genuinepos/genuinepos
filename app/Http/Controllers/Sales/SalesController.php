@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Utils\SaleUtil;
+use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
 use App\Utils\NameSearchUtil;
+use App\Utils\SaleUtil;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
 class SalesController extends Controller
 {

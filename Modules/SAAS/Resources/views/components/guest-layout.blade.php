@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
     <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
-    <link rel="stylesheet" href="{{ asset('modules/admin') }}/vendor/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('modules/admin') }}/vendor/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/OverlayScrollbars.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('modules/admin') }}/css/style.css">
-    <link rel="stylesheet" href="{{ asset('modules/admin') }}/css/blue-color.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
+    <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/blue-color.css">
 
     @stack('css')
 </head>
@@ -38,8 +38,8 @@
         <x-saas::_footer />
     </div>
     <!-- main content end -->
-    <script src="{{ asset('modules/admin') }}/vendor/js/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('modules/admin') }}/vendor/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="{{ asset('modules/saas') }}/vendor/js/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('modules/saas') }}/vendor/js/jquery.overlayScrollbars.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
         $('.password-show').on('click', function() {

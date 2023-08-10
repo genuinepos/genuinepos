@@ -10,3 +10,7 @@ Route::get('my-test', function () {
         ->whereIn('account_groups.sub_sub_group_number', [1, 2, 11])
         ->get();
 });
+
+Route::get('t-id', function () {
+    dd(tenant());
+});

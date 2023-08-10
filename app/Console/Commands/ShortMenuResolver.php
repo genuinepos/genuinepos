@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\ShortMenu;
 use App\Models\PosShortMenu;
+use App\Models\ShortMenu;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
 

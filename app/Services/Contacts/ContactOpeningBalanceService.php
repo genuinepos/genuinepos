@@ -7,7 +7,8 @@ use Carbon\Carbon;
 
 class ContactOpeningBalanceService
 {
-    function addContactOpeningBalance(int $contactId, float|null $openingBalance, string $openingBalanceType) {
+    public function addContactOpeningBalance(int $contactId, ?float $openingBalance, string $openingBalanceType)
+    {
 
         $addCustomerOpeningBalance = new ContactOpeningBalance();
         $addCustomerOpeningBalance->contact_id = $contactId;
@@ -19,7 +20,8 @@ class ContactOpeningBalanceService
         $addCustomerOpeningBalance->save();
     }
 
-    function updateContactOpeningBalance(object $contactOpeningBalance, float|null $openingBalance, string $openingBalanceType) {
+    public function updateContactOpeningBalance(object $contactOpeningBalance, ?float $openingBalance, string $openingBalanceType)
+    {
 
         $contactOpeningBalance->amount = $openingBalance ? $openingBalance : 0;
         $contactOpeningBalance->amount_type = $openingBalanceType;

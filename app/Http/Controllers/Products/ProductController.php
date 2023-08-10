@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountService;
+use App\Services\Products\ProductAccessBranchService;
 use App\Services\Products\ProductService;
 use App\Services\Products\ProductVariantService;
-use App\Services\Products\ProductAccessBranchService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -50,7 +50,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        if (!auth()->user()->can('product_add')) {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -95,7 +95,7 @@ class ProductController extends Controller
 
             $this->validate(
                 $request,
-                ['variant_image.*' => 'sometimes|image|max:2048',],
+                ['variant_image.*' => 'sometimes|image|max:2048'],
             );
         }
 

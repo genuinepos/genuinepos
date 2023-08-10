@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
@@ -15,7 +14,7 @@ class SalesController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('create_add_sale')) {
+        if (! auth()->user()->can('create_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }

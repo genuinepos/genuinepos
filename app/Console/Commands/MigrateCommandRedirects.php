@@ -25,6 +25,6 @@ class MigrateCommandRedirects extends Command
      */
     public function handle()
     {
-        $this->info("Eitehr run php artisan tenants:migrate Or, php artisan module:migrate SAAS");
+        $this->info('Eitehr run php artisan tenants:migrate Or, php artisan module:migrate SAAS');
     }
 }

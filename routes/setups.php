@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('setups')->group(function () {
 

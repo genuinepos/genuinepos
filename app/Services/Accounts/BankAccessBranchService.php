@@ -37,7 +37,7 @@ class BankAccessBranchService
                     $addOrEditBankAccessBranch = $bankAccessBranch;
                 } else {
 
-                    $addOrEditBankAccessBranch =  new BankAccessBranch();
+                    $addOrEditBankAccessBranch = new BankAccessBranch();
                 }
 
                 $addOrEditBankAccessBranch->bank_account_id = $bankAccount->id;

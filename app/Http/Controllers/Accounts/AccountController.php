@@ -160,7 +160,7 @@ class AccountController extends Controller
 
     public function update(Request $request, $accountId, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('ac_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -223,11 +223,11 @@ class AccountController extends Controller
 
                 $contactType = $accountGroup->sub_sub_group_number == 6 ? ContactType::Customer->value : ContactType::Supplier->value;
                 $contactId = '';
-                if($updateAccount?->contact) {
+                if ($updateAccount?->contact) {
 
                     $contactId = $updateAccount?->contact_id;
                     $updateContact = $this->contactService->updateContact(contactId: $updateAccount->contact_id, type: $contactType, name: $request->name, phone: $contactPhoneNo, address: $contactAddress, creditLimit: $request->credit_limit, openingBalance: ($request->opening_balance ? $request->opening_balance : 0), openingBalanceType: $request->opening_balance_type);
-                }else {
+                } else {
 
                     $contactIdPrefix = $accountGroup->sub_sub_group_number == 6 ? $cusIdPrefix : $supIdPrefix;
                     $addContact = $this->contactService->addContact(type: $contactType, codeGenerator: $codeGenerator, contactIdPrefix: $contactIdPrefix, name: $request->name, phone: $contactPhoneNo, address: $contactAddress, creditLimit: $request->credit_limit, openingBalance: ($request->opening_balance ? $request->opening_balance : 0), openingBalanceType: $request->opening_balance_type);

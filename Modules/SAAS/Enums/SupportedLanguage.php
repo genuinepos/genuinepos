@@ -2,7 +2,7 @@
 
 namespace Modules\SAAS\Enums;
 
-enum SupportedLanguage : string
+enum SupportedLanguage: string
 {
     case English = 'en';
     case Bangla = 'bn';

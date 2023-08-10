@@ -21,7 +21,7 @@ class ProductAccessBranchService
                 $addProductAccessBranch->branch_id = $branch_id;
                 $addProductAccessBranch->save();
             }
-        }else {
+        } else {
 
             if (auth()->user()->branch_id) {
 

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Services\Setups\BranchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 
 class BranchController extends Controller
 {
     public function __construct(
-       private BranchService $branchService
-    ){
+        private BranchService $branchService
+    ) {
     }
 
     public function index()
@@ -150,9 +150,9 @@ class BranchController extends Controller
 
             if ($updateBranch->logo != 'default.png') {
 
-                if (file_exists(public_path('uploads/branch_logo/'. $updateBranch->logo))) {
+                if (file_exists(public_path('uploads/branch_logo/'.$updateBranch->logo))) {
 
-                    unlink(public_path('uploads/branch_logo/'. $updateBranch->logo));
+                    unlink(public_path('uploads/branch_logo/'.$updateBranch->logo));
                 }
             }
 

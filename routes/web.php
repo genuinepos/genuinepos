@@ -1,10 +1,10 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Providers\RouteServiceProvider;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +40,7 @@ Route::get('/', function () {
     if (isset($isTenant)) {
         return redirect(RouteServiceProvider::HOME);
     }
+
     return view('saas::welcome-page');
-// });
+    // });
 })->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

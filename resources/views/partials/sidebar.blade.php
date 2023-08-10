@@ -435,7 +435,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.expired_product_list')</p>
+                                        <p class="switch_text">{{ __('Expired Product List') }}</p>
                                     </a>
                                 </div>
                             </div>
@@ -546,23 +546,20 @@
                                     </div>
                                 @endif
 
-                                @if(
-                                    auth()->user()->can('product_settings') &&
-                                    auth()->user()->can('product_settings')
-                                )
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('products.settings') }}" class="switch-bar-wrap settings-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span>
-                                                        <i class="fas fa-sliders-h"></i>
-                                                    </span>
-                                                </div>
+                                @can('product_settings')
+                                <div class="sub-menu-col">
+                                    <a href="{{ route('products.settings') }}" class="switch-bar-wrap settings-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span>
+                                                    <i class="fas fa-sliders-h"></i>
+                                                </span>
                                             </div>
-                                            <p class="switch_text">@lang('menu.product_settings')</p>
-                                        </a>
-                                    </div>
-                                @endif
+                                        </div>
+                                        <p class="switch_text">{{ __('Product Settings') }}</p>
+                                    </a>
+                                </div>
+                                @endcan
                             </div>
                         </div>
 

@@ -40,7 +40,7 @@ Route::group(['prefix' => 'communication', 'as' => 'communication.'], function (
     Route::controller(EmailSettingController::class)->group(function () {
         Route::group(['prefix' => 'email'], function () {
             Route::get('settings', 'emailSettingsUI')->name('email.settings');
-            Route::get('permission/on/modiul', 'emailPermission')->name('email.permission');
+            Route::get('permission/on/module', 'emailPermission')->name('email.permission');
             Route::get('manual/service', 'emailManual')->name('email.manual-service');
 
             Route::get('setting', 'emailSettings')->name('email.setting');
@@ -58,7 +58,7 @@ Route::group(['prefix' => 'communication', 'as' => 'communication.'], function (
             Route::post('server/setup', 'emailServerStore')->name('email.server.store');
             Route::get('/serve/active/{id}/{flag}', 'activeServer')->name('email.server.active');
             Route::delete('/delete/serve/{id}', 'deleteServe')->name('email.serve.delete');
-            Route::post('/delete/all/server', 'deleteAllserver')->name('email.server.delete_all');
+            Route::post('/delete/all/server', 'deleteAllServer')->name('email.server.delete_all');
         });
 
     });

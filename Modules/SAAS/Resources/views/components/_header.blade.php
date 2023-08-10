@@ -5,26 +5,27 @@
             <div class="main-logo d-lg-block d-none">
                 <div class="logo-big">
                     <a href="/">
-                        <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="Logo">
+                        <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="{{ config('app.name') }}">
                     </a>
                 </div>
                 <div class="logo-small">
                     <a href="/">
-                        <img src="{{ asset('modules/saas/images/favicon.png') }}" alt="Logo">
+                        <img src="{{ asset('modules/saas/images/favicon.png') }}" alt="{{ config('app.name') }}">
                     </a>
                 </div>
             </div>
             <div class="nav-close-btn">
                 <button id="navClose"><i class="fa-light fa-bars-sort"></i></button>
             </div>
-            <a href="#" target="_blank" class="btn btn-sm btn-primary site-view-btn"><i class="fa-light fa-globe me-1"></i>
+            <a href="#" target="_blank" class="btn btn-sm btn-primary site-view-btn">
+                <i class="fa-light fa-globe me-1"></i>
                 <span>{{ __("Business List") }}</span>
             </a>
         </div>
         <div class="col-4 d-lg-none">
             <div class="mobile-logo">
                 <a href="/">
-                    <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="Logo">
+                    <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="{{ config('app.name') }}">
                 </a>
             </div>
         </div>
@@ -33,7 +34,7 @@
                 <div class="header-collapse-group">
                     <div class="header-right-btns d-flex justify-content-end align-items-center p-0">
                         <form class="header-form">
-                            <input type="search" name="search" placeholder="Search..." required>
+                            <input type="search" name="search" placeholder="{{ __("Search...") }}" required>
                             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                         <div class="header-right-btns d-flex justify-content-end align-items-center p-0">
@@ -138,16 +139,25 @@
 
                 <div class="header-btn-box">
                     <button class="profile-btn" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset(auth()?->user()?->photo ?? 'modules/saas/images/admin.png') }}" alt="image">
+                        @isset(auth()->user()->photo)
+                            <img src="{{ asset(auth()->user()->photo) }}" alt="Avatar-image">
+                        @else
+                            <img src="{{ asset('modules/saas/images/admin.png') }}" alt="Avatar-image">
+                        @endisset
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                         <li>
                             <div class="dropdown-txt text-center">
                                 <p class="mb-0">{{ auth()->user()?->name }}</p>
-                                <span class="d-block">{{ auth()->user()?->roles?->first()->name }}</span>
+                                <span class="d-block">{{ auth()->user()?->roles?->first()?->name }}</span>
                             </div>
                         </li>
-                        <li><a class="dropdown-item" href="{{ route('saas.profile.edit', auth()->user()->id ) }}"><span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span>{{ __("Profile") }}</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('saas.profile.edit', auth()->user()->id ) }}">
+                                <span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span>
+                                {{ __("Profile") }}
+                            </a>
+                        </li>
                         {{-- <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-message-lines"></i></span> Message</a></li>
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li> --}}
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-question"></i></span> {{ __("Help") }}</a></li>

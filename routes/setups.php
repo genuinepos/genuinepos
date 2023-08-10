@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\InvoiceLayoutController;
 
 Route::prefix('setups')->group(function () {
 

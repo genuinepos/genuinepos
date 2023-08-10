@@ -16,6 +16,7 @@
         .checkbox_input_wrap {text-align: right;}
     </style>
 @endpush
+@section('title', 'Create Purchase - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -434,8 +435,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Credit A/c') }} <span
-                                                            class="text-danger">*</span></b></label>
+                                                        <label class="col-4"><b>{{ __('Credit A/c') }} <span class="text-danger">*</span></b></label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
                                                                 @foreach ($accounts as $account)
@@ -444,9 +444,9 @@
                                                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
                                                                             $bank = $account->bank ? ', BK : '.$account->bank : '';
                                                                             $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                                                            $balance = ', BL : '.$account->balance;
+
                                                                         @endphp
-                                                                        {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                                                        {{ $account->name.$accountType.$bank.$ac_no }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>

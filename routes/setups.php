@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\InvoiceLayoutController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('setups')->group(function () {

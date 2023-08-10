@@ -25,7 +25,7 @@ class GeneralSettingController extends Controller
         $units = Unit::all();
         $timezones = TimeZone::all();
 
-        return view('settings.general_settings.index', compact(
+        return view('setups.general_settings.index', compact(
             'generalSettings',
             'currencies',
             'timezones',
@@ -39,8 +39,11 @@ class GeneralSettingController extends Controller
         $business_logo = null;
         if ($request->hasFile('business_logo')) {
             if ($generalSettings['business__business_logo'] != null) {
+
                 $bLogo = $generalSettings['business__business_logo'];
+
                 if (file_exists(public_path('uploads/business_logo/'.$bLogo))) {
+
                     unlink(public_path('uploads/business_logo/'.$bLogo));
                 }
             }
@@ -49,6 +52,7 @@ class GeneralSettingController extends Controller
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
+
             $business_logo = $generalSettings['business__business_logo'] != null ? $generalSettings['business__business_logo'] : null;
         }
 

@@ -1,28 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setups;
 
+use App\Http\Controllers\Controller;
 use App\Models\InvoiceLayout;
 use App\Services\Setups\InvoiceLayoutService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class InvoiceLayoutController extends Controller
 {
-    public function __construct(InvoiceLayoutService $invoiceLayoutService)
+    public function __construct(private InvoiceLayoutService $invoiceLayoutService)
     {
-
     }
 
     public function index(Request $request)
     {
         if (! auth()->user()->can('inv_lay')) {
-
             abort(403, 'Access Forbidden.');
         }
-
         if ($request->ajax()) {
-
             return $this->invoiceLayoutService->invoiceLayoutListTable($request);
         }
 
@@ -40,80 +38,32 @@ class InvoiceLayoutController extends Controller
             'name' => 'required|unique:invoice_layouts,name',
             'invoice_heading' => 'required',
             'quotation_heading' => 'required',
-            'draft_heading' => 'required',
+            'sales_order_heading' => 'required',
             'challan_heading' => 'required',
         ]);
 
-        if (isset($request->is_header_less)) {
-
+        if ($request->is_header_less == 1) {
             $this->validate($request, [
-
                 'gap_from_top' => 'required',
             ]);
         }
 
-        $addLayout = new InvoiceLayout();
-        $addLayout->name = $request->name;
-        $addLayout->layout_design = $request->design;
-        $addLayout->show_shop_logo = isset($request->show_shop_logo) ? 1 : 0;
-        $addLayout->show_total_in_word = isset($request->show_total_in_word) ? 1 : 0;
-        $addLayout->is_header_less = isset($request->is_header_less) ? 1 : 0;
-        $addLayout->gap_from_top = isset($request->is_header_less) ? $request->gap_from_top : null;
-        $addLayout->header_text = $request->header_text;
-        $addLayout->sub_heading_1 = $request->sub_heading_1;
-        $addLayout->sub_heading_2 = $request->sub_heading_2;
-        $addLayout->sub_heading_3 = $request->sub_heading_3;
-        $addLayout->invoice_heading = $request->invoice_heading;
-        $addLayout->quotation_heading = $request->quotation_heading;
-        $addLayout->order_heading = $request->order_heading;
-        $addLayout->challan_heading = $request->challan_heading;
-        $addLayout->branch_landmark = isset($request->branch_landmark) ? 1 : 0;
-        $addLayout->branch_city = isset($request->branch_city) ? 1 : 0;
-        $addLayout->branch_state = isset($request->branch_state) ? 1 : 0;
-        $addLayout->branch_zipcode = isset($request->branch_zipcode) ? 1 : 0;
-        $addLayout->branch_phone = isset($request->branch_phone) ? 1 : 0;
-        $addLayout->branch_alternate_number = isset($request->branch_alternate_number) ? 1 : 0;
-        $addLayout->branch_email = isset($request->branch_email) ? 1 : 0;
-        $addLayout->product_img = isset($request->product_img) ? 1 : 0;
-        $addLayout->product_cate = isset($request->product_cate) ? 1 : 0;
-        $addLayout->product_brand = isset($request->product_brand) ? 1 : 0;
-        $addLayout->product_imei = isset($request->product_imei) ? 1 : 0;
-        $addLayout->product_w_type = isset($request->product_w_type) ? 1 : 0;
-        $addLayout->product_w_duration = isset($request->product_w_duration) ? 1 : 0;
-        $addLayout->product_w_discription = isset($request->product_w_discription) ? 1 : 0;
-        $addLayout->product_discount = isset($request->product_discount) ? 1 : 0;
-        $addLayout->product_tax = isset($request->product_tax) ? 1 : 0;
-        $addLayout->product_price_inc_tax = isset($request->product_price_inc_tax) ? 1 : 0;
-        $addLayout->product_price_exc_tax = isset($request->product_price_exc_tax) ? 1 : 0;
-        $addLayout->customer_name = isset($request->customer_name) ? 1 : 0;
-        $addLayout->customer_address = isset($request->customer_address) ? 1 : 0;
-        $addLayout->customer_tax_no = isset($request->customer_tax_no) ? 1 : 0;
-        $addLayout->customer_phone = isset($request->customer_phone) ? 1 : 0;
-        $addLayout->bank_name = $request->bank_name;
-        $addLayout->bank_branch = $request->bank_branch;
-        $addLayout->account_name = $request->account_name;
-        $addLayout->account_no = $request->account_no;
-        $addLayout->invoice_notice = $request->invoice_notice;
-        $addLayout->footer_text = $request->footer_text;
-        $addLayout->save();
-
-        $invoiceLayouts = InvoiceLayout::where('branch_id', auth()->user()->branch_id)->get();
-
-        if (count($invoiceLayouts) == 1) {
-
-            $defaultLayouts = InvoiceLayout::first();
-            $defaultLayouts->is_default = 1;
-            $defaultLayouts->save();
+        try {
+            DB::beginTransaction();
+            $this->invoiceLayoutService->addInvoiceLayout($request);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
         return response()->json('Successfully invoice layout is created');
     }
 
-    public function edit($layoutId)
+    public function edit($id)
     {
-        $layout = DB::table('invoice_layouts')->where('id', $layoutId)->first();
+        $invoiceLayout = $this->invoiceLayoutService->singleInvoiceLayout(id: $id);
 
-        return view('setups.invoices.layouts.edit', compact('layout'));
+        return view('setups.invoices.layouts.edit', compact('invoiceLayout'));
     }
 
     public function update(Request $request, $layoutId)
@@ -123,7 +73,6 @@ class InvoiceLayoutController extends Controller
         ]);
 
         if (isset($request->is_header_less)) {
-
             $this->validate($request, [
                 'gap_from_top' => 'required',
             ]);

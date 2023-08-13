@@ -14,8 +14,6 @@ class LicenseDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
 
-        // $this->call("OthersTableSeeder");
     }
 }

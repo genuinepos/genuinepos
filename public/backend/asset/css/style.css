@@ -647,11 +647,11 @@ div#rightSidebar {
     gap: 10px;
     background: transparent;
     width: max-content;
-    height: calc(100% - 62px);
+    height: calc(100% - 47px);
     padding: 5px 5px 5px 0;
     overflow: hidden;
     position: fixed;
-    margin-top: 62px;
+    margin-top: 47px;
     top: 0px;
     z-index: 99;
     transition: 0.5s all ease-in-out;
@@ -664,9 +664,9 @@ div#rightSidebar.open {
     right: 0;
 }
 #rightSidebar .sidebar-container {
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, .05);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(5px);
     border-radius: 5px;
     padding: 20px;
     height: 100%;

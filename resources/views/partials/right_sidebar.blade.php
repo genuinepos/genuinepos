@@ -63,15 +63,16 @@
             </ul>
         </div>
 
-        <div class=" position-absolute" style="bottom: 2px; left: 0; right: 0; padding: 20px 0px 28px 0px; border-top: 1px solid #fff;">
-            <ul class="d-flex justify-content-around">
-                <li><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog fa-2x"></i></span></a></li>
+        <div class="position-absolute bottom-btn-group" style="bottom: 0; left: 0; right: 0; border-top: 1px solid #fff;">
+            <ul class="d-flex">
+                <li><a href="#" class="text-white menu-theme"><span><i class="fas fa-sun"></i></span><span id="themeNameText">Light Nav</span></a></li>
+                <li class="d-lg-block d-none"><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog"></i></span><span>Settings</span></a></li>
 
                 <li>
-                    <a href="#" class="text-white" id="btnFullscreen"><i class="fas fa-expand fa-2x"></i></a>
+                    <a href="#" class="text-white" id="btnFullscreen"><span><i class="fas fa-expand"></i></span><span>Fullscreen</span></a>
                 </li>
 
-                <li><a href="#" class="text-white" id="logout_option"><span><i class="fas fa-power-off fa-2x"></i></span></a></li>
+                <li><a href="#" class="text-white bg-danger border-danger" id="logout_option"><span><i class="fas fa-power-off"></i></span><span>Logout</span></a></li>
             </ul>
         </div>
     </div>

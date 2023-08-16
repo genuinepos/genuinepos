@@ -9,7 +9,7 @@
                                 <img style="height: 40px; width:110px;"
                                 src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else
                             @if ($generalSettings['business__business_logo'])
@@ -17,7 +17,7 @@
                                 src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                 alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;padding-top:15px;display:inline-block;">{{
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;display:inline-block;">{{
                                 $generalSettings['business__shop_name'] }}</span>
                             @endif
                         @endif
@@ -25,9 +25,13 @@
                 </div>
                 <div id="left_bar_toggle"><span class="fas fa-bars"></span></div>
                 <div class="notify-menu">
+                    <div class="company-name">
+                        <p class="text-uppercase">Ambient Steel BD Ltd.</p>
+                        <span><strong>FY :</strong> 1 Jun 2023 - 30 May 2024</span>
+                    </div>
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" title="Reload"><b><span class="fas fa-redo-alt"></span></b></a></li>
+                            <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>Reload</span></a></li>
                             {{-- @if ($generalSettings['addons__e_commerce'] == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
@@ -49,12 +53,12 @@
                             @endif --}}
 
                             @if(auth()->user()->can('today_summery'))
-                                <li class="top-icon"><a href="#" id="today_summery"><b>{{ __('Today') }}</b></a></li>
+                                <li class="top-icon"><a href="#" class="nav-btn" id="today_summery"><span><i class="far fa-calendar"></i><br>{{ __('Today') }}</span></a></li>
                             @endif
 
                             <li class="top-icon dropdown notification-dropdown">
-                                <a href="" id="dropdownMenuButton0" data-bs-toggle="dropdown">
-                                    <i class="far fa-bell"></i>
+                                <a href="" class="nav-btn" id="dropdownMenuButton0" data-bs-toggle="dropdown">
+                                    <span><i class="far fa-bell"></i><br>Notification</span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton0">
@@ -77,13 +81,17 @@
 
                             @if ($generalSettings['modules__pos'] == '1')
                                 @if(auth()->user()->can('pos_add'))
-                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}"><b>POS</b></a></li>
+                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>POS</span></a></li>
                                 @endif
                             @endif
 
                             <li class="top-icon">
-                                <a href="" class="pos-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
-                                    <span class="fas fa-calculator"></span>
+                                <a href="" class="nav-btn" data-bs-toggle="modal" data-bs-target="#calculatorModal">
+                                    <span>
+                                        <i class="fas fa-calculator"></i>
+                                        <br>
+                                        Calculator
+                                    </span>
                                 </a>
                                 <div class="modal" id="calculatorModal" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -122,8 +130,12 @@
                                 </div>
                             </li>
                             <li class="dropdown dp__top top-icon">
-                                <a href="" class="" id="dropdownMenuButton1" data-bs-toggle="dropdown">
-                                    <i class="fas fa-language"></i>
+                                <a href="" class="nav-btn" id="dropdownMenuButton1" data-bs-toggle="dropdown">
+                                    <span>
+                                        <i class="fas fa-language"></i>
+                                        <br>
+                                        Language
+                                    </span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton1">
@@ -141,15 +153,20 @@
 
                                 </ul>
                             </li>
-                            <li class="top-icon d-hide d-md-block"><a href="https://help.genuinepos.com/"
-                                    target="_blank"><b><span class="far fa-question-circle"></span></b></a></li>
-                            <li class="dropdown dp__top top-icon">
-                                <a href="" class="" id="dropdownMenuButton2" data-bs-toggle="dropdown" title="User">
-                                    <span class="fas fa-user"></span>
+                            <li class="top-icon d-hide d-md-block">
+                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>Help</span></a>
+                            </li>
+                            <li class="dp__top top-icon">
+                                <a role="button" class="nav-btn" id="openRightSidebar" title="User">
+                                    <span>
+                                        <i class="fas fa-user"></i>
+                                        <br>
+                                        User
+                                    </span>
                                 </a>
 
-                                <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton2">
-                                    {{-- <li>
+                                {{-- <ul class="dropdown-menu dropdown__main__menu" aria-labelledby="dropdownMenuButton2">
+                                    <li>
                                         <span class="user_name text-primary">
                                             {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' .
                                             auth()->user()->last_name }}
@@ -161,7 +178,7 @@
                                                 {{ auth()->user()->roles->first()->name }}
                                             @endif
                                         </span>
-                                    </li> --}}
+                                    </li>
 
                                     <li>
                                         <i class="fas fa-eye text-primary"></i><a class="dropdown-item d-block"
@@ -173,11 +190,7 @@
                                         <i class="fas fa-edit text-primary"></i></span><a class="dropdown-item d-block"
                                             href="{{ route('users.profile.index') }}">{{ __('Edit Profile') }} </a>
                                     </li>
-                                </ul>
-                            </li>
-                            </li>
-                            <li class="top-icon">
-                                <a role="button" id="openRightSidebar" ><i class="fas fa-bars"></i></a>
+                                </ul> --}}
                             </li>
                         </ul>
                     </div>

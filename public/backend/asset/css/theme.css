@@ -156,12 +156,7 @@ body.red-theme {
 }
 
 .red-theme .top-icon {
-    border: var(--red-color-1) 1px solid;
     background: var(--red-color-2);
-}
-
-.red-theme .top-icon:hover {
-    border: 1px solid #ffffff;
 }
 
 .red-theme ul.head__cn li a {
@@ -446,12 +441,7 @@ body.blue-theme {
 }
 
 .blue-theme .top-icon {
-    border: var(--blue-color-1) 1px solid;
     background: var(--blue-color-2);
-}
-
-.blue-theme .top-icon:hover {
-    border: 1px solid #ffffff;
 }
 
 .blue-theme ul.head__cn li a {
@@ -743,12 +733,7 @@ body.dark-theme {
 }
 
 .dark-theme .top-icon {
-    border: var(--blue-color-1) 1px solid;
     background: var(--dark-color-2);
-}
-
-.dark-theme .top-icon:hover {
-    border: 1px solid #ffffff;
 }
 
 .dark-theme ul.head__cn li a {
@@ -1012,12 +997,7 @@ body.light-theme {
 }
 
 .light-theme .top-icon {
-    border: var(--light-color-1) 1px solid;
     background: var(--light-color-2);
-}
-
-.light-theme .top-icon:hover {
-    border: 1px solid #ffffff;
 }
 
 .light-theme ul.head__cn li a {
@@ -1319,12 +1299,7 @@ body.orange-theme {
 }
 
 .orange-theme .top-icon {
-    border: var(--orange-color-1) 2px solid;
     background: var(--orange-color-2);
-}
-
-.orange-theme .top-icon:hover {
-    border: 1px solid #ffffff;
 }
 
 .orange-theme ul.head__cn li a {

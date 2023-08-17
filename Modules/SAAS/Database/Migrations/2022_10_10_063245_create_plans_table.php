@@ -1,6 +1,6 @@
 <?php
 
-use Modules\License\Entities\PlanType;
+use Modules\SAAS\Entities\PlanType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,11 +16,10 @@ return new class extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PlanType::class);
             $table->string('name');
             $table->text('description')->nullable();
             $table->double('price');
-            $table->integer('period');
+            $table->integer('period_month');
             $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();

@@ -40,6 +40,22 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item">
+                        <a role="button" class="sidebar-link has-sub" data-dropdown="packageManagementDropdown">
+                            <span class="nav-icon"><i class="fa-light fa-chart-simple"></i></span>
+                            <span class="sidebar-txt">{{ __('Package Management') }}</span>
+                        </a>
+                        <ul class="sidebar-dropdown-menu" id="packageManagementDropdown">
+                            <li class="sidebar-dropdown-item">
+                                <a href="#" class="sidebar-link">{{ __('Plans') }}</a>
+                            </li>
+                            <li class="sidebar-dropdown-item">
+                                <a href="#" class="sidebar-link">{{ __('Packages') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
             {{-- <li class="help-center">
                 <h3>Help Center</h3>

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\License\Database\factories;
+namespace Modules\SAAS\Database\factories;
 
-use Modules\License\Entities\PlanType;
+use Modules\SAAS\Entities\PlanType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PlanFactory extends Factory
@@ -12,7 +12,7 @@ class PlanFactory extends Factory
      *
      * @var string
      */
-    protected $model = \Modules\License\Entities\Plan::class;
+    protected $model = \Modules\SAAS\Entities\Plan::class;
 
     /**
      * Define the model's default state.
@@ -23,10 +23,9 @@ class PlanFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'plan_type_id' => $this->faker->randomElement(PlanType::pluck('id')->toArray()),
             'description' => $this->faker->paragraph(1),
             'price' => $this->faker->randomFloat(),
-            'period' => $this->faker->randomElement([1, 6, 12, 24]),
+            'period_month' => $this->faker->randomElement([1, 6, 12, 24]),
             'status' => 1,
         ];
     }

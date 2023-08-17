@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\License\Database\Seeders;
+namespace Modules\SAAS\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +14,9 @@ class LicenseDatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // $this->call(FeatureTableSeeder::class);
+        $this->call(PlanTableSeeder::class);
+        $this->call(PlanFeatureTableSeeder::class);
 
     }
 }

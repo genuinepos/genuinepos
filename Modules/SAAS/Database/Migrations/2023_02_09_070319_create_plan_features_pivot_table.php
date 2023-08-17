@@ -1,7 +1,7 @@
 <?php
 
-use Modules\License\Entities\Feature;
-use Modules\License\Entities\Plan;
+use Modules\SAAS\Entities\Feature;
+use Modules\SAAS\Entities\Plan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

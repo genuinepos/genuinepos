@@ -42,16 +42,13 @@
                 </ul>
                 <ul class="sidebar-link-group">
                     <li class="sidebar-dropdown-item">
-                        <a role="button" class="sidebar-link has-sub" data-dropdown="packageManagementDropdown">
+                        <a role="button" class="sidebar-link has-sub" data-dropdown="planManagementDropdown">
                             <span class="nav-icon"><i class="fa-light fa-chart-simple"></i></span>
-                            <span class="sidebar-txt">{{ __('Package Management') }}</span>
+                            <span class="sidebar-txt">{{ __('Manage Plans') }}</span>
                         </a>
-                        <ul class="sidebar-dropdown-menu" id="packageManagementDropdown">
+                        <ul class="sidebar-dropdown-menu" id="planManagementDropdown">
                             <li class="sidebar-dropdown-item">
-                                <a href="#" class="sidebar-link">{{ __('Plans') }}</a>
-                            </li>
-                            <li class="sidebar-dropdown-item">
-                                <a href="#" class="sidebar-link">{{ __('Packages') }}</a>
+                                <a href="{{ route('saas.plans.index') }}" class="sidebar-link">{{ __('Plans') }}</a>
                             </li>
                         </ul>
                     </li>

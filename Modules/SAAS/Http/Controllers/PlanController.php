@@ -5,6 +5,7 @@ namespace Modules\SAAS\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\SAAS\Entities\Feature;
 use Modules\SAAS\Entities\Plan;
 
 class PlanController extends Controller
@@ -26,7 +27,9 @@ class PlanController extends Controller
      */
     public function create()
     {
-        return view('saas::create');
+        return view('saas::plans.create', [
+            'features' => Feature::all(),
+        ]);
     }
 
     /**

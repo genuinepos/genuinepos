@@ -108,7 +108,7 @@
                                             <i class="fas fa-receipt"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.total_purchase')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.total_purchase')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_purchase"></span>
@@ -123,7 +123,7 @@
                                             <i class="fas fa-money-check"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.total_sale')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.total_sale')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_sale"></span>
@@ -138,7 +138,7 @@
                                             <i class="fas fa-clipboard"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.purchase_due')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.purchase_due')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_purchase_due"></span>
@@ -153,7 +153,7 @@
                                             <i class="fas fa-file-invoice"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.invoice_due')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.invoice_due')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_sale_due"></span>
@@ -168,7 +168,7 @@
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.expense')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.expense')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_expense"></span>
@@ -183,7 +183,7 @@
                                             <i class="fas fa-user"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.total_user')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.total_user')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_user"></span>
@@ -198,7 +198,7 @@
                                             <i class="fas fa-list"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.total_products')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.total_products')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span id="total_product"></span>
@@ -213,7 +213,7 @@
                                             <i class="fas fa-balance-scale"></i>
                                         </div>
                                         <div class="numbers px-1">
-                                            <h3 class="sub-title">@lang('menu.total_adjustment')</h3>
+                                            <h3 class="sub-title text-white">@lang('menu.total_adjustment')</h3>
                                             <h1 class="title">
                                                 <i class="fas fa-sync fa-spin card_preloader"></i>
                                                 <span class="card_amount" id="total_adjustment"></span>

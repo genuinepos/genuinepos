@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Setups;
+
+use App\Models\BaseModel;
+use App\Models\Setup\PaymentMethodSetting;
 
 class PaymentMethod extends BaseModel
 {
@@ -8,10 +11,9 @@ class PaymentMethod extends BaseModel
 
     protected $guarded = [];
 
-    public function methodAccount()
+    public function branchDefaultAccount()
     {
         return $this->hasOne(PaymentMethodSetting::class, 'payment_method_id')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->select('payment_method_id', 'account_id');
+            ->where('branch_id', auth()->user()->branch_id);
     }
 }

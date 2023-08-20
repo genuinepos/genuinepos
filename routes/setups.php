@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
+use App\Http\Controllers\PaymentMethodSettingsController;
 
 Route::prefix('setups')->group(function () {
 
@@ -39,5 +40,20 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('payment.methods.edit');
         Route::post('update/{id}', 'update')->name('payment.methods.update');
         Route::delete('delete/{id}', 'delete')->name('payment.methods.delete');
+    });
+
+    Route::controller(PaymentMethodSettingsController::class)->prefix('payment_method_settings')->group(function () {
+
+        Route::get('/', 'index')->name('payment.method.settings.index');
+        Route::post('update', 'update')->name('payment.method.settings.update');
+    });
+
+    Route::controller(CashCounterController::class)->prefix('cash_counter')->group(function () {
+
+        Route::get('/', 'index')->name('cash.counters.index');
+        Route::post('store', 'store')->name('cash.counters.store');
+        Route::get('edit/{id}', 'edit')->name('cash.counters.edit');
+        Route::post('update/{id}', 'update')->name('cash.counters.update');
+        Route::delete('delete/{id}', 'delete')->name('cash.counters.delete');
     });
 });

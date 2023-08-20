@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Setups;
 
 use Illuminate\Http\Request;
-use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\PaymentMethodService;
-use Yajra\DataTables\Facades\DataTables;
 
 class PaymentMethodController extends Controller
 {
@@ -52,7 +50,7 @@ class PaymentMethodController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Payment method created successfully.');
+        return response()->json(__('Payment method created successfully.'));
     }
 
     public function edit($id)
@@ -83,7 +81,7 @@ class PaymentMethodController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Payment Method update successfully.');
+        return response()->json(__('Payment Method update successfully.'));
     }
 
     public function delete(Request $request, $id)

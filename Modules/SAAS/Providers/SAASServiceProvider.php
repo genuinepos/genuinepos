@@ -3,6 +3,7 @@
 namespace Modules\SAAS\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
@@ -39,6 +40,8 @@ class SAASServiceProvider extends ServiceProvider
             $schedule = $this->app->make(Schedule::class);
             $schedule->command('inspire')->everyMinute();
         });
+
+        Paginator::useBootstrapFive();      
     }
 
     /**

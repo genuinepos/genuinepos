@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\PlanController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\TenantController;
@@ -30,5 +31,6 @@ Route::prefix('saas')->group(function () {
         });
         Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('profile/{user}/update', [ProfileController::class, 'update'])->name('profile.update');
+        Route::resource('plans', PlanController::class);
     });
 });

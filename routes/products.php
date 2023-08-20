@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Products\ProductController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 

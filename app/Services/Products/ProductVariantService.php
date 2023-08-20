@@ -7,7 +7,7 @@ use Intervention\Image\Facades\Image;
 
 class ProductVariantService
 {
-    function addProductVariants(object $request): array
+    public function addProductVariants(object $request): array
     {
         $variantId = [];
 
@@ -26,15 +26,15 @@ class ProductVariantService
             if (isset($request->variant_image[$index])) {
 
                 $variantImage = $request->variant_image[$index];
-                $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
                 $path = public_path('uploads/product/variant_image');
 
-                if (!file_exists($path)) {
+                if (! file_exists($path)) {
 
                     mkdir($path);
                 }
 
-                Image::make($variantImage)->resize(250, 250)->save($path . '/' . $variantImageName);
+                Image::make($variantImage)->resize(250, 250)->save($path.'/'.$variantImageName);
                 $addVariant->variant_image = $variantImageName;
             }
 
@@ -44,7 +44,6 @@ class ProductVariantService
 
             $index++;
         }
-
 
         return $variantIds;
     }

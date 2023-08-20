@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Setups;
 
-use Illuminate\Http\Request;
-use App\Models\InvoiceLayout;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\InvoiceLayout;
 use App\Services\Setups\InvoiceLayoutService;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceLayoutController extends Controller
 {
@@ -17,13 +17,10 @@ class InvoiceLayoutController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('inv_lay')) {
-
+        if (! auth()->user()->can('inv_lay')) {
             abort(403, 'Access Forbidden.');
         }
-
         if ($request->ajax()) {
-
             return $this->invoiceLayoutService->invoiceLayoutListTable($request);
         }
 
@@ -46,22 +43,16 @@ class InvoiceLayoutController extends Controller
         ]);
 
         if ($request->is_header_less == 1) {
-
             $this->validate($request, [
-
                 'gap_from_top' => 'required',
             ]);
         }
 
         try {
-
             DB::beginTransaction();
-
             $this->invoiceLayoutService->addInvoiceLayout($request);
-
             DB::commit();
         } catch (Exception $e) {
-
             DB::rollBack();
         }
 
@@ -78,6 +69,7 @@ class InvoiceLayoutController extends Controller
     public function update(Request $request, $layoutId)
     {
         $this->validate($request, [
+
             'name' => 'required|unique:invoice_layouts,name,' . $layoutId,
             'invoice_heading' => 'required',
             'quotation_heading' => 'required',

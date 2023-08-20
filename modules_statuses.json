@@ -1,5 +1,4 @@
 {
     "Communication": true,
-    "SAAS": true,
-    "Admin": false
+    "SAAS": true
 }

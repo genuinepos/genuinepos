@@ -23,7 +23,7 @@ interface CodeGenerationServiceInterface
         int $size = 13,
         string $splitter = '-',
         string $suffixSeparator = '',
-        ?string $branch_id = null,
+        string $branch_id = null,
         ?string $connection = 'mysql',
     ): string;
 
@@ -37,7 +37,7 @@ interface CodeGenerationServiceInterface
         int $size = 13,
         string $splitter = '-',
         string $suffixSeparator = '',
-        ?string $branch_id = null,
+        string $branch_id = null,
         ?string $connection = 'mysql'
     ): string;
 

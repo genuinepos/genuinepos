@@ -21,8 +21,10 @@ class FileUploader
         $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
         $file->move($filePath, $fileName);
         $fullPathToStoreInDb = "{$filePath}/{$fileName}";
+
         return $fullPathToStoreInDb;
     }
+
     public static function upload(object $file, string $filePath = 'uploads/'): string
     {
         if (! file_exists($filePath)) {
@@ -37,6 +39,7 @@ class FileUploader
         $fullName = implode('.', $arr);
         $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
         $file->move($filePath, $fileName);
+
         return $fileName;
     }
 
@@ -59,8 +62,10 @@ class FileUploader
                 $file->move($filesPath, $fileName);
                 $filesNameArr[$key] = $fileName;
             }
+
             return json_encode($filesNameArr);
         }
+
         return '';
     }
 
@@ -78,6 +83,7 @@ class FileUploader
         $fullName = implode('.', $arr);
         $fileName = $fullName.'__'.uniqid().'__'.'.'.$extension;
         $file->move($filePath, $fileName);
+
         return $fileName;
     }
 }

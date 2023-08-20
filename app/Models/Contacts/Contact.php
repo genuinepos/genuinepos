@@ -2,11 +2,11 @@
 
 namespace App\Models\Contacts;
 
-use App\Models\Account;
 use App\Enums\ContactType;
+use App\Models\Account;
 use App\Models\CustomerGroup;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
 {

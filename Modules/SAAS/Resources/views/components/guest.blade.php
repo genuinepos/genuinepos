@@ -38,10 +38,6 @@
             }
         });
 
-        // $(document).ready(function() {
-        //     $('.select2').select2();
-        // });
-
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -91,7 +87,6 @@
                     'Yes': {
                         'class': 'yes btn-danger',
                         'action': function() {
-                            // console.log("Deleting from: " + url);
                             $.ajax({
                                 url: url,
                                 type: 'DELETE',
@@ -134,10 +129,6 @@
             }
         });
 
-        // $(document).ready(function() {
-        //     $('.select2').select2();
-        // });
-
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -187,7 +178,6 @@
                     'Yes': {
                         'class': 'yes btn-danger',
                         'action': function() {
-                            // console.log("Deleting from: " + url);
                             $.ajax({
                                 url: url,
                                 type: 'DELETE',

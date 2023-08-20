@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Accounts\Bank;
-use App\Models\Contacts\Contact;
 use App\Models\Accounts\AccountGroup;
+use App\Models\Accounts\Bank;
 use App\Models\Accounts\BankAccessBranch;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends BaseModel
@@ -13,6 +13,7 @@ class Account extends BaseModel
     use HasFactory;
 
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function bank()

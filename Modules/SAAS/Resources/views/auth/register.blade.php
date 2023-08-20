@@ -12,25 +12,25 @@
                 @csrf
                 <div class="input-group mb-30">
                     <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
-                    <input type="text" name="name" class="form-control" placeholder="{{ __('Name') }}">
+                    <input type="text" name="name" class="form-control  @error('name') is-invalid @enderror" placeholder="{{ __('Name') }}" required>
                 </div>
                 <div class="input-group mb-30">
                     <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
-                    <input type="email" name="email" class="form-control" placeholder="{{ __('Email') }}">
+                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}" required>
                 </div>
                 <div class="input-group mb-20">
                     <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
-                    <input type="password" name="password" class="form-control rounded-end" placeholder="{{ __('Password') }}">
+                    <input type="password" name="password" class="form-control rounded-end @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" required>
                     <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
                 </div>
                 <div class="input-group mb-20">
                     <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
-                    <input type="password" name="password_confirmation" class="form-control rounded-end" placeholder="{{ __('Confirm Password') }}">
+                    <input type="password" name="password_confirmation" class="form-control rounded-end" placeholder="{{ __('Confirm Password') }}" required>
                     <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
                 </div>
                 <div class="d-flex justify-content-between mb-30">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="registerCheckbox" required>
+                        <input class="form-check-input" type="checkbox" id="registerCheckbox" @error('checkbox') is-invalid @enderror required>
                         <label class="form-check-label text-white" for="registerCheckbox">
                             {{ __('I agree') }} {{ config('app.name') }}
                             <a href="#" class="text-white text-decoration-underline">

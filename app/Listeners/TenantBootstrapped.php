@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\GeneralSetting;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 
@@ -23,10 +24,13 @@ class TenantBootstrapped
     {
         try {
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
-                Cache::rememberForever('generalSettings', function () {
-                    return GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
-                });
-                $generalSettings = Cache::get('generalSettings') ?? GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
+                $generalSettings = Cache::get('generalSettings');
+                if (! isset($generalSettings)) {
+                    $generalSettings = GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
+                    Cache::rememberForever('generalSettings', function () use ($generalSettings) {
+                        return $generalSettings;
+                    });
+                }
                 config([
                     'generalSettings' => $generalSettings,
                     'mail.mailers.smtp.transport' => $generalSettings['email_config__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),

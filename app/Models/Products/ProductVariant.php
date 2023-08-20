@@ -55,7 +55,7 @@ class ProductVariant extends Model
         $generalSettings = config('generalSettings');
 
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
-        
+
         if ($stockAccountingMethod == 1) {
 
             $ordering = 'asc';

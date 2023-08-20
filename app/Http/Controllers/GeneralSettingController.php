@@ -52,7 +52,7 @@ class GeneralSettingController extends Controller
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
-            
+
             $business_logo = $generalSettings['business__business_logo'] != null ? $generalSettings['business__business_logo'] : null;
         }
 

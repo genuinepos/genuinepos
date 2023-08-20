@@ -1,21 +1,52 @@
 <x-saas::admin-layout title="Create tenant">
+    @push('css')
+    <style>
+        tr, th, td {
+            text-align: start !important;
+            border: 1px solid black;
+        }
+    </style>
+    @endpush
     <div class="panel">
         <div class="panel-header">
-            <h2>{{ __('Business List') }}</h2>
+            <h5>{{ __('Manage Business') }}</h5>
         </div>
         <div class="panel-body">
-            @foreach($tenants as $tenant)
-                <li class="group-list-item">
-                    @php
-                        $domain =  $tenant?->domains()?->first()?->domain;
-                        $domain = (str_contains($domain,'.')) ? $domain : $domain . '.' . config('app.domain');
-                        $domain = 'http://' . $domain;
-                    @endphp
-                    <span class="me-4"><b>{{ $domain }}</b></span> <a href="{{ $domain }}" target="_blank">
-                        {{ __("Access the App") }}
-                    </a>
-                </li>
-            @endforeach
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{ __("SL No.") }}</th>
+                                    <th>{{ __("Business Name") }}</th>
+                                    <th>{{ __("Domain") }}</th>
+                                    <th>{{ __("Action") }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tenants as $tenant)
+                                    @php
+                                        $domain = $tenant?->domains()?->first()?->domain;
+                                        $domain = str_contains($domain, '.') ? $domain : $domain . '.' . config('app.domain');
+                                        $domain = 'http://' . $domain;
+                                    @endphp
+                                    <tr class="text-start">
+                                        <td>{{ $tenant->id }}</td>
+                                        <td>{{ $tenant->name }}</td>
+                                        <td>{{ $domain }}</td>
+                                        <td class="text-start">
+                                            <a href="{{ $domain }}" target="_blank" role="button" class="btn btn-sm btn-primary text-white">
+                                                {{ __('Open App') }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </x-saas::admin-layout>

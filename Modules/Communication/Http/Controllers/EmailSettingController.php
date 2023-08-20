@@ -317,7 +317,7 @@ class EmailSettingController extends Controller
         return response()->json(['status' => 'view for edit email serve', 'serverCredentialVal' => $serverCredential]);
     }
 
-    public function deleteAllserver(Request $request)
+    public function deleteAllServer(Request $request)
     {
         if (! isset($request->server_id)) {
             return response()->json(['errorMsg' => 'Select mail first']);

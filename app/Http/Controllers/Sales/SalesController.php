@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
+use App\Utils\NameSearchUtil;
+use App\Utils\SaleUtil;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -15,7 +18,7 @@ class SalesController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('create_add_sale')) {
+        if (! auth()->user()->can('create_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }

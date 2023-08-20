@@ -63,7 +63,7 @@ class ProductController extends Controller
         $taxes = DB::table('taxes')->get(['id', 'tax_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('product.products.index_v2', compact('categories', 'brands', 'units', 'taxes', 'branches'));
+        return view('product.products.index', compact('categories', 'brands', 'units', 'taxes', 'branches'));
     }
 
     // Add product view

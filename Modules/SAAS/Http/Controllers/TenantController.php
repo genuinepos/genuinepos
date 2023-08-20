@@ -25,6 +25,7 @@ class TenantController extends Controller
         $tenantRequest = $request->validated();
         $tenant = Tenant::create([
             'id' => $tenantRequest['domain'],
+            'name' => $tenantRequest['name'],
         ]);
         if ($tenant) {
             $tenant->domains()->create(['domain' => $tenantRequest['domain']]);

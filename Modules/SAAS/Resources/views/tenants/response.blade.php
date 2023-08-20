@@ -10,7 +10,7 @@
                 $domain = (str_contains($domain,'.')) ? $domain : $domain . '.pos.test';
                 $domain = 'http://' . $domain;
                 @endphp
-                <span class="me-4"><b>{{ $domain }}</b></span> <a href="{{ $domain }}" target="_blank">Access the App</a>
+                <span class="me-4"><b>{{ $domain }}</b></span> <a href="{{ $domain }}" target="_blank">{{ __("Access the App") }}</a>
             </div>
         </div>
     </div>

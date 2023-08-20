@@ -17,7 +17,7 @@ class PlanController extends Controller
     public function index()
     {
         return view('saas::plans.index', [
-            'plans' => Plan::paginate(2),
+            'plans' => Plan::paginate(),
         ]);
     }
 
@@ -39,7 +39,14 @@ class PlanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $plan = Plan::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'period_month' => $request->period_month,
+        ]);
+        $plan->features()->sync($request->feature_id);
+        return redirect(route('saas.plans.index'))->with('success', 'Plan created successfully!');
     }
 
     /**
@@ -49,7 +56,7 @@ class PlanController extends Controller
      */
     public function show($id)
     {
-        return view('saas::show');
+        return view('saas::plans.show');
     }
 
     /**
@@ -59,7 +66,10 @@ class PlanController extends Controller
      */
     public function edit($id)
     {
-        return view('saas::edit');
+        return view('saas::plans.edit', [
+            'plan' => Plan::find($id),
+            'features' => Feature::all(),
+        ]);
     }
 
     /**
@@ -70,7 +80,15 @@ class PlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $plan = Plan::find($id);
+        $plan->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'period_month' => $request->period_month,
+        ]);
+        $plan->features()->sync($request->feature_id);
+        return redirect(route('saas.plans.index'))->with('success', 'Plan updated successfully!');
     }
 
     /**
@@ -80,6 +98,8 @@ class PlanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $plan = Plan::find($id);
+        $plan->delete();
+        return redirect(route('saas.plans.index'))->with('success', 'Plan deleted successfully!');
     }
 }

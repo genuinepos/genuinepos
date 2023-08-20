@@ -7,6 +7,9 @@
     <div class="panel">
         <div class="panel-header">
             <h5>{{ __('Manage Plan') }}</h5>
+            <div>
+                <a href="{{ route('saas.plans.create') }}" class="btn btn-primary">{{ __('Create Plan') }}</a>
+            </div>
         </div>
         <div class="panel-body">
             <div class="row">
@@ -23,15 +26,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($plans as $plan)
-                                    <tr class="text-start">
-                                        <td>{{ $plan->id }}</td>
+                                @foreach ($plans as $key => $plan)
+                                    <tr class="">
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $plan->name }}</td>
                                         <td>{{ $plan->price }}</td>
                                         <td>{{ $plan->period_month }}</td>
-                                        <td class="text-start">
-                                            <a href="" target="_blank" role="button" class="btn btn-sm btn-primary text-white">
-                                                {{ __('Setup Plan') }}
+                                        <td class="">
+                                            <a href="{{route('saas.plans.edit', $plan->id)}}" target="_blank" class="">
+                                                {{ __('Edit Plan') }}
                                             </a>
                                         </td>
                                     </tr>

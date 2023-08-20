@@ -2317,7 +2317,7 @@
 
                                 @if (auth()->user()->can('p_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.payment.method.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('payment.methods.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-credit-card"></i></span>

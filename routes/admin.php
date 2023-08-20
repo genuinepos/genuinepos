@@ -43,7 +43,6 @@ use App\Http\Controllers\PosShortMenuController;
 use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\InvoiceLayoutController;
 use App\Http\Controllers\InvoiceSchemaController;
-use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\BarcodeSettingController;
@@ -945,15 +944,6 @@ Route::group(['prefix' => 'settings'], function () {
         Route::post('send/email/sms/settings', [GeneralSettingController::class, 'SendEmailSmsSettings'])->name('settings.send.email.sms.settings');
         Route::post('sms/settings', [GeneralSettingController::class, 'smsSettings'])->name('settings.sms.settings');
         Route::post('rp/settings', [GeneralSettingController::class, 'rewardPointSettings'])->name('settings.reward.point.settings');
-    });
-
-    Route::group(['prefix' => 'payment_methods'], function () {
-
-        Route::get('/', [PaymentMethodController::class, 'index'])->name('settings.payment.method.index');
-        Route::post('store', [PaymentMethodController::class, 'store'])->name('settings.payment.method.store');
-        Route::get('edit/{id}', [PaymentMethodController::class, 'edit'])->name('settings.payment.method.edit');
-        Route::post('update/{id}', [PaymentMethodController::class, 'update'])->name('settings.payment.method.update');
-        Route::delete('delete/{id}', [PaymentMethodController::class, 'delete'])->name('settings.payment.method.delete');
     });
 
     Route::group(['prefix' => 'payment_method_settings'], function () {

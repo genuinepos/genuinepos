@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\WarehouseController;
+use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\PaymentMethodSettingsController;
@@ -15,6 +17,16 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('branches.edit');
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
+    });
+
+    Route::controller(WarehouseController::class)->prefix('warehouses')->group(function () {
+
+        Route::get('/', 'index')->name('warehouses.index');
+        Route::get('create', 'create')->name('warehouses.create');
+        Route::post('store', 'store')->name('warehouses.store');
+        Route::get('edit/{id}', 'edit')->name('warehouses.edit');
+        Route::post('update/{id}', 'update')->name('warehouses.update');
+        Route::delete('delete/{warehouseId}', 'delete')->name('warehouses.delete');
     });
 
     Route::group(['prefix' => 'invoices'], function () {
@@ -50,6 +62,7 @@ Route::prefix('setups')->group(function () {
     Route::controller(CashCounterController::class)->prefix('cash_counter')->group(function () {
 
         Route::get('/', 'index')->name('cash.counters.index');
+        Route::get('create', 'create')->name('cash.counters.create');
         Route::post('store', 'store')->name('cash.counters.store');
         Route::get('edit/{id}', 'edit')->name('cash.counters.edit');
         Route::post('update/{id}', 'update')->name('cash.counters.update');

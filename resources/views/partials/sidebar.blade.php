@@ -2288,7 +2288,7 @@
 
                                 @if (auth()->user()->can('warehouse'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.warehouses.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('warehouses.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-warehouse"></i></span>

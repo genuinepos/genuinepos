@@ -2,39 +2,45 @@
 
 namespace App\Services\Setups;
 
+use App\Models\Setups\CashCounter;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
+
 class CashCounterService
 {
-    public function cashCounterListTable($request)
+    public function cashCounterListTable(object $request): object
     {
-
         $generalSettings = config('generalSettings');
         $cashCounters = '';
 
-        $query = DB::table('cash_counters')
-                ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
-                ->select(
-                    'branches.name as br_name',
-                    'branches.branch_code as br_code',
-                    'cash_counters.id',
-                    'cash_counters.counter_name',
-                    'cash_counters.short_name'
-                )->where('branch_id', auth()->user()->branch_id)->get();
+        $query = DB::table('cash_counters')->leftJoin('branches', 'cash_counters.branch_id', 'branches.id');
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+        if (isset($request)) {
 
-            $cashCounters = DB::table('cash_counters')->orderBy('id', 'DESC')
-                ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
-                ->select(
-                    'branches.name as br_name',
-                    'branches.branch_code as br_code',
-                    'cash_counters.id',
-                    'cash_counters.counter_name',
-                    'cash_counters.short_name'
-                )->get();
-        } else {
+            if ($request->branch_id) {
 
+                if ($request->branch_id == 'NULL') {
 
+                    $query->where('cash_counters.branch_id', null);
+                } else {
+
+                    $query->where('cash_counters.branch_id', $request->branch_id);
+                }
+            }
         }
+
+        if (auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('cash_counters.branch_id', auth()->user()->branch_id);
+        }
+
+        $cashCounters = $query->select(
+            'branches.name as br_name',
+            'branches.branch_code as br_code',
+            'cash_counters.id',
+            'cash_counters.counter_name',
+            'cash_counters.short_name'
+        )->get();
 
         return DataTables::of($cashCounters)
             ->addIndexColumn()
@@ -48,13 +54,71 @@ class CashCounterService
                 return $html;
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
+
                 if ($row->br_name) {
-                    return $row->br_name . '/' . $row->br_code . '(<b>BR</b>)';
+
+                    return $row->br_name . '/' . $row->br_code;
                 } else {
-                    return $generalSettings['business__shop_name'] . '(<b>HO</b>)';
+
+                    return $generalSettings['business__shop_name'];
                 }
             })
             ->rawColumns(['branch', 'action'])
             ->make(true);
+    }
+
+    public function restriction(array|object $generalSettings): array
+    {
+        $cashCounterLimit = $generalSettings['addons__cash_counter_limit'];
+
+        $cashCounters = DB::table('cash_counters')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->count();
+
+        if ($cashCounterLimit <= $cashCounters) {
+
+            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit}")];
+        }
+
+        return ['pass' => true];
+    }
+
+    public function addCashCounter(object $request): object
+    {
+        return CashCounter::create([
+            'branch_id' => auth()->user()->branch_id,
+            'counter_name' => $request->counter_name,
+            'short_name' => $request->short_name,
+        ]);
+    }
+
+    public function updateCashCounter($id, $request)
+    {
+        $updateCashCounter = $this->singleCashCounter($id);
+        $updateCashCounter->counter_name = $request->counter_name;
+        $updateCashCounter->short_name = $request->short_name;
+        $updateCashCounter->save();
+    }
+
+    function deleteCashCounter() : void
+    {
+        $delete = CashCounter::find($id);
+
+        if (!is_null($delete)) {
+
+            $delete->delete();
+        }
+    }
+
+    public function singleCashCounter(int $id, array $with = null)
+    {
+        $query = CashCounter::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
     }
 }

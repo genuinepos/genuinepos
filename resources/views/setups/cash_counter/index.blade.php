@@ -1,6 +1,7 @@
 @extends('layout.master')
-@push('stylesheets')@endpush
-@section('title', 'All Cash Counter - ')
+@push('stylesheets')
+@endpush
+@section('title', 'Cash Counter List - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -9,22 +10,53 @@
                     <span class="fas fa-cubes"></span>
                     <h5>@lang('menu.cash_counter')</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
         <div class="p-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <div class="element-body">
+                            <form id="filter_form">
+                                <div class="form-group row">
+                                    @if (auth()->user()->is_belonging_an_area == 0)
+                                        <div class="col-md-2">
+                                            <label><strong>{{ __('Shop') }}</strong></label>
+                                            <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
+                                                <option value="">{{ __("All") }}</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+
+                                    <div class="col-md-2">
+                                        <label><strong></strong></label>
+                                        <div class="input-group">
+                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-7">
-                        <h6>{{ __('All Cash Counter') }}</h6>
+                        <h6>{{ __('Cash Counter List') }}</h6>
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
-                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-primary" id="addCashCounter"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
                     </div>
-
                 </div>
 
                 <div class="widget_content">
@@ -32,11 +64,11 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="bg-navey-blue">
-                                    <th class="text-black">@lang('menu.serial')</th>
-                                    <th class="text-black">@lang('menu.counter_name')</th>
-                                    <th class="text-black">@lang('menu.short_name')</th>
-                                    <th class="text-black">@lang('menu.branch')</th>
-                                    <th class="text-black">@lang('menu.action')</th>
+                                    <th class="text-black">{{ __("Serial") }}</th>
+                                    <th class="text-black">{{ __("Counter Name") }}</th>
+                                    <th class="text-black">{{ __("Short Name") }}</th>
+                                    <th class="text-black">{{ __("Shop") }}</th>
+                                    <th class="text-black">{{ __("Action") }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -62,21 +94,59 @@
     <script>
         var cashCounterTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
             ],
             processing: true,
             serverSide: true,
             searchable: true,
-            ajax: "{{ route('settings.cash.counter.index') }}",
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
-            columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
-                {data: 'counter_name',name: 'counter_name'},
-                {data: 'short_name',name: 'short_name'},
-                {data: 'branch',name: 'branch'},
-                {data: 'action',name: 'action'},
+            ajax: "{{ route('cash.counters.index') }}",
+            "lengthMenu": [
+                [50, 100, 500, 1000, -1],
+                [50, 100, 500, 1000, "All"]
+            ],
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'counter_name',
+                    name: 'counter_name'
+                },
+                {
+                    data: 'short_name',
+                    name: 'short_name'
+                },
+                {
+                    data: 'branch',
+                    name: 'branch'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
             ],
         });
 
@@ -90,7 +160,7 @@
         // call jquery method
         $(document).ready(function() {
 
-            $(document).on('click', '#addBtn', function(e) {
+            $(document).on('click', '#addCashCounter', function(e) {
                 e.preventDefault();
 
                 var url = $(this).attr('href');
@@ -166,7 +236,7 @@
                 });
             });
 
-            $(document).on('click', '#delete',function(e){
+            $(document).on('click', '#delete', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);

@@ -904,15 +904,6 @@ Route::group(['prefix' => 'accounting'], function () {
 
 Route::group(['prefix' => 'settings'], function () {
 
-    Route::group(['prefix' => 'warehouses'], function () {
-
-        Route::get('/', [WarehouseController::class, 'index'])->name('settings.warehouses.index');
-        Route::post('store', [WarehouseController::class, 'store'])->name('settings.warehouses.store');
-        Route::get('edit/{id}', [WarehouseController::class, 'edit'])->name('settings.warehouses.edit');
-        Route::post('update/{id}', [WarehouseController::class, 'update'])->name('settings.warehouses.update');
-        Route::delete('delete/{warehouseId}', [WarehouseController::class, 'delete'])->name('settings.warehouses.delete');
-    });
-
     Route::group(['prefix' => 'taxes'], function () {
 
         Route::get('/', [TaxController::class, 'index'])->name('settings.taxes.index');

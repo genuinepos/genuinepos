@@ -17,7 +17,6 @@ class CategoryController extends Controller
     public function __construct(UserActivityLogUtil $userActivityLogUtil)
     {
         $this->userActivityLogUtil = $userActivityLogUtil;
-
     }
 
     // Category main page/index page

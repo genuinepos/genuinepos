@@ -14,6 +14,7 @@ class TenantStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            // 'domain' => ['required', 'string'],
             'domain' => ['required', 'string', 'unique:domains,domain'],
         ];
     }
@@ -26,5 +27,12 @@ class TenantStoreRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function messages()
+    {
+        return [
+            'domain.unique' => 'Selected domain is already taken. Try other domain names.'
+        ];
     }
 }

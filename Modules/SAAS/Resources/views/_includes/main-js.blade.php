@@ -1,8 +1,9 @@
 <script>
-    toastr.options = {"positionClass": "toast-top-center",}
+    toastr.options = {
+        "positionClass": "toast-top-center"
+    };
     // toastr.options.timeOut = 0;
     // toastr.options.extendedTimeOut = 0;
-    
     // Rendering Session messages
     @if (Session::has('message') || Session::has('success') || Session::has('error') || Session::has('info') || Session::has('warning'))
 
@@ -42,7 +43,9 @@
                 break;
         }
     @endif
+</script>
 
+<script>
     (function($) {
         'use strict';
         $(window).on('load', function() {

@@ -16,6 +16,7 @@ class PlanController extends Controller
      */
     public function index()
     {
+        abort_unless(auth()->user()->can('plans_index'), 403);
         return view('saas::plans.index', [
             'plans' => Plan::paginate(),
         ]);
@@ -27,6 +28,7 @@ class PlanController extends Controller
      */
     public function create()
     {
+        abort_unless(auth()->user()->can('plans_create'), 403);
         return view('saas::plans.create', [
             'features' => Feature::all(),
         ]);
@@ -39,6 +41,7 @@ class PlanController extends Controller
      */
     public function store(Request $request)
     {
+        abort_unless(auth()->user()->can('plans_store'), 403);
         $plan = Plan::create([
             'name' => $request->name,
             'price' => $request->price,
@@ -56,6 +59,7 @@ class PlanController extends Controller
      */
     public function show($id)
     {
+        abort_unless(auth()->user()->can('plans_show'), 403);
         return view('saas::plans.show');
     }
 

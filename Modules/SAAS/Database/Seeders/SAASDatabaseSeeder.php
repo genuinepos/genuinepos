@@ -14,5 +14,8 @@ class SAASDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(RolePermissionTableSeeder::class);
+        $this->call(FeatureTableSeeder::class);
+        $this->call(PlanTableSeeder::class);
+        $this->call(PlanFeatureTableSeeder::class);
     }
 }

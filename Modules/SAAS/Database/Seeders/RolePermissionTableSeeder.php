@@ -69,7 +69,7 @@ class RolePermissionTableSeeder extends Seeder
             // Plan
             'plans_index',
             'plans_create',
-            'plans_view',
+            'plans_show',
             'plans_update',
             'plans_delete',
         ];

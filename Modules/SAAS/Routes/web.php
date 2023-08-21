@@ -34,3 +34,9 @@ Route::prefix('saas')->group(function () {
         Route::resource('plans', PlanController::class);
     });
 });
+
+
+// Dev route
+Route::get('dd', function() {
+    dd(Auth::user()->roles->first()->permissions->pluck('name'));
+});

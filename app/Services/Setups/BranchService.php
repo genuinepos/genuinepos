@@ -9,7 +9,6 @@ class BranchService
 {
     public function addBranch($request)
     {
-
         $addBranch = new Branch();
         $addBranch->name = $request->name;
         $addBranch->branch_code = $request->code;

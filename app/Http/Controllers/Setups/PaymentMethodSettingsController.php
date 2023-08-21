@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setups;
 
-use App\Models\PaymentMethodSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\PaymentMethodSetting;
 
 class PaymentMethodSettingsController extends Controller
 {

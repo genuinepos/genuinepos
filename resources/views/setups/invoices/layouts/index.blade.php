@@ -4,7 +4,6 @@
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <!-- =====================================================================BODY CONTENT================== -->
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-file-invoice"></span>
@@ -13,7 +12,6 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <!-- =========================================top section button=================== -->
 
         <div class="p-3">
             <div class="form_element rounded m-0">
@@ -27,29 +25,26 @@
                     </div>
                 </div>
 
-                    <div class="widget_content">
-                        <div class="table-responsive" id="data-list">
-                            <table class="display data_tbl data__table">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('menu.serial')</th>
-                                        <th>@lang('menu.layout_name')</th>
-                                        <th>{{ __('Is Header Less') }}</th>
-                                        <th>@lang('menu.action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="widget_content">
+                    <div class="table-responsive" id="data-list">
+                        <table class="display data_tbl data__table">
+                            <thead>
+                                <tr>
+                                    <th>{{ __("Serial") }}</th>
+                                    <th>{{ __("Layout Name") }}</th>
+                                    <th>{{ __('Is Header Less') }}</th>
+                                    <th>{{ __("Action") }}</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
-
-                    <form id="deleted_form" action="" method="post">
-                        @method('DELETE')
-                        @csrf
-                    </form>
                 </div>
+
+                <form id="deleted_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -59,14 +54,30 @@
         var table = $('.data_tbl').DataTable({
             processing: true,
             serverSide: true,
-            aaSorting: [[3, 'asc']],
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            aaSorting: [
+                [3, 'asc']
+            ],
+            "lengthMenu": [
+                [50, 100, 500, 1000, -1],
+                [50, 100, 500, 1000, "All"]
+            ],
             ajax: "{{ route('invoices.layouts.index') }}",
-            columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'name', name: 'name'},
-                {data: 'is_header_less', name: 'is_header_less'},
-                {data: 'action', name: 'action'},
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'is_header_less',
+                    name: 'is_header_less'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
             ]
         });
 
@@ -78,7 +89,7 @@
         });
 
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
@@ -103,16 +114,16 @@
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
+        $(document).on('submit', '#deleted_form', function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                async:false,
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                async: false,
+                data: request,
+                success: function(data) {
                     toastr.error(data);
                     table.ajax.reload();
                     $('#deleted_form')[0].reset();
@@ -121,20 +132,19 @@
         });
 
         // pass editable data to edit modal fields
-        $(document).on('click', '#set_default_btn', function(e){
+        $(document).on('click', '#set_default_btn', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
                     table.ajax.reload();
                     toastr.success(data);
                     $('.data_preloader').hide();
                 }
             });
         });
-
     </script>
 @endpush

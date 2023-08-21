@@ -1317,28 +1317,4 @@ class POSController extends Controller
             return 0;
         }
     }
-
-    public function settings()
-    {
-        return view('sales.pos.settings.index');
-    }
-
-    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
-    {
-        $settings = [
-            'pos__is_enabled_multiple_pay' => isset($request->is_enabled_multiple_pay) ? 1 : 0,
-            'pos__is_enabled_draft' => isset($request->is_enabled_draft) ? 1 : 0,
-            'pos__is_enabled_quotation' => isset($request->is_enabled_quotation) ? 1 : 0,
-            'pos__is_enabled_suspend' => isset($request->is_enabled_suspend) ? 1 : 0,
-            'pos__is_enabled_discount' => isset($request->is_enabled_discount) ? 1 : 0,
-            'pos__is_enabled_order_tax' => isset($request->is_enabled_order_tax) ? 1 : 0,
-            'pos__is_show_recent_transactions' => isset($request->is_show_recent_transactions) ? 1 : 0,
-            'pos__is_enabled_credit_full_sale' => isset($request->is_enabled_credit_full_sale) ? 1 : 0,
-            'pos__is_enabled_hold_invoice' => isset($request->is_enabled_hold_invoice) ? 1 : 0,
-        ];
-
-        $generalSettingService->updateAndSync($settings);
-
-        return response()->json('POS settings updated successfully');
-    }
 }

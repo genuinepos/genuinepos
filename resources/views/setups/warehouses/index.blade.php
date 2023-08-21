@@ -162,8 +162,6 @@
                 $.ajax({
                     url: url,
                     type: 'get',
-                    cache: false,
-                    async: false,
                     success: function(data) {
 
                         $('#warehouseAddOrEditModal .modal-dialog').remove();
@@ -200,8 +198,6 @@
                 $.ajax({
                     url: url,
                     type: 'get',
-                    cache: false,
-                    async: false,
                     success: function(data) {
 
                         $('#warehouseAddOrEditModal .modal-dialog').remove();

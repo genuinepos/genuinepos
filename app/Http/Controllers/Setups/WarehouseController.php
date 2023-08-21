@@ -53,6 +53,7 @@ class WarehouseController extends Controller
         ]);
 
         try {
+
             DB::beginTransaction();
 
             $addWarehouse = $this->warehouseService->addWarehouse($request);
@@ -67,17 +68,9 @@ class WarehouseController extends Controller
 
     public function edit($id)
     {
-        $w = Warehouse::with(['warehouseBranches'])->where('id', $id)->first();
+        $warehouse = $this->warehouseService->singleWarehouse(id: $id);
 
-        $isExistsHeadOffice = DB::table('warehouse_branches')
-            ->where('warehouse_id', $id)
-            ->where('branch_id', null)
-            ->where('is_global', 0)
-            ->first();
-
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-
-        return view('settings.warehouses.ajax_view.edit', compact('w', 'branches', 'isExistsHeadOffice'));
+        return view('setups.warehouses.ajax_view.edit', compact('warehouse'));
     }
 
     public function update(Request $request, $id)
@@ -88,61 +81,33 @@ class WarehouseController extends Controller
             'phone' => 'required',
         ]);
 
-        $updateWarehouse = Warehouse::where('id', $id)->first();
-        $updateWarehouse->warehouse_name = $request->name;
-        $updateWarehouse->warehouse_code = $request->code;
-        $updateWarehouse->phone = $request->phone;
-        $updateWarehouse->address = $request->address;
-        $updateWarehouse->save();
+        try {
 
-        WarehouseBranch::where('warehouse_id', $id)->delete();
+            DB::beginTransaction();
 
-        if (isset($request->branch_ids)) {
+            $this->warehouseService->updateWarehouse(id: $id, request: $request);
 
-            foreach ($request->branch_ids as $branch_id) {
-
-                $__branch_id = $branch_id == 'NULL' ? null : $branch_id;
-                $addWarehouseBranch = new WarehouseBranch();
-                $addWarehouseBranch->warehouse_id = $updateWarehouse->id;
-                $addWarehouseBranch->branch_id = $__branch_id;
-                $addWarehouseBranch->save();
-            }
-        } else {
-
-            $addWarehouseBranch = new WarehouseBranch();
-            $addWarehouseBranch->warehouse_id = $updateWarehouse->id;
-            $addWarehouseBranch->branch_id = null;
-            $addWarehouseBranch->is_global = 1;
-            $addWarehouseBranch->save();
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
-        return response()->json('Successfully warehouse is updated');
+        return response()->json(__("Warehouse is updated successfully"));
     }
 
-    public function delete(Request $request, $warehouseId)
+    public function delete(Request $request, $id)
     {
-        $deleteWarehouse = Warehouse::where('id', $warehouseId)->first();
+        try {
 
-        if (count($deleteWarehouse->transfer_stock_branch_to_branch) > 0) {
-            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transfer branch to branch.']);
-        }
-        if (count($deleteWarehouse->transfer_stock_branch) > 0) {
-            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transfer warehouse to branch.']);
-        }
-        if (count($deleteWarehouse->sale_product) > 0) {
-            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in sale.']);
-        }
-        if (count($deleteWarehouse->transfer_to_branch) > 0) {
-            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in transferred.']);
-        }
-        if (count($deleteWarehouse->purchase) > 0) {
-            return response()->json(['errorMsg' => 'Warehouse can\'t be deleted. One or more entry has been created in purchase.']);
-        }
-        if (!is_null($deleteWarehouse)) {
+            DB::beginTransaction();
 
-            $deleteWarehouse->delete();
+            $this->warehouseService->deleteWarehouse($id);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
-        return response()->json('Successfully warehouse is deleted');
+        return response()->json(__("Successfully warehouse is deleted"));
     }
 }

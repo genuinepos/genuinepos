@@ -45,7 +45,7 @@ class WarehouseService
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
 
-                if ($row->is_global == 1 && (auth()->user()->role_type != 1 || auth()->user()->role_type != 2)) {
+                if ($row->is_global == 1 && auth()->user()->role_type == 3) {
 
                     return;
                 }
@@ -76,7 +76,7 @@ class WarehouseService
             ->make(true);
     }
 
-    public function addWarehouse(object $request) : object
+    public function addWarehouse(object $request): object
     {
         $addWarehouse = new Warehouse();
         $addWarehouse->branch_id = auth()->user()->branch_id;
@@ -88,5 +88,38 @@ class WarehouseService
         $addWarehouse->save();
 
         return $addWarehouse;
+    }
+
+    public function updateWarehouse(int $id, object $request): void
+    {
+        $updateWarehouse = $this->singleWarehouse($id);
+        $updateWarehouse->warehouse_name = $request->name;
+        $updateWarehouse->warehouse_code = $request->code;
+        $updateWarehouse->phone = $request->phone;
+        $updateWarehouse->address = $request->address;
+        $updateWarehouse->is_global = isset($request->is_global) ? $request->is_global : 0;
+        $updateWarehouse->save();
+    }
+
+    function deleteWarehouse(int $id) : void
+    {
+        $deleteWarehouse = $this->singleWarehouse($id);
+
+        if (!is_null($deleteWarehouse)) {
+
+            $deleteWarehouse->delete();
+        }
+    }
+
+    public function singleWarehouse(int $id, array $with = null)
+    {
+        $query = Warehouse::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
     }
 }

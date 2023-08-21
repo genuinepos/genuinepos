@@ -367,16 +367,13 @@
         <div id="sidebar_t">
             <div class="sub-menu_t" id="product">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>{{ __("Product Management")</strong></p>
-                            </div>
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __("Product Management") }}</p>
@@ -620,16 +617,13 @@
 
                 <div class="sub-menu_t" id="superadmin">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Superadmin</strong></p>
-                                </div>
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
@@ -658,16 +652,13 @@
 
                 <div class="sub-menu_t" id="contact">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>{{ __('Contact Management') }}</strong></p>
-                                </div>
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
@@ -818,16 +809,13 @@
                 ])
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
-                            {{-- <div class="model__close bg-secondary-2 mb-3">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Purchase Management</strong></p>
-                                    </div>
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
                                     <div class="col-md-4">
-                                        <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="container-fluid">
                                 <div class="sub-menu-group">
@@ -1049,16 +1037,14 @@
 
             <div class="sub-menu_t" id="sales">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Sale Management</strong></p>
-                            </div>
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Sale Management') }}</p>
@@ -1406,16 +1392,14 @@
             @if ($generalSettings['modules__transfer_stock'] == '1')
                 <div class="sub-menu_t" id="transfer">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Stock Transfer Management</strong></p>
-                                </div>
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
+
                         <div class="container-fluid">
                             {{-- <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
@@ -1559,17 +1543,13 @@
             @if ($generalSettings['modules__stock_adjustment'] == '1')
                 <div class="sub-menu_t" id="adjustment">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>@lang('menu.stock_adjustment')</strong></p>
-                                </div>
-
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
@@ -1653,16 +1633,13 @@
             @if ($generalSettings['modules__expenses'] == '1')
                 <div class="sub-menu_t" id="expenses">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>{{ __('Expense Management') }}</strong></p>
-                                </div>
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
@@ -1761,16 +1738,13 @@
 
                     <div class="sub-menu_t" id="accounting">
                         <div class="sub-menu-width">
-                            {{-- <div class="model__close bg-secondary-2 mb-3">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8">
-                                        <p class="text-muted float-start mt-1"><strong>Account Management</strong></p>
-                                    </div>
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
                                     <div class="col-md-4">
-                                        <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                     </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="container-fluid">
                                 <div class="sub-menu-group">
@@ -1933,16 +1907,14 @@
 
             <div class="sub-menu_t" id="users">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>User Management</strong></p>
-                            </div>
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('User Management') }}</p>
@@ -2009,17 +1981,13 @@
             @if ($generalSettings['addons__hrm'] == 1)
                 <div class="sub-menu_t" id="hrm">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Human Resource Management System</strong></p>
-                                </div>
-
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
@@ -2244,16 +2212,14 @@
 
             <div class="sub-menu_t" id="settings">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>{{ __('Set-up') }}</strong></p>
-                            </div>
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Set-up') }}</p>
@@ -2418,16 +2384,13 @@
             @if ($generalSettings['addons__manufacturing'] == 1)
                 <div class="sub-menu_t" id="manufacture">
                     <div class="sub-menu-width">
-                        {{-- <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <p class="text-muted float-start mt-1"><strong>Manufacturing</strong></p>
-                                </div>
+                        <div class="model__close bg-secondary-2 mb-3">
+                            <div class="row align-items-center justify-content-end">
                                 <div class="col-md-4">
-                                    <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
@@ -2493,16 +2456,14 @@
 
             <div class="sub-menu_t" id="essentials">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Task Management</strong></p>
-                            </div>
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+                    
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __("Task Management") }}</p>
@@ -2566,17 +2527,14 @@
 
             <div class="sub-menu_t" id="communication">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>@lang('menu.communication')</strong></p>
-                            </div>
-
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+                    
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">@lang('menu.communication')</p>
@@ -2669,17 +2627,14 @@
 
             <div class="sub-menu_t" id="reports">
                 <div class="sub-menu-width">
-                    {{-- <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <p class="text-muted float-start mt-1"><strong>Common Reports</strong></p>
-                            </div>
-
+                    <div class="model__close bg-secondary-2 mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-4">
-                                <a href="#" class="btn p-0 close-model float-end"><i class="fas fa-times"></i></a>
+                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+                    
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Common Reports') }}</p>

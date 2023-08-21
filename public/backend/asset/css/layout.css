@@ -168,6 +168,7 @@ img.logo__img {
 
 ul.head__cn {
     display: flex;
+    border-left: 1px solid #000000;
 }
 
 ul.head__cn li .nav-btn {
@@ -176,11 +177,11 @@ ul.head__cn li .nav-btn {
     text-align: left;
     height: 45px !important;
     max-height: none;
-    background: linear-gradient(#2b9ed0, #0f5167) !important;
+    background: linear-gradient(#424242, #000000) !important;
     color: #fff;
     border: 0;
-    border-left: 1px solid #3ebdf3;
-    border-right: 1px solid #16516a;
+    border-left: 1px solid #424242;
+    border-right: 1px solid #000000;
     border-radius: 0;
     padding: 0 10px;
     position: relative;
@@ -629,7 +630,7 @@ div#menu__id {
 /* ===============================2 left bar design=================================== */
 
 ul.head__cn li a span {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 300;
 }
 
@@ -770,7 +771,7 @@ footer img.logo {
 }
 
 #dashboard-8 #primary_nav {
-    height: calc(100vh - 47px);
+    height: calc(100vh - 46px);
     bottom: 0;
     width: 142px;
     position: fixed;
@@ -785,7 +786,7 @@ footer img.logo {
     position: fixed;
     overflow: auto;
     overflow-y: scroll!important;
-    height: 100vh;
+    height: calc(100vh - 74px);
     z-index: 99;
 }
 

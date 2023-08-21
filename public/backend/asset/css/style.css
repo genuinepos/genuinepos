@@ -53,7 +53,16 @@ body {
 }
 
 body::-webkit-scrollbar {
-  display: none;
+    width: 5px;
+}
+body::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+body::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 .select2-container {
     display: block !important;
@@ -1521,8 +1530,8 @@ legend {
     left: 142px;
     display: none;
     padding: 0 0px;
-    padding-top: 80px;
-    padding-right: 142px;
+    padding-top: 0;
+    padding-right: 126px;
     padding-bottom: 30px;
     overflow-y: scroll;
 }
@@ -2080,13 +2089,7 @@ table.display tbody tr:hover {
 } */
 
 .close-model {
-    /* background: var(--dark-color-2);
-    color: var(--header-color); */
-    width: 50px;
-    height: 35px;
-    line-height: 34px;
-    font-size: 24px;
-    border-radius: 0;
+    width: 40px;
 }
 
 .close-model:hover {

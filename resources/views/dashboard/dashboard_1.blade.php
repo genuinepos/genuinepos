@@ -2,6 +2,11 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link href="{{ asset('backend/asset/css/dashboard.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        .widget_content .table-responsive {
+            min-height: 40vh !important;
+        }
+    </style>
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')

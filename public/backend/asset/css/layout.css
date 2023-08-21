@@ -770,7 +770,7 @@ footer img.logo {
 }
 
 #dashboard-8 #primary_nav {
-    height: calc(100vh - 47px);
+    height: calc(100vh - 46px);
     bottom: 0;
     width: 142px;
     position: fixed;
@@ -785,7 +785,7 @@ footer img.logo {
     position: fixed;
     overflow: auto;
     overflow-y: scroll!important;
-    height: 100vh;
+    height: calc(100vh - 74px);
     z-index: 99;
 }
 

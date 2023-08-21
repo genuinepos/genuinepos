@@ -645,7 +645,7 @@ body.dark-theme {
 }
 
 .dark-theme .panel__nav {
-    border-top: 2px solid var(--blue-color-1);
+    border-top: 1px solid var(--blue-color-1);
 }
 
 .dark-theme .text-primary {
@@ -673,7 +673,7 @@ body.dark-theme {
     border-right: 1px solid var(--dark-color-2);
 }
 .dark-theme .main__nav ul li:first-child {
-    border-top: 2px solid var(--blue-color-1);
+    border-top: 1px solid var(--blue-color-1);
 }
 
 .dark-theme .main__nav ul li a {

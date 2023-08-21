@@ -24,8 +24,8 @@ class RegistrationController extends Controller
             'password' => bcrypt($userRequest['password']),
         ]);
 
-        Auth::guard()->login($user);
+        // Auth::guard()->login($user);
         // event(new TenantRegistered($user));
-        return redirect()->to(route('saas.dashboard'))->with('success', 'Successfully Registered!');
+        return redirect()->to(route('saas.login'))->with('success', 'Successfully Registered. You can login!');
     }
 }

@@ -359,7 +359,7 @@
 
 
     .widget_content .table-responsive {
-        min-height: 80vh !important;
+        min-height: 60vh !important;
     }
 
     .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button.btn-default:hover, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button.btn-default:first-child {

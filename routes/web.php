@@ -42,5 +42,4 @@ Route::get('/', function () {
     }
 
     return view('saas::welcome-page');
-    // });
 })->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

@@ -33,7 +33,7 @@
                                         <td>{{ $plan->price }}</td>
                                         <td>{{ $plan->period_month }}</td>
                                         <td class="">
-                                            <a href="{{route('saas.plans.edit', $plan->id)}}" target="_blank" class="">
+                                            <a href="{{route('saas.plans.edit', $plan->id)}}" class="">
                                                 {{ __('Edit Plan') }}
                                             </a>
                                         </td>

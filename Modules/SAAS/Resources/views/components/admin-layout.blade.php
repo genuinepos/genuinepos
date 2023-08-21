@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
     <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/jquery.dataTables.min.css">
@@ -16,6 +17,11 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
     <link rel="stylesheet" id="rtlStyle" href="#" type="text/css">
+    <style>
+        .toast-success {
+            background-color: #51A351 !important;
+        }
+    </style>
     @stack('css')
 </head>
 
@@ -26,6 +32,7 @@
     <x-saas::_mainsidebar />
 
     <div class="main-content">
+        <x-saas::_messages />
         {{ $slot }}
         <x-saas::_footer />
     </div>
@@ -39,6 +46,8 @@
     <script src="{{ asset('modules/saas') }}/vendor/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('modules/saas') }}/vendor/js/moment.min.js"></script>
     <script src="{{ asset('modules/saas') }}/vendor/js/daterangepicker.js"></script>
+    <!--Toaster.js js link-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('modules/saas') }}/vendor/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('modules/saas') }}/js/dashboard.js"></script>
     @include('saas::_includes.main-js')

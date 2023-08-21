@@ -52,17 +52,26 @@ class RolePermissionTableSeeder extends Seeder
     private function permissionsArray(): array
     {
         return [
+            // Business or Tenant
             'tenants_index',
             'tenants_create',
             'tenants_show',
             'tenants_update',
             'tenants_delete',
+            // User
             'users_index',
             'users_create',
             'users_show',
             'users_update',
             'users_delete',
+            // Profile
             'profile_edit',
+            // Plan
+            'plans_index',
+            'plans_create',
+            'plans_show',
+            'plans_update',
+            'plans_delete',
         ];
     }
 }

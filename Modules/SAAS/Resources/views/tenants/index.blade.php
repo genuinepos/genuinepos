@@ -1,10 +1,7 @@
 <x-saas::admin-layout title="Create tenant">
     @push('css')
     <style>
-        tr, th, td {
-            text-align: start !important;
-            border: 1px solid black;
-        }
+        
     </style>
     @endpush
     <div class="panel">
@@ -31,12 +28,12 @@
                                         $domain = str_contains($domain, '.') ? $domain : $domain . '.' . config('app.domain');
                                         $domain = 'http://' . $domain;
                                     @endphp
-                                    <tr class="text-start">
-                                        <td>{{ $tenant->id }}</td>
+                                    <tr class="">
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $tenant->name }}</td>
                                         <td>{{ $domain }}</td>
-                                        <td class="text-start">
-                                            <a href="{{ $domain }}" target="_blank" role="button" class="btn btn-sm btn-primary text-white">
+                                        <td class="">
+                                            <a href="{{ $domain }}" target="_blank" role="button" class="">
                                                 {{ __('Open App') }}
                                             </a>
                                         </td>

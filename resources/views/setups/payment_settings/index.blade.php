@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-credit-card"></span>
-                    <h6>@lang('menu.payment_method_settings') </h6>
+                    <h6>{{ __("Payment Method Settings") }} </h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -21,7 +21,7 @@
                     <form id="payment_method_settings_form" action="{{ route('settings.payment.method.settings.update') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <p class="m-0 p-0"><b> @lang('menu.business_location') </b>
+                            <p class="m-0 p-0"><b> {{ __("Shop/Business") }} </b>
                                 @if (auth()->user()->branch_id)
 
                                     {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}

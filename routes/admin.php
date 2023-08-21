@@ -30,12 +30,8 @@ use App\Http\Controllers\LoanCompanyController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\MoneyReceiptController;
-use App\Http\Controllers\PaymentMethodController;
-use App\Http\Controllers\PaymentMethodSettingsController;
-use App\Http\Controllers\POSController;
 use App\Http\Controllers\PosShortMenuController;
-use App\Http\Controllers\PriceGroupController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\InvoiceLayoutController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -945,21 +941,6 @@ Route::group(['prefix' => 'settings'], function () {
         Route::post('rp/settings', [GeneralSettingController::class, 'rewardPointSettings'])->name('settings.reward.point.settings');
     });
 
-    Route::group(['prefix' => 'payment_methods'], function () {
-
-        Route::get('/', [PaymentMethodController::class, 'index'])->name('settings.payment.method.index');
-        Route::post('store', [PaymentMethodController::class, 'store'])->name('settings.payment.method.store');
-        Route::get('edit/{id}', [PaymentMethodController::class, 'edit'])->name('settings.payment.method.edit');
-        Route::post('update/{id}', [PaymentMethodController::class, 'update'])->name('settings.payment.method.update');
-        Route::delete('delete/{id}', [PaymentMethodController::class, 'delete'])->name('settings.payment.method.delete');
-    });
-
-    Route::group(['prefix' => 'payment_method_settings'], function () {
-
-        Route::get('/', [PaymentMethodSettingsController::class, 'index'])->name('settings.payment.method.settings.index');
-        Route::post('update', [PaymentMethodSettingsController::class, 'update'])->name('settings.payment.method.settings.update');
-    });
-
     Route::group(['prefix' => 'barcode_settings'], function () {
 
         Route::get('/', [BarcodeSettingController::class, 'index'])->name('settings.barcode.index');
@@ -983,15 +964,6 @@ Route::group(['prefix' => 'settings'], function () {
             Route::delete('delete/{schemaId}', [InvoiceSchemaController::class, 'delete'])->name('invoices.schemas.delete');
             Route::get('set/default/{schemaId}', [InvoiceSchemaController::class, 'setDefault'])->name('invoices.schemas.set.default');
         });
-    });
-
-    Route::group(['prefix' => 'cash_counter'], function () {
-
-        Route::get('/', [CashCounterController::class, 'index'])->name('settings.cash.counter.index');
-        Route::post('store', [CashCounterController::class, 'store'])->name('settings.payment.cash.counter.store');
-        Route::get('edit/{id}', [CashCounterController::class, 'edit'])->name('settings.cash.counter.edit');
-        Route::post('update/{id}', [CashCounterController::class, 'update'])->name('settings.cash.counter.update');
-        Route::delete('delete/{id}', [CashCounterController::class, 'delete'])->name('settings.cash.counter.delete');
     });
 
     Route::group(['prefix' => 'release/note'], function () {

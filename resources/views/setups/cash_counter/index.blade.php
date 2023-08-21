@@ -54,71 +54,13 @@
     </div>
 
     <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
-        aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Cash Counter') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="add_cash_counter_form" action="{{ route('settings.payment.cash.counter.store') }}" method="POST"
-                        enctype="multipart/form-data">
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label><b>@lang('menu.counter_name') </b> <span class="text-danger">*</span></label>
-                                <input type="text" name="counter_name" class="form-control" id="counter_name"
-                                    placeholder="@lang('menu.counter_name')"/>
-                                <span class="error error_counter_name"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12">
-                                <label for=""><b>@lang('menu.short_name') </b> <span class="text-danger">*</span></label>
-                                <input type="text" name="short_name" class="form-control" id="short_name" placeholder="@lang('menu.short_name')">
-                                <span class="error error_short_name"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="modal fade" id="cashCounterAddOrEditModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ _('Edit Cash Counter') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="edit_modal_body">
-                    <!--begin::Form-->
-
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 @push('scripts')
     <script>
-        var table = $('.data_tbl').DataTable({
+        var cashCounterTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
@@ -147,82 +89,79 @@
 
         // call jquery method
         $(document).ready(function() {
-            // Add category by ajax
-            $(document).on('submit', '#add_cash_counter_form', function(e) {
+
+            $(document).on('click', '#addBtn', function(e) {
                 e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                $('.submit_button').prop('type', 'button');
-                var request = $(this).serialize();
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: request,
-                    success: function(data) {
-                        $('.error').html('');
-                        $('.loading_button').hide();
-                        $('.submit_button').prop('type', 'submit');
-                        if (!$.isEmptyObject(data.errorMsg)) {
-                            toastr.error(data.errorMsg);
-                            return;
-                        }
 
-                        $('#addModal').modal('hide');
-                        toastr.success(data);
-                        $('#add_cash_counter_form')[0].reset();
-                        table.ajax.reload();
-                    },
-                    error: function(err) {
-
-                        $('.loading_button').hide();
-                        $('.error').html('');
-
-                        $.each(err.responseJSON.errors, function(key, error) {
-
-                            $('.error_' + key + '').html(error[0]);
-                        });
-
-                        $('.submit_button').prop('type', 'submit');
-                    }
-                });
-            });
-
-            // pass editable data to edit modal fields
-            $(document).on('click', '#edit', function(e) {
-                e.preventDefault();
                 var url = $(this).attr('href');
+
                 $.ajax({
                     url: url,
                     type: 'get',
+                    cache: false,
+                    async: false,
                     success: function(data) {
-                        $('#edit_modal_body').html(data);
-                        $('#editModal').modal('show');
+
+                        $('#cashCounterAddOrEditModal .modal-dialog').remove();
+                        $('#cashCounterAddOrEditModal').html(data);
+                        $('#cashCounterAddOrEditModal').modal('show');
+
+                        setTimeout(function() {
+
+                            $('#cash_counter_name').focus();
+                        }, 500);
+
+                        $('.data_preloader').hide();
+
+                    },
+                    error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                        } else {
+
+                            toastr.error('Server Error. Please contact to the support team.');
+                        }
                     }
                 });
             });
 
-            // edit Cash counter by ajax
-            $(document).on('submit', '#edit_cash_counter_form', function(e) {
+            $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
+
+                var url = $(this).attr('href');
+
                 $.ajax({
                     url: url,
-                    type: 'post',
-                    data: request,
+                    type: 'get',
+                    cache: false,
+                    async: false,
                     success: function(data) {
-                        toastr.success(data);
-                        $('.loading_button').hide();
-                        table.ajax.reload();
-                        $('#editModal').modal('hide');
+
+                        $('#cashCounterAddOrEditModal .modal-dialog').remove();
+                        $('#cashCounterAddOrEditModal').html(data);
+                        $('#cashCounterAddOrEditModal').modal('show');
+
+                        setTimeout(function() {
+
+                            $('#cash_counter_name').focus().select();
+                        }, 500);
+
+                        $('.data_preloader').hide();
+
                     },
                     error: function(err) {
-                        $('.loading_button').hide();
-                        $('.error').html('');
-                        $.each(err.responseJSON.errors, function(key, error) {
-                            $('.error_e_' + key + '').html(error[0]);
-                        });
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                        } else {
+
+                            toastr.error('Server Error. Please contact to the support team.');
+                        }
                     }
                 });
             });
@@ -263,7 +202,7 @@
                     data: request,
                     success: function(data) {
                         toastr.error(data);
-                        table.ajax.reload();
+                        cashCounterTable.ajax.reload();
                         $('#deleted_form')[0].reset();
                     }
                 });

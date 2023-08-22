@@ -12,12 +12,22 @@
                         <label> <b>{{ __("Shop Type") }}</b></label>
                         <select name="shop_type" class="form-control" id="shop_type">
                             <option value="1">{{ __("Different Shop") }}</option>
-                            <option value="0">{{ __("Chain Shop") }}</option>
+                            <option value="2">{{ __("Chain Shop") }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 parent_branches d-hide">
+                        <label> <b>{{ __("Parent Shop") }}</b> <span class="text-danger">*</span></label>
+                        <select name="parent_branch_id" class="form-control" id="parent_branch_id">
+                            <option value="">{{ __('Select Parent Shop') }}</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row mt-1">
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Shop Name") }} </b> <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" id="name" placeholder="{{ __("Shop Name") }}" />
@@ -234,6 +244,21 @@
         } else {
 
             $('#add_opening_user').val('')
+        }
+    });
+
+    $('#shop_type').on('click', function() {
+
+        $('.parent_branches').hide();
+
+        if ($(this).val() == 2) {
+
+            $('.parent_branches').show();
+            $('#parent_branch_id').prop('required', true);
+        } else {
+
+            $('.parent_branches').hide();
+            $('#parent_branch_id').prop('required', false);
         }
     });
 </script>

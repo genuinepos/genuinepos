@@ -83,12 +83,12 @@ class CashCounterService
         return ['pass' => true];
     }
 
-    public function addCashCounter(object $request): object
+    public function addCashCounter(int $branchId, string $cashCounterName, string $shortName): object
     {
         return CashCounter::create([
-            'branch_id' => auth()->user()->branch_id,
-            'counter_name' => $request->counter_name,
-            'short_name' => $request->short_name,
+            'branch_id' => $branchId,
+            'counter_name' => $cashCounterName,
+            'short_name' => $shortName,
         ]);
     }
 

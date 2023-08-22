@@ -1,11 +1,33 @@
 <?php
 
 use App\Http\Controllers\Setups\BranchController;
+use App\Http\Controllers\Setups\WarehouseController;
+use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\PaymentMethodSettingsController;
+use App\Http\Controllers\Setups\GeneralSettingController;
 
 Route::prefix('setups')->group(function () {
+
+    Route::controller(GeneralSettingController::class)->prefix('general-settings')->group(function () {
+
+        Route::get('/', 'index')->name('settings.general.index');
+        Route::post('business/settings', 'businessSettings')->name('settings.business.settings');
+        Route::post('tax/settings', 'taxSettings')->name('settings.tax.settings');
+        Route::post('product/settings', 'productSettings')->name('settings.product.settings');
+        Route::post('contact/settings', 'contactSettings')->name('settings.contact.settings');
+        Route::post('sale/settings', 'saleSettings')->name('settings.sale.settings');
+        Route::post('pos/settings', 'posSettings')->name('settings.pos.settings');
+        Route::post('purchase/settings', 'purchaseSettings')->name('settings.purchase.settings');
+        Route::post('dashboard/settings', 'dashboardSettings')->name('settings.dashboard.settings');
+        Route::post('prefix/settings', 'prefixSettings')->name('settings.prefix.settings');
+        Route::post('system/settings', 'systemSettings')->name('settings.system.settings');
+        Route::post('module/settings', 'moduleSettings')->name('settings.module.settings');
+        Route::post('send/email/sms/settings', 'SendEmailSmsSettings')->name('settings.send.email.sms.settings');
+        Route::post('sms/settings', 'smsSettings')->name('settings.sms.settings');
+        Route::post('rp/settings', 'rewardPointSettings')->name('settings.reward.point.settings');
+    });
 
     Route::controller(BranchController::class)->prefix('branches')->group(function () {
 
@@ -15,6 +37,16 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('branches.edit');
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
+    });
+
+    Route::controller(WarehouseController::class)->prefix('warehouses')->group(function () {
+
+        Route::get('/', 'index')->name('warehouses.index');
+        Route::get('create', 'create')->name('warehouses.create');
+        Route::post('store', 'store')->name('warehouses.store');
+        Route::get('edit/{id}', 'edit')->name('warehouses.edit');
+        Route::post('update/{id}', 'update')->name('warehouses.update');
+        Route::delete('delete/{warehouseId}', 'delete')->name('warehouses.delete');
     });
 
     Route::group(['prefix' => 'invoices'], function () {
@@ -50,6 +82,7 @@ Route::prefix('setups')->group(function () {
     Route::controller(CashCounterController::class)->prefix('cash_counter')->group(function () {
 
         Route::get('/', 'index')->name('cash.counters.index');
+        Route::get('create', 'create')->name('cash.counters.create');
         Route::post('store', 'store')->name('cash.counters.store');
         Route::get('edit/{id}', 'edit')->name('cash.counters.edit');
         Route::post('update/{id}', 'update')->name('cash.counters.update');

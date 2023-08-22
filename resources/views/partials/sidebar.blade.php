@@ -1080,12 +1080,9 @@
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('add_sale_settings') &&
-                                        auth()->user()->can('add_sale_settings')
-                                    )
+                                    @if (auth()->user()->can('add_sale_settings'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('sales.add.sale.settings') }}" class="switch-bar-wrap settings-wrap">
+                                            <a href="{{ route('add.sales.settings.edit') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-sliders-h"></i></span>
@@ -1129,12 +1126,9 @@
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('pos_sale_settings') &&
-                                        auth()->user()->can('pos_sale_settings')
-                                    )
+                                    @if (auth()->user()->can('pos_sale_settings'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('sales.pos.settings') }}" class="switch-bar-wrap settings-wrap">
+                                            <a href="{{ route('pos.sales.settings.edit') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-sliders-h"></i></span>
@@ -2254,7 +2248,7 @@
 
                                 @if (auth()->user()->can('warehouse'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.warehouses.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('warehouses.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-warehouse"></i></span>

@@ -1,42 +1,42 @@
 <div class="modal-dialog double-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Warehouse') }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Warehouse') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            <form id="edit_warehouse_form" action="{{ route('warehouses.update', $warehouse->id) }}" method="POST">
+            <form id="add_warehouse_form" action="{{ route('warehouses.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label><b>{{ __("Warehouse Name") }}</b> <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" id="warehouse_name" data-next="warehouse_code" value="{{ $warehouse->warehouse_name }}" placeholder="{{ __("Warehouse Name") }}"/>
+                    <input type="text" name="name" class="form-control" id="warehouse_name" data-next="warehouse_code" placeholder="{{ __("Warehouse Name") }}"/>
                     <span class="error error_warehouse_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
                     <label><b>{{ __("Warehouse Code") }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
-                    <input type="text" name="code" class="form-control" id="warehouse_code" data-next="warehouse_phone" value="{{ $warehouse->warehouse_code }}" placeholder="{{ __("Warehouse Code") }}"/>
+                    <input type="text" name="code" class="form-control" id="warehouse_code" data-next="warehouse_phone" placeholder="{{ __("Warehouse Code") }}"/>
                     <span class="error error_warehouse_code"></span>
                 </div>
 
                 <div class="form-group mt-1">
                     <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
-                    <input type="text" name="phone" class="form-control" id="warehouse_phone" data-next="warehouse_address" value="{{ $warehouse->phone }}" placeholder="{{ __("Phone No") }}"/>
+                    <input type="text" name="phone" class="form-control" id="warehouse_phone" data-next="warehouse_address" placeholder="{{ __("Phone No") }}"/>
                     <span class="error error_warehouse_phone"></span>
                 </div>
 
                 <div class="form-group mt-1">
                     <label><b>{{ __("Address") }}</b> </label>
-                    <input name="address" class="form-control" id="warehouse_address" data-next="is_global" value="{{ $warehouse->address }}" placeholder="{{ __("Warehouse address") }}">
+                    <input name="address" class="form-control" id="warehouse_address" data-next="is_global" placeholder="Warehouse address">
                 </div>
 
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
                     <div class="form-group mt-1">
                         <label><b>{{ __("Is Global Warehouse") }}</b> </label>
-                        <select name="is_global" class="form-control" id="is_global" data-next="warehouse_save_changes">
+                        <select name="is_global" class="form-control" id="is_global" data-next="warehouse_save">
                             <option value="0">{{ __("No") }}</option>
-                            <option {{ $warehouse->is_global == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
+                            <option value="1">{{ __("Yes") }}</option>
                         </select>
                     </div>
                 @endif
@@ -46,7 +46,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button warehouse_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="warehouse_save_changes" class="btn btn-sm btn-success warehouse_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="submit" id="warehouse_save" class="btn btn-sm btn-success warehouse_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -74,19 +74,27 @@
         }
     });
 
-    $('#edit_warehouse_form').on('submit', function(e) {
+    $('#add_warehouse_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.warehouse_loading_btn').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
+        isAjaxIn = false;
+        isAllowSubmit = false;
+
         $.ajax({
+            beforeSend: function() {
+                isAjaxIn = true;
+            },
             url: url,
             type: 'post',
             data: request,
             success: function(data) {
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.warehouse_loading_btn').hide();
 
                 if(!$.isEmptyObject(data.errorMsg)) {
@@ -97,11 +105,13 @@
 
                 $('#warehouseAddOrEditModal').modal('hide');
                 $('#warehouseAddOrEditModal').empty();
-                toastr.success(data);
+                toastr.success("{{ __('Warehouse is created successfully') }}");
                 warehouseTable.ajax.reload();
             },
             error: function(err) {
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.warehouse_loading_btn').hide();
                 $('.error').html('');
 
@@ -125,6 +135,11 @@
                 });
             }
         });
+
+        if (isAjaxIn == false) {
+
+            isAllowSubmit = true;
+        }
     });
 
     $(document).on('change keypress', 'input', function(e) {

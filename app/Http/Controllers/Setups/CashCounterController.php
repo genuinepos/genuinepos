@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Models\CashCounter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\CashCounterService;
 
 class CashCounterController extends Controller
 {
+    public function __construct(private CashCounterService $cashCounterService, private BranchService $branchService)
+    {
+    }
+
     public function index(Request $request)
     {
         if (!auth()->user()->can('cash_counters')) {
@@ -19,76 +24,106 @@ class CashCounterController extends Controller
 
         if ($request->ajax()) {
 
-            
+            return $this->cashCounterService->cashCounterListTable($request);
         }
 
-        return view('setups.cash_counter.index');
+        $branches = $this->branchService->branches()->get();
+
+        return view('setups.cash_counter.index', compact('branches'));
+    }
+
+    public function create()
+    {
+        if (!auth()->user()->can('cash_counters')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        return view('setups.cash_counter.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        $generalSettings = config('generalSettings');
-        $cash_counter_limit = $generalSettings['addons__cash_counter_limit'];
-
-        $cash_counters = DB::table('cash_counters')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->count();
-
-        if ($cash_counter_limit <= $cash_counters) {
-
-            return response()->json(['errorMsg' => "Cash counter limit is ${cash_counter_limit}"]);
-        }
-
         $this->validate($request, [
-            // 'counter_name' => 'required|unique:cash_counters,counter_name',
             'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
                 return $query->where('branch_id', auth()->user()->branch_id);
             })],
-            // 'short_name' => 'required|unique:cash_counters,short_name',
             'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
                 return $query->where('branch_id', auth()->user()->branch_id);
             })],
         ]);
 
-        CashCounter::insert([
-            'branch_id' => auth()->user()->branch_id,
-            'counter_name' => $request->counter_name,
-            'short_name' => $request->short_name,
-        ]);
+        try {
 
-        return response()->json('Cash counter created Successfully.');
+            DB::beginTransaction();
+
+            $generalSettings = config('generalSettings');
+
+            $restriction = $this->cashCounterService->restriction($generalSettings);
+
+            if ($restriction['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restriction['msg']]);
+            }
+
+            $addCashCounter = $this->cashCounterService->addCashCounter($request);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return $addCashCounter;
     }
 
     public function edit($id)
     {
-        $cc = DB::table('cash_counters')->where('id', $id)->orderBy('id', 'DESC')->first(['id', 'counter_name', 'short_name']);
+        $cashCounter = $this->cashCounterService->singleCashCounter(id: $id);
 
-        return view('settings.cash_counter.ajax_view.edit_cash_counter', compact('cc'));
+        return view('setups.cash_counter.ajax_view.edit', compact('cashCounter'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'counter_name' => 'required|unique:cash_counters,counter_name,' . $id,
-            'short_name' => 'required|unique:cash_counters,short_name,' . $id,
+            'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) use ($id) {
+                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
+            })],
+            'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) use ($id) {
+                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
+            })],
         ]);
 
-        $updateCC = CashCounter::where('id', $id)->first();
-        $updateCC->update([
-            'counter_name' => $request->counter_name,
-            'short_name' => $request->short_name,
-        ]);
+        try {
 
-        return response()->json('Cash counter updated Successfully.');
+            DB::beginTransaction();
+
+            $this->cashCounterService->updateCashCounter(id: $id, request: $request);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Cash counter updated Successfully.'));
     }
 
     public function delete(Request $request, $id)
     {
-        $delete = CashCounter::find($id);
-        if (!is_null($delete)) {
-            $delete->delete();
+        try {
+
+            DB::beginTransaction();
+
+            $this->cashCounterService->deleteCashCounter($id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        return response()->json('Cash counter deleted Successfully.');
+        return response()->json(__('Cash counter deleted Successfully.'));
     }
 }

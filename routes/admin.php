@@ -23,7 +23,6 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ExpanseCategoryController;
 use App\Http\Controllers\ExpanseController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\GeneralSettingController;
 use App\Http\Controllers\ImportPriceGroupProductController;
 use App\Http\Controllers\InvoiceSchemaController;
 use App\Http\Controllers\LoanCompanyController;
@@ -511,9 +510,6 @@ Route::group(['prefix' => 'sales'], function () {
 
     Route::get('notification/form/{saleId}', [SaleController::class, 'getNotificationForm'])->name('sales.notification.form');
 
-    Route::get('settings', [SaleController::class, 'settings'])->name('sales.add.sale.settings');
-    Route::post('settings/store', [SaleController::class, 'settingsStore'])->name('sales.add.sale.settings.store');
-
     // Sale return route
     Route::group(['prefix' => 'returns'], function () {
 
@@ -562,8 +558,6 @@ Route::group(['prefix' => 'sales'], function () {
         Route::get('search/exchangeable/invoice', [POSController::class, 'searchExchangeableInv'])->name('sales.pos.search.exchange.invoice');
         Route::post('prepare/exchange', [POSController::class, 'prepareExchange'])->name('sales.pos.prepare.exchange');
         Route::post('exchange/confirm', [POSController::class, 'exchangeConfirm'])->name('sales.pos.exchange.confirm');
-        Route::get('settings', [POSController::class, 'settings'])->name('sales.pos.settings');
-        Route::post('settings/store', [POSController::class, 'settingsStore'])->name('sales.pos.settings.store');
     });
 
     //Sale discount routes
@@ -904,15 +898,6 @@ Route::group(['prefix' => 'accounting'], function () {
 
 Route::group(['prefix' => 'settings'], function () {
 
-    Route::group(['prefix' => 'warehouses'], function () {
-
-        Route::get('/', [WarehouseController::class, 'index'])->name('settings.warehouses.index');
-        Route::post('store', [WarehouseController::class, 'store'])->name('settings.warehouses.store');
-        Route::get('edit/{id}', [WarehouseController::class, 'edit'])->name('settings.warehouses.edit');
-        Route::post('update/{id}', [WarehouseController::class, 'update'])->name('settings.warehouses.update');
-        Route::delete('delete/{warehouseId}', [WarehouseController::class, 'delete'])->name('settings.warehouses.delete');
-    });
-
     Route::group(['prefix' => 'taxes'], function () {
 
         Route::get('/', [TaxController::class, 'index'])->name('settings.taxes.index');
@@ -920,25 +905,6 @@ Route::group(['prefix' => 'settings'], function () {
         Route::post('store', [TaxController::class, 'store'])->name('settings.taxes.store');
         Route::post('update', [TaxController::class, 'update'])->name('settings.taxes.update');
         Route::delete('delete/{taxId}', [TaxController::class, 'delete'])->name('settings.taxes.delete');
-    });
-
-    Route::group(['prefix' => 'general_settings'], function () {
-
-        Route::get('/', [GeneralSettingController::class, 'index'])->name('settings.general.index');
-        Route::post('business/settings', [GeneralSettingController::class, 'businessSettings'])->name('settings.business.settings');
-        Route::post('tax/settings', [GeneralSettingController::class, 'taxSettings'])->name('settings.tax.settings');
-        Route::post('product/settings', [GeneralSettingController::class, 'productSettings'])->name('settings.product.settings');
-        Route::post('contact/settings', [GeneralSettingController::class, 'contactSettings'])->name('settings.contact.settings');
-        Route::post('sale/settings', [GeneralSettingController::class, 'saleSettings'])->name('settings.sale.settings');
-        Route::post('pos/settings', [GeneralSettingController::class, 'posSettings'])->name('settings.pos.settings');
-        Route::post('purchase/settings', [GeneralSettingController::class, 'purchaseSettings'])->name('settings.purchase.settings');
-        Route::post('dashboard/settings', [GeneralSettingController::class, 'dashboardSettings'])->name('settings.dashboard.settings');
-        Route::post('prefix/settings', [GeneralSettingController::class, 'prefixSettings'])->name('settings.prefix.settings');
-        Route::post('system/settings', [GeneralSettingController::class, 'systemSettings'])->name('settings.system.settings');
-        Route::post('module/settings', [GeneralSettingController::class, 'moduleSettings'])->name('settings.module.settings');
-        Route::post('send/email/sms/settings', [GeneralSettingController::class, 'SendEmailSmsSettings'])->name('settings.send.email.sms.settings');
-        Route::post('sms/settings', [GeneralSettingController::class, 'smsSettings'])->name('settings.sms.settings');
-        Route::post('rp/settings', [GeneralSettingController::class, 'rewardPointSettings'])->name('settings.reward.point.settings');
     });
 
     Route::group(['prefix' => 'barcode_settings'], function () {

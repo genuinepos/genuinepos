@@ -1,16 +1,15 @@
 <div class="modal-dialog double-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Cash Counter') }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Cash Counter') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            <!--begin::Form-->
-            <form id="add_cash_counter_form" action="{{ route('cash.counters.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="edit_cash_counter_form" action="{{ route('cash.counters.update', $cashCounter->id) }}" method="POST">
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="counter_name" class="form-control" id="cash_counter_name" data-next="short_name" placeholder="{{ __("Counter Name") }}"/>
+                        <input required type="text" name="counter_name" class="form-control" id="cash_counter_name" value="{{ $cashCounter->counter_name }}" data-next="short_name" placeholder="{{ __("Counter Name") }}"/>
                         <span class="error error_cash_counter_counter_name"></span>
                     </div>
                 </div>
@@ -18,7 +17,7 @@
                 <div class="form-group row mt-2">
                     <div class="col-md-12">
                         <label for=""><b>{{ __("Short Name") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="short_name" class="form-control" id="short_name" data-next="cash_counter_save" placeholder="{{ __("Cash Counter Short Name") }}">
+                        <input required type="text" name="short_name" class="form-control" id="short_name" value="{{ $cashCounter->short_name }}" data-next="cash_counter_save_changes" placeholder="{{ __("Cash Counter Short Name") }}">
                         <span class="error error_cash_counter_short_name"></span>
                     </div>
                 </div>
@@ -28,7 +27,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button cash_counter_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="cash_counter_save" class="btn btn-sm btn-success cash_counter_submit_button">{{ __("Save") }}</button>
+                            <button type="submit" id="cash_counter_save_changes" class="btn btn-sm btn-success cash_counter_submit_button">{{ __("Save Changes") }}</button>
                         </div>
                     </div>
                 </div>
@@ -56,35 +55,20 @@
         }
     });
 
-    $('#add_cash_counter_form').on('submit', function(e) {
+    $('#edit_cash_counter_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.cash_counter_loading_btn').show();
         var url = $(this).attr('action');
         var request = $(this).serialize();
 
-        isAjaxIn = false;
-        isAllowSubmit = false;
-
         $.ajax({
-            beforeSend: function() {
-                isAjaxIn = true;
-            },
             url: url,
             type: 'post',
             data: request,
             success: function(data) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.cash_counter_loading_btn').hide();
-
-                if(!$.isEmptyObject(data.errorMsg)) {
-
-                    toastr.error(data.errorMsg);
-                    return;
-                }
-
                 $('#cashCounterAddOrEditModal').modal('hide');
                 $('#cashCounterAddOrEditModal').empty();
                 toastr.success("{{ __('Cash counter is created successfully') }}");
@@ -92,8 +76,6 @@
             },
             error: function(err) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.cash_counter_loading_btn').hide();
                 $('.error').html('');
 
@@ -117,11 +99,6 @@
                 });
             }
         });
-
-        if (isAjaxIn == false) {
-
-            isAllowSubmit = true;
-        }
     });
 
     $(document).on('change keypress', 'input', function(e) {
@@ -136,3 +113,4 @@
         }
     });
 </script>
+

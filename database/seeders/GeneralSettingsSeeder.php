@@ -81,7 +81,7 @@ class GeneralSettingsSeeder extends Seeder
             ['id' => '68', 'key' => 'product__is_enable_warranty', 'value' => '1', 'branch_id' => null],
             ['id' => '69', 'key' => 'sale__default_sale_discount', 'value' => '0.00', 'branch_id' => null],
             ['id' => '70', 'key' => 'sale__default_tax_id', 'value' => 'null', 'branch_id' => null],
-            ['id' => '71', 'key' => 'sale__sales_cmsn_agnt', 'value' => 'select_form_cmsn_list', 'branch_id' => null],
+            ['id' => '71', 'key' => 'sale__sales_commission', 'value' => 'disable', 'branch_id' => null],
             ['id' => '72', 'key' => 'sale__default_price_group_id', 'value' => '7', 'branch_id' => null],
             ['id' => '73', 'key' => 'pos__is_disable_draft', 'value' => '0', 'branch_id' => null],
             ['id' => '74', 'key' => 'pos__is_disable_quotation', 'value' => '0', 'branch_id' => null],

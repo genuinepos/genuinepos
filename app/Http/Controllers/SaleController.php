@@ -1864,35 +1864,4 @@ class SaleController extends Controller
     public function getNotificationForm($saleId)
     {
     }
-
-    // Get notification form method
-    public function settings()
-    {
-        if (! auth()->user()->can('add_sale_settings')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
-        $price_groups = DB::table('price_groups')->where('status', 'Active')->get();
-
-        return view('sales.settings.index', compact('taxes', 'price_groups'));
-    }
-
-    // Add tax settings
-    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
-    {
-        if (! auth()->user()->can('add_sale_settings')) {
-            return response()->json('Asses Forbidden.');
-        }
-        $settings = [
-            'sale__default_sale_discount' => $request->default_sale_discount,
-            'sale__default_tax_id' => $request->default_tax_id,
-            'sale__sales_commission_agent' => $request->sales_cmsn_agnt,
-            'sale__default_price_group_id' => $request->default_price_group_id,
-        ];
-        $generalSettingService->updateAndSync($settings);
-
-        return response()->json('Sale settings updated successfully');
-    }
 }

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setups;
 
-use App\Models\Currency;
 use App\Models\Unit;
-use App\Services\GeneralSettingServiceInterface;
 use App\Utils\TimeZone;
+use App\Models\Currency;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\GeneralSettingServiceInterface;
 
 class GeneralSettingController extends Controller
 {
@@ -17,7 +18,7 @@ class GeneralSettingController extends Controller
 
     public function index()
     {
-        if (! auth()->user()->can('g_settings')) {
+        if (!auth()->user()->can('g_settings')) {
             abort(403, 'Access Forbidden.');
         }
         $generalSettings = config('generalSettings');
@@ -42,13 +43,13 @@ class GeneralSettingController extends Controller
 
                 $bLogo = $generalSettings['business__business_logo'];
 
-                if (file_exists(public_path('uploads/business_logo/'.$bLogo))) {
+                if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
 
-                    unlink(public_path('uploads/business_logo/'.$bLogo));
+                    unlink(public_path('uploads/business_logo/' . $bLogo));
                 }
             }
             $logo = $request->file('business_logo');
-            $logoName = uniqid().'-'.'.'.$logo->getClientOriginalExtension();
+            $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {

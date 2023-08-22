@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Setups;
+
+use App\Models\BaseModel;
 
 class CashCounter extends BaseModel
 {

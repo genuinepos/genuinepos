@@ -5,7 +5,7 @@ use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
-use App\Http\Controllers\PaymentMethodSettingsController;
+use App\Http\Controllers\Setups\PaymentMethodSettingsController;
 use App\Http\Controllers\Setups\GeneralSettingController;
 
 Route::prefix('setups')->group(function () {

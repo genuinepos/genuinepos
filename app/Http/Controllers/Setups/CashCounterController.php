@@ -66,7 +66,7 @@ class CashCounterController extends Controller
                 return response()->json(['errorMsg' => $restriction['msg']]);
             }
 
-            $addCashCounter = $this->cashCounterService->addCashCounter($request);
+            $addCashCounter = $this->cashCounterService->addCashCounter(branchId: auth()->user()->branch_id, cashCounterName: $request->counter_name, shortName: $request->short_name);
 
             DB::commit();
         } catch (Exception $e) {

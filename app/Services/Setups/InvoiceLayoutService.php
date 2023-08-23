@@ -50,20 +50,20 @@ class InvoiceLayoutService
             ->make(true);
     }
 
-    public function addInvoiceLayout(object $request): void
+    public function addInvoiceLayout(object $request, $branchId = null, $defaultName = null): object
     {
         $addLayout = new InvoiceLayout();
-        $addLayout->branch_id = auth()->user()->branch_id;
-        $addLayout->name = isset($request->name) ? $request->name : 'Invoice Layout';
+        $addLayout->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
+        $addLayout->name = $defaultName ? $defaultName : $request->name;
         $addLayout->layout_design = $request->design ? $request->design : 1;
-        $addLayout->show_shop_logo = $request->show_shop_logo;
-        $addLayout->show_total_in_word = $request->show_total_in_word;
+        $addLayout->show_shop_logo = $request->show_shop_logo ? $request->show_shop_logo : 1;
+        $addLayout->show_total_in_word = $request->show_total_in_word ? $request->show_total_in_word : 1;
         $addLayout->is_header_less = $request->is_header_less ? $request->is_header_less : 0;
         $addLayout->gap_from_top = $request->is_header_less == 1 ? $request->gap_from_top : null;
-        $addLayout->header_text = $request->header_text;
-        $addLayout->sub_heading_1 = $request->sub_heading_1;
-        $addLayout->sub_heading_2 = $request->sub_heading_2;
-        $addLayout->sub_heading_3 = $request->sub_heading_3;
+        $addLayout->header_text = $request->header_text ? $request->header_text : '';
+        $addLayout->sub_heading_1 = $request->sub_heading_1 ? $request->sub_heading_1 : '';
+        $addLayout->sub_heading_2 = $request->sub_heading_2 ? $request->sub_heading_2 : '';
+        $addLayout->sub_heading_3 = $request->sub_heading_3 ? $request->sub_heading_3 : '';
         $addLayout->invoice_heading = isset($request->invoice_heading) ? $request->invoice_heading : 'Invoice';
         $addLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $addLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
@@ -99,6 +99,8 @@ class InvoiceLayoutService
             $defaultLayouts->is_default = 1;
             $defaultLayouts->save();
         }
+
+        return $addLayout;
     }
 
     function updateInvoiceLayout(int $id, object $request): void

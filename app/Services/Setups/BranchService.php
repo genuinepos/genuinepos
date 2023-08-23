@@ -7,7 +7,7 @@ use App\Models\Branch;
 
 class BranchService
 {
-    public function addBranch($request)
+    public function addBranch($request) : object
     {
         $addBranch = new Branch();
         $addBranch->name = $request->name;
@@ -116,5 +116,38 @@ class BranchService
         }
 
         return $query;
+    }
+
+
+    public function singleCashCounter(int $id, array $with = null)
+    {
+        $query = Branch::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
+    }
+
+    public function addBranchOpeningUser($request, $branchId)
+    {
+        $addUser = new User();
+        $addUser->name = $request->first_name;
+        $addUser->last_name = $request->last_name;
+        $addUser->phone = $request->user_phone;
+
+        $addUser->allow_login = 1;
+        $addUser->username = $request->username;
+        $addUser->password = Hash::make($request->password);
+
+        $addUser->role_type = 3;
+        $addUser->is_belonging_an_area = 1;
+        // Assign role
+
+        $addUser->branch_id = $branch_id;
+
+        $addUser->save();
     }
 }

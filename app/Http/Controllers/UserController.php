@@ -169,6 +169,7 @@ class UserController extends Controller
         $addUser->status = 1;
 
         if (isset($request->allow_login)) {
+
             $addUser->allow_login = 1;
             $addUser->username = $request->username;
             $addUser->password = Hash::make($request->password);
@@ -176,18 +177,22 @@ class UserController extends Controller
             $role = Role::find($roleId);
 
             if ($role->name == 'superadmin') {
+
                 $addUser->role_type = 1;
                 $addUser->assignRole($role->name);
             } elseif ($role->name == 'admin') {
+
                 $addUser->role_type = 2;
                 $addUser->assignRole($role->name);
                 // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
+                
                 $addUser->branch_id = $request->branch_id == 'head_office' ? null : $request->branch_id;
                 $addUser->role_type = 3;
                 $addUser->assignRole($role->name);
             }
         } else {
+
             $addUser->allow_login = 0;
             $addUser->branch_id = $request->belonging_branch_id == 'head_office' ? null : $request->belonging_branch_id;
         }

@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Http\Controllers\Controller;
 use App\Models\Branch;
-use App\Services\Setups\BranchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\CashCounterService;
+use App\Services\Setups\InvoiceLayoutService;
 
 class BranchController extends Controller
 {
     public function __construct(
-        private BranchService $branchService
+        private BranchService $branchService,
+        private InvoiceLayoutService $invoiceLayoutService,
+        private CashCounterService $cashCounterService
     ) {
     }
 
@@ -46,7 +50,7 @@ class BranchController extends Controller
     public function create()
     {
         $roles = DB::table('roles')->select('id', 'name')->get();
-        $branches = $this->branchService->branches()->get();
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
         return view('setups.branches.ajax_view.create', compact('branches', 'roles'));
     }
@@ -54,12 +58,10 @@ class BranchController extends Controller
     public function store(Request $request)
     {
         $generalSettings = config('generalSettings');
-
-        $branch_limit = $generalSettings['addons__branch_limit'];
-
+        $branchLimit = $generalSettings['addons__branch_limit'];
         $branchCount = DB::table('branches')->count();
 
-        if ($branch_limit <= $branchCount) {
+        if ($branchLimit <= $branchCount) {
 
             return response()->json(['errorMsg' => "Shop limit is ${branch_limit}"]);
         }
@@ -91,12 +93,14 @@ class BranchController extends Controller
 
         $this->branchService->addBranchDefaultAccounts($addBranch->id);
 
-        // $this->branchUtil->addBranchDefaultCashCounter($addBranchGetId);
+        $this->cashCounterService->addCashCounter(branchId: $addBranch->id, cashCounterName: 'Cash Counter 1', shortName: 'CN1');
 
-        // if ($request->add_opening_user) {
+        $addInvoiceLayout = $this->invoiceLayoutService->addInvoiceLayout(request: $request, branchId: $addBranch->id, defaultName: 'Default Invoice Layout');
 
-        //     $this->branchUtil->addBranchOpeningUser($request, $addBranchGetId);
-        // }
+        if ($request->add_opening_user) {
+
+            $this->branchUtil->addBranchOpeningUser($request, $addBranch->id);
+        }
 
         return response()->json('Shop created successfully');
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
+use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\PaymentMethodSettingsController;
@@ -37,6 +38,12 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('branches.edit');
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
+
+        Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
+
+            Route::get('edit/{branchId}', 'edit')->name('branches.settings.edit');
+            Route::post('update/{branchId}', 'update')->name('branches.settings.update');
+        });
     });
 
     Route::controller(WarehouseController::class)->prefix('warehouses')->group(function () {

@@ -2,16 +2,86 @@
 
 namespace App\Services\Setups;
 
-use App\Models\Accounts\AccountGroup;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Branch;
+use App\Models\Account;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Accounts\AccountGroup;
+use Yajra\DataTables\Facades\DataTables;
 
 class BranchService
 {
-    public function addBranch($request) : object
+    public function branchListTable()
+    {
+        $generalSettings = config('generalSettings');
+        $logoUrl = asset('uploads/branch_logo');
+        $branches = '';
+        $query = DB::table('branches')->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+
+        $branches = $query->select(
+            'branches.id',
+            'branches.branch_type',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'branches.phone',
+            'branches.logo',
+            'branches.city',
+            'branches.state',
+            'branches.zip_code',
+            'branches.country',
+            'parentBranch.name as parent_branch_name',
+        )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        return DataTables::of($branches)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+
+                $html = '<div class="btn-group" role="group">';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                $html .= '<a class="dropdown-item" id="edit" href="' . route('branches.edit', [$row->id]) . '">' . __("Edit") . '</a>';
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('branches.delete', [$row->id]) . '">' . __("Delete") . '</a>';
+                $html .= '<a class="dropdown-item" id="branchSettings" href="' . route('branches.settings.edit', [$row->id]) . '">' . __("Shop Settings") . '</a>';
+                $html .= '</div>';
+                $html .= '</div>';
+
+                return $html;
+            })
+            ->editColumn('branchName', function ($row) {
+
+                if ($row->branch_type == 1) {
+
+                    return $row->branch_name;
+                } else {
+
+                    return '<span class="fas fa-long-arrow-alt-right text-success" style="font-size:15px;"></span> ' . __("Chain Shop Of") . ' <span class="badge badge p-1 bg-success">' . $row->parent_branch_name . '</span>';
+                }
+            })
+
+            ->editColumn('logo', function ($row) use ($logoUrl) {
+
+                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $logoUrl . '/' . $row->logo . '">';
+            })
+
+            ->editColumn('address', function ($row) {
+
+                return $row->city . ', ' . $row->state . ', ' . $row->zip_code . ', ' . $row->country;
+            })
+
+            ->rawColumns(['branchName', 'shopLogo', 'logo', 'address', 'action'])
+            ->make(true);
+    }
+
+
+    public function addBranch($request): object
     {
         $addBranch = new Branch();
-        $addBranch->name = $request->name;
-        $addBranch->branch_code = $request->code;
+        $addBranch->name = $request->branch_type;
+        $addBranch->name = $request->branch_type == 1 ? $request->name : null;
+        $addBranch->parent_branch_id = $request->branch_type == 2 ? $request->parent_branch_id : null;
+        $addBranch->branch_code = $request->branch_code;
         $addBranch->phone = $request->phone;
         $addBranch->city = $request->city;
         $addBranch->state = $request->state;
@@ -26,13 +96,78 @@ class BranchService
         if ($request->hasFile('logo')) {
 
             $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid().'-'.'.'.$branchLogo->getClientOriginalExtension();
+            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
 
             $addBranch->logo = $branchLogoName;
         }
 
         $addBranch->save();
+
+        return $addBranch;
+    }
+
+    public function updateBranch(int $id, object $request): void
+    {
+        $updateBranch = $this->singleBranch($id);
+        $updateBranch->name = $request->branch_type;
+        $updateBranch->name = $request->branch_type == 1 ? $request->name : null;
+        $updateBranch->parent_branch_id = $request->branch_type == 2 ? $request->parent_branch_id : null;
+        $updateBranch->branch_code = $request->branch_code;
+        $updateBranch->phone = $request->phone;
+        $updateBranch->city = $request->city;
+        $updateBranch->state = $request->state;
+        $updateBranch->zip_code = $request->zip_code;
+        $updateBranch->country = $request->country;
+        $updateBranch->alternate_phone_number = $request->alternate_phone_number;
+        $updateBranch->email = $request->email;
+        $updateBranch->website = $request->website;
+        $updateBranch->purchase_permission = $request->purchase_permission;
+
+        if ($request->hasFile('logo')) {
+
+            if ($updateBranch->logo != 'default.png') {
+
+                if (file_exists(public_path('uploads/branch_logo/' . $updateBranch->logo))) {
+
+                    unlink(public_path('uploads/branch_logo/' . $updateBranch->logo));
+                }
+            }
+
+            $branchLogo = $request->file('logo');
+            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
+            $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
+            $updateBranch->logo = $branchLogoName;
+        }
+
+        $updateBranch->save();
+    }
+
+    public function deleteBranch(int $id) : array
+    {
+        $deleteBranch = $this->singleBranch(id: $id, with: ['sales', 'purchases']);
+
+        if (count($deleteBranch->sales) > 0) {
+
+            return ['pass' => false, 'msg' => __("Can not delete this Shop. This shop has one or more sales.")];
+        }
+
+        if (count($deleteBranch->purchases) > 0) {
+
+            return ['pass' => false, 'msg' => __("Can not delete this shop. This shop has one or more purchases.")];
+        }
+
+        if ($deleteBranch->logo != 'default.png') {
+
+            if (file_exists(public_path('uploads/branch_logo/' . $deleteBranch->logo))) {
+
+                unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
+            }
+        }
+
+        $deleteBranch->delete();
+
+        return ['pass' => true];
     }
 
     public function addBranchDefaultAccountGroups(int $branchId): void
@@ -78,14 +213,14 @@ class BranchService
 
     public function addBranchDefaultAccounts(int $branchId): void
     {
-        $cashInHand = AccountGroup::where('account_groups')->where('sub_sub_group_number', 2)->where('branch_id', $branchId)->first();
-        $directExpenseGroup = AccountGroup::where('account_groups')->where('sub_group_number', 10)->where('branch_id', $branchId)->first();
-        $directIncomeGroup = AccountGroup::where('account_groups')->where('sub_group_number', 13)->where('branch_id', $branchId)->first();
-        $salesAccountGroup = AccountGroup::where('account_groups')->where('sub_group_number', 15)->where('branch_id', $branchId)->first();
-        $purchaseAccountGroup = AccountGroup::where('account_groups')->where('sub_group_number', 12)->where('branch_id', $branchId)->first();
-        $suspenseAccountGroup = AccountGroup::where('account_groups')->where('sub_group_number', 9)->where('branch_id', $branchId)->first();
-        $capitalAccountGroup = AccountGroup::where('account_groups')->where('sub_group_number', 6)->where('branch_id', $branchId)->first();
-        $dutiesAndTaxAccountGroup = AccountGroup::where('account_groups')->where('sub_sub_group_number', 8)->where('branch_id', $branchId)->first();
+        $cashInHand = AccountGroup::where('sub_sub_group_number', 2)->where('branch_id', $branchId)->first();
+        $directExpenseGroup = AccountGroup::where('sub_group_number', 10)->where('branch_id', $branchId)->first();
+        $directIncomeGroup = AccountGroup::where('sub_group_number', 13)->where('branch_id', $branchId)->first();
+        $salesAccountGroup = AccountGroup::where('sub_group_number', 15)->where('branch_id', $branchId)->first();
+        $purchaseAccountGroup = AccountGroup::where('sub_group_number', 12)->where('branch_id', $branchId)->first();
+        $suspenseAccountGroup = AccountGroup::where('sub_group_number', 9)->where('branch_id', $branchId)->first();
+        $capitalAccountGroup = AccountGroup::where('sub_group_number', 6)->where('branch_id', $branchId)->first();
+        $dutiesAndTaxAccountGroup = AccountGroup::where('sub_sub_group_number', 8)->where('branch_id', $branchId)->first();
 
         $accounts = [
             ['account_group_id' => $cashInHand->id, 'name' => 'Cash', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'debit', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => '1', 'is_main_capital_account' => null, 'is_main_pl_account' => null, 'created_at' => '2023-08-04 17:33:01', 'updated_at' => '2023-08-04 17:33:01', 'branch_id' => $branchId],
@@ -118,8 +253,7 @@ class BranchService
         return $query;
     }
 
-
-    public function singleCashCounter(int $id, array $with = null)
+    public function singleBranch(int $id, array $with = null)
     {
         $query = Branch::query();
 
@@ -131,23 +265,43 @@ class BranchService
         return $query->where('id', $id)->first();
     }
 
-    public function addBranchOpeningUser($request, $branchId)
+    public function addBranchOpeningUser(object $request, int $branchId): void
     {
         $addUser = new User();
         $addUser->name = $request->first_name;
         $addUser->last_name = $request->last_name;
         $addUser->phone = $request->user_phone;
+        $addUser->branch_id = $branchId;
 
         $addUser->allow_login = 1;
         $addUser->username = $request->username;
         $addUser->password = Hash::make($request->password);
 
+        // Assign role
         $addUser->role_type = 3;
         $addUser->is_belonging_an_area = 1;
-        // Assign role
+
+        $roleId = $request->role_id ?? 3;
+        $role = Role::find($roleId);
+        $addUser->assignRole($role->name);
 
         $addUser->branch_id = $branch_id;
 
         $addUser->save();
+    }
+
+    public function restrictions(): array
+    {
+        $generalSettings = config('generalSettings');
+        $branchLimit = $generalSettings['addons__branch_limit'];
+
+        $branchCount = DB::table('branches')->count();
+
+        if ($branchLimit <= $branchCount) {
+
+            return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
+        }
+
+        return ['pass' => true];
     }
 }

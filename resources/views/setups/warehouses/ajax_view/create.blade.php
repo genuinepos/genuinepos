@@ -160,7 +160,7 @@
 
         if (e.which == 0) {
 
-            if ($(this).attr('id') == 'warehouse_phone' && $('is_global').val() == undefined) {
+            if ($(this).attr('id') == 'warehouse_phone' && $('#is_global').val() == undefined) {
 
                 $('#warehouse_save').focus();
                 return;

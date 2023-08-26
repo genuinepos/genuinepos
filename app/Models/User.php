@@ -17,6 +17,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles;
 
     protected $guarded = [];
+    protected $appends = ['role'];
 
     protected $hidden = [
         'password',
@@ -27,6 +28,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getRoleAttribute()
+    {
+        return $this->roles?->first()?->name;
+    }
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');

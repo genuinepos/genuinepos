@@ -43,9 +43,9 @@ class RolePermissionTableSeeder extends Seeder
     private function rolesArray(): array
     {
         return [
-            'Admin',
-            'Customer',
-            'Reseller',
+            'admin',
+            'customer',
+            'reseller',
         ];
     }
 

@@ -53,6 +53,19 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item">
+                        <a role="button" class="sidebar-link has-sub" data-dropdown="planManagementDropdown">
+                            <span class="nav-icon"><i class="fa-light fa-chart-simple"></i></span>
+                            <span class="sidebar-txt">{{ __('Manage users') }}</span>
+                        </a>
+                        <ul class="sidebar-dropdown-menu" id="planManagementDropdown">
+                            <li class="sidebar-dropdown-item">
+                                <a href="{{ route('saas.users.index') }}" class="sidebar-link">{{ __('Users') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
             {{-- <li class="help-center">
                 <h3>Help Center</h3>

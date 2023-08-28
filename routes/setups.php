@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\Setups\BranchController;
-use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
+use App\Http\Controllers\Setups\GeneralSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
 use App\Http\Controllers\Setups\PaymentMethodSettingsController;
-use App\Http\Controllers\Setups\GeneralSettingController;
+use App\Http\Controllers\Setups\WarehouseController;
 
 Route::prefix('setups')->group(function () {
 

@@ -12,11 +12,13 @@ class PlanController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Renderable
      */
     public function index()
     {
         abort_unless(auth()->user()->can('plans_index'), 403);
+
         return view('saas::plans.index', [
             'plans' => Plan::paginate(),
         ]);
@@ -24,11 +26,13 @@ class PlanController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
      * @return Renderable
      */
     public function create()
     {
         abort_unless(auth()->user()->can('plans_create'), 403);
+
         return view('saas::plans.create', [
             'features' => Feature::all(),
         ]);
@@ -36,7 +40,7 @@ class PlanController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     *
      * @return Renderable
      */
     public function store(Request $request)
@@ -49,23 +53,27 @@ class PlanController extends Controller
             'period_month' => $request->period_month,
         ]);
         $plan->features()->sync($request->feature_id);
+
         return redirect(route('saas.plans.index'))->with('success', 'Plan created successfully!');
     }
 
     /**
      * Show the specified resource.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function show($id)
     {
         abort_unless(auth()->user()->can('plans_show'), 403);
+
         return view('saas::plans.show');
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function edit($id)
@@ -78,8 +86,8 @@ class PlanController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function update(Request $request, $id)
@@ -92,18 +100,21 @@ class PlanController extends Controller
             'period_month' => $request->period_month,
         ]);
         $plan->features()->sync($request->feature_id);
+
         return redirect(route('saas.plans.index'))->with('success', 'Plan updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function destroy($id)
     {
         $plan = Plan::find($id);
         $plan->delete();
+
         return redirect(route('saas.plans.index'))->with('success', 'Plan deleted successfully!');
     }
 }

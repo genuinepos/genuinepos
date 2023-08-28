@@ -3,7 +3,6 @@
 namespace Modules\SAAS\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 use Modules\SAAS\Entities\Plan;
 
 class PlanTableSeeder extends Seeder

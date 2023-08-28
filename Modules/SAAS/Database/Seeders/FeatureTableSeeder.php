@@ -2,9 +2,9 @@
 
 namespace Modules\SAAS\Database\Seeders;
 
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Database\Seeder;
 use Modules\SAAS\Entities\Feature;
-use Database\Seeders\RolePermissionSeeder;
 
 class FeatureTableSeeder extends Seeder
 {
@@ -16,7 +16,7 @@ class FeatureTableSeeder extends Seeder
     public function run()
     {
         $features = (new RolePermissionSeeder)->getPermissionsArray();
-        foreach($features as $feature) {
+        foreach ($features as $feature) {
             Feature::create(['name' => $feature['name']]);
         }
     }

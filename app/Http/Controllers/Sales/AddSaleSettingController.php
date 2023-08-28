@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\GeneralSettingServiceInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AddSaleSettingController extends Controller
 {
     // Get notification form method
     public function edit()
     {
-        if (!auth()->user()->can('add_sale_settings')) {
+        if (! auth()->user()->can('add_sale_settings')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -25,7 +25,7 @@ class AddSaleSettingController extends Controller
     // Add tax settings
     public function update(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        if (!auth()->user()->can('add_sale_settings')) {
+        if (! auth()->user()->can('add_sale_settings')) {
 
             return response()->json('Asses Forbidden.');
         }
@@ -38,6 +38,6 @@ class AddSaleSettingController extends Controller
 
         $generalSettingService->updateAndSync($settings);
 
-        return response()->json(__("Sale settings updated successfully"));
+        return response()->json(__('Sale settings updated successfully'));
     }
 }

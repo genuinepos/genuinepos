@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Models\Warehouse;
-use Illuminate\Http\Request;
-use App\Models\WarehouseBranch;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Setups\WarehouseService;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WarehouseController extends Controller
 {
@@ -19,7 +16,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('warehouse')) {
+        if (! auth()->user()->can('warehouse')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -36,7 +33,7 @@ class WarehouseController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('warehouse')) {
+        if (! auth()->user()->can('warehouse')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -92,7 +89,7 @@ class WarehouseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Warehouse is updated successfully"));
+        return response()->json(__('Warehouse is updated successfully'));
     }
 
     public function delete(Request $request, $id)
@@ -108,6 +105,6 @@ class WarehouseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Successfully warehouse is deleted"));
+        return response()->json(__('Successfully warehouse is deleted'));
     }
 }

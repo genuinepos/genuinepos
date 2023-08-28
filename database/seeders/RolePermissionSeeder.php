@@ -55,7 +55,7 @@ class RolePermissionSeeder extends Seeder
         $permissions = $this->getPermissionsArray();
         foreach ($permissions as $permission) {
             $permissionExists = Permission::where('id', $permission['id'])->where('name', $permission['name'])->exists();
-            if(! $permissionExists) {
+            if (! $permissionExists) {
                 Permission::create([
                     'id' => $permission['id'],
                     'name' => $permission['name'],
@@ -83,6 +83,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '3', 'name' => 'Accountant'],
             ['id' => '4', 'name' => 'POS Seller'],
         ];
+
         return $roles;
     }
 

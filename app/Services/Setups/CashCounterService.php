@@ -47,8 +47,8 @@ class CashCounterService
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="' . route('cash.counters.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('cash.counters.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="'.route('cash.counters.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('cash.counters.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -57,7 +57,7 @@ class CashCounterService
 
                 if ($row->br_name) {
 
-                    return $row->br_name . '/' . $row->br_code;
+                    return $row->br_name.'/'.$row->br_code;
                 } else {
 
                     return $generalSettings['business__shop_name'];
@@ -100,11 +100,11 @@ class CashCounterService
         $updateCashCounter->save();
     }
 
-    function deleteCashCounter() : void
+    public function deleteCashCounter(): void
     {
         $delete = CashCounter::find($id);
 
-        if (!is_null($delete)) {
+        if (! is_null($delete)) {
 
             $delete->delete();
         }

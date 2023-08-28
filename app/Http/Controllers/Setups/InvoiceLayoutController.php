@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
-use App\Models\InvoiceLayout;
 use App\Services\Setups\InvoiceLayoutService;
 use Exception;
 use Illuminate\Http\Request;
@@ -70,7 +69,7 @@ class InvoiceLayoutController extends Controller
     {
         $this->validate($request, [
 
-            'name' => 'required|unique:invoice_layouts,name,' . $layoutId,
+            'name' => 'required|unique:invoice_layouts,name,'.$layoutId,
             'invoice_heading' => 'required',
             'quotation_heading' => 'required',
             'sales_order_heading' => 'required',

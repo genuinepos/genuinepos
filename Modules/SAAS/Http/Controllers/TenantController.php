@@ -12,12 +12,14 @@ class TenantController extends Controller
     {
         abort_unless(auth()->user()->can('tenants_index'), 403);
         $tenants = Tenant::all();
+
         return view('saas::tenants.index', compact('tenants'));
     }
 
     public function create()
     {
         abort_unless(auth()->user()->can('tenants_create'), 403);
+
         return view('saas::tenants.create');
     }
 

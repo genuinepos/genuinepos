@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Setups;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethodSetting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentMethodSettingsController extends Controller
 {

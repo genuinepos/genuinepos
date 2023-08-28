@@ -51,21 +51,22 @@ class WarehouseService
                 }
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('warehouses.edit', [$row->id]) . '" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                $html .= '<a href="'.route('warehouses.edit', [$row->id]).'" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('warehouses.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 $html .= '</div>';
+
                 return $html;
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->is_global == 1) {
 
-                    return __("Global Access");
+                    return __('Global Access');
                 } else {
 
                     if ($row->b_name) {
 
-                        return $row->b_name . '/' . $row->b_code;
+                        return $row->b_name.'/'.$row->b_code;
                     } else {
 
                         return $generalSettings['business__shop_name'];
@@ -101,11 +102,11 @@ class WarehouseService
         $updateWarehouse->save();
     }
 
-    function deleteWarehouse(int $id) : void
+    public function deleteWarehouse(int $id): void
     {
         $deleteWarehouse = $this->singleWarehouse($id);
 
-        if (!is_null($deleteWarehouse)) {
+        if (! is_null($deleteWarehouse)) {
 
             $deleteWarehouse->delete();
         }

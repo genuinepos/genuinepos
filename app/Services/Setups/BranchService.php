@@ -7,7 +7,7 @@ use App\Models\Branch;
 
 class BranchService
 {
-    public function addBranch($request) : object
+    public function addBranch($request): object
     {
         $addBranch = new Branch();
         $addBranch->name = $request->name;
@@ -117,7 +117,6 @@ class BranchService
 
         return $query;
     }
-
 
     public function singleCashCounter(int $id, array $with = null)
     {

@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
+use App\Http\Controllers\Sales\SalesController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(SalesController::class)->prefix('sales')->group(function () {
 

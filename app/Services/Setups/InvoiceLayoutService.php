@@ -10,14 +10,39 @@ class InvoiceLayoutService
 {
     public function invoiceLayoutListTable($request)
     {
-        $layouts = DB::table('invoice_layouts')->orderBy('id', 'DESC')->select('id', 'name', 'is_default', 'is_header_less')->get();
+        $generalSettings = config('generalSettings');
+        $layouts = '';
+
+        $query = DB::table('invoice_layouts')
+            ->leftJoin('branches', 'invoice_layouts.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
-                $layouts->where('invoice_layout.branch_id', null);
+
+                $query->where('invoice_layouts.branch_id', null);
             } else {
-                $layouts->where('invoice_layout.branch_id', $request->branch_id);
+
+                $query->where('invoice_layouts.branch_id', $request->branch_id);
             }
         }
+
+        if(auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('invoice_layouts.branch_id', auth()->user()->branch_id);
+        }
+
+        $layouts = $query->select(
+                'invoice_layouts.id',
+                'invoice_layouts.name',
+                'invoice_layouts.is_default',
+                'invoice_layouts.is_header_less',
+                'branches.name as branch_name',
+                'branches.parent_branch_id',
+                'branches.branch_code',
+                'parentBranch.name as parent_branch_name',
+            )->orderBy('id', 'asc')->get();
 
         return DataTables::of($layouts)
             ->addIndexColumn()
@@ -26,7 +51,24 @@ class InvoiceLayoutService
                 return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">' . __('Default') . '</span>' : '');
             })
             ->editColumn('is_header_less', function ($row) {
+
                 return $row->is_header_less == 1 ? '<span class="badge bg-info">' . __('Yes') . '</span>' : '<span class="badge bg-secondary">' . __('No') . '</span>';
+            })
+            ->editColumn('branch', function ($row) use ($generalSettings) {
+
+                if($row->parent_branch_id){
+
+                    return __("Chain Shop Of") . '  <span class="badge badge-sm bg-success">' . $row->parent_branch_name.'</span>-('.$row->branch_code.')';
+                }else {
+
+                    if ($row->branch_name) {
+
+                        return $row->branch_name.'-('.$row->branch_code.')';
+                    } else {
+
+                        return $generalSettings['business__shop_name'].'(<b>'. __("Business") . '</b>)';
+                    }
+                }
             })
             ->addColumn('action', function ($row) {
 
@@ -46,7 +88,7 @@ class InvoiceLayoutService
 
                 return $html;
             })
-            ->rawColumns(['action', 'name', 'is_header_less'])
+            ->rawColumns(['action', 'name', 'branch', 'is_header_less'])
             ->make(true);
     }
 
@@ -169,7 +211,7 @@ class InvoiceLayoutService
         $updateLayout->save();
     }
 
-    public function invoiceLayouts(int $branchId = null, array $with = null) : object
+    public function invoiceLayouts(int $branchId = null, array $with = null): object
     {
         $query = InvoiceLayout::query();
 

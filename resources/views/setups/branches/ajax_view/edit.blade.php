@@ -223,6 +223,7 @@
     $('#branch_type').on('click', function() {
 
         $('.parent_branches_field').hide();
+        $('#parent_branch_id').val('');
 
         if ($(this).val() == 2) {
 

@@ -3,11 +3,13 @@
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
+use App\Http\Controllers\Setups\ReleaseNoteController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
-use App\Http\Controllers\Setups\PaymentMethodSettingsController;
+use App\Http\Controllers\Setups\BarcodeSettingController;
 use App\Http\Controllers\Setups\GeneralSettingController;
+use App\Http\Controllers\Setups\PaymentMethodSettingsController;
 
 Route::prefix('setups')->group(function () {
 
@@ -78,12 +80,12 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('payment.methods.edit');
         Route::post('update/{id}', 'update')->name('payment.methods.update');
         Route::delete('delete/{id}', 'delete')->name('payment.methods.delete');
-    });
 
-    Route::controller(PaymentMethodSettingsController::class)->prefix('payment_method_settings')->group(function () {
+        Route::controller(PaymentMethodSettingsController::class)->prefix('settings')->group(function () {
 
-        Route::get('/', 'index')->name('payment.method.settings.index');
-        Route::post('update', 'update')->name('payment.method.settings.update');
+            Route::get('/', 'index')->name('payment.methods.settings.index');
+            Route::post('update', 'update')->name('payment.methods.settings.add.or.update');
+        });
     });
 
     Route::controller(CashCounterController::class)->prefix('cash_counter')->group(function () {
@@ -94,5 +96,22 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('cash.counters.edit');
         Route::post('update/{id}', 'update')->name('cash.counters.update');
         Route::delete('delete/{id}', 'delete')->name('cash.counters.delete');
+    });
+
+    Route::controller(BarcodeSettingController::class)->prefix('barcode_settings')->group(function () {
+
+        Route::get('/', 'index')->name('barcode.settings.index');
+        Route::get('create', 'create')->name('barcode.settings.create');
+        Route::post('store', 'store')->name('barcode.settings.store');
+        Route::get('edit/{id}', 'edit')->name('barcode.settings.edit');
+        Route::post('update/{id}', 'update')->name('barcode.settings.update');
+        Route::delete('delete/{id}', 'delete')->name('barcode.settings.delete');
+        Route::get('set-default/{id}', 'setDefault')->name('barcode.settings.set.default');
+        Route::get('design/pages', 'designPage')->name('barcode.settings.design.pages');
+    });
+
+    Route::group(['prefix' => 'release/note'], function () {
+
+        Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
     });
 });

@@ -210,9 +210,15 @@
                 url:url,
                 type:'delete',
                 data:request,
-                success:function(data){
+                success:function(data) {
 
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
                     toastr.error(data);
+                    branchTable.ajax.reload(false, null);
                 }
             });
         });

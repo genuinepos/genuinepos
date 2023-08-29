@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountGroupService;
+use App\Services\Setups\BranchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,26 +12,30 @@ class AccountGroupController extends Controller
 {
     public function __construct(
         private AccountGroupService $accountGroupService,
+        private BranchService $branchService,
     ) {
     }
 
     public function index()
     {
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('accounting.groups.index', compact('branches'));
     }
 
-    public function groupList()
+    public function groupList(Request $request)
     {
-        $groups = $this->accountGroupService->accountGroups(with: ['subgroups'])->where('is_main_group', 1)->get();
+        $groups = $this->accountGroupService->accountGroups(request: $request, with: ['subgroups'])
+            ->where('account_groups.is_main_group', 1)->get();
 
         return view('accounting.groups.ajax_view.list_of_groups', compact('groups'));
     }
 
     public function create()
     {
-        $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->get();
+        $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
+            ->where('is_main_group', 0)->where('branch_id', auth()->user()->branch_id)->get();
 
         return view('accounting.groups.ajax_view.create', compact('formGroups'));
     }

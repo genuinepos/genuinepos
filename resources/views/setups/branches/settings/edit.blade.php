@@ -8,15 +8,20 @@
             <form id="edit_branch_settings_form" action="{{ route('branches.settings.update', $branchSetting->branch_id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <label><b>{{ __("Shop") }} : </b>
+                    <label><b>{{ __("Shop Name") }} : </b>
                         @if ($branchSetting?->branch?->parent_branch_id)
-                           {{ __("Chain Shop Of") }} <strong>{{ $branchSetting?->branch?->parentBranch->name }}-({{ $branchSetting?->branch?->branch_code }})</strong>
+                           {{ __("Chain Shop Of") }} <strong>{{ $branchSetting?->branch?->parentBranch->name.'-('.$branchSetting?->branch?->parentBranch->branch_code.')' }}</strong>
                         @else
-                            {{ $branchSetting?->branch?->name.'-('.$branchSetting?->branch?->branch_code.')' }}
+                            {{ $branchSetting?->branch?->name }}
                         @endif
-
                     </label>
                 </div>
+
+                <div class="row">
+                    <label><b>{{ __("Shop ID") }} : </b> {{ $branchSetting?->branch?->branch_code }}</label>
+                </div>
+
+                <hr>
 
                 <div class="form-group row mt-1">
                     <div class="col-lg-3 col-md-6 branch_name_field">

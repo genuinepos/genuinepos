@@ -32,6 +32,7 @@
                                 <tr>
                                     <th>{{ __("Serial") }}</th>
                                     <th>{{ __("Layout Name") }}</th>
+                                    <th>{{ __("Shop/Business") }}</th>
                                     <th>{{ __('Is Header Less') }}</th>
                                     <th>{{ __("Action") }}</th>
                                 </tr>
@@ -71,6 +72,10 @@
                     name: 'name'
                 },
                 {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
                     data: 'is_header_less',
                     name: 'is_header_less'
                 },
@@ -87,7 +92,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
 
         $(document).on('click', '#delete', function(e) {
             e.preventDefault();

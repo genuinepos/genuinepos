@@ -61,6 +61,7 @@ class BranchController extends Controller
         }
 
         $this->validate($request, [
+            'area_name' => 'required',
             'branch_code' => 'required',
             'phone' => 'required',
             'city' => 'required',
@@ -108,7 +109,7 @@ class BranchController extends Controller
 
             $addInvoiceLayout = $this->invoiceLayoutService->addInvoiceLayout(request: $request, branchId: $addBranch->id, defaultName: 'Default Invoice Layout');
 
-            $this->branchSettingService->addBranchSettings(branchId: ($addBranch->parent_branch_id ? $addBranch->parent_branch_id : $addBranch->id), defaultInvoiceLayoutId: $addInvoiceLayout->id, branchService: $this->branchService);
+            $this->branchSettingService->addBranchSettings(branchId: $addBranch->id, parentBranchId: $request->parent_branch_id, defaultInvoiceLayoutId: $addInvoiceLayout->id, branchService: $this->branchService);
 
             if ($request->add_opening_user) {
 
@@ -145,6 +146,7 @@ class BranchController extends Controller
         }
 
         $this->validate($request, [
+            'area_name' => 'required',
             'branch_code' => 'required',
             'phone' => 'required',
             'city' => 'required',

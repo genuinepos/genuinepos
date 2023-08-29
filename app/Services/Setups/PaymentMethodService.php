@@ -2,7 +2,7 @@
 
 namespace App\Services\Setups;
 
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -60,6 +60,18 @@ class PaymentMethodService
         }
 
         return ['success' => true, 'msg' => __('Payment Method deleted successfully.')];
+    }
+
+    public function paymentMethods(array $with = null): ?object
+    {
+        $query = PaymentMethod::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 
     public function singlePaymentMethod(int $id, array $with = null): ?PaymentMethod

@@ -911,18 +911,6 @@ Route::group(['prefix' => 'settings'], function () {
         Route::delete('delete/{taxId}', [TaxController::class, 'delete'])->name('settings.taxes.delete');
     });
 
-    Route::group(['prefix' => 'barcode_settings'], function () {
-
-        Route::get('/', [BarcodeSettingController::class, 'index'])->name('settings.barcode.index');
-        Route::get('create', [BarcodeSettingController::class, 'create'])->name('settings.barcode.create');
-        Route::post('store', [BarcodeSettingController::class, 'store'])->name('settings.barcode.store');
-        Route::get('edit/{id}', [BarcodeSettingController::class, 'edit'])->name('settings.barcode.edit');
-        Route::post('update/{id}', [BarcodeSettingController::class, 'update'])->name('settings.barcode.update');
-        Route::delete('delete/{id}', [BarcodeSettingController::class, 'delete'])->name('settings.barcode.delete');
-        Route::get('set-default/{id}', [BarcodeSettingController::class, 'setDefault'])->name('settings.barcode.set.default');
-        Route::get('design/pages', [BarcodeSettingController::class, 'designPage'])->name('settings.barcode.design.pages');
-    });
-
     Route::group(['prefix' => 'invoices'], function () {
 
         Route::group(['prefix' => 'schemas'], function () {
@@ -934,11 +922,6 @@ Route::group(['prefix' => 'settings'], function () {
             Route::delete('delete/{schemaId}', [InvoiceSchemaController::class, 'delete'])->name('invoices.schemas.delete');
             Route::get('set/default/{schemaId}', [InvoiceSchemaController::class, 'setDefault'])->name('invoices.schemas.set.default');
         });
-    });
-
-    Route::group(['prefix' => 'release/note'], function () {
-
-        Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
     });
 });
 

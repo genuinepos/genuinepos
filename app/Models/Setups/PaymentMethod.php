@@ -3,7 +3,7 @@
 namespace App\Models\Setups;
 
 use App\Models\BaseModel;
-use App\Models\Setup\PaymentMethodSetting;
+use App\Models\Setups\PaymentMethodSetting;
 
 class PaymentMethod extends BaseModel
 {
@@ -15,5 +15,10 @@ class PaymentMethod extends BaseModel
     {
         return $this->hasOne(PaymentMethodSetting::class, 'payment_method_id')
             ->where('branch_id', auth()->user()->branch_id);
+    }
+
+    public function paymentMethodSetting()
+    {
+        return $this->hasOne(PaymentMethodSetting::class, 'payment_method_id')->where('branch_id', auth()->user()->branch_id);
     }
 }

@@ -17,7 +17,7 @@ class AccountGroup extends Model
 
     public function subgroups()
     {
-        return $this->hasMany(AccountGroup::class, 'parent_group_id')->with('subgroups');
+        return $this->hasMany(AccountGroup::class, 'parent_group_id')->with(['subgroups']);
     }
 
     public function accounts()

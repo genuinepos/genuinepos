@@ -16,13 +16,13 @@ class AccountGroupService
             $query->with($with);
         }
 
-        if (isset($request)) {
+        if ($request) {
 
             if ($request->branch_id) {
 
                 if ($request->branch_id == 'NULL') {
 
-                    $query->where('branch_id', null);
+                    $query->where('branch_id', NULL);
                 } else {
 
                     $query->where('branch_id', $request->branch_id);
@@ -30,9 +30,9 @@ class AccountGroupService
             }
         }
 
-        if (auth()->user()->role_type != 1 || ! auth()->user()->role_type != 2) {
+        if (auth()->user()->role_type == 3) {
 
-            $query->where('branch_id', auth()->user()->branch_id);
+            $query->where('account_groups.branch_id', auth()->user()->branch_id);
         }
 
         return $query;
@@ -43,6 +43,7 @@ class AccountGroupService
         $parentGroup = DB::table('account_groups')->where('id', $request->parent_group_id)->first();
 
         $addGroup = new AccountGroup();
+        $addGroup->sorting_number = $parentGroup->sorting_number;
         $addGroup->name = $request->name;
         $addGroup->branch_id = $parentGroup->is_global == 0 ? auth()->user()->branch_id : null;
         $addGroup->parent_group_id = $request->parent_group_id;
@@ -57,6 +58,7 @@ class AccountGroupService
         $addGroup->sub_group_name = $parentGroup->sub_group_name;
         $addGroup->sub_sub_group_name = $parentGroup->sub_sub_group_name;
         $addGroup->default_balance_type = $parentGroup->default_balance_type;
+        $addGroup->is_global = $parentGroup->is_global;
         $addGroup->save();
 
         $group = AccountGroup::with('parentGroup')->where('id', $addGroup->id)->first();

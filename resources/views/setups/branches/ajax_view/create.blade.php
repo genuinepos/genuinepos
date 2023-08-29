@@ -30,9 +30,15 @@
 
                 <div class="form-group row mt-1">
                     <div class="col-lg-3 col-md-6 branch_name_field">
-                        <label><b>{{ __("Shop Name") }} </b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="name" class="form-control" id="branch_name" data-next="branch_code" placeholder="{{ __("Shop Name") }}" />
+                        <label><b>{{ __("Shop Name") }}</b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="name" class="form-control" id="branch_name" data-next="branch_area_name" placeholder="{{ __("Shop Name") }}"/>
                         <span class="error error_branch_name"></span>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <label><b>{{ __("Area Name") }}</b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="area_name" class="form-control" id="branch_area_name" data-next="branch_code" placeholder="{{ __("Area Name") }}"/>
+                        <span class="error error_branch_area_name"></span>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
@@ -42,8 +48,8 @@
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <label><b>{{ __("Phone") }} </b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" placeholder="{{ __("Phone No") }}" />
+                        <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" placeholder="{{ __("Phone No") }}"/>
                         <span class="error error_branch_phone"></span>
                     </div>
 
@@ -56,25 +62,25 @@
                 <div class="form-group row mt-1">
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Country") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="country" class="form-control" id="branch_country" data-next="branch_state" placeholder="{{ __("Country") }}" />
+                        <input required type="text" name="country" class="form-control" id="branch_country" data-next="branch_state" placeholder="{{ __("Country") }}"/>
                         <span class="error error_branch_country"></span>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("State") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="state" class="form-control" id="branch_state" data-next="branch_city" placeholder="{{ __("State") }}" />
+                        <input required type="text" name="state" class="form-control" id="branch_state" data-next="branch_city" placeholder="{{ __("State") }}"/>
                         <span class="error error_branch_state"></span>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <label> <b>{{ __("City") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="city" class="form-control" id="branch_city" data-next="branch_zip_code" placeholder="{{ __("City") }}" />
+                        <input required type="text" name="city" class="form-control" id="branch_city" data-next="branch_zip_code" placeholder="{{ __("City") }}"/>
                         <span class="error error_branch_city"></span>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Zip-Code") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="zip_code" class="form-control" id="branch_zip_code" data-next="branch_email" placeholder="Zip code" />
+                        <input required type="text" name="zip_code" class="form-control" id="branch_zip_code" data-next="branch_email" placeholder="Zip code"/>
                         <span class="error error_branch_zip_code"></span>
                     </div>
                 </div>
@@ -82,12 +88,12 @@
                 <div class="form-group row mt-1">
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Email") }}</b></label>
-                        <input type="text" name="email" class="form-control" id="branch_email" data-next="branch_website" placeholder="{{ __("Email address") }}" />
+                        <input type="text" name="email" class="form-control" id="branch_email" data-next="branch_website" placeholder="{{ __("Email address") }}"/>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Website") }}</b></label>
-                        <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_purchase_permission" placeholder="{{ __("Website Url") }}" />
+                        <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_purchase_permission" placeholder="{{ __("Website Url") }}"/>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
@@ -311,6 +317,7 @@
     $('#branch_type').on('click', function() {
 
         $('.parent_branches_field').hide();
+        $('#parent_branch_id').val('');
 
         if ($(this).val() == 2) {
 

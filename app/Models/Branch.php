@@ -19,7 +19,7 @@ class Branch extends BaseModel
         return $this->belongsTo(InvoiceSchema::class, 'invoice_schema_id');
     }
 
-    public function childBranch()
+    public function childBranches()
     {
         return $this->hasMany(Branch::class, 'parent_branch_id');
     }

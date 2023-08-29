@@ -2285,7 +2285,7 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('payment.method.settings.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('payment.methods.settings.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-credit-card"></i></span>
@@ -2324,7 +2324,7 @@
 
                                 @if (auth()->user()->can('barcode_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.barcode.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('barcode.settings.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-barcode"></i></span>
@@ -2360,7 +2360,7 @@
                                 </div>
 
                                 <div class="sub-menu-col">
-                                    <a href="{{ route('settings.barcode.design.pages') }}" class="switch-bar-wrap">
+                                    <a href="{{ route('barcode.settings.design.pages') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>
@@ -2457,7 +2457,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __("Task Management") }}</p>
@@ -2528,7 +2528,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">@lang('menu.communication')</p>
@@ -2628,7 +2628,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Common Reports') }}</p>

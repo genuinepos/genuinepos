@@ -24,9 +24,12 @@ class UserController extends Controller
 
         if ($request->ajax()) {
 
+            $generalSettings = config('generalSettings');
+
             $users = '';
             $query = DB::table('users')
-                ->leftJoin('branches', 'users.branch_id', 'branches.id');
+                ->leftJoin('branches', 'users.branch_id', 'branches.id')
+                ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
             if ($request->branch_id) {
 
@@ -39,20 +42,20 @@ class UserController extends Controller
                 }
             }
 
-            $query->select(
-                'users.*',
-                'branches.name as branch_name',
-                'branches.branch_code'
-            );
+            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-                $users = $query->orderBy('id', 'desc');
-            } else {
-
-                $users = $query->where('users.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc');
+                $query->where('users.branch_id', auth()->user()->branch_id);
             }
+
+            $users = $query->select(
+                'users.*',
+                'branches.id as b_id',
+                'branches.parent_branch_id',
+                'branches.name as branch_name',
+                'branches.area_name',
+                'branches.branch_code',
+                'parentBranch.name as parent_branch_name',
+            )->orderBy('id', 'desc');
 
             return DataTables::of($users)
                 ->addColumn('action', function ($row) {
@@ -67,14 +70,20 @@ class UserController extends Controller
 
                     return $html;
                 })
-                ->editColumn('branch', function ($row) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
-                    if ($row->branch_name) {
+                    if ($row->parent_branch_id) {
 
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>B.L</b>)';
+                        return $row->parent_branch_name.' ('.$row->area_name.')';
                     } else {
 
-                        return '';
+                        if($row->b_id){
+
+                            return $row->branch_name.' ('.$row->area_name.')';
+                        }else {
+
+                            return $generalSettings['business__shop_name'];
+                        }
                     }
                 })
                 ->editColumn('role_name', function ($row) {
@@ -186,7 +195,7 @@ class UserController extends Controller
                 $addUser->assignRole($role->name);
                 // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
-                
+
                 $addUser->branch_id = $request->branch_id == 'head_office' ? null : $request->branch_id;
                 $addUser->role_type = 3;
                 $addUser->assignRole($role->name);

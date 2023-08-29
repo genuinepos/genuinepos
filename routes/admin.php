@@ -253,15 +253,6 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
         });
     });
-
-    Route::group(['prefix' => 'units'], function () {
-        Route::get('/', [UnitController::class, 'index'])->name('product.units.index');
-        Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('product.units.get.all.unit');
-        Route::post('store', [UnitController::class, 'store'])->name('product.units.store');
-        Route::get('edit/{id}', [UnitController::class, 'edit'])->name('product.units.edit');
-        Route::post('update/{id}', [UnitController::class, 'update'])->name('product.units.update');
-        Route::delete('delete/{unitId}', [UnitController::class, 'delete'])->name('product.units.delete');
-    });
 });
 
 // Contact route group

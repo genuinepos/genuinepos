@@ -156,7 +156,7 @@
                                                     <th>{{ __("Curr. Stock") }}</th>
                                                     <th>{{ __("Type") }}</th>
                                                     <th>{{ __("Category") }}</th>
-                                                    <th>{{ __("Brand") }}</th>
+                                                    <th>Brand</th>
                                                     <th>{{ __("Default Tax") }}</th>
                                                     <th>{{ __("Status") }}</th>
                                                 </tr>
@@ -223,7 +223,7 @@
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
-            "url": "{{ route('products.all.product') }}",
+            "url": "{{ route('products.index') }}",
             "data": function(d) {
                 d.branch_id = $('#branch_id').val();
                 d.type = $('#product_type').val();

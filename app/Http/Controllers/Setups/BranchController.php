@@ -36,7 +36,6 @@ class BranchController extends Controller
             return $this->branchService->branchListTable();
         }
 
-
         return view('setups.branches.index');
     }
 

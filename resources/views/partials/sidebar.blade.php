@@ -34,7 +34,6 @@
                             auth()->user()->can('customer_report') &&
                             auth()->user()->can('customer_report')
                         )
-
                     )
                         <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
                             <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/agenda.svg') }}">
@@ -233,7 +232,6 @@
                 @endif
 
                 @if ($generalSettings['addons__hrm'])
-
                     @if (
                         auth()->user()->can('hrm_dashboard') ||
                         auth()->user()->can('leave_type') ||
@@ -395,7 +393,7 @@
 
                                 @if (auth()->user()->can('product_all'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('products.all.product') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('products.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -470,7 +468,7 @@
 
                                 @if (auth()->user()->can('units'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.units.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('units.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-weight-hanging"></i></span>

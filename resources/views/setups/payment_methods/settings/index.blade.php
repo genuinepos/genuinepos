@@ -26,12 +26,12 @@
                             <p class="m-0 p-0"><b> {{ __("Shop/Business") }} : </b>
                                 @if (auth()?->user()?->branch?->parent_branch_id)
 
-                                    {{ auth()?->user()?->branch?->parentBranch?->name.'-('.auth()?->user()?->branch?->branch_code.')' }}
+                                    {{ auth()?->user()?->branch?->parentBranch?->name. '(' .auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                 @else
 
                                     @if (auth()?->user()?->branch)
 
-                                        {{ auth()?->user()?->branch?->name.'-('.auth()?->user()?->branch?->branch_code.')' }}
+                                        {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                     @else
 
                                         {{ $generalSettings['business__shop_name'] }}
@@ -70,7 +70,7 @@
                                                                                 @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
                                                                                     @continue
                                                                                 @endif
-                                                                                
+
                                                                                 <option {{ isset($methodSetting) && $methodSetting->account_id == $ac->id ? 'SELECTED' : ''}} value="{{ $ac->id }}">
                                                                                     @php
                                                                                         $acNo = $ac->account_number ? ', A/c No : '.$ac->account_number : '';

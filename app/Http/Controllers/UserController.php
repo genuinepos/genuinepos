@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminUserBranch;
-use App\Models\Branch;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Branch;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
+use App\Models\AdminUserBranch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private BranchService $branchService,
+    ) {
+    }
+
     // Users index view
     public function index(Request $request)
     {
@@ -109,17 +115,17 @@ class UserController extends Controller
 
                     if ($row->allow_login == 1) {
 
-                        return '<span  class="badge badge-sm bg-success">Allowed</span>';
+                        return '<span  class="badge badge-sm bg-success">' . __("Allowed") . '</span>';
                     } else {
 
-                        return '<span  class="badge badge-sm bg-danger">Not-Allowed</span>';
+                        return '<span  class="badge badge-sm bg-danger">' . __("Not-Allowed") . '</span>';
                     }
                 })
                 ->rawColumns(['action', 'branch', 'role_name', 'name', 'username', 'allow_login'])
                 ->make(true);
         }
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(['parentBranch'])->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('users.index', compact('branches'));
     }

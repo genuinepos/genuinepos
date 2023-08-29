@@ -41,19 +41,22 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
+
             return $this->productUtil->expiredProductTable($request);
         }
 
         return view('product.products.expired_products');
     }
 
-    public function allProduct(Request $request)
+    public function index(Request $request)
     {
         if (! auth()->user()->can('product_all')) {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+            
             return $this->productUtil->productListTable($request);
         }
 

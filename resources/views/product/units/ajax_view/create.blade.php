@@ -1,68 +1,68 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Unit") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Unit") }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            <!--begin::Form-->
-            <form id="edit_unit_form" action="{{ route('units.update', $unit->id) }}">
+            <form id="add_unit_form" action="{{ route('units.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="unit_name" value="{{ $unit->name }}" data-next="unit_short_name" placeholder="{{ __("Unit Name") }}" />
-                    <span class="error error_name"></span>
+                    <input required type="text" name="name" class="form-control" id="unit_name" data-next="unit_short_name" placeholder="{{ __("Unit Name") }}" />
+                    <span class="error error_unit_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Short Name") }} </b><span class="text-danger">*</span></label>
-                    <input required type="text" name="short_name" class="form-control" id="unit_short_name" value="{{ $unit->code_name }}" data-next="unit_as_a_multiplier_of_other_unit" placeholder="@lang('menu.short_name')" />
+                    <label><b>{{ __("Short Name") }}</b> <span class="text-danger">*</span></label>
+                    <input required type="text" name="short_name" class="form-control" id="unit_short_name" data-next="unit_as_a_multiplier_of_other_unit" placeholder="{{ __("Short Name") }}" />
                     <span class="error error_unit_short_name"></span>
                 </div>
 
-                <div class="form-group mt-1">
-                    <label><b>{{ __("As A Multiplier Of Other Unit") }}</b></label>
-                    <select name="as_a_multiplier_of_other_unit" class="form-control form-select" id="unit_as_a_multiplier_of_other_unit" data-next="unit_base_unit_multiplier">
-                        <option value="0">@lang('menu.no')</option>
-                        <option {{ $unit->base_unit_id ? 'selected' : '' }} value="1">@lang('menu.yes')</option>
-                    </select>
-                </div>
+                @if ($isAllowedMultipleUnit == 1)
+                    <div class="form-group mt-1">
+                        <label><b>{{ __("As A Multiplier Of Other Unit") }}</b></label>
+                        <select name="as_a_multiplier_of_other_unit" class="form-control" id="unit_as_a_multiplier_of_other_unit" data-next="unit_base_unit_multiplier">
+                            <option value="0">{{ __("No") }}</option>
+                            <option value="1">{{ __("Yes") }}</option>
+                        </select>
+                    </div>
 
-                <div class="{{ $unit->base_unit_id ? '' : 'd-hide' }}" id="multiple_unit_fields">
-                    <div class="form-group mt-2 row g-2">
-                        <div class="col-md-3">
-                            <p class="fw-bold">{{ __("1") }} <span id="base_unit_name">{{ $unit->name }}</span>
-                            </p>
-                        </div>
+                    <div class="d-hide" id="multiple_unit_fields">
+                        <div class="form-group mt-2 row g-2">
+                            <div class="col-md-3">
+                                <p class="fw-bold">{{ __("1") }} <span id="base_unit_name">{{ __("Unit") }}</span></p>
+                            </div>
 
-                        <div class="col-md-1">
-                            <p class="fw-bold"> = </p>
-                        </div>
+                            <div class="col-md-1">
+                                <p class="fw-bold"> = </p>
+                            </div>
 
-                        <div class="col-md-4">
-                            <input type="text" name="base_unit_multiplier" class="form-control fw-bold" id="unit_base_unit_multiplier" value="{{ $unit->base_unit_multiplier }}" data-next="unit_base_unit_id" placeholder="{{ __("Amount Of Base Unit") }}" />
-                            <span class="error error_unit_base_unit_multiplier"></span>
-                        </div>
+                            <div class="col-md-4">
+                                <input type="text" name="base_unit_multiplier" class="form-control fw-bold" id="unit_base_unit_multiplier" data-next="unit_base_unit_id" placeholder="{{ __("Amount Of Base Unit") }}" />
+                                <span class="error error_unit_base_unit_multiplier"></span>
+                            </div>
 
-                        <div class="col-md-4">
-                            <select name="base_unit_id" class="form-control select2 form-select" id="unit_base_unit_id" data-next="unit_save_changes">
-                                <option value="">{{ __("Select Base Unit") }}</option>
-                                @foreach ($baseUnits as $baseUnit)
-                                    <option {{ $baseUnit->id == $unit->base_unit_id ? 'SELECTED' : '' }} value="{{ $baseUnit->id }}">{{ $baseUnit->name }} ({{ $baseUnit->code_name }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            <span class="error error_unit_base_unit_id"></span>
+                            <div class="col-md-4">
+                                <select name="base_unit_id" class="form-control select2" id="unit_base_unit_id" data-next="unit_save">
+                                    <option value="">{{ __("Select Base Unit") }}</option>
+                                    @foreach ($baseUnits as $unit)
+                                        <option value="{{ $unit->id }}">{{ $unit->name }} ({{ $unit->code_name }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="error error_unit_base_unit_id"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button unit_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="button" id="unit_save_changes" class="btn btn-sm btn-success unit_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="submit" id="unit_save" class="btn btn-sm btn-success unit_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -104,6 +104,12 @@
 
             e.preventDefault();
 
+            if ($('#' + nextId).val() == undefined) {
+
+                $('#unit_save').focus().select();
+                return;
+            }
+
             $('#' + nextId).focus().select();
         }
     });
@@ -129,9 +135,10 @@
             if ($(this).attr('id') == 'unit_as_a_multiplier_of_other_unit' && $(
                     '#unit_as_a_multiplier_of_other_unit').val() == 0) {
 
-                $('#unit_save_changes').focus();
+                $('#unit_save').focus();
                 return;
             }
+
             $('#' + nextId).focus().select();
         }
     });
@@ -142,10 +149,13 @@
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
+        } else {
+
+            $(this).prop('type', 'button');
         }
     });
 
-    $('#edit_unit_form').on('submit', function(e) {
+    $('#add_unit_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.unit_loading_btn').show();
@@ -171,9 +181,29 @@
                     toastr.error(data.errorMsg, 'ERROR');
                 } else {
 
-                    toastr.success(data);
+                    toastr.success("{{ __('Unit is created successfully') }}");
                     $('#unitAddOrEditModal').modal('hide');
-                    unitsTable.ajax.reload(false, null);
+                    var unit_id = $('#unit_id').val();
+                    var product_unit_id = $('#product_unit_id').val();
+
+                    if (unit_id != undefined) {
+
+                        $('#unit_id').append('<option value="' + data.id + '">' + data.name + ' (' + data.code_name + ')' + '</option>');
+                        $('#unit_id').val(data.id);
+
+                        var nextId = $('#unit_id').data('next');
+                        $('#' + nextId).focus().select();
+                    } else if (product_unit_id != undefined) {
+
+                        $('#product_unit_id').append('<option value="' + data.id + '">' + data.name + ' (' + data.code_name + ')' + '</option>');
+                        $('#product_unit_id').val(data.id);
+
+                        var nextId = $('#product_unit_id').data('next');
+                        $('#' + nextId).focus().select();
+                    } else {
+
+                        unitsTable.ajax.reload();
+                    }
                 }
             },
             error: function(err) {

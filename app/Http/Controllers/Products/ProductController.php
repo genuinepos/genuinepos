@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Products;
 
+use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
-use App\Services\Products\ProductAccessBranchService;
 use App\Services\Products\ProductService;
 use App\Services\Products\ProductVariantService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Products\ProductAccessBranchService;
 
 class ProductController extends Controller
 {
@@ -18,13 +19,14 @@ class ProductController extends Controller
         private ProductVariantService $productVariantService,
         private ProductAccessBranchService $productAccessBranchService,
         private AccountService $accountService,
+        private BranchService $branchService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_all')) {
+        if (!auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -50,7 +52,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        if (! auth()->user()->can('product_add')) {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -70,7 +72,8 @@ class ProductController extends Controller
             ->where('account_groups.is_default_tax_calculator', 1)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)
+        ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches'));
     }

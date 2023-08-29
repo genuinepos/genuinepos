@@ -2,6 +2,8 @@
 @push('stylesheets')
 
 @endpush
+@section('title', 'Payment Method Settings - ')
+
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -18,16 +20,22 @@
             <div class="form_element rounded m-0">
 
                 <div class="element-body px-4">
-                    <form id="payment_method_settings_form" action="{{ route('settings.payment.method.settings.update') }}" method="POST">
+                    <form id="payment_method_settings_form" action="{{ route('payment.methods.settings.add.or.update') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <p class="m-0 p-0"><b> {{ __("Shop/Business") }} </b>
-                                @if (auth()->user()->branch_id)
+                            <p class="m-0 p-0"><b> {{ __("Shop/Business") }} : </b>
+                                @if (auth()?->user()?->branch?->parent_branch_id)
 
-                                    {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
+                                    {{ auth()?->user()?->branch?->parentBranch?->name. '(' .auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                 @else
 
-                                    {{ $generalSettings['business__shop_name'] }}
+                                    @if (auth()?->user()?->branch)
+
+                                        {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
+                                    @else
+
+                                        {{ $generalSettings['business__shop_name'] }}
+                                    @endif
                                 @endif
                             </p>
                             <div class="form_element rounded">
@@ -38,37 +46,37 @@
                                                 <div class="col-md-12">
                                                     <table class="display table table-sm">
                                                         <thead>
-                                                            <th class="text-start">@lang('menu.sl')</th>
-                                                            <th class="text-start">@lang('menu.payment_method')</th>
-                                                            <th class="text-start">@lang('menu.default_account')</th>
+                                                            <th class="text-start">{{ __("S/L") }}</th>
+                                                            <th class="text-start">{{ __("Payment Method") }}</th>
+                                                            <th class="text-start">{{ __("Default Account") }}</th>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($methods as $method)
+                                                            @foreach ($paymentMethods as $method)
                                                                 <tr>
                                                                     <td class="text-start">
                                                                         <b>{{ $loop->index + 1 }}.</b>
                                                                     </td>
                                                                     <td class="text-start">
                                                                         {{ $method->name }}
-                                                                        <input type="hidden" name="method_ids[]" value="{{ $method->id }}">
+                                                                        <input type="hidden" name="payment_method_ids[]" value="{{ $method->id }}">
                                                                     </td>
                                                                     <td class="text-start">
                                                                         <select name="account_ids[]" class="form-control">
                                                                             @foreach ($accounts as $ac)
                                                                                 @php
-                                                                                    $presettedAc = DB::table('payment_method_settings')
-                                                                                    ->where('payment_method_id', $method->id)
-                                                                                    ->where('branch_id', auth()->user()->branch_id)
-                                                                                    ->where('account_id', $ac->id)
-                                                                                    ->first();
+                                                                                    $methodSetting = $method?->paymentMethodSetting;
                                                                                 @endphp
-                                                                                <option {{ $presettedAc ? 'SELECTED' : ''}} value="{{ $ac->id }}">
+
+                                                                                @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
+                                                                                    @continue
+                                                                                @endif
+
+                                                                                <option {{ isset($methodSetting) && $methodSetting->account_id == $ac->id ? 'SELECTED' : ''}} value="{{ $ac->id }}">
                                                                                     @php
-                                                                                        $accountType = $ac->account_type == 1 ? ' (Type : Cash-In-Hand)' : ' (Type : Bank A/C)';
-                                                                                        $acNo = $ac->account_number ? ', (A/c No : '.$ac->account_number.')' : ', (A/c No : N/A';
-                                                                                        $bank = $ac->b_name ? ', (Bank : '.$ac->b_name.')' : ', (Bank : N/A)';
+                                                                                        $acNo = $ac->account_number ? ', A/c No : '.$ac->account_number : '';
+                                                                                        $bank = $ac?->bank ? ', Bank : '.$ac?->bank?->name : '';
                                                                                     @endphp
-                                                                                    {{ $ac->name . $accountType . $acNo . $bank}}
+                                                                                    {{ $ac->name . $acNo . $bank}}
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
@@ -81,41 +89,13 @@
                                                                 <td colspan="2"></td>
                                                                 <td class="d-flex justify-content-end">
                                                                     <div class="btn-loading">
-                                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                                                                        <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                                                        <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
+                                                                        <button type="submit" class="btn btn-sm btn-success submit_button mt-1 mb-1">{{ __("Save Changes") }}</button>
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                         </tfoot>
-
                                                     </table>
-                                                    {{-- @foreach ($methods as $method)
-                                                        <div class="input-group mt-1">
-                                                            <label class="col-4"><b>{{ $loop->index + 1 }}. {{ $method->name }} </b> </label>
-                                                            <input type="hidden" name="method_ids[]" value="{{ $method->id }}">
-                                                            <div class="col-8">
-                                                                <select name="account_ids[]" class="form-control">
-                                                                    @foreach ($accounts as $ac)
-                                                                        @php
-                                                                            $presettedAc = DB::table('payment_method_settings')
-                                                                            ->where('payment_method_id', $method->id)
-                                                                            ->where('branch_id', auth()->user()->branch_id)
-                                                                            ->where('account_id', $ac->id)
-                                                                            ->first();
-                                                                        @endphp
-                                                                        <option {{ $presettedAc ? 'SELECTED' : ''}} value="{{ $ac->id }}">
-                                                                            @php
-                                                                                $accountType = $ac->account_type == 1 ? ' (Type : Cash-In-Hand)' : ' (Type : Bank A/C)';
-                                                                                $acNo = $ac->account_number ? ', (A/c No : '.$ac->account_number.')' : ', (A/c No : N/A';
-                                                                                $bank = $ac->b_name ? ', (Bank : '.$ac->b_name.')' : ', (Bank : N/A)';
-                                                                            @endphp
-                                                                            {{ $ac->name . $accountType . $acNo . $bank}}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -141,17 +121,44 @@
         // Add user by ajax
         $('#payment_method_settings_form').on('submit', function(e) {
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $.ajax({
                 url: url,
                 type: 'post',
                 data: request,
                 success: function(data) {
 
-                    toastr.success(data);
                     $('.loading_button').hide();
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    toastr.success(data);
+                },
+                error: function(err) {
+
+                    $('.loading_button').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });

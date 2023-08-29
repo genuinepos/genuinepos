@@ -61,7 +61,6 @@ class AccountService
 
         return DataTables::of($accounts)
             ->addIndexColumn()
-
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
@@ -74,7 +73,6 @@ class AccountService
 
                 return $html;
             })
-
             ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
             ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'Not Applicable')
             ->editColumn('group', fn ($row) => '<b>'.$row->group_name.'</b>')

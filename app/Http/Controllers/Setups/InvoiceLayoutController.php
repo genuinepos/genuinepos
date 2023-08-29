@@ -42,6 +42,7 @@ class InvoiceLayoutController extends Controller
         ]);
 
         if ($request->is_header_less == 1) {
+
             $this->validate($request, [
                 'gap_from_top' => 'required',
             ]);
@@ -49,7 +50,9 @@ class InvoiceLayoutController extends Controller
 
         try {
             DB::beginTransaction();
+
             $this->invoiceLayoutService->addInvoiceLayout($request);
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

@@ -6,15 +6,13 @@
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
                         @if (auth()->user()->branch)
                             @if (auth()->user()?->branch?->logo != 'default.png')
-                                <img style="height: 40px; width:110px;"
-                                src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                                <img style="height: 40px; width:110px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
                             @endif
                         @else
                             @if ($generalSettings['business__business_logo'])
-                                <img style="height: 40px; width:110px;"
-                                src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
+                                <img style="height: 40px; width:110px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                 alt="logo" class="logo__img">
                             @else
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;display:inline-block;">{{
@@ -26,7 +24,21 @@
                 <div id="left_bar_toggle"><span class="fas fa-bars"></span></div>
                 <div class="notify-menu">
                     <div class="company-name">
-                        <p class="text-uppercase">Ambient Steel BD Ltd.</p>
+                        <p class="text-uppercase">
+                            @if (auth()?->user()?->branch?->parent_branch_id)
+
+                                {{ auth()?->user()?->branch?->parentBranch?->name. '(' .auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
+                            @else
+
+                                @if (auth()?->user()?->branch)
+
+                                    {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
+                                @else
+
+                                    {{ $generalSettings['business__shop_name'] }}
+                                @endif
+                            @endif
+                        </p>
                         <span><strong>FY :</strong> 1 Jun 2023 - 30 May 2024</span>
                     </div>
                     <div class="head__content__sec">
@@ -37,17 +49,12 @@
                             @endif --}}
 
                             {{-- @if(auth()->user()->can('communication'))
-                                <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i
-                                                class="fas fa-th-large"></i></b></a>
+                                <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
-                                        <li><a href="#"><i class="fas fa-bell"></i>
-                                            <span class="title">Notice Board</span></a> </li>
-                                        <li><a href="#"><i class="fas fa-envelope-open"></i><span class="title">Send
-                                                    Email</span></a></li>
-                                        <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send
-                                                    SMS</span></a></li>
-                                        <li><a href="#"><i class="fas fa-download"></i><span class="title">Download
-                                                    {{ __('Center') }}</span></a></li>
+                                        <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice Board</span></a></li>
+                                        <li><a href="#"><i class="fas fa-envelope-open"></i><span class="title">Send Email</span></a></li>
+                                        <li><a href="#"><i class="fas fa-comment-alt"></i><span class="title">Send SMS</span></a></li>
+                                        <li><a href="#"><i class="fas fa-download"></i><span class="title">Download {{ __('Center') }}</span></a></li>
                                     </ul>
                                 </li>
                             @endif --}}

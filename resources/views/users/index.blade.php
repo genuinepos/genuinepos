@@ -14,50 +14,54 @@
         </div>
 
         <div class="p-3">
-            @if ($generalSettings['addons__branches'] == 1)
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form_element rounded mt-0 mb-3">
-                        <div class="element-body">
-                            <form action="" method="get">
-                                <div class="form-group row">
-                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    <div class="col-md-4">
-                                        <label><strong>@lang('menu.business_location') </strong></label>
-                                        <select name="branch_id" class="form-control submit_able select2" id="branch_id">
-                                            <option value="">@lang('menu.all')</option>
-                                            <option value="NULL"> {{ $generalSettings['business__shop_name'] }} </option>
-                                            @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}">
-                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                            </option>
-                                            @endforeach
-                                        </select>
+            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_area == 0)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <form action="" method="get">
+                                    <div class="form-group row">
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-4">
+                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id">
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        @php
+                                                            $parentBranchName = $branch?->parentBranch?->name;
+                                                            $areaName = $branch?->area_name ? ' ('.$branch->area_name.')' : '';
+                                                            $branchCode = $branch?->branch_code ? '-('.$branch->branch_code.')' : '';
+                                                        @endphp
+                                                        {{ $branch->name . $parentBranchName . $areaName . $branchCode }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @endif
                                     </div>
-                                    @endif
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
+
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>@lang('menu.username')</th>
-                                    <th>@lang('menu.allow_login')</th>
-                                    <th>@lang('menu.name')</th>
-                                    <th>@lang('menu.phone')</th>
-                                    @if($generalSettings['addons__branches'] == 1)
-                                        <th>@lang('menu.business_location')</th>
-                                    @endif
-                                    <th>@lang('menu.role')</th>
-                                    <th>@lang('menu.email')</th>
-                                    <th>@lang('menu.action')</th>
+                                    <th>{{ __("Username") }}</th>
+                                    <th>{{ __("Allow Login") }}</th>
+                                    <th>{{ __("Name") }}</th>
+                                    <th>{{ __("Phone") }}</th>
+                                    <th>{{ __("Shop/Business") }}</th>
+                                    <th>{{ __("Role") }}</th>
+                                    <th>{{ __("Email") }}</th>
+                                    <th>{{ __("Action") }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

@@ -215,7 +215,7 @@
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_id" multiple>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name.'/'.$branch->branch_code }}
+                                                                        {{ $branch->name.'-('.$branch->branch_code.')' }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -929,7 +929,7 @@
 
             var value = $(this).val();
             if (value == 2) {
-                
+
                 toastr.error('Add Combo product feature is temporary disabled. Comming soon.');
                 $(this).val(1);
                 return;

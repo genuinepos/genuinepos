@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-6">
@@ -40,10 +40,12 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th>{{ __("Shop Logo") }}</th>
                                     <th>{{ __('Shop Name') }}</th>
                                     <th>{{ __("Shop Id") }}</th>
                                     <th>{{ __("Parent Shop") }}</th>
+                                    <th>{{ __("Phone") }}</th>
+                                    <th>{{ __("Address") }}</th>
+                                    <th>{{ __("Shop Logo") }}</th>
                                     <th>{{ __("Action") }}</th>
                                 </tr>
                             </thead>
@@ -60,11 +62,33 @@
         </div>
     </div>
 
-    <!-- Add Modal -->
     <div class="modal fade" id="branchAddOrEditModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="branchSettingEditModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
 <script>
+
+    var branchTable = $('.data_tbl').DataTable({
+        "processing": true,
+        "serverSide": true,
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: 'Excel',className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' }},
+            { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' }},
+            { extend: 'print', text: 'Print', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' }},
+        ],
+        "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+        ajax: "{{ route('branches.index') }}",
+        columns: [
+            { data: 'branchName', name: 'branches.name' },
+            { data: 'branch_code', name: 'branches.branch_code' },
+            { data: 'parent_branch_name', name: 'parentBranch.name', className: 'fw-bold'},
+            { data: 'phone', name: 'branches.phone' },
+            { data: 'address', name: 'branches.city'},
+            { data: 'logo', name: 'branches.state'},
+            { data: 'action' },
+        ],
+    });
 
     // insert branch by ajax
     $.ajaxSetup({ headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}} );
@@ -87,9 +111,9 @@
 
                     setTimeout(function() {
 
-                        $('#shop_type').focus();
+                        $('#branch_type').focus();
                     }, 500);
-                }, error:function(err){
+                }, error:function(err) {
 
                     if (err.status == 0) {
 
@@ -97,6 +121,66 @@
                     } else {
 
                         toastr.error('Server Error. Please contact to the support team.');
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#edit', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#branchAddOrEditModal').html(data);
+                    $('#branchAddOrEditModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#branch_type').focus();
+                    }, 500);
+                }, error:function(err){
+
+                    if (err.status == 0) {
+
+                        toastr.error('{{ __("Net Connetion Error.") }}');
+                    } else {
+
+                        toastr.error('{{ __("Server Error. Please contact to the support team.") }}');
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#branchSettings', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#branchSettingEditModal').html(data);
+                    $('#branchSettingEditModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#branch_setting_invoice_prefix').focus().select();
+                    }, 500);
+                }, error:function(err){
+
+                    if (err.status == 0) {
+
+                        toastr.error('{{ __("Net Connetion Error.") }}');
+                    } else {
+
+                        toastr.error('{{ __("Server Error. Please contact to the support team.") }}');
                     }
                 }
             });
@@ -126,9 +210,15 @@
                 url:url,
                 type:'delete',
                 data:request,
-                success:function(data){
+                success:function(data) {
 
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
                     toastr.error(data);
+                    branchTable.ajax.reload(false, null);
                 }
             });
         });

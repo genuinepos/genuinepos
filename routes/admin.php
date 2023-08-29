@@ -250,15 +250,6 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
         });
     });
-
-    Route::group(['prefix' => 'units'], function () {
-        Route::get('/', [UnitController::class, 'index'])->name('product.units.index');
-        Route::get('get/all/unit', [UnitController::class, 'getAllUnit'])->name('product.units.get.all.unit');
-        Route::post('store', [UnitController::class, 'store'])->name('product.units.store');
-        Route::get('edit/{id}', [UnitController::class, 'edit'])->name('product.units.edit');
-        Route::post('update/{id}', [UnitController::class, 'update'])->name('product.units.update');
-        Route::delete('delete/{unitId}', [UnitController::class, 'delete'])->name('product.units.delete');
-    });
 });
 
 // Contact route group
@@ -908,18 +899,6 @@ Route::group(['prefix' => 'settings'], function () {
         Route::delete('delete/{taxId}', [TaxController::class, 'delete'])->name('settings.taxes.delete');
     });
 
-    Route::group(['prefix' => 'barcode_settings'], function () {
-
-        Route::get('/', [BarcodeSettingController::class, 'index'])->name('settings.barcode.index');
-        Route::get('create', [BarcodeSettingController::class, 'create'])->name('settings.barcode.create');
-        Route::post('store', [BarcodeSettingController::class, 'store'])->name('settings.barcode.store');
-        Route::get('edit/{id}', [BarcodeSettingController::class, 'edit'])->name('settings.barcode.edit');
-        Route::post('update/{id}', [BarcodeSettingController::class, 'update'])->name('settings.barcode.update');
-        Route::delete('delete/{id}', [BarcodeSettingController::class, 'delete'])->name('settings.barcode.delete');
-        Route::get('set-default/{id}', [BarcodeSettingController::class, 'setDefault'])->name('settings.barcode.set.default');
-        Route::get('design/pages', [BarcodeSettingController::class, 'designPage'])->name('settings.barcode.design.pages');
-    });
-
     Route::group(['prefix' => 'invoices'], function () {
 
         Route::group(['prefix' => 'schemas'], function () {
@@ -931,11 +910,6 @@ Route::group(['prefix' => 'settings'], function () {
             Route::delete('delete/{schemaId}', [InvoiceSchemaController::class, 'delete'])->name('invoices.schemas.delete');
             Route::get('set/default/{schemaId}', [InvoiceSchemaController::class, 'setDefault'])->name('invoices.schemas.set.default');
         });
-    });
-
-    Route::group(['prefix' => 'release/note'], function () {
-
-        Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
     });
 });
 

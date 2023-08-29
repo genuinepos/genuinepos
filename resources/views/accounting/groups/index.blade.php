@@ -1,50 +1,50 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
-<style>
-    .parent a {
-        font-size: 14px !important;
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
+    <style>
+        .parent a {
+            font-size: 14px !important;
+        }
 
-    span.select2-results ul li {
-        font-size: 15px;
-        font-weight: 450;
-        line-height: 15px;
-    }
+        span.select2-results ul li {
+            font-size: 15px;
+            font-weight: 450;
+            line-height: 15px;
+        }
 
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        font-weight: 700;
-    }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-weight: 700;
+        }
 
-    .fw-icon {
-        font-size: 11px;
-        font-weight: 400;
-    }
+        .fw-icon {
+            font-size: 11px;
+            font-weight: 400;
+        }
 
-    .add_btn_frm_group:hover {
-        color: rgb(21, 255, 21) !important;
-        font-weight: 700 !important;
-        font-size: 13px !important
-    }
+        .add_btn_frm_group:hover {
+            color: rgb(21, 255, 21) !important;
+            font-weight: 700 !important;
+            font-size: 13px !important
+        }
 
-    .delete_group_btn:hover {
-        color: rgb(244, 16, 16) !important;
-        font-weight: 700 !important;
-        font-size: 13px !important
-    }
+        .delete_group_btn:hover {
+            color: rgb(244, 16, 16) !important;
+            font-weight: 700 !important;
+            font-size: 13px !important
+        }
 
-    .parent #parentText {
-        text-transform: uppercase !important;
-        font-weight: 700 !important;
-        font-size: 17px !important;
-    }
+        .parent #parentText {
+            text-transform: uppercase !important;
+            font-weight: 700 !important;
+            font-size: 17px !important;
+        }
 
-    .jstree-default .jstree-anchor {
-        font-size: 11px !important;
-    }
-</style>
+        .jstree-default .jstree-anchor {
+            font-size: 11px !important;
+        }
+    </style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 @endpush
 
 @section('title', 'Account Groups - ')
@@ -72,14 +72,13 @@
                                             <div class="form-group row">
                                                 @if ($generalSettings['addons__branches'] == 1)
                                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control select2" id="f_branch_id" autofocus>
+                                                        <div class="col-md-6">
+                                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                            <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
                                                                 <option value="NULL">{{ $generalSettings['business__shop_name'] }}</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                                        {{ ($branch->parent_branch_id ? __("Chain Shop Of") .' '.$branch->parentBranch?->name : $branch->name) . '-(' . $branch->branch_code.')' }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -152,9 +151,9 @@
             var url = $(this).attr('href');
             var group_id = $(this).data('group_id');
             $.ajax({
-                url: url
-                , type: 'get'
-                , success: function(data) {
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#accountGroupAddOrEditModal').html(data);
                     $('#accountGroupAddOrEditModal').modal('show');
@@ -183,9 +182,9 @@
             lastChartListClass = $(this).data('class_name');
 
             $.ajax({
-                url: url
-                , type: 'get'
-                , success: function(data) {
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#accountGroupAddOrEditModal').empty();
                     $('#accountGroupAddOrEditModal').html(data);
@@ -196,8 +195,8 @@
 
                         $('#account_group_name').focus().select();
                     }, 500);
-                }
-                , error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
@@ -214,12 +213,12 @@
         function getAjaxList() {
 
             $('.data_preloader').show();
-            var branch_id = $('f_branch_id').val();
+            var branch_id = $('#f_branch_id').val();
             $.ajax({
                 url: "{{ route('account.groups.list') }}",
                 async: true,
                 type: 'get',
-                data: {branch_id},
+                data: { branch_id },
                 success: function(data) {
 
                     var div = $('#list_of_groups').html(data);
@@ -236,7 +235,8 @@
                     }
 
                     $('.data_preloader').hide();
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
@@ -252,7 +252,7 @@
         getAjaxList();
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -265,18 +265,18 @@
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
             $.confirm({
-                'title': 'Delete Confirmation'
-                , 'message': 'Are you sure?'
-                , 'buttons': {
+                'title': 'Delete Confirmation',
+                'message': 'Are you sure?',
+                'buttons': {
                     'Yes': {
-                        'class': 'yes btn-danger'
-                        , 'action': function() {
+                        'class': 'yes btn-danger',
+                        'action': function() {
                             $('#deleted_form').submit();
                         }
-                    }
-                    , 'No': {
-                        'class': 'no btn-primary'
-                        , 'action': function() {}
+                    },
+                    'No': {
+                        'class': 'no btn-primary',
+                        'action': function() {}
                     }
                 }
             });
@@ -304,7 +304,8 @@
                         toastr.error(data);
                         $('#deleted_form')[0].reset();
                     }
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
@@ -317,6 +318,5 @@
                 }
             });
         });
-
     </script>
 @endpush

@@ -5,7 +5,6 @@
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <!-- =====================================================================BODY CONTENT================== -->
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-barcode"></span>
@@ -14,7 +13,6 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <!-- =========================================top section button=================== -->
 
         <div class="p-3">
             <div class="form_element rounded m-0">
@@ -24,7 +22,7 @@
                     </div>
 
                     <div class="col-3 d-flex justify-content-end">
-                        <a href="{{ route('settings.barcode.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                        <a href="{{ route('barcode.settings.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
                     </div>
                 </div>
 
@@ -33,15 +31,13 @@
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-start">@lang('menu.sl')</th>
-                                        <th class="text-start">@lang('menu.sticker_settings_name')</th>
-                                        <th class="text-start">@lang('menu.sticker_settings_description')</th>
-                                        <th class="text-start">@lang('menu.action')</th>
+                                        <th class="text-start">{{ __("S/L") }}</th>
+                                        <th class="text-start">{{ __("Sticker Settings Name") }}</th>
+                                        <th class="text-start">{{ __("Sticker Settings Description") }}</th>
+                                        <th class="text-start">{{ __("Action") }}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -67,7 +63,7 @@
             processing: true,
             serverSide: true,
             aaSorting: [[3, 'asc']],
-            ajax: "{{ route('settings.barcode.index') }}",
+            ajax: "{{ route('barcode.settings.index') }}",
             columns: [
                 {data: 'DT_RowIndex',name: 'DT_RowIndex'},
                 {data: 'name', name: 'name'},

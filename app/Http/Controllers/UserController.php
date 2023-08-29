@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminUserBranch;
-use App\Models\Branch;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Branch;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
+use App\Models\AdminUserBranch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private BranchService $branchService,
+    ) {
+    }
+
     // Users index view
     public function index(Request $request)
     {
@@ -24,9 +30,12 @@ class UserController extends Controller
 
         if ($request->ajax()) {
 
+            $generalSettings = config('generalSettings');
+
             $users = '';
             $query = DB::table('users')
-                ->leftJoin('branches', 'users.branch_id', 'branches.id');
+                ->leftJoin('branches', 'users.branch_id', 'branches.id')
+                ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
             if ($request->branch_id) {
 
@@ -39,20 +48,20 @@ class UserController extends Controller
                 }
             }
 
-            $query->select(
-                'users.*',
-                'branches.name as branch_name',
-                'branches.branch_code'
-            );
+            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-                $users = $query->orderBy('id', 'desc');
-            } else {
-
-                $users = $query->where('users.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc');
+                $query->where('users.branch_id', auth()->user()->branch_id);
             }
+
+            $users = $query->select(
+                'users.*',
+                'branches.id as b_id',
+                'branches.parent_branch_id',
+                'branches.name as branch_name',
+                'branches.area_name',
+                'branches.branch_code',
+                'parentBranch.name as parent_branch_name',
+            )->orderBy('id', 'desc');
 
             return DataTables::of($users)
                 ->addColumn('action', function ($row) {
@@ -67,14 +76,20 @@ class UserController extends Controller
 
                     return $html;
                 })
-                ->editColumn('branch', function ($row) {
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
-                    if ($row->branch_name) {
+                    if ($row->parent_branch_id) {
 
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>B.L</b>)';
+                        return $row->parent_branch_name.' ('.$row->area_name.')';
                     } else {
 
-                        return '';
+                        if($row->b_id){
+
+                            return $row->branch_name.' ('.$row->area_name.')';
+                        }else {
+
+                            return $generalSettings['business__shop_name'];
+                        }
                     }
                 })
                 ->editColumn('role_name', function ($row) {
@@ -100,17 +115,17 @@ class UserController extends Controller
 
                     if ($row->allow_login == 1) {
 
-                        return '<span  class="badge badge-sm bg-success">Allowed</span>';
+                        return '<span  class="badge badge-sm bg-success">' . __("Allowed") . '</span>';
                     } else {
 
-                        return '<span  class="badge badge-sm bg-danger">Not-Allowed</span>';
+                        return '<span  class="badge badge-sm bg-danger">' . __("Not-Allowed") . '</span>';
                     }
                 })
                 ->rawColumns(['action', 'branch', 'role_name', 'name', 'username', 'allow_login'])
                 ->make(true);
         }
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(['parentBranch'])->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('users.index', compact('branches'));
     }

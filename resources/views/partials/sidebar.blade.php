@@ -34,7 +34,6 @@
                             auth()->user()->can('customer_report') &&
                             auth()->user()->can('customer_report')
                         )
-
                     )
                         <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
                             <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/agenda.svg') }}">
@@ -233,7 +232,6 @@
                 @endif
 
                 @if ($generalSettings['addons__hrm'])
-
                     @if (
                         auth()->user()->can('hrm_dashboard') ||
                         auth()->user()->can('leave_type') ||
@@ -395,7 +393,7 @@
 
                                 @if (auth()->user()->can('product_all'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('products.all.product') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('products.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -470,7 +468,7 @@
 
                                 @if (auth()->user()->can('units'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.units.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('units.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-weight-hanging"></i></span>
@@ -2285,7 +2283,7 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('payment.method.settings.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('payment.methods.settings.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-credit-card"></i></span>
@@ -2324,7 +2322,7 @@
 
                                 @if (auth()->user()->can('barcode_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.barcode.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('barcode.settings.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-barcode"></i></span>
@@ -2360,7 +2358,7 @@
                                 </div>
 
                                 <div class="sub-menu-col">
-                                    <a href="{{ route('settings.barcode.design.pages') }}" class="switch-bar-wrap">
+                                    <a href="{{ route('barcode.settings.design.pages') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>
@@ -2457,7 +2455,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __("Task Management") }}</p>
@@ -2528,7 +2526,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">@lang('menu.communication')</p>
@@ -2628,7 +2626,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Common Reports') }}</p>

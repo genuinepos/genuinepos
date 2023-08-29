@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Purchases;
 
-use App\Mail\PurchaseCreated;
-use App\Models\PaymentMethod;
+use App\Utils\Util;
+use App\Models\Unit;
 use App\Models\Product;
-use App\Models\ProductVariant;
 use App\Models\Purchase;
+use App\Models\Supplier;
+use App\Utils\AccountUtil;
+use App\Utils\ProductUtil;
+use App\Utils\PurchaseUtil;
+use App\Utils\SupplierUtil;
+use Illuminate\Http\Request;
+use App\Mail\PurchaseCreated;
+use App\Utils\NameSearchUtil;
+use App\Models\ProductVariant;
+use App\Models\PurchaseReturn;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseProduct;
-use App\Models\PurchaseReturn;
-use App\Models\Supplier;
 use App\Models\SupplierProduct;
-use App\Models\Unit;
-use App\Services\GeneralSettingServiceInterface;
-use App\Utils\AccountUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\NameSearchUtil;
 use App\Utils\ProductStockUtil;
-use App\Utils\ProductUtil;
-use App\Utils\PurchaseProductUtil;
 use App\Utils\PurchaseReturnUtil;
-use App\Utils\PurchaseUtil;
+use App\Utils\PurchaseProductUtil;
 use App\Utils\SupplierPaymentUtil;
-use App\Utils\SupplierUtil;
 use App\Utils\UserActivityLogUtil;
-use App\Utils\Util;
-use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
 
 class PurchaseController extends Controller
@@ -46,7 +46,8 @@ class PurchaseController extends Controller
         private AccountUtil $accountUtil,
         private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
         private PurchaseReturnUtil $purchaseReturnUtil,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserActivityLogUtil $userActivityLogUtil,
+        private PaymentMethodService $paymentMethodService,
     ) {
     }
 
@@ -111,7 +112,7 @@ class PurchaseController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
+        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         $accounts = DB::table('account_branches')
             ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
@@ -364,7 +365,6 @@ class PurchaseController extends Controller
             'purchase_order_products.variant',
             'purchase_payments',
         ])->where('id', $addPurchase->id)->first();
-        // dd($purchase['purchase_status']);
 
         if (env('EMAIL_ACTIVE') == 'true' && $purchase?->supplier && $purchase?->supplier?->email) {
 

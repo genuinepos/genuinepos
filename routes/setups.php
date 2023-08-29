@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
-use App\Http\Controllers\Setups\CashCounterController;
 
+use App\Http\Controllers\Setups\WarehouseController;
+use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;

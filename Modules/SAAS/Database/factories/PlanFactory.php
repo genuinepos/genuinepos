@@ -2,7 +2,6 @@
 
 namespace Modules\SAAS\Database\factories;
 
-use Modules\SAAS\Entities\PlanType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PlanFactory extends Factory
@@ -30,4 +29,3 @@ class PlanFactory extends Factory
         ];
     }
 }
-

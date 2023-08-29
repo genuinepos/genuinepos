@@ -2,14 +2,14 @@
 
 namespace Modules\SAAS\Entities;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Plan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name' , 'description', 'price', 'period_month', 'status'];
+    protected $fillable = ['name', 'description', 'price', 'period_month', 'status'];
 
     protected static function newFactory()
     {

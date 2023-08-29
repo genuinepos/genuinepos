@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Setups;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Setups\CashCounterService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class CashCounterController extends Controller
 {
@@ -17,7 +17,7 @@ class CashCounterController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('cash_counters')) {
+        if (! auth()->user()->can('cash_counters')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -34,7 +34,7 @@ class CashCounterController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('cash_counters')) {
+        if (! auth()->user()->can('cash_counters')) {
 
             abort(403, 'Access Forbidden.');
         }

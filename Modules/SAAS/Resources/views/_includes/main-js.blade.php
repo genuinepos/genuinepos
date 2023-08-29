@@ -6,7 +6,6 @@
     // toastr.options.extendedTimeOut = 0;
     // Rendering Session messages
     @if (Session::has('message') || Session::has('success') || Session::has('error') || Session::has('info') || Session::has('warning'))
-
         var text = "{{ session('successMsg') ?? (session('message')['text'] ?? (session('success') ?? (session('error') ?? (session('info') ?? session('warning'))))) }}";
         var posClass = "toast-{{ session('message')['position'] ?? 'top-center' }}";
         toastr.options.positionClass = posClass;
@@ -43,6 +42,15 @@
                 break;
         }
     @endif
+
+    $(document).on('click', '.delete-btn', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#deleted_form').attr('action', url);
+            if(window.confirm('Are you sure?')) {
+                console.log('Deleted');
+            }
+        });
 </script>
 
 <script>
@@ -659,10 +667,6 @@
                 $('.main-sidebar').css('background-image', 'url(' + navbackgroundImage + ')');
             }
 
-
-
-
-
             //------------------------------------------------------------------------------------------------------------------
             // Main Content Background Change From Settings
             //------------------------------------------------------------------------------------------------------------------
@@ -687,8 +691,6 @@
                 $('body').css('background-image', 'url(' + mainBackgroundImage + ')');
             }
 
-
-
             //------------------------------------------------------------------------------------------------------------------
             // Disable & Enable Preloader From Settings
             //------------------------------------------------------------------------------------------------------------------
@@ -705,9 +707,6 @@
                 $(this).addClass('active');
                 $('#disableLoader').removeClass('active');
             });
-
-
-
 
             //------------------------------------------------------------------------------------------------------------------
             // Template Sidebar Dropdown
@@ -1849,4 +1848,8 @@
             }
         });
     })(jQuery);
+</script>
+
+<script>
+
 </script>

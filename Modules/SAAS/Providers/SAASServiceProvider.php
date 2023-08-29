@@ -41,7 +41,7 @@ class SAASServiceProvider extends ServiceProvider
             $schedule->command('inspire')->everyMinute();
         });
 
-        Paginator::useBootstrapFive();      
+        Paginator::useBootstrapFive();
     }
 
     /**

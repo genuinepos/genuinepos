@@ -6,10 +6,9 @@ use App\Models\Setups\PaymentMethod;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class PaymentMethodService
 {
-    function paymentMethodListTable()
+    public function paymentMethodListTable()
     {
         $methods = DB::table('payment_methods')->get();
 
@@ -20,8 +19,8 @@ class PaymentMethodService
                 if ($row->is_fixed == 0) {
 
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('payment.methods.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('payment.methods.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="'.route('payment.methods.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="'.route('payment.methods.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                     $html .= '</div>';
 
                     return $html;
@@ -36,7 +35,7 @@ class PaymentMethodService
         return PaymentMethod::create(['name' => $request->name]);
     }
 
-    function updatePaymentMethod($request, $id): void
+    public function updatePaymentMethod($request, $id): void
     {
         $updatePayment = PaymentMethod::where('id', $id)->first();
 
@@ -49,7 +48,7 @@ class PaymentMethodService
     {
         $deletePaymentMethod = PaymentMethod::where('id', $id)->first();
 
-        if (!is_null($deletePaymentMethod)) {
+        if (! is_null($deletePaymentMethod)) {
 
             if ($deletePaymentMethod->is_fixed == 1) {
 

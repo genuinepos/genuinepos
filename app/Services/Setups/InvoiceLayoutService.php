@@ -130,7 +130,6 @@ class InvoiceLayoutService
         $addLayout->account_no = isset($request->account_no) ? $request->account_no : NULL;
         $addLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : NULL;
         $addLayout->footer_text = isset($request->footer_text) ? $request->footer_text : NULL;
-
         $addLayout->save();
 
         $invoiceLayouts = InvoiceLayout::where('branch_id', auth()->user()->branch_id)->get();
@@ -145,7 +144,7 @@ class InvoiceLayoutService
         return $addLayout;
     }
 
-    function updateInvoiceLayout(int $id, object $request): void
+    public function updateInvoiceLayout(int $id, object $request): void
     {
         // dd($request->all());
         $updateInvoiceLayout = InvoiceLayout::where('id', $id)->first();
@@ -164,7 +163,7 @@ class InvoiceLayoutService
         $updateInvoiceLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $updateInvoiceLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
         $updateInvoiceLayout->challan_heading = isset($request->challan_heading) ? $request->challan_heading : 'Challan';
-        $updateInvoiceLayout->branch_city =  $request->branch_city;
+        $updateInvoiceLayout->branch_city = $request->branch_city;
         $updateInvoiceLayout->branch_state = $request->branch_state;
         $updateInvoiceLayout->branch_zipcode = $request->branch_zipcode;
         $updateInvoiceLayout->branch_phone = $request->branch_phone;
@@ -179,25 +178,25 @@ class InvoiceLayoutService
         $updateInvoiceLayout->customer_tax_no = $request->customer_tax_no;
         $updateInvoiceLayout->customer_phone = $request->customer_phone;
         $updateInvoiceLayout->bank_name = $request->bank_name;
-        $updateInvoiceLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : NULL;
-        $updateInvoiceLayout->account_name = isset($request->account_name) ? $request->account_name : NULL;
-        $updateInvoiceLayout->account_no = isset($request->account_no) ? $request->account_no : NULL;
-        $updateInvoiceLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : NULL;
-        $updateInvoiceLayout->footer_text = isset($request->footer_text) ? $request->footer_text : NULL;
+        $updateInvoiceLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : null;
+        $updateInvoiceLayout->account_name = isset($request->account_name) ? $request->account_name : null;
+        $updateInvoiceLayout->account_no = isset($request->account_no) ? $request->account_no : null;
+        $updateInvoiceLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : null;
+        $updateInvoiceLayout->footer_text = isset($request->footer_text) ? $request->footer_text : null;
         $updateInvoiceLayout->save();
     }
 
-    function deleteInvoiceLayout(int $id): void
+    public function deleteInvoiceLayout(int $id): void
     {
         $deleteInvoice = InvoiceLayout::find($schemaId);
 
-        if (!is_null($deleteInvoice)) {
+        if (! is_null($deleteInvoice)) {
 
             $deleteInvoice->delete();
         }
     }
 
-    function setDefaultInvoiceLayout(int $id): void
+    public function setDefaultInvoiceLayout(int $id): void
     {
         $defaultLayout = InvoiceLayout::where('is_default', 1)->first();
         if ($defaultLayout) {

@@ -32,7 +32,7 @@ class TenantStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'domain.unique' => 'Selected domain is already taken. Try other domain names.'
+            'domain.unique' => 'Selected domain is already taken. Try other domain names.',
         ];
     }
 }

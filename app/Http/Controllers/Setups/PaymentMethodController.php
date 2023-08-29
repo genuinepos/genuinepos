@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Setups;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\PaymentMethodService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentMethodController extends Controller
 {
-
     public function __construct(private PaymentMethodService $paymentMethodService)
     {
     }
@@ -65,7 +64,7 @@ class PaymentMethodController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:payment_methods,name,' . $id,
+                'name' => 'required|unique:payment_methods,name,'.$id,
             ]
         );
 

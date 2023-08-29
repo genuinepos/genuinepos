@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\GeneralSettingServiceInterface;
+use Illuminate\Http\Request;
 
 class PosSaleSettingController extends Controller
 {

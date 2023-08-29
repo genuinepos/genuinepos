@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
-    <link rel="stylesheet" id="rtlStyle" href="#" type="text/css">
+    {{-- <link rel="stylesheet" id="rtlStyle" href="" type="text/css"> --}}
     <style>
         .toast-success {
             background-color: #51A351 !important;
@@ -35,6 +35,10 @@
         <x-saas::_messages />
         {{ $slot }}
         <x-saas::_footer />
+        <form action="#" id="deleted_form">
+            @csrf
+            @method('DELETE')
+        </form>
     </div>
 
     <script>

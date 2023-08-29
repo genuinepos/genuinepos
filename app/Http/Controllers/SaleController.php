@@ -13,7 +13,6 @@ use App\Models\Sale;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
 use App\Models\User;
-use App\Services\GeneralSettingServiceInterface;
 use App\Utils\AccountUtil;
 use App\Utils\BranchWiseCustomerAmountUtil;
 use App\Utils\CustomerPaymentUtil;

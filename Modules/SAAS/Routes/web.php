@@ -45,8 +45,7 @@ Route::prefix('saas')->group(function () {
     });
 });
 
-
 // Dev route
-Route::get('dd', function() {
+Route::get('dd', function () {
     dd(Auth::user()->roles->first()->permissions->pluck('name'));
 });

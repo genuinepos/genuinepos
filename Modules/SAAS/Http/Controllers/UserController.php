@@ -3,10 +3,13 @@
 namespace Modules\SAAS\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\Support\Renderable;
+use App\Utils\FileUploader;
 use Illuminate\Http\Request;
+use Modules\SAAS\Entities\Role;
 use Illuminate\Routing\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Contracts\Support\Renderable;
+use Modules\SAAS\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
@@ -18,15 +21,13 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="'.route('saas.users.edit', [$row->id]).'" class="px-2 edit-btn" id="editUser" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="'.route('saas.users.destroy', [$row->id]).'" class="px-2 delete-btn" id="deleteUser" title="Delete"><span class="fas fa-trash "></span></a>';
+                    $html .= '<a href="' . route('saas.users.edit', $row->id) . '" class="px-2 edit-btn" id="editUser" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('saas.users.destroy', $row->id) . '" class="px-2 delete-btn" id="deleteUser" title="Delete"><span class="fas fa-trash "></span></a>';
                     $html .= '</div>';
-
                     return $html;
                 })
                 ->make(true);
         }
-
         return view('saas::users.index', compact('users'));
     }
 
@@ -37,17 +38,27 @@ class UserController extends Controller
      */
     public function create()
     {
-        // return view('saas::create');
+        return view('saas::users.create', [
+            'roles' => Role::all(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Renderable
-     */
-    public function store(Request $request)
+
+    public function store(UserStoreRequest $request, FileUploader $fileUploader)
     {
-        //
+        $photo = null;
+        if ($request->hasFile('photo')) {
+            $photo = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
+        }
+        $user = User::create([
+            ...$request->except(['role_id', 'photo']),
+            'photo' => $photo
+        ]);
+        $role = Role::find($request->role_id);
+        if ($user && $role) {
+            $user->assignRole();
+            return redirect(route('saas.users.index'))->with('success', 'User created successfully!');
+        }
     }
 
     /**

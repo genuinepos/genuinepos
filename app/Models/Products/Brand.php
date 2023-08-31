@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Products;
+
+use App\Models\BaseModel;
 
 class Brand extends BaseModel
 {

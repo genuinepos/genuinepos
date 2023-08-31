@@ -124,17 +124,16 @@ class ProductService
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" id="check_pur_and_gan_bar_button" href="' . route('products.check.purchase.and.generate.barcode', [$row->id]) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '">View</a>';
 
                 if (auth()->user()->can('product_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
                 }
 
                 if (auth()->user()->can('product_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '">Delete</a>';
                 }
 
                 // if ($row->status == 1) {
@@ -147,12 +146,12 @@ class ProductService
 
                 if (auth()->user()->can('openingStock_add')) {
 
-                    $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '"><i class="fas fa-database text-primary"></i> Add or edit opening stock</a>';
+                    $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">Add or edit opening stock</a>';
                 }
 
                 if ($countPriceGroup > 0) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('products.add.price.groups', [$row->id, $row->is_variant]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add or edit price group</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> '. __("Manage Price Group") .'</a>';
                 }
 
                 $html .= ' </div>';
@@ -373,5 +372,17 @@ class ProductService
         }
 
         return ['pass' => true];
+    }
+
+    public function singleProduct(int $id, array $with = null, array $firstWithSelect = null): ?object
+    {
+        $query = Product::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
     }
 }

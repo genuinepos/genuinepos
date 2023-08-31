@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')@endpush
-@section('title', 'All Brand - ')
+@section('title', 'Brands - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -13,77 +13,34 @@
             </div>
         </div>
 
-        <div class="p-lg-3 p-1">
+        <div class="p-1">
             <div class="row g-lg-3 g-1">
-                @if(auth()->user()->can('brand'))
-                    <div class="col-lg-4">
-                        <div class="card" id="add_form">
-                            <div class="section-header">
-                                <div class="col-md-12">
-                                    <h6>@lang('menu.add_brand') </h6>
-                                </div>
-                            </div>
-
-                            <div class="form-area px-3 pb-2">
-                                <form id="add_brand_form" action="{{ route('product.brands.store') }}">
-                                    <div class="form-group">
-                                        <label><b>@lang('brand.name') </b> <span class="text-danger">*</span></label>
-                                        <input type="text" name="name" class="form-control  add_input" data-name="Brand name" id="name"
-                                            placeholder="Brand Name" />
-                                        <span class="error error_name"></span>
-                                    </div>
-
-                                    <div class="form-group mt-1">
-                                        <label><b>@lang('brand.brand_photo') </b></label>
-                                        <input type="file" name="photo" class="form-control" data-max-file-size="2M" id="photo"
-                                            accept=".jpg, .jpeg, .png, .gif">
-                                        <span class="error error_photo"></span>
-                                    </div>
-
-                                    <div class="form-group mt-2">
-                                        <div class="col-md-12 d-flex justify-content-end">
-                                            <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="card d-hide" id="edit_form">
-                            <div class="section-header">
-                                <div class="col-md-12">
-                                    <h6>@lang('menu.edit_brand')</h6>
-                                </div>
-                            </div>
-
-                            <div class="form-area px-3 pb-2" id="edit_form_body"></div>
-                        </div>
-                    </div>
-                @endif
-
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>@lang('menu.all_brand')</h6>
+                                <h6>{{ __("List Of Brands") }}</h6>
+                            </div>
+
+                            <div class="col-6 d-flex justify-content-end">
+                                @if (auth()->user()->can('brand'))
+                                    <a href="{{ route('brands.create') }}" class="btn btn-sm btn-primary" id="addBrand"><i class="fas fa-plus-square"></i> {{ __("Add Brand") }}</a>
+                                @endif
                             </div>
                         </div>
 
                         <div class="widget_content">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                             </div>
                             <div class="table-responsive" id="data-list">
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>@lang('menu.serial')</th>
-                                            <th>@lang('menu.photo')</th>
-                                            <th>@lang('menu.name')</th>
-                                            <th>@lang('menu.action')</th>
+                                            <th>{{ __("Serial") }}</th>
+                                            <th>{{ __("Photo") }}</th>
+                                            <th>{{ __("Name") }}</th>
+                                            <th>{{ __("Action") }}</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -100,23 +57,25 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="brandAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     <script>
         // Get all brands by ajax
-        var table = $('.data_tbl').DataTable({
+        var brandsTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
                 //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: 'Pdf', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: 'Print', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             processing: true,
             serverSide: true,
             searchable: true,
-            ajax: "{{ route('product.brands.index') }}",
+            ajax: "{{ route('brands.index') }}",
             columnDefs: [{
                 "targets": [0, 1, 3],
                 "orderable": false,
@@ -138,100 +97,72 @@
 
         // call jquery method
         $(document).ready(function() {
-            // Add brand by ajax
-            $('#add_brand_form').on('submit', function(e) {
+
+            $(document).on('click', '#addBrand', function(e) {
                 e.preventDefault();
-                $('.loading_button').removeClass('d-hide');
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.add_input');
-                $('.error').html('');
-                var countErrorField = 0;
-                $.each(inputs, function(key, val) {
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#' + inputId).val()
-                    if (inputId !== 'parent_category' && inputId !== 'photo') {
-                        if (idValue == '') {
-                            countErrorField += 1;
-                            var fieldName = $('#' + inputId).data('name');
-                            $('.error_' + inputId).html(fieldName +' is required.');
-                        }
-                    }
-                });
 
-                if (countErrorField > 0) {
-                    $('.loading_button').hide();
-                    return;
-                }
+                var url = $(this).attr('href');
 
-                $('.submit_button').prop('type', 'button');
                 $.ajax({
                     url: url,
-                    type: 'post',
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
+                    type: 'get',
                     success: function(data) {
-                        toastr.success(data);
-                        $('#add_brand_form')[0].reset();
-                        $('.loading_button').hide();
-                        $('.submit_button').prop('type', 'submit');
-                        table.ajax.reload();
+
+                        $('#brandAddOrEditModal').html(data);
+                        $('#brandAddOrEditModal').modal('show');
+
+                        setTimeout(function() {
+
+                            $('#brand_name').focus();
+                        }, 500);
+                    }, error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error('Server error. Please contact to the support team.');
+                            return;
+                        }
                     }
                 });
             });
 
             // pass editable data to edit modal fields
-            $(document).on('click', '.edit', function(e) {
+            $(document).on('click', '#edit', function(e) {
                 e.preventDefault();
-                $('.data_preloader').show();
-                var url = $(this).attr('href');
-                $.get(url, function(data) {
-                    $("#edit_form_body").html(data);
-                    $('#add_form').hide();
-                    $('#edit_form').show();
-                    // $('#edit_form').removeClass('d-hide');
-                    $('.data_preloader').hide();
-                })
-            });
 
-            // edit brand by ajax
-            $(document).on('submit', '#edit_brand_form', function(e){
-                e.preventDefault();
-                $('.loading_button').show();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                var inputs = $('.edit_input');
-                    $('.error').html('');
-                    var countErrorField = 0;
-                $.each(inputs, function(key, val){
-                    var inputId = $(val).attr('id');
-                    var idValue = $('#'+inputId).val()
-                    if(idValue == ''){
-                        countErrorField += 1;
-                        var fieldName = $('#'+inputId).data('name');
-                        $('.error_'+inputId).html(fieldName+' is required.');
-                    }
-                });
-                if(countErrorField > 0){
-                    $('.loading_button').hide();
-                    return;
-                }
+                var url = $(this).attr('href');
+
+                $('.data_preloader').show();
                 $.ajax({
-                    url:url,
-                    type:'post',
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success:function(data){
-                        $('.error').html('');
-                        toastr.success(data);
-                        $('.loading_button').hide();
-                        table.ajax.reload();
-                        $('#add_form').show();
-                        $('#edit_form').hide();
+                    url: url
+                    , type: 'get'
+                    , success: function(data) {
+
+                        $('#brandAddOrEditModal').empty();
+                        $('#brandAddOrEditModal').html(data);
+                        $('#brandAddOrEditModal').modal('show');
+                        $('.data_preloader').hide();
+                        setTimeout(function() {
+
+                            $('#brand_name').focus().select();
+                        }, 500);
+                    }
+                    , error: function(err) {
+
+                        $('.data_preloader').hide();
+                        if (err.status == 0) {
+
+                            toastr.error('Net Connetion Error. Reload This Page.');
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error('Server error. Please contact to the support team.');
+                            return;
+                        }
                     }
                 });
             });
@@ -261,15 +192,11 @@
                     async: false,
                     data: request,
                     success: function(data) {
-                        $('.data_tbl').DataTable().ajax.reload();
+
+                        brandsTable.ajax.reload();
                         toastr.error(data);
                     }
                 });
-            });
-
-            $(document).on('click', '#close_form', function() {
-                $('#add_form').show();
-                $('#edit_form').hide();
             });
         });
     </script>

@@ -1,16 +1,15 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Brand") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Brand") }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            <!--begin::Form-->
-            <form id="edit_brand_form" action="{{ route('brands.update', $brand->id) }}">
+            <form id="add_brand_form" action="{{ route('brands.store') }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" value="{{ $brand->name}}" id="brand_name" data-next="brand_save_changes" placeholder="{{ __("Brand Name") }}"/>
+                    <input required type="text" name="name" class="form-control" data-next="brand_save" id="brand_name" placeholder="{{ __("Brand Name") }}"/>
                     <span class="error error_brand_name"></span>
                 </div>
 
@@ -25,7 +24,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button brand_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="brand_save_changes" class="btn btn-sm btn-success brand_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="submit" id="brand_save" class="btn btn-sm btn-success brand_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -58,10 +57,13 @@
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
+        }else {
+
+            $(this).prop('type', 'button');
         }
     });
 
-    $('#edit_brand_form').on('submit',function(e) {
+    $('#add_brand_form').on('submit',function(e) {
         e.preventDefault();
 
         $('.brand_loading_btn').show();
@@ -89,9 +91,29 @@
                     toastr.error(data.errorMsg, 'ERROR');
                 }else{
 
-                    toastr.success(data);
+                    toastr.success('Brand is added successfully');
                     $('#brandAddOrEditModal').modal('hide');
-                    brandsTable.ajax.reload(null, false);
+                    var brand_id = $('#brand_id').val();
+                    var product_brand_id = $('#product_brand_id').val();
+
+                    if (brand_id != undefined) {
+
+                        $('#brand_id').append('<option value="' + data.id + '">' + data.name +'</option>');
+                        $('#brand_id').val(data.id);
+
+                        var nextId = $('#brand_id').data('next');
+                        $('#'+nextId).focus().select();
+                    }else if (product_brand_id != undefined) {
+
+                        $('#product_brand_id').append('<option value="' + data.id + '">' + data.name +'</option>');
+                        $('#product_brand_id').val(data.id);
+
+                        var nextId = $('#product_brand_id').data('next');
+                        $('#'+nextId).focus().select();
+                    } else {
+
+                        brandsTable.ajax.reload();
+                    }
                 }
             }, error: function(err) {
 

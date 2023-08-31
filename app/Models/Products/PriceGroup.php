@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Products;
 
-class Warranty extends BaseModel
+use App\Models\BaseModel;
+
+class PriceGroup extends BaseModel
 {
     protected $guarded = [];
 

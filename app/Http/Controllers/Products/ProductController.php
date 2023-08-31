@@ -70,10 +70,10 @@ class ProductController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.is_default_tax_calculator', 1)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        $branches = $this->branchService->branches()->where('parent_branch_id', null)
-        ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
         return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches'));
     }

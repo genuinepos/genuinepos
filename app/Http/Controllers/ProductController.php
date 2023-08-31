@@ -56,7 +56,7 @@ class ProductController extends Controller
         }
 
         if ($request->ajax()) {
-            
+
             return $this->productUtil->productListTable($request);
         }
 
@@ -1101,28 +1101,5 @@ class ProductController extends Controller
         $taxes = DB::table('taxes')->get(['id', 'tax_name', 'tax_percent']);
 
         return view('product.products.ajax_view.form_part', compact('type', 'variants', 'taxes'));
-    }
-
-    public function settings()
-    {
-        $units = DB::table('units')->select('id', 'name', 'code_name')->get();
-
-        return view('product.settings.index', compact('units'));
-    }
-
-    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
-    {
-        $settings = [
-            'product__product_code_prefix' => $request->product_code_prefix,
-            'product__default_unit_id' => $request->default_unit_id,
-            'product__is_enable_brands' => isset($request->is_enable_brands) ? 1 : 0,
-            'product__is_enable_categories' => isset($request->is_enable_categories) ? 1 : 0,
-            'product__is_enable_sub_categories' => isset($request->is_enable_sub_categories) ? 1 : 0,
-            'product__is_enable_price_tax' => isset($request->is_enable_price_tax) ? 1 : 0,
-            'product__is_enable_warranty' => isset($request->is_enable_warranty) ? 1 : 0,
-        ];
-        $generalSettingService->updateAndSync($settings);
-
-        return response()->json('Product settings updated successfully');
     }
 }

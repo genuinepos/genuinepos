@@ -1,16 +1,15 @@
 <div class="modal-dialog double-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Selling Price Group") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Selling Price Group") }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            <form id="edit_price_group_form" action="{{ route('selling.price.groups.update', $priceGroup->id) }}" method="POST">
-                @csrf
+            <form id="add_price_group_form" action="{{ route('selling.price.groups.store') }}" method="POST">
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" id="price_group_name" data-next="price_group_description" placeholder="{{ __("Price Group Name") }}" value="{{ $priceGroup->name }}"/>
+                        <input type="text" name="name" class="form-control" id="price_group_name" data-next="price_group_description" placeholder="{{ __("Price Group Name") }}"/>
                         <span class="error error_price_group_name"></span>
                     </div>
                 </div>
@@ -18,7 +17,7 @@
                 <div class="form-group row mt-1">
                     <div class="col-md-12">
                         <label><b>{{ __("Description") }}</b></label>
-                        <input name="description" class="form-control" id="price_group_description" data-next="price_group_save_changes" placeholder="{{ __("Price Group Description") }}" value="{{ $priceGroup->description }}">
+                        <input name="description" class="form-control" id="price_group_description" data-next="price_group_save" placeholder="{{ __("Price Group Description") }}">
                     </div>
                 </div>
 
@@ -27,7 +26,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button price_group_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="button" id="price_group_save_changes" class="btn btn-sm btn-success price_group_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="button" id="price_group_save" class="btn btn-sm btn-success price_group_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -66,7 +65,7 @@
         }
     });
 
-    $('#edit_price_group_form').on('submit',function(e) {
+    $('#add_price_group_form').on('submit',function(e) {
         e.preventDefault();
 
         $('.price_group_loading_btn').show();
@@ -74,12 +73,19 @@
 
         var request = $(this).serialize();
 
+        isAjaxIn = false;
+        isAllowSubmit = false;
         $.ajax({
+            beforeSend: function(){
+                isAjaxIn = true;
+            },
             url : url,
             type : 'post',
             data: request,
             success:function(data){
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.price_group_loading_btn').hide();
 
                 if(!$.isEmptyObject(data.errorMsg)){
@@ -89,9 +95,11 @@
 
                 toastr.success("{{ __('Selling Price Group is added successfully') }}");
                 $('#priceGroupAddOrEditModal').modal('hide');
-                priceGroupsTable.ajax.reload(null, false);
+                priceGroupsTable.ajax.reload();
             }, error: function(err) {
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.price_group_loading_btn').hide();
                 $('.error').html('');
 
@@ -115,5 +123,10 @@
                 });
             }
         });
+
+        if (isAjaxIn == false) {
+
+            isAllowSubmit = true;
+        }
     });
 </script>

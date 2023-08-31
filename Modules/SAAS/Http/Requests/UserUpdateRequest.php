@@ -2,10 +2,10 @@
 
 namespace Modules\SAAS\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,13 +16,13 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
             'phone' => 'nullable|max:255',
             'photo' => ['nullable', 'mimes:png,jpeg,jpg', 'max:2048'],
             'address' => 'nullable',
             'language' => 'required',
             'role_id' => 'required',
-            'password' => ['required', Password::default()],
+            'password' => ['nullable', Password::default()],
         ];
     }
 

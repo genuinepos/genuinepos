@@ -7,9 +7,12 @@ use App\Utils\FileUploader;
 use Illuminate\Http\Request;
 use Modules\SAAS\Entities\Role;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
 use Modules\SAAS\Http\Requests\UserStoreRequest;
+use Modules\SAAS\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
@@ -31,11 +34,6 @@ class UserController extends Controller
         return view('saas::users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Renderable
-     */
     public function create()
     {
         return view('saas::users.create', [
@@ -51,57 +49,63 @@ class UserController extends Controller
             $photo = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
         }
         $user = User::create([
-            ...$request->except(['role_id', 'photo']),
-            'photo' => $photo
+            ...$request->except(['role_id', 'photo', 'password']),
+            'photo' => $photo,
+            'password' => bcrypt($request->password),
         ]);
         $role = Role::find($request->role_id);
         if ($user && $role) {
-            $user->assignRole();
+            $user->assignRole($role);
             return redirect(route('saas.users.index'))->with('success', 'User created successfully!');
         }
     }
 
-    /**
-     * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
     public function show($id)
     {
         // return view('saas::show');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
-    public function edit($id)
+    public function edit(User $user)
     {
-        // return view('saas::edit');
+        return view('saas::users.edit', [
+            'user' => $user,
+            'roles' => Role::all(),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
+
+    public function update(UserUpdateRequest $request, User $user, FileUploader $fileUploader)
     {
-        //
+        $userUpdateAttributes = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            if (isset($user->photo)) {
+                File::delete(public_path('uploads/saas/users/' . $user->photo));
+            }
+            $userUpdateAttributes['photo'] = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
+        } else {
+            Arr::forget($userUpdateAttributes, 'photo');
+        }
+
+        if (isset($userUpdateAttributes['password']) && !empty($userUpdateAttributes['password'])) {
+            $userUpdateAttributes['password'] = bcrypt($userUpdateAttributes['password']);
+        } else {
+            Arr::forget($userUpdateAttributes, 'password');
+        }
+        $role = Role::find($userUpdateAttributes['role_id']);
+        Arr::forget($userUpdateAttributes, 'role_id');
+
+        $user->update($userUpdateAttributes);
+        if ($user && $role) {
+            $user->syncRoles($role);
+            return redirect(route('saas.users.index'))->with('success', 'User updated successfully!');
+        }
+        return back()->with('success', 'User update failed!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->update(['status' => false]);
+        return redirect()->route('saas.users.index')->with('success', 'User deactivated successfully!');
     }
 }

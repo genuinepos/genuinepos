@@ -356,7 +356,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __("Purchase Tax") }}</b></label>
                                                         <div class="col-8">
-                                                            <select name="purchase_tax" class="form-control" id="purchase_tax" data-next="shipment_charge">
+                                                            <select name="purchase_tax_ac_id" class="form-control" id="purchase_tax_ac_id" data-next="shipment_charge">
                                                                 <option data-purchase_tax_percent="0.00" value="">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxAccounts as $taxAccount)
                                                                     <option data-purchase_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
@@ -402,6 +402,7 @@
                                                         <label class=" col-4"><b>{{ __('Total Invoice Amount') }}</b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="total_purchase_amount" id="total_purchase_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
+                                                            <input type="hidden" name="purchase_ledger_amount" id="purchase_ledger_amount" value="0">
                                                         </div>
                                                     </div>
                                                 </div>

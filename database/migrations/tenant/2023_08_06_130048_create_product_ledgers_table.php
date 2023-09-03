@@ -14,14 +14,22 @@ return new class extends Migration
         Schema::create('product_ledgers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('warehouse_id');
+            $table->tinyInteger('voucher_type');
+            $table->unsignedBigInteger('warehouse_id')->nullable();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('variant_id')->nullable();
             $table->unsignedBigInteger('sale_product_id')->nullable();
+            $table->unsignedBigInteger('sale_return_product_id')->nullable();
             $table->unsignedBigInteger('purchase_product_id')->nullable();
+            $table->unsignedBigInteger('purchase_return_product_id')->nullable();
             $table->unsignedBigInteger('opening_stock_product_id')->nullable();
             $table->unsignedBigInteger('stock_adjustment_product_id')->nullable();
             $table->unsignedBigInteger('production_id')->nullable();
+            $table->decimal('rate', 22, 2)->default(0);
+            $table->decimal('in', 22, 2)->default(0);
+            $table->decimal('out', 22, 2)->default(0);
+            $table->decimal('subtotal', 22, 2)->default(0);
+            $table->string('type', 5);
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');

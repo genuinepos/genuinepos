@@ -284,7 +284,7 @@
                                             @if ($generalSettings['product__is_enable_price_tax'] == '1')
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b> {{ __("Tax") }}</b></label>
+                                                        <label class="col-4"><b> {{ __("Vat/Tax") }}</b></label>
                                                         <div class="col-8">
                                                             <select class="form-control" name="tax_ac_id" id="tax_ac_id" data-next="tax_type">
                                                                 <option data-tax_percent="0" value="">
@@ -300,7 +300,7 @@
 
                                                 <div class="col-md-6">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>{{ __("Tax Type") }}</b> </label>
+                                                        <label class="col-4"><b>{{ __("Vat/Tax Type") }}</b> </label>
                                                         <div class="col-8">
                                                             <select name="tax_type" class="form-control" id="tax_type" data-next="profit">
                                                                 <option value="1">{{ __("Exclusive") }}</option>
@@ -468,7 +468,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __("Enable IMEI or SL No") }}</b></label>
+                                                <label class="col-4"><b>{{ __("Enable IMEI/SL No") }}</b></label>
                                                 <div class="col-8">
                                                     <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_for_sale">
                                                         <option value="0">{{ __("No") }}</option>
@@ -494,7 +494,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __("Batch No/Expire Date") }}</b></label>
+                                                <label class="col-4"><b>{{ __("BatchNo/Expire Date") }}</b></label>
                                                 <div class="col-8">
                                                     <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date" data-next="save_and_new">
                                                         <option value="0">{{ __("No") }}</option>
@@ -514,7 +514,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>@lang('menu.description') </b> </label>
+                                                <label class="col-2"><b>{{ __("Description") }}</b></label>
                                                 <div class="col-10">
                                                     <textarea name="product_details" class="ckEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;" data-next="save_and_new"></textarea>
                                                 </div>
@@ -525,7 +525,7 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-2"> <b>@lang('menu.photo') <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> </b> </label>
+                                                <label class="col-2"><b>{{ __("Photos") }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="This photo will be shown in e-commerce. You can upload multiple file. Per photo max size 2MB." class="fas fa-info-circle tp"></i> </b> </label>
                                                 <div class="col-10">
                                                     <input type="file" name="image[]" class="form-control" id="image" accept="image" multiple>
                                                     <span class="error error_image"></span>
@@ -559,10 +559,10 @@
                                     <table class="display table-hover data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>@lang('menu.product')</th>
-                                                <th>@lang('menu.unit_cost')</th>
-                                                <th>@lang('menu.unit_price')</th>
-                                                <th>@lang('menu.action')</th>
+                                                <th>{{ __("Product") }}</th>
+                                                <th>{{ __("Unit Cost(Inc. Tax)") }}</th>
+                                                <th>{{ __("Unit Price") }}</th>
+                                                <th>{{ __("Action") }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

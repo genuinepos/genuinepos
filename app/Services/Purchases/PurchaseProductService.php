@@ -14,16 +14,16 @@ class PurchaseProductService
         $addPurchaseProduct = new PurchaseProduct();
         $addPurchaseProduct->purchase_id = $purchaseId;
         $addPurchaseProduct->product_id = $productId;
-        $addPurchaseProduct->product_variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
+        $addPurchaseProduct->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $addPurchaseProduct->description = $request->descriptions[$index];
         $addPurchaseProduct->quantity = $request->quantities[$index];
         $addPurchaseProduct->left_qty = $request->quantities[$index];
-        $addPurchaseProduct->unit = $request->unit_names[$index];
-        $addPurchaseProduct->unit_cost = $request->unit_costs[$index];
+        $addPurchaseProduct->unit_id = $request->unit_ids[$index];
+        $addPurchaseProduct->unit_cost_exc_tax = $request->unit_costs_exc_tax[$index];
         $addPurchaseProduct->unit_discount = $request->unit_discounts[$index];
         $addPurchaseProduct->unit_cost_with_discount = $request->unit_costs_with_discount[$index];
         $addPurchaseProduct->subtotal = $request->subtotals[$index];
-        $addPurchaseProduct->unit_tax_ac_id = $request->unit_tax_ac_ids[$index];
+        $addPurchaseProduct->tax_ac_id = $request->tax_ac_ids[$index];
         $addPurchaseProduct->unit_tax_percent = $request->tax_percents[$index];
         $addPurchaseProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
         $addPurchaseProduct->net_unit_cost = $request->net_unit_costs[$index];
@@ -41,6 +41,8 @@ class PurchaseProductService
             $addPurchaseProduct->lot_no = $request->lot_number[$index];
         }
 
+        $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
+        $addPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : NULL;
         $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
         $addPurchaseProduct->save();

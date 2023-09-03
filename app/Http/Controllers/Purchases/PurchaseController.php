@@ -2,40 +2,24 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use App\Utils\Util;
-use App\Models\Unit;
-use App\Models\Product;
-use App\Models\Purchase;
-use App\Models\Supplier;
-use App\Utils\AccountUtil;
-use App\Utils\ProductUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierUtil;
+
 use Illuminate\Http\Request;
 use App\Mail\PurchaseCreated;
-use App\Utils\NameSearchUtil;
-use App\Models\ProductVariant;
-use App\Models\PurchaseReturn;
-use App\Models\PurchasePayment;
-use App\Models\PurchaseProduct;
-use App\Models\SupplierProduct;
-use App\Utils\ProductStockUtil;
-use App\Utils\PurchaseReturnUtil;
-use App\Utils\PurchaseProductUtil;
-use App\Utils\SupplierPaymentUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
-use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
 use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
 
@@ -44,17 +28,6 @@ class PurchaseController extends Controller
     public function __construct(
         private PurchaseService $purchaseService,
         private EmailServiceInterface $emailService,
-        private NameSearchUtil $nameSearchUtil,
-        private PurchaseUtil $purchaseUtil,
-        private PurchaseProductUtil $purchaseProductUtil,
-        private Util $util,
-        private SupplierUtil $supplierUtil,
-        private SupplierPaymentUtil $supplierPaymentUtil,
-        private ProductUtil $productUtil,
-        private ProductStockUtil $productStockUtil,
-        private AccountUtil $accountUtil,
-        private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        private PurchaseReturnUtil $purchaseReturnUtil,
         private UserActivityLogUtil $userActivityLogUtil,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,
@@ -63,6 +36,9 @@ class PurchaseController extends Controller
         private WarehouseService $warehouseService,
         private BranchSettingService $branchSettingService,
         private UnitService $unitService,
+        private DayBookService $dayBookService,
+        private AccountLedgerService $accountLedgerService,
+        private ProductLedgerService $productLedgerService,
     ) {
     }
 
@@ -204,32 +180,6 @@ class PurchaseController extends Controller
             $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
-            // $i = 0;
-            // foreach ($request->product_ids as $product_id) {
-
-            //     $variant_id = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
-            //     $SupplierProduct = SupplierProduct::where('supplier_id', $request->supplier_id)
-            //         ->where('product_id', $product_id)
-            //         ->where('product_variant_id', $variant_id)
-            //         ->first();
-
-            //     if (!$SupplierProduct) {
-
-            //         $addSupplierProduct = new SupplierProduct();
-            //         $addSupplierProduct->supplier_id = $request->supplier_id;
-            //         $addSupplierProduct->product_id = $product_id;
-            //         $addSupplierProduct->product_variant_id = $variant_id;
-            //         $addSupplierProduct->label_qty = $request->quantities[$i];
-            //         $addSupplierProduct->save();
-            //     } else {
-
-            //         $SupplierProduct->label_qty = $SupplierProduct->label_qty + $request->quantities[$i];
-            //         $SupplierProduct->save();
-            //     }
-
-            //     $i++;
-            // }
-
             $updateLastCreated = $this->purchaseService->purchaseByAnyCondition()->where('is_last_created', 1)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
 
             if ($updateLastCreated) {
@@ -240,34 +190,38 @@ class PurchaseController extends Controller
 
             $addPurchase = $this->purchaseService->addPurchase(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
 
+            // Add Day Book entry for Purchase
+            $this->dayBookService->addDayBook(voucherTypeId: 4, date: $request->date, accountId: $request->supplier_account_id, transId: $addPurchase->id, amount: $request->total_invoice_amount, amountType: 'credit');
+
+            // Add Purchase A/c Ledger Entry
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, date: $request->date, account_id: $request->purchase_account_id, trans_id: $addPurchase->id, amount: $request->purchase_ledger_amount, amount_type: 'debit');
+
+            // Add supplier A/c ledger Entry For Purchase
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addPurchase->id, amount: $request->total_invoice_amount, amount_type: 'credit');
+
+            if ($request->purchase_tax_id) {
+
+                // Add Tax A/c ledger Entry For Purchase
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, account_id: $request->purchase_tax_id, date: $request->date, trans_id: $addPurchase->id, amount: $request->purchase_tax_amount, amount_type: 'debit');
+            }
+
             $index = 0;
             foreach ($request->product_ids as $productId) {
 
                 $addPurchaseProduct = $this->purchaseProductService->addPurchaseProduct(request: $request, purchaseId: $addPurchase->id, isEditProductPrice: $isEditProductPrice, index: $index);
 
+                // Add Product Ledger Entry
+                $this->productLedgerService->addProductLedgerEntry(voucher_type_id: 3, date: $request->date, productId: $productId, transId: $addPurchaseProduct->id, rate: $addPurchaseProduct->net_unit_cost, quantityType: 'in', quantity: $addPurchaseProduct->quantity, subtotal: $addPurchaseProduct->linetotal, variantId: $addPurchaseProduct->variant_id);
+
                 // purchase product tax will be go here
+                if ($addPurchaseProduct->tax_ac_id) {
+
+                    // Add Tax A/c ledger Entry
+                    $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 17, date: $request->date, account_id: $addPurchaseProduct->tax_ac_id, trans_id: $addPurchaseProduct->id, amount: ($addPurchaseProduct->unit_tax_amount * $addPurchaseProduct->quantity), amount_type: 'debit');
+                }
+                
                 $index++;
             }
-
-            // Add Purchase A/c Ledger
-            $this->accountUtil->addAccountLedger(
-                voucher_type_id: 3,
-                date: $request->date,
-                account_id: $request->purchase_account_id,
-                trans_id: $addPurchase->id,
-                amount: $request->total_purchase_amount,
-                balance_type: 'debit'
-            );
-
-            // // Add supplier ledger For Purchase
-            // $this->supplierUtil->addSupplierLedger(
-            //     voucher_type_id: 1,
-            //     supplier_id: $request->supplier_id,
-            //     branch_id: auth()->user()->branch_id,
-            //     date: $request->date,
-            //     trans_id: $addPurchase->id,
-            //     amount: $request->total_purchase_amount,
-            // );
 
             if ($request->paying_amount > 0) {
 

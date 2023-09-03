@@ -52,9 +52,10 @@
 
         var quantities = document.querySelectorAll('#quantity');
         var linetotals = document.querySelectorAll('#linetotal');
+        var unitTaxAmounts = document.querySelectorAll('#unit_tax_amount');
+
         var total_item = 0;
         var total_qty = 0;
-
         quantities.forEach(function(qty){
             total_item += 1;
             total_qty += parseFloat(qty.value)
@@ -65,9 +66,11 @@
 
         //Update Net Total Amount
         var netTotalAmount = 0;
+        var productTotalTaxAmount = 0;
         linetotals.forEach(function(linetotal){
 
             netTotalAmount += parseFloat(linetotal.value);
+            productTotalTaxAmount += (quantities[i].value ? quantities[i].value : 0) * (unitTaxAmounts[i].value ? unitTaxAmounts[i].value : 0);
         });
 
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
@@ -89,23 +92,31 @@
         // Update total purchase amount
         var netTotalWithDiscount = parseFloat(netTotalAmount) - orderDiscountAmount;
 
-        var purchaseTaxPercent = $('#purchase_tax').val() ? $('#purchase_tax').val() : 0;
+        var purchaseTaxPercent = $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent') ? $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent') : 0;
         var purchaseTaxAmount = parseFloat(netTotalWithDiscount) / 100 * parseFloat(purchaseTaxPercent);
 
         $('#purchase_tax_amount').val(parseFloat(purchaseTaxAmount).toFixed(2));
 
-        var shipment_charge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
+        var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
 
         var calcTotalPurchaseAmount = parseFloat(netTotalAmount)
                                     - parseFloat(orderDiscountAmount)
                                     + parseFloat(purchaseTaxAmount)
-                                    + parseFloat(shipment_charge);
+                                    + parseFloat(shipmentCharge);
 
         $('#total_purchase_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
 
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
         var purchaseDue = parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
         $('#purchase_due').val(parseFloat(purchaseDue).toFixed(2));
+
+        var purchaseLedgerAmount = parseFloat(netTotalAmount) +
+            parseFloat(shipmentCharge) -
+            parseFloat(orderDiscountAmount) -
+            parseFloat(productTotalTaxAmount) -
+            parseFloat(purchaseTaxAmount);
+
+        $('#purchase_ledger_amount').val(purchaseLedgerAmount);
     }
 
     var delay = (function() {
@@ -955,7 +966,7 @@
     });
 
     // // chane purchase tax and clculate total amount
-    $(document).on('change', '#purchase_tax', function(){
+    $(document).on('change', '#purchase_tax_ac_id', function(){
         calculateTotalAmount();
     });
 

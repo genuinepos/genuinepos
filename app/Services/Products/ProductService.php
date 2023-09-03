@@ -243,7 +243,7 @@ class ProductService
 
                     $areaName = $productAccessBranch?->branch?->area_name ? '('.$productAccessBranch?->branch?->area_name.')' : '';
 
-                    $text .= '<p class="m-0 p-0">' . $__branchName.$areaName. ',</p>';
+                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName.$areaName. ',</p>';
                 }
 
                 return $text;

@@ -240,6 +240,7 @@ class SupplierController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
+        
         $deleteSupplier = Supplier::with(['supplier_ledgers'])->where('id', $supplierId)->first();
 
         if (count($deleteSupplier->supplier_ledgers) > 1) {

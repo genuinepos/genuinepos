@@ -80,7 +80,6 @@ class ContactService
 
     public function changeStatus($contactId)
     {
-
         $statusChange = Contact::where('id', $contactId)->first();
         if ($statusChange->status == 1) {
 
@@ -97,9 +96,18 @@ class ContactService
         }
     }
 
+    public function deleteContact(int $id): void
+    {
+        $deleteContact = $this->singleContact(id: $id);
+
+        if (! is_null($deleteContact)) {
+
+            $deleteContact->delete();
+        }
+    }
+
     public function singleContact(int $id, array $with = null)
     {
-
         $query = Contact::query();
 
         if (isset($with)) {

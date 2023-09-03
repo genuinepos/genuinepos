@@ -112,6 +112,18 @@ class WarehouseService
         }
     }
 
+    public function warehouses(array $with = null)
+    {
+        $query = Warehouse::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function singleWarehouse(int $id, array $with = null)
     {
         $query = Warehouse::query();

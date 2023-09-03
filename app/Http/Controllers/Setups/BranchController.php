@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Models\Branch;
 use App\Enums\BranchType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,7 +99,7 @@ class BranchController extends Controller
 
             $addBranch = $this->branchService->addBranch($request);
 
-            $this->branchService->addBranchDefaultAccountGroups($addBranch->id);
+            // $this->branchService->addBranchDefaultAccountGroups($addBranch->id);
 
             $this->branchService->addBranchDefaultAccounts($addBranch->id);
 

@@ -13,8 +13,8 @@ Route::group(['prefix' => 'contacts'], function () {
     Route::post('store/{type}', [ContactController::class, 'store'])->name('contacts.store');
     Route::get('edit/{id}/{type}', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::post('update/{id}/{type}', [ContactController::class, 'update'])->name('contacts.update');
-    Route::delete('delete/{id}', [ContactController::class, 'delete'])->name('contacts.delete');
     Route::post('change/status/{id}', [ContactController::class, 'changeStatus'])->name('contacts.change.status');
+    Route::delete('delete/{id}', [ContactController::class, 'delete'])->name('contacts.delete');
 
     Route::group(['prefix' => 'manage/customers'], function () {
 

@@ -16,25 +16,6 @@ class AccountGroupService
             $query->with($with);
         }
 
-        if ($request) {
-
-            if ($request->branch_id) {
-
-                if ($request->branch_id == 'NULL') {
-
-                    $query->where('branch_id', NULL);
-                } else {
-
-                    $query->where('branch_id', $request->branch_id);
-                }
-            }
-        }
-
-        if (auth()->user()->role_type == 3) {
-
-            $query->where('account_groups.branch_id', auth()->user()->branch_id);
-        }
-
         return $query;
     }
 

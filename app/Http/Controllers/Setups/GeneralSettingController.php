@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
-use App\Models\Unit;
 use App\Services\GeneralSettingServiceInterface;
+use App\Services\Products\UnitService;
 use App\Utils\TimeZone;
 use Illuminate\Http\Request;
 
 class GeneralSettingController extends Controller
 {
     public function __construct(
+        private UnitService $unitService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
     }
@@ -23,7 +24,7 @@ class GeneralSettingController extends Controller
         }
         $generalSettings = config('generalSettings');
         $currencies = Currency::all();
-        $units = Unit::all();
+        $units = $this->unitService->units()->where('base_unit_id', null)->get();
         $timezones = TimeZone::all();
 
         return view('setups.general_settings.index', compact(
@@ -38,7 +39,9 @@ class GeneralSettingController extends Controller
     {
         $generalSettings = config('generalSettings');
         $business_logo = null;
+
         if ($request->hasFile('business_logo')) {
+
             if ($generalSettings['business__business_logo'] != null) {
 
                 $bLogo = $generalSettings['business__business_logo'];
@@ -48,6 +51,7 @@ class GeneralSettingController extends Controller
                     unlink(public_path('uploads/business_logo/'.$bLogo));
                 }
             }
+
             $logo = $request->file('business_logo');
             $logoName = uniqid().'-'.'.'.$logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
@@ -110,15 +114,16 @@ class GeneralSettingController extends Controller
             'prefix__sale_invoice' => $request->sale_invoice,
             'prefix__purchase_return' => $request->purchase_return,
             'prefix__stock_transfer' => $request->stock_transfer,
-            'prefix__stock_adjustment' => $request->stock_djustment,
+            'prefix__stock_adjustment' => $request->stock_adjustment,
             'prefix__sale_return' => $request->sale_return,
             'prefix__expenses' => $request->expenses,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
-            'prefix__purchase_payment' => $request->purchase_payment,
-            'prefix__sale_payment' => $request->sale_payment,
+            'prefix__payment' => $request->purchase_payment,
+            'prefix__receipt' => $request->sale_payment,
             'prefix__expanse_payment' => $request->expanse_payment,
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json('Prefix settings updated Successfully');

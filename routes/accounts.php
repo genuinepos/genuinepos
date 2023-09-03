@@ -25,7 +25,6 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('edit/{id}', 'edit')->name('account.groups.edit');
         Route::post('update/{id}', 'update')->name('account.groups.update');
         Route::delete('delete/{id}', 'delete')->name('account.groups.delete');
-        Route::get('account/groups/branch/wise', 'accountGroupBranchWise')->name('account.groups.branch.wise');
     });
 
     Route::controller(AccountController::class)->prefix('accounts')->group(function () {

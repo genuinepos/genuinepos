@@ -114,33 +114,6 @@ Route::group(['prefix' => 'common/ajax/call'], function () {
 
 //Product section route group
 Route::group(['prefix' => 'product'], function () {
-    // Branch route group
-    Route::group(['prefix' => 'categories'], function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('product.categories.index');
-        Route::get('form/category', [CategoryController::class, 'getAllFormCategory'])->name('product.categories.all.category.form');
-        Route::post('store', [CategoryController::class, 'store'])->name('product.categories.store');
-        Route::get('edit/{categoryId}', [CategoryController::class, 'edit'])->name('product.categories.edit');
-        Route::post('update', [CategoryController::class, 'update'])->name('product.categories.update');
-        Route::delete('delete/{categoryId}', [CategoryController::class, 'delete'])->name('product.categories.delete');
-    });
-
-    Route::group(['prefix' => 'sub-categories'], function () {
-        Route::get('/', [SubCategoryController::class, 'index'])->name('product.subcategories.index');
-        Route::post('store', [SubCategoryController::class, 'store'])->name('product.subcategories.store');
-        Route::post('update', [SubCategoryController::class, 'update'])->name('product.subcategories.update');
-        Route::delete('delete/{categoryId}', [SubCategoryController::class, 'delete'])->name('product.subcategories.delete');
-        Route::get('edit/{id}', [SubCategoryController::class, 'edit']);
-    });
-
-    // Brand route group
-    Route::group(['prefix' => 'brands'], function () {
-        Route::get('/', [BrandController::class, 'index'])->name('product.brands.index');
-        Route::get('all', [BrandController::class, 'getAllBrand'])->name('product.brands.all.brand');
-        Route::post('store', [BrandController::class, 'store'])->name('product.brands.store');
-        Route::post('update', [BrandController::class, 'update'])->name('product.brands.update');
-        Route::delete('delete/{brandId}', [BrandController::class, 'delete'])->name('product.brands.delete');
-        Route::get('edit/{id}', [BrandController::class, 'edit'])->name('product.brands.edit');
-    });
 
     // Products route group
     Route::group(['prefix' => '/'], function () {
@@ -170,8 +143,6 @@ Route::group(['prefix' => 'product'], function () {
         Route::post('add/brand', [ProductController::class, 'addBrand'])->name('products.add.brand');
         Route::post('add/unit', [ProductController::class, 'addUnit'])->name('products.add.unit');
         Route::post('add/warranty', [ProductController::class, 'addWarranty'])->name('products.add.warranty');
-        Route::get('settings', [ProductController::class, 'settings'])->name('products.settings');
-        Route::post('settings/store', [ProductController::class, 'settingsStore'])->name('products.settings.store');
 
         Route::get('expired/products', [ProductController::class, 'expiredProducts'])->name('products.expired.products');
 
@@ -179,17 +150,6 @@ Route::group(['prefix' => 'product'], function () {
 
             Route::get('export', [ImportPriceGroupProductController::class, 'export'])->name('products.export.price.group.products');
         });
-    });
-
-    // Selling price group route group
-    Route::group(['prefix' => 'selling/price/groups'], function () {
-
-        Route::get('/', [PriceGroupController::class, 'index'])->name('product.selling.price.groups.index');
-        Route::post('store', [PriceGroupController::class, 'store'])->name('product.selling.price.groups.store');
-        Route::get('edit/{id}', [PriceGroupController::class, 'edit'])->name('product.selling.price.groups.edit');
-        Route::post('update/{id}', [PriceGroupController::class, 'update'])->name('product.selling.price.groups.update');
-        Route::delete('delete/{id}', [PriceGroupController::class, 'delete'])->name('product.selling.price.groups.delete');
-        Route::get('change/status/{id}', [PriceGroupController::class, 'changeStatus'])->name('product.selling.price.groups.change.status');
     });
 
     // Variants route group
@@ -225,15 +185,6 @@ Route::group(['prefix' => 'product'], function () {
 
         Route::get('create', [ProductImportController::class, 'create'])->name('product.import.create');
         Route::post('store', [ProductImportController::class, 'store'])->name('product.import.store');
-    });
-
-    // Warranty route group
-    Route::group(['prefix' => 'warranties'], function () {
-        Route::get('/', [WarrantyController::class, 'index'])->name('product.warranties.index');
-        Route::get('all', [WarrantyController::class, 'allWarranty'])->name('product.warranties.all.warranty');
-        Route::post('store', [WarrantyController::class, 'store'])->name('product.warranties.store');
-        Route::post('update', [WarrantyController::class, 'update'])->name('product.warranties.update');
-        Route::delete('delete/{warrantyId}', [WarrantyController::class, 'delete'])->name('product.warranties.delete');
     });
 
     Route::group(['prefix' => 'reports'], function () {
@@ -357,8 +308,7 @@ Route::group(['prefix' => 'purchases'], function () {
     Route::get('product/list', [PurchaseController::class, 'purchaseProductList'])->name('purchases.product.list');
     Route::get('show/{purchaseId}', [PurchaseController::class, 'show'])->name('purchases.show');
     Route::get('order/print/supplier/copy/{purchaseId}', [PurchaseController::class, 'printSupplierCopy'])->name('purchases.order.supplier.copy.print');
-    Route::get('create', [PurchaseController::class, 'create'])->name('purchases.create');
-    Route::post('store', [PurchaseController::class, 'store'])->name('purchases.store');
+
     Route::get('edit/{purchaseId}', [PurchaseController::class, 'edit'])->name('purchases.edit');
     Route::get('editable/purchase/{purchaseId}/{editType}', [PurchaseController::class, 'editablePurchase'])->name('purchases.get.editable.purchase');
     Route::post('update/{purchaseId}', [PurchaseController::class, 'update'])->name('purchases.update');

@@ -438,7 +438,7 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('categories'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.categories.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('categories.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -453,7 +453,7 @@
 
                                 @if (auth()->user()->can('brand'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.brands.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('brands.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -496,7 +496,7 @@
 
                                 @if (auth()->user()->can('warranties'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.warranties.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('warranties.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -513,7 +513,7 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('selling_price_group'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.selling.price.groups.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('selling.price.groups.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -542,18 +542,18 @@
                                 @endif
 
                                 @can('product_settings')
-                                <div class="sub-menu-col">
-                                    <a href="{{ route('products.settings') }}" class="switch-bar-wrap settings-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span>
-                                                    <i class="fas fa-sliders-h"></i>
-                                                </span>
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('product.settings.index') }}" class="switch-bar-wrap settings-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span>
+                                                        <i class="fas fa-sliders-h"></i>
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('Product Settings') }}</p>
-                                    </a>
-                                </div>
+                                            <p class="switch_text">{{ __('Product Settings') }}</p>
+                                        </a>
+                                    </div>
                                 @endcan
                             </div>
                         </div>

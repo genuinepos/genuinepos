@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountGroupService;
+use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Setups\PaymentMethodSettingsService;
 
@@ -14,7 +14,7 @@ class PaymentMethodSettingsController extends Controller
 {
     public function __construct(
         private PaymentMethodSettingsService $paymentMethodSettingsService,
-        private AccountGroupService $accountGroupService,
+        private AccountService $accountService,
         private PaymentMethodService $paymentMethodService,
         private AccountFilterService $accountFilterService,
     ) {
@@ -22,14 +22,19 @@ class PaymentMethodSettingsController extends Controller
 
     public function index()
     {
-        $accountGroups = $this->accountGroupService->accountGroups(with: [
-            'accounts:id,name,account_number,account_group_id,bank_id,bank_branch',
-            'accounts.bank:id,name',
-            'accounts.group:id,sorting_number,sub_sub_group_number',
-            'accounts.bankAccessBranch'
-        ])->whereIn('sub_sub_group_number', [1, 2, 11])->where('branch_id', auth()->user()->branch_id)->orWhere('is_global', 1)->get();
+        $accounts = $this->accountService->accounts(with: [
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch'
+        ])
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('branch_id', auth()->user()->branch_id)
+        ->whereIn('account_groups.sub_sub_group_number', [2])
+        ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+        ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+        ->get();
 
-        $accounts = $this->accountFilterService->filterCashBankAccounts($accountGroups);
+        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
 
         $paymentMethods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 

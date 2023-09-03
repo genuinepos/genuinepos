@@ -14,52 +14,52 @@
                         <div class="col-md-9">
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
-                                    <input required type="text" name="name" class="form-control" id="contact_name" data-next="contact_phone" placeholder="@lang('menu.customer_name')" />
+                                    <label><strong>{{ __("Name") }} </strong> <span class="text-danger">*</span></label>
+                                    <input required type="text" name="name" class="form-control" id="contact_name" data-next="contact_phone" placeholder="{{ __("Name") }}" />
                                     <span class="error error_contact_name"></span>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.phone') </strong> <span class="text-danger">*</span></label>
+                                    <label><strong>{{ __("Phone") }}</strong> <span class="text-danger">*</span></label>
                                     <input required type="text" name="phone" class="form-control"
                                         id="contact_phone" data-next="contact_business_name" placeholder="@lang('menu.phone_number')" />
                                     <span class="error error_contact_phone"></span>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.business_name') </strong></label>
+                                    <label><strong>{{ __("Business") }}</strong></label>
                                     <input type="text" name="business_name" class="form-control" id="contact_business_name" data-next="contact_alternative_phone" placeholder="@lang('menu.business_name')" />
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.alternative_number') </strong> </label>
-                                    <input type="text" name="alternative_phone" class="form-control" id="contact_alternative_phone" data-next="contact_landline" placeholder="Alternative phone number" />
+                                    <label><strong>{{ __("Alternative Number") }}</strong></label>
+                                    <input type="text" name="alternative_phone" class="form-control" id="contact_alternative_phone" data-next="contact_landline" placeholder="{{ __("Alternative phone number") }}" />
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.landline') </strong></label>
-                                    <input type="text" name="landline" class="form-control" id="contact_landline" data-next="contact_email" placeholder="landline number" />
+                                    <label><strong>{{ __("Landline") }}</strong></label>
+                                    <input type="text" name="landline" class="form-control" id="contact_landline" data-next="contact_email" placeholder="{{ __("landline number") }}" />
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.email') </strong></label>
-                                    <input type="text" name="email" class="form-control" id="contact_email" data-next="contact_tax_number" placeholder="Email address" />
+                                    <label><strong>{{ __("Email") }}</strong></label>
+                                    <input type="text" name="email" class="form-control" id="contact_email" data-next="contact_tax_number" placeholder="{{ __("Email address") }}" />
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.tax_number') </strong></label>
-                                    <input type="text" name="tax_number" class="form-control" id="contact_tax_number" data-next="contact_customer_group_id" placeholder="@lang('menu.tax_number')" />
+                                    <label><strong>{{ __("Tax Number") }}</strong></label>
+                                    <input type="text" name="tax_number" class="form-control" id="contact_tax_number" data-next="contact_customer_group_id" placeholder="{{ __("Tax Number") }}" />
                                 </div>
 
                                 @if ($type == \App\Enums\ContactType::Customer->value)
                                     <div class="col-md-4">
-                                        <label><strong>@lang('menu.customer_group') </strong> </label>
+                                        <label><strong>{{ __("Customer Group") }}</strong> </label>
                                         <select name="customer_group_id" class="form-control" id="contact_customer_group_id" data-next="contact_date_of_birth">
-                                            <option value="">@lang('menu.none')</option>
+                                            <option value="">{{ __("None") }}</option>
                                             @foreach ($customerGroups as $group)
                                                 <option value="{{ $group->id }}">{{ $group->group_name }}</option>
                                             @endforeach
@@ -68,7 +68,7 @@
                                 @endif
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.date_of_birth')</strong></label>
+                                    <label><strong>{{ __("Date Of Birth") }}</strong></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -76,44 +76,44 @@
                                             </span>
                                         </div>
 
-                                        <input type="text" name="date_of_birth" class="form-control" id="contact_date_of_birth" data-next="contact_address" autocomplete="off" placeholder="YYYY-MM-DD">
+                                        <input type="text" name="date_of_birth" class="form-control" id="contact_date_of_birth" data-next="contact_address" autocomplete="off" placeholder="{{ __("YYYY-MM-DD") }}">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.address') </strong> </label>
-                                    <input type="text" name="address" class="form-control" id="contact_address" data-next="contact_city" placeholder="Address">
+                                    <label><strong>{{ __("Address") }}</strong> </label>
+                                    <input type="text" name="address" class="form-control" id="contact_address" data-next="contact_city" placeholder="{{ __("Address") }}">
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.city') </strong> </label>
-                                    <input type="text" name="city" class="form-control" id="contact_city" data-next="contact_state" placeholder="@lang('menu.city')"/>
+                                    <label><strong>{{ __("City") }}</strong></label>
+                                    <input type="text" name="city" class="form-control" id="contact_city" data-next="contact_state" placeholder="{{ __("City") }}"/>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.state') </strong> </label>
-                                    <input type="text" name="state" class="form-control" id="contact_state" data-next="contact_country" placeholder="@lang('menu.state')"/>
+                                    <label><strong>{{ __("State") }}</strong></label>
+                                    <input type="text" name="state" class="form-control" id="contact_state" data-next="contact_country" placeholder="{{ __("State") }}"/>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>@lang('menu.country') </strong> </label>
+                                    <label><strong>{{ __("Country") }}</strong></label>
                                     <input type="text" name="country" class="form-control" id="contact_country" data-next="contact_zip_code" placeholder="@lang('menu.country')"/>
                                 </div>
 
                                 <div class="col-md-4 mt-1">
-                                    <label><strong>@lang('menu.zip_code') </strong> </label>
-                                    <input type="text" name="zip_code" class="form-control" id="contact_zip_code" data-next="contact_shipping_address" placeholder="zip_code" />
+                                    <label><strong>{{ __("Zip-Code") }}</strong> </label>
+                                    <input type="text" name="zip_code" class="form-control" id="contact_zip_code" data-next="contact_shipping_address" placeholder="{{ __("Zip-Code") }}" />
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.shipping_address') </strong> </label>
-                                    <input type="text" name="shipping_address" class="form-control" id="contact_shipping_address" data-next="contact_credit_limit" placeholder="@lang('menu.shipping_address')" />
+                                    <label><strong>{{ __("Shipping Address") }}</strong></label>
+                                    <input type="text" name="shipping_address" class="form-control" id="contact_shipping_address" data-next="contact_credit_limit" placeholder="{{ __("Shipping Address") }}" />
                                 </div>
                             </div>
                         </div>
@@ -122,21 +122,21 @@
                             <div class="row">
                                 @if ($type == \App\Enums\ContactType::Customer->value)
                                     <div class="col-md-12">
-                                        <label><strong>@lang('menu.credit_limit') </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
-                                        <input type="number" step="any" name="credit_limit" class="form-control" id="contact_credit_limit" data-next="contact_pay_term_number" placeholder="@lang('menu.credit_limit')"/>
+                                        <label><strong>{{ __("Credit Limit") }}</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
+                                        <input type="number" step="any" name="credit_limit" class="form-control" id="contact_credit_limit" data-next="contact_pay_term_number" placeholder="{{ __("Credit Limit") }}"/>
                                     </div>
                                 @endif
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-12">
-                                    <label><strong>@lang('menu.pay_term') </strong> </label>
+                                    <label><strong>{{ __("Pay Term") }}</strong></label>
                                     <div class="input-group">
-                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="Number"/>
+                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="{{ __("Number") }}"/>
                                         <select name="pay_term" class="form-control" id="contact_pay_term" data-next="contact_opening_balance">
-                                            <option value="1">@lang('menu.select_term')</option>
-                                            <option value="2">@lang('menu.days') </option>
-                                            <option value="3">@lang('menu.months')</option>
+                                            <option value="1">{{ __("Select Term") }}</option>
+                                            <option value="2">{{ __("Days") }}</option>
+                                            <option value="3">{{ __("Months") }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -144,9 +144,9 @@
 
                             <div class="row mt-1">
                                 <div class="col-md-12 mt-1">
-                                    <label><strong>@lang('menu.opening_balance') </strong></label>
+                                    <label><strong>{{ __("Opening Balance") }}</strong></label>
                                     <div class="input-group">
-                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')"/>
+                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="{{ __("Opening Balance") }}"/>
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}
@@ -169,7 +169,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" id="contact_save_btn" class="btn btn-sm btn-success contact_submit_button">@lang('menu.save')</button>
+                            <button type="submit" id="contact_save_btn" class="btn btn-sm btn-success contact_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>

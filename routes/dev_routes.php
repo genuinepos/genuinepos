@@ -22,47 +22,19 @@ Route::get('my-test', function () {
     // $str = 'DifferentShop';
     // return $str = preg_replace("/[A-Z]/", ' ' . "$0", $str);
 
-    $branchId = 19;
-    return $accountGroups = AccountGroup::with([
-        'accounts',
-        'accounts.group:id,sorting_number,sub_sub_group_number',
-        'accounts.bankAccessBranch'
-    ])->whereIn('sub_sub_group_number', [1, 2, 11])->where('branch_id', $branchId)->orWhere('is_global', 1)->get();
-
-    $filteredAccounts = [];
-    foreach ($accountGroups as $accountGroups) {
-
-        if (count($accountGroups->accounts) > 0) {
-
-            foreach ($accountGroups->accounts as $account) {
-
-                $account->sorting_number = $account->group->sorting_number;
-                $account->is_bank_account = ($account->group->sub_sub_group_number == 2 || $account->group->sub_sub_group_number) == 1 ? 1 : 0;
-                $account->has_bank_access_branch = 0;
-
-                if (isset($account->bankAccessBranch)) {
-
-                    $account->has_bank_access_branch = 1;
-                }
-
-                if (isset($account->bank_access_branch)) {
-
-                    $account->sorting_number = $account->group->sorting_number;
-                }
-
-                unset($account->group);
-                unset($account->bankAccessBranch);
-                array_push($filteredAccounts, $account);
-            }
-        }
-    }
-
-    usort($filteredAccounts, function ($item) {
-
-        return $item['sorting_number'];
-    });
-
-    return $filteredAccounts;
+    return $accountGroups = Account::query()
+        ->with([
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch'
+        ])
+        ->where('branch_id', auth()->user()->branch_id)
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        
+        ->whereIn('account_groups.sub_sub_group_number', [2])
+        ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+        ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+        ->get();
 });
 
 Route::get('t-id', function () {

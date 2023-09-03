@@ -19,8 +19,7 @@
                     <label><strong>{{ __("Under Group") }} <span class="text-danger">*</span></strong></label>
                     <select required name="parent_group_id" class="form-control select2" id="parent_group_id"
                         data-next="is_default_tax_calculator">
-                        <option data-is_allowed_bank_details="0" data-is_default_tax_calculator="0" value="">
-                            Select Group</option>
+                        <option data-is_allowed_bank_details="0" data-is_default_tax_calculator="0" value="">{{ __("Select Group") }}</option>
                         @foreach ($formGroups as $group)
                             <option data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}"
                                 data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}"

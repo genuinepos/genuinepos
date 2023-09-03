@@ -3,22 +3,24 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Enums\ContactType;
+use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Accounts\BankService;
+use App\Services\Setups\BranchService;
+use App\Services\CodeGenerationService;
+use App\Services\Accounts\AccountService;
+use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountService;
 use App\Services\Accounts\BankAccessBranchService;
-use App\Services\Accounts\BankService;
-use App\Services\CodeGenerationService;
 use App\Services\Contacts\ContactOpeningBalanceService;
-use App\Services\Contacts\ContactService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
     public function __construct(
+        private BranchService $branchService,
         private AccountService $accountService,
         private BankService $bankService,
         private AccountGroupService $accountGroupService,
@@ -42,9 +44,12 @@ class AccountController extends Controller
             return $this->accountService->accountListTable($request);
         }
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('accounting.accounts.index', compact('branches'));
+        $accountGroups = $this->accountGroupService->singleAccountGroupByAnyCondition(with: ['parentGroup'])->where('is_main_group', 0)->get();
+
+        return view('accounting.accounts.index', compact('branches', 'accountGroups'));
     }
 
     public function create()
@@ -87,7 +92,7 @@ class AccountController extends Controller
 
             $addAccount = $this->accountService->addAccount(
                 name: $request->name,
-                accountGroupId: $request->account_group_id,
+                accountGroup: $accountGroup,
                 accountNumber: $request->account_number,
                 bankId: $request->bank_id,
                 bankAddress: $request->bank_address,
@@ -190,7 +195,7 @@ class AccountController extends Controller
             $updateAccount = $this->accountService->updateAccount(
                 accountId: $accountId,
                 name: $request->name,
-                accountGroupId: $request->account_group_id,
+                accountGroup: $accountGroup,
                 accountNumber: $request->account_number,
                 bankId: $request->bank_id,
                 bankAddress: $request->bank_address,

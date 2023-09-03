@@ -103,6 +103,7 @@
                         </table>
                     </div>
                 </div>
+                
                 <form id="delete_contact_form" action="" method="post">
                     @method('DELETE')
                     @csrf
@@ -288,7 +289,7 @@
                     'title': 'Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
+                        'Yes': {'class': 'yes btn-danger','action': function() {$('#delete_contact_form').submit();}},
                         'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
                     }
                 });

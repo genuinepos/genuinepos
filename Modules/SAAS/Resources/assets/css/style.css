@@ -7115,7 +7115,7 @@ pre .punctuation {
 }
 .main-content .table a {
   color: #a9b4cc;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 .main-content .table-dscr {
   text-align: left;

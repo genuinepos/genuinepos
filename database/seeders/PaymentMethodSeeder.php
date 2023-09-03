@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 

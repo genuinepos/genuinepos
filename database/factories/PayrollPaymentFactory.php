@@ -31,7 +31,7 @@ final class PayrollPaymentFactory extends Factory
             'paid' => $this->faker->randomFloat(),
             'due' => $this->faker->randomFloat(),
             'pay_mode' => $this->faker->word,
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
             'date' => $this->faker->word,
             'time' => $this->faker->word,
             'month' => $this->faker->word,

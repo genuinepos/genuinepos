@@ -26,7 +26,7 @@ final class CashRegisterFactory extends Factory
     {
         return [
             'sale_account_id' => $this->faker->randomNumber(),
-            'cash_counter_id' => \App\Models\CashCounter::factory(),
+            'cash_counter_id' => \App\Models\Setups\CashCounter::factory(),
             'branch_id' => \App\Models\Branch::factory(),
             'admin_id' => \App\Models\User::factory(),
             'cash_in_hand' => $this->faker->randomFloat(),

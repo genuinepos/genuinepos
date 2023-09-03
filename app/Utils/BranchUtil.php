@@ -5,7 +5,7 @@ namespace App\Utils;
 use App\Models\Account;
 use App\Models\AccountBranch;
 use App\Models\AccountLedger;
-use App\Models\CashCounter;
+use App\Models\Setups\CashCounter;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 

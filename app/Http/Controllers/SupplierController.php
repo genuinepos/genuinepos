@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
 use App\Models\PurchaseReturn;

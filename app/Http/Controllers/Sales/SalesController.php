@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use App\Utils\NameSearchUtil;
 use App\Utils\SaleUtil;
 use Illuminate\Support\Facades\DB;

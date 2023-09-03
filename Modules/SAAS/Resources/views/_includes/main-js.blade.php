@@ -44,13 +44,23 @@
     @endif
 
     $(document).on('click', '.delete-btn', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            if(window.confirm('Are you sure?')) {
-                console.log('Deleted');
-            }
-        });
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#deleted_form').attr('action', url);
+        if (window.confirm('Are you sure?')) {
+            $('#deleted_form').submit();
+            console.log('Deleted');
+        }
+    });
+    $(document).on('click', '.restore-btn', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#restore_form').attr('action', url);
+        if (window.confirm('Are you sure?')) {
+            $('#restore_form').submit();
+            console.log('Restored');
+        }
+    });
 </script>
 
 <script>
@@ -1850,6 +1860,4 @@
     })(jQuery);
 </script>
 
-<script>
-
-</script>
+<script></script>

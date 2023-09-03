@@ -28,7 +28,7 @@ final class StockAdjustmentRecoverFactory extends Factory
             'voucher_no' => $this->faker->word,
             'stock_adjustment_id' => \App\Models\StockAdjustment::factory(),
             'account_id' => \App\Models\Account::factory(),
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
             'recovered_amount' => $this->faker->randomFloat(),
             'note' => $this->faker->sentence,
             'report_date' => $this->faker->word,

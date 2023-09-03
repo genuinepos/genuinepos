@@ -18,14 +18,18 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::where('status', 1);
+        $users = User::query();
         if ($request->ajax()) {
             return DataTables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
                     $html .= '<a href="' . route('saas.users.edit', $row->id) . '" class="px-2 edit-btn" id="editUser" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="' . route('saas.users.destroy', $row->id) . '" class="px-2 delete-btn" id="deleteUser" title="Delete"><span class="fas fa-trash "></span></a>';
+                    if ($row->status == 1) {
+                        $html .= '<a href="' . route('saas.users.destroy', $row->id) . '" class="px-2 delete-btn" id="deleteUser" title="Delete"><span class="fas fa-trash"></span></a>';
+                    } else {
+                        $html .= '<a href="' . route('saas.users.restore', $row->id) . '" class="px-2 restore-btn" id="restoreUser" title="Restore"><span class="fas fa-recycle"></span></a>';
+                    }
                     $html .= '</div>';
                     return $html;
                 })
@@ -107,5 +111,10 @@ class UserController extends Controller
     {
         $user->update(['status' => false]);
         return redirect()->route('saas.users.index')->with('success', 'User deactivated successfully!');
+    }
+    public function restore(User $user)
+    {
+        $user->update(['status' => true]);
+        return redirect()->route('saas.users.index')->with('success', 'User activated successfully!');
     }
 }

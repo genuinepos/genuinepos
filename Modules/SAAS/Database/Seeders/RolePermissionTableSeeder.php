@@ -21,7 +21,7 @@ class RolePermissionTableSeeder extends Seeder
         $adminRole->syncPermissions(Permission::pluck('name'));
 
         $adminUser = User::where('email', 'admin@gmail.com')->first();
-        if (! isset($adminUser)) {
+        if (!isset($adminUser)) {
             $adminUser = $this->makeAnAdmin();
         }
         if (isset($adminUser)) {
@@ -31,7 +31,7 @@ class RolePermissionTableSeeder extends Seeder
 
     private function makeAnAdmin(): User
     {
-        $user = User::create([
+        $user = User::store([
             'name' => 'Super Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
@@ -55,23 +55,26 @@ class RolePermissionTableSeeder extends Seeder
             // Business or Tenant
             'tenants_index',
             'tenants_create',
+            'tenants_store',
             'tenants_show',
             'tenants_update',
-            'tenants_delete',
+            'tenants_destroy',
             // User
             'users_index',
             'users_create',
+            'users_store',
             'users_show',
             'users_update',
-            'users_delete',
-            // Profile
-            'profile_edit',
+            'users_destroy',
             // Plan
             'plans_index',
             'plans_create',
+            'plans_store',
             'plans_show',
             'plans_update',
-            'plans_delete',
+            'plans_destroy',
+            // Profile
+            'profile_edit',
         ];
     }
 }

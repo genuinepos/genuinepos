@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
     <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/jquery.dataTables.min.css">
@@ -16,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
     {{-- <link rel="stylesheet" id="rtlStyle" href="" type="text/css"> --}}
     <style>
         .toast-success {
@@ -35,7 +35,7 @@
         <x-saas::_messages />
         {{ $slot }}
         <x-saas::_footer />
-        <form action="#" id="deleted_form">
+        <form action="#" id="deleted_form" method="POST">
             @csrf
             @method('DELETE')
         </form>

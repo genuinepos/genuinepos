@@ -33,7 +33,7 @@ final class SalePaymentFactory extends Factory
             'customer_id' => \App\Models\Customer::factory(),
             'account_id' => \App\Models\Account::factory(),
             'pay_mode' => $this->faker->word,
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
             'paid_amount' => $this->faker->randomFloat(),
             'payment_on' => $this->faker->boolean,
             'payment_type' => $this->faker->boolean,

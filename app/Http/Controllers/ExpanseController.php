@@ -6,7 +6,7 @@ use App\Models\Expanse;
 use App\Models\ExpanseCategory;
 use App\Models\ExpansePayment;
 use App\Models\ExpenseDescription;
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use App\Utils\AccountUtil;
 use App\Utils\ExpenseUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;

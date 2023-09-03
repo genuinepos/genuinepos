@@ -35,7 +35,7 @@ final class SupplierPaymentFactory extends Factory
             'report_date' => $this->faker->word,
             'type' => $this->faker->boolean,
             'pay_mode' => $this->faker->word,
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
             'date' => $this->faker->word,
             'time' => $this->faker->word,
             'month' => $this->faker->word,

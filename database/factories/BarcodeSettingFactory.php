@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\BarcodeSetting;
+use App\Models\Setups\BarcodeSetting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\BarcodeSetting>
+ * @extends Factory<\App\Models\Setups\BarcodeSetting>
  */
 final class BarcodeSettingFactory extends Factory
 {

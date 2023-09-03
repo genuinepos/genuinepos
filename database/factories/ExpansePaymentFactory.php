@@ -48,7 +48,7 @@ final class ExpansePaymentFactory extends Factory
             'admin_id' => $this->faker->randomNumber(),
             'note' => $this->faker->sentence,
             'report_date' => $this->faker->word,
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
         ];
     }
 }

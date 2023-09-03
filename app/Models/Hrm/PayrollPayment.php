@@ -4,7 +4,7 @@ namespace App\Models\Hrm;
 
 use App\Models\Account;
 use App\Models\BaseModel;
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 
 class PayrollPayment extends BaseModel
 {

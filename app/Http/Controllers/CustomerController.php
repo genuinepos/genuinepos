@@ -7,7 +7,7 @@ use App\Models\CustomerCreditLimit;
 use App\Models\CustomerOpeningBalance;
 use App\Models\CustomerPayment;
 use App\Models\CustomerPaymentInvoice;
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use App\Models\Sale;
 use App\Models\SaleReturn;
 use App\Utils\AccountUtil;

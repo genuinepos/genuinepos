@@ -31,7 +31,7 @@ final class LoanPaymentFactory extends Factory
             'account_id' => $this->faker->randomNumber(),
             'paid_amount' => $this->faker->randomFloat(),
             'pay_mode' => $this->faker->word,
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
             'date' => $this->faker->word,
             'report_date' => $this->faker->word,
             'user_id' => $this->faker->randomNumber(),

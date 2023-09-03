@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\PaymentMethod>
+ * @extends Factory<\App\Models\Setups\PaymentMethod>
  */
 final class PaymentMethodFactory extends Factory
 {

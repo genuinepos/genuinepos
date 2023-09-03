@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\CashCounter;
+use App\Models\Setups\CashCounter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\CashCounter>
+ * @extends Factory<\App\Models\Setups\CashCounter>
  */
 final class CashCounterFactory extends Factory
 {

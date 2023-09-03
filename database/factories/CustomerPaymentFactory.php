@@ -52,7 +52,7 @@ final class CustomerPaymentFactory extends Factory
             'attachment' => $this->faker->word,
             'note' => $this->faker->sentence,
             'admin_id' => $this->faker->randomNumber(),
-            'payment_method_id' => \App\Models\PaymentMethod::factory(),
+            'payment_method_id' => \App\Models\Setups\PaymentMethod::factory(),
         ];
     }
 }

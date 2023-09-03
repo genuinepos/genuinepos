@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\InvoiceLayout;
+use App\Models\Setups\InvoiceLayout;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\InvoiceLayout>
+ * @extends Factory<\App\Models\Setups\InvoiceLayout>
  */
 final class InvoiceLayoutFactory extends Factory
 {
@@ -43,7 +43,6 @@ final class InvoiceLayoutFactory extends Factory
             'quotation_heading' => $this->faker->word,
             'draft_heading' => $this->faker->word,
             'challan_heading' => $this->faker->word,
-            'branch_landmark' => $this->faker->boolean,
             'branch_city' => $this->faker->boolean,
             'branch_state' => $this->faker->boolean,
             'branch_country' => $this->faker->boolean,

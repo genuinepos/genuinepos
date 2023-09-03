@@ -6,7 +6,7 @@ use App\Mail\FinalSaleCreated;
 use App\Mail\SaleOrderCreated;
 use App\Mail\SaleQuotationCreated;
 use App\Models\Customer;
-use App\Models\PaymentMethod;
+use App\Models\Setups\PaymentMethod;
 use App\Models\Product;
 use App\Models\ProductBranch;
 use App\Models\Sale;

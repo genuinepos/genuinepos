@@ -2,23 +2,23 @@
 
 namespace App\Models\Products;
 
-use App\Models\Tax;
-use App\Models\Unit;
-use App\Models\Brand;
-use App\Models\Account;
-use App\Models\Category;
-use App\Models\Warranty;
 use App\Models\SaleProduct;
 use App\Models\ComboProduct;
 use App\Models\ProductImage;
 use App\Models\ProductBranch;
-use App\Models\ProductVariant;
-use App\Models\PurchaseProduct;
+use App\Models\Products\Unit;
+use App\Models\Products\Brand;
+use App\Models\Accounts\Account;
 use App\Models\ProductWarehouse;
+use App\Models\Products\Category;
+use App\Models\Products\Warranty;
 use App\Models\PurchaseOrderProduct;
 use App\Models\Manufacturing\Process;
+use App\Models\Products\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Manufacturing\Production;
+use App\Models\Purchases\PurchaseProduct;
+use App\Models\Products\ProductAccessBranch;
 use App\Models\TransferStockToBranchProduct;
 use App\Models\Manufacturing\ProcessIngredient;
 use App\Models\TransferStockToWarehouseProduct;
@@ -119,7 +119,7 @@ class Product extends Model
 
     public function tax()
     {
-        return $this->belongsTo(Account::class, 'tax_ac_id');
+        return $this->belongsTo(Account::class, 'tax_ac_id')->select(['id', 'name', 'tax_percent']);;
     }
 
     public function unit()
@@ -163,5 +163,16 @@ class Product extends Model
     {
         return $this->hasOne(ProductBranch::class)->where('branch_id', auth()->user()->branch_id)
             ->select('id', 'branch_id', 'product_id', 'product_quantity');
+    }
+
+    public function productAccessBranches()
+    {
+        return $this->hasMany(ProductAccessBranch::class);
+    }
+
+    public function productAccessBranch()
+    {
+        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        return $this->hasOne(ProductAccessBranch::class)->where('branch_id', $ownBranchIdOrParentBranchId);
     }
 }

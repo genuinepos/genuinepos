@@ -28,6 +28,8 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
     Route::middleware('auth')->group(base_path('routes/sales.php'));
     Route::middleware('auth')->group(base_path('routes/products.php'));
     Route::middleware('auth')->group(base_path('routes/setups.php'));
+    Route::middleware('auth')->group(base_path('routes/purchases.php'));
+    Route::middleware('auth')->group(base_path('routes/general_searches.php'));
 });
 
 /*

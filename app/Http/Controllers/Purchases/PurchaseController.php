@@ -26,14 +26,23 @@ use App\Utils\SupplierPaymentUtil;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Products\UnitService;
 use App\Utils\InvoiceVoucherRefIdUtil;
+use App\Services\CodeGenerationService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\WarehouseService;
+use App\Services\Purchases\PurchaseService;
+use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
+use App\Services\Accounts\AccountGroupService;
+use App\Services\Accounts\AccountFilterService;
 use App\Services\GeneralSettingServiceInterface;
 use Modules\Communication\Interface\EmailServiceInterface;
 
 class PurchaseController extends Controller
 {
     public function __construct(
+        private PurchaseService $purchaseService,
         private EmailServiceInterface $emailService,
         private NameSearchUtil $nameSearchUtil,
         private PurchaseUtil $purchaseUtil,
@@ -48,12 +57,18 @@ class PurchaseController extends Controller
         private PurchaseReturnUtil $purchaseReturnUtil,
         private UserActivityLogUtil $userActivityLogUtil,
         private PaymentMethodService $paymentMethodService,
+        private AccountService $accountService,
+        private AccountGroupService $accountGroupService,
+        private AccountFilterService $accountFilterService,
+        private WarehouseService $warehouseService,
+        private BranchSettingService $branchSettingService,
+        private UnitService $unitService,
     ) {
     }
 
-    public function index_v2(Request $request)
+    public function index(Request $request)
     {
-        if (! auth()->user()->can('purchase_all')) {
+        if (!auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -70,7 +85,7 @@ class PurchaseController extends Controller
 
     public function purchaseProductList(Request $request)
     {
-        if (! auth()->user()->can('purchase_all')) {
+        if (!auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -107,56 +122,53 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('purchase_add')) {
+        if (!auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }
 
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $accounts = $this->accountService->accounts(with: [
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch'
+        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+            ->get();
+
+        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
+
         $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
-        $accounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
-            ->whereIn('accounts.account_type', [1, 2])
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->orderBy('accounts.account_type', 'asc')
-            ->select(
-                'accounts.id',
-                'accounts.name',
-                'accounts.account_number',
-                'accounts.account_type',
-                'banks.name as bank'
-            )->get();
-
-        $purchaseAccounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->where('accounts.account_type', 3)
+        $purchaseAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 12)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name']);
 
-        $warehouses = DB::table('warehouse_branches')
-            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
-            ->orWhere('warehouse_branches.is_global', 1)
-            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
-            ->select(
-                'warehouses.id',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-            )->get();
+        $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
+            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
-        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
-        $units = DB::table('units')->select('id', 'name')->get();
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone', 'pay_term', 'pay_term_number')->get();
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        return view('purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxes', 'units', 'suppliers'));
+        return view('purchase.purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
     }
 
     // add purchase method
-    public function store(Request $request)
+    public function store(Request $request, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
-            'supplier_id' => 'required',
+            'supplier_account_id' => 'required',
             'invoice_id' => 'sometimes|unique:purchases,invoice_id',
             'date' => 'required|date',
             'payment_method_id' => 'required',
@@ -174,12 +186,11 @@ class PurchaseController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (! isset($request->product_ids)) {
+        $restrictions = $this->purchaseService->restrictions($request);
 
-            return response()->json(['errorMsg' => 'Product table is empty.']);
-        } elseif (count($request->product_ids) > 60) {
+        if ($restrictions['pass'] == false) {
 
-            return response()->json(['errorMsg' => 'Purchase invoice items must be less than 60 or equal.']);
+            return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
         try {
@@ -187,40 +198,39 @@ class PurchaseController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
-            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
+
+            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
+            $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_invoice_prefix ? $branchSetting?->purchase_invoice_prefix : $generalSettings['prefix__purchase_invoice'];
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
-            $i = 0;
-            foreach ($request->product_ids as $product_id) {
+            // $i = 0;
+            // foreach ($request->product_ids as $product_id) {
 
-                $variant_id = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
-                $SupplierProduct = SupplierProduct::where('supplier_id', $request->supplier_id)
-                    ->where('product_id', $product_id)
-                    ->where('product_variant_id', $variant_id)
-                    ->first();
+            //     $variant_id = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
+            //     $SupplierProduct = SupplierProduct::where('supplier_id', $request->supplier_id)
+            //         ->where('product_id', $product_id)
+            //         ->where('product_variant_id', $variant_id)
+            //         ->first();
 
-                if (! $SupplierProduct) {
+            //     if (!$SupplierProduct) {
 
-                    $addSupplierProduct = new SupplierProduct();
-                    $addSupplierProduct->supplier_id = $request->supplier_id;
-                    $addSupplierProduct->product_id = $product_id;
-                    $addSupplierProduct->product_variant_id = $variant_id;
-                    $addSupplierProduct->label_qty = $request->quantities[$i];
-                    $addSupplierProduct->save();
-                } else {
+            //         $addSupplierProduct = new SupplierProduct();
+            //         $addSupplierProduct->supplier_id = $request->supplier_id;
+            //         $addSupplierProduct->product_id = $product_id;
+            //         $addSupplierProduct->product_variant_id = $variant_id;
+            //         $addSupplierProduct->label_qty = $request->quantities[$i];
+            //         $addSupplierProduct->save();
+            //     } else {
 
-                    $SupplierProduct->label_qty = $SupplierProduct->label_qty + $request->quantities[$i];
-                    $SupplierProduct->save();
-                }
+            //         $SupplierProduct->label_qty = $SupplierProduct->label_qty + $request->quantities[$i];
+            //         $SupplierProduct->save();
+            //     }
 
-                $i++;
-            }
+            //     $i++;
+            // }
 
-            $updateLastCreated = Purchase::where('is_last_created', 1)
-                ->where('branch_id', auth()->user()->branch_id)
-                ->select('id', 'is_last_created')
-                ->first();
+            $updateLastCreated = $this->purchaseService->purchaseByAnyCondition()->where('is_last_created', 1)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
 
             if ($updateLastCreated) {
 
@@ -228,13 +238,14 @@ class PurchaseController extends Controller
                 $updateLastCreated->save();
             }
 
-            $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : '';
-            $addPurchase = $this->purchaseUtil->addPurchase(request: $request, invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil, invoicePrefix: $__invoicePrefix);
+            $addPurchase = $this->purchaseService->addPurchase(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
 
             $index = 0;
             foreach ($request->product_ids as $productId) {
 
-                $addPurchaseProduct = $this->purchaseProductUtil->addPurchaseProduct(request: $request, purchaseId: $addPurchase->id, isEditProductPrice: $isEditProductPrice, index: $index);
+                $addPurchaseProduct = $this->purchaseProductService->addPurchaseProduct(request: $request, purchaseId: $addPurchase->id, isEditProductPrice: $isEditProductPrice, index: $index);
+
+                // purchase product tax will be go here
                 $index++;
             }
 
@@ -248,15 +259,15 @@ class PurchaseController extends Controller
                 balance_type: 'debit'
             );
 
-            // Add supplier ledger For Purchase
-            $this->supplierUtil->addSupplierLedger(
-                voucher_type_id: 1,
-                supplier_id: $request->supplier_id,
-                branch_id: auth()->user()->branch_id,
-                date: $request->date,
-                trans_id: $addPurchase->id,
-                amount: $request->total_purchase_amount,
-            );
+            // // Add supplier ledger For Purchase
+            // $this->supplierUtil->addSupplierLedger(
+            //     voucher_type_id: 1,
+            //     supplier_id: $request->supplier_id,
+            //     branch_id: auth()->user()->branch_id,
+            //     date: $request->date,
+            //     trans_id: $addPurchase->id,
+            //     amount: $request->total_purchase_amount,
+            // );
 
             if ($request->paying_amount > 0) {
 
@@ -437,7 +448,7 @@ class PurchaseController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (! isset($request->product_ids)) {
+        if (!isset($request->product_ids)) {
 
             return response()->json(['errorMsg' => 'Product table is empty.']);
         }
@@ -489,7 +500,7 @@ class PurchaseController extends Controller
                     ->where('product_variant_id', $variantId)
                     ->first();
 
-                if (! $SupplierProduct) {
+                if (!$SupplierProduct) {
 
                     $addSupplierProduct = new SupplierProduct();
                     $addSupplierProduct->supplier_id = $purchase->supplier_id;
@@ -686,7 +697,7 @@ class PurchaseController extends Controller
 
             $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)->where('product_id', $product->id)->first();
 
-            if (! $productBranch) {
+            if (!$productBranch) {
 
                 return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
             }
@@ -703,7 +714,7 @@ class PurchaseController extends Controller
                 $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
                     ->where('product_id', $variant_product->product_id)->first();
 
-                if (! $productBranch) {
+                if (!$productBranch) {
 
                     return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
                 }
@@ -740,8 +751,8 @@ class PurchaseController extends Controller
 
             if (count($purchase_product->purchaseSaleChains) > 0) {
 
-                $variant = $purchase_product->variant ? ' - '.$purchase_product->variant->name : '';
-                $product = $purchase_product->product->name.$variant;
+                $variant = $purchase_product->variant ? ' - ' . $purchase_product->variant->name : '';
+                $product = $purchase_product->product->name . $variant;
 
                 return response()->json("Can not delete is purchase. Mismatch between sold and purchase stock account method. Product: ${product}");
             }
@@ -1234,14 +1245,14 @@ class PurchaseController extends Controller
             ->where('id', $paymentId)
             ->first();
 
-        if (! is_null($deletePurchasePayment)) {
+        if (!is_null($deletePurchasePayment)) {
 
             $storedAccountId = $deletePurchasePayment->account_id;
             if ($deletePurchasePayment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/'.$deletePurchasePayment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/'.$deletePurchasePayment->attachment));
+                    unlink(public_path('uploads/payment_attachment/' . $deletePurchasePayment->attachment));
                 }
             }
 

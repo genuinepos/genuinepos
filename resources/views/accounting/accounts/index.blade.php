@@ -24,31 +24,42 @@
                                 <div class="form-group row">
                                     @if ($generalSettings['addons__branches'] == 1)
                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
-                                            <div class="col-md-2">
+                                            <div class="col-md-4">
                                                 <label><strong>{{ __("Shop/Business") }} </strong></label>
                                                 <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
                                                     <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
+                                                        @foreach ($branches as $branch)
+                                                            <option value="{{ $branch->id }}">
+                                                                @php
+                                                                    $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                    $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                    $branchCode = '-(' . $branch->branch_code.')';
+                                                                @endphp
+                                                                {{  $branchName.$areaName.$branchCode }}
+                                                            </option>
+                                                        @endforeach
                                                 </select>
                                             </div>
                                         @endif
                                     @endif
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <label><strong>{{ __("Account Group") }} </strong></label>
                                         <select name="f_account_group_id" id="f_account_group_id" class="form-control select2">
-                                            <option value="">@lang('menu.all')</option>
+                                            <option value="">{{ __("All") }}</option>
+                                            @foreach ($accountGroups as $group)
+                                                @php
+                                                    $parentGroup = $group?->parentGroup ? '-('.$group?->parentGroup?->name.')' : '';
+                                                @endphp
+                                                <option value="{{ $group->id }}">{{ $group->name.$parentGroup }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
                                     <div class="col-md-2">
                                         <label><strong></strong></label>
                                         <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-info"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -268,43 +279,6 @@
                 });
             });
         });
-
-        $('#f_branch_id').on('change', function(e) {
-
-            getAccountGroupBranchWise();
-        });
-
-        function getAccountGroupBranchWise() {
-
-            var url = "{{ route('account.groups.branch.wise') }}";
-            var auth_branch_id = "{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}";
-            var branch_id = $('#f_branch_id').val() ? $('#f_branch_id').val() : auth_branch_id;
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                data: {branch_id},
-                success: function(accountGroups) {
-
-                    $('#f_account_group_id').empty();
-                    $('#f_account_group_id').append('<option value="">All</option>');
-                    $.each(accountGroups, function(key, accountGroup) {
-
-                        $('#f_account_group_id').append('<option value="' + accountGroup.id + '">' + accountGroup.name + '</option>');
-                    });
-                },error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error('Net Connetion Error. Reload This Page.');
-                        return;
-                    }
-                }
-            });
-        }
-
-        getAccountGroupBranchWise()
-
 
         // $(document).on('change', '#account_type', function() {
         //     var account_type = $(this).val();

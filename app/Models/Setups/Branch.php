@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Setups;
 
 use App\Models\Sale;
 use App\Models\Purchase;
+use App\Models\BaseModel;
 use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
 use App\Models\Setups\InvoiceLayout;

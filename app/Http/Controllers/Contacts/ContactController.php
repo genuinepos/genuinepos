@@ -54,7 +54,7 @@ class ContactController extends Controller
             $supplierAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
                 ->where('sub_sub_group_number', 10)->where('is_reserved', 1)->first();
 
-            $__accountGroup_id = $type == ContactType::Customer->value ? $customerAccountGroup->id : $supplierAccountGroup->id;
+            $accountGroup = $type == ContactType::Customer->value ? $customerAccountGroup : $supplierAccountGroup;
 
             $addContact = $this->contactService->addContact(type: $type, codeGenerator: $codeGenerator, contactIdPrefix: $contactIdPrefix, name: $request->name, phone: $request->phone, businessName: $request->business_name, email: $request->email, alternativePhone: $request->alternative_phone, landLine: $request->landline, dateOfBirth: $request->date_of_birth, taxNumber: $request->tax_number, customerGroupId: $request->customer_group_id, address: $request->address, city: $request->city, state: $request->state, country: $request->country, zipCode: $request->zip_code, shippingAddress: $request->shipping_address, payTerm: $request->pay_term, payTermNumber: $request->pay_term_number, creditLimit: $request->credit_limit, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
 
@@ -68,7 +68,7 @@ class ContactController extends Controller
                 $addContactOpeningBalance = $this->contactOpeningBalanceService->addContactOpeningBalance(contactId: $addContact->id, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
             }
 
-            $addAccount = $this->accountService->addAccount(name: $request->name, accountGroupId: $__accountGroup_id, phone: $request->phone, address: $request->address, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type, contactId: $addContact->id);
+            $addAccount = $this->accountService->addAccount(name: $request->name, accountGroup: $accountGroup, phone: $request->phone, address: $request->address, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type, contactId: $addContact->id);
 
             $this->accountLedgerService->addAccountLedgerEntry(
                 voucher_type_id: 0,
@@ -114,7 +114,7 @@ class ContactController extends Controller
             $supplierAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
                 ->where('sub_sub_group_number', 10)->where('is_reserved', 1)->first();
 
-            $__accountGroup_id = $type == ContactType::Customer->value ? $customerAccountGroup->id : $supplierAccountGroup->id;
+            $accountGroup = $type == ContactType::Customer->value ? $customerAccountGroup : $supplierAccountGroup;
 
             $updateContact = $this->contactService->updateContact($contactId, type: $type, name: $request->name, phone: $request->phone, businessName: $request->business_name, email: $request->email, alternativePhone: $request->alternative_phone, landLine: $request->landline, dateOfBirth: $request->date_of_birth, taxNumber: $request->tax_number, customerGroupId: $request->customer_group_id, address: $request->address, city: $request->city, state: $request->state, country: $request->country, zipCode: $request->zip_code, shippingAddress: $request->shipping_address, payTerm: $request->pay_term, payTermNumber: $request->pay_term_number, creditLimit: $request->credit_limit, openingBalance: $request->opening_balance, openingBalanceType: $request->opening_balance_type);
 
@@ -133,7 +133,7 @@ class ContactController extends Controller
                 name: $request->name,
                 phone: $request->phone,
                 address: $request->address,
-                accountGroupId: $__accountGroup_id,
+                accountGroup: $accountGroup,
                 openingBalance: $request->opening_balance,
                 openingBalanceType: $request->opening_balance_type,
             );
@@ -162,5 +162,17 @@ class ContactController extends Controller
     public function changeStatus($contactId)
     {
         return $this->contactService->changeStatus($contactId);
+    }
+
+    public function delete(Request $request, $id)
+    {
+        if (! auth()->user()->can('supplier_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $this->contactService->deleteContact($id);
+
+        return response()->json('Contact deleted successfully');
     }
 }

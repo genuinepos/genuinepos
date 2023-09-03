@@ -13,29 +13,33 @@ class ProductService
 {
     public function productListTable($request)
     {
-        // $generalSettings = config('generalSettings');
+        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
         $generalSettings = config('generalSettings');
         $countPriceGroup = DB::table('price_groups')->where('status', 'Active')->count();
         $img_url = asset('uploads/product/thumbnail');
         $products = '';
 
-        $query = DB::table('product_branches')
-            ->leftJoin('products', 'product_branches.product_id', 'products.id')
+        $query = Product::query()->with([
+            'productAccessBranches',
+            'productAccessBranches.branch:id,name,area_name,branch_code,parent_branch_id',
+            'productAccessBranches.branch.parentBranch:id,name,area_name,branch_code',
+        ])
+            ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
             ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
             ->leftJoin('accounts as tax', 'products.tax_ac_id', 'tax.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('product_branches.status', 1);
+            ->where('products.status', 1);
 
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('product_branches.branch_id', null);
+                $query->where('product_access_branches.branch_id', null);
             } else {
 
-                $query->where('product_branches.branch_id', $request->branch_id);
+                $query->where('product_access_branches.branch_id', $request->branch_id);
             }
         }
 
@@ -84,10 +88,9 @@ class ProductService
             $query->where('products.status', $request->status);
         }
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-        } else {
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            $query->where('product_branches.branch_id', auth()->user()->branch_id);
+            $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
         }
 
         $products = $query->select(
@@ -110,7 +113,7 @@ class ProductService
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->distinct('product_branches.branch_id')->orderBy('id', 'desc');
+        )->distinct('product_access_branches.branch_id')->orderBy('id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
@@ -151,7 +154,7 @@ class ProductService
 
                 if ($countPriceGroup > 0) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> '. __("Manage Price Group") .'</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
                 }
 
                 $html .= ' </div>';
@@ -198,34 +201,49 @@ class ProductService
                     return $html;
                 }
             })
-            ->editColumn('access_locations', function ($row) use ($generalSettings, $request) {
+            ->editColumn('access_branches', function ($row) use ($generalSettings, $request) {
 
-                $productBranches = '';
-                $query = DB::table('product_branches')->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->where('product_branches.product_id', $row->id);
+                $productAccessBranches = $row->productAccessBranches;
+                // $query = DB::table('product_branches')->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->where('product_branches.product_id', $row->id);
 
                 if ($request->branch_id) {
 
                     if ($request->branch_id == 'NULL') {
 
-                        $query->where('product_branches.branch_id', null);
+                        // $query->where('product_branches.branch_id', null);
+                        $productAccessBranches->where('branch_id', null);
                     } else {
 
-                        $query->where('product_branches.branch_id', $request->branch_id);
+                        // $query->where('product_branches.branch_id', $request->branch_id);
+                        $productAccessBranches->where('branch_id', $request->branch_id);
                     }
                 }
 
-                if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
-                    $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
-                } else {
+                //     $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
+                // } else {
 
-                    $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
+                //     $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)
+                //         ->select('branches.name as b_name')
+                //         ->orderBy('product_branches.branch_id', 'asc')->get();
+                // }
+
+                if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+                    $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }
 
                 $text = '';
-                foreach ($productBranches as $productBranch) {
+                foreach ($productAccessBranches as $productAccessBranch) {
 
-                    $text .= '<p class="m-0 p-0">' . ($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__shop_name']) . ',</p>';
+                    $branchName = $productAccessBranch?->branch?->parent_branch_id ? $productAccessBranch?->branch?->name : $productAccessBranch?->branch?->name;
+
+                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business__shop_name'];
+
+                    $areaName = $productAccessBranch?->branch?->area_name ? '('.$productAccessBranch?->branch?->area_name.')' : '';
+
+                    $text .= '<p class="m-0 p-0">' . $__branchName.$areaName. ',</p>';
                 }
 
                 return $text;
@@ -238,7 +256,7 @@ class ProductService
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
-            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_locations'])
+            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
             ->smart(true)->make(true);
     }
 
@@ -372,6 +390,18 @@ class ProductService
         }
 
         return ['pass' => true];
+    }
+
+    public function productByAnyCondition(array $with): ?object
+    {
+        $query = Product::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 
     public function singleProduct(int $id, array $with = null, array $firstWithSelect = null): ?object

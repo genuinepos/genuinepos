@@ -308,8 +308,7 @@ Route::group(['prefix' => 'purchases'], function () {
     Route::get('product/list', [PurchaseController::class, 'purchaseProductList'])->name('purchases.product.list');
     Route::get('show/{purchaseId}', [PurchaseController::class, 'show'])->name('purchases.show');
     Route::get('order/print/supplier/copy/{purchaseId}', [PurchaseController::class, 'printSupplierCopy'])->name('purchases.order.supplier.copy.print');
-    Route::get('create', [PurchaseController::class, 'create'])->name('purchases.create');
-    Route::post('store', [PurchaseController::class, 'store'])->name('purchases.store');
+
     Route::get('edit/{purchaseId}', [PurchaseController::class, 'edit'])->name('purchases.edit');
     Route::get('editable/purchase/{purchaseId}/{editType}', [PurchaseController::class, 'editablePurchase'])->name('purchases.get.editable.purchase');
     Route::post('update/{purchaseId}', [PurchaseController::class, 'update'])->name('purchases.update');

@@ -35,7 +35,7 @@ class AccountGroupController extends Controller
     public function create()
     {
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
-            ->where('is_main_group', 0)->where('branch_id', auth()->user()->branch_id)->get();
+            ->where('is_main_group', 0)->where('branch_id', auth()->user()->branch_id)->orWhere('is_global', 1)->get();
 
         return view('accounting.groups.ajax_view.create', compact('formGroups'));
     }
@@ -64,7 +64,8 @@ class AccountGroupController extends Controller
 
     public function edit($id)
     {
-        $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->get();
+        $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
+        ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
         $group = $this->accountGroupService->singleAccountGroup(id: $id, with: ['parentGroup']);
 
         return view('accounting.groups.ajax_view.edit', compact('formGroups', 'group'));
@@ -90,12 +91,6 @@ class AccountGroupController extends Controller
         }
 
         return response()->json(__('Account Group Updated Successfully'));
-    }
-
-    public function accountGroupBranchWise(Request $request)
-    {
-
-        return $this->accountGroupService->accountGroups($request)->select('id', 'name')->where('is_main_group', 0)->orWhere('is_global', 1)->get();
     }
 
     public function delete(Request $request, $id)

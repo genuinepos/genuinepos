@@ -1,6 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Purchases;
+
+use App\Models\BaseModel;
+use App\Models\Products\Product;
+use App\Models\Purchases\Purchase;
+use App\Models\Products\ProductVariant;
 
 class PurchaseProduct extends BaseModel
 {

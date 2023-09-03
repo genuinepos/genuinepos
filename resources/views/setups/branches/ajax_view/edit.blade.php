@@ -30,19 +30,25 @@
 
                 <div class="form-group row mt-1">
                     <div class="col-lg-3 col-md-6 branch_name_field {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}">
-                        <label><b>{{ __("Shop Name") }} </b> <span class="text-danger">*</span></label>
-                        <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="branch_name" data-next="branch_code" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
+                        <label><b>{{ __("Shop Name") }}</b> <span class="text-danger">*</span></label>
+                        <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
                         <span class="error error_branch_name"></span>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <label><b>{{ __("Shop ID") }} </b> <span class="text-danger">*</span></label>
+                        <label><b>{{ __("Area Name") }}</b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="area_name" class="form-control" id="area_name" data-next="branch_code" value="{{ $branch->area_name }}" placeholder="{{ __("Area Name") }}"/>
+                        <span class="error error_branch_code"></span>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <label><b>{{ __("Shop ID") }}</b> <span class="text-danger">*</span></label>
                         <input required type="text" name="branch_code" class="form-control" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __("Shop ID") }}"/>
                         <span class="error error_branch_code"></span>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
-                        <label><b>{{ __("Phone") }} </b> <span class="text-danger">*</span></label>
+                        <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
                         <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __("Phone No") }}" />
                         <span class="error error_branch_phone"></span>
                     </div>

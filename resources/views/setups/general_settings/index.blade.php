@@ -323,7 +323,7 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label><strong>View Stock Expiry Alert For </strong> <span
+                                            <label><strong>{{ __("View Stock Expiry Alert For") }} </strong> <span
                                                     class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <input type="number" name="view_stock_expiry_alert_for"
@@ -387,56 +387,46 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.stock_adjustment') </strong></label>
-                                            <input type="text" name="stock_djustment" class="form-control"
-                                                autocomplete="off"
-                                                value="{{ $generalSettings['prefix__stock_adjustment'] }}">
+                                            <label><strong>{{ __("Stock Adjustment") }}</strong></label>
+                                            <input type="text" name="stock_adjustment" class="form-control" value="{{ $generalSettings['prefix__stock_adjustment'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.sale_return') </strong></label>
-                                            <input type="text" name="sale_return" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['prefix__sale_return'] }}">
+                                            <input type="text" name="sale_return" class="form-control" value="{{ $generalSettings['prefix__sale_return'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.expenses') </strong></label>
-                                            <input type="text" name="expenses" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['prefix__expenses'] }}">
+                                            <input type="text" name="expenses" class="form-control" value="{{ $generalSettings['prefix__expenses'] }}" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Expense Payment') }} </strong></label>
-                                            <input type="text" name="expanse_payment" class="form-control"
-                                                autocomplete="off"
-                                                value="{{ $generalSettings['prefix__expanse_payment'] }}">
+                                            <input type="text" name="expanse_payment" class="form-control" value="{{ $generalSettings['prefix__expanse_payment'] }}" autocomplete="off" >
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Purchase Payment') }} </strong></label>
-                                            <input type="text" name="purchase_payment" class="form-control"
-                                                autocomplete="off"
-                                                value="{{ $generalSettings['prefix__purchase_payment'] }}">
+                                            <label><strong>{{ __('Payment') }} </strong></label>
+                                            <input type="text" name="payment" class="form-control" value="{{ $generalSettings['prefix__payment'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Sale Payment') }} </strong></label>
-                                            <input type="text" name="sale_payment" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['prefix__sale_payment'] }}">
+                                            <label><strong>{{ __('Receipt') }} </strong></label>
+                                            <input type="text" name="receipt" class="form-control" value="{{ $generalSettings['prefix__receipt'] }}" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.supplier_id')</strong></label>
-                                            <input type="text" name="supplier_id" class="form-control"
-                                                autocomplete="off" value="{{ $generalSettings['prefix__supplier_id'] }}">
+                                            <label><strong>{{ __("Supplier ID") }}</strong></label>
+                                            <input type="text" name="supplier_id" class="form-control" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.customer') ID </strong></label>
+                                            <label><strong>{{ __("Customer ID") }} </strong></label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off"
                                                 value="{{ $generalSettings['prefix__customer_id'] }}">
                                         </div>

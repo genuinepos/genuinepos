@@ -1,6 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Purchases;
+
+use App\Models\Branch;
+use App\Models\BaseModel;
+use App\Models\Setups\Warehouse;
 
 class Purchase extends BaseModel
 {
@@ -20,19 +24,19 @@ class Purchase extends BaseModel
         return $this->belongsTo(Branch::class, 'branch_id')->select(['id', 'name', 'branch_code', 'phone', 'city', 'state', 'zip_code', 'country', 'logo']);
     }
 
-    public function purchase_products()
+    public function purchaseProducts()
     {
         return $this->hasMany(PurchaseProduct::class, 'purchase_id');
     }
 
-    public function purchase_order_products()
+    public function purchaseOrderProducts()
     {
         return $this->hasMany(PurchaseOrderProduct::class);
     }
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id')->select(['id', 'name', 'business_name', 'phone', 'email', 'address', 'prefix']);
+        return $this->belongsTo(Account::class, 'supplier_account_id')->select(['id', 'name', 'business_name', 'phone', 'email', 'address', 'prefix']);
     }
 
     public function admin()
@@ -40,27 +44,27 @@ class Purchase extends BaseModel
         return $this->belongsTo(User::class, 'admin_id');
     }
 
-    public function purchase_return()
+    public function purchaseReturn()
     {
         return $this->hasOne(PurchaseReturn::class, 'purchase_id');
     }
 
-    public function purchase_payments()
-    {
-        return $this->hasMany(PurchasePayment::class);
-    }
+    // public function purchase_payments()
+    // {
+    //     return $this->hasMany(PurchasePayment::class);
+    // }
 
-    public function ledger()
-    {
-        return $this->hasOne(SupplierLedger::class);
-    }
+    // public function ledger()
+    // {
+    //     return $this->hasOne(SupplierLedger::class);
+    // }
 
-    public function transfer_to_warehouse()
+    public function transferToWarehouse()
     {
         return $this->hasMany(TransferStockToWarehouse::class);
     }
 
-    public function transfer_to_branch()
+    public function transferToBranch()
     {
         return $this->hasMany(TransferStockToBranch::class);
     }

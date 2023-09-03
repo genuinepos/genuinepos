@@ -2,19 +2,33 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Modules\SAAS\Entities\Role;
 use Illuminate\Routing\Controller;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Contracts\Support\Renderable;
+use Modules\SAAS\Entities\Permission;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('saas::index');
+        $roles = Role::query();
+        if ($request->ajax()) {
+            return DataTables::of($roles)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $html = '<div class="dropdown table-dropdown">';
+                    $html .= '<a href="' . route('saas.roles.edit', $row->id) .
+                        '" class="px-2 edit-btn btn btn-primary btn-sm text-white" id="editUser" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
+                    $html .= '<a href="' . route('saas.roles.destroy', $row->id) .
+                        '" class="px-2 delete-btn btn btn-danger btn-sm text-white ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
+                    $html .= '</div>';
+                    return $html;
+                })
+                ->make(true);
+        }
+        return view('saas::roles.index', compact('roles'));
     }
 
     /**
@@ -23,7 +37,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('saas::create');
+        return view('saas::roles.create', [
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+        ]);
     }
 
     /**
@@ -43,7 +60,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        return view('saas::show');
+        return view('saas::roles.show');
     }
 
     /**
@@ -51,9 +68,12 @@ class RoleController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        return view('saas::edit');
+        return view('saas::roles.edit', [
+            'role' => $role,
+            'roles' => Role::all(),
+        ]);
     }
 
     /**

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('cheque_issue_date')->nullable();
             $table->string('note')->nullable();
             $table->string('amount_type')->nullable();
-            $table->decimal('amount', 22, 2)->default();
+            $table->decimal('amount', 22, 2)->default(0);
             $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
 

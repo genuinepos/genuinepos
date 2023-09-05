@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounting_voucher_description_references', function (Blueprint $table) {
+        Schema::create('voucher_description_references', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('accounting_voucher_description_id')->nullable();
+            $table->unsignedBigInteger('voucher_description_id')->nullable();
             $table->unsignedBigInteger('sale_id')->nullable();
             $table->unsignedBigInteger('purchase_id')->nullable();
             $table->unsignedBigInteger('sale_return_id')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('amount', 22, 2)->default(0);
             $table->timestamps();
 
-            $table->foreign('accounting_voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
+            $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->foreign('purchase_return_id')->references('id')->on('purchase_returns')->onDelete('cascade');

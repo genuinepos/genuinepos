@@ -30,6 +30,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('branch_id')->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

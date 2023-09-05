@@ -48,7 +48,7 @@ class AccountLedgerService
         $add->{$voucherType['id']} = $trans_id;
         $add->{$amount_type} = $amount;
         $add->amount_type = $amount_type;
-        // $add->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
+        $add->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
         $add->branch_id = auth()->user()->branch_id;
         $add->save();
     }
@@ -83,7 +83,7 @@ class AccountLedgerService
             $update->account_id = $account_id;
             $update->{$amount_type} = $amount;
             $update->amount_type = $amount_type;
-            // $update->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
+            $update->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
             $update->save();
         } else {
 

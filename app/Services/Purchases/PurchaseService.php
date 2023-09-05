@@ -8,7 +8,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseService
 {
-    public function addPurchase($request, $codeGenerationService, $invoicePrefix)
+    public function addPurchase(object $request, object $codeGenerationService, string $invoicePrefix): ?object
     {
         $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : 'PI';
         $invoiceId = $codeGenerationService->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $__invoicePrefix, splitter: '-', suffixSeparator: '-');
@@ -39,11 +39,49 @@ class PurchaseService
         $addPurchase->purchase_status = PurchaseStatus::Purchase->value;
         $addPurchase->is_purchased = 1;
         $addPurchase->date = $request->date;
-        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchase->is_last_created = 1;
         $addPurchase->save();
 
         return $addPurchase;
+    }
+
+    public function adjustPurchaseInvoiceAmounts(object $purchase): ?object
+    {
+        $totalPurchasePaid = DB::table('accounting_voucher_description_references')
+            ->where('accounting_voucher_description_references.purchase_id', $purchase->id)
+            ->select(DB::raw('sum(accounting_voucher_description_references.amount) as total_paid'))
+            ->groupBy('accounting_voucher_description_references.purchase_id')
+            ->get();
+
+        $totalReturn = DB::table('purchase_returns')
+            ->where('purchase_returns.purchase_id', $purchase->id)
+            ->select(DB::raw('sum(total_return_amount) as total_returned_amount'))
+            ->groupBy('purchase_returns.purchase_id')
+            ->get();
+
+        $due = $purchase->total_purchase_amount
+            - $totalPurchasePaid->sum('total_paid')
+            - $totalReturn->sum('total_returned_amount');
+
+        $purchase->paid = $totalPurchasePaid->sum('total_paid');
+        $purchase->due = $due;
+        $purchase->purchase_return_amount = $totalReturn->sum('total_returned_amount');
+        $purchase->save();
+
+        return $purchase;
+    }
+
+    public function purchaseByAnyConditions(?array $with = null): ?object
+    {
+        $query = Purchase::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 
     public function restrictions(object $request): array

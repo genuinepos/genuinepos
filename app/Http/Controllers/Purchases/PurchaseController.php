@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers\Purchases;
 
-
 use Illuminate\Http\Request;
+use App\Enums\PurchaseStatus;
 use App\Mail\PurchaseCreated;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
 use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\Products\ProductService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Accounts\AccountGroupService;
+use App\Services\Products\ProductStockService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\GeneralSettingServiceInterface;
+use App\Services\Accounts\AccountingVoucherService;
 use Modules\Communication\Interface\EmailServiceInterface;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PurchaseController extends Controller
 {
@@ -35,10 +41,15 @@ class PurchaseController extends Controller
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchSettingService $branchSettingService,
+        private ProductService $productService,
+        private ProductStockService $productStockService,
         private UnitService $unitService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
         private ProductLedgerService $productLedgerService,
+        private AccountingVoucherService $accountingVoucherService,
+        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
     }
 
@@ -151,10 +162,10 @@ class PurchaseController extends Controller
             'purchase_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'purchase_account_id.required' => 'Purchase A/c is required.',
-            'account_id.required' => 'Credit field must not be is empty.',
-            'payment_method_id.required' => 'Payment method field is required.',
-            'supplier_id.required' => 'Supplier is required.',
+            'purchase_account_id.required' => __("Purchase A/c is required."),
+            'account_id.required' => __("Credit field must not be is empty."),
+            'payment_method_id.required' => __("Payment method field is required."),
+            'supplier_account_id.required' => __("Supplier is required."),
         ]);
 
         if (isset($request->warehouse_count)) {
@@ -180,7 +191,7 @@ class PurchaseController extends Controller
             $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
-            $updateLastCreated = $this->purchaseService->purchaseByAnyCondition()->where('is_last_created', 1)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
+            $updateLastCreated = $this->purchaseService->purchaseByAnyConditions()->where('is_last_created', 1)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
 
             if ($updateLastCreated) {
 
@@ -219,46 +230,46 @@ class PurchaseController extends Controller
                     // Add Tax A/c ledger Entry
                     $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 17, date: $request->date, account_id: $addPurchaseProduct->tax_ac_id, trans_id: $addPurchaseProduct->id, amount: ($addPurchaseProduct->unit_tax_amount * $addPurchaseProduct->quantity), amount_type: 'debit');
                 }
-                
+
                 $index++;
             }
 
             if ($request->paying_amount > 0) {
 
-                // Add purchase payment
-                $addPurchasePaymentGetId = $this->purchaseUtil->addPurchasePaymentGetId(
-                    invoicePrefix: $paymentInvoicePrefix,
-                    request: $request,
-                    payingAmount: $request->paying_amount,
-                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT),
-                    purchase: $addPurchase,
-                    supplier_payment_id: null
-                );
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, totalDebit: $request->paying_amount, totalCredit: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $addPurchase->id);
 
-                // Add Bank/Cash-In-Hand A/C Ledger
-                $this->accountUtil->addAccountLedger(
-                    voucher_type_id: 11,
-                    date: $request->date,
-                    account_id: $request->account_id,
-                    trans_id: $addPurchasePaymentGetId,
-                    amount: $request->paying_amount,
-                    balance_type: 'debit'
-                );
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
 
-                // Add supplier ledger for payment
-                $this->supplierUtil->addSupplierLedger(
-                    voucher_type_id: 3,
-                    supplier_id: $request->supplier_id,
-                    branch_id: auth()->user()->branch_id,
-                    date: $request->date,
-                    trans_id: $addPurchasePaymentGetId,
-                    amount: $request->paying_amount,
-                );
+                // Add Accounting VoucherDescription References
+                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$addPurchase->id]);
+
+                //Add Debit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addPaymentDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
+
+                //Add Credit Ledger Entry
+                $this->accountLedgerUtil->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addPaymentCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit');
             }
 
-            if ($request->purchase_due > 0) {
+            $purchase = $this->purchaseService->purchaseByAnyConditions(
+                with: [
+                    'warehouse:id,warehouse_name,warehouse_code',
+                    'branch',
+                    'supplier',
+                    'admin:id,prefix,name,last_name',
+                    'purchaseProducts',
+                    'purchaseProducts.product',
+                    'purchaseProducts.product.warranty',
+                    'purchaseProducts.variant',
+                ]
+            )->where('id', $addPurchase->id)->first();
+            
+            if ($purchase->due > 0) {
 
-                $this->supplierPaymentUtil->distributePurchaseDueAmount(request: $request, purchase: $addPurchase, paymentInvoicePrefix: $paymentInvoicePrefix);
+                $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: 9, refIdColName: 'purchase_id', purchase: $purchase);
             }
 
             // update main product and variant price
@@ -269,16 +280,7 @@ class PurchaseController extends Controller
                 $__xMargin = isset($request->profits) ? $request->profits[$loop] : 0;
                 $__selling_price = isset($request->selling_prices) ? $request->selling_prices[$loop] : 0;
 
-                $this->productUtil->updateProductAndVariantPrice(
-                    productId: $productId,
-                    variantId: $variantId,
-                    unitCostWithDiscount: $request->unit_costs_with_discount[$loop],
-                    unitCostIncTax: $request->net_unit_costs[$loop],
-                    profit: $__xMargin,
-                    sellingPrice: $__selling_price,
-                    isEditProductPrice: $isEditProductPrice,
-                    isLastEntry: $addPurchase->is_last_created
-                );
+                $this->productService->updateProductAndVariantPrice(productId: $productId, variantId: $variantId, unitCostWithDiscount: $request->unit_costs_with_discount[$loop], unitCostIncTax: $request->net_unit_costs[$loop], profit: $__xMargin, sellingPrice: $__selling_price, isEditProductPrice: $isEditProductPrice, isLastEntry: $purchase->is_last_created);
 
                 $loop++;
             }
@@ -287,49 +289,29 @@ class PurchaseController extends Controller
             foreach ($request->product_ids as $productId) {
 
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
-                $this->productStockUtil->adjustMainProductAndVariantStock($productId, $variantId);
+                $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
                 if (isset($request->warehouse_count)) {
 
-                    $this->productStockUtil->addWarehouseProduct($productId, $variantId, $request->warehouse_id);
-                    $this->productStockUtil->adjustWarehouseStock($productId, $variantId, $request->warehouse_id);
+                    $this->productStockService->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
+                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                 } else {
 
-                    $this->productStockUtil->addBranchProduct($productId, $variantId, auth()->user()->branch_id);
-                    $this->productStockUtil->adjustBranchStock($productId, $variantId, auth()->user()->branch_id);
+                    $this->productStockService->addBranchProduct(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
+                    $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
                 }
 
                 $__index++;
             }
 
             // Add user Log
-            $this->userActivityLogUtil->addLog(
-                action: 1,
-                subject_type: $request->purchase_status == 3 ? 5 : 4,
-                data_obj: $addPurchase
-            );
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: PurchaseStatus::purchaseOrder == 2 ? 5 : 4, data_obj: $purchase);
 
             DB::commit();
         } catch (Exception $e) {
 
             DB::rollBack();
         }
-
-        $purchase = Purchase::with([
-            'warehouse:id,warehouse_name,warehouse_code',
-            'branch',
-            'supplier',
-            'admin:id,prefix,name,last_name',
-            'purchase_products',
-            'purchase_products.product',
-            'purchase_products.product.warranty',
-            'purchase_products.variant',
-            'purchase_order_products',
-            'purchase_order_products.product',
-            'purchase_order_products.product.warranty',
-            'purchase_order_products.variant',
-            'purchase_payments',
-        ])->where('id', $addPurchase->id)->first();
 
         if (env('EMAIL_ACTIVE') == 'true' && $purchase?->supplier && $purchase?->supplier?->email) {
 
@@ -351,7 +333,7 @@ class PurchaseController extends Controller
 
         if ($request->action == 2) {
 
-            return response()->json(['successMsg' => 'Successfully purchase is created.']);
+            return response()->json(['successMsg' => __("Successfully purchase is created.")]);
         } else {
 
             return view('purchases.save_and_print_template.print_purchase', compact('purchase'));

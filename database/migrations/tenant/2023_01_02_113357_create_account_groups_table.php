@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('account_groups', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('sorting_number');
             $table->string('name')->nullable();
             $table->unsignedBigInteger('parent_group_id')->nullable();
             $table->boolean('is_reserved')->default(0);
@@ -33,6 +34,8 @@ return new class extends Migration
             $table->string('sub_sub_group_name')->nullable();
             $table->string('default_balance_type', 10)->nullable();
             $table->timestamps();
+            $table->boolean('is_global')->default(false);
+
             $table->foreign('parent_group_id')->references('id')->on('account_groups')->onDelete('cascade');
         });
     }

@@ -24,10 +24,13 @@ return new class extends Migration
             $table->string('unit')->nullable();
             $table->decimal('unit_cost', 22)->default(0);
             $table->decimal('unit_discount', 22)->default(0);
+            $table->tinyInteger('unit_discount_type')->default(1);
+            $table->decimal('unit_discount_amount', 22, 2)->default(0);
             $table->decimal('unit_cost_with_discount', 10)->default(0);
             $table->decimal('subtotal', 22)->default(0)->comment('Without_tax');
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->decimal('unit_tax_percent', 22)->default(0);
+            $table->tinyInteger('tax_type')->default(1);
             $table->decimal('unit_tax', 22)->default(0);
             $table->decimal('net_unit_cost', 22)->default(0)->comment('inc_tax');
             $table->decimal('ordered_unit_cost', 22)->default(0)->comment('inc_tax');

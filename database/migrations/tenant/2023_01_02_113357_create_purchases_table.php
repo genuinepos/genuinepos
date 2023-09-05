@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('invoice_id');
             $table->unsignedBigInteger('warehouse_id')->nullable()->index('purchases_warehouse_id_foreign');
             $table->unsignedBigInteger('branch_id')->nullable()->index('purchases_branch_id_foreign');
-            $table->unsignedBigInteger('supplier_id')->nullable()->index('purchases_supplier_id_foreign');
+            $table->unsignedBigInteger('supplier_account_id')->nullable();
             $table->tinyInteger('pay_term')->nullable();
             $table->bigInteger('pay_term_number')->nullable();
             $table->bigInteger('total_item');
+            $table->decimal('total_qty', 22, 2)->default(0);
             $table->decimal('net_total_amount', 22)->default(0);
             $table->decimal('order_discount', 22)->default(0);
             $table->tinyInteger('order_discount_type')->default(1);
@@ -29,7 +30,7 @@ return new class extends Migration
             $table->string('shipment_details')->nullable();
             $table->decimal('shipment_charge', 22)->default(0);
             $table->mediumText('purchase_note')->nullable();
-            $table->unsignedBigInteger('purchase_tax_id')->nullable();
+            $table->unsignedBigInteger('purchase_tax_ac_id')->nullable();
             $table->decimal('purchase_tax_percent', 22)->default(0);
             $table->decimal('purchase_tax_amount', 22)->default(0);
             $table->decimal('total_purchase_amount', 22)->default(0);
@@ -56,6 +57,9 @@ return new class extends Migration
             $table->string('po_receiving_status', 20)->nullable()->comment('This field only for order, which numeric status = 3');
             $table->timestamps();
             $table->unsignedBigInteger('purchase_account_id')->nullable()->index('purchases_purchase_account_id_foreign');
+
+            $table->foreign('supplier_account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('purchase_tax_ac_id')->references('id')->on('accounts')->onDelete('cascade');
         });
     }
 

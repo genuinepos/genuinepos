@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->unsignedBigInteger('parent_branch_id');
+            $table->tinyInteger('branch_type')->default(1);
+            $table->string('name')->nullable();
+            $table->string('area_name')->nullable();
             $table->string('branch_code')->nullable();
             $table->string('phone')->nullable();
             $table->string('city')->nullable();
@@ -26,13 +29,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('website')->nullable();
             $table->string('logo', 191)->nullable()->default('default.png');
-            $table->unsignedBigInteger('invoice_schema_id')->nullable();
-            $table->unsignedBigInteger('add_sale_invoice_layout_id')->nullable();
-            $table->unsignedBigInteger('pos_sale_invoice_layout_id')->nullable();
-            $table->unsignedBigInteger('default_account_id')->nullable();
             $table->boolean('purchase_permission')->default(false);
-            $table->tinyInteger('after_purchase_store')->nullable()->comment('1=branch;2=warehouse');
             $table->timestamps();
+
+            $table->foreign('parent_branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 

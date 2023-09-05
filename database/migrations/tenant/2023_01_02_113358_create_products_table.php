@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sub_category_id')->nullable()->index('products_sub_category_id_foreign');
             $table->unsignedBigInteger('brand_id')->nullable()->index('products_brand_id_foreign');
             $table->unsignedBigInteger('unit_id')->nullable()->index('products_unit_id_foreign');
-            $table->unsignedBigInteger('tax_id')->nullable()->index('products_tax_id_foreign');
+            $table->unsignedBigInteger('tax_ac_id')->nullable();
             $table->tinyInteger('tax_type')->default(1);
             $table->unsignedBigInteger('warranty_id')->nullable()->index('products_warranty_id_foreign');
             $table->decimal('product_cost', 22)->default(0);
@@ -39,6 +39,7 @@ return new class extends Migration
             $table->boolean('is_variant')->default(false);
             $table->boolean('is_show_in_ecom')->default(false);
             $table->boolean('is_show_emi_on_pos')->default(false);
+            $table->boolean('has_batch_no_expire_date')->default(0);
             $table->boolean('is_for_sale')->default(true);
             $table->string('attachment')->nullable();
             $table->string('thumbnail_photo')->default('default.png');
@@ -56,6 +57,8 @@ return new class extends Migration
             $table->string('custom_field_2', 191)->nullable();
             $table->string('custom_field_3', 191)->nullable();
             $table->timestamps();
+
+            $table->foreign('tax_ac_id')->references('id')->on('accounts')->onDelete('cascade');
         });
     }
 

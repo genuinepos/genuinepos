@@ -17,8 +17,14 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('code_name');
-            $table->string('dimension')->nullable();
+            $table->unsignedBigInteger('base_unit_id')->nullable();
+            $table->decimal('base_unit_multiplier', 22, 4)->nullable();
+            $table->unsignedBigInteger('created_by_id')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('base_unit_id')->references('id')->on('units')->onDelete('cascade');
+            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

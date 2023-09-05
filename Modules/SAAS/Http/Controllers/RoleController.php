@@ -7,6 +7,7 @@ use Modules\SAAS\Entities\Role;
 use Illuminate\Routing\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
 use Modules\SAAS\Entities\Permission;
 
 class RoleController extends Controller
@@ -50,7 +51,16 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'permissions' => 'required|min:1',
+        ]);
+
+        $permissionsArray = $request->permissions;
+        Arr::forget($permissionsArray, 'select_all');
+        $role = Role::create(['name' => $request->name]);
+        $role->syncPermissions(array_keys($permissionsArray));
+        return redirect()->route('saas.roles.index')->with('success', 'Role created successfully!');
     }
 
     /**
@@ -73,6 +83,7 @@ class RoleController extends Controller
         return view('saas::roles.edit', [
             'role' => $role,
             'roles' => Role::all(),
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -82,9 +93,17 @@ class RoleController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'permissions' => 'required|min:1',
+        ]);
+
+        $permissionsArray = $request->permissions;
+        Arr::forget($permissionsArray, 'select_all');
+        $role->syncPermissions(array_keys($permissionsArray));
+        return redirect()->route('saas.roles.index')->with('success', 'Role updated successfully!');
     }
 
     /**
@@ -92,8 +111,11 @@ class RoleController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+        // $role->update(['status' => 0]);
+        $role->syncPermissions([]);
+        $role->delete();
+        return redirect()->route('saas.roles.index')->with('success', 'Role disabled successfully!');
     }
 }

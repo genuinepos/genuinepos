@@ -39,6 +39,10 @@
             @csrf
             @method('DELETE')
         </form>
+        <form action="#" id="restore_form" method="POST">
+            @csrf
+            @method('PATCH')
+        </form>
     </div>
 
     <script>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
+use App\Services\Setups\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
@@ -42,6 +43,7 @@ class PurchaseController extends Controller
         private AccountGroupService $accountGroupService,
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
+        private BranchService $branchService,
         private BranchSettingService $branchSettingService,
         private ProductService $productService,
         private ProductStockService $productStockService,
@@ -63,13 +65,21 @@ class PurchaseController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->purchaseUtil->purchaseListTable($request);
+            return $this->purchaseService->purchaseListTable($request);
         }
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone')->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('purchases.index_v2', compact('branches', 'suppliers'));
+        $purchaseAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 12)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name']);
+
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return view('purchase.purchases.index', compact('branches', 'suppliers', 'purchaseAccounts'));
     }
 
     public function purchaseProductList(Request $request)

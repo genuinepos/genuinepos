@@ -6,5 +6,5 @@ use App\Http\Controllers\Purchases\PurchaseController;
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
     Route::get('create', 'create')->name('purchases.create');
-    Route::get('store', 'store')->name('purchases.store');
+    Route::post('store', 'store')->name('purchases.store');
 });

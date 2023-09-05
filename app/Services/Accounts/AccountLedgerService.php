@@ -25,7 +25,6 @@ class AccountLedgerService
             17 => ['name' => 'Purchase', 'id' => 'purchase_product_id', 'voucher_no' => 'product_purchase_voucher', 'details_id' => 'product_purchase_id', 'link' => 'purchases.show'],
             18 => ['name' => 'Sales Return', 'id' => 'sale_return_product_id', 'voucher_no' => 'product_sale_return_voucher', 'details_id' => 'product_sale_return_id', 'link' => 'sales.returns.show'],
             19 => ['name' => 'Purchase Return', 'id' => 'purchase_return_product_id', 'voucher_no' => 'product_purchase_return_voucher', 'details_id' => 'product_purchase_return_id', 'link' => 'purchases.returns.show'],
-            20 => ['name' => 'Daily Stock', 'id' => 'daily_stock_product_id', 'voucher_no' => 'daily_stock_voucher', 'details_id' => 'product_daily_stock_id', 'link' => ''],
         ];
 
         return $data[$voucher_type_id];
@@ -43,13 +42,13 @@ class AccountLedgerService
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
         $time = $voucher_type_id == 0 ? ' 01:00:00' : date(' H:i:s');
-        $add->date = date('Y-m-d H:i:s', strtotime($date.$time));
+        $add->date = date('Y-m-d H:i:s', strtotime($date . $time));
         $add->account_id = $account_id;
         $add->voucher_type = $voucher_type_id;
         $add->{$voucherType['id']} = $trans_id;
         $add->{$amount_type} = $amount;
         $add->amount_type = $amount_type;
-        // $add->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
+        $add->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
         $add->branch_id = auth()->user()->branch_id;
         $add->save();
     }
@@ -64,11 +63,9 @@ class AccountLedgerService
         $current_account_id = null,
         $cash_bank_account_id = null
     ) {
-        //dd($account_id);
         $voucherType = $this->voucherType($voucher_type_id);
         $update = '';
         $query = AccountLedger::where($voucherType['id'], $trans_id)->where('voucher_type', $voucher_type_id);
-        // dd($voucher_type_id);
         if ($current_account_id) {
 
             $query->where('account_id', $current_account_id);
@@ -82,11 +79,11 @@ class AccountLedgerService
             $update->credit = 0;
             $previousAccountId = $update->account_id;
             $previousTime = date(' H:i:s', strtotime($update->date));
-            $update->date = date('Y-m-d H:i:s', strtotime($date.$previousTime));
+            $update->date = date('Y-m-d H:i:s', strtotime($date . $previousTime));
             $update->account_id = $account_id;
             $update->{$amount_type} = $amount;
             $update->amount_type = $amount_type;
-            // $update->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
+            $update->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
             $update->save();
         } else {
 

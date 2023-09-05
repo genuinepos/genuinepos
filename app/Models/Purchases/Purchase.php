@@ -16,12 +16,12 @@ class Purchase extends BaseModel
 
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_id')->select(['id', 'warehouse_name', 'warehouse_code', 'phone', 'address']);
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
 
     public function branch()
     {
-        return $this->belongsTo(Branch::class, 'branch_id')->select(['id', 'name', 'branch_code', 'phone', 'city', 'state', 'zip_code', 'country', 'logo']);
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 
     public function purchaseProducts()
@@ -36,7 +36,7 @@ class Purchase extends BaseModel
 
     public function supplier()
     {
-        return $this->belongsTo(Account::class, 'supplier_account_id')->select(['id', 'name', 'business_name', 'phone', 'email', 'address', 'prefix']);
+        return $this->belongsTo(Account::class, 'supplier_account_id');
     }
 
     public function admin()

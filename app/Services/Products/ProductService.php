@@ -2,11 +2,12 @@
 
 namespace App\Services\Products;
 
+use Illuminate\Support\Str;
 use App\Models\ProductImage;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use App\Models\Products\ProductVariant;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
@@ -241,9 +242,9 @@ class ProductService
 
                     $__branchName = isset($branchName) ? $branchName : $generalSettings['business__shop_name'];
 
-                    $areaName = $productAccessBranch?->branch?->area_name ? '('.$productAccessBranch?->branch?->area_name.')' : '';
+                    $areaName = $productAccessBranch?->branch?->area_name ? '(' . $productAccessBranch?->branch?->area_name . ')' : '';
 
-                    $text .= '<p class="m-0 p-0">' . $__branchName.$areaName. ',</p>';
+                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName . $areaName . ',</p>';
                 }
 
                 return $text;
@@ -285,7 +286,7 @@ class ProductService
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
-        // $addProduct->tax_ac_id = $request->tax_ac_id;
+        $addProduct->tax_ac_id = $request->tax_ac_id;
         $addProduct->tax_type = $request->tax_type;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
@@ -324,6 +325,46 @@ class ProductService
         }
 
         $addProduct->save();
+
+        if ($request->type == 1) {
+
+            if ($request->is_variant == 1) {
+                
+                $index = 0;
+                foreach ($request->variant_combinations as $value) {
+
+                    $addVariant = new ProductVariant();
+                    $addVariant->product_id = $addProduct->id;
+                    $addVariant->variant_name = $value;
+                    $addVariant->variant_code = $request->variant_codes[$index];
+                    $addVariant->variant_cost = $request->variant_costings[$index];
+                    $addVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
+                    $addVariant->variant_profit = $request->variant_profits[$index];
+                    $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
+
+                    if (isset($request->variant_image[$index])) {
+
+                        $variantImage = $request->variant_image[$index];
+                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                        $path = public_path('uploads/product/variant_image');
+
+                        if (!file_exists($path)) {
+
+                            mkdir($path);
+                        }
+
+                        Image::make($variantImage)->resize(250, 250)->save($path . '/' . $variantImageName);
+                        $addVariant->variant_image = $variantImageName;
+                    }
+
+                    $addVariant->save();
+
+                    array_push($variantIds, $addVariant->id);
+
+                    $index++;
+                }
+            }
+        }
 
         if ($request->file('image')) {
 
@@ -369,6 +410,59 @@ class ProductService
         // }
 
         return $addProduct;
+    }
+
+    public function updateProductAndVariantPrice(
+        $productId,
+        $variant_id,
+        $unit_cost_with_discount,
+        $net_unit_cost,
+        $profit,
+        $selling_price,
+        $isEditProductPrice,
+        $isLastEntry
+    ) {
+        $updateProduct = Product::where('id', $productId)->first();
+        $updateProduct->is_purchased = 1;
+
+        if ($updateProduct->is_variant == 0) {
+
+            if ($isLastEntry == 1) {
+
+                $updateProduct->product_cost = $unit_cost_with_discount;
+                $updateProduct->product_cost_with_tax = $net_unit_cost;
+            }
+
+            if ($isEditProductPrice == '1') {
+
+                $updateProduct->profit = $profit;
+                $updateProduct->product_price = $selling_price;
+            }
+        }
+
+        $updateProduct->save();
+
+        if ($variant_id != null) {
+
+            $updateVariant = ProductVariant::where('id', $variant_id)
+                ->where('product_id', $productId)
+                ->first();
+
+            if ($isLastEntry == 1) {
+
+                $updateVariant->variant_cost = $unit_cost_with_discount;
+                $updateVariant->variant_cost_with_tax = $net_unit_cost;
+            }
+
+            if ($isEditProductPrice == '1') {
+
+                $updateVariant->variant_profit = $profit;
+                $updateVariant->variant_price = $selling_price;
+            }
+
+            $updateVariant->is_purchased = 1;
+            $updateVariant->save();
+        }
     }
 
     public function restrictions($request)

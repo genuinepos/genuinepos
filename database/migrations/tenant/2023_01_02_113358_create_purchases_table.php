@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('invoice_id');
             $table->unsignedBigInteger('warehouse_id')->nullable()->index('purchases_warehouse_id_foreign');
             $table->unsignedBigInteger('branch_id')->nullable()->index('purchases_branch_id_foreign');
-            $table->unsignedBigInteger('supplier_account_id')->after('branch_id')->nullable();
+            $table->unsignedBigInteger('supplier_account_id')->nullable();
             $table->tinyInteger('pay_term')->nullable();
             $table->bigInteger('pay_term_number')->nullable();
             $table->bigInteger('total_item');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('shipment_details')->nullable();
             $table->decimal('shipment_charge', 22)->default(0);
             $table->mediumText('purchase_note')->nullable();
-            $table->unsignedBigInteger('purchase_tax_ac_id')->after('purchase_note')->nullable();
+            $table->unsignedBigInteger('purchase_tax_ac_id')->nullable();
             $table->decimal('purchase_tax_percent', 22)->default(0);
             $table->decimal('purchase_tax_amount', 22)->default(0);
             $table->decimal('total_purchase_amount', 22)->default(0);

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sub_category_id')->nullable()->index('products_sub_category_id_foreign');
             $table->unsignedBigInteger('brand_id')->nullable()->index('products_brand_id_foreign');
             $table->unsignedBigInteger('unit_id')->nullable()->index('products_unit_id_foreign');
-            $table->unsignedBigInteger('tax_ac_id')->after('unit_id')->nullable();
+            $table->unsignedBigInteger('tax_ac_id')->nullable();
             $table->tinyInteger('tax_type')->default(1);
             $table->unsignedBigInteger('warranty_id')->nullable()->index('products_warranty_id_foreign');
             $table->decimal('product_cost', 22)->default(0);

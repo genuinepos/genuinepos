@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('parent_branch_id')->nullable();
-            $table->tinyInteger('branch_type')->after('id')->default(1);
+            $table->unsignedBigInteger('parent_branch_id');
+            $table->tinyInteger('branch_type')->default(1);
             $table->string('name')->nullable();
             $table->string('area_name')->nullable();
             $table->string('branch_code')->nullable();

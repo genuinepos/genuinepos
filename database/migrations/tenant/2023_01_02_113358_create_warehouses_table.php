@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('warehouses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('branch_id')->nullable()->index('warehouses_branch_id_foreign');
-            $table->boolean('is_global')->after('branch_id')->default(0);
+            $table->boolean('is_global')->default(0);
             $table->string('warehouse_name');
             $table->string('warehouse_code');
             $table->string('phone')->nullable();

@@ -17,10 +17,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('code_name');
-            $table->unsignedBigInteger('base_unit_id')->after('code_name')->nullable();
-            $table->decimal('base_unit_multiplier', 22, 4)->after('base_unit_id')->nullable();
-            $table->unsignedBigInteger('created_by_id')->after('base_unit_multiplier')->nullable();
-            $table->timestamp('deleted_at')->after('created_by_id')->nullable();
+            $table->unsignedBigInteger('base_unit_id')->nullable();
+            $table->decimal('base_unit_multiplier', 22, 4)->nullable();
+            $table->unsignedBigInteger('created_by_id')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->foreign('base_unit_id')->references('id')->on('units')->onDelete('cascade');

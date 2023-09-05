@@ -2,8 +2,10 @@
 
 namespace App\Models\Purchases;
 
-use App\Models\Branch;
+use App\Models\User;
 use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Accounts\Account;
 use App\Models\Setups\Warehouse;
 
 class Purchase extends BaseModel

@@ -24,6 +24,7 @@ use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\GeneralSettingServiceInterface;
+use App\Services\Purchases\PurchaseProductService;
 use App\Services\Accounts\AccountingVoucherService;
 use Modules\Communication\Interface\EmailServiceInterface;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
@@ -33,6 +34,7 @@ class PurchaseController extends Controller
 {
     public function __construct(
         private PurchaseService $purchaseService,
+        private PurchaseProductService $purchaseProductService,
         private EmailServiceInterface $emailService,
         private UserActivityLogUtil $userActivityLogUtil,
         private PaymentMethodService $paymentMethodService,
@@ -185,7 +187,6 @@ class PurchaseController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
             $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_invoice_prefix ? $branchSetting?->purchase_invoice_prefix : $generalSettings['prefix__purchase_invoice'];
             $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
@@ -202,18 +203,18 @@ class PurchaseController extends Controller
             $addPurchase = $this->purchaseService->addPurchase(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
 
             // Add Day Book entry for Purchase
-            $this->dayBookService->addDayBook(voucherTypeId: 4, date: $request->date, accountId: $request->supplier_account_id, transId: $addPurchase->id, amount: $request->total_invoice_amount, amountType: 'credit');
+            $this->dayBookService->addDayBook(voucherTypeId: 4, date: $request->date, accountId: $request->supplier_account_id, transId: $addPurchase->id, amount: $request->total_purchase_amount, amountType: 'credit');
 
             // Add Purchase A/c Ledger Entry
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, date: $request->date, account_id: $request->purchase_account_id, trans_id: $addPurchase->id, amount: $request->purchase_ledger_amount, amount_type: 'debit');
 
             // Add supplier A/c ledger Entry For Purchase
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addPurchase->id, amount: $request->total_invoice_amount, amount_type: 'credit');
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addPurchase->id, amount: $request->total_purchase_amount, amount_type: 'credit');
 
-            if ($request->purchase_tax_id) {
+            if ($request->purchase_tax_ac_id) {
 
                 // Add Tax A/c ledger Entry For Purchase
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, account_id: $request->purchase_tax_id, date: $request->date, trans_id: $addPurchase->id, amount: $request->purchase_tax_amount, amount_type: 'debit');
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 3, account_id: $request->purchase_tax_ac_id, date: $request->date, trans_id: $addPurchase->id, amount: $request->purchase_tax_amount, amount_type: 'debit');
             }
 
             $index = 0;
@@ -222,7 +223,7 @@ class PurchaseController extends Controller
                 $addPurchaseProduct = $this->purchaseProductService->addPurchaseProduct(request: $request, purchaseId: $addPurchase->id, isEditProductPrice: $isEditProductPrice, index: $index);
 
                 // Add Product Ledger Entry
-                $this->productLedgerService->addProductLedgerEntry(voucher_type_id: 3, date: $request->date, productId: $productId, transId: $addPurchaseProduct->id, rate: $addPurchaseProduct->net_unit_cost, quantityType: 'in', quantity: $addPurchaseProduct->quantity, subtotal: $addPurchaseProduct->linetotal, variantId: $addPurchaseProduct->variant_id);
+                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: 3, date: $request->date, productId: $productId, transId: $addPurchaseProduct->id, rate: $addPurchaseProduct->net_unit_cost, quantityType: 'in', quantity: $addPurchaseProduct->quantity, subtotal: $addPurchaseProduct->line_total, variantId: $addPurchaseProduct->variant_id);
 
                 // purchase product tax will be go here
                 if ($addPurchaseProduct->tax_ac_id) {
@@ -236,7 +237,7 @@ class PurchaseController extends Controller
 
             if ($request->paying_amount > 0) {
 
-                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, totalDebit: $request->paying_amount, totalCredit: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $addPurchase->id);
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $addPurchase->id);
 
                 // Add Debit Account Accounting voucher Description
                 $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
@@ -245,13 +246,13 @@ class PurchaseController extends Controller
                 $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$addPurchase->id]);
 
                 //Add Debit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addPaymentDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
 
                 // Add Payment Description Credit Entry
                 $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
 
                 //Add Credit Ledger Entry
-                $this->accountLedgerUtil->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addPaymentCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit');
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
             }
 
             $purchase = $this->purchaseService->purchaseByAnyConditions(
@@ -266,7 +267,7 @@ class PurchaseController extends Controller
                     'purchaseProducts.variant',
                 ]
             )->where('id', $addPurchase->id)->first();
-            
+
             if ($purchase->due > 0) {
 
                 $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: 9, refIdColName: 'purchase_id', purchase: $purchase);
@@ -305,7 +306,7 @@ class PurchaseController extends Controller
             }
 
             // Add user Log
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: PurchaseStatus::purchaseOrder == 2 ? 5 : 4, data_obj: $purchase);
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: PurchaseStatus::PurchaseOrder->value == 2 ? 5 : 4, data_obj: $purchase);
 
             DB::commit();
         } catch (Exception $e) {
@@ -336,7 +337,7 @@ class PurchaseController extends Controller
             return response()->json(['successMsg' => __("Successfully purchase is created.")]);
         } else {
 
-            return view('purchases.save_and_print_template.print_purchase', compact('purchase'));
+            return view('purchase.save_and_print_template.print_purchase', compact('purchase'));
         }
     }
 
@@ -603,7 +604,6 @@ class PurchaseController extends Controller
     public function getAllSupplier()
     {
         $suppliers = Supplier::select('id', 'name', 'pay_term', 'pay_term_number', 'phone')->get();
-
         return response()->json($suppliers);
     }
 
@@ -764,15 +764,10 @@ class PurchaseController extends Controller
     public function addProductModalView()
     {
         $units = DB::table('units')->select('id', 'name', 'code_name')->get();
-
         $warranties = DB::table('warranties')->select('id', 'name', 'type')->get();
-
         $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
-
         $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'DESC')->get();
-
         $brands = DB::table('brands')->get();
-
         return view('purchases.ajax_view.add_product_modal_view', compact('units', 'warranties', 'taxes', 'categories', 'brands'));
     }
 

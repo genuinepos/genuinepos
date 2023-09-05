@@ -53,7 +53,7 @@ class BranchSettingService
         $updateBranchSettings->save();
     }
 
-    public function singleBranchSetting(int $branchId, array $with = null)
+    public function singleBranchSetting(?int $branchId, array $with = null)
     {
         $query = BranchSetting::query();
 

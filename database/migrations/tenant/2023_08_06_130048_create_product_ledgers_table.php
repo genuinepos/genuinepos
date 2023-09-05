@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_ledgers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->tinyInteger('voucher_type');
             $table->unsignedBigInteger('warehouse_id')->nullable();
             $table->unsignedBigInteger('product_id');
@@ -30,6 +30,8 @@ return new class extends Migration
             $table->decimal('out', 22, 2)->default(0);
             $table->decimal('subtotal', 22, 2)->default(0);
             $table->string('type', 5);
+            $table->string('date', 255)->nullable();
+            $table->timestamp('date_ts')->nullable();
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');

@@ -4,14 +4,15 @@ namespace App\Services\Purchases;
 
 use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseService
 {
-    public function addPurchase(object $request, object $codeGenerationService, string $invoicePrefix): ?object
+    public function addPurchase(object $request, object $codeGenerator, string $invoicePrefix): ?object
     {
         $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : 'PI';
-        $invoiceId = $codeGenerationService->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $__invoicePrefix, splitter: '-', suffixSeparator: '-');
+        $invoiceId = $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $__invoicePrefix, splitter: '-', suffixSeparator: '-');
 
         $addPurchase = new Purchase();
         $addPurchase->invoice_id = $invoiceId;
@@ -33,7 +34,7 @@ class PurchaseService
         $addPurchase->net_total_amount = $request->net_total_amount;
         $addPurchase->total_purchase_amount = $request->total_purchase_amount;
         $addPurchase->paid = $request->paying_amount;
-        $addPurchase->due = $request->purchase_due;
+        $addPurchase->due = $request->total_purchase_amount;
         $addPurchase->shipment_details = $request->shipment_details;
         $addPurchase->purchase_note = $request->purchase_note;
         $addPurchase->purchase_status = PurchaseStatus::Purchase->value;
@@ -48,10 +49,10 @@ class PurchaseService
 
     public function adjustPurchaseInvoiceAmounts(object $purchase): ?object
     {
-        $totalPurchasePaid = DB::table('accounting_voucher_description_references')
-            ->where('accounting_voucher_description_references.purchase_id', $purchase->id)
-            ->select(DB::raw('sum(accounting_voucher_description_references.amount) as total_paid'))
-            ->groupBy('accounting_voucher_description_references.purchase_id')
+        $totalPurchasePaid = DB::table('voucher_description_references')
+            ->where('voucher_description_references.purchase_id', $purchase->id)
+            ->select(DB::raw('sum(voucher_description_references.amount) as total_paid'))
+            ->groupBy('voucher_description_references.purchase_id')
             ->get();
 
         $totalReturn = DB::table('purchase_returns')
@@ -94,6 +95,6 @@ class PurchaseService
             return ['pass' => false, 'msg' => __("Purchase invoice items must be less than 60 or equal.")];
         }
 
-        return ['pass', true];
+        return ['pass' => true];
     }
 }

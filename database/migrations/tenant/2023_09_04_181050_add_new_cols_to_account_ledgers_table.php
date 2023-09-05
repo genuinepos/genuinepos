@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('account_ledgers', function (Blueprint $table) {
             $table->boolean('is_cash_flow')->default(0);
-            $table->unsignedBigInteger('accounting_voucher_description_id')->after('loan_payment_id')->nullable(0);
+            $table->unsignedBigInteger('accounting_voucher_description_id')->after('loan_payment_id')->nullable();
         });
     }
 

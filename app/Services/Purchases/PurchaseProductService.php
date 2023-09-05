@@ -13,7 +13,7 @@ class PurchaseProductService
 
         $addPurchaseProduct = new PurchaseProduct();
         $addPurchaseProduct->purchase_id = $purchaseId;
-        $addPurchaseProduct->product_id = $productId;
+        $addPurchaseProduct->product_id = $request->product_ids[$index];
         $addPurchaseProduct->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $addPurchaseProduct->description = $request->descriptions[$index];
         $addPurchaseProduct->quantity = $request->quantities[$index];
@@ -24,7 +24,7 @@ class PurchaseProductService
         $addPurchaseProduct->unit_cost_with_discount = $request->unit_costs_with_discount[$index];
         $addPurchaseProduct->subtotal = $request->subtotals[$index];
         $addPurchaseProduct->tax_ac_id = $request->tax_ac_ids[$index];
-        $addPurchaseProduct->unit_tax_percent = $request->tax_percents[$index];
+        $addPurchaseProduct->unit_tax_percent = $request->unit_tax_percents[$index];
         $addPurchaseProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
         $addPurchaseProduct->net_unit_cost = $request->net_unit_costs[$index];
         $addPurchaseProduct->line_total = $request->linetotals[$index];

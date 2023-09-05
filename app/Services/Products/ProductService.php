@@ -329,7 +329,7 @@ class ProductService
         if ($request->type == 1) {
 
             if ($request->is_variant == 1) {
-                
+
                 $index = 0;
                 foreach ($request->variant_combinations as $value) {
 
@@ -413,14 +413,14 @@ class ProductService
     }
 
     public function updateProductAndVariantPrice(
-        $productId,
-        $variant_id,
-        $unit_cost_with_discount,
-        $net_unit_cost,
-        $profit,
-        $selling_price,
-        $isEditProductPrice,
-        $isLastEntry
+        int $productId,
+        ?int $variantId,
+        float $unitCostWithDiscount,
+        float $unitCostIncTax,
+        float $profit,
+        float $sellingPrice,
+        string $isEditProductPrice,
+        string $isLastEntry
     ) {
         $updateProduct = Product::where('id', $productId)->first();
         $updateProduct->is_purchased = 1;
@@ -429,35 +429,35 @@ class ProductService
 
             if ($isLastEntry == 1) {
 
-                $updateProduct->product_cost = $unit_cost_with_discount;
-                $updateProduct->product_cost_with_tax = $net_unit_cost;
+                $updateProduct->product_cost = $unitCostWithDiscount;
+                $updateProduct->product_cost_with_tax = $unitCostIncTax;
             }
 
             if ($isEditProductPrice == '1') {
 
                 $updateProduct->profit = $profit;
-                $updateProduct->product_price = $selling_price;
+                $updateProduct->product_price = $sellingPrice;
             }
         }
 
         $updateProduct->save();
 
-        if ($variant_id != null) {
+        if ($variantId != null) {
 
-            $updateVariant = ProductVariant::where('id', $variant_id)
+            $updateVariant = ProductVariant::where('id', $variantId)
                 ->where('product_id', $productId)
                 ->first();
 
             if ($isLastEntry == 1) {
 
-                $updateVariant->variant_cost = $unit_cost_with_discount;
-                $updateVariant->variant_cost_with_tax = $net_unit_cost;
+                $updateVariant->variant_cost = $unitCostWithDiscount;
+                $updateVariant->variant_cost_with_tax = $unitCostIncTax;
             }
 
             if ($isEditProductPrice == '1') {
 
                 $updateVariant->variant_profit = $profit;
-                $updateVariant->variant_price = $selling_price;
+                $updateVariant->variant_price = $sellingPrice;
             }
 
             $updateVariant->is_purchased = 1;

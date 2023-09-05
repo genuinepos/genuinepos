@@ -24,11 +24,14 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('saas.users.edit', $row->id) . '" class="px-2 edit-btn" id="editUser" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('saas.users.edit', $row->id) .
+                        '" class="px-2 edit-btn btn btn-primary btn-sm text-white" id="editUser" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
                     if ($row->status == 1) {
-                        $html .= '<a href="' . route('saas.users.destroy', $row->id) . '" class="px-2 delete-btn" id="deleteUser" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="' . route('saas.users.destroy', $row->id) .
+                            '" class="px-2 delete-btn btn btn-danger btn-sm text-white ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
                     } else {
-                        $html .= '<a href="' . route('saas.users.restore', $row->id) . '" class="px-2 restore-btn" id="restoreUser" title="Restore"><span class="fas fa-recycle"></span></a>';
+                        $html .= '<a href="' . route('saas.users.restore', $row->id) .
+                            '" class="px-2 restore-btn btn btn-info btn-sm text-white ms-2" id="restoreUser" title="Restore"><span class="fas fa-recycle pe-1"></span>Restore</a>';
                     }
                     $html .= '</div>';
                     return $html;

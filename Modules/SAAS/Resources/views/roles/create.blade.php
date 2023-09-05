@@ -20,12 +20,12 @@
                         <div class="row g-3">
                             <div class="col-md-8">
                                 <div class="form-check my-3">
-                                    <input type="checkbox" name="permissions[]" class="permissions form-check-input" id="select-all">
+                                    <input type="checkbox" name="permissions[select_all]" class="permissions form-check-input" id="select-all">
                                     <label class="form-check-label" for="select-all"><b>{{ __('Permissions') }}</b></label>
                                 </div>
                                 @foreach ($permissions as $permission)
                                     <div class="form-check mb-2">
-                                        <input type="checkbox" name="permissions[]" class="permissions select-child form-check-input" id="{{ $permission->id }}">
+                                        <input type="checkbox" name="permissions[{{ $permission->name }}]" class="permissions select-child form-check-input" id="{{ $permission->id }}">
                                         <label class="form-check-label" for="{{ $permission->id }}">{{ str($permission->name)->headline() }}</label>
                                     </div>
                                 @endforeach

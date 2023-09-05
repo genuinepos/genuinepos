@@ -57,11 +57,14 @@
                     <li class="sidebar-dropdown-item">
                         <a role="button" class="sidebar-link has-sub" data-dropdown="userManagementDropdown">
                             <span class="nav-icon"><i class="fa-light fa-chart-simple"></i></span>
-                            <span class="sidebar-txt">{{ __('Manage users') }}</span>
+                            <span class="sidebar-txt">{{ __('User Management') }}</span>
                         </a>
                         <ul class="sidebar-dropdown-menu" id="userManagementDropdown">
                             <li class="sidebar-dropdown-item">
                                 <a href="{{ route('saas.users.index') }}" class="sidebar-link">{{ __('Users') }}</a>
+                            </li>
+                            <li class="sidebar-dropdown-item">
+                                <a href="{{ route('saas.roles.index') }}" class="sidebar-link">{{ __('Roles') }}</a>
                             </li>
                         </ul>
                     </li>

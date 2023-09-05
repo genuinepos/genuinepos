@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('money_receipts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('invoice_id', 191)->nullable();
+            $table->unsignedBigInteger('contact_id');
+            $table->string('voucher_no', 191)->nullable();
             $table->decimal('amount', 22)->nullable();
-            $table->unsignedBigInteger('customer_id')->index('money_receipts_customer_id_foreign');
             $table->boolean('is_customer_name')->default(false);
             $table->unsignedBigInteger('branch_id')->nullable()->index('money_receipts_branch_id_foreign');
             $table->mediumText('note')->nullable();
@@ -26,9 +26,10 @@ return new class extends Migration
             $table->boolean('is_date')->default(false);
             $table->boolean('is_header_less')->default(false);
             $table->bigInteger('gap_from_top')->nullable();
-            $table->string('date')->nullable();
-            $table->string('month')->nullable();
-            $table->timestamps();
+            $table->string('date_ts')->nullable();
+            $table->timestamps()->nullable();
+
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
     }
 

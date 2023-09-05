@@ -8,15 +8,21 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::table('units', function (Blueprint $table) {
-            $table->dropColumn('dimension');
+        Schema::create('units', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('code_name');
             $table->unsignedBigInteger('base_unit_id')->after('code_name')->nullable();
             $table->decimal('base_unit_multiplier', 22, 4)->after('base_unit_id')->nullable();
             $table->unsignedBigInteger('created_by_id')->after('base_unit_multiplier')->nullable();
             $table->timestamp('deleted_at')->after('created_by_id')->nullable();
+            $table->timestamps();
+
             $table->foreign('base_unit_id')->references('id')->on('units')->onDelete('cascade');
             $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
@@ -24,17 +30,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('units', function (Blueprint $table) {
-            $table->string('dimension')->after('code_name');
-            $table->dropForeign(['base_unit_id']);
-            $table->dropColumn('base_unit_id');
-            $table->dropForeign(['created_by_id']);
-            $table->dropColumn('created_by_id');
-            $table->dropColumn('base_unit_multiplier');
-            $table->dropColumn('deleted_at');
-        });
+        Schema::dropIfExists('units');
     }
 };

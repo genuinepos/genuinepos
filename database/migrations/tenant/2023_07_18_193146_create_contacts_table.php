@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->tinyInteger('type');
             $table->string('contact_id', 255);
             $table->unsignedBigInteger('customer_group_id')->nullable();
@@ -24,7 +25,8 @@ return new class extends Migration
             $table->string('email', 255)->nullable();
             $table->string('date_of_birth', 255)->nullable();
             $table->string('tax_number', 255)->nullable();
-            $table->string('opening_balance', 255)->nullable();
+            $table->decimal('opening_balance', 22, 2)->default(0);
+            $table->string('opening_balance_type')->nullable();
             $table->string('credit_limit', 255)->nullable();
             $table->tinyInteger('pay_term_number')->nullable();
             $table->tinyInteger('pay_term')->nullable();
@@ -36,8 +38,11 @@ return new class extends Migration
             $table->string('zip_code')->nullable();
             $table->boolean('status')->default(1);
             $table->boolean('is_fixed')->default(0);
+            $table->boolean('is_chain_shop_contact')->default(0);
             $table->timestamps();
+
             $table->foreign('customer_group_id')->references('id')->on('customer_groups')->onDelete('set null');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 

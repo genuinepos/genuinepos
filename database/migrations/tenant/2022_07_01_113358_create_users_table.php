@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('role_type')->nullable()->comment('1=super_admin,2=admin,3=others');
             $table->boolean('allow_login')->default(false);
             $table->unsignedBigInteger('branch_id')->nullable()->index('users_branch_id_foreign');
+            $table->boolean('is_belonging_an_area')->default(true);
             $table->boolean('status')->default(true);
             $table->string('password')->nullable();
             $table->string('remember_token')->nullable();

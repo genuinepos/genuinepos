@@ -15,19 +15,34 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('branch_id')->nullable()->index('accounts_branch_id_foreign');
+            $table->unsignedBigInteger('account_group_id')->nullable();
             $table->integer('account_type')->default(2);
             $table->string('name');
+            $table->string('phone', 255)->nullable();
+            $table->unsignedBigInteger('contact_id')->nullable();
+            $table->text('address')->after('contact_id')->nullable();
             $table->string('account_number')->nullable();
             $table->unsignedBigInteger('bank_id')->nullable()->index('accounts_bank_id_foreign');
+            $table->string('bank_branch', 255)->after('bank_id')->nullable();
+            $table->text('bank_address')->after('bank_branch')->nullable();
+            $table->decimal('tax_percent', 22, 2)->after('bank_address')->nullable();
+            $table->text('bank_code')->after('bank_address')->nullable();
+            $table->text('swift_code')->after('bank_code')->nullable();
             $table->decimal('opening_balance', 22)->default(0);
-            $table->decimal('debit', 22)->default(0);
-            $table->decimal('credit', 22)->default(0);
-            $table->decimal('balance', 22)->default(0);
+            $table->string('opening_balance_type', 10)->after('opening_balance')->nullable();
             $table->mediumText('remark')->nullable();
             $table->boolean('status')->default(true);
-            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->unsignedBigInteger('created_by_id')->after('status')->nullable();
+            $table->boolean('is_fixed')->after('created_by_id')->nullable();
+            $table->boolean('is_main_capital_account')->after('is_fixed')->nullable();
+            $table->boolean('is_main_pl_account')->after('is_main_capital_account')->nullable();
+            $table->boolean('is_global')->after('is_main_pl_account')->default(false);
             $table->timestamps();
-            $table->unsignedBigInteger('branch_id')->nullable()->index('accounts_branch_id_foreign');
+
+            $table->foreign('account_group_id')->references('id')->on('account_groups')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

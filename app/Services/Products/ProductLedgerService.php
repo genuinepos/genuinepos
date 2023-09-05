@@ -35,19 +35,21 @@ class ProductLedgerService
     }
 
     public function addProductLedgerEntry(
-        $voucherTypeId,
-        $date,
-        $productId,
-        $transId,
-        $rate,
-        $quantityType,
-        $quantity,
-        $subtotal,
-        $variantId = null,
+        int $voucherTypeId,
+        string $date,
+        int $productId,
+        int $transId,
+        float $rate,
+        string $quantityType,
+        float $quantity,
+        float $subtotal,
+        ?int $variantId = null,
+        ?int $warehouseId = null,
     ) {
         $voucherType = $this->voucherType($voucherTypeId);
         $add = new ProductLedger();
         $add->branch_id = auth()->user()->branch_id;
+        $add->warehouse_id = $warehouseId;
         $add->date = $date;
         $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $add->product_id = $productId;

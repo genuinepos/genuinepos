@@ -20,6 +20,11 @@ return new class extends Migration
             $table->decimal('stock', 22, 2)->default(0);
             $table->decimal('stock_value', 22, 2)->default(0);
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('variant_id')->references('id')->on('product_variants')->onDelete('cascade');
         });
     }
 

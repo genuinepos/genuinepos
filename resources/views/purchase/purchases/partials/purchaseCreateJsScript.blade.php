@@ -1071,6 +1071,8 @@
                     toastr.success("{{ __('Purchase created successfully.') }}");
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
+                    $("#supplier_account_id").select2("destroy");
+                    $("#supplier_account_id").select2();
 
                     $(data).printThis({
                         debug: false,

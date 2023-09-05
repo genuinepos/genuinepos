@@ -19,7 +19,6 @@ return new class extends Migration
             $table->timestamp('date')->nullable();
             $table->string('voucher_type', 50)->nullable();
             $table->unsignedBigInteger('account_id')->nullable()->index('account_ledgers_account_id_foreign');
-            $table->unsignedBigInteger('expense_payment_id')->nullable()->index('account_ledgers_expense_payment_id_foreign');
             $table->unsignedBigInteger('sale_id')->nullable()->index('account_ledgers_sale_id_foreign');
             $table->unsignedBigInteger('sale_return_id')->nullable()->index('account_ledgers_sale_return_id_foreign');
             $table->unsignedBigInteger('purchase_id')->nullable()->index('account_ledgers_purchase_id_foreign');
@@ -31,7 +30,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payroll_payment_id')->nullable()->index('account_ledgers_payroll_payment_id_foreign');
             $table->unsignedBigInteger('loan_id')->nullable()->index('account_ledgers_loan_id_foreign');
             $table->unsignedBigInteger('loan_payment_id')->nullable()->index('account_ledgers_loan_payment_id_foreign');
-            $table->unsignedBigInteger('accounting_voucher_description_id')->nullable(0);
+            $table->unsignedBigInteger('voucher_description_id')->nullable(0);
             $table->decimal('debit', 22)->default(0);
             $table->decimal('credit', 22)->default(0);
             $table->decimal('running_balance', 22)->default(0);
@@ -39,6 +38,7 @@ return new class extends Migration
             $table->boolean('is_cash_flow')->default(false);
             $table->timestamps();
 
+            $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
             $table->foreign('purchase_product_id')->references('id')->on('purchase_products')->onDelete('cascade');
             $table->foreign('purchase_return_product_id')->references('id')->on('purchase_return_products')->onDelete('cascade');
         });

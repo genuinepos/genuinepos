@@ -27,6 +27,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('accounting_voucher_id')->references('id')->on('accounting_vouchers')->onDelete('cascade');
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('set null');
         });
     }
 

@@ -490,7 +490,7 @@ class AccountingVoucherDescriptionReferenceService
         }
     }
 
-    private function dueRandomInvoices(int $accountId, string $refIdColName, array $refIds)
+    private function dueRandomInvoices(int $accountId, string $refIdColName)
     {
         if ($refIdColName == 'purchase_id') {
 

@@ -223,7 +223,7 @@ class PurchaseController extends Controller
                 $addPurchaseProduct = $this->purchaseProductService->addPurchaseProduct(request: $request, purchaseId: $addPurchase->id, isEditProductPrice: $isEditProductPrice, index: $index);
 
                 // Add Product Ledger Entry
-                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: 3, date: $request->date, productId: $productId, transId: $addPurchaseProduct->id, rate: $addPurchaseProduct->net_unit_cost, quantityType: 'in', quantity: $addPurchaseProduct->quantity, subtotal: $addPurchaseProduct->line_total, variantId: $addPurchaseProduct->variant_id);
+                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: 3, date: $request->date, productId: $productId, transId: $addPurchaseProduct->id, rate: $addPurchaseProduct->net_unit_cost, quantityType: 'in', quantity: $addPurchaseProduct->quantity, subtotal: $addPurchaseProduct->line_total, variantId: $addPurchaseProduct->variant_id, warehouseId: (isset($request->warehouse_count) ? $request->warehouse_id : null));
 
                 // purchase product tax will be go here
                 if ($addPurchaseProduct->tax_ac_id) {
@@ -337,7 +337,8 @@ class PurchaseController extends Controller
             return response()->json(['successMsg' => __("Successfully purchase is created.")]);
         } else {
 
-            return view('purchase.save_and_print_template.print_purchase', compact('purchase'));
+            $payingAmount = $request->paying_amount;
+            return view('purchase.save_and_print_template.print_purchase', compact('purchase', 'payingAmount'));
         }
     }
 

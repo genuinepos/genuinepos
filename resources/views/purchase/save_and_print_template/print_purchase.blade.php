@@ -229,7 +229,7 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Paid") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->paid) }}</b>
+                                <b>{{ App\Utils\Converter::format_in_bdt($payingAmount) }}</b>
                             </td>
                         </tr>
 

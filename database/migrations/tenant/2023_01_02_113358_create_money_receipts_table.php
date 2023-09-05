@@ -27,7 +27,7 @@ return new class extends Migration
             $table->boolean('is_header_less')->default(false);
             $table->bigInteger('gap_from_top')->nullable();
             $table->string('date_ts')->nullable();
-            $table->timestamps()->nullable();
+            $table->timestamps();
 
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });

@@ -96,7 +96,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __("Subcategory") }} : </strong></label>
                                                     <select name="sub_category_id" class="form-control select2" id="sub_category_id">
-                                                        <option value="">{{ __('All') }}</option>
+                                                        <option value="">{{ __('Select Category First') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -298,21 +298,26 @@
         });
 
         $('#category_id').on('change', function() {
-            var category_id = $(this).val();
-            $.get("{{ url('product/all/sub/category/') }}" + "/" + category_id, function(subCategories) {
+            var categoryId = $(this).val();
+
+            if (categoryId == '') {
+                
                 $('#sub_category_id').empty();
-                $('#sub_category_id').append('<option value="">Select Sub-Category</option>');
+                $('#sub_category_id').append('<option value="">'+"{{ __('Select Category First') }}"+'</option>');
+            }
+
+            var url = "{{ route('subcategories.by.category.id', ':categoryId') }}";
+            var route = url.replace(':categoryId', categoryId);
+
+            $.get(route, function(subCategories) {
+
+                $('#sub_category_id').empty();
+                $('#sub_category_id').append('<option value="">'+"{{ __('All') }}"+'</option>');
                 $.each(subCategories, function(key, val) {
+
                     $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 });
             });
-        });
-
-        //Submit filter form by date-range field blur
-        $(document).on('click', '#search_product', function() {
-            $(this).val('');
-            $('#product_id').val('');
-            $('#variant_id').val('');
         });
 
         //Submit filter form by select input changing
@@ -367,9 +372,11 @@
             $('.search_result').hide();
 
             $('#list').empty();
-            var product_name = $(this).val();
+            var keyword = $(this).val();
 
-            if (product_name === '') {
+            console.log(keyword);
+
+            if (keyword === '') {
 
                 $('.search_result').hide();
                 $('#product_id').val('');
@@ -377,8 +384,11 @@
                 return;
             }
 
-            var url = "{{ route('common.ajax.call.search.products.only.for.report.filter', ':product_name') }}";
-            var route = url.replace(':product_name', product_name);
+            var branchId = "{{ $ownBranchIdOrParentBranchId }}";
+
+            var url = "{{ route('general.product.search.by.only.name', ':keyword', ':branchId') }}";
+            var route = url.replace(':keyword', keyword);
+                route = route.replace(':branchId', branchId);
 
             $.ajax({
                 url: route,
@@ -410,6 +420,13 @@
             $('.search_result').hide();
         });
 
+        //Submit filter form by date-range field blur
+        $(document).on('click', '#search_product', function() {
+            $(this).val('');
+            $('#product_id').val('');
+            $('#variant_id').val('');
+        });
+
         $('body').keyup(function(e) {
 
             if (e.keyCode == 13 || e.keyCode == 9) {
@@ -423,6 +440,15 @@
         $(document).on('mouseenter', '#list>li>a', function() {
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
+        });
+
+        $(document).on('click', function(e) {
+
+            if ($(e.target).closest(".search_result").length === 0) {
+
+                $('.search_result').hide();
+                $('#list').empty();
+            }
         });
     </script>
 @endpush

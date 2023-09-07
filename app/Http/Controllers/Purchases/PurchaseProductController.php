@@ -38,8 +38,8 @@ class PurchaseProductController extends Controller
 
         $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        $categories = $this->categoryService->categories()->where('parent_category_id', 'null')->get();
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get();
 
-        return view('purchase.purchases.purchase_product_list', compact('branches', 'supplierAccounts', 'categories'));
+        return view('purchase.purchases.purchase_product_list', compact('branches', 'supplierAccounts', 'categories', 'ownBranchIdOrParentBranchId'));
     }
 }

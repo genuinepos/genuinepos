@@ -328,8 +328,6 @@ Route::group(['prefix' => 'purchases'], function () {
     Route::get('payment/details/{paymentId}', [PurchaseController::class, 'paymentDetails'])->name('purchases.payment.details');
     Route::delete('payment/delete/{paymentId}', [PurchaseController::class, 'paymentDelete'])->name('purchases.payment.delete');
     Route::get('payment/list/{purchaseId}', [PurchaseController::class, 'paymentList'])->name('purchase.payment.list');
-    Route::get('settings', [PurchaseController::class, 'settings'])->name('purchase.settings');
-    Route::post('settings/store', [PurchaseController::class, 'settingsStore'])->name('purchase.settings.store');
 
     Route::group(['prefix' => '/'], function () {
         Route::get('po/process/receive/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceive'])->name('purchases.po.receive.process');

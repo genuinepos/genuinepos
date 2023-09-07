@@ -1318,4 +1318,13 @@
             return false;
         }
     }
+
+    $(document).on('click', function(e) {
+
+        if ($(e.target).closest(".select_area").length === 0) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+        }
+    });
 </script>

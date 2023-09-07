@@ -1122,23 +1122,4 @@ class PurchaseController extends Controller
 
         return response()->json('Successfully payment is deleted.');
     }
-
-    //Show Change status modal
-    public function settings()
-    {
-        return view('purchases.settings.index');
-    }
-
-    //Show Change status modal
-    public function settingsStore(Request $request, GeneralSettingServiceInterface $generalSettingService)
-    {
-        $settings = [
-            'purchase__is_edit_pro_price' => isset($request->is_edit_pro_price) ? 1 : 0,
-            'purchase__is_enable_status' => isset($request->is_enable_status) ? 1 : 0,
-            'purchase__is_enable_lot_no' => isset($request->is_enable_lot_no) ? 1 : 0,
-        ];
-        $generalSettingService->updateAndSync($settings);
-
-        return response()->json('Purchase settings updated successfully.');
-    }
 }

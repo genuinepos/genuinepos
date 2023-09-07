@@ -100,4 +100,16 @@ class GeneralProductSearchController extends Controller
     {
         return $this->generalProductSearchService->getProductUnitAndMultiplierUnit($productId);
     }
+
+    function productSearchByOnlyName($keyWord, $branchId = null) {
+
+        $keyWord = (string) $keyWord;
+        $__keyWord = str_replace('~', '/', $keyWord);
+
+        $products = $this->generalProductSearchService->nameSearching(keyword: $keyWord, branchId: $branchId);
+
+        return view('search_results_view.product_search_result_for_report_filter', [
+            'products' => $products->getData()
+        ]);
+    }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
+use App\Http\Controllers\Purchases\PurchaseSettingController;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
@@ -16,4 +17,10 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 Route::controller(PurchaseProductController::class)->prefix('purchase-products')->group(function () {
 
     Route::get('/', 'index')->name('purchases.products.index');
+});
+
+Route::controller(PurchaseSettingController::class)->prefix('purchase-settings')->group(function () {
+
+    Route::get('/', 'index')->name('purchase.settings.index');
+    Route::post('update', 'update')->name('purchase.settings.update');
 });

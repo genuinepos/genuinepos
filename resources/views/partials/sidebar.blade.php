@@ -856,12 +856,9 @@
                                             </div>
                                         @endif
 
-                                        @if (
-                                            auth()->user()->can('purchase_settings') &&
-                                            auth()->user()->can('purchase_settings')
-                                        )
+                                        @if (auth()->user()->can('purchase_settings'))
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchase.settings') }}" class="switch-bar-wrap settings-wrap">
+                                                <a href="{{ route('purchase.settings.index') }}" class="switch-bar-wrap settings-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-sliders-h"></i></span>

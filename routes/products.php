@@ -25,7 +25,6 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {
         Route::get('/', 'index')->name('categories.index');
         Route::get('create', 'create')->name('categories.create');
-        Route::get('form/category', 'getAllFormCategory')->name('categories.all.category.form');
         Route::post('store', 'store')->name('categories.store');
         Route::get('edit/{id}', 'edit')->name('categories.edit');
         Route::post('update/{id}', 'update')->name('categories.update');
@@ -39,6 +38,7 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         Route::get('edit/{id}', 'edit')->name('subcategories.edit');
         Route::post('update/{id}', 'update')->name('subcategories.update');
         Route::delete('delete/{id}', 'delete')->name('subcategories.delete');
+        Route::get('subcategories/by/categoryId/{categoryId}', 'subcategoriesByCategoryId')->name('subcategories.by.category.id');
     });
 
     Route::controller(UnitController::class)->prefix('units')->group(function () {

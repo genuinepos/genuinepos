@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         $userRequest = $request->validated();
         $user = User::where('email', $userRequest['email'])->first();
-        if (! $user || ! Hash::check($userRequest['password'], $user->password)) {
+        if (!$user || !Hash::check($userRequest['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);

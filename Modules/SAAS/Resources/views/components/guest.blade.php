@@ -22,6 +22,11 @@
 
 <body>
     <div id="app">
+        <form class="d-none" id="logout-form" method="POST" action="{{ route('saas.logout') }}">
+            @csrf
+            @method('DELETE')
+        </form>
+
         <x-saas::nav />
         <x-saas::message />
         {{ $slot }}

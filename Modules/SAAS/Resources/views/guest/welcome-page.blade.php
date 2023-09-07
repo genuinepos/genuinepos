@@ -22,10 +22,12 @@
         <div class="container d-flex justify-content-center align-items-center">
             <div class="card p-3 py-5">
                 <div class="card-body">
-                    <h1 class="text-center display-1">{{ __("Welcome to") }} {{ config('app.name') }}</h1>
+                    <h1 class="text-center display-1">{{ __('Welcome to') }} {{ config('app.name') }}</h1>
                     <p class="text-center pt-3">
-                        <a href="{{ route('saas.register') }}" class="btn btn-primary btn-bg  pe-2">{{ _('Register') }}</a>
-                        <a href="{{ route('saas.login') }}" class="btn btn-primary btn-bg ">{{ _('Login') }}</a>
+                        @guest
+                            <a href="{{ route('saas.register') }}" class="btn btn-primary btn-bg  pe-2">{{ _('Register') }}</a>
+                            <a href="{{ route('saas.login') }}" class="btn btn-primary btn-bg ">{{ _('Login') }}</a>
+                        @endguest
                     </p>
                 </div>
             </div>

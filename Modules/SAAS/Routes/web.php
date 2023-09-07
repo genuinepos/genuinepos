@@ -36,6 +36,7 @@ Route::prefix('saas')->group(function () {
         Route::resource('plans', PlanController::class);
 
         Route::resource('users', UserController::class);
+        Route::delete('users/{user}/trash', [UserController::class, 'trash'])->name('users.trash');
         Route::patch('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
 
         Route::resource('roles', RoleController::class);

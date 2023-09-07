@@ -46,7 +46,7 @@
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',
@@ -83,7 +83,7 @@
         $(document).on('click', '.delete-and-refresh-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',
@@ -137,7 +137,7 @@
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',
@@ -174,7 +174,7 @@
         $(document).on('click', '.delete-and-refresh-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',

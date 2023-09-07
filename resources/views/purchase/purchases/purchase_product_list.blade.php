@@ -3,12 +3,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Search Product area style */
-        .selectProduct {background-color: #ab1c59;color: #fff !important;}
-        .search_area{position: relative;}
-        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px; margin-top: 1px;}
-        .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
-        .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
-        .search_result ul li a:hover {color: white;background-color: #ab1c59;}
+        .selectProduct { background-color: #ab1c59; color: #fff !important; }
+
+        .search_area { position: relative; }
+
+        .search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 8px; margin-top: 1px; }
+
+        .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
+
+        .search_result ul li a { color: #6b6262; font-size: 12px; display: block; padding: 3px; }
+
+        .search_result ul li a:hover { color: white; background-color: #ab1c59; }
+
         /* Search Product area style end */
     </style>
 @endpush
@@ -21,17 +27,17 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-basket"></span> <h5>@lang('menu.purchase_product_list')</h5>
+                                <span class="fas fa-shopping-basket"></span>
+                                <h5>{{ __('Purchased Products') }}</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
                     </div>
 
-                    <div class="p-3">
+                    <div class="p-1">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form_element rounded mt-0 mb-3">
+                                <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body">
                                         <form action="" method="get" class="px-2">
                                             <div class="form-group row">
@@ -47,85 +53,79 @@
                                                     </div>
                                                 </div>
 
-                                                @if ($generalSettings['addons__branches'] == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>@lang('menu.business_location') : </strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able select2" id="branch_id" autofocus>
-                                                                <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-md-2">
+                                                        <label><strong>{{ __('Shop/Business') }} : </strong></label>
+                                                        <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
+                                                            <option value="">{{ __('All') }}</option>
+                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} ({{ __('Business') }})</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    @php
+                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $branchCode = '-(' . $branch->branch_code.')';
+                                                                    @endphp
+                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.supplier') : </strong></label>
-                                                    <select name="supplier_id" class="form-control submit_able select2"
-                                                        id="supplier_id">
-                                                        <option value="">@lang('menu.all')</option>
-                                                        @foreach ($suppliers as $supplier)
-                                                            <option value="{{ $supplier->id }}">{{ $supplier->name.' ('.$supplier->phone.')' }}</option>
+                                                    <label><strong>{{ __("Supplier") }} : </strong></label>
+                                                    <select name="supplier_id" class="form-control select2" id="supplier_id">
+                                                        <option value="">{{ __('All') }}</option>
+                                                        @foreach ($supplierAccounts as $supplierAccount)
+                                                            <option data-supplier_account_name="{{ $supplierAccount->name.'/'.$supplierAccount->phone }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.category') : </strong></label>
-                                                    <select name="category_id" class="form-control submit_able select2"
-                                                        id="category_id">
-                                                        <option value="">@lang('menu.all')</option>
+                                                    <label><strong>{{ __("Category") }} : </strong></label>
+                                                    <select name="category_id" class="form-control select2" id="category_id">
+                                                        <option value="">{{ __('All') }}</option>
                                                         @foreach ($categories as $category)
-                                                            <option value="{{ $category->id }}">{{$category->name}}</option>
+                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.sub_category') : </strong></label>
-                                                    <select name="sub_category_id" class="form-control submit_able select2" id="sub_category_id">
-                                                        <option value="">@lang('menu.all')</option>
+                                                    <label><strong>{{ __("Subcategory") }} : </strong></label>
+                                                    <select name="sub_category_id" class="form-control select2" id="sub_category_id">
+                                                        <option value="">{{ __('All') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.from_date') : </strong></label>
+                                                    <label><strong>{{ __("From Date") }} : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date"
-                                                            autocomplete="off">
+                                                        <input type="text" name="from_date" id="from_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.to_date') : </strong></label>
+                                                    <label><strong>{{ __("To Date") }} : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_i"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                         </div>
-                                                        <input type="text" name="to_date" id="datepicker2"
-                                                            class="form-control to_date"
-                                                            autocomplete="off">
+                                                        <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-search"></i> @lang('menu.filter')</button>
+                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-search"></i> {{ __("Filter") }}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -138,11 +138,11 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>{{ __('All Purchased Products') }}</h6>
+                                    <h6>{{ __('List Of Purchased Products') }}</h6>
                                 </div>
-                                @if(auth()->user()->can('purchase_add'))
+                                @if (auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -155,23 +155,23 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>@lang('menu.date')</th>
-                                                <th>@lang('menu.product')</th>
-                                                <th>@lang('menu.p_code')</th>
-                                                <th>@lang('menu.supplier')</th>
+                                                <th>{{ __("Date") }}</th>
+                                                <th>{{ __("Shop/Business") }}</th>
+                                                <th>{{ __("Product") }}</th>
+                                                <th>{{ __("Supplier") }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
-                                                <th>@lang('menu.quantity')</th>
-                                                <th>@lang('menu.unit_cost')</th>
-                                                <th>@lang('menu.subtotal')</th>
+                                                <th>{{ __("Quantity") }}</th>
+                                                <th>{{ __("Unit Cost") }}</th>
+                                                <th>{{ __("Subtotal") }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white">@lang('menu.total') : {{ $generalSettings['business__currency'] }}</th>
-                                                <th class="text-start text-white">(<span id="total_qty"></span>)</th>
+                                                <th colspan="5" class="text-end text-white fw-bold">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th class="text-start text-white fw-bold">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
-                                                <th class="text-start text-white"><span id="total_subtotal"></span></th>
+                                                <th class="text-start text-white fw-bold"><span id="total_subtotal"></span></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -189,7 +189,8 @@
         </div>
     </div>
 
-    <div id="purchase_details"></div>
+    <div id="details"></div>
+    <div id="extra_details"></div>
 @endsection
 @push('scripts')
     <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
@@ -199,38 +200,37 @@
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary'},
-                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary'},
-                {extend: 'print',text: 'Print',className: 'btn btn-primary'},
+                { extend: 'excel', text: 'Excel', className: 'btn btn-primary' },
+                { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary' },
+                { extend: 'print', text: 'Print', className: 'btn btn-primary' },
             ],
             "processing": true,
             "serverSide": true,
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('purchases.product.list') }}",
+                "url": "{{ route('purchases.products.index') }}",
                 "data": function(d) {
                     d.product_id = $('#product_id').val();
                     d.variant_id = $('#variant_id').val();
                     d.branch_id = $('#branch_id').val();
-                    d.supplier_id = $('#supplier_id').val();
+                    d.supplier_account_id = $('#supplier_account_id').val();
                     d.category_id = $('#category_id').val();
                     d.sub_category_id = $('#sub_category_id').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
+                    d.from_date = $('#from_date').val();
+                    d.to_date = $('#to_date').val();
                 }
             },
             columns: [
-                {data: 'date', name: 'purchases.date'},
-                {data: 'product', name: 'products.name'},
-                {data: 'product_code', name: 'products.product_code'},
-                {data: 'supplier_name', name: 'suppliers.name as supplier_name'},
-                {data: 'invoice_id', name: 'purchases.invoice_id'},
-                {data: 'quantity', name: 'quantity', className: 'text-end'},
-                {data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end'},
-                {data: 'subtotal', name: 'subtotal', className: 'text-end'},
-            ],
-            fnDrawCallback: function() {
+                { data: 'date', name: 'purchases.date' },
+                { data: 'branch', name: 'branch.name' },
+                { data: 'product', name: 'products.name' },
+                { data: 'supplier_name', name: 'suppliers.name as supplier_name' },
+                { data: 'invoice_id', name: 'purchases.invoice_id' },
+                { data: 'quantity', name: 'quantity', className: 'text-end fw-bold' },
+                { data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end fw-bold' },
+                { data: 'subtotal', name: 'subtotal', className: 'text-end fw-bold' },
+            ], fnDrawCallback: function() {
                 var total_qty = sum_table_col($('.data_tbl'), 'qty');
                 $('#total_qty').text(bdFormat(total_qty));
                 var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
@@ -252,21 +252,54 @@
         }
 
         // Show details modal with data
-        $(document).on('click', '.details_button', function(e) {
+        $(document).on('click', '#details_btn', function(e) {
             e.preventDefault();
+
             $('.data_preloader').show();
             var url = $(this).attr('href');
-            $.get(url,  function(data) {
-                $('#purchase_details').html(data);
-                $('.data_preloader').hide();
-                $('#detailsModal').modal('show');
-                $('.action_hideable').hide();
-            })
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#details').html(data);
+                    $('#detailsModal').modal('show');
+                    $('.data_preloader').hide();
+                },error: function(err) {
+
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+
+        // Make print
+        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
+            e.preventDefault();
+
+            var body = $('.print_modal_details').html();
+
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
+                removeInline: false,
+                printDelay: 500,
+                header: null,
+            });
         });
 
         $('#category_id').on('change', function() {
             var category_id = $(this).val();
-            $.get("{{ url('product/all/sub/category/') }}"+"/"+category_id, function(subCategories) {
+            $.get("{{ url('product/all/sub/category/') }}" + "/" + category_id, function(subCategories) {
                 $('#sub_category_id').empty();
                 $('#sub_category_id').append('<option value="">Select Sub-Category</option>');
                 $.each(subCategories, function(key, val) {
@@ -275,46 +308,15 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Confirmation',
-                'content': 'Are you sure, you want to delete?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-
-                    table.ajax.reload();
-                    toastr.error(data);
-                }
-            });
-        });
-
         //Submit filter form by date-range field blur
-        $(document).on('click', '#search_product', function () {
+        $(document).on('click', '#search_product', function() {
             $(this).val('');
             $('#product_id').val('');
             $('#variant_id').val('');
         });
 
         //Submit filter form by select input changing
-        $(document).on('click', '#filter_button', function (e) {
+        $(document).on('click', '#filter_button', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             table.ajax.reload();
@@ -324,7 +326,7 @@
     <script type="text/javascript">
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker'),
+            element: document.getElementById('from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -343,7 +345,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker2'),
+            element: document.getElementById('to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -360,7 +362,7 @@
             format: 'DD-MM-YYYY'
         });
 
-        $('#search_product').on('input', function () {
+        $('#search_product').on('input', function() {
 
             $('.search_result').hide();
 
@@ -379,15 +381,15 @@
             var route = url.replace(':product_name', product_name);
 
             $.ajax({
-                url : route,
-                async : true,
-                type : 'get',
-                success:function(data){
+                url: route,
+                async: true,
+                type: 'get',
+                success: function(data) {
 
                     if (!$.isEmptyObject(data.noResult)) {
 
                         $('.search_result').hide();
-                    }else{
+                    } else {
 
                         $('.search_result').show();
                         $('#list').html(data);
@@ -396,7 +398,7 @@
             });
         });
 
-        $(document).on('click', '#select_product', function (e) {
+        $(document).on('click', '#select_product', function(e) {
             e.preventDefault();
 
             var product_name = $(this).html();
@@ -408,9 +410,9 @@
             $('.search_result').hide();
         });
 
-        $('body').keyup(function(e){
+        $('body').keyup(function(e) {
 
-            if (e.keyCode == 13 || e.keyCode == 9){
+            if (e.keyCode == 13 || e.keyCode == 9) {
 
                 $(".selectProduct").click();
                 $('.search_result').hide();
@@ -418,7 +420,7 @@
             }
         });
 
-        $(document).on('mouseenter', '#list>li>a',function () {
+        $(document).on('mouseenter', '#list>li>a', function() {
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
         });

@@ -167,7 +167,7 @@
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
                             <td class="text-start" style="font-size:11px!important;">
-                                {{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost) }}
+                                {{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost_exc_tax) }}
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_discount) }} </td>
                             <td class="text-start" style="font-size:11px!important;">{{ '('.$purchaseProduct->unit_tax_percent.'%)='.$purchaseProduct->unit_tax_amount }}</td>

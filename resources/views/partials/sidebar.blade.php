@@ -834,7 +834,7 @@
 
                                         @if (auth()->user()->can('purchase_all'))
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.index_v2') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchases.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-list"></i></span>
@@ -845,13 +845,13 @@
                                             </div>
 
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.product.list') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchases.products.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">@lang('menu.purchase_product_list')</p>
+                                                    <p class="switch_text">{{ __("Purchased Product List") }}</p>
                                                 </a>
                                             </div>
                                         @endif

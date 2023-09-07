@@ -112,11 +112,10 @@
         var purchaseDue = parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
         $('#purchase_due').val(parseFloat(purchaseDue).toFixed(2));
 
-        var purchaseLedgerAmount = parseFloat(netTotalAmount) +
-            parseFloat(shipmentCharge) -
-            parseFloat(orderDiscountAmount) -
-            parseFloat(productTotalTaxAmount) -
-            parseFloat(purchaseTaxAmount);
+        var purchaseLedgerAmount = parseFloat(netTotalAmount)
+        + parseFloat(shipmentCharge)
+        - parseFloat(orderDiscountAmount)
+        - parseFloat(productTotalTaxAmount);
 
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
     }

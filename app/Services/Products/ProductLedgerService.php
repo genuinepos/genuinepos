@@ -62,4 +62,55 @@ class ProductLedgerService
         $add->type = $quantityType;
         $add->save();
     }
+
+    public function updateProductLedgerEntry(
+        int $voucherTypeId,
+        string $date,
+        int $productId,
+        int $transId,
+        float $rate,
+        string $quantityType,
+        float $quantity,
+        float $subtotal,
+        ?int $variantId = null,
+        ?int $branchId = null,
+        ?int $warehouseId = null,
+        ?int $currentWarehouseId = null,
+    ) {
+        $branchId = $branchId ? $branchId : auth()->user()->branch_id;
+        $voucherType = $this->voucherType($voucherTypeId);
+
+        $update = '';
+        $query = ProductLedger::where($voucherType['id'], $transId)
+            ->where('voucher_type', $voucherTypeId)
+            ->where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->where('branch_id', $branchId);
+
+        if ($currentWarehouseId) {
+
+            $query->where('warehouse_id', $currentWarehouseId);
+        }
+
+        $update = $query->first();
+
+        if ($update) {
+
+            $update->warehouse_id = $warehouseId;
+            $update->date = $date;
+            $previousTime = date(' H:i:s', strtotime($update->date));
+            $update->date_ts = date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $update->product_id = $productId;
+            $update->variant_id = $variantId ? $variantId : null;
+            $update->voucher_type = $voucherTypeId;
+            $update->rate = $rate;
+            $update->{$quantityType} = $quantity;
+            $update->subtotal = $subtotal;
+            $update->type = $quantityType;
+            $update->save();
+        } else {
+
+            $this->addProductLedgerEntry(voucherTypeId: $voucherTypeId, date: $date, productId: $productId, transId: $transId, rate: $rate, quantityType: $quantityType, quantity: $quantity, subtotal: $subtotal, variantId: $variantId, warehouseId: $warehouseId);
+        }
+    }
 }

@@ -304,12 +304,7 @@ Route::group(['prefix' => 'contacts'], function () {
 // Purchase route group
 Route::group(['prefix' => 'purchases'], function () {
 
-    Route::get('v2', [PurchaseController::class, 'index_v2'])->name('purchases.index_v2');
-    Route::get('product/list', [PurchaseController::class, 'purchaseProductList'])->name('purchases.product.list');
-    Route::get('show/{purchaseId}', [PurchaseController::class, 'show'])->name('purchases.show');
     Route::get('order/print/supplier/copy/{purchaseId}', [PurchaseController::class, 'printSupplierCopy'])->name('purchases.order.supplier.copy.print');
-
-    Route::get('edit/{purchaseId}', [PurchaseController::class, 'edit'])->name('purchases.edit');
     Route::get('editable/purchase/{purchaseId}/{editType}', [PurchaseController::class, 'editablePurchase'])->name('purchases.get.editable.purchase');
     Route::post('update/{purchaseId}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::get('get/all/supplier', [PurchaseController::class, 'getAllSupplier'])->name('purchases.get.all.supplier');

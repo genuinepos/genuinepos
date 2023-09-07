@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class GeneralProductSearchService
 {
-    public function getProductByKeyword($product, $keyWord, $priceGroupId, $isShowNotForSaleItem)
+    public function getProductByKeyword($product, $keyWord, $priceGroupId, $isShowNotForSaleItem, $branchId = null)
     {
         if ($product) {
 
@@ -51,7 +51,7 @@ class GeneralProductSearchService
                     'variant_price',
                 ])->first();
 
-            if ($variantProduct && $variantProduct?->product?->productAccessBranch) {
+            if ($variantProduct && $variantProduct?->product?->productAccessBranch($branchId)) {
 
                 if ($isShowNotForSaleItem == 0 && $variantProduct->product->is_for_sale == 0) {
 
@@ -67,7 +67,7 @@ class GeneralProductSearchService
             }
         }
 
-        return $this->nameSearching($keyWord, $isShowNotForSaleItem);
+        return $this->nameSearching($keyWord, $isShowNotForSaleItem, $branchId);
     }
 
     private function productDiscount($productId, $priceGroupId, $brandId, $categoryId)
@@ -333,7 +333,7 @@ class GeneralProductSearchService
         return $stock;
     }
 
-    public function nameSearching($keyword, $isShowNotForSaleItem = 1)
+    public function nameSearching($keyword, $isShowNotForSaleItem = 1, $branchId = null)
     {
         $namedProducts = '';
 

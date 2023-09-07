@@ -68,6 +68,8 @@ class PurchaseController extends Controller
             return $this->purchaseService->purchaseListTable($request);
         }
 
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -79,44 +81,35 @@ class PurchaseController extends Controller
 
         $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        return view('purchase.purchases.index', compact('branches', 'suppliers', 'purchaseAccounts'));
-    }
-
-    public function purchaseProductList(Request $request)
-    {
-        if (!auth()->user()->can('purchase_all')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        if ($request->ajax()) {
-
-            return $this->purchaseUtil->purchaseProductListTable($request);
-        }
-
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        $suppliers = DB::table('suppliers')->get(['id', 'name', 'phone']);
-        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
-
-        return view('purchases.purchase_product_list', compact('branches', 'suppliers', 'categories'));
+        return view('purchase.purchases.index', compact('branches', 'supplierAccounts', 'purchaseAccounts'));
     }
 
     // show purchase details
-    public function show($purchaseId)
+    public function show($id)
     {
-        $purchase = Purchase::with([
-            'warehouse',
-            'branch',
-            'supplier',
-            'admin',
-            'purchase_products',
-            'purchase_products.product',
-            'purchase_products.product.warranty',
-            'purchase_products.variant',
-            'purchase_payments',
-        ])->where('id', $purchaseId)->first();
+        $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
+            'warehouse:id,warehouse_name,warehouse_code',
+            'supplier:id,name,phone,address',
+            'admin:id,prefix,name,last_name',
+            'purchaseAccount:id,name',
+            'purchaseProducts',
+            'purchaseProducts.product',
+            'purchaseProducts.product.warranty',
+            'purchaseProducts.variant',
+            'purchaseProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseProducts.unit.baseUnit:id,base_unit_id,code_name',
 
-        return view('purchases.ajax_view.purchase_details_modal', compact('purchase'));
+            'references:id,voucher_description_id,purchase_id,amount',
+            'references.voucherDescription:id,accounting_voucher_id',
+            'references.voucherDescription.accountingVoucher:id,voucher_no,date,voucher_type',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions:id,accounting_voucher_id,account_id,payment_method_id',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.paymentMethod:id,name',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.account:id,name,account_number,account_group_id,bank_id,bank_branch',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.bank:id,name',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
+        ]);
+
+        return view('purchase.purchases.ajax_view.show', compact('purchase'));
     }
 
     public function create()
@@ -275,6 +268,7 @@ class PurchaseController extends Controller
                     'purchaseProducts.product',
                     'purchaseProducts.product.warranty',
                     'purchaseProducts.variant',
+                    'purchaseProducts.unit:id,code_name',
                 ]
             )->where('id', $addPurchase->id)->first();
 
@@ -352,43 +346,76 @@ class PurchaseController extends Controller
         }
     }
 
-    // Purchase edit view
-    public function edit($purchaseId)
+    public function edit($id)
     {
-        $warehouses = DB::table('warehouse_branches')
-            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
-            ->orWhere('warehouse_branches.is_global', 1)
-            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
-            ->select(
-                'warehouses.id',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-            )->get();
+        if (!auth()->user()->can('purchase_edit')) {
 
-        $purchase = DB::table('purchases')->where('id', $purchaseId)->select('id', 'warehouse_id', 'date', 'delivery_date', 'purchase_status')->first();
+            abort(403, 'Access Forbidden.');
+        }
 
-        $purchaseAccounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->where('accounts.account_type', 3)
+        $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
+            'branch',
+            'branch.parentBranch',
+            'purchaseAccount:id,name',
+            'purchaseProducts',
+            'purchaseProducts.product',
+            'purchaseProducts.product.warranty',
+            'purchaseProducts.variant',
+            'purchaseProducts.product.unit:id,name,code_name',
+            'purchaseProducts.product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseProducts.unit:id,name,code_name,base_unit_multiplier',
+        ]);
+
+        $ownBranchIdOrParentBranchId = $purchase?->branch?->parent_branch_id ? $purchase?->branch?->parent_branch_id : $purchase->branch_id;
+
+        $accounts = $this->accountService->accounts(with: [
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch'
+        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', $purchase->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+            ->get();
+
+        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
+
+        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+
+        $purchaseAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 12)
+            ->where('accounts.branch_id', $purchase->branch_id)
             ->get(['accounts.id', 'accounts.name']);
 
-        $purchase = Purchase::with(['warehouse', 'supplier', 'purchase_products', 'purchase_products.product', 'purchase_products.variant'])->where('id', $purchaseId)->first();
+        $warehouses = $this->warehouseService->warehouses()->where('branch_id', $purchase->branch_id)
+            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
-        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
-        $units = DB::table('units')->select('id', 'name')->get();
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->where('accounts.branch_id', $purchase->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        return view('purchases.edit', compact('warehouses', 'purchase', 'purchaseAccounts', 'purchase', 'taxes', 'units'));
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return view('purchase.purchases.edit', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts', 'purchase', 'ownBranchIdOrParentBranchId'));
     }
 
-    // update purchase method
-    public function update(Request $request, $purchaseId)
+    public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
+            'supplier_account_id' => 'required',
             'date' => 'required|date',
+            'payment_method_id' => 'required',
             'purchase_account_id' => 'required',
+            'account_id' => 'required',
         ], [
-            'purchase_account_id.required' => 'Purchase A/c is required.',
+            'purchase_account_id.required' => __("Purchase A/c is required."),
+            'account_id.required' => __("Credit field must not be is empty."),
+            'payment_method_id.required' => __("Payment method field is required."),
+            'supplier_account_id.required' => __("Supplier is required."),
         ]);
 
         if (isset($request->warehouse_count)) {
@@ -396,9 +423,11 @@ class PurchaseController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        if (!isset($request->product_ids)) {
+        $restrictions = $this->purchaseService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseId: $id);
 
-            return response()->json(['errorMsg' => 'Product table is empty.']);
+        if ($restrictions['pass'] == false) {
+
+            return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
         try {
@@ -406,183 +435,149 @@ class PurchaseController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
+            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
-            // get updatable purchase row
-            $purchase = purchase::with(['purchase_products', 'purchase_order_products', 'ledger'])
-                ->where('id', $purchaseId)->first();
+            $purchase = $this->purchaseService->singlePurchase(id: $id, with: ['purchaseProducts']);
 
-            $storedWarehouseId = $purchase->warehouse_id;
-            $storePurchaseProducts = $purchase->purchase_products;
+            $storedCurrPurchaseAccountId = $purchase->purchase_account_id;
+            $storedCurrSupplierAccountId = $purchase->supplier_account_id;
+            $storedCurrPurchaseTaxAccountId = $purchase->purchase_tax_ac_id;
+            $storedCurrentWarehouseId = $purchase->warehouse_id;
+            $storePurchaseProducts = $purchase->purchaseProducts;
 
-            // update product and variant quantity for adjustment
-            foreach ($purchase->purchase_products as $purchaseProduct) {
+            $updatePurchase = $this->purchaseService->updatePurchase(request: $request, updatePurchase: $purchase);
 
-                $SupplierProduct = SupplierProduct::where('supplier_id', $purchase->supplier_id)
-                    ->where('product_id', $purchaseProduct->product_id)
-                    ->where('product_variant_id', $purchaseProduct->product_variant_id)
-                    ->first();
+            // Add Day Book entry for Purchase
+            $this->dayBookService->updateDayBook(voucherTypeId: 4, date: $request->date, accountId: $request->supplier_account_id, transId: $updatePurchase->id, amount: $request->total_purchase_amount, amountType: 'credit');
 
-                if ($SupplierProduct) {
+            // Add Purchase A/c Ledger Entry
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 3, date: $request->date, account_id: $request->purchase_account_id, trans_id: $updatePurchase->id, amount: $request->purchase_ledger_amount, amount_type: 'debit', current_account_id: $storedCurrPurchaseAccountId, branch_id: $updatePurchase->branch_id);
 
-                    $SupplierProduct->label_qty -= (float) $purchaseProduct->quantity;
-                    $SupplierProduct->save();
-                }
-            }
+            // Add supplier A/c ledger Entry For Purchase
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 3, account_id: $request->supplier_account_id, date: $request->date, trans_id: $updatePurchase->id, amount: $request->total_purchase_amount, amount_type: 'credit', current_account_id: $storedCurrSupplierAccountId, branch_id: $updatePurchase->branch_id);
 
-            foreach ($purchase->purchase_products as $purchaseProduct) {
+            if ($request->purchase_tax_ac_id) {
 
-                $purchaseProduct->delete_in_update = 1;
-                $purchaseProduct->save();
-            }
+                // Add Tax A/c ledger Entry For Purchase
+                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 3, account_id: $request->purchase_tax_ac_id, date: $request->date, trans_id: $updatePurchase->id, amount: $request->purchase_tax_amount, amount_type: 'debit', current_account_id: $storedCurrPurchaseTaxAccountId, branch_id: $updatePurchase->branch_id);
+            } else {
 
-            // update supplier product
-            $i = 0;
-            foreach ($request->product_ids as $productId) {
-
-                $variantId = $request->variant_ids[$i] != 'noid' ? $request->variant_ids[$i] : null;
-
-                $SupplierProduct = SupplierProduct::where('supplier_id', $purchase->supplier_id)
-                    ->where('product_id', $productId)
-                    ->where('product_variant_id', $variantId)
-                    ->first();
-
-                if (!$SupplierProduct) {
-
-                    $addSupplierProduct = new SupplierProduct();
-                    $addSupplierProduct->supplier_id = $purchase->supplier_id;
-                    $addSupplierProduct->product_id = $productId;
-                    $addSupplierProduct->product_variant_id = $variantId;
-                    $addSupplierProduct->label_qty = $request->quantities[$i];
-                    $addSupplierProduct->save();
-                } else {
-
-                    $SupplierProduct->label_qty = $SupplierProduct->label_qty + $request->quantities[$i];
-                    $SupplierProduct->save();
-                }
-                $i++;
-            }
-
-            $updatePurchase = $this->purchaseUtil->updatePurchase($request, $purchase);
-
-            // update product and variant Price & quantity
-            $loop = 0;
-            foreach ($request->product_ids as $productId) {
-
-                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : null;
-
-                $__xMargin = isset($request->profits) ? $request->profits[$loop] : 0;
-                $__sellingPrice = isset($request->selling_prices) ? $request->selling_prices[$loop] : 0;
-
-                $this->productUtil->updateProductAndVariantPrice(
-                    productId: $productId,
-                    variantId: $variantId,
-                    unitCostWithDiscount: $request->unit_costs_with_discount[$loop],
-                    unitCostIncTax: $request->net_unit_costs[$loop],
-                    profit: $__xMargin,
-                    sellingPrice: $__sellingPrice,
-                    isEditProductPrice: $isEditProductPrice,
-                    isLastEntry: $updatePurchase->is_last_created
-                );
-
-                $loop++;
+                $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: 3, transId: $updatePurchase->id, accountId: $storedCurrPurchaseTaxAccountId);
             }
 
             $index = 0;
             foreach ($request->product_ids as $productId) {
 
-                $updatePurchaseProduct = $this->purchaseProductUtil->updatePurchaseProduct(request: $request, purchaseId: $updatePurchase->id, isEditProductPrice: $isEditProductPrice, index: $index, purchaseUtil: $this->purchaseUtil);
+                $updatePurchaseProduct = $this->purchaseProductService->updatePurchaseProduct(request: $request, purchaseId: $updatePurchase->id, isEditProductPrice: $isEditProductPrice, index: $index);
+
+                // Add Product Ledger Entry
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: 3, date: $request->date, productId: $productId, transId: $updatePurchaseProduct->id, rate: $updatePurchaseProduct->net_unit_cost, quantityType: 'in', quantity: $updatePurchaseProduct->quantity, subtotal: $updatePurchaseProduct->line_total, variantId: $updatePurchaseProduct->variant_id, warehouseId: (isset($request->warehouse_count) ? $request->warehouse_id : null), currentWarehouseId: $storedCurrentWarehouseId, branchId: $updatePurchase->branch_id);
+
+                // purchase product tax will be go here
+                if ($updatePurchaseProduct->tax_ac_id) {
+
+                    // Add Tax A/c ledger Entry
+                    $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 17, date: $request->date, account_id: $updatePurchaseProduct->tax_ac_id, trans_id: $updatePurchaseProduct->id, amount: ($updatePurchaseProduct->unit_tax_amount * $updatePurchaseProduct->quantity), amount_type: 'debit', current_account_id: $updatePurchaseProduct->current_tax_ac_id, branch_id: $updatePurchase->branch_id);
+                } else {
+
+                    $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: 17, transId: $updatePurchaseProduct->id, accountId: $updatePurchaseProduct->current_tax_ac_id);
+                }
+
                 $index++;
             }
 
-            $deletedUnusedPurchaseProducts = PurchaseProduct::where('purchase_id', $updatePurchase->id)
-                ->where('delete_in_update', 1)
-                ->get();
+            if ($request->paying_amount > 0) {
 
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $updatePurchase->id);
+
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
+
+                // Add Accounting VoucherDescription References
+                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$updatePurchase->id]);
+
+                //Add Debit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
+
+                //Add Credit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
+            }
+
+            $purchase = $this->purchaseService->purchaseByAnyConditions(with: ['purchaseProducts'])->where('id', $updatePurchase->id)->first();
+            if ($purchase->due > 0) {
+
+                $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: 9, refIdColName: 'purchase_id', purchase: $purchase);
+            }
+
+            $deletedUnusedPurchaseProducts = $purchase->purchaseProducts->where('delete_in_update', 1);
             if (count($deletedUnusedPurchaseProducts) > 0) {
 
                 foreach ($deletedUnusedPurchaseProducts as $deletedPurchaseProduct) {
 
                     $storedProductId = $deletedPurchaseProduct->product_id;
-                    $storedVariantId = $deletedPurchaseProduct->product_variant_id;
+                    $storedVariantId = $deletedPurchaseProduct->variant_id;
                     $deletedPurchaseProduct->delete();
+
                     // Adjust deleted product stock
-                    $this->productStockUtil->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
+                    $this->productStockService->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
 
-                    if (isset($request->warehouse_count)) {
+                    if (isset($storedCurrentWarehouseId)) {
 
-                        $this->productStockUtil->adjustWarehouseStock($storedProductId, $storedVariantId, $request->warehouse_id);
+                        $this->productStockService->adjustWarehouseStock($storedProductId, $storedVariantId, $storedCurrentWarehouseId);
                     } else {
 
-                        $this->productStockUtil->adjustBranchStock($storedProductId, $storedVariantId, auth()->user()->branch_id);
+                        $this->productStockService->adjustBranchStock($storedProductId, $storedVariantId, $purchase->branch_id);
                     }
                 }
             }
 
-            $purchaseProducts = DB::table('purchase_products')->where('purchase_id', $updatePurchase->id)->get();
-            foreach ($purchaseProducts as $purchaseProduct) {
+            $__index = 0;
+            foreach ($request->product_ids as $productId) {
 
-                $this->productStockUtil->adjustMainProductAndVariantStock($purchaseProduct->product_id, $purchaseProduct->product_variant_id);
+                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+                $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
                 if (isset($request->warehouse_count)) {
 
-                    $this->productStockUtil->addWarehouseProduct($purchaseProduct->product_id, $purchaseProduct->product_variant_id, $request->warehouse_id);
-                    $this->productStockUtil->adjustWarehouseStock($purchaseProduct->product_id, $purchaseProduct->product_variant_id, $request->warehouse_id);
+                    $this->productStockService->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
+                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                 } else {
 
-                    $this->productStockUtil->addBranchProduct($purchaseProduct->product_id, $purchaseProduct->product_variant_id, auth()->user()->branch_id);
-                    $this->productStockUtil->adjustBranchStock($purchaseProduct->product_id, $purchaseProduct->product_variant_id, auth()->user()->branch_id);
+                    $this->productStockService->addBranchProduct(productId: $productId, variantId: $variantId, branchId: $updatePurchaseProduct->branch_id);
+                    $this->productStockService->adjustBranchStock($productId, $variantId, branchId: $updatePurchaseProduct->branch_id);
+                }
+
+                $__index++;
+            }
+
+            if (isset($request->warehouse_count) && $storedCurrentWarehouseId && $request->warehouse_id != $storedCurrentWarehouseId) {
+
+                foreach ($storePurchaseProducts as $purchaseProduct) {
+
+                    $this->productStockService->adjustWarehouseStock($purchaseProduct->product_id, $purchaseProduct->variant_id, $storedCurrentWarehouseId);
                 }
             }
 
-            if (isset($request->warehouse_count) && $request->warehouse_id != $storedWarehouseId) {
+            // update main product and variant price
+            $loop = 0;
+            foreach ($request->product_ids as $productId) {
 
-                foreach ($storePurchaseProducts as $PurchaseProduct) {
+                $variantId = $request->variant_ids[$loop] != 'noid' ? $request->variant_ids[$loop] : null;
+                $__xMargin = isset($request->profits) ? $request->profits[$loop] : 0;
+                $__selling_price = isset($request->selling_prices) ? $request->selling_prices[$loop] : 0;
 
-                    $this->productStockUtil->adjustWarehouseStock($PurchaseProduct->product_id, $PurchaseProduct->product_variant_id, $storedWarehouseId);
-                }
-            }
+                $this->productService->updateProductAndVariantPrice(productId: $productId, variantId: $variantId, unitCostWithDiscount: $request->unit_costs_with_discount[$loop], unitCostIncTax: $request->net_unit_costs[$loop], profit: $__xMargin, sellingPrice: $__selling_price, isEditProductPrice: $isEditProductPrice, isLastEntry: $purchase->is_last_created);
 
-            // Update Purchase A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 3,
-                date: $request->date,
-                account_id: $request->purchase_account_id,
-                trans_id: $updatePurchase->id,
-                amount: $request->total_purchase_amount,
-                balance_type: 'debit'
-            );
-
-            // Update supplier ledger
-            $this->supplierUtil->updateSupplierLedger(
-                voucher_type_id: 1,
-                supplier_id: $updatePurchase->supplier_id,
-                previous_branch_id: auth()->user()->branch_id,
-                new_branch_id: auth()->user()->branch_id,
-                date: $request->date,
-                trans_id: $updatePurchase->id,
-                amount: $request->total_purchase_amount
-            );
-
-            // if ($editType == 'ordered') {
-
-            //     $this->purchaseUtil->updatePoInvoiceQtyAndStatusPortion($updatePurchase);
-            // }
-
-            $adjustedPurchase = $this->purchaseUtil->adjustPurchaseInvoiceAmounts($updatePurchase);
-
-            if ($adjustedPurchase->due > 0) {
-
-                $this->supplierPaymentUtil->distributePurchaseDueAmount(request: $request, purchase: $adjustedPurchase, paymentInvoicePrefix: $paymentInvoicePrefix);
+                $loop++;
             }
 
             // Add user Log
-            $this->userActivityLogUtil->addLog(
-                action: 2,
-                subject_type: $request->purchase_status == 3 ? 5 : 4,
-                data_obj: $adjustedPurchase
-            );
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: PurchaseStatus::PurchaseOrder->value == 2 ? 5 : 4, data_obj: $purchase);
 
             DB::commit();
         } catch (Exception $e) {
@@ -590,185 +585,46 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
-        session()->flash('successMsg', ['Successfully purchase is updated', 'purchases']);
-
-        return response()->json('Successfully purchase is updated');
-    }
-
-    // Get editable purchase
-    public function editablePurchase($purchaseId, $editType)
-    {
-        if ($editType == 'purchased') {
-
-            $purchase = Purchase::with(['warehouse', 'supplier', 'purchase_products', 'purchase_products.product', 'purchase_products.variant'])->where('id', $purchaseId)->first();
-
-            return response()->json($purchase);
-        } else {
-
-            $purchase = Purchase::with(['warehouse', 'supplier', 'purchase_order_products', 'purchase_order_products.product', 'purchase_order_products.variant'])->where('id', $purchaseId)->first();
-
-            return response()->json($purchase);
-        }
-    }
-
-    // Get all supplier requested by ajax
-    public function getAllSupplier()
-    {
-        $suppliers = Supplier::select('id', 'name', 'pay_term', 'pay_term_number', 'phone')->get();
-        return response()->json($suppliers);
-    }
-
-    // Get all warehouse requested by ajax
-    public function getAllUnit()
-    {
-        return Unit::select('id', 'name')->get();
-    }
-
-    // Get all warehouse requested by ajax
-    public function getAllTax()
-    {
-        return DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
-    }
-
-    // Search product by code
-    public function searchProduct($product_code)
-    {
-        $__product_code = str_replace('~', '/', $product_code);
-
-        $product = Product::with(['product_variants', 'tax', 'unit'])
-            ->where('type', 1)
-            ->where('product_code', $__product_code)
-            ->where('status', 1)->first();
-
-        if ($product) {
-
-            $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)->where('product_id', $product->id)->first();
-
-            if (!$productBranch) {
-
-                return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
-            }
-
-            return response()->json(['product' => $product]);
-        } else {
-
-            $variant_product = ProductVariant::with('product', 'product.tax', 'product.unit')
-                ->where('variant_code', $__product_code)
-                ->first();
-
-            if ($variant_product) {
-
-                $productBranch = DB::table('product_branches')->where('branch_id', auth()->user()->branch_id)
-                    ->where('product_id', $variant_product->product_id)->first();
-
-                if (!$productBranch) {
-
-                    return response()->json(['errorMsg' => 'Product is not available in the Business Location']);
-                }
-
-                return response()->json(['variant_product' => $variant_product]);
-            }
-        }
-
-        return $this->nameSearchUtil->nameSearching($__product_code);
+        return response()->json(__("Purchase is update Successfully."));
     }
 
     // delete purchase method
-    public function delete(Request $request, $purchaseId)
+    public function delete($id)
     {
-        // get deleting purchase row
-        $deletePurchase = purchase::with([
-            'supplier',
-            'purchase_products',
-            'purchase_products.product',
-            'purchase_products.variant',
-            'purchase_products.purchaseSaleChains',
-        ])->where('id', $purchaseId)->first();
+        try {
+            DB::beginTransaction();
 
-        $supplier = DB::table('suppliers')->where('id', $deletePurchase->supplier_id)->first();
-        //purchase payments
-        $storedWarehouseId = $deletePurchase->warehouse_id;
-        $storedPurchaseReturnAccountId = $deletePurchase->purchase_return ? $deletePurchase->purchase_return->purchase_return_account_id : null;
-        $storedBranchId = $deletePurchase->branch_id;
-        $storedPayments = $deletePurchase->purchase_payments;
-        $storedPurchaseAccountId = $deletePurchase->purchase_account_id;
-        $storePurchaseProducts = $deletePurchase->purchase_products;
+            $deletePurchase = $this->purchaseService->deletePurchase(id: $id);
 
-        foreach ($deletePurchase->purchase_products as $purchase_product) {
+            if (isset($deletePurchase['pass']) && $deletePurchase['pass'] == false) {
 
-            if (count($purchase_product->purchaseSaleChains) > 0) {
-
-                $variant = $purchase_product->variant ? ' - ' . $purchase_product->variant->name : '';
-                $product = $purchase_product->product->name . $variant;
-
-                return response()->json("Can not delete is purchase. Mismatch between sold and purchase stock account method. Product: ${product}");
+                return response()->json(['errorMsg' => $deletePurchase['msg']]);
             }
-        }
 
-        foreach ($deletePurchase->purchase_products as $purchase_product) {
+            foreach ($deletePurchase->purchaseProducts as $purchaseProduct) {
 
-            $SupplierProduct = SupplierProduct::where('supplier_id', $deletePurchase->supplier_id)
-                ->where('product_id', $purchase_product->product_id)
-                ->where('product_variant_id', $purchase_product->product_variant_id)
-                ->first();
+                $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : null;
+                $this->productStockService->adjustMainProductAndVariantStock($purchaseProduct->product_id, $variantId);
 
-            if ($SupplierProduct) {
+                if ($deletePurchase->warehouse_id) {
 
-                $SupplierProduct->label_qty -= $purchase_product->quantity;
-                $SupplierProduct->save();
-            }
-        }
+                    $this->productStockService->adjustWarehouseStock($purchaseProduct->product_id, $variantId, $deletePurchase->warehouse_id);
+                } else {
 
-        // Add user Log
-        $this->userActivityLogUtil->addLog(
-            action: 3,
-            subject_type: $deletePurchase->purchase_status == 3 ? 5 : 4,
-            data_obj: $deletePurchase
-        );
-
-        $deletePurchase->delete();
-
-        if ($storedPurchaseAccountId) {
-
-            $this->accountUtil->adjustAccountBalance('debit', $storedPurchaseAccountId);
-        }
-
-        if ($storedPurchaseReturnAccountId) {
-
-            $this->accountUtil->adjustAccountBalance('credit', $storedPurchaseReturnAccountId);
-        }
-
-        foreach ($storePurchaseProducts as $purchase_product) {
-
-            $variant_id = $purchase_product->product_variant_id ? $purchase_product->product_variant_id : null;
-
-            $this->productStockUtil->adjustMainProductAndVariantStock($purchase_product->product_id, $variant_id);
-
-            if ($storedWarehouseId) {
-
-                $this->productStockUtil->adjustWarehouseStock($purchase_product->product_id, $variant_id, $storedWarehouseId);
-            } else {
-
-                $this->productStockUtil->adjustBranchStock($purchase_product->product_id, $variant_id, $storedBranchId);
-            }
-        }
-
-        if (count($storedPayments) > 0) {
-
-            foreach ($storedPayments as $payment) {
-
-                if ($payment->account_id) {
-
-                    $this->accountUtil->adjustAccountBalance('debit', $payment->account_id);
+                    $this->productStockService->adjustBranchStock($purchaseProduct->product_id, $variantId, $deletePurchase->branch_id);
                 }
             }
+
+            // Add user Log
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: PurchaseStatus::PurchaseOrder->value == 2 ? 5 : 4, data_obj: $deletePurchase);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $this->supplierUtil->adjustSupplierForPurchasePaymentDue($supplier->id);
-
-        DB::statement('ALTER TABLE purchases AUTO_INCREMENT = 1');
-
-        return response()->json('Successfully purchase is deleted');
+        return response()->json(__("Purchase is deleted successfully"));
     }
 
     // Add product modal view with data

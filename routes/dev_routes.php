@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Account;
-use App\Models\Accounts\AccountGroup;
 use Illuminate\Support\Arr;
+use App\Models\Accounts\AccountGroup;
 use Illuminate\Support\Facades\Route;
 
 Route::get('my-test', function () {

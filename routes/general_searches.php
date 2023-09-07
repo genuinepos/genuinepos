@@ -4,7 +4,7 @@ use App\Http\Controllers\GeneralSearch\GeneralProductSearchController;
 
 Route::controller(GeneralProductSearchController::class)->prefix('general/product/search')->group(function () {
 
-    Route::get('common/{keyword}/{isShowNotForSaleItem}/{priceGroup?}/{type?}', 'commonSearch')->name('general.product.search.common');
+    Route::get('common/{keyword}/{isShowNotForSaleItem}/{priceGroup?}/{branchId?}', 'commonSearch')->name('general.product.search.common');
     Route::get('check/product/discount/{productId}/{priceGroupId}', 'checkProductDiscount')->name('general.product.search.check.product.discount');
     Route::get('check/product/discount/with/stock/{productId}/{variantId}/{priceGroupId}', 'checkProductDiscountWithStock')->name('general.product.search.check.product.discount.with.stock');
     Route::get('single/product/stock/{productId}/{warehouseId?}', 'singleProductStock')->name('general.product.search.single.product.stock');

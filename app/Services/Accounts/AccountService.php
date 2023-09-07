@@ -202,18 +202,26 @@ class AccountService
 
     function customerAndSupplierAccounts($ownBranchIdOrParentBranchId)
     {
+        $customerAccounts = '';
+        $query = DB::table('accounts')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
+            ->where('account_groups.sub_sub_group_number', 6);
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+        }
+
+        $customerAccounts = $query->select('accounts.id', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term');
+
         return $results = Account::query()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
             ->where('account_groups.sub_sub_group_number', 10)
             ->select('accounts.id', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term')
             ->union(
-                DB::table('accounts')
-                    ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-                    ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
-                    ->where('account_groups.sub_sub_group_number', 6)
-                    ->where('accounts.branch_id', $ownBranchIdOrParentBranchId)
-                    ->select('accounts.id', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term')
+                $customerAccounts
             )
             ->orderBy('name', 'asc')
             ->get();

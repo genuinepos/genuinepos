@@ -30,27 +30,24 @@ class PaymentMethodSettingsService
             $index = 0;
             foreach ($request->payment_method_ids as $payment_method_id) {
 
-                if (isset($request->account_ids[$index])) {
+                $paymentMethodSetting = PaymentMethodSetting::where('branch_id', auth()->user()->branch_id)
+                    ->where('payment_method_id', $payment_method_id)
+                    ->first();
 
-                    $paymentMethodSetting = PaymentMethodSetting::where('branch_id', auth()->user()->branch_id)
-                        ->where('payment_method_id', $payment_method_id)
-                        ->first();
+                $addOrUpdatePaymentMethodSettings = '';
 
-                    $addOrUpdatePaymentMethodSettings = '';
+                if ($paymentMethodSetting) {
 
-                    if ($paymentMethodSetting) {
+                    $addOrUpdatePaymentMethodSettings = $paymentMethodSetting;
+                } else {
 
-                        $addOrUpdatePaymentMethodSettings = $paymentMethodSetting;
-                    } else {
-
-                        $addOrUpdatePaymentMethodSettings = new PaymentMethodSetting();
-                    }
-
-                    $addOrUpdatePaymentMethodSettings->payment_method_id = $payment_method_id;
-                    $addOrUpdatePaymentMethodSettings->account_id = $request->account_ids[$index];
-                    $addOrUpdatePaymentMethodSettings->branch_id = auth()->user()->branch_id;
-                    $addOrUpdatePaymentMethodSettings->save();
+                    $addOrUpdatePaymentMethodSettings = new PaymentMethodSetting();
                 }
+
+                $addOrUpdatePaymentMethodSettings->payment_method_id = $payment_method_id;
+                $addOrUpdatePaymentMethodSettings->account_id = $request->account_ids[$index];
+                $addOrUpdatePaymentMethodSettings->branch_id = auth()->user()->branch_id;
+                $addOrUpdatePaymentMethodSettings->save();
 
                 $index++;
             }

@@ -43,7 +43,7 @@
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
-                                                    <option value="">@lang('menu.select_supplier')</option>
+                                                    <option value="">{{ __("Select Supplier") }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
                                                         <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
                                                     @endforeach
@@ -183,11 +183,11 @@
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
-                                        <label class="fw-bold">@lang('menu.quantity')</label>
+                                        <label class="fw-bold">{{ __("Quantity") }}</label>
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
                                             <select id="e_unit_id" class="form-control w-40">
-                                                <option value="">@lang('menu.unit')</option>
+                                                <option value="">{{ __("Unit") }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -370,16 +370,16 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.shipment_cost') </b></label>
+                                                        <label class="col-4"><b>{{ __("Shipment Charge") }}</b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_charge" type="number" class="form-control fw-bold" id="shipment_charge" value="0.00" data-next="shipment_details">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.shipment_details') </b></label>
+                                                        <label class="col-4"><b>{{ __("Shipment Details") }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="paying_amount" placeholder="@lang('menu.shipment_details')">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="paying_amount" placeholder="{{ __("Shipment Details") }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -420,10 +420,8 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option
-                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                        value="{{ $method ->id }}">
-                                                                        {{ $method->name }}
+                                                                    <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}"
+                                                                        value="{{ $method ->id }}">{{ $method->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -501,9 +499,9 @@
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">@lang('menu.save_print')</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">{{ __("Save And Print") }}</button>
+                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>

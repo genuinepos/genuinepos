@@ -170,9 +170,9 @@ class Product extends Model
         return $this->hasMany(ProductAccessBranch::class);
     }
 
-    public function productAccessBranch()
+    public function productAccessBranch($branchId = null)
     {
-        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
-        return $this->hasOne(ProductAccessBranch::class)->where('branch_id', $ownBranchIdOrParentBranchId);
+        // $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        return $this->hasOne(ProductAccessBranch::class)->where('branch_id', $branchId);
     }
 }

@@ -15,9 +15,10 @@ class GeneralProductSearchController extends Controller
     ) {
     }
 
-    public function commonSearch($keyWord, $isShowNotForSaleItem = 1, $priceGroupId = null, $type = null)
+    public function commonSearch($keyWord, $isShowNotForSaleItem = 1, $priceGroupId = null, $branchId = null)
     {
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        $__ownBranchIdOrParentBranchId = $branchId ? $branchId : $ownBranchIdOrParentBranchId;
 
         $keyWord = (string) $keyWord;
         $__keyWord = str_replace('~', '/', $keyWord);
@@ -37,7 +38,7 @@ class GeneralProductSearchController extends Controller
         $query->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id');
 
         $query->where('products.product_code', $__keyWord);
-        $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
+        $query->where('product_access_branches.branch_id', $__ownBranchIdOrParentBranchId);
 
         $query->select([
             'products.id',

@@ -60,18 +60,21 @@ class AccountLedgerService
         $trans_id,
         $amount,
         $amount_type,
+        $branch_id = null,
         $current_account_id = null,
         $cash_bank_account_id = null
     ) {
+        $branchId = $branch_id ? $branch_id : auth()->user()->branch_id;
         $voucherType = $this->voucherType($voucher_type_id);
         $update = '';
         $query = AccountLedger::where($voucherType['id'], $trans_id)->where('voucher_type', $voucher_type_id);
+
         if ($current_account_id) {
 
             $query->where('account_id', $current_account_id);
         }
 
-        $update = $query->where('branch_id', auth()->user()->branch_id)->first();
+        $update = $query->where('branch_id', $branchId)->first();
 
         if ($update) {
 
@@ -96,6 +99,18 @@ class AccountLedgerService
                 $amount_type,
                 $cash_bank_account_id
             );
+        }
+    }
+
+    public function deleteUnusedLedgerEntry($voucherType, $transId, $accountId)
+    {
+        $voucherType = $this->voucherType($voucherType);
+        $deleteAccountLedger = AccountLedger::where('voucher_type', $voucherType)
+            ->where($voucherType['id'], $transId)->where('account_id', $accountId)->first();
+
+        if (!is_null($deleteAccountLedger)) {
+
+            $deleteAccountLedger->delete();
         }
     }
 }

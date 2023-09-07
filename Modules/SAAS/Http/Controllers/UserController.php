@@ -2,7 +2,7 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Models\User;
+use Modules\SAAS\Entities\User;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
 use Modules\SAAS\Entities\Role;
@@ -24,14 +24,16 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('saas.users.edit', $row->id) .
-                        '" class="px-2 edit-btn btn btn-primary btn-sm text-white" id="editUser" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
                     if ($row->status == 1) {
-                        $html .= '<a href="' . route('saas.users.destroy', $row->id) .
-                            '" class="px-2 delete-btn btn btn-danger btn-sm text-white ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
+                        $html .= '<a href="' . route('saas.users.edit', $row->id) .
+                            '" class="px-2 edit-btn btn btn-primary btn-sm text-white" id="editUser" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
+                        $html .= '<a href="' . route('saas.users.trash', $row->id) .
+                            '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="trashUser" title="Trash"><span class="fas fa-trash pe-1"></span>Trash</a>';
                     } else {
                         $html .= '<a href="' . route('saas.users.restore', $row->id) .
-                            '" class="px-2 restore-btn btn btn-info btn-sm text-white ms-2" id="restoreUser" title="Restore"><span class="fas fa-recycle pe-1"></span>Restore</a>';
+                            '" class="restore-btn btn btn-info btn-sm text-white" id="restoreUser" title="Restore"><span class="fas fa-recycle pe-1"></span>Restore</a>';
+                        $html .= '<a href="' . route('saas.users.destroy', $row->id) .
+                            '" class="px-2 delete-btn btn btn-warning btn-sm text-black ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
                     }
                     $html .= '</div>';
                     return $html;
@@ -110,14 +112,19 @@ class UserController extends Controller
         return back()->with('success', 'User update failed!');
     }
 
-    public function destroy(User $user)
+    public function trash(User $user)
     {
         $user->update(['status' => false]);
-        return redirect()->route('saas.users.index')->with('success', 'User deactivated successfully!');
+        return redirect()->route('saas.users.index')->with('success', 'User Deactivated!');
     }
     public function restore(User $user)
     {
         $user->update(['status' => true]);
-        return redirect()->route('saas.users.index')->with('success', 'User activated successfully!');
+        return redirect()->route('saas.users.index')->with('success', 'User Successfully Activated!');
+    }
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('saas.users.index')->with('success', 'User Deleted Permanently!');
     }
 }

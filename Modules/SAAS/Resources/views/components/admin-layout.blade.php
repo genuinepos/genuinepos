@@ -35,13 +35,17 @@
         <x-saas::_messages />
         {{ $slot }}
         <x-saas::_footer />
-        <form action="#" id="deleted_form" method="POST">
+        <form action="#" id="trash_form" method="POST">
             @csrf
             @method('DELETE')
         </form>
         <form action="#" id="restore_form" method="POST">
             @csrf
             @method('PATCH')
+        </form>
+        <form action="#" id="delete_form" method="POST">
+            @csrf
+            @method('DELETE')
         </form>
     </div>
 

@@ -31,6 +31,7 @@
                                     </div>
                                 @endforeach
                                 <input type="submit" class="btn btn-sm btn-primary mt-3" value="{{ __('Update Role') }}" />
+                                <a href="{{ route('saas.roles.index') }}" class="btn btn-sm btn-secondary mt-3">{{ __('Cancel') }}</a>
                             </div>
                         </div>
                     </form>

@@ -29,7 +29,8 @@
                                         <label class="form-check-label" for="{{ $permission->id }}">{{ str($permission->name)->headline() }}</label>
                                     </div>
                                 @endforeach
-                                <input type="submit" class="btn btn-sm btn-primary mt-3" value="{{ __('Create Role') }}" />
+                                <button type="submit" class="btn btn-sm btn-primary mt-3" value="">{{ __('Create Role') }}</button>
+                                <a href="{{ route('saas.roles.index') }}" class="btn btn-sm btn-secondary mt-3">{{ __('Cancel') }}</a>
                             </div>
                         </div>
                     </form>

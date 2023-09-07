@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +38,11 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
 | Common welcome/home URI ("/" route) for main platform and all tenants
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    $isTenant = tenant()?->id;
+Route::get('/', function (Request $request) {
+    $isTenant = tenant();
     if (isset($isTenant)) {
         return redirect(RouteServiceProvider::HOME);
+    } else {
+        return redirect('/welcome');
     }
-
-    return view('saas::welcome-page');
 })->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

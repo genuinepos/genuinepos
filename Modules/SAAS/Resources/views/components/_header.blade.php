@@ -181,4 +181,5 @@
 <!-- header end -->
 <form method="POST" action="{{ route('saas.logout') }}" id="logoutForm">
     @csrf
+    @method('DELETE')
 </form>

@@ -43,22 +43,31 @@
         }
     @endif
 
-    $(document).on('click', '.delete-btn', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
-        $('#deleted_form').attr('action', url);
-        if (window.confirm('Are you sure?')) {
-            $('#deleted_form').submit();
-            console.log('Deleted');
-        }
-    });
     $(document).on('click', '.restore-btn', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
         $('#restore_form').attr('action', url);
-        if (window.confirm('Are you sure?')) {
+        if (window.confirm('Are you sure you want to restore?')) {
             $('#restore_form').submit();
             console.log('Restored');
+        }
+    });
+    $(document).on('click', '.trash-btn', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#trash_form').attr('action', url);
+        if (window.confirm('Confirm delete?')) {
+            $('#trash_form').submit();
+            console.log('Restored');
+        }
+    });
+    $(document).on('click', '.delete-btn', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        $('#delete_form').attr('action', url);
+        if (window.confirm('Delete permanently?')) {
+            $('#delete_form').submit();
+            console.log('Deleted');
         }
     });
 </script>

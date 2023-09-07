@@ -22,6 +22,11 @@
 
 <body>
     <div id="app">
+        <form class="d-none" id="logout-form" method="POST" action="{{ route('saas.logout') }}">
+            @csrf
+            @method('DELETE')
+        </form>
+
         <x-saas::nav />
         <x-saas::message />
         {{ $slot }}
@@ -41,7 +46,7 @@
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',
@@ -78,7 +83,7 @@
         $(document).on('click', '.delete-and-refresh-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',
@@ -132,7 +137,7 @@
         $(document).on('click', '.delete-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',
@@ -169,7 +174,7 @@
         $(document).on('click', '.delete-and-refresh-btn', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             console.log(url);
             $.confirm({
                 'title': 'Confirmation',

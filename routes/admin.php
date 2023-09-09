@@ -345,23 +345,23 @@ Route::group(['prefix' => 'purchases'], function () {
     });
 
     // Purchase Return route
-    Route::group(['prefix' => 'returns'], function () {
-        Route::get('/', [PurchaseReturnController::class, 'index'])->name('purchases.returns.index');
-        Route::get('show/{returnId}', [PurchaseReturnController::class, 'show'])->name('purchases.returns.show');
-        Route::get('add/{purchaseId}', [PurchaseReturnController::class, 'create'])->name('purchases.returns.create');
-        Route::get('get/purchase/{purchaseId}', [PurchaseReturnController::class, 'getPurchase'])->name('purchases.returns.get.purchase');
-        Route::post('store/{purchaseId}', [PurchaseReturnController::class, 'store'])->name('purchases.returns.store');
-        Route::delete('delete/{purchaseReturnId}', [PurchaseReturnController::class, 'delete'])->name('purchases.returns.delete');
-        Route::get('create', [PurchaseReturnController::class, 'supplierReturn'])->name('purchases.returns.supplier.return');
-        Route::get('search/product/{productCode}/{warehouseId}', [PurchaseReturnController::class, 'searchProduct']);
-        Route::get('check/single/product/stock/{product_id}/{warehouse_id}', [PurchaseReturnController::class, 'checkSingleProductStock']);
-        Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', [PurchaseReturnController::class, 'checkVariantProductStock']);
-        Route::post('supplier/return/store', [PurchaseReturnController::class, 'supplierReturnStore'])->name('purchases.returns.supplier.return.store');
-        Route::get('supplier/return/edit/{purchaseReturnId}', [PurchaseReturnController::class, 'supplierReturnEdit'])->name('purchases.returns.supplier.return.edit');
-        Route::get('get/editable/supplierReturn/{purchaseReturnId}', [PurchaseReturnController::class, 'getEditableSupplierReturn'])->name('purchases.return.get.editable.supplier.return');
-        Route::post('supplier/return/update/{purchaseReturnId}', [PurchaseReturnController::class, 'supplierReturnUpdate'])->name('purchases.returns.supplier.return.update');
-        Route::post('return/payments/{returnId}', [PurchaseReturnController::class, 'returnPaymentList'])->name('purchases.returns.purchase.return.payment.list');
-    });
+    // Route::group(['prefix' => 'returns'], function () {
+    //     Route::get('/', [PurchaseReturnController::class, 'index'])->name('purchases.returns.index');
+    //     Route::get('show/{returnId}', [PurchaseReturnController::class, 'show'])->name('purchases.returns.show');
+    //     Route::get('add/{purchaseId}', [PurchaseReturnController::class, 'create'])->name('purchases.returns.create');
+    //     Route::get('get/purchase/{purchaseId}', [PurchaseReturnController::class, 'getPurchase'])->name('purchases.returns.get.purchase');
+    //     Route::post('store/{purchaseId}', [PurchaseReturnController::class, 'store'])->name('purchases.returns.store');
+    //     Route::delete('delete/{purchaseReturnId}', [PurchaseReturnController::class, 'delete'])->name('purchases.returns.delete');
+    //     Route::get('create', [PurchaseReturnController::class, 'supplierReturn'])->name('purchases.returns.supplier.return');
+    //     Route::get('search/product/{productCode}/{warehouseId}', [PurchaseReturnController::class, 'searchProduct']);
+    //     Route::get('check/single/product/stock/{product_id}/{warehouse_id}', [PurchaseReturnController::class, 'checkSingleProductStock']);
+    //     Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', [PurchaseReturnController::class, 'checkVariantProductStock']);
+    //     Route::post('supplier/return/store', [PurchaseReturnController::class, 'supplierReturnStore'])->name('purchases.returns.supplier.return.store');
+    //     Route::get('supplier/return/edit/{purchaseReturnId}', [PurchaseReturnController::class, 'supplierReturnEdit'])->name('purchases.returns.supplier.return.edit');
+    //     Route::get('get/editable/supplierReturn/{purchaseReturnId}', [PurchaseReturnController::class, 'getEditableSupplierReturn'])->name('purchases.return.get.editable.supplier.return');
+    //     Route::post('supplier/return/update/{purchaseReturnId}', [PurchaseReturnController::class, 'supplierReturnUpdate'])->name('purchases.returns.supplier.return.update');
+    //     Route::post('return/payments/{returnId}', [PurchaseReturnController::class, 'returnPaymentList'])->name('purchases.returns.purchase.return.payment.list');
+    // });
 
     Route::group(['prefix' => 'reports'], function () {
 

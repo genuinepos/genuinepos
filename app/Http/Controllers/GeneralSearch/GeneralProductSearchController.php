@@ -74,25 +74,29 @@ class GeneralProductSearchController extends Controller
         return $this->generalProductSearchService->getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId);
     }
 
-    public function singleProductStock($productId, $warehouseId = null)
+    public function singleProductStock($productId, $warehouseId = null, $branchId = null)
     {
+        $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
+
         if ($warehouseId) {
 
-            return $this->generalProductSearchService->singleProductWarehouseStock($productId, $warehouseId);
+            return $this->generalProductSearchService->singleProductWarehouseStock($productId, $warehouseId, $__branchId);
         } else {
 
-            return $this->generalProductSearchService->singleProductBranchStock($productId);
+            return $this->generalProductSearchService->singleProductBranchStock($productId, $__branchId);
         }
     }
 
-    public function variantProductStock($productId, $variantId, $warehouseId = null)
+    public function variantProductStock($productId, $variantId, $warehouseId = null, $branchId = null)
     {
+        $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
+
         if ($warehouseId) {
 
-            return $this->generalProductSearchService->variantProductWarehouseStock($productId, $variantId, $warehouseId);
+            return $this->generalProductSearchService->variantProductWarehouseStock($productId, $variantId, $warehouseId, $__branchId);
         } else {
 
-            return $this->generalProductSearchService->variantProductBranchStock($productId, $variantId);
+            return $this->generalProductSearchService->variantProductBranchStock($productId, $variantId, $__branchId);
         }
     }
 

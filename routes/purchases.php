@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Purchases\PurchaseController;
+use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseSettingController;
 
@@ -12,15 +13,28 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
     Route::get('create', 'create')->name('purchases.create');
     Route::post('store', 'store')->name('purchases.store');
     Route::get('edit/{id}', 'edit')->name('purchases.edit');
+    Route::get('search/by/invoice/id/{keyword}', 'searchPurchasesByInvoiceId')->name('purchases.search.by.invoice.id');
+
+    Route::controller(PurchaseProductController::class)->prefix('products')->group(function () {
+
+        Route::get('/', 'index')->name('purchases.products.index');
+        Route::get('for/purchase/return/{purchase_id}', 'purchaseProductsForPurchaseReturn')->name('purchases.products.for.purchase.return');
+    });
+
+    Route::controller(PurchaseReturnController::class)->prefix('returns')->group(function () {
+
+        Route::get('/', 'index')->name('purchase.returns.index');
+        Route::get('show/{id}', 'show')->name('purchase.returns.show');
+        Route::get('create', 'create')->name('purchase.returns.create');
+        Route::post('store', 'store')->name('purchase.returns.store');
+        Route::get('edit/{id}', 'edit')->name('purchase.returns.edit');
+    });
+
+
+    Route::controller(PurchaseSettingController::class)->prefix('purchase-settings')->group(function () {
+
+        Route::get('/', 'index')->name('purchase.settings.index');
+        Route::post('update', 'update')->name('purchase.settings.update');
+    });
 });
 
-Route::controller(PurchaseProductController::class)->prefix('purchase-products')->group(function () {
-
-    Route::get('/', 'index')->name('purchases.products.index');
-});
-
-Route::controller(PurchaseSettingController::class)->prefix('purchase-settings')->group(function () {
-
-    Route::get('/', 'index')->name('purchase.settings.index');
-    Route::post('update', 'update')->name('purchase.settings.update');
-});

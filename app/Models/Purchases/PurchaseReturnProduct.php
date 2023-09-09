@@ -1,6 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Purchases;
+
+use App\Models\BaseModel;
+use App\Models\Products\Product;
+use App\Models\Products\ProductVariant;
+use App\Models\Purchases\PurchaseReturn;
+use App\Models\Purchases\PurchaseProduct;
 
 class PurchaseReturnProduct extends BaseModel
 {
@@ -8,12 +14,12 @@ class PurchaseReturnProduct extends BaseModel
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function purchase_return()
+    public function purchaseReturn()
     {
         return $this->belongsTo(PurchaseReturn::class, 'purchase_return_id');
     }
 
-    public function purchase_product()
+    public function purchaseProduct()
     {
         return $this->belongsTo(PurchaseProduct::class, 'purchase_product_id');
     }
@@ -25,6 +31,6 @@ class PurchaseReturnProduct extends BaseModel
 
     public function variant()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }

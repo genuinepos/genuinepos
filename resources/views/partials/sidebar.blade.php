@@ -905,24 +905,24 @@
                                     @if (auth()->user()->can('purchase_return'))
                                         <div class="sub-menu-row">
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.returns.supplier.return') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchase.returns.create') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-plus-circle"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text"> @lang('menu.add_return')</p>
+                                                    <p class="switch_text"> {{ __("Add Purchase Return") }}</p>
                                                 </a>
                                             </div>
 
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.returns.index') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchase.returns.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-undo"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">@lang('menu.purchase_return_list')</p>
+                                                    <p class="switch_text">{{ __("Purchase Return List") }}</p>
                                                 </a>
                                             </div>
                                         </div>

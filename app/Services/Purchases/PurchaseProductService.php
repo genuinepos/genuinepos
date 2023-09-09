@@ -274,4 +274,16 @@ class PurchaseProductService
         $purchaseProduct->left_qty = $leftQty;
         $purchaseProduct->save();
     }
+
+    function purchaseProducts(?array $with = null): ?object
+    {
+        $query = PurchaseProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
 }

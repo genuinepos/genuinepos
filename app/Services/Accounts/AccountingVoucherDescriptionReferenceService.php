@@ -3,6 +3,7 @@
 namespace App\Services\Accounts;
 
 use App\Models\Sale;
+use App\Models\Purchases\PurchaseReturn;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
@@ -31,7 +32,7 @@ class AccountingVoucherDescriptionReferenceService
         if (isset($refIds)) {
 
             $this->specificAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, refIds: $refIds);
-        }else {
+        } else {
 
             $this->randomAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName);
         }
@@ -47,6 +48,7 @@ class AccountingVoucherDescriptionReferenceService
 
         $saleService = new \App\Services\Sales\SaleService();
         $purchaseService = new \App\Services\Purchases\PurchaseService();
+        $purchaseReturnService = new \App\Services\Purchases\PurchaseReturnService();
 
         $receivedOrPaidAmount = $amount;
         $dueSpecificInvoices = $this->dueSpecificInvoices(accountId: $accountId, refIdColName: $refIdColName, refIds: $refIds);
@@ -91,6 +93,9 @@ class AccountingVoucherDescriptionReferenceService
                         } elseif ($refIdColName == 'purchase_id') {
 
                             $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                        } elseif ($refIdColName == 'purchase_return_id') {
+
+                            $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                         }
                     }
                 } elseif ($dueInvoice->due == $receivedOrPaidAmount) {
@@ -114,6 +119,9 @@ class AccountingVoucherDescriptionReferenceService
                         } elseif ($refIdColName == 'purchase_id') {
 
                             $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                        } elseif ($refIdColName == 'purchase_return_id') {
+
+                            $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                         }
                     }
                 } elseif ($dueInvoice->due < $receivedOrPaidAmount) {
@@ -137,6 +145,9 @@ class AccountingVoucherDescriptionReferenceService
                         } elseif ($refIdColName == 'purchase_id') {
 
                             $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                        } elseif ($refIdColName == 'purchase_return_id') {
+
+                            $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                         }
                     }
                 }
@@ -184,6 +195,9 @@ class AccountingVoucherDescriptionReferenceService
                             } elseif ($refIdColName == 'purchase_id') {
 
                                 $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                             }
                         }
                     } elseif ($dueInvoice->due == $receivedOrPaidAmount) {
@@ -207,6 +221,9 @@ class AccountingVoucherDescriptionReferenceService
                             } elseif ($refIdColName == 'purchase_id') {
 
                                 $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                             }
                         }
                     } elseif ($dueInvoice->due < $receivedOrPaidAmount) {
@@ -230,6 +247,9 @@ class AccountingVoucherDescriptionReferenceService
                             } elseif ($refIdColName == 'purchase_id') {
 
                                 $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                             }
                         }
                     }
@@ -249,6 +269,7 @@ class AccountingVoucherDescriptionReferenceService
 
         $saleService = new \App\Services\Sales\SaleService();
         $purchaseService = new \App\Services\Purchases\PurchaseService();
+        $purchaseReturnService = new \App\Services\Purchases\PurchaseReturnService();
 
         $receivedOrPaidAmount = $amount;
 
@@ -291,6 +312,9 @@ class AccountingVoucherDescriptionReferenceService
                             } elseif ($refIdColName == 'purchase_id') {
 
                                 $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                             }
                         }
                     } elseif ($dueInvoice->due == $receivedOrPaidAmount) {
@@ -314,6 +338,9 @@ class AccountingVoucherDescriptionReferenceService
                             } elseif ($refIdColName == 'purchase_id') {
 
                                 $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                             }
                         }
                     } elseif ($dueInvoice->due < $receivedOrPaidAmount) {
@@ -337,6 +364,9 @@ class AccountingVoucherDescriptionReferenceService
                             } elseif ($refIdColName == 'purchase_id') {
 
                                 $purchaseService->adjustPurchaseInvoiceAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
                             }
                         }
                     }
@@ -468,10 +498,10 @@ class AccountingVoucherDescriptionReferenceService
                 ->get();
         } elseif ($refIdColName == 'purchase_return_id') {
 
-            // return PurchaseReturn::where('supplier_account_id', $accountId)
-            // ->whereIn('id', $refIds)
-            // ->orderBy('report_date', 'asc')
-            // ->get();
+            return PurchaseReturn::where('supplier_account_id', $accountId)
+                ->whereIn('id', $refIds)
+                ->orderBy('report_date', 'asc')
+                ->get();
             return;
         } elseif ($refIdColName == 'sale_id') {
 
@@ -501,10 +531,10 @@ class AccountingVoucherDescriptionReferenceService
                 ->get();
         } elseif ($refIdColName == 'purchase_return_id') {
 
-            // return PurchaseReturn::where('supplier_account_id', $accountId)
-            // ->whereIn('id', $refIds)
-            // ->orderBy('report_date', 'asc')
-            // ->get();
+            return PurchaseReturn::where('supplier_account_id', $accountId)
+                ->whereIn('id', $refIds)
+                ->orderBy('report_date', 'asc')
+                ->get();
             return;
         } elseif ($refIdColName == 'sale_id') {
 

@@ -84,7 +84,6 @@ class PurchaseController extends Controller
         return view('purchase.purchases.index', compact('branches', 'supplierAccounts', 'purchaseAccounts'));
     }
 
-    // show purchase details
     public function show($id)
     {
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
@@ -179,7 +178,6 @@ class PurchaseController extends Controller
         }
 
         $restrictions = $this->purchaseService->restrictions($request);
-
         if ($restrictions['pass'] == false) {
 
             return response()->json(['errorMsg' => $restrictions['msg']]);
@@ -424,7 +422,6 @@ class PurchaseController extends Controller
         }
 
         $restrictions = $this->purchaseService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseId: $id);
-
         if ($restrictions['pass'] == false) {
 
             return response()->json(['errorMsg' => $restrictions['msg']]);
@@ -625,6 +622,24 @@ class PurchaseController extends Controller
         }
 
         return response()->json(__("Purchase is deleted successfully"));
+    }
+
+    public function searchPurchasesByInvoiceId($keyword)
+    {
+        $purchases = DB::table('purchases')
+            ->where('purchases.invoice_id', 'like', "%{$keyword}%")
+            ->where('purchases.branch_id', auth()->user()->branch_id)
+            ->where('purchases.purchase_status', 1)
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            ->select('purchases.id as purchase_id', 'purchases.invoice_id as p_invoice_id', 'purchases.supplier_account_id', 'purchases.warehouse_id', 'warehouses.warehouse_name')->limit(35)->get();
+
+        if (count($purchases) > 0) {
+
+            return view('search_results_view.purchase_invoice_search_result_list', compact('purchases'));
+        } else {
+
+            return response()->json(['noResult' => 'no result']);
+        }
     }
 
     // Add product modal view with data

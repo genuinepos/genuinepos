@@ -317,7 +317,7 @@ class PurchaseService
             return ['pass' => false, 'msg' => __("Product table is empty.")];
         } elseif (count($request->product_ids) > 60) {
 
-            return ['pass' => false, 'msg' => __("Purchase invoice items must be less than 60 or equal.")];
+            return ['pass' => false, 'msg' => __("Purchase invoice products must be less than 60 or equal.")];
         }
 
         if ($checkSupplierChangeRestriction == true) {

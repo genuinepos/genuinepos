@@ -4,8 +4,8 @@ namespace App\Utils;
 
 use App\Models\Purchase;
 use App\Models\PurchaseProduct;
-use App\Models\PurchaseReturn;
-use App\Models\PurchaseReturnProduct;
+use App\Models\Purchases\PurchaseReturn;
+use App\Models\Purchases\PurchaseReturnProduct;
 use Illuminate\Support\Facades\DB;
 
 class PurchaseReturnUtil

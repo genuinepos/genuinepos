@@ -17,27 +17,11 @@ class RolePermissionTableSeeder extends Seeder
         foreach ($this->permissionsArray() as $permission) {
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
-        $adminRole = Role::first();
+        $adminRole = User::whereName('admin')->first() ?? Role::first();
         $adminRole->syncPermissions(Permission::pluck('name'));
 
-        $adminUser = User::where('email', 'admin@gmail.com')->first();
-        if (!isset($adminUser)) {
-            $adminUser = $this->makeAnAdmin();
-        }
-        if (isset($adminUser)) {
-            $adminUser->assignRole($adminRole);
-        }
-    }
-
-    private function makeAnAdmin(): User
-    {
-        $user = User::store([
-            'name' => 'Super Admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('password'),
-        ]);
-
-        return $user;
+        $adminUser = User::whereEmail('admin@gmail.com')->first() ?? User::first();
+        $adminUser->assignRole($adminRole);
     }
 
     private function rolesArray(): array

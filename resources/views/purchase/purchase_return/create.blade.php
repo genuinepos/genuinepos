@@ -79,7 +79,7 @@
                                         <div class="col-8">
                                             <div style="position: relative;">
                                                 <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" data-next="warehouse_id" placeholder="{{ __("Serach Purchase Invoice ID") }}" autocomplete="off">
-                                                <input type="hidden" name="purchase_id" id="purchase_id" class="resetable" value="">
+                                                <input type="hidden" name="purchase_id" id="purchase_id">
 
                                                 <div class="invoice_search_result d-hide">
                                                     <ul id="invoice_list" class="list-unstyled"></ul>
@@ -448,8 +448,8 @@
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">{{ __("Save And Print") }}</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">{{ __("Save") }}</button>
+                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success submit_button">{{ __("Save And Print") }}</button>
+                            <button type="submit" id="save" value="save" class="btn btn-sm btn-success submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -1338,12 +1338,13 @@
                         afterCreatePurchaseReturn();
                     } else {
 
-                        toastr.success('Successfully Purchase return is created.');
+                        toastr.success("{{ __('Successfully Purchase return is created.') }}");
                         $(data).printThis({
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{ asset('css/print/sale.print.css') }}",
+                            loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                            removeInline: false,
                             printDelay: 1000,
                             header: null,
                         });

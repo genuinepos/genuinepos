@@ -142,7 +142,7 @@ class PurchaseService
     public function addPurchase(object $request, object $codeGenerator, string $invoicePrefix): ?object
     {
         $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : 'PI';
-        $invoiceId = $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $__invoicePrefix, splitter: '-', suffixSeparator: '-');
+        $invoiceId = $codeGenerator->generateMonthAndTypeWise(table: 'purchases', column: 'invoice_id', typeColName: 'purchase_status', typeValue: PurchaseStatus::Purchase->value, prefix: $__invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         $addPurchase = new Purchase();
         $addPurchase->invoice_id = $invoiceId;

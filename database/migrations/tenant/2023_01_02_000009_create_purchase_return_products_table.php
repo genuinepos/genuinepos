@@ -44,7 +44,7 @@ return new class extends Migration
             $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
             $table->foreign(['variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
             $table->foreign(['unit_id'])->references(['id'])->on('units')->onDelete('SET NULL');
-            $table->foreign(['tax_ac_id'])->references(['id'])->on('product_variants')->onDelete('SET NULL');
+            $table->foreign(['tax_ac_id'])->references(['id'])->on('accounts')->onDelete('SET NULL');
         });
     }
 

@@ -37,6 +37,6 @@ class PurchaseReturn extends BaseModel
 
     public function purchaseReturnProducts()
     {
-        return $this->hasMany(PurchaseReturnProduct::class);
+        return $this->hasMany(PurchaseReturnProduct::class, 'purchase_return_id');
     }
 }

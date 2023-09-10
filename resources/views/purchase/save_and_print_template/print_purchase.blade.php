@@ -73,7 +73,7 @@
                 <p>
                     @if ($purchase?->branch)
 
-                        {{ $sale->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
+                        {{ $purchase->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
                     @else
 
                         {{ $generalSettings['business__address'] }}

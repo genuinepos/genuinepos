@@ -62,7 +62,7 @@ class ProductStockService
 
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
 
-            $avgUnitCost = $productCurrentStock > 0 ? $productLedger->sum('total_purchased_cost') / $currentStock : $product->product_cost;
+            $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $currentStock : $product->product_cost;
             $stockValue = $avgUnitCost * $currentStock;
 
             $productStock = ProductStock::where('product_id', $productId)

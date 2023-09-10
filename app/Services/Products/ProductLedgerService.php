@@ -26,7 +26,7 @@ class ProductLedgerService
             1 => ['name' => 'Sales', 'id' => 'sale_product_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'sale_id', 'link' => 'sales.show'],
             2 => ['name' => 'Sales Return', 'id' => 'sale_return_id', 'voucher_no' => 'sale_return_voucher', 'details_id' => 'sale_return_id', 'link' => 'sales.returns.show'],
             3 => ['name' => 'Purchase', 'id' => 'purchase_product_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchases.show'],
-            4 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchases.returns.show'],
+            4 => ['name' => 'Purchase Return', 'id' => 'purchase_return_product_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchases.returns.show'],
             5 => ['name' => 'Stock Adjustment', 'id' => 'stock_adjustment_product_id', 'voucher_no' => 'stock_adjustment_voucher', 'details_id' => 'stock_adjustment_id', 'link' => 'stock.adjustments.show'],
             6 => ['name' => 'Production', 'id' => 'production_id', 'voucher_no' => 'product_voucher', 'details_id' => 'production_id', 'link' => null],
         ];
@@ -44,11 +44,12 @@ class ProductLedgerService
         float $quantity,
         float $subtotal,
         ?int $variantId = null,
+        ?int $branchId = null,
         ?int $warehouseId = null,
     ) {
         $voucherType = $this->voucherType($voucherTypeId);
         $add = new ProductLedger();
-        $add->branch_id = auth()->user()->branch_id;
+        $add->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
         $add->warehouse_id = $warehouseId;
         $add->date = $date;
         $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
@@ -110,7 +111,7 @@ class ProductLedgerService
             $update->save();
         } else {
 
-            $this->addProductLedgerEntry(voucherTypeId: $voucherTypeId, date: $date, productId: $productId, transId: $transId, rate: $rate, quantityType: $quantityType, quantity: $quantity, subtotal: $subtotal, variantId: $variantId, warehouseId: $warehouseId);
+            $this->addProductLedgerEntry(voucherTypeId: $voucherTypeId, date: $date, productId: $productId, transId: $transId, rate: $rate, quantityType: $quantityType, quantity: $quantity, subtotal: $subtotal, variantId: $variantId, branchId: $branchId, warehouseId: $warehouseId);
         }
     }
 }

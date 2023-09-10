@@ -12,7 +12,6 @@ interface CodeGenerationServiceInterface
         int $size = 13,
         string $splitter = '-',
         string $suffixSeparator = '',
-        ?string $connection = 'mysql',
     ): string;
 
     public function generateMonthWise(
@@ -24,7 +23,6 @@ interface CodeGenerationServiceInterface
         string $splitter = '-',
         string $suffixSeparator = '',
         string $branch_id = null,
-        ?string $connection = 'mysql',
     ): string;
 
     public function generateMonthAndTypeWise(
@@ -38,7 +36,6 @@ interface CodeGenerationServiceInterface
         string $splitter = '-',
         string $suffixSeparator = '',
         string $branch_id = null,
-        ?string $connection = 'mysql'
     ): string;
 
     public function generateAndTypeWiseWithoutYearMonth(
@@ -51,6 +48,5 @@ interface CodeGenerationServiceInterface
         int $size = 13,
         string $splitter = '-',
         string $suffixSeparator = '',
-        ?string $connection = 'mysql'
     ): string;
 }

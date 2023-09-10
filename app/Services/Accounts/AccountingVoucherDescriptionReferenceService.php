@@ -16,6 +16,7 @@ class AccountingVoucherDescriptionReferenceService
         float $amount,
         string $refIdColName,
         ?array $refIds = null,
+        ?int $branchId = null,
     ) {
         // $index = 0;
         // foreach ($refIds as $refId) {
@@ -31,10 +32,10 @@ class AccountingVoucherDescriptionReferenceService
 
         if (isset($refIds)) {
 
-            $this->specificAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, refIds: $refIds);
+            $this->specificAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, refIds: $refIds, branchId: $branchId);
         } else {
 
-            $this->randomAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName);
+            $this->randomAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, branchId: $branchId);
         }
     }
 
@@ -43,7 +44,8 @@ class AccountingVoucherDescriptionReferenceService
         int $accountId,
         int $amount,
         string $refIdColName,
-        array $refIds
+        array $refIds,
+        ?int $branchId = null
     ) {
 
         $saleService = new \App\Services\Sales\SaleService();
@@ -51,7 +53,9 @@ class AccountingVoucherDescriptionReferenceService
         $purchaseReturnService = new \App\Services\Purchases\PurchaseReturnService();
 
         $receivedOrPaidAmount = $amount;
-        $dueSpecificInvoices = $this->dueSpecificInvoices(accountId: $accountId, refIdColName: $refIdColName, refIds: $refIds);
+        $dueSpecificInvoices = $this->dueSpecificInvoices(accountId: $accountId, refIdColName: $refIdColName, refIds: $refIds, branchId: $branchId);
+        
+        // dd($dueSpecificInvoices);
 
         // $dueInvoices = Sale::where('customer_id', $customerId)
         //     ->whereIn('id', $saleIds)
@@ -265,6 +269,7 @@ class AccountingVoucherDescriptionReferenceService
         int $accountId,
         int $amount,
         string $refIdColName,
+        ?int $branchId = null
     ) {
 
         $saleService = new \App\Services\Sales\SaleService();
@@ -275,7 +280,7 @@ class AccountingVoucherDescriptionReferenceService
 
         if ($receivedOrPaidAmount > 0) {
 
-            $dueRandomInvoices = $this->dueRandomInvoices(accountId: $accountId, refIdColName: $refIdColName);
+            $dueRandomInvoices = $this->dueRandomInvoices(accountId: $accountId, refIdColName: $refIdColName, branchId: $branchId);
 
             if (count($dueRandomInvoices) > 0) {
 
@@ -389,12 +394,14 @@ class AccountingVoucherDescriptionReferenceService
         $purchaseService = new \App\Services\Purchases\PurchaseService();
 
         $dueAmount = $refIdColName == 'purchase_id' ? $purchase->due : $sale->due;
+        $branchId = $refIdColName == 'purchase_id' ? $purchase->branch_id : $sale->branch_id;
 
         $voucherDescriptions = DB::table('accounting_voucher_descriptions')
             ->leftJoin('voucher_description_references', 'accounting_voucher_descriptions.id', 'voucher_description_references.voucher_description_id')
             ->leftJoin('accounting_vouchers', 'accounting_voucher_descriptions.accounting_voucher_id', 'accounting_vouchers.id')
             ->where('accounting_voucher_descriptions.account_id', $accountId)
             ->where('accounting_vouchers.voucher_type', $accountingVoucherType)
+            ->where('accounting_vouchers.branch_id', $branchId)
             ->select(
                 'accounting_vouchers.id as accounting_voucher_id',
                 'accounting_voucher_descriptions.id as voucher_description_id',
@@ -487,25 +494,26 @@ class AccountingVoucherDescriptionReferenceService
         }
     }
 
-    private function dueSpecificInvoices(int $accountId, string $refIdColName, array $refIds)
+    private function dueSpecificInvoices(int $accountId, string $refIdColName, array $refIds, ?int $branchId = null)
     {
+        $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
         if ($refIdColName == 'purchase_id') {
 
-            return Purchase::where('branch_id', auth()->user()->branch_id)
+            return Purchase::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->whereIn('id', $refIds)
                 ->orderBy('report_date', 'asc')
                 ->get();
         } elseif ($refIdColName == 'purchase_return_id') {
 
-            return PurchaseReturn::where('supplier_account_id', $accountId)
+            return PurchaseReturn::where('branch_id', $__branchId)
+                ->where('supplier_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                ->orderBy('report_date', 'asc')
+                ->orderBy('date_ts', 'asc')
                 ->get();
-            return;
         } elseif ($refIdColName == 'sale_id') {
 
-            return Sale::where('branch_id', auth()->user()->branch_id)
+            return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->whereIn('id', $refIds)
                 ->orderBy('report_date', 'asc')
@@ -520,25 +528,25 @@ class AccountingVoucherDescriptionReferenceService
         }
     }
 
-    private function dueRandomInvoices(int $accountId, string $refIdColName)
+    private function dueRandomInvoices(int $accountId, string $refIdColName, ?int $branchId = null)
     {
+        $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
         if ($refIdColName == 'purchase_id') {
 
-            return Purchase::where('branch_id', auth()->user()->branch_id)
+            return Purchase::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->where('due', '>', 0)
                 ->orderBy('report_date', 'asc')
                 ->get();
         } elseif ($refIdColName == 'purchase_return_id') {
 
-            return PurchaseReturn::where('supplier_account_id', $accountId)
-                ->whereIn('id', $refIds)
-                ->orderBy('report_date', 'asc')
+            return PurchaseReturn::where('branch_id', $__branchId)
+                ->where('supplier_account_id', $accountId)
+                ->orderBy('date_ts', 'asc')
                 ->get();
-            return;
         } elseif ($refIdColName == 'sale_id') {
 
-            return Sale::where('branch_id', auth()->user()->branch_id)
+            return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->where('due', '>', 0)
                 ->orderBy('report_date', 'asc')

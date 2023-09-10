@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Mail\PurchaseReturnCreated;
+use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use App\Services\CodeGenerationService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
@@ -28,7 +30,6 @@ use App\Services\Purchases\PurchaseReturnProductService;
 use Modules\Communication\Interface\EmailServiceInterface;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\CodeGenerationService;
 
 class PurchaseReturnController extends Controller
 {
@@ -58,177 +59,23 @@ class PurchaseReturnController extends Controller
     public function index(Request $request)
     {
         if (!auth()->user()->can('purchase_return')) {
+
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
 
-            $returns = '';
-            $generalSettings = config('generalSettings');
-            $query = DB::table('purchase_returns')
-                ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
-                ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')
-                ->leftJoin('warehouses', 'purchase_returns.warehouse_id', 'warehouses.id')
-                ->leftJoin('suppliers', 'purchase_returns.supplier_id', 'suppliers.id')
-                ->leftJoin('suppliers as p_supplier', 'purchases.supplier_id', 'p_supplier.id');
-
-            if ($request->branch_id) {
-
-                if ($request->branch_id == 'NULL') {
-
-                    $query->where('purchase_returns.branch_id', null);
-                } else {
-
-                    $query->where('purchase_returns.branch_id', $request->branch_id);
-                }
-            }
-
-            if ($request->supplier_id) {
-
-                $query->where('purchase_returns.supplier_id', $request->supplier_id);
-            }
-
-            if ($request->from_date) {
-
-                $from_date = date('Y-m-d', strtotime($request->from_date));
-                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
-                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-                $query->whereBetween('purchase_returns.report_date', $date_range); // Final
-            }
-
-            $query->select(
-                'purchase_returns.*',
-                'purchases.invoice_id as parent_invoice_id',
-                'branches.name as branch_name',
-                'branches.branch_code',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-                'suppliers.name as sup_name',
-                'p_supplier.name as ps_name',
-            );
-
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-                $returns = $query->orderBy('purchase_returns.report_date', 'desc');
-            } else {
-
-                $returns = $query->where('purchase_returns.branch_id', auth()->user()->branch_id)
-                    ->orderBy('purchase_returns.report_date', 'desc');
-            }
-
-            return DataTables::of($returns)
-
-                ->addColumn('action', function ($row) {
-
-                    $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('purchases.returns.show', $row->id) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-
-                    if (auth()->user()->branch_id == $row->branch_id) {
-
-                        if ($row->return_type == 1) {
-
-                            $html .= '<a class="dropdown-item" href="' . route('purchases.returns.create', $row->purchase_id) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                        } else {
-
-                            $html .= '<a class="dropdown-item" href="' . route('purchases.returns.supplier.return.edit', $row->id) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
-                        }
-
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('purchases.returns.delete', $row->id) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
-                        // $html .= '<a class="dropdown-item" id="view_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
-                        if ($row->total_return_due > 0) {
-
-                            if ($row->purchase_id) {
-
-                                $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->purchase_id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Add Payment</a>';
-                            } else {
-
-                                // $html .= '<a class="dropdown-item" id="add_supplier_return_payment" href="#"><i class="far fa-money-bill-alt mr-1 text-primary"></i> Receive Return Amt.</a>';
-                            }
-                        }
-                    }
-
-                    $html .= '</div>';
-                    $html .= '</div>';
-
-                    return $html;
-                })
-                ->editColumn('date', function ($row) {
-
-                    return date('d/m/Y', strtotime($row->date));
-                })
-                ->editColumn('supplier', function ($row) {
-
-                    if ($row->sup_name == null) {
-
-                        return $row->ps_name;
-                    }
-
-                    return $row->sup_name;
-                })
-                ->editColumn('location', function ($row) use ($generalSettings) {
-
-                    if ($row->branch_name) {
-
-                        return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
-                    } else {
-
-                        return $generalSettings['business__shop_name'] . '<b>(HO)</b>';
-                    }
-                })
-                ->editColumn('return_from', function ($row) use ($generalSettings) {
-
-                    if ($row->warehouse_name) {
-
-                        return ($row->warehouse_name . '/' . $row->warehouse_code) . '<b>(WH)</b>';
-                    } elseif ($row->branch_name) {
-
-                        return $row->branch_name . '/' . $row->branch_code . '<b>(BL)</b>';
-                    } else {
-
-                        return $generalSettings['business__shop_name'] . '<b>(HO)</b>';
-                    }
-                })
-                ->editColumn('total_return_amount', fn ($row) => $this->converter->format_in_bdt($row->total_return_amount))
-
-                ->editColumn('total_return_due_received', fn ($row) => $this->converter->format_in_bdt($row->total_return_due_received))
-
-                ->editColumn('total_return_due', function ($row) {
-
-                    if ($row->parent_invoice_id) {
-
-                        return '<span class="text-danger"> ' . ($row->total_return_due >= 0 ? $this->converter->format_in_bdt($row->total_return_due) : $this->converter->format_in_bdt(0)) . '</span></b>';
-                    } else {
-
-                        return '<span class="text-dark"><b>CHECK SUPPLIER DUE</b></span>';
-                    }
-                })
-
-                ->editColumn('payment_status', function ($row) {
-
-                    if ($row->parent_invoice_id) {
-                        if ($row->total_return_due > 0) {
-
-                            return '<span class="text-danger"><b>Due</b></span>';
-                        } else {
-
-                            return '<span class="text-success"><b>Paid</b></span>';
-                        }
-                    } else {
-
-                        return '<span class="text-dark"><b>CHECK SUPPLIER DUE</b></span>';
-                    }
-                })
-                ->rawColumns(['action', 'date', 'supplier', 'return_from', 'location', 'total_return_amount', 'total_return_due_received', 'total_return_due', 'payment_status'])
-                ->make(true);
+            return $this->purchaseReturnService->purchaseReturnsTable($request);
         }
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
-        $suppliers = DB::table('suppliers')->where('status', 1)->get(['id', 'name', 'phone']);
+        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
-        return view('purchases.purchase_return.index', compact('branches', 'suppliers'));
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return view('purchase.purchase_return.index', compact('branches', 'supplierAccounts'));
     }
 
     // create purchase return view
@@ -309,93 +156,102 @@ class PurchaseReturnController extends Controller
             $this->validate($request, ['warehouse_id' => 'required']);
         }
 
-        $restrictions = $this->purchaseReturnService->restrictions($request);
-        if ($restrictions['pass'] == false) {
+        try {
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
+            DB::beginTransaction();
 
-        $generalSettings = config('generalSettings');
-        $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $purchaseReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->purchase_return_prefix ? $branchSetting?->purchase_return_prefix : $generalSettings['prefix__purchase_return'];
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+            $restrictions = $this->purchaseReturnService->restrictions($request);
+            if ($restrictions['pass'] == false) {
 
-        $addReturn = $this->purchaseReturnService->addPurchaseReturn(request: $request, voucherPrefix: $purchaseReturnVoucherPrefix, codeGenerator: $codeGenerator);
-
-        $this->dayBookService->addDayBook(voucherTypeId: 6, date: $request->date, accountId: $request->supplier_account_id, transId: $addReturn->id, amount: $request->total_return_amount, amountType: 'debit');
-
-        // Add Purchase A/c Ledger Entry
-        $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, date: $request->date, account_id: $request->purchase_account_id, trans_id: $addReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit');
-
-        // Add supplier A/c ledger Entry For Purchase
-        $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addReturn->id, amount: $request->total_purchase_amount, amount_type: 'debit');
-
-        if ($request->return_tax_ac_id) {
-
-            // Add Tax A/c ledger Entry For Purchase
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $addReturn->id, amount: $request->return_tax_amount, amount_type: 'credit');
-        }
-
-        $index = 0;
-        foreach ($request->product_ids as $productId) {
-
-            $addPurchaseReturnProduct = $this->purchaseProductService->addPurchaseReturnProduct(request: $request, purchaseReturnId: $addReturn->id, index: $index);
-
-            // Add Product Ledger Entry
-            $this->productLedgerService->addProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->net_unit_cost, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->line_total, variantId: $addPurchaseReturnProduct->variant_id, warehouseId: (isset($request->warehouse_count) ? $request->warehouse_id : null));
-
-            // purchase product tax will be go here
-            if ($addPurchaseProduct->tax_ac_id) {
-
-                // Add Tax A/c ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 19, date: $request->date, account_id: $addPurchaseProduct->tax_ac_id, trans_id: $addPurchaseProduct->id, amount: ($addPurchaseReturnProduct->unit_tax_amount * $addPurchaseReturnProduct->return_qty), amount_type: 'credit');
+                return response()->json(['errorMsg' => $restrictions['msg']]);
             }
 
-            $index++;
-        }
+            $generalSettings = config('generalSettings');
+            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
+            $purchaseReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->purchase_return_prefix ? $branchSetting?->purchase_return_prefix : $generalSettings['prefix__purchase_return'];
+            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
 
-        if ($request->received_amount > 0) {
+            $addReturn = $this->purchaseReturnService->addPurchaseReturn(request: $request, voucherPrefix: $purchaseReturnVoucherPrefix, codeGenerator: $codeGenerator);
 
-            $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->receipt_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, purchaseReturnRefId: $addReturn->id);
+            $this->dayBookService->addDayBook(voucherTypeId: 6, date: $request->date, accountId: $request->supplier_account_id, transId: $addReturn->id, amount: $request->total_return_amount, amountType: 'debit');
 
-            // Add Payment Description Credit Entry
-            $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'dr', amount: $request->received_amount, note: null);
+            // Add Purchase A/c Ledger Entry
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, date: $request->date, account_id: $request->purchase_account_id, trans_id: $addReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit');
 
-            //Add debit Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+            // Add supplier A/c ledger Entry For Purchase
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addReturn->id, amount: $request->total_return_amount, amount_type: 'debit');
 
-            // Add Credit Account Accounting voucher Description
-            $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount);
+            if ($request->return_tax_ac_id) {
 
-            // Add Accounting VoucherDescription References
-            $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->supplier_account_id, amount: $request->received_amount, refIdColName: 'purchase_return_id', refIds: [$addReturn->id]);
-
-            //Add Credit Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->supplier_account_id);
-        }
-
-        $__index = 0;
-        foreach ($request->product_ids as $productId) {
-
-            $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
-            $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
-
-            if (isset($request->warehouse_count)) {
-
-                $this->productStockService->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
-                $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
-            } else {
-
-                $this->productStockService->addBranchProduct(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
-                $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
+                // Add Tax A/c ledger Entry For Purchase
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $addReturn->id, amount: $request->return_tax_amount, amount_type: 'credit');
             }
 
-            $__index++;
+            $index = 0;
+            foreach ($request->product_ids as $productId) {
+
+                $addPurchaseReturnProduct = $this->purchaseReturnProductService->addPurchaseReturnProduct(request: $request, purchaseReturnId: $addReturn->id, index: $index);
+
+                // Add Product Ledger Entry
+                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: $addPurchaseReturnProduct->variant_id, warehouseId: ($addPurchaseReturnProduct->warehouse_id ? $addPurchaseReturnProduct->warehouse_id : null));
+
+                // purchase product tax will be go here
+                if ($addPurchaseReturnProduct->tax_ac_id) {
+
+                    // Add Tax A/c ledger Entry
+                    $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 19, date: $request->date, account_id: $addPurchaseReturnProduct->tax_ac_id, trans_id: $addPurchaseReturnProduct->id, amount: ($addPurchaseReturnProduct->unit_tax_amount * $addPurchaseReturnProduct->return_qty), amount_type: 'credit');
+                }
+
+                $index++;
+            }
+
+            if ($request->received_amount > 0) {
+
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->receipt_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, purchaseReturnRefId: $addReturn->id);
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'dr', amount: $request->received_amount, note: null);
+
+                //Add debit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+
+                // Add Credit Account Accounting voucher Description
+                $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount);
+
+                // Add Accounting VoucherDescription References
+                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->supplier_account_id, amount: $request->received_amount, refIdColName: 'purchase_return_id', refIds: [$addReturn->id]);
+
+                //Add Credit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->supplier_account_id);
+            }
+
+            $__index = 0;
+            foreach ($request->product_ids as $productId) {
+
+                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+                $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
+
+                if (isset($request->warehouse_ids[$__index])) {
+
+                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
+                } else {
+
+                    $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
+                }
+
+                $__index++;
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
         if ($request->action == 'save_and_print') {
 
-            $return = $this->purchaseReturnService->singlePurchaseReturn(id: $addReturn->id, with:[
+            $receivedAmount = $request->received_amount;
+            $return = $this->purchaseReturnService->singlePurchaseReturn(id: $addReturn->id, with: [
                 'purchase',
                 'branch',
                 'branch.parentBranch',
@@ -403,17 +259,13 @@ class PurchaseReturnController extends Controller
                 'purchaseReturnProducts',
                 'purchaseReturnProducts.product',
                 'purchaseReturnProducts.variant',
-                'purchaseReturnProducts.branch',
-                'purchaseReturnProducts.warehouse',
-            ])->first();
+                'purchaseReturnProducts.unit',
+            ]);
 
-            if ($purchaseReturn) {
-
-                return view('purchase.save_and_print_template.print_purchase_return', compact('return'));
-            }
+            return view('purchase.save_and_print_template.print_purchase_return', compact('return', 'receivedAmount'));
         } else {
 
-            return response()->json(['successMsg' => 'Purchase Return Added Successfully.']);
+            return response()->json(['successMsg' => __("Purchase Return Created Successfully.")]);
         }
     }
 
